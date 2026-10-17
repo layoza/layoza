@@ -1,0 +1,296 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/experiment-03-living-atelier/layoza-mcp/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 3.92,
+      "contrast_failures": 4,
+      "lcp_ms": 1312,
+      "cls": 0.0229,
+      "inp_proxy_ms": 120,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\experiment-03-living-atelier\\layoza-mcp\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 3.92,
+      "contrast_failures": 4,
+      "lcp_ms": 1292,
+      "cls": 0.0238,
+      "inp_proxy_ms": 88,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 7,
+        "opened": true,
+        "screenshot": "examples\\experiment-03-living-atelier\\layoza-mcp\\qa\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\experiment-03-living-atelier\\layoza-mcp\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 3.92,
+      "contrast_failures": 4,
+      "lcp_ms": 1320,
+      "cls": 0.034,
+      "inp_proxy_ms": 48,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 7,
+        "opened": true,
+        "screenshot": "examples\\experiment-03-living-atelier\\layoza-mcp\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\experiment-03-living-atelier\\layoza-mcp\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 3.92,
+  "contrast_failures": 4,
+  "contrast_failure_samples": [
+    "<span> \"STAGE 02\" 3.92:1 (needs 4.5:1)",
+    "<span> \"STAGE 03\" 3.92:1 (needs 4.5:1)",
+    "<span> \"STAGE 04\" 3.92:1 (needs 4.5:1)",
+    "<span> \"STAGE 05\" 3.92:1 (needs 4.5:1)"
+  ],
+  "contrast_checked_elements": 123,
+  "contrast_indeterminate_elements": 39,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 25.4,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1320,
+  "cls": 0.034,
+  "inp_ms": 120,
+  "inp_event_entries": 33,
+  "h1_to_body_ratio": 5.55,
+  "max_line_length_ch": 65,
+  "font_families": [
+    "jetbrains mono",
+    "playfair display",
+    "plus jakarta sans"
+  ],
+  "font_family_count": 3,
+  "site_dna": {
+    "title": "ATELIER VIVANT — The Living Atelier | Interactive Digital Art & Design Exhibition",
+    "lang": "en",
+    "page_background": "#FAF7F2",
+    "text_colors": [
+      {
+        "value": "#252D42",
+        "count": 3705
+      },
+      {
+        "value": "#0B1021",
+        "count": 1655
+      },
+      {
+        "value": "#CBD5E1",
+        "count": 668
+      },
+      {
+        "value": "#0047FF",
+        "count": 488
+      },
+      {
+        "value": "#FAF7F2",
+        "count": 396
+      },
+      {
+        "value": "#94A3B8",
+        "count": 346
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 233
+      },
+      {
+        "value": "#93B4FF",
+        "count": 173
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#F2ECE1",
+        "count": 4058.832447265625
+      },
+      {
+        "value": "#0B1021",
+        "count": 2854.1541967773437
+      },
+      {
+        "value": "#FAF7F2",
+        "count": 1124.0173103027346
+      },
+      {
+        "value": "#060B19",
+        "count": 1114.56
+      },
+      {
+        "value": "#0A1020",
+        "count": 880.9465
+      },
+      {
+        "value": "#10172A",
+        "count": 811.51
+      },
+      {
+        "value": "#0F172A",
+        "count": 241.003125
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 198.47965234375
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Plus Jakarta Sans",
+        "count": 4905
+      },
+      {
+        "value": "JetBrains Mono",
+        "count": 2070
+      },
+      {
+        "value": "Playfair Display",
+        "count": 1016
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "87.84px",
+        "weight": "700",
+        "line_height": "93.1104px",
+        "letter_spacing": "-1.7568px",
+        "family": "Playfair Display"
+      },
+      "h2": {
+        "size": "64.8px",
+        "weight": "700",
+        "line_height": "69.984px",
+        "letter_spacing": "-1.296px",
+        "family": "Playfair Display"
+      },
+      "h3": {
+        "size": "40.32px",
+        "weight": "700",
+        "line_height": "45.1584px",
+        "letter_spacing": "normal",
+        "family": "Playfair Display"
+      },
+      "p": {
+        "size": "15.84px",
+        "weight": "400",
+        "line_height": "25.6608px",
+        "letter_spacing": "normal",
+        "family": "Plus Jakarta Sans"
+      }
+    },
+    "radii": [
+      {
+        "value": "999px",
+        "count": 43
+      },
+      {
+        "value": "24px",
+        "count": 8
+      },
+      {
+        "value": "28px",
+        "count": 6
+      },
+      {
+        "value": "16px",
+        "count": 6
+      },
+      {
+        "value": "18px",
+        "count": 5
+      },
+      {
+        "value": "12px",
+        "count": 4
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1440px",
+        "count": 10
+      },
+      {
+        "value": "809.534px",
+        "count": 7
+      },
+      {
+        "value": "1380px",
+        "count": 1
+      },
+      {
+        "value": "991.494px",
+        "count": 1
+      },
+      {
+        "value": "626.124px",
+        "count": 1
+      },
+      {
+        "value": "665.71px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--bg-ivory": "#FAF7F2",
+      "--bg-porcelain": "#F2ECE1",
+      "--bg-alabaster": "#EAE2D3",
+      "--bg-cobalt-stage": "#081229",
+      "--ink-midnight": "#0B1021",
+      "--ink-body": "#252D42",
+      "--ink-muted": "#525B73",
+      "--accent-cobalt": "#0047FF",
+      "--accent-cobalt-deep": "#0033BF",
+      "--accent-vermilion": "#E63B20",
+      "--border-hairline": "rgba(11, 16, 33, 0.13)",
+      "--border-strong": "rgba(11, 16, 33, 0.28)",
+      "--font-display": "'Playfair Display', Georgia, serif",
+      "--font-sans": "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif",
+      "--font-mono": "'JetBrains Mono', monospace",
+      "--ease-out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "--container-max": "1440px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 0
+  },
+  "unmeasured": []
+}

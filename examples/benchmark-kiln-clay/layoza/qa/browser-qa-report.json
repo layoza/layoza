@@ -1,0 +1,309 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-kiln-clay/layoza/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.54,
+      "contrast_failures": 0,
+      "lcp_ms": 1892,
+      "cls": 0.0206,
+      "inp_proxy_ms": 56,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-kiln-clay\\layoza\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.56,
+      "contrast_failures": 0,
+      "lcp_ms": 1864,
+      "cls": 0.0074,
+      "inp_proxy_ms": 16,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 5,
+        "opened": true,
+        "screenshot": "examples\\benchmark-kiln-clay\\layoza\\qa\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-kiln-clay\\layoza\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "label-wrap",
+          "severity": "warning",
+          "detail": "<button#faq-3-q> \"Do I need any experience for a workshop?\" wraps onto 2 lines"
+        },
+        {
+          "rule": "label-wrap",
+          "severity": "warning",
+          "detail": "<button#faq-5-q> \"Do you take custom or wedding orders?\" wraps onto 2 lines"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.54,
+      "contrast_failures": 0,
+      "lcp_ms": 1792,
+      "cls": 0.0443,
+      "inp_proxy_ms": 24,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 5,
+        "opened": true,
+        "screenshot": "examples\\benchmark-kiln-clay\\layoza\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-kiln-clay\\layoza\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 5.54,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "contrast_checked_elements": 165,
+  "contrast_indeterminate_elements": 3,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 22,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1892,
+  "cls": 0.0443,
+  "inp_ms": 56,
+  "inp_event_entries": 23,
+  "h1_to_body_ratio": 7.09,
+  "max_line_length_ch": 49,
+  "font_families": [
+    "plus jakarta sans",
+    "syne",
+    "space mono"
+  ],
+  "font_family_count": 3,
+  "site_dna": {
+    "title": "Kiln & Clay — Handmade ceramics & wheel workshops, Lahore",
+    "lang": "en",
+    "page_background": "#F3EDE3",
+    "text_colors": [
+      {
+        "value": "#4E463D",
+        "count": 1365
+      },
+      {
+        "value": "#17130F",
+        "count": 1220
+      },
+      {
+        "value": "#F3EDE3",
+        "count": 539
+      },
+      {
+        "value": "#C9BCAA",
+        "count": 498
+      },
+      {
+        "value": "#FFE9DE",
+        "count": 154
+      },
+      {
+        "value": "#FFF8F2",
+        "count": 75
+      },
+      {
+        "value": "#A63A1A",
+        "count": 32
+      },
+      {
+        "value": "#FF8A5C",
+        "count": 11
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#1B1612",
+        "count": 2565.9956249999996
+      },
+      {
+        "value": "#A63A1A",
+        "count": 471.00195507812504
+      },
+      {
+        "value": "#2A231D",
+        "count": 381.883125
+      },
+      {
+        "value": "#E6DFD3",
+        "count": 133.38293408203126
+      },
+      {
+        "value": "#DCE5EA",
+        "count": 133.38293408203126
+      },
+      {
+        "value": "#E4E7DC",
+        "count": 132.73168823242187
+      },
+      {
+        "value": "#EEDCD3",
+        "count": 132.73168823242187
+      },
+      {
+        "value": "#E9DDCF",
+        "count": 112.89057275390626
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Plus Jakarta Sans",
+        "count": 2487
+      },
+      {
+        "value": "Syne",
+        "count": 817
+      },
+      {
+        "value": "Space Mono",
+        "count": 591
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "92.16px",
+        "weight": "700",
+        "line_height": "95.8464px",
+        "letter_spacing": "-3.2256px",
+        "family": "Syne"
+      },
+      "h2": {
+        "size": "64px",
+        "weight": "700",
+        "line_height": "66.56px",
+        "letter_spacing": "-1.92px",
+        "family": "Syne"
+      },
+      "h3": {
+        "size": "21.6px",
+        "weight": "700",
+        "line_height": "25.92px",
+        "letter_spacing": "-0.324px",
+        "family": "Syne"
+      },
+      "p": {
+        "size": "13px",
+        "weight": "400",
+        "line_height": "20.8px",
+        "letter_spacing": "0.78px",
+        "family": "Space Mono"
+      },
+      "small": {
+        "size": "13.6px",
+        "weight": "400",
+        "line_height": "19.04px",
+        "letter_spacing": "normal",
+        "family": "Plus Jakarta Sans"
+      }
+    },
+    "radii": [
+      {
+        "value": "50%",
+        "count": 42
+      },
+      {
+        "value": "999px",
+        "count": 22
+      },
+      {
+        "value": "4px",
+        "count": 13
+      },
+      {
+        "value": "6px",
+        "count": 2
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1432px",
+        "count": 9
+      },
+      {
+        "value": "480px",
+        "count": 5
+      },
+      {
+        "value": "850.176px",
+        "count": 4
+      },
+      {
+        "value": "816.169px",
+        "count": 1
+      },
+      {
+        "value": "576px",
+        "count": 1
+      },
+      {
+        "value": "520px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--bone": "#F3EDE3",
+      "--bone-2": "#EAE2D4",
+      "--paper": "#FBF8F2",
+      "--ink": "#17130F",
+      "--ink-2": "#4E463D",
+      "--line": "rgba(23, 19, 15, 0.16)",
+      "--line-strong": "rgba(23, 19, 15, 0.42)",
+      "--kiln": "#A63A1A",
+      "--kiln-deep": "#7E2A11",
+      "--kiln-glow": "#FF8A5C",
+      "--celadon": "#5E7F6B",
+      "--night": "#1B1612",
+      "--night-2": "#2A231D",
+      "--night-ink": "#F3EDE3",
+      "--night-mute": "#C9BCAA",
+      "--ok": "#2F6B45",
+      "--err": "#A3271A",
+      "--display": "\"Syne\", \"Arial Narrow\", system-ui, sans-serif",
+      "--body": "\"Plus Jakarta Sans\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "--mono": "\"Space Mono\", ui-monospace, \"Cascadia Mono\", monospace",
+      "--gutter": "clamp(1rem, 4vw, 3.5rem)",
+      "--max": "1320px",
+      "--section": "clamp(5.5rem, 9vw, 9rem)",
+      "--head-gap": "clamp(2.5rem, 5vw, 4.5rem)",
+      "--ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 1
+  },
+  "unmeasured": []
+}

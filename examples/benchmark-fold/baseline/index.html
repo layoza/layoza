@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold Architects, Glasgow</title>
+<meta name="description" content="Fold is a six-person architecture studio in Glasgow working on housing retrofits, small civic buildings and timber extensions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3F1EB;
+    --paper-2: #EAE7DE;
+    --ink: #1D1E1B;
+    --ink-2: #57564F;
+    --line: #CFCBBF;
+    --stone: #9B3D26;   /* Glasgow red sandstone */
+    --error: #A3261B;
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+    --gutter: clamp(16px, 4vw, 56px);
+    --max: 1320px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 1rem/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+  a:hover { color: var(--stone); }
+  :focus-visible { outline: 2px solid var(--stone); outline-offset: 3px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .skip {
+    position: absolute; left: 8px; top: -100px; z-index: 100;
+    background: var(--ink); color: var(--paper); padding: 10px 14px;
+  }
+  .skip:focus { top: 8px; }
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; margin: -1px;
+  }
+  .label {
+    font: 400 0.75rem/1.4 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  /* Header */
+  .site-header {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    font: 500 1.375rem/1 var(--serif);
+    letter-spacing: -0.01em;
+  }
+  .wordmark svg { width: 26px; height: 18px; }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 36px; }
+  .nav a { text-decoration: none; font-size: 0.9375rem; padding: 6px 0; }
+  .nav a:hover { text-decoration: underline; color: var(--ink); }
+  .menu-btn {
+    display: none;
+    background: none; border: 1px solid var(--line); color: var(--ink);
+    font: 400 0.8125rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 10px 14px; min-height: 44px; cursor: pointer;
+  }
+  .menu-btn:hover { border-color: var(--ink); }
+
+  /* Hero */
+  .hero { padding: clamp(56px, 10vw, 128px) 0 0; }
+  .hero-grid {
+    display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: 48px; align-items: end;
+  }
+  .hero h1 {
+    margin: 0;
+    font: 400 clamp(2.125rem, 5.2vw, 4.5rem)/1.06 var(--serif);
+    letter-spacing: -0.02em;
+    max-width: 16ch;
+  }
+  .hero h1 em { font-style: italic; color: var(--stone); }
+  .hero-aside { padding-bottom: 8px; }
+  .hero-aside p { margin: 0 0 20px; color: var(--ink-2); max-width: 34ch; }
+  .arrow-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 500; text-decoration: none;
+    border-bottom: 1px solid currentColor; padding-bottom: 4px;
+  }
+  .arrow-link span { font-family: var(--mono); }
+  .hero-drawing {
+    margin: clamp(48px, 7vw, 88px) 0 0;
+    border-top: 1px solid var(--ink);
+    color: var(--ink);
+  }
+  .hero-drawing svg { width: 100%; height: auto; }
+  .hero-drawing svg *, .plate svg * { vector-effect: non-scaling-stroke; }
+  .hero-caption {
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    padding: 12px 0 0;
+  }
+
+  /* Sections */
+  section { scroll-margin-top: 64px; }
+  .section { padding: clamp(80px, 11vw, 144px) 0 0; }
+  .section-head {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 48px; align-items: baseline;
+    border-top: 1px solid var(--ink); padding-top: 18px; margin-bottom: 48px;
+  }
+  .section-head h2 {
+    margin: 0; font: 400 clamp(1.75rem, 3vw, 2.5rem)/1.1 var(--serif); letter-spacing: -0.015em;
+  }
+  .section-head .lead { margin: 0; color: var(--ink-2); max-width: 52ch; }
+
+  /* Work */
+  .filters {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px;
+    margin-bottom: 32px;
+  }
+  .filter-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter {
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line);
+    font: 400 0.875rem/1 var(--sans);
+    padding: 0 16px; min-height: 40px; cursor: pointer;
+  }
+  .filter:hover { border-color: var(--ink); }
+  .filter[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .filter-count { margin-left: auto; }
+  .projects {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px 32px;
+  }
+  .project[hidden] { display: none; }
+  .project figure { margin: 0; }
+  .plate {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    aspect-ratio: 4 / 3;
+    display: grid; place-items: center;
+    color: var(--ink);
+    padding: 8%;
+  }
+  .plate svg { width: 100%; height: 100%; }
+  .project-meta {
+    display: flex; justify-content: space-between; gap: 12px;
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0 10px;
+  }
+  .project h3 { margin: 14px 0 6px; font: 400 1.375rem/1.2 var(--serif); }
+  .project p { margin: 0; color: var(--ink-2); font-size: 0.9375rem; }
+  .empty { color: var(--ink-2); }
+
+  /* Approach */
+  .principles {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+  .principles li { padding: 24px 28px 8px 0; }
+  .principles li + li { padding-left: 28px; border-left: 1px solid var(--line); }
+  .principles .num { font: 400 0.8125rem/1 var(--mono); color: var(--stone); }
+  .principles h3 { margin: 20px 0 10px; font: 400 1.375rem/1.2 var(--serif); }
+  .principles p { margin: 0; color: var(--ink-2); font-size: 0.9375rem; }
+
+  /* Studio */
+  .studio-grid {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px;
+  }
+  .studio-text p {
+    margin: 0 0 18px; font: 400 clamp(1.125rem, 1.6vw, 1.3125rem)/1.5 var(--serif);
+    max-width: 34ch;
+  }
+  .studio-text p + p { font: 400 1rem/1.6 var(--sans); color: var(--ink-2); }
+  .people {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 32px;
+  }
+  .people li {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    border-top: 1px solid var(--line); padding: 16px 0;
+  }
+  .people li:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .people .name { font: 400 1.1875rem/1.3 var(--serif); }
+  .people .role { font-size: 0.875rem; color: var(--ink-2); text-align: right; }
+
+  /* Contact */
+  .contact-grid {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px;
+  }
+  .contact-intro p { margin: 0 0 16px; color: var(--ink-2); max-width: 36ch; }
+  .contact-intro a { color: var(--ink); }
+  form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 24px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: 0.875rem; font-weight: 500; }
+  .field label .opt { font-weight: 400; color: var(--ink-2); }
+  input, select, textarea {
+    font: 400 1rem/1.4 var(--sans);
+    color: var(--ink);
+    background: #FBFAF7;
+    border: 1px solid #8C897F;
+    border-radius: 0;
+    padding: 12px 14px;
+    min-height: 48px;
+    width: 100%;
+  }
+  select {
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231D1E1B' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 40px;
+  }
+  textarea { min-height: 150px; resize: vertical; }
+  input:hover, select:hover, textarea:hover { border-color: var(--ink); }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline-offset: 0; border-color: var(--ink); }
+  [aria-invalid="true"] { border-color: var(--error); box-shadow: inset 3px 0 0 var(--error); }
+  .error { margin: 0; min-height: 0; font-size: 0.875rem; color: var(--error); }
+  .error:empty { display: none; }
+  .form-foot {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .form-foot p { margin: 0; font-size: 0.875rem; color: var(--ink-2); }
+  .submit {
+    background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
+    font: 500 1rem/1 var(--sans); padding: 0 28px; min-height: 52px; cursor: pointer;
+  }
+  .submit:hover { background: var(--stone); border-color: var(--stone); }
+  .success {
+    border: 1px solid var(--ink); padding: 32px;
+    background: #FBFAF7;
+  }
+  .success h3 { margin: 0 0 10px; font: 400 1.75rem/1.2 var(--serif); }
+  .success p { margin: 0 0 18px; color: var(--ink-2); max-width: 52ch; }
+  .success button {
+    background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer;
+    font: 500 1rem/1.4 var(--sans); text-decoration: underline; text-underline-offset: 0.2em;
+  }
+
+  /* Footer */
+  .site-footer { margin-top: clamp(96px, 12vw, 160px); border-top: 1px solid var(--ink); padding: 40px 0 32px; }
+  .footer-grid {
+    display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2.6fr)); gap: 32px;
+  }
+  .footer-grid h2 { margin: 0 0 12px; }
+  .footer-grid address, .footer-grid p { font-style: normal; margin: 0; color: var(--ink); }
+  .footer-grid ul { list-style: none; margin: 0; padding: 0; }
+  .footer-grid li + li { margin-top: 4px; }
+  .footer-base {
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
+  }
+  .footer-mark { font: 400 clamp(4rem, 14vw, 11rem)/0.8 var(--serif); letter-spacing: -0.04em; margin: 48px 0 0; color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 1080px) {
+    .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .principles li, .principles li + li { padding: 24px 24px 28px 0; border-left: 0; }
+    .principles li:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--line); }
+    .principles li:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .footer-grid > :first-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 860px) {
+    .hero-grid, .section-head, .studio-grid, .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+    .section-head { margin-bottom: 36px; }
+    .hero h1 { max-width: 18ch; }
+    .studio-text p { max-width: 52ch; }
+  }
+  @media (max-width: 720px) {
+    .menu-btn { display: inline-flex; align-items: center; }
+    .nav { position: absolute; top: 64px; left: 0; right: 0; background: var(--paper); border-bottom: 1px solid var(--ink); display: none; }
+    .nav.open { display: block; }
+    .nav ul { flex-direction: column; gap: 0; padding: 8px var(--gutter) 16px; }
+    .nav li + li { border-top: 1px solid var(--line); }
+    .nav a { display: block; padding: 14px 0; font: 400 1.5rem/1.2 var(--serif); }
+  }
+  @media (max-width: 600px) {
+    .projects { grid-template-columns: 1fr; gap: 48px; }
+    .principles { grid-template-columns: 1fr; }
+    .principles li, .principles li + li, .principles li:nth-child(even) { padding: 22px 0 24px; border-left: 0; }
+    .principles li + li { border-top: 1px solid var(--line); }
+    .people { grid-template-columns: 1fr; }
+    .people li:nth-last-child(2) { border-bottom: 0; }
+    form { grid-template-columns: 1fr; }
+    .filter-count { margin-left: 0; width: 100%; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-caption .label:last-child { display: none; }
+    .success { padding: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Fold Architects, home">
+      <svg viewBox="0 0 26 18" aria-hidden="true"><path d="M1 17V7l8-6 8 6 8-6v16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter"/></svg>
+      Fold
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#studio">Studio</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-grid">
+        <h1 id="hero-title">We make existing homes warmer, small public buildings better, and add rooms in <em>timber</em>.</h1>
+        <div class="hero-aside">
+          <p>Fold is a six-person architecture studio in Glasgow. Most of our work starts with a building that is already there.</p>
+          <a class="arrow-link" href="#work">See selected work <span aria-hidden="true">&darr;</span></a>
+        </div>
+      </div>
+
+      <figure class="hero-drawing" aria-hidden="true">
+        <svg viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax meet" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke">
+          <!-- ground -->
+          <line x1="0" y1="200" x2="1200" y2="200" stroke-width="1.4"/>
+          <g stroke-width="0.6" opacity="0.6">
+            <path d="M0 206h1200M0 212h1200"/>
+          </g>
+          <!-- tenement elevation -->
+          <g>
+            <rect x="40" y="40" width="250" height="160"/>
+            <path d="M34 40h262M40 34h250"/>
+            <g stroke-width="0.8">
+              <rect x="62" y="56" width="22" height="26"/><rect x="104" y="56" width="22" height="26"/><rect x="164" y="56" width="22" height="26"/><rect x="206" y="56" width="22" height="26"/><rect x="248" y="56" width="22" height="26"/>
+              <rect x="62" y="98" width="22" height="26"/><rect x="104" y="98" width="22" height="26"/><rect x="164" y="98" width="22" height="26"/><rect x="206" y="98" width="22" height="26"/><rect x="248" y="98" width="22" height="26"/>
+              <rect x="62" y="140" width="22" height="26"/><rect x="104" y="140" width="22" height="26"/><rect x="206" y="140" width="22" height="26"/><rect x="248" y="140" width="22" height="26"/>
+              <path d="M150 200v-44a10 10 0 0 1 20 0v44"/>
+            </g>
+            <!-- insulation line inside walls -->
+            <path d="M46 46v154M284 46v154" stroke="#9B3D26" stroke-dasharray="3 3"/>
+          </g>
+          <!-- terrace houses with pitched roofs -->
+          <g>
+            <path d="M330 200V110l45-34 45 34v90M420 200V110l45-34 45 34v90"/>
+            <path d="M330 110h180" stroke-width="0.6"/>
+            <g stroke-width="0.8">
+              <rect x="350" y="128" width="20" height="24"/><rect x="380" y="160" width="18" height="40"/>
+              <rect x="440" y="128" width="20" height="24"/><rect x="470" y="160" width="18" height="40"/>
+            </g>
+            <path d="M336 108l39-29 39 29M426 108l39-29 39 29" stroke="#9B3D26" stroke-dasharray="3 3"/>
+          </g>
+          <!-- civic hall with clerestory -->
+          <g>
+            <path d="M560 200V118h240v82"/>
+            <path d="M560 118l60-36h120l60 36"/>
+            <path d="M620 82V66h120v16" />
+            <g stroke-width="0.8">
+              <path d="M634 70h12v12M660 70h12v12M686 70h12v12M712 70h12v12" />
+              <rect x="590" y="140" width="40" height="60"/><rect x="650" y="140" width="40" height="60"/><rect x="710" y="140" width="60" height="60"/>
+              <path d="M740 140v60"/>
+            </g>
+          </g>
+          <!-- house with timber extension -->
+          <g>
+            <path d="M850 200V100l60-44 60 44v100"/>
+            <g stroke-width="0.8"><rect x="874" y="120" width="22" height="28"/><rect x="924" y="120" width="22" height="28"/></g>
+            <path d="M970 200V140h120l0 60" stroke="#9B3D26" stroke-width="1.2"/>
+            <path d="M970 140l120-10v10" stroke="#9B3D26" stroke-width="1.2"/>
+            <g stroke="#9B3D26" stroke-width="0.6">
+              <path d="M985 140v60M1000 140v60M1015 140v60M1030 140v60M1045 140v60M1060 140v60M1075 140v60"/>
+            </g>
+            <rect x="1000" y="160" width="60" height="40" fill="#F3F1EB" stroke="#9B3D26" stroke-width="1.2"/>
+          </g>
+          <!-- tree -->
+          <g stroke-width="0.8">
+            <path d="M1140 200v-50"/>
+            <circle cx="1140" cy="128" r="26"/>
+          </g>
+        </svg>
+      </figure>
+      <div class="hero-caption">
+        <span class="label">Glasgow &mdash; housing retrofit, civic, timber</span>
+        <span class="label">Red dashed line: new insulation and timber</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="work-title">Selected work</h2>
+        <p class="lead">Six recent projects. Each is drawn here as the plan or section that best explains it.</p>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group" role="group" aria-label="Filter projects by type">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" type="button" data-filter="housing" aria-pressed="false">Housing</button>
+          <button class="filter" type="button" data-filter="civic" aria-pressed="false">Civic</button>
+          <button class="filter" type="button" data-filter="extensions" aria-pressed="false">Extensions</button>
+        </div>
+        <p class="label filter-count" id="filter-count" aria-live="polite">Showing 6 of 6</p>
+      </div>
+
+      <ul class="projects" id="projects">
+        <!-- 1 -->
+        <li class="project" data-type="housing">
+          <article>
+            <figure>
+              <div class="plate">
+                <svg viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1" role="img" aria-label="Section through a four-storey tenement showing internal insulation lining">
+                  <path d="M20 170h200" stroke-width="1.4"/>
+                  <path d="M50 170V30h140v140"/>
+                  <path d="M42 30h156"/>
+                  <path d="M50 65h140M50 100h140M50 135h140" stroke-width="0.7"/>
+                  <path d="M56 32v138M184 32v138" stroke="#9B3D26" stroke-dasharray="3 2"/>
+                  <g stroke-width="0.7"><rect x="62" y="42" width="14" height="16"/><rect x="164" y="42" width="14" height="16"/><rect x="62" y="77" width="14" height="16"/><rect x="164" y="77" width="14" height="16"/><rect x="62" y="112" width="14" height="16"/><rect x="164" y="112" width="14" height="16"/><rect x="62" y="147" width="14" height="16"/><rect x="164" y="147" width="14" height="23"/></g>
+                  <path d="M110 170V140h20v30" stroke-width="0.7"/>
+                </svg>
+              </div>
+              <figcaption class="visually-hidden">Drawing: tenement section</figcaption>
+            </figure>
+            <div class="project-meta"><span class="label">01 &middot; Housing</span><span class="label">2025</span></div>
+            <h3>Close 14 Retrofit</h3>
+            <p class="label" style="margin:0 0 8px">Hillhead, Glasgow</p>
+            <p>Eight flats in a sandstone tenement, insulated from the inside while residents stayed at home.</p>
+          </article>
+        </li>
+        <!-- 2 -->
+        <li class="project" data-type="civic">
+          <article>
+            <figure>
+              <div class="plate">
+                <svg viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1" role="img" aria-label="Section through a community hall with a raised clerestory roof">
+                  <path d="M20 160h200" stroke-width="1.4"/>
+                  <path d="M40 160V90l50-34h60l50 34v70"/>
+                  <path d="M90 56V36h60v20"/>
+                  <path d="M98 40h10v10M114 40h10v10M130 40h10v10" stroke-width="0.7"/>
+                  <path d="M90 56l-30 104M150 56l30 104" stroke-width="0.5" stroke-dasharray="2 3"/>
+                  <path d="M60 160v-16h120v16" stroke-width="0.7"/>
+                  <circle cx="120" cy="130" r="6" stroke-width="0.7"/><path d="M120 136v8" stroke-width="0.7"/>
+                  <path d="M40 90h160" stroke="#9B3D26" stroke-dasharray="3 2"/>
+                </svg>
+              </div>
+              <figcaption class="visually-hidden">Drawing: hall section</figcaption>
+            </figure>
+            <div class="project-meta"><span class="label">02 &middot; Civic</span><span class="label">2024</span></div>
+            <h3>Burnside Community Hall</h3>
+            <p class="label" style="margin:0 0 8px">Rutherglen</p>
+            <p>A 1960s church hall reworked with a daylit roof, a kitchen that opens to the street, and a lower heating bill.</p>
+          </article>
+        </li>
+        <!-- 3 -->
+        <li class="project" data-type="extensions">
+          <article>
+            <figure>
+              <div class="plate">
+                <svg viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1" role="img" aria-label="Section through a terraced house with a timber rear extension and rooflight">
+                  <path d="M20 160h200" stroke-width="1.4"/>
+                  <path d="M30 160V60l45-30 45 30v100"/>
+                  <path d="M30 105h90" stroke-width="0.7"/>
+                  <path d="M120 160V100h80v60" stroke="#9B3D26"/>
+                  <path d="M120 100l80-8v8" stroke="#9B3D26"/>
+                  <path d="M150 97l20-2" stroke="#9B3D26" stroke-width="2.4"/>
+                  <g stroke="#9B3D26" stroke-width="0.5"><path d="M130 100v60M140 100v60M190 100v60"/></g>
+                  <path d="M150 160v-40h30v40" stroke-width="0.7"/>
+                  <path d="M160 95l-12 65M168 94l-6 66" stroke-width="0.4" stroke-dasharray="2 3"/>
+                </svg>
+              </div>
+              <figcaption class="visually-hidden">Drawing: extension section</figcaption>
+            </figure>
+            <div class="project-meta"><span class="label">03 &middot; Extensions</span><span class="label">2025</span></div>
+            <h3>Garden Kitchen</h3>
+            <p class="label" style="margin:0 0 8px">Strathbungo, Glasgow</p>
+            <p>A larch-clad kitchen at the back of a terraced house, lit from above by a single long rooflight.</p>
+          </article>
+        </li>
+        <!-- 4 -->
+        <li class="project" data-type="housing">
+          <article>
+            <figure>
+              <div class="plate">
+                <svg viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1" role="img" aria-label="Site plan of six homes arranged around a shared back court">
+                  <rect x="20" y="20" width="200" height="140" stroke-width="0.6"/>
+                  <g><rect x="34" y="30" width="40" height="44"/><rect x="74" y="30" width="40" height="44"/><rect x="114" y="30" width="40" height="44"/></g>
+                  <g><rect x="34" y="106" width="40" height="44"/><rect x="74" y="106" width="40" height="44"/><rect x="114" y="106" width="40" height="44"/></g>
+                  <path d="M34 90h120" stroke-width="0.5" stroke-dasharray="2 3"/>
+                  <circle cx="186" cy="58" r="14" stroke-width="0.7"/><circle cx="192" cy="118" r="10" stroke-width="0.7"/>
+                  <path d="M154 74v32" stroke="#9B3D26"/>
+                  <path d="M168 90h40" stroke="#9B3D26" stroke-dasharray="3 2"/>
+                </svg>
+              </div>
+              <figcaption class="visually-hidden">Drawing: site plan</figcaption>
+            </figure>
+            <div class="project-meta"><span class="label">04 &middot; Housing</span><span class="label">2023</span></div>
+            <h3>Back Court Homes</h3>
+            <p class="label" style="margin:0 0 8px">Govanhill, Glasgow</p>
+            <p>Six low-energy homes for a housing co-operative, set around a shared garden on a former lock-up site.</p>
+          </article>
+        </li>
+        <!-- 5 -->
+        <li class="project" data-type="civic">
+          <article>
+            <figure>
+              <div class="plate">
+                <svg viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1" role="img" aria-label="Plan of a small timber waiting shelter with a bench and a deep roof overhang">
+                  <rect x="40" y="40" width="160" height="100" stroke-width="0.6" stroke-dasharray="3 3"/>
+                  <path d="M60 60h120v60H130M110 120H60V60"/>
+                  <path d="M66 66h108" stroke-width="0.7"/><path d="M66 74h108" stroke-width="0.7"/>
+                  <path d="M110 120a20 20 0 0 1 20-20" stroke-width="0.5"/>
+                  <path d="M20 160h200" stroke="#9B3D26" stroke-dasharray="6 4"/>
+                  <path d="M200 26l6 -10 6 10" stroke-width="0.7"/><path d="M206 16v24" stroke-width="0.7"/>
+                </svg>
+              </div>
+              <figcaption class="visually-hidden">Drawing: shelter plan</figcaption>
+            </figure>
+            <div class="project-meta"><span class="label">05 &middot; Civic</span><span class="label">2022</span></div>
+            <h3>Pier Waiting Room</h3>
+            <p class="label" style="margin:0 0 8px">Isle of Bute</p>
+            <p>A small timber shelter by the water: one bench, one window to the sea, and a roof deep enough for the rain.</p>
+          </article>
+        </li>
+        <!-- 6 -->
+        <li class="project" data-type="extensions">
+          <article>
+            <figure>
+              <div class="plate">
+                <svg viewBox="0 0 240 180" fill="none" stroke="currentColor" stroke-width="1" role="img" aria-label="Axonometric drawing of a small timber garden studio">
+                  <path d="M20 150l100 20 100-20" stroke-width="0.6"/>
+                  <path d="M60 140V80l60 12v60l-60-12z"/>
+                  <path d="M120 152V92l60-12v60l-60 12z"/>
+                  <path d="M54 78l66-26 66 26-66 14z"/>
+                  <g stroke="#9B3D26" stroke-width="0.6"><path d="M132 150V90M144 148V88M156 145V85M168 143V83"/></g>
+                  <path d="M76 140V100l28 6v40" stroke-width="0.7"/>
+                </svg>
+              </div>
+              <figcaption class="visually-hidden">Drawing: studio axonometric</figcaption>
+            </figure>
+            <div class="project-meta"><span class="label">06 &middot; Extensions</span><span class="label">2024</span></div>
+            <h3>Garden Studio</h3>
+            <p class="label" style="margin:0 0 8px">Dennistoun, Glasgow</p>
+            <p>A workroom at the end of a long garden, built from a prefabricated timber kit in four days on site.</p>
+          </article>
+        </li>
+      </ul>
+      <p class="empty" id="empty" hidden>No projects of this type yet.</p>
+    </div>
+  </section>
+
+  <section class="section" id="approach" aria-labelledby="approach-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="approach-title">Approach</h2>
+        <p class="lead">Four things we hold to on every job, whatever the size.</p>
+      </div>
+      <ol class="principles">
+        <li>
+          <span class="num">01</span>
+          <h3>Keep what is there</h3>
+          <p>The greenest building is usually the one already standing. We start by asking what can stay.</p>
+        </li>
+        <li>
+          <span class="num">02</span>
+          <h3>Fabric first</h3>
+          <p>Walls, roofs and windows before gadgets. A well-insulated, airtight building needs less of everything else.</p>
+        </li>
+        <li>
+          <span class="num">03</span>
+          <h3>Build in timber</h3>
+          <p>Where we add, we use wood: light on old foundations, quick to build, and pleasant to live with.</p>
+        </li>
+        <li>
+          <span class="num">04</span>
+          <h3>Design with the people who stay</h3>
+          <p>Residents, staff and neighbours know a building best. We draw with them, not just for them.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="studio" aria-labelledby="studio-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="studio-title">Studio</h2>
+        <p class="lead">Six people in a first-floor room near the river.</p>
+      </div>
+      <div class="studio-grid">
+        <div class="studio-text">
+          <p>We are small on purpose. Everyone in the studio works on drawings, and the person you meet at the start is the person on site at the end.</p>
+          <p>Most of our clients are homeowners, housing associations, community groups and local trusts. We take on a handful of projects at a time so each one gets proper attention.</p>
+        </div>
+        <ul class="people">
+          <li><span class="name">Iona Baird</span><span class="role">Director, Architect</span></li>
+          <li><span class="name">Calum Reid</span><span class="role">Director, Architect</span></li>
+          <li><span class="name">Priya Nair</span><span class="role">Architect</span></li>
+          <li><span class="name">Tom Hendry</span><span class="role">Retrofit Coordinator</span></li>
+          <li><span class="name">Ailsa Murray</span><span class="role">Architectural Assistant</span></li>
+          <li><span class="name">Ruaridh Gill</span><span class="role">Studio Manager</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="contact-title">Start a project</h2>
+        <p class="lead">Tell us a little about the building and what you would like to change. We read every enquiry.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-intro">
+          <p>Not ready for a form? Email <a href="mailto:hello@fold-architects.example">hello@fold-architects.example</a> or call <a href="tel:+441414960318">0141 496 0318</a>.</p>
+          <p>All fields are required. We only use your details to reply.</p>
+        </div>
+        <div id="form-area">
+          <form id="enquiry" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+              <p class="error" id="e-name"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
+              <p class="error" id="e-email"></p>
+            </div>
+            <div class="field">
+              <label for="f-type">Project type</label>
+              <select id="f-type" name="type" required aria-describedby="e-type">
+                <option value="">Choose one</option>
+                <option>Housing retrofit</option>
+                <option>New housing</option>
+                <option>Civic or community building</option>
+                <option>Timber extension</option>
+                <option>Something else</option>
+              </select>
+              <p class="error" id="e-type"></p>
+            </div>
+            <div class="field">
+              <label for="f-budget">Budget range</label>
+              <select id="f-budget" name="budget" required aria-describedby="e-budget">
+                <option value="">Choose one</option>
+                <option>Under &pound;50,000</option>
+                <option>&pound;50,000 &ndash; &pound;150,000</option>
+                <option>&pound;150,000 &ndash; &pound;500,000</option>
+                <option>Over &pound;500,000</option>
+                <option>Not sure yet</option>
+              </select>
+              <p class="error" id="e-budget"></p>
+            </div>
+            <div class="field full">
+              <label for="f-message">Message</label>
+              <textarea id="f-message" name="message" required aria-describedby="e-message"></textarea>
+              <p class="error" id="e-message"></p>
+            </div>
+            <div class="form-foot">
+              <p>We reply within a week.</p>
+              <button class="submit" type="submit">Send enquiry</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h2 class="label">Fold Architects</h2>
+        <p style="color:var(--ink-2);max-width:30ch">Housing retrofit, small civic buildings and timber extensions.</p>
+      </div>
+      <div>
+        <h2 class="label">Studio</h2>
+        <address>First floor, 27 Clyde Lane<br>Glasgow G1 0XX</address>
+      </div>
+      <div>
+        <h2 class="label">Contact</h2>
+        <ul>
+          <li><a href="mailto:hello@fold-architects.example">hello@fold-architects.example</a></li>
+          <li><a href="tel:+441414960318">0141 496 0318</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="label">Elsewhere</h2>
+        <ul>
+          <li><a href="#" aria-label="Fold on Instagram (placeholder link)">Instagram</a></li>
+          <li><a href="#" aria-label="Fold on LinkedIn (placeholder link)">LinkedIn</a></li>
+          <li><a href="#" aria-label="Fold on Are.na (placeholder link)">Are.na</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-mark" aria-hidden="true">Fold</p>
+    <div class="footer-base">
+      <span class="label">&copy; <span id="year">2026</span> Fold Architects</span>
+      <a class="label" href="#top">Back to top &uarr;</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Mobile navigation
+  var btn = document.querySelector('.menu-btn');
+  var nav = document.getElementById('site-nav');
+  function setMenu(open) {
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Close' : 'Menu';
+    nav.classList.toggle('open', open);
+  }
+  btn.addEventListener('click', function () { setMenu(btn.getAttribute('aria-expanded') !== 'true'); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { setMenu(false); btn.focus(); }
+  });
+  window.matchMedia('(min-width: 721px)').addEventListener('change', function (m) { if (m.matches) setMenu(false); });
+
+  // Project filter
+  var filters = document.querySelectorAll('.filter');
+  var projects = document.querySelectorAll('.project');
+  var count = document.getElementById('filter-count');
+  var empty = document.getElementById('empty');
+  filters.forEach(function (f) {
+    f.addEventListener('click', function () {
+      var type = f.dataset.filter, shown = 0;
+      filters.forEach(function (o) { o.setAttribute('aria-pressed', String(o === f)); });
+      projects.forEach(function (p) {
+        var match = type === 'all' || p.dataset.type === type;
+        p.hidden = !match;
+        if (match) shown++;
+      });
+      empty.hidden = shown > 0;
+      count.textContent = 'Showing ' + shown + ' of ' + projects.length;
+    });
+  });
+
+  // Enquiry form
+  var form = document.getElementById('enquiry');
+  var area = document.getElementById('form-area');
+  var rules = {
+    name: function (v) { return v.trim().length < 2 ? 'Please enter your name.' : ''; },
+    email: function (v) {
+      if (!v.trim()) return 'Please enter your email address.';
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Please enter a valid email, like name@example.com.';
+    },
+    type: function (v) { return v ? '' : 'Please choose a project type.'; },
+    budget: function (v) { return v ? '' : 'Please choose a budget range, or "Not sure yet".'; },
+    message: function (v) { return v.trim().length < 20 ? 'Please tell us a little more (at least 20 characters).' : ''; }
+  };
+  function check(el) {
+    var msg = rules[el.name](el.value);
+    var err = document.getElementById(el.getAttribute('aria-describedby'));
+    err.textContent = msg;
+    if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    return !msg;
+  }
+  Object.keys(rules).forEach(function (n) {
+    var el = form.elements[n];
+    el.addEventListener('blur', function () { if (el.value || el.hasAttribute('aria-invalid')) check(el); });
+    el.addEventListener('input', function () { if (el.hasAttribute('aria-invalid')) check(el); });
+    el.addEventListener('change', function () { if (el.tagName === 'SELECT') check(el); });
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var firstBad = null;
+    Object.keys(rules).forEach(function (n) {
+      var el = form.elements[n];
+      if (!check(el) && !firstBad) firstBad = el;
+    });
+    if (firstBad) { firstBad.focus(); return; }
+    var name = form.elements.name.value.trim().split(/\s+/)[0];
+    var success = document.createElement('div');
+    success.className = 'success';
+    success.setAttribute('role', 'status');
+    success.setAttribute('tabindex', '-1');
+    var h = document.createElement('h3'); h.textContent = 'Thank you, ' + name + '.';
+    var p = document.createElement('p'); p.textContent = 'Your enquiry has been received. One of us will reply to ' + form.elements.email.value.trim() + ' within a week.';
+    var again = document.createElement('button'); again.type = 'button'; again.textContent = 'Send another enquiry';
+    again.addEventListener('click', function () {
+      form.reset(); area.replaceChild(form, success); form.elements.name.focus();
+    });
+    success.append(h, p, again);
+    area.replaceChild(success, form);
+    success.focus();
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

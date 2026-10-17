@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orrery — planetarium and night-sky shop, Bristol harbourside</title>
+<meta name="description" content="A 60-seat planetarium dome on Bristol's harbourside: live presenter-led shows, rooftop telescope nights on clear Fridays, and a shop of star maps, telescopes and kits.">
+<meta name="theme-color" content="#D6DDD9">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=Cedarville+Cursive&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=Cedarville+Cursive&amp;display=swap" rel="stylesheet"></noscript>
+<style>
+@font-face{font-family:"Archivo Fallback";src:local("Arial Narrow"),local("ArialNarrow"),local("Arial");size-adjust:97%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
+@font-face{font-family:"Hand Fallback";src:local("Segoe Script"),local("Brush Script MT"),local("Comic Sans MS");size-adjust:90%}
+:root{
+  --glass:#D6DDD9; --glass-lite:#E2E7E4; --glass-deep:#C3CCC7;
+  --ink:#14171C; --ink-2:#3A424A; --rule:#8E9A94;
+  --red:#A61E17; --red-press:#861710;
+  --blue:#1C3478; --blue-2:#26438F; --on-blue:#E9EEF7;
+  --on-dark:#DDE3DF; --on-dark-2:#AEB8B3;
+  --body:"Archivo","Archivo Fallback",system-ui,sans-serif;
+  --hand:"Cedarville Cursive","Hand Fallback",cursive;
+  --xl:clamp(50px,6.8vw,104px); --h2:clamp(40px,4.4vw,64px); --h3:26px;
+  --ease:cubic-bezier(.23,1,.32,1);
+  --header-h:72px; --pad:clamp(16px,4.45vw,64px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 16px);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--glass);color:var(--ink);font:400 18px/1.55 var(--body);font-stretch:100%;caret-color:var(--red);text-rendering:optimizeLegibility}
+::selection{background:var(--red);color:var(--glass-lite)}
+html{scrollbar-color:var(--ink-2) var(--glass-deep)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+h1,h2,h3{margin:0;font-weight:760;font-stretch:72%;letter-spacing:-.025em;word-spacing:.08em;line-height:.96;text-wrap:balance}
+h2{font-size:var(--h2)}
+h3{font-size:var(--h3);line-height:1.05;letter-spacing:-.015em}
+p{margin:0}
+.wrap{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--pad)}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--glass);padding:10px 14px;z-index:100;border-radius:3px}
+.skip:focus{top:12px}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.dark :focus-visible,.bluef :focus-visible{outline-color:var(--glass-lite)}
+.hand{font-family:var(--hand);font-weight:400;letter-spacing:0}
+.tab{font-variant-numeric:tabular-nums}
+
+/* buttons */
+.btn{--bg:var(--red);--fg:#F4F6F4;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border:2px solid var(--bg);background:var(--bg);color:var(--fg);font:650 17px/1 var(--body);font-stretch:88%;letter-spacing:.005em;text-decoration:none;border-radius:2px;cursor:pointer;transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .12s ease}
+.btn:active{transform:translateY(1px) scale(.98)}
+@media (hover:hover) and (pointer:fine){.btn:hover{--bg:var(--red-press)}}
+.btn.ghost{--bg:transparent;--fg:var(--ink);border-color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.btn.ghost:hover{--bg:var(--ink);--fg:var(--glass)}}
+.btn.ink{--bg:var(--ink);--fg:var(--glass)}
+@media (hover:hover) and (pointer:fine){.btn.ink:hover{--bg:var(--blue)}}
+.btn.sm{min-height:44px;padding:0 16px;font-size:16px}
+.btn svg{flex:none}
+
+/* header */
+.site-head{position:sticky;top:0;z-index:40;background:var(--glass);border-bottom:1px solid var(--rule)}
+.site-head .wrap{display:flex;align-items:center;gap:24px;height:var(--header-h)}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:780;font-stretch:72%;font-size:30px;letter-spacing:-.03em;line-height:1}
+.mark svg{width:34px;height:34px}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav a{display:block;padding:10px 12px;text-decoration:none;font-size:16px;font-weight:520;border-radius:2px;transition:background-color .18s ease}
+@media (hover:hover) and (pointer:fine){.nav a:hover{background:var(--glass-deep)}}
+.head-actions{display:flex;align-items:center;gap:10px}
+.basket-btn{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px 0 10px;border:2px solid var(--ink);background:transparent;color:var(--ink);font:600 16px/1 var(--body);border-radius:2px;cursor:pointer;transition:background-color .18s ease,color .18s ease}
+@media (hover:hover) and (pointer:fine){.basket-btn:hover{background:var(--ink);color:var(--glass)}}
+.basket-btn:active{transform:scale(.97)}
+.count{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--red);color:#F4F6F4;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.count.turn{animation:wheel .32s var(--ease)}
+@keyframes wheel{0%{transform:rotate(-120deg) scale(.8)}100%{transform:none}}
+.menu-btn{display:none}
+.basket-panel{position:absolute;right:var(--pad);top:calc(var(--header-h) - 4px);width:min(380px,calc(100vw - 32px));background:var(--glass-lite);border:2px solid var(--ink);border-radius:3px;padding:20px;box-shadow:0 18px 40px -18px rgba(20,23,28,.45);transform-origin:top right}
+.basket-panel[hidden]{display:none}
+.basket-panel.open{animation:pop .2s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.95)}}
+.basket-panel h2{font-size:30px;margin-bottom:12px}
+.basket-panel ul{list-style:none;margin:0 0 14px;padding:0;max-height:260px;overflow:auto}
+.basket-panel li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.basket-panel li button{background:none;border:0;color:var(--red);font:600 15px var(--body);text-decoration:underline;text-underline-offset:.2em;cursor:pointer;min-height:32px;padding:0 4px}
+.basket-total{display:flex;justify-content:space-between;font-weight:700;margin-bottom:6px}
+.basket-note{font-size:15px;color:var(--ink-2)}
+
+/* hero */
+.hero{position:relative;padding:clamp(32px,4.5vw,64px) 0 clamp(64px,7vw,104px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,3vw,48px);align-items:start}
+.hero h1{font-size:var(--xl);margin:clamp(8px,3vw,56px) 0 28px -.04em}
+.lede{font-size:clamp(18px,1.45vw,21px);max-width:31ch;color:var(--ink)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero-facts{margin:44px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:4px 28px;font-size:15px;color:var(--ink-2)}
+.hero-facts b{display:block;color:var(--ink);font-weight:760;font-stretch:72%;font-size:28px;letter-spacing:-.02em;line-height:1.1}
+.plate-fig{margin:0;position:relative}
+.plate{width:100%;height:auto;aspect-ratio:800/640;background:var(--glass-lite);border-radius:3px;box-shadow:0 0 0 7px var(--ink),0 30px 60px -30px rgba(20,23,28,.55)}
+.sky-ctl{display:flex;align-items:center;gap:16px;margin-top:26px;flex-wrap:wrap}
+.sky-ctl label{font-weight:650;font-size:16px}
+.sky-ctl output{font:760 28px/1 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums;min-width:4ch}
+.sky-ctl .hint{flex-basis:100%;font-size:15px;color:var(--ink-2)}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;min-width:160px;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:4px;background:var(--ink);border-radius:2px}
+input[type=range]::-moz-range-track{height:4px;background:var(--ink);border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-11px;border-radius:50%;background:var(--glass-lite);border:3px solid var(--red)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--glass-lite);border:3px solid var(--red)}
+.star{transition:none}
+.developing .star{animation:develop 1.6s var(--ease) backwards}
+@keyframes develop{from{opacity:0}}
+.ink-draw{stroke-dasharray:var(--len,600);stroke-dashoffset:0}
+.ink-pending .ink-draw{stroke-dashoffset:var(--len,600)}
+.ink-go .ink-draw{transition:stroke-dashoffset 1.1s var(--ease)}
+
+/* sections */
+section{position:relative}
+.sec{padding:clamp(80px,8.5vw,136px) 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,3vw,48px);align-items:end;margin-bottom:clamp(48px,6vw,88px)}
+.sec-head p{font-size:19px;max-width:46ch}
+.plate-tag{display:block;white-space:nowrap;color:var(--red);font-size:26px;line-height:1.2;margin-bottom:8px}
+#shop .sec-head{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+#membership .sec-head{grid-template-columns:1fr;gap:20px}
+#membership .sec-head h2{font-size:clamp(48px,7vw,104px)}
+
+/* shows */
+.shows-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(56px,6vw,96px) clamp(32px,4vw,64px)}
+.show{display:grid;grid-template-columns:clamp(180px,17vw,250px) minmax(0,1fr);gap:clamp(20px,2.4vw,36px);align-items:start}
+.show .finder{width:100%;height:auto;aspect-ratio:1;border-radius:50%;background:var(--glass-lite);box-shadow:0 0 0 5px var(--ink)}
+.show h3{margin:6px 0 12px}
+.show p{max-width:44ch}
+.meta{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:2px 28px;margin:20px 0 22px;padding:14px 0 0;border-top:1px solid var(--rule)}
+.meta dt{font-size:14px;color:var(--ink-2)}
+.meta dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.meta div{display:flex;flex-direction:column}
+
+/* booking */
+.bluef{background:var(--blue);color:var(--on-blue)}
+.book .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,5vw,96px)}
+.book h2{margin-bottom:24px}
+.book .intro p{max-width:36ch;font-size:19px}
+.ticket{margin-top:48px;max-width:420px;display:grid;grid-template-columns:1fr 92px;color:var(--ink);filter:drop-shadow(0 16px 24px rgba(8,14,40,.35))}
+.ticket .main,.ticket .stub{background:var(--glass-lite);padding:22px 22px 20px}
+.ticket .main{border-radius:3px 0 0 3px;-webkit-mask:radial-gradient(circle at 100% 0,transparent 9px,#000 9.5px) top/100% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 9px,#000 9.5px) bottom/100% 51% no-repeat;mask:radial-gradient(circle at 100% 0,transparent 9px,#000 9.5px) top/100% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 9px,#000 9.5px) bottom/100% 51% no-repeat}
+.ticket .stub{border-left:2px dashed var(--rule);border-radius:0 3px 3px 0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;-webkit-mask:radial-gradient(circle at 0 0,transparent 9px,#000 9.5px) top/100% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 9px,#000 9.5px) bottom/100% 51% no-repeat;mask:radial-gradient(circle at 0 0,transparent 9px,#000 9.5px) top/100% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 9px,#000 9.5px) bottom/100% 51% no-repeat}
+.ticket .t-show{font:760 26px/1.05 var(--body);font-stretch:72%;letter-spacing:-.015em;margin:4px 0 14px}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:16px}
+.ticket dt{color:var(--ink-2)}
+.ticket dd{margin:0;font-weight:650;font-variant-numeric:tabular-nums}
+.ticket .t-no{font-size:14px;color:var(--ink-2)}
+.ticket .stub .seats{font:760 44px/1 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums}
+.ticket .stamp{position:absolute;right:110px;top:18px;padding:6px 12px;border:3px solid var(--red);color:var(--red);font:800 22px/1 var(--body);font-stretch:72%;letter-spacing:.06em;text-transform:uppercase;transform:rotate(-9deg);opacity:0;pointer-events:none}
+.ticket{position:relative}
+.ticket.booked .stamp{opacity:1}
+.ticket.booked.tear .stub{animation:tear .6s var(--ease)}
+.ticket.booked.tear .stamp{animation:stamp .35s var(--ease) .15s backwards}
+@keyframes tear{0%{transform:none}40%{transform:translate(10px,4px) rotate(5deg)}100%{transform:translate(6px,2px) rotate(3deg)}}
+@keyframes stamp{from{opacity:0;transform:rotate(-9deg) scale(1.4)}}
+.ticket.booked .stub{transform:translate(6px,2px) rotate(3deg)}
+@media (prefers-reduced-motion:reduce){.ticket.booked .stub{transform:none}}
+
+form{display:grid;grid-template-columns:1fr 1fr;gap:26px 24px;align-content:start}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field.full,fieldset.full{grid-column:1/-1}
+label,legend{font-weight:650;font-size:16px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0;margin-bottom:10px}
+input[type=text],input[type=email],select,input[type=number]{width:100%;min-height:52px;padding:0 14px;font:400 max(16px,1rem)/1.2 var(--body);color:var(--ink);background:var(--glass-lite);border:2px solid var(--glass-lite);border-radius:2px;transition:border-color .18s ease,box-shadow .18s ease}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%2314171C' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:44px}
+.bluef input:focus-visible,.bluef select:focus-visible{outline:3px solid var(--glass-lite);outline-offset:2px}
+[aria-invalid=true]{border-color:#FFB4AE!important;box-shadow:0 0 0 2px #FFB4AE}
+.err{min-height:0;font-size:15px;font-weight:600;color:#FFD3CF}
+.err:empty{display:none}
+.err:not(:empty){animation:nudge .3s var(--ease)}
+@keyframes nudge{30%{transform:translateX(-4px)}60%{transform:translateX(3px)}}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:58px;border:2px solid rgba(233,238,247,.55);border-radius:2px;font-size:14px;line-height:1.15;font-variant-numeric:tabular-nums;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+.chip span b{font-size:20px;font-weight:720;font-stretch:80%}
+.chip input:checked+span{background:var(--glass-lite);color:var(--ink);border-color:var(--glass-lite)}
+.chip input:focus-visible+span{outline:3px solid var(--glass-lite);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){.chip:hover span{border-color:var(--on-blue)}}
+.times{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.times .chip span{min-height:52px;font-size:19px;font-weight:700}
+.stepper{display:flex;align-items:stretch;gap:0}
+.stepper button{width:52px;min-height:52px;border:2px solid var(--glass-lite);background:transparent;color:var(--on-blue);font:600 24px/1 var(--body);cursor:pointer;transition:background-color .16s ease}
+.stepper button:active{background:rgba(233,238,247,.18)}
+.stepper input{text-align:center;width:72px;border-radius:0;-moz-appearance:textfield}
+.stepper input::-webkit-inner-spin-button{-webkit-appearance:none}
+.submit-row{grid-column:1/-1;display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding-top:8px;border-top:1px solid rgba(233,238,247,.35)}
+.submit-row .total{font-size:17px}
+.submit-row .total b{font:760 30px/1 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums;margin-left:6px}
+.submit-row .btn{margin-left:auto;min-height:56px;padding:0 30px;font-size:18px;--bg:var(--glass-lite);--fg:var(--ink)}
+@media (hover:hover) and (pointer:fine){.submit-row .btn:hover{--bg:#fff}}
+.success{grid-column:1/-1;padding:28px;background:var(--glass-lite);color:var(--ink);border-radius:3px}
+.success h3{font-size:34px;margin-bottom:10px}
+.ok-plate{float:right;width:min(42%,260px);height:auto;margin:0 0 16px 24px;border-radius:50%;background:var(--glass-lite);box-shadow:0 0 0 5px var(--ink)}
+.success{min-height:300px}
+.success::after{content:"";display:block;clear:both}
+.success[hidden]{display:none}
+
+/* telescope (dark positive) */
+.dark{background:var(--ink);color:var(--on-dark)}
+.roof{width:100%;height:auto;aspect-ratio:1440/300;margin-top:-1px}
+.tel .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,5vw,96px)}
+.tel h2{margin-bottom:24px}
+.tel .intro{max-width:40ch;font-size:19px;color:var(--on-dark)}
+.evening{position:relative;list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.evening::before{content:"";position:absolute;left:0;right:0;top:15px;height:2px;background:var(--on-dark-2)}
+.evening li{position:relative;padding-top:44px}
+.evening li::before{content:"";position:absolute;left:0;top:7px;width:18px;height:18px;border-radius:50%;background:var(--ink);border:2px solid var(--on-dark)}
+.evening time{display:block;font:760 30px/1 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums;margin-bottom:10px;color:#fff}
+.evening p{font-size:16px;color:var(--on-dark)}
+.cloudy{margin-top:56px;padding:28px 0 0;border-top:1px solid #3B434B;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.cloudy svg{width:64px;height:auto}
+.cloudy h3{color:#fff;margin-bottom:8px}
+.cloudy p{max-width:52ch;color:var(--on-dark)}
+.dates h3{color:#fff;margin-bottom:6px}
+.dates .small{font-size:16px;color:var(--on-dark-2);margin-bottom:24px}
+.dates ol{list-style:none;margin:0;padding:0;border-top:1px solid #3B434B}
+.dates li{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:22px 0;border-bottom:1px solid #3B434B}
+.dates .d{font:760 64px/0.9 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums;color:#fff;letter-spacing:-.03em;min-width:2ch}
+.dates .m{font-size:16px;line-height:1.35}
+.dates .m b{display:block;font-size:18px;color:#fff}
+.btn.lite{--bg:var(--glass-lite);--fg:var(--ink)}
+@media (hover:hover) and (pointer:fine){.btn.lite:hover{--bg:#fff}}
+
+/* shop */
+.tray{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink)}
+.item{display:flex;flex-direction:column;padding:28px clamp(16px,2.2vw,32px) 32px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule)}
+.item:nth-child(3n){border-right:0}
+.item:nth-child(3n+1){padding-left:0}
+.item svg{background:var(--glass-lite);box-shadow:inset 0 0 0 1px var(--rule);width:100%;height:clamp(150px,15vw,220px);margin-bottom:22px}
+.item h3{font-size:24px;margin-bottom:8px}
+.item p{font-size:16px;color:var(--ink-2);max-width:36ch;margin-bottom:20px}
+.item .buy{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.price{font:760 30px/1 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.add.done{--bg:var(--ink)}
+.fly{position:fixed;z-index:60;width:14px;height:14px;pointer-events:none}
+
+/* membership */
+.alt{background:var(--glass-deep)}
+.tiers{border-top:2px solid var(--ink)}
+.tier{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr) minmax(0,5fr) 168px;gap:clamp(16px,3vw,48px);align-items:center;padding:34px 0;border-bottom:1px solid var(--rule)}
+.tier .name{display:flex;align-items:center;gap:18px}
+.tier .name svg{flex:none;width:44px;height:44px}
+.tier h3{font-size:clamp(28px,2.6vw,38px)}
+.tier .yr{font:760 clamp(40px,4vw,56px)/1 var(--body);font-stretch:72%;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.tier .yr small{font:500 16px var(--body);letter-spacing:0;color:var(--ink-2);margin-left:4px}
+.tier .join{justify-self:end}
+.tier ul{margin:0;padding:0;list-style:none;font-size:16px;display:grid;gap:4px}
+.tier li{padding-left:22px;position:relative}
+.tier li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.join-note{margin-top:18px;font-size:16px;min-height:1.5em;color:var(--ink-2)}
+
+/* schools */
+.schools .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(40px,5vw,96px);align-items:center}
+.schools p{font-size:19px;max-width:44ch;margin-top:22px}
+.schools ul{margin:24px 0 32px;padding:0;list-style:none;display:grid;gap:10px;font-size:17px}
+.schools li{display:grid;grid-template-columns:150px 1fr;gap:12px;border-top:1px solid var(--rule);padding-top:10px}
+.schools li b{font-weight:700}
+.seatplan{width:100%;height:auto;aspect-ratio:520/560}
+
+/* voices */
+.voices .big{font:700 clamp(32px,3.6vw,54px)/1.08 var(--body);font-stretch:78%;letter-spacing:-.02em;max-width:24ch;margin:0;text-wrap:balance}
+.voices figure{margin:0}
+.voices figcaption{margin-top:18px;font-size:16px;color:var(--ink-2)}
+.voices .row{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,6vw,112px);align-items:end}
+.slips{display:grid;gap:28px}
+.slip{padding:22px 24px 18px;background:var(--glass-lite);border-top:8px solid var(--ink);background-image:linear-gradient(var(--glass-lite),var(--glass-lite))}
+.slip figcaption,.voices figure>figcaption{font-family:var(--hand);font-size:22px;color:var(--blue);margin-top:10px}
+.slip blockquote{margin:0;font-size:18px}
+.disclaim{margin-top:40px;font-size:14px;color:var(--ink-2)}
+
+/* faq */
+.faq .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,5vw,96px)}
+.faq-side p{font-size:19px;max-width:34ch;margin-top:20px}
+.faq-call a{font:760 40px/1 var(--body);font-stretch:72%;text-decoration:none;letter-spacing:-.02em}
+.faq-plate{width:200px;height:200px;margin-top:40px;border-radius:50%;background:var(--glass-lite);box-shadow:0 0 0 5px var(--ink)}
+@media (max-width:960px){.faq-plate{display:none}}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq details:first-child{border-top:2px solid var(--ink)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 0;cursor:pointer;font:700 22px/1.25 var(--body);font-stretch:86%}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .x{flex:none;width:30px;height:30px;border:2px solid var(--ink);border-radius:50%;position:relative;transition:transform .24s var(--ease),background-color .18s ease}
+.faq summary .x::before,.faq summary .x::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--ink);transform:translate(-50%,-50%)}
+.faq summary .x::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq details[open] summary .x{transform:rotate(45deg);background:var(--glass-deep)}
+@media (hover:hover) and (pointer:fine){.faq summary:hover .x{background:var(--glass-deep)}}
+.faq .ans{padding:0 48px 26px 0;max-width:62ch;font-size:17px}
+.faq details[open] .ans{animation:open .26s var(--ease)}
+@keyframes open{from{opacity:0;transform:translateY(-6px)}}
+
+/* footer */
+.foot{padding:clamp(72px,8vw,120px) 0 40px}
+.foot .name{display:flex;align-items:flex-end;gap:2vw;font:780 clamp(76px,21.5vw,330px)/.8 var(--body);font-stretch:100%;letter-spacing:-.05em;color:#fff;margin:0 0 56px -.04em}
+.foot .name svg{width:clamp(56px,11vw,170px);height:auto;margin-bottom:1.2vw}
+.foot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;padding-top:28px;border-top:1px solid #3B434B}
+.foot h3{font-size:22px;color:#fff;margin-bottom:12px}
+.foot address,.foot p,.foot dl{font-style:normal;font-size:16px;color:var(--on-dark);margin:0}
+.foot dl{display:grid;grid-template-columns:auto 1fr;gap:2px 16px}
+.foot dd{margin:0;font-variant-numeric:tabular-nums}
+.foot a{color:#fff}
+.social{display:flex;gap:10px;list-style:none;margin:0;padding:0}
+.social a{display:grid;place-items:center;width:46px;height:46px;border:2px solid var(--on-dark-2);border-radius:50%;transition:background-color .18s ease,border-color .18s ease}
+@media (hover:hover) and (pointer:fine){.social a:hover{background:var(--on-dark);border-color:var(--on-dark)}.social a:hover svg{stroke:var(--ink)}}
+.social svg{width:20px;height:20px;fill:none;stroke:var(--on-dark);stroke-width:1.8}
+.fine{margin-top:56px;font-size:14px;color:var(--on-dark-2);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* responsive */
+@media (max-width:1100px){
+  .nav a{padding:10px 8px;font-size:15px}
+  .shows-grid{grid-template-columns:1fr}
+  .show{grid-template-columns:220px minmax(0,1fr)}
+  .tier{grid-template-columns:minmax(0,1fr) auto;row-gap:16px}
+  .tier ul{grid-column:1/-1;grid-row:2}
+  .tier .yr{grid-row:1}
+  .tier .join{grid-column:1/-1;justify-self:start}
+}
+@media (max-width:960px){
+  :root{--header-h:64px}
+  .nav{position:fixed;inset:var(--header-h) 0 0 0;background:var(--glass);margin:0;padding:24px var(--pad);display:none;overflow:auto;border-top:1px solid var(--rule)}
+  .nav.open{display:block;animation:pop .2s var(--ease)}
+  .nav ul{flex-direction:column;gap:0}
+  .nav a{font:760 40px/1.1 var(--body);font-stretch:72%;letter-spacing:-.02em;padding:14px 0;border-bottom:1px solid var(--rule);border-radius:0}
+  .head-actions{margin-left:auto}
+  .menu-btn{display:inline-flex;align-items:center;justify-content:center;width:46px;height:44px;border:2px solid var(--ink);background:transparent;border-radius:2px;cursor:pointer;color:var(--ink)}
+  .menu-btn:active{transform:scale(.96)}
+  .hero .wrap{grid-template-columns:1fr}
+  .hero h1{margin-top:0}
+  .sec-head,.book .wrap,.tel .wrap,.schools .wrap,.voices .row,.faq .wrap{grid-template-columns:1fr}
+  .tray{grid-template-columns:1fr 1fr}
+  .item:nth-child(3n){border-right:1px solid var(--rule)}
+  .item:nth-child(2n){border-right:0}
+  .item:nth-child(3n+1){padding-left:clamp(16px,2.2vw,32px)}
+  .item:nth-child(2n+1){padding-left:0}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .seatplan{max-width:520px}
+}
+@media (max-width:620px){
+  body{font-size:17px}
+  .site-head .wrap{gap:10px}
+  .mark{font-size:26px}
+  .mark svg{width:28px;height:28px}
+  .head-actions .btn{padding:0 12px}
+  .basket-btn .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .hero{padding-top:20px}
+  .hero-copy{display:contents}
+  .hero h1{order:1}.plate-fig{order:2}.lede{order:3}.hero .cta{order:4}.hero-facts{order:5}
+  .hero .wrap{gap:0}
+  .plate-fig{margin-bottom:20px}
+  .lede{font-size:17px;max-width:none}
+  .sky-ctl{margin-top:14px;gap:10px}
+  .sky-ctl .hint{display:none}
+  .sky-ctl{display:grid;grid-template-columns:1fr auto;align-items:center}
+  .sky-ctl input{grid-column:1/-1;grid-row:2;width:100%}
+  .hero h1{margin-bottom:16px}
+  .plate{box-shadow:0 0 0 4px var(--ink)}
+  .hero-facts{grid-template-columns:repeat(3,auto);gap:4px 18px;margin-top:28px}
+  .hero-facts b{font-size:24px}
+  .cta{margin-top:18px}
+  .cta .btn{flex:1 1 auto}
+  .show{grid-template-columns:1fr}
+  .show .finder{max-width:240px}
+  form{grid-template-columns:1fr}
+  .days{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tray{grid-template-columns:1fr}
+  .item,.item:nth-child(n){border-right:0;padding-left:0;padding-right:0}
+  .evening{grid-template-columns:1fr;gap:28px}
+  .evening::before{left:8px;right:auto;top:0;bottom:0;width:2px;height:auto}
+  .evening li{padding:0 0 0 40px}
+  .evening li::before{top:6px}
+  .dates .d{font-size:52px}
+  .dates li{grid-template-columns:auto 1fr}
+  .dates li .btn{grid-column:1/-1}
+  .schools li{grid-template-columns:1fr;gap:2px}
+  .foot-grid{grid-template-columns:1fr}
+  .faq summary{font-size:19px}
+  .faq .ans{padding-right:0}
+  .ticket{grid-template-columns:1fr 78px}
+  .ticket .stamp{right:92px}
+  .submit-row .btn{width:100%;margin-left:0}
+  .plate-note{display:none}
+  #annot text{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="orrery-mark" viewBox="0 0 40 40">
+      <ellipse cx="20" cy="20" rx="17" ry="17" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <ellipse cx="20" cy="20" rx="10" ry="10" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="20" cy="20" r="4.2" fill="currentColor"/>
+      <path d="M20 20 L35.5 13" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="35.5" cy="13" r="3" fill="currentColor"/>
+      <path d="M20 20 L12 26" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="12" cy="26" r="2.4" fill="#A61E17"/>
+    </symbol>
+    <symbol id="basket-ico" viewBox="0 0 24 24">
+      <path d="M3 9h18l-2 11H5L3 9z M8 9l3-6 M16 9l-3-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Orrery, home"><svg aria-hidden="true"><use href="#orrery-mark"/></svg>Orrery</a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <ul>
+        <li><a href="#shows">Shows</a></li>
+        <li><a href="#telescope">Telescope nights</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#schools">Schools</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <div class="head-actions">
+      <a class="btn sm" href="#book">Book</a>
+      <button class="basket-btn" id="basket-btn" type="button" aria-expanded="false" aria-controls="basket-panel">
+        <svg width="22" height="22" aria-hidden="true"><use href="#basket-ico"/></svg>
+        <span class="lbl">Basket</span>
+        <span class="count" id="basket-count">0</span>
+      </button>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path id="menu-path" d="M2 6h18M2 11h18M2 16h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="basket-panel" id="basket-panel" role="region" aria-label="Basket" hidden>
+    <h2>Basket</h2>
+    <ul id="basket-list"></ul>
+    <div class="basket-total"><span>Total</span><span id="basket-total" class="tab">£0.00</span></div>
+    <button class="btn sm" type="button" id="basket-hold" hidden style="width:100%;margin:6px 0 12px">Hold for collection</button>
+    <p class="basket-note" id="basket-note">Your basket is empty. Add a star map, a kit or a telescope night below.</p>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1 id="hero-h">Bristol’s sky,<br>under one dome.</h1>
+      <p class="lede">Sixty reclining seats on the harbourside, a live presenter at the controls, and tonight’s real stars turning overhead.</p>
+      <div class="cta">
+        <a class="btn" href="#book">Book a dome show</a>
+        <a class="btn ghost" href="#telescope">Friday telescope nights</a>
+      </div>
+      <ul class="hero-facts">
+        <li><b class="tab">60</b>seats</li>
+        <li><b>Live</b>every show</li>
+        <li><b>Fridays</b>on the roof</li>
+      </ul>
+    </div>
+    <figure class="plate-fig">
+      <svg class="plate" id="dome" viewBox="0 0 800 640" role="img" aria-labelledby="dome-t">
+        <title id="dome-t">The Orrery dome seen from the back row: a hemisphere of tonight’s stars over Bristol, printed as a negative, above rows of reclined seats, the star projector and the presenter’s pointer.</title>
+        <defs>
+          <clipPath id="domeclip"><path d="M40 410 A360 360 0 0 1 760 410 Z"/></clipPath>
+          <pattern id="reseau" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#14171C" stroke-opacity=".12" stroke-width="1"/></pattern>
+          <symbol id="seat" viewBox="0 0 60 80" overflow="visible">
+            <path d="M6 80 L4 34 C3 18 14 10 30 10 C46 10 57 18 56 34 L54 80 Z" fill="#14171C"/>
+            <path d="M10 36 C14 24 46 24 50 36" fill="none" stroke="#3A424A" stroke-width="2"/>
+          </symbol>
+          <symbol id="head" viewBox="0 0 60 80" overflow="visible">
+            <path d="M18 14 C16 -6 26 -16 34 -14 C44 -12 46 0 42 14 Z" fill="#14171C"/>
+          </symbol>
+        </defs>
+        <rect x="0" y="0" width="800" height="640" fill="#E2E7E4"/>
+        <g clip-path="url(#domeclip)">
+          <rect x="0" y="0" width="800" height="420" fill="url(#reseau)"/>
+          <g id="sky"></g>
+          <g id="annot"></g>
+        </g>
+        <!-- dome shell -->
+        <path d="M40 410 A360 360 0 0 1 760 410" fill="none" stroke="#14171C" stroke-width="7"/>
+        <path d="M24 410 A376 376 0 0 1 776 410" fill="none" stroke="#14171C" stroke-width="1.5"/>
+        <path d="M24 410 H776" stroke="#14171C" stroke-width="2"/>
+        <path d="M24 410 V640 M776 410 V640" stroke="#14171C" stroke-width="2"/>
+        <!-- cove lighting line -->
+        <path d="M40 424 H760" stroke="#14171C" stroke-width="1" stroke-dasharray="2 6"/>
+        <!-- presenter console + presenter -->
+        <g>
+          <path d="M70 500 L170 492 L176 530 L66 538 Z" fill="#14171C"/>
+          <path d="M120 432 c-8 0 -13 -7 -12 -15 c1 -9 8 -13 14 -12 c8 1 12 8 11 15 c-1 7 -6 12 -13 12 Z" fill="#14171C"/>
+          <path d="M103 446 C106 436 136 436 140 446 L146 498 L98 500 Z" fill="#14171C"/>
+          <path d="M138 452 L162 440" stroke="#14171C" stroke-width="7" stroke-linecap="round"/>
+        </g>
+        <line id="beam" x1="164" y1="439" x2="164" y2="439" stroke="#A61E17" stroke-width="2.2" stroke-linecap="round"/>
+        <circle id="beam-dot" cx="164" cy="439" r="0" fill="#A61E17"/>
+        <!-- projector -->
+        <g>
+          <path d="M392 560 L386 470 L414 470 L408 560 Z" fill="#14171C"/>
+          <circle cx="400" cy="452" r="26" fill="#14171C"/>
+          <g fill="#E2E7E4"><circle cx="390" cy="444" r="2.4"/><circle cx="404" cy="440" r="2.4"/><circle cx="414" cy="452" r="2.4"/><circle cx="397" cy="458" r="2.4"/><circle cx="386" cy="456" r="1.6"/><circle cx="409" cy="463" r="1.6"/></g>
+          <path d="M370 562 H430" stroke="#14171C" stroke-width="4"/>
+        </g>
+        <!-- seats: three raked rows seen from behind -->
+        <g id="seats"></g>
+        <!-- plate labels (blue ink) -->
+        <g class="plate-note" aria-hidden="true">
+          <text x="784" y="34" text-anchor="end" font-family="Cedarville Cursive, cursive" font-size="21" fill="#1C3478">Pl. 117 — Orrery dome, Bristol 51°27′N</text>
+          <text x="784" y="62" text-anchor="end" font-family="Cedarville Cursive, cursive" font-size="21" fill="#1C3478" id="plate-time">tonight, 19:30</text>
+        </g>
+        <!-- edge scale ticks -->
+        <g stroke="#14171C" stroke-width="1">
+          <path d="M8 40v10M8 80v6M8 120v10M8 160v6M8 200v10M8 240v6M8 280v10M8 320v6M8 360v10M8 400v6M8 440v10M8 480v6M8 520v10M8 560v6M8 600v10"/>
+        </g>
+      </svg>
+      <div class="sky-ctl">
+        <label for="hour">Turn the dome sky</label>
+        <input id="hour" type="range" min="0" max="480" step="5" value="90" aria-describedby="hour-hint" aria-valuetext="19:30">
+        <output id="hour-out" for="hour" class="tab">19:30</output>
+        <p class="hint" id="hour-hint">Tonight’s brightest stars over Bristol from 18:00 to 02:00, printed black on glass like an observatory plate. The presenter’s red pointer picks out a bright star as it turns.</p>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" id="shows" aria-labelledby="shows-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="shows-h">Four shows, all presented live.</h2>
+      <p>Every show is run by a person at the console, not a recording, so questions are part of it. Seats recline; the dome goes dark slowly.</p>
+    </div>
+    <div class="shows-grid">
+      <article class="show" data-show="sky-tonight">
+        <svg class="finder" viewBox="0 0 240 240" data-plate="tonight" role="img" aria-label="All-sky chart of tonight over Bristol, horizon at the edge"></svg>
+        <div>
+          <h3>The Sky Tonight</h3>
+          <p>A live tour of what is above the harbour this week: which planets are up, what to look for after dinner, and how to find it without an app.</p>
+          <dl class="meta"><div><dt>Duration</dt><dd>45 min</dd></div><div><dt>Ages</dt><dd>6+</dd></div><div><dt>Price</dt><dd>£9</dd></div></dl>
+          <button class="btn sm ghost pick" type="button" data-pick="sky-tonight">Book The Sky Tonight</button>
+        </div>
+      </article>
+      <article class="show" data-show="winter-hunter">
+        <svg class="finder" viewBox="0 0 240 240" data-plate="orion" role="img" aria-label="Plate of Orion with the Orion Nebula circled"></svg>
+        <div>
+          <h3>Winter Hunter</h3>
+          <p>Orion rises before midnight from late autumn. Follow the hunter’s belt to the nebula below it, where new stars are still forming.</p>
+          <dl class="meta"><div><dt>Duration</dt><dd>50 min</dd></div><div><dt>Ages</dt><dd>8+</dd></div><div><dt>Price</dt><dd>£10</dd></div></dl>
+          <button class="btn sm ghost pick" type="button" data-pick="winter-hunter">Book Winter Hunter</button>
+        </div>
+      </article>
+      <article class="show" data-show="small-wanderers">
+        <svg class="finder" viewBox="0 0 240 240" data-plate="planets" role="img" aria-label="Drawing of planets strung along the ecliptic: the Moon, Saturn with its rings, Jupiter and Mars"></svg>
+        <div>
+          <h3>Small Wanderers</h3>
+          <p>The planets for three to seven year olds. Short, bright and noisy: we count Saturn’s rings, find the Moon’s face and sing the planets home.</p>
+          <dl class="meta"><div><dt>Duration</dt><dd>30 min</dd></div><div><dt>Ages</dt><dd>3–7</dd></div><div><dt>Price</dt><dd>£7</dd></div></dl>
+          <button class="btn sm ghost pick" type="button" data-pick="small-wanderers">Book Small Wanderers</button>
+        </div>
+      </article>
+      <article class="show" data-show="black-holes">
+        <svg class="finder" viewBox="0 0 240 240" data-plate="lens" role="img" aria-label="Star field bent around a black hole into a ring"></svg>
+        <div>
+          <h3>Black Holes, Plainly</h3>
+          <p>What astronomers can actually measure, what is still a guess, and why light bends into a ring around something you cannot see.</p>
+          <dl class="meta"><div><dt>Duration</dt><dd>60 min</dd></div><div><dt>Ages</dt><dd>12+</dd></div><div><dt>Price</dt><dd>£11</dd></div></dl>
+          <button class="btn sm ghost pick" type="button" data-pick="black-holes">Book Black Holes, Plainly</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec bluef book" id="book" aria-labelledby="book-h">
+  <div class="wrap">
+    <div class="intro">
+      <h2 id="book-h">Book seats in the dome.</h2>
+      <p>Pick a show, a day in the next two weeks and a session. Seats are held for you until five minutes before the doors close.</p>
+      <div class="ticket" id="ticket" aria-live="polite">
+        <div class="main">
+          <div class="t-no">Orrery dome · admit</div>
+          <div class="t-show" id="t-show">The Sky Tonight</div>
+          <dl><dt>Date</dt><dd id="t-date">Choose a day</dd><dt>Session</dt><dd id="t-time">Choose a time</dd><dt>Total</dt><dd id="t-total">£9.00</dd></dl>
+        </div>
+        <div class="stub"><span class="t-no">Seats</span><span class="seats" id="t-seats">1</span><svg width="40" height="40" aria-hidden="true" style="color:#14171C"><use href="#orrery-mark"/></svg></div>
+        <span class="stamp" aria-hidden="true">Booked</span>
+      </div>
+    </div>
+    <form id="book-form" novalidate>
+      <div class="field">
+        <label for="f-name">Your name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+        <p class="err" id="e-name"></p>
+      </div>
+      <div class="field">
+        <label for="f-email">Email for the tickets</label>
+        <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="e-email">
+        <p class="err" id="e-email"></p>
+      </div>
+      <div class="field full">
+        <label for="f-show">Show</label>
+        <select id="f-show" name="show" required aria-describedby="e-show">
+          <option value="sky-tonight" data-price="9">The Sky Tonight · 45 min · £9</option>
+          <option value="winter-hunter" data-price="10">Winter Hunter · 50 min · £10</option>
+          <option value="small-wanderers" data-price="7">Small Wanderers · 30 min · £7</option>
+          <option value="black-holes" data-price="11">Black Holes, Plainly · 60 min · £11</option>
+        </select>
+        <p class="err" id="e-show"></p>
+      </div>
+      <fieldset class="full" aria-describedby="e-date">
+        <legend>Day (next 14 days)</legend>
+        <div class="days" id="days"></div>
+        <p class="err" id="e-date"></p>
+      </fieldset>
+      <fieldset aria-describedby="e-time">
+        <legend>Session</legend>
+        <div class="times">
+          <label class="chip"><input type="radio" name="time" value="11:00"><span>11:00</span></label>
+          <label class="chip"><input type="radio" name="time" value="14:00"><span>14:00</span></label>
+          <label class="chip"><input type="radio" name="time" value="19:30"><span>19:30</span></label>
+        </div>
+        <p class="err" id="e-time"></p>
+      </fieldset>
+      <div class="field">
+        <label for="f-qty">Tickets</label>
+        <div class="stepper">
+          <button type="button" id="qty-minus" aria-label="One fewer ticket">−</button>
+          <input id="f-qty" name="tickets" type="number" inputmode="numeric" min="1" max="12" value="1" required aria-describedby="e-qty">
+          <button type="button" id="qty-plus" aria-label="One more ticket">+</button>
+        </div>
+        <p class="err" id="e-qty"></p>
+      </div>
+      <div class="submit-row">
+        <p class="total">Total <b id="f-total" class="tab">£9.00</b></p>
+        <button class="btn" type="submit" id="book-submit">Book seats</button>
+      </div>
+      <div class="success" id="book-ok" role="status" hidden tabindex="-1">
+        <svg class="ok-plate" viewBox="0 0 240 240" data-plate="tonight" aria-hidden="true"></svg>
+        <h3>Seats booked.</h3>
+        <p id="book-ok-text"></p>
+        <p class="hand" style="color:var(--red);font-size:22px;margin-top:12px">the dome sky at 21:00 tonight</p>
+        <p style="margin-top:14px"><button class="btn sm ink" type="button" id="book-again">Book another show</button></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="dark tel" id="telescope" aria-labelledby="tel-h">
+  <svg class="roof" id="roof" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <rect width="1440" height="300" fill="#14171C"/>
+    <g id="roof-stars"></g>
+    <!-- harbour roofline: hillside terraces, the Orrery with its dome, dockside cranes, the water -->
+    <path fill="#2A3038" d="M0 250V162L23.0 148L46 162V250Z"/>
+    <path fill="#2A3038" d="M34 141.0h7v21.0h-7Z"/>
+    <path fill="#222831" d="M46 250V166L67.0 156L88 166V250Z"/>
+    <path fill="#222831" d="M76 147.0h7v19.0h-7Z"/>
+    <path fill="#2A3038" d="M88 250V170H126V250Z"/>
+    <path fill="#2A3038" d="M114 156.0h7v14.0h-7Z"/>
+    <path fill="#252B33" d="M126 250V168L147.0 154L168 168V250Z"/>
+    <path fill="#252B33" d="M156 147.0h7v21.0h-7Z"/>
+    <path fill="#252B33" d="M168 250V165H206V250Z"/>
+    <path fill="#252B33" d="M194 151.0h7v14.0h-7Z"/>
+    <path fill="#222831" d="M206 250V175H248V250Z"/>
+    <path fill="#222831" d="M236 161.0h7v14.0h-7Z"/>
+    <path fill="#252B33" d="M248 250V185H290V250Z"/>
+    <path fill="#252B33" d="M278 171.0h7v14.0h-7Z"/>
+    <path fill="#2A3038" d="M290 250V182H340V250Z"/>
+    <path fill="#2A3038" d="M328 168.0h7v14.0h-7Z"/>
+    <path fill="#2A3038" d="M340 250V187L365.0 177L390 187V250Z"/>
+    <path fill="#2A3038" d="M378 168.0h7v19.0h-7Z"/>
+    <path fill="#222831" d="M390 250V185L413.0 171L436 185V250Z"/>
+    <path fill="#222831" d="M424 164.0h7v21.0h-7Z"/>
+    <path fill="#2E353E" d="M436 250V201H474V250Z"/>
+    <path fill="#2E353E" d="M462 187.0h7v14.0h-7Z"/>
+    <rect x="8" y="174" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="28" y="174" width="9" height="11" fill="#3A424B"/>
+    <rect x="8" y="192" width="9" height="11" fill="#3A424B"/>
+    <rect x="28" y="192" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="54" y="178" width="9" height="11" fill="#3A424B"/>
+    <rect x="70" y="178" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="54" y="196" width="9" height="11" fill="#3A424B"/>
+    <rect x="70" y="196" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="96" y="182" width="9" height="11" fill="#3A424B"/>
+    <rect x="108" y="182" width="9" height="11" fill="#3A424B"/>
+    <rect x="96" y="200" width="9" height="11" fill="#3A424B"/>
+    <rect x="108" y="200" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="134" y="180" width="9" height="11" fill="#3A424B"/>
+    <rect x="150" y="180" width="9" height="11" fill="#3A424B"/>
+    <rect x="134" y="198" width="9" height="11" fill="#3A424B"/>
+    <rect x="150" y="198" width="9" height="11" fill="#3A424B"/>
+    <rect x="176" y="177" width="9" height="11" fill="#3A424B"/>
+    <rect x="188" y="177" width="9" height="11" fill="#3A424B"/>
+    <rect x="176" y="195" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="188" y="195" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="214" y="187" width="9" height="11" fill="#3A424B"/>
+    <rect x="230" y="187" width="9" height="11" fill="#3A424B"/>
+    <rect x="214" y="205" width="9" height="11" fill="#3A424B"/>
+    <rect x="230" y="205" width="9" height="11" fill="#3A424B"/>
+    <rect x="256" y="197" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="272" y="197" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="256" y="215" width="9" height="11" fill="#3A424B"/>
+    <rect x="272" y="215" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="298" y="194" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="322" y="194" width="9" height="11" fill="#3A424B"/>
+    <rect x="298" y="212" width="9" height="11" fill="#3A424B"/>
+    <rect x="322" y="212" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="348" y="199" width="9" height="11" fill="#3A424B"/>
+    <rect x="372" y="199" width="9" height="11" fill="#3A424B"/>
+    <rect x="348" y="217" width="9" height="11" fill="#3A424B"/>
+    <rect x="372" y="217" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="398" y="197" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="418" y="197" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="398" y="215" width="9" height="11" fill="#E9D9A6"/>
+    <rect x="418" y="215" width="9" height="11" fill="#3A424B"/>
+    <rect x="444" y="213" width="9" height="11" fill="#3A424B"/>
+    <rect x="456" y="213" width="9" height="11" fill="#3A424B"/>
+    <rect x="444" y="231" width="9" height="11" fill="#3A424B"/>
+    <rect x="456" y="231" width="9" height="11" fill="#E9D9A6"/>
+    <path fill="#2B3139" d="M500 300V246H1000V300Z"/>
+    <path fill="#2B3139" d="M880 246a62 62 0 0 1 124 0Z"/>
+    <path d="M880 246a62 62 0 0 1 124 0" fill="none" stroke="#5B6570" stroke-width="2"/>
+    <path d="M934 186v-8" stroke="#5B6570" stroke-width="3"/>
+    <path d="M500 246H1000" stroke="#5B6570" stroke-width="2"/>
+    <g fill="none" stroke="#3E4650" stroke-width="5" stroke-linejoin="round">
+      <path d="M1100 250V150h22v100M1100 150l-90-34h140l-28 34M1122 196h-22"/>
+      <path d="M1270 250V170h20v80M1270 170l-110-42h150l-20 42"/>
+    </g>
+    <path fill="#1B2027" d="M0 250H1440V300H0Z"/>
+    <path d="M40 266h60M160 278h90M330 270h50M560 284h120M760 268h70M1090 276h40M1110 288h24M1262 272h50M1360 284h50" stroke="#3A424B" stroke-width="2" stroke-linecap="round"/>
+    <path d="M928 262h14M924 274h22" stroke="#5B6570" stroke-width="2" stroke-linecap="round"/>
+    <!-- telescope on tripod -->
+    <g stroke="#DDE3DF" stroke-width="3" fill="none" stroke-linecap="round">
+      <path d="M720 246 L744 186 L768 246 M744 186 L744 246"/>
+      <path d="M716 170 L812 112" stroke-width="16"/>
+      <path d="M810 113 L826 103" stroke-width="20"/>
+      <path d="M716 170 L704 177" stroke-width="7"/>
+      <path d="M744 186 L756 160"/>
+    </g>
+    <!-- a figure at the eyepiece -->
+    <path fill="#DDE3DF" d="M676 246 L680 196 C681 186 698 184 702 194 L708 246 Z M694 182 c-8 0 -12 -6 -11 -13 c1 -7 7 -10 12 -9 c7 1 10 7 9 13 c-1 6 -5 9 -10 9 Z"/>
+    <path d="M698 200 L712 178" stroke="#DDE3DF" stroke-width="6" stroke-linecap="round"/>
+    <!-- red torch -->
+    <path d="M630 240 l14 -6" stroke="#E04A40" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+  <div class="sec" style="padding-top:clamp(48px,6vw,88px)">
+    <div class="wrap">
+      <div>
+        <h2 id="tel-h">Clear Friday? Come up on the roof.</h2>
+        <p class="intro">On clear Friday nights the roof becomes a small observatory: three telescopes, red torches, and a guide who knows where everything is.</p>
+        <ol class="evening">
+          <li><time>20:00</time><p>Meet in the foyer. Eyes start adjusting while we hand out red torches and a star chart.</p></li>
+          <li><time>20:20</time><p>Up on the roof. A ten-minute tour of the sky with a pointer, naked eye first.</p></li>
+          <li><time>20:30–22:00</time><p>At the eyepieces: the Moon, a planet when one is up, double stars and clusters.</p></li>
+        </ol>
+        <div class="cloudy">
+          <svg viewBox="0 0 64 48" aria-hidden="true"><path d="M14 40h36a10 10 0 0 0 0-20 14 14 0 0 0-27-3 11 11 0 0 0-9 23z" fill="none" stroke="#DDE3DF" stroke-width="2.4" stroke-linejoin="round"/><path d="M20 46l3-4M32 46l3-4M44 46l3-4" stroke="#DDE3DF" stroke-width="2.4" stroke-linecap="round"/></svg>
+          <div>
+            <h3>If it is cloudy</h3>
+            <p>We decide by 16:00 on the day and email everyone booked. A cloudy night moves into the dome for a live “what you would have seen” show, or you can switch to any other Friday at no charge.</p>
+          </div>
+        </div>
+      </div>
+      <div class="dates">
+        <h3>Next three Fridays</h3>
+        <p class="small">£14 a place, 16 places a night, ages 8+ with an adult.</p>
+        <ol id="fridays">
+          <li><span class="d">16</span><span class="m"><b>Friday 16 October</b>20:00–22:00</span><button class="btn sm lite tel-add" type="button" data-date="Friday 16 October">Add a place</button></li>
+          <li><span class="d">23</span><span class="m"><b>Friday 23 October</b>20:00–22:00</span><button class="btn sm lite tel-add" type="button" data-date="Friday 23 October">Add a place</button></li>
+          <li><span class="d">30</span><span class="m"><b>Friday 30 October</b>20:00–22:00</span><button class="btn sm lite tel-add" type="button" data-date="Friday 30 October">Add a place</button></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="shop" aria-labelledby="shop-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="shop-h">Things for looking up.</h2>
+      <p><span class="hand plate-tag">Specimen tray, plates 1–6</span>Everything here is something our presenters use themselves. Collect at the desk after your show or we post it.</p>
+    </div>
+    <div class="tray">
+      <article class="item">
+        <svg viewBox="0 0 200 150" aria-hidden="true">
+          <rect width="200" height="150" fill="url(#reseau)" opacity=".7"/><text x="6" y="16" font-family="Cedarville Cursive, cursive" font-size="13" fill="#1C3478">Sp. 1</text>
+          <rect x="38" y="8" width="124" height="134" rx="4" fill="#E2E7E4" stroke="#14171C" stroke-width="2"/>
+          <circle cx="100" cy="72" r="54" fill="none" stroke="#14171C" stroke-width="2"/>
+          <circle cx="100" cy="72" r="50" fill="none" stroke="#14171C" stroke-width="6" stroke-dasharray="1 4.24"/>
+          <ellipse cx="100" cy="66" rx="40" ry="33" fill="#1C3478"/>
+          <g fill="#E2E7E4"><circle cx="86" cy="55" r="1.8"/><circle cx="96" cy="60" r="1.4"/><circle cx="110" cy="52" r="2.2"/><circle cx="118" cy="70" r="1.4"/><circle cx="90" cy="78" r="1.6"/><circle cx="104" cy="82" r="1.2"/><circle cx="78" cy="68" r="1.2"/><circle cx="124" cy="58" r="1.2"/></g>
+          <path d="M86 55L96 60L110 52M96 60L90 78" stroke="#E2E7E4" stroke-width=".8" fill="none"/>
+          <circle cx="100" cy="72" r="3" fill="#14171C"/>
+          <path d="M60 128h80" stroke="#14171C" stroke-width="1"/><path d="M64 134h72" stroke="#A61E17" stroke-width="1"/>
+        </svg>
+        <h3>Bristol Planisphere</h3>
+        <p>Turn the disc to any date and hour and see the sky over 51°N. Card, wipe-clean, 25 cm.</p>
+        <div class="buy"><span class="price">£16</span><button class="btn sm add" type="button" data-name="Bristol Planisphere" data-price="16">Add to basket</button></div>
+      </article>
+      <article class="item">
+        <svg viewBox="0 0 200 150" aria-hidden="true">
+          <rect width="200" height="150" fill="url(#reseau)" opacity=".7"/><text x="6" y="16" font-family="Cedarville Cursive, cursive" font-size="13" fill="#1C3478">Sp. 2</text>
+          <path d="M28 30 L76 20 L76 128 L28 138 Z" fill="#E2E7E4" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M76 20 L124 30 L124 138 L76 128 Z" fill="#C3CCC7" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M124 30 L172 20 L172 128 L124 138 Z" fill="#E2E7E4" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <g fill="#14171C"><circle cx="44" cy="52" r="2.6"/><circle cx="58" cy="62" r="2"/><circle cx="52" cy="82" r="3"/><circle cx="64" cy="96" r="1.8"/><circle cx="92" cy="56" r="2.4"/><circle cx="108" cy="72" r="2"/><circle cx="100" cy="98" r="2.8"/><circle cx="140" cy="48" r="2.2"/><circle cx="154" cy="66" r="3"/><circle cx="146" cy="90" r="2"/><circle cx="160" cy="106" r="1.6"/></g>
+          <path d="M44 52L58 62L52 82L64 96M92 56L108 72L100 98M140 48L154 66L146 90L160 106" fill="none" stroke="#14171C" stroke-width=".9"/>
+          <ellipse cx="100" cy="98" rx="12" ry="9" fill="none" stroke="#A61E17" stroke-width="1.6"/>
+        </svg>
+        <h3>Season Star Charts</h3>
+        <p>Four folding charts, one per season, drawn for this latitude with the bright stars named.</p>
+        <div class="buy"><span class="price">£12</span><button class="btn sm add" type="button" data-name="Season Star Charts" data-price="12">Add to basket</button></div>
+      </article>
+      <article class="item">
+        <svg viewBox="0 0 200 150" aria-hidden="true">
+          <rect width="200" height="150" fill="url(#reseau)" opacity=".7"/><text x="6" y="16" font-family="Cedarville Cursive, cursive" font-size="13" fill="#1C3478">Sp. 3</text>
+          <path d="M56 50 L150 18 L156 34 L62 66 Z" fill="#E2E7E4" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M150 18 L170 11 L177 30 L156 34" fill="#14171C"/>
+          <path d="M56 50 L44 54 L48 66 L62 66" fill="#14171C"/>
+          <path d="M44 56 L34 50 M34 50 l-6 -4" stroke="#14171C" stroke-width="5" stroke-linecap="round"/>
+          <path d="M98 30 L128 20" stroke="#14171C" stroke-width="5" stroke-linecap="round"/>
+          <path d="M104 52 L104 74" stroke="#14171C" stroke-width="4"/>
+          <path d="M104 74 L70 142 M104 74 L104 144 M104 74 L140 142" stroke="#14171C" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M82 116 L126 116" stroke="#14171C" stroke-width="1.2"/>
+          <rect x="96" y="70" width="16" height="10" fill="#14171C"/>
+        </svg>
+        <h3>70 mm Starter Refractor</h3>
+        <p>A first telescope that shows Saturn’s rings and the Moon’s craters. Tripod, two eyepieces, finder.</p>
+        <div class="buy"><span class="price">£149</span><button class="btn sm add" type="button" data-name="70 mm Starter Refractor" data-price="149">Add to basket</button></div>
+      </article>
+      <article class="item">
+        <svg viewBox="0 0 200 150" aria-hidden="true">
+          <rect width="200" height="150" fill="url(#reseau)" opacity=".7"/><text x="6" y="16" font-family="Cedarville Cursive, cursive" font-size="13" fill="#1C3478">Sp. 4</text>
+          <path d="M44 46 L82 40 L90 118 L40 124 Z" fill="#E2E7E4" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M118 40 L156 46 L160 124 L110 118 Z" fill="#E2E7E4" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <ellipse cx="65" cy="121" rx="25" ry="7" fill="#14171C"/>
+          <ellipse cx="135" cy="121" rx="25" ry="7" fill="#14171C"/>
+          <rect x="82" y="54" width="36" height="16" fill="#14171C"/>
+          <circle cx="100" cy="62" r="6" fill="#E2E7E4" stroke="#14171C" stroke-width="2"/>
+          <path d="M50 46 L52 30 L76 28 L80 42 M120 42 L124 28 L148 30 L150 46" fill="#14171C"/>
+          <path d="M46 80 L86 76 M114 76 L156 80" stroke="#14171C" stroke-width="1"/>
+        </svg>
+        <h3>10×50 Binoculars</h3>
+        <p>The best first instrument for the sky. Wide enough for clusters, steady enough to hold.</p>
+        <div class="buy"><span class="price">£69</span><button class="btn sm add" type="button" data-name="10×50 Binoculars" data-price="69">Add to basket</button></div>
+      </article>
+      <article class="item">
+        <svg viewBox="0 0 200 150" aria-hidden="true">
+          <rect width="200" height="150" fill="url(#reseau)" opacity=".7"/><text x="6" y="16" font-family="Cedarville Cursive, cursive" font-size="13" fill="#1C3478">Sp. 5</text>
+          <ellipse cx="100" cy="74" rx="78" ry="26" fill="none" stroke="#14171C" stroke-width="1" stroke-dasharray="3 4"/>
+          <ellipse cx="100" cy="74" rx="48" ry="16" fill="none" stroke="#14171C" stroke-width="1" stroke-dasharray="3 4"/>
+          <path d="M100 74 L100 132 M80 142 H120" stroke="#14171C" stroke-width="3" stroke-linecap="round"/>
+          <path d="M100 66 L172 58 M100 66 L58 82" stroke="#14171C" stroke-width="2"/>
+          <path d="M172 58 V62 M58 82 V86" stroke="#14171C" stroke-width="2"/>
+          <circle cx="100" cy="64" r="12" fill="#14171C"/>
+          <circle cx="172" cy="52" r="7" fill="#E2E7E4" stroke="#14171C" stroke-width="2"/>
+          <circle cx="58" cy="78" r="5" fill="#A61E17"/>
+          <path d="M126 34 L136 26 M134 40 L146 34" stroke="#14171C" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="137" cy="25" r="2" fill="#14171C"/><circle cx="147" cy="33" r="2" fill="#14171C"/>
+        </svg>
+        <h3>Build-an-Orrery Kit</h3>
+        <p>A desk orrery in card and brass pins: Sun, Earth and Moon that turn by hand. Ages 9+, one evening to build.</p>
+        <div class="buy"><span class="price">£24</span><button class="btn sm add" type="button" data-name="Build-an-Orrery Kit" data-price="24">Add to basket</button></div>
+      </article>
+      <article class="item">
+        <svg viewBox="0 0 200 150" aria-hidden="true">
+          <rect width="200" height="150" fill="url(#reseau)" opacity=".7"/><text x="6" y="16" font-family="Cedarville Cursive, cursive" font-size="13" fill="#1C3478">Sp. 6</text>
+          <path d="M150 75 L196 50 L196 100 Z" fill="#A61E17" fill-opacity=".22"/>
+          <path d="M40 62 H130 L150 56 V94 L130 88 H40 Z" fill="#E2E7E4" stroke="#14171C" stroke-width="2" stroke-linejoin="round"/>
+          <rect x="146" y="56" width="6" height="38" fill="#A61E17"/>
+          <rect x="70" y="58" width="20" height="8" rx="2" fill="#14171C"/>
+          <path d="M40 62 Q30 75 40 88" fill="#14171C"/>
+          <path d="M100 70 V80 M108 70 V80 M116 70 V80" stroke="#14171C" stroke-width="1"/>
+        </svg>
+        <h3>Red Observing Torch</h3>
+        <p>Dimmable red light, so you can read a chart without losing twenty minutes of dark-adapted eyes.</p>
+        <div class="buy"><span class="price">£9</span><button class="btn sm add" type="button" data-name="Red Observing Torch" data-price="9">Add to basket</button></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="membership" aria-labelledby="mem-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="mem-h">Members, by magnitude.</h2>
+      <p>Astronomers rank stars by brightness. We rank memberships the same way: the brighter the tier, the more of the sky you see.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="name"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="5" fill="#14171C"/></svg><h3>Naked Eye</h3></div>
+        <div class="yr tab">£35<small>a year</small></div>
+        <ul><li>Two dome shows of your choice</li><li>10% off in the shop</li><li>The monthly sky note by email</li></ul>
+        <button class="btn sm join" type="button" data-name="Naked Eye membership (1 year)" data-price="35">Join Naked Eye</button>
+      </div>
+      <div class="tier">
+        <div class="name"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="10" fill="#14171C"/></svg><h3>Binocular</h3></div>
+        <div class="yr tab">£60<small>a year</small></div>
+        <ul><li>Six dome shows, bring a guest to one</li><li>One Friday telescope night</li><li>10% off in the shop</li></ul>
+        <button class="btn sm join" type="button" data-name="Binocular membership (1 year)" data-price="60">Join Binocular</button>
+      </div>
+      <div class="tier">
+        <div class="name"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="16" fill="#14171C"/><path d="M22 0v8M22 36v8M0 22h8M36 22h8" stroke="#14171C" stroke-width="2"/></svg><h3>Telescope</h3></div>
+        <div class="yr tab">£120<small>a year</small></div>
+        <ul><li>Unlimited shows for two adults and up to three children</li><li>Four Friday telescope nights</li><li>15% off in the shop, first look at new shows</li></ul>
+        <button class="btn sm join" type="button" data-name="Telescope membership (1 year)" data-price="120">Join Telescope</button>
+      </div>
+    </div>
+    <p class="join-note" id="join-note" role="status"></p>
+  </div>
+</section>
+
+<section class="sec schools" id="schools" aria-labelledby="sch-h">
+  <div class="wrap">
+    <div>
+      <h2 id="sch-h">Weekday mornings belong to schools.</h2>
+      <p>Monday to Friday, the first two sessions are for classes. Sixty seats fit two classes and their adults; the presenter pitches the show to the year group.</p>
+      <ul>
+        <li><b>Who</b><span>Reception to Year 11</span></li>
+        <li><b>When</b><span>Weekdays, 09:45 and 11:00 in term time</span></li>
+        <li><b>Length</b><span>45 minutes in the dome, plus questions</span></li>
+      </ul>
+      <a class="btn ink" href="mailto:schools@orrery.example?subject=School%20visit">Ask about a school visit</a>
+    </div>
+    <svg class="seatplan" id="seatplan" viewBox="0 0 520 560" role="img" aria-label="Plan of the dome from above: sixty seats in five curved rows facing the front"></svg>
+  </div>
+</section>
+
+<section class="sec alt voices" id="voices" aria-labelledby="voices-h">
+  <div class="wrap">
+    <h2 id="voices-h" style="margin-bottom:clamp(40px,5vw,72px)">From the visitors’ book.</h2>
+    <div class="row">
+      <figure>
+        <blockquote class="big">“My seven-year-old asked eleven questions in the dark, and the presenter answered every one.”</blockquote>
+        <figcaption>Hannah, came to Small Wanderers</figcaption>
+      </figure>
+      <div class="slips">
+        <figure class="slip"><blockquote>“Clouded over on our Friday, so we watched the sky we’d have seen in the dome instead. Rebooked for the next week.”</blockquote><figcaption>Dev, telescope night</figcaption></figure>
+        <figure class="slip"><blockquote>“Bought the planisphere after the show. Found Cassiopeia from our back garden in Totterdown the same night.”</blockquote><figcaption>Ruth, The Sky Tonight</figcaption></figure>
+      </div>
+    </div>
+    <p class="disclaim">Sample visitor notes written for this concept page.</p>
+  </div>
+</section>
+
+<section class="sec faq" id="faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="faq-side">
+      <h2 id="faq-h">Before you come.</h2>
+      <p>Anything else, ask the box office. A person answers, usually one of the presenters.</p>
+      <p class="faq-call"><a href="tel:+441174960123">0117 496 0123</a></p>
+      <svg class="faq-plate" viewBox="0 0 240 240" data-plate="orion" role="img" aria-label="Small plate of Orion"></svg>
+    </div>
+    <div>
+      <details><summary>How early should we arrive?<span class="x" aria-hidden="true"></span></summary><div class="ans">Fifteen minutes before the show. The doors close when the lights go down, because opening them lets light into the dome.</div></details>
+      <details><summary>Is the dome suitable for young children?<span class="x" aria-hidden="true"></span></summary><div class="ans">Small Wanderers is made for ages three to seven. The dome is never fully dark during that show, and you can step out at any time.</div></details>
+      <details><summary>Is there step-free access?<span class="x" aria-hidden="true"></span></summary><div class="ans">Yes. The foyer, dome and shop are on one level, with two wheelchair spaces in the dome. Tell us when you book and we keep them free. The roof is reached by a lift.</div></details>
+      <details><summary>What happens if a telescope night is cloudy?<span class="x" aria-hidden="true"></span></summary><div class="ans">We decide by 16:00 and email you. You can join a live dome show of that night’s sky instead, or move to any other Friday at no charge.</div></details>
+      <details><summary>Can I bring my own telescope or binoculars?<span class="x" aria-hidden="true"></span></summary><div class="ans">Please do. Bring it on a Friday and a guide will help you set it up and find your first targets.</div></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="dark foot" id="visit">
+  <div class="wrap">
+    <p class="name" aria-label="Orrery"><svg aria-hidden="true" style="color:#DDE3DF"><use href="#orrery-mark"/></svg><span aria-hidden="true">Orrery</span></p>
+    <div class="foot-grid">
+      <div><h3>Visit</h3><address>Orrery Planetarium<br>Harbourside, Bristol BS1</address><p style="margin-top:10px">Step-free throughout.</p></div>
+      <div><h3>Opening hours</h3><dl><dt>Tue–Thu</dt><dd>10:00–20:00</dd><dt>Friday</dt><dd>10:00–22:30</dd><dt>Sat–Sun</dt><dd>10:00–20:00</dd><dt>Monday</dt><dd>Schools only</dd></dl></div>
+      <div><h3>Phone</h3><p><a href="tel:+441174960123">0117 496 0123</a></p><p style="margin-top:10px">Box office lines open from 10:00.</p></div>
+      <div><h3>Follow the sky</h3>
+        <ul class="social">
+          <li><a href="#visit" aria-label="Orrery on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg></a></li>
+          <li><a href="#visit" aria-label="Orrery on Mastodon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 9c0-4-3-5-8-5S4 5 4 9c0 6 0 10 6 11 2 .3 4 0 5-.4v-2c-2 .5-6 .5-6-2 3 .5 7 .2 9-.6 2-1 2-3 2-6zM8.5 13V9.5a1.8 1.8 0 0 1 3.5 0V12m0-2.5a1.8 1.8 0 0 1 3.5 0V13"/></svg></a></li>
+          <li><a href="#visit" aria-label="Orrery on YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z"/></svg></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine"><span>Orrery is a fictional planetarium; this is a concept page.</span><a href="#top">Back to the top</a></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
+  const money = n => '£' + n.toFixed(2);
+  const DEG = Math.PI / 180;
+  const LAT = 51.45, LON = -2.6;
+
+  // seeded PRNG for repeatable faint field stars
+  function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  // bright-star catalogue: [name, RA hours, Dec deg, magnitude]
+  const BRIGHT = [
+    ['Vega',18.615,38.78,0.03],['Sheliak',18.83,33.36,3.5],['Sulafat',18.98,32.69,3.2],['Deneb',20.69,45.28,1.25],['Sadr',20.37,40.26,2.2],['Albireo',19.51,27.96,3.1],['Fawaris',19.75,45.13,2.9],['Aljanah',20.77,33.97,2.5],
+    ['Altair',19.846,8.87,0.77],['Tarazed',19.77,10.61,2.7],['Alshain',19.92,6.41,3.7],['Rasalhague',17.58,12.56,2.1],['Arcturus',14.26,19.18,-0.05],['Alphecca',15.58,26.71,2.2],
+    ['Markab',23.08,15.21,2.5],['Scheat',23.06,28.08,2.4],['Algenib',0.22,15.18,2.8],['Alpheratz',0.14,29.09,2.1],['Enif',21.74,9.88,2.4],['Homam',22.69,10.83,3.4],['Biham',22.17,6.2,3.5],
+    ['Mirach',1.16,35.62,2.1],['Almach',2.06,42.33,2.1],['Delta And',0.66,30.86,3.3],['Schedar',0.675,56.54,2.2],['Caph',0.153,59.15,2.3],['Gamma Cas',0.945,60.72,2.4],['Ruchbah',1.43,60.24,2.7],['Segin',1.91,63.67,3.4],
+    ['Mirfak',3.405,49.86,1.8],['Algol',3.136,40.96,2.1],['Alcyone',3.79,24.1,2.9],['Electra',3.75,24.11,3.7],['Atlas',3.82,24.05,3.6],['Maia',3.76,24.37,3.9],['Merope',3.77,23.95,4.2],['Taygeta',3.75,24.47,4.3],
+    ['Aldebaran',4.6,16.51,0.85],['Elnath',5.44,28.6,1.65],['Capella',5.28,46.0,0.08],['Fomalhaut',22.96,-29.62,1.16],['Deneb Algedi',21.78,-16.13,2.9],['Dabih',20.35,-14.78,3.1],['Sadalsuud',21.53,-5.57,2.9],['Sadalmelik',22.1,-0.32,3.0],
+    ['Hamal',2.12,23.46,2.0],['Sheratan',1.91,20.81,2.6],['Diphda',0.73,-17.99,2.0],['Menkar',3.04,4.09,2.5],['Nunki',18.92,-26.3,2.0],['Kaus Australis',18.4,-34.38,1.8],['Eltanin',17.94,51.49,2.2],['Rastaban',17.51,52.3,2.8],
+    ['Kochab',14.85,74.16,2.1],['Polaris',2.53,89.26,2.0],['Dubhe',11.06,61.75,1.8],['Merak',11.03,56.38,2.4],['Alkaid',13.79,49.31,1.9],['Mizar',13.4,54.93,2.2],['Alioth',12.9,55.96,1.8],['Megrez',12.26,57.03,3.3],['Phecda',11.9,53.69,2.4],
+    ['Betelgeuse',5.92,7.41,0.5],['Rigel',5.24,-8.2,0.13],['Bellatrix',5.42,6.35,1.6],['Mintaka',5.53,-0.3,2.2],['Alnilam',5.6,-1.2,1.7],['Alnitak',5.68,-1.94,1.8],['Saiph',5.8,-9.67,2.1]
+  ];
+  const r1 = rng(117);
+  const FIELD = [];
+  for (let i = 0; i < 900; i++) {
+    const ra = r1() * 24, dec = Math.asin(r1() * 2 - 1) / DEG, m = 3.6 + Math.pow(r1(), 0.55) * 2.6;
+    FIELD.push(['', ra, dec, m]);
+  }
+  // Milky Way: faint stars scattered about the galactic equator, converted to RA/Dec (J2000)
+  const MW = [], aG = 192.85948 * DEG, dG = 27.12825 * DEG, lN = 122.93192 * DEG;
+  const gauss = () => { let u = 0; for (let k = 0; k < 4; k++) u += r1(); return (u - 2) / 0.58; };
+  for (let i = 0; i < 1700; i++) {
+    const l = r1() * 2 * Math.PI, b = gauss() * (4 + 3 * Math.abs(Math.cos(l / 2))) * DEG;
+    const sd = Math.sin(dG) * Math.sin(b) + Math.cos(dG) * Math.cos(b) * Math.cos(lN - l);
+    const ra = aG + Math.atan2(Math.cos(b) * Math.sin(lN - l), Math.cos(dG) * Math.sin(b) - Math.sin(dG) * Math.cos(b) * Math.cos(lN - l));
+    MW.push(['', (((ra / DEG) % 360 + 360) % 360) / 15, Math.asin(sd) / DEG, 6.4 + r1() * 1.2]);
+  }
+  const STARS = BRIGHT.concat(FIELD, MW);
+
+  function londonOffsetHours(d) {
+    const h = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', hourCycle: 'h23' }).format(d);
+    return ((h - d.getUTCHours()) + 24) % 24;
+  }
+  function londonToday() {
+    const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    const [y, m, d] = p.split('-').map(Number); return { y, m, d };
+  }
+  function lstHours(dateUTC) {
+    const D = (dateUTC.getTime() / 86400000) + 2440587.5 - 2451545.0;
+    let g = 18.697374558 + 24.06570982441908 * D;
+    return (((g + LON / 15) % 24) + 24) % 24;
+  }
+  function altaz(raH, decD, lst) {
+    const H = (lst - raH) * 15 * DEG, dec = decD * DEG, lat = LAT * DEG;
+    const sinAlt = Math.sin(dec) * Math.sin(lat) + Math.cos(dec) * Math.cos(lat) * Math.cos(H);
+    const alt = Math.asin(sinAlt);
+    const cosAz = (Math.sin(dec) - sinAlt * Math.sin(lat)) / (Math.cos(alt) * Math.cos(lat));
+    let az = Math.acos(Math.max(-1, Math.min(1, cosAz)));
+    if (Math.sin(H) > 0) az = 2 * Math.PI - az;
+    return [alt, az];
+  }
+  const starR = m => m > 6.3 ? 0.55 + (7.6 - m) * 0.25 : Math.max(0.8, (6.4 - m) * 1.0);
+
+  /* ---------- the dome ---------- */
+  const T = londonToday();
+  const sky = $('#sky'), annot = $('#annot');
+  const CX = 400, CY = 410, R = 360;
+  const nodes = STARS.map(s => {
+    const r = starR(s[3]);
+    const c = el('circle', { r: r.toFixed(2), fill: '#14171C', class: 'star', cx: -50, cy: -50 }, sky);
+    c.style.animationDelay = (Math.max(0, s[3]) * 0.22).toFixed(2) + 's';
+    let halo = null;
+    if (s[3] < 1.3) halo = el('circle', { r: (r * 2.4).toFixed(1), fill: 'none', stroke: '#14171C', 'stroke-opacity': '.25', 'stroke-width': '1', class: 'star', cx: -50, cy: -50 }, sky);
+    return { s, c, halo };
+  });
+  // ink annotations: [label, star names to circle]
+  const ANN = [['Vega', ['Vega'], 30], ['the Square', ['Markab', 'Scheat', 'Algenib', 'Alpheratz'], 0], ['Pleiades', ['Alcyone', 'Electra', 'Atlas', 'Maia'], 18], ['Altair', ['Altair'], 22]];
+  const byName = Object.fromEntries(nodes.filter(n => n.s[0]).map(n => [n.s[0], n]));
+  function inkLoop(cx, cy, rx, ry, seed) {
+    const r = rng(seed); let d = '';
+    const steps = 22, start = r() * Math.PI * 2;
+    for (let i = 0; i <= steps + 3; i++) {
+      const a = start + i / steps * Math.PI * 2;
+      const j = 1 + (r() - 0.5) * 0.12 + i * 0.006;
+      const x = cx + Math.cos(a) * rx * j, y = cy + Math.sin(a) * ry * j;
+      d += (i ? ' L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }
+    return d;
+  }
+  const annNodes = ANN.map(([label, names, seed], i) => {
+    const g = el('g', { class: 'ann' + (i > 1 ? ' plate-note' : '') }, annot);
+    const p = el('path', { fill: 'none', stroke: '#A61E17', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+    const t = el('text', { 'font-family': 'Cedarville Cursive, cursive', 'font-size': '22', fill: '#A61E17' }, g);
+    t.textContent = label;
+    return { names, seed, g, p, t };
+  });
+  const beam = $('#beam'), beamDot = $('#beam-dot');
+
+  function project(alt, az) {
+    // view from the back row, facing south: east on the left, zenith at the crown
+    const d = az - Math.PI;
+    if (alt < 0 || Math.cos(d) < -0.15) return null;
+    return [CX + R * Math.cos(alt) * Math.sin(d), CY - R * Math.sin(alt)];
+  }
+  function drawSky(mins) {
+    const off = londonOffsetHours(new Date(Date.UTC(T.y, T.m - 1, T.d, 12)));
+    const utc = new Date(Date.UTC(T.y, T.m - 1, T.d, 18, 0) + (mins - off * 60) * 60000);
+    const lst = lstHours(utc);
+    for (const n of nodes) {
+      const [alt, az] = altaz(n.s[1], n.s[2], lst);
+      const p = project(alt, az);
+      n.pos = p;
+      const x = p ? p[0].toFixed(1) : -50, y = p ? p[1].toFixed(1) : -50;
+      n.c.setAttribute('cx', x); n.c.setAttribute('cy', y);
+      if (n.halo) { n.halo.setAttribute('cx', x); n.halo.setAttribute('cy', y); }
+    }
+    for (const a of annNodes) {
+      const pts = a.names.map(nm => byName[nm] && byName[nm].pos).filter(Boolean);
+      if (pts.length < a.names.length || pts.some(p => p[1] > CY - 30)) { a.g.style.display = 'none'; continue; }
+      a.g.style.display = '';
+      const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+      const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+      const rx = (Math.max(...xs) - Math.min(...xs)) / 2 + 16, ry = (Math.max(...ys) - Math.min(...ys)) / 2 + 14;
+      a.p.setAttribute('d', inkLoop(cx, cy, rx, ry, a.seed + 3));
+      const right = cx < CX;
+      a.t.setAttribute('x', (right ? cx + rx + 8 : cx - rx - 8).toFixed(1));
+      a.t.setAttribute('y', (cy + 7).toFixed(1));
+      a.t.setAttribute('text-anchor', right ? 'start' : 'end');
+    }
+    const tgt = ['Vega', 'Altair', 'Alpheratz', 'Aldebaran', 'Capella'].map(n => byName[n].pos).find(p => p && p[1] < CY - 20 && p[0] > 150);
+    const v = tgt;
+    if (v) {
+      beam.setAttribute('x2', v[0].toFixed(1)); beam.setAttribute('y2', v[1].toFixed(1));
+      beamDot.setAttribute('cx', v[0].toFixed(1)); beamDot.setAttribute('cy', v[1].toFixed(1)); beamDot.setAttribute('r', '4');
+      beam.style.display = '';
+    } else { beam.style.display = 'none'; beamDot.setAttribute('r', '0'); }
+  }
+  const hour = $('#hour'), hourOut = $('#hour-out'), plateTime = $('#plate-time');
+  const fmt = mins => { const t = (18 * 60 + mins) % 1440; return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+  function setHour(mins) {
+    drawSky(mins);
+    const s = fmt(Math.round(mins / 5) * 5);
+    hourOut.textContent = s; hour.setAttribute('aria-valuetext', s); plateTime.textContent = 'tonight, ' + s;
+  }
+  let userTouched = false;
+  hour.addEventListener('input', () => { userTouched = true; setHour(+hour.value); });
+
+  // seats: three raked rows seen from behind (front row smallest)
+  const seats = $('#seats');
+  const rows = [{ y: 488, s: 0.62, n: 13, gap: 52, seed: 3 }, { y: 528, s: 0.8, n: 11, gap: 66, seed: 5 }, { y: 576, s: 1.02, n: 9, gap: 84, seed: 9 }];
+  rows.forEach(row => {
+    const r = rng(row.seed);
+    const w = (row.n - 1) * row.gap, x0 = CX - w / 2;
+    for (let i = 0; i < row.n; i++) {
+      const x = x0 + i * row.gap;
+      if (row.s < 0.7 && Math.abs(x - CX) < 40) continue; // gap for the projector
+      if (row.s < 0.9 && x < 200) continue; // aisle by the presenter's console
+      const tf = `translate(${(x - 30 * row.s).toFixed(1)} ${(row.y - 10 * row.s).toFixed(1)}) scale(${row.s})`;
+      if (r() > 0.22) el('use', { href: '#head', width: 60, height: 80, transform: tf }, seats);
+      el('use', { href: '#seat', width: 60, height: 80, transform: tf }, seats);
+    }
+  });
+
+  // first load: the plate develops while the sky turns from 18:00 to showtime
+  const start = 90;
+  if (reduce) { setHour(start); }
+  else {
+    $('#dome').classList.add('developing');
+    const t0 = performance.now(), dur = 2400, from = 0;
+    const tick = now => {
+      if (userTouched) return;
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      const m = from + (start - from) * e; hour.value = Math.round(m / 5) * 5; setHour(m);
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    setHour(from); requestAnimationFrame(tick);
+  }
+
+  /* ---------- finder plates for the shows ---------- */
+  function fieldStars(svg, seed, n, keep) {
+    const r = rng(seed);
+    for (let i = 0; i < n; i++) {
+      const a = r() * Math.PI * 2, d = Math.sqrt(r()) * 116, x = 120 + Math.cos(a) * d, y = 120 + Math.sin(a) * d;
+      if (keep && !keep(x, y)) continue;
+      el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: (0.5 + Math.pow(r(), 3) * 1.8).toFixed(2), fill: '#14171C' }, svg);
+    }
+  }
+  function grid(svg) { el('rect', { x: 0, y: 0, width: 240, height: 240, fill: 'url(#reseau)', opacity: .8 }, svg); }
+  function inkPath(svg, d, len) { const p = el('path', { d, fill: 'none', stroke: '#A61E17', 'stroke-width': '2', 'stroke-linecap': 'round', class: 'ink-draw' }, svg); p.style.setProperty('--len', len); return p; }
+  function hand(svg, x, y, txt, anchor) { const t = el('text', { x, y, 'font-family': 'Cedarville Cursive, cursive', 'font-size': '19', fill: '#A61E17', 'text-anchor': anchor || 'start', 'aria-hidden': 'true' }, svg); t.textContent = txt; }
+
+  const plates = {
+    tonight(svg) {
+      grid(svg);
+      const off = londonOffsetHours(new Date());
+      const utc = new Date(Date.UTC(T.y, T.m - 1, T.d, 21 - off, 0));
+      const lst = lstHours(utc);
+      el('circle', { cx: 120, cy: 120, r: 108, fill: 'none', stroke: '#14171C', 'stroke-width': '1.2' }, svg);
+      for (const s of STARS) {
+        if (s[3] > 4.8) continue;
+        const [alt, az] = altaz(s[1], s[2], lst); if (alt < 0) continue;
+        const rr = (90 - alt / DEG) / 90 * 106;
+        el('circle', { cx: (120 - Math.sin(az) * rr).toFixed(1), cy: (120 - Math.cos(az) * rr).toFixed(1), r: (starR(s[3]) * 0.5).toFixed(2), fill: '#14171C' }, svg);
+      }
+      [['N', 120, 26], ['S', 120, 226], ['E', 22, 126], ['W', 218, 126]].forEach(([t, x, y]) => { const n = el('text', { x, y, 'text-anchor': 'middle', 'font-family': 'Archivo, sans-serif', 'font-size': '13', 'font-weight': '700', fill: '#1C3478' }, svg); n.textContent = t; });
+      el('circle', { cx: 120, cy: 120, r: 2, fill: '#A61E17' }, svg);
+      inkPath(svg, inkLoop(120, 120, 22, 22, 4), 160);
+      hand(svg, 146, 106, 'zenith');
+    },
+    orion(svg) {
+      grid(svg); fieldStars(svg, 21, 140);
+      const ORI = [['Betelgeuse', 5.92, 7.41, 0.5], ['Rigel', 5.24, -8.2, 0.13], ['Bellatrix', 5.42, 6.35, 1.6], ['Mintaka', 5.53, -0.3, 2.2], ['Alnilam', 5.6, -1.2, 1.7], ['Alnitak', 5.68, -1.94, 1.8], ['Saiph', 5.8, -9.67, 2.1], ['Meissa', 5.59, 9.93, 3.4], ['', 5.59, -5.0, 4.4], ['', 5.59, -5.9, 4.6]];
+      const P = s => [120 - (s[1] - 5.6) * 15 * 7.6, 112 - s[2] * 7.6];
+      for (const s of ORI) { const [x, y] = P(s); el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: (starR(s[3]) * 0.75).toFixed(2), fill: '#14171C' }, svg); }
+      const [nx, ny] = P(['', 5.59, -5.39]);
+      el('ellipse', { cx: nx, cy: ny, rx: 9, ry: 6, fill: '#14171C', opacity: .35 }, svg);
+      el('ellipse', { cx: nx, cy: ny, rx: 4.5, ry: 3, fill: '#14171C', opacity: .55 }, svg);
+      inkPath(svg, inkLoop(nx, ny, 17, 14, 8), 140);
+      hand(svg, nx + 22, ny + 20, 'M42');
+    },
+    planets(svg) {
+      grid(svg); fieldStars(svg, 33, 70);
+      el('path', { d: 'M8 168 C70 130 170 110 232 72', fill: 'none', stroke: '#1C3478', 'stroke-width': '1', 'stroke-dasharray': '4 5' }, svg);
+      // Moon crescent
+      el('path', { d: 'M46 140 a18 18 0 1 0 22 -20 a14 14 0 1 1 -22 20 z', fill: '#14171C' }, svg);
+      // Saturn with rings
+      el('ellipse', { cx: 112, cy: 124, rx: 30, ry: 9, fill: 'none', stroke: '#14171C', 'stroke-width': '2.4', transform: 'rotate(-18 112 124)' }, svg);
+      el('circle', { cx: 112, cy: 124, r: 14, fill: '#14171C' }, svg);
+      el('path', { d: 'M84 133 Q112 127 140 115', fill: 'none', stroke: '#14171C', 'stroke-width': '2.4', transform: 'rotate(0)' }, svg);
+      // Jupiter with bands
+      el('circle', { cx: 172, cy: 96, r: 18, fill: '#14171C' }, svg);
+      el('path', { d: 'M155 90 H189 M154 100 H190', stroke: '#E2E7E4', 'stroke-width': '2' }, svg);
+      [[186, 112], [196, 108], [150, 104]].forEach(([x, y]) => el('circle', { cx: x + 22 > 238 ? x : x + 20, cy: y - 14, r: 1.6, fill: '#14171C' }, svg));
+      // Mars
+      el('circle', { cx: 214, cy: 72, r: 6, fill: '#14171C' }, svg);
+      inkPath(svg, inkLoop(112, 124, 40, 22, 12), 220);
+      hand(svg, 80, 172, 'count the rings');
+    },
+    lens(svg) {
+      grid(svg);
+      fieldStars(svg, 47, 220, (x, y) => Math.hypot(x - 120, y - 120) > 46);
+      el('circle', { cx: 120, cy: 120, r: 22, fill: '#E2E7E4' }, svg);
+      el('circle', { cx: 120, cy: 120, r: 34, fill: 'none', stroke: '#14171C', 'stroke-width': '5', opacity: .85 }, svg);
+      el('circle', { cx: 120, cy: 120, r: 40, fill: 'none', stroke: '#14171C', 'stroke-width': '1.4', opacity: .5 }, svg);
+      el('path', { d: 'M86 98 A40 40 0 0 1 108 82', fill: 'none', stroke: '#14171C', 'stroke-width': '3' }, svg);
+      el('path', { d: 'M150 146 A40 40 0 0 1 128 159', fill: 'none', stroke: '#14171C', 'stroke-width': '3' }, svg);
+      inkPath(svg, inkLoop(120, 120, 56, 56, 15), 380);
+      hand(svg, 184, 58, 'nothing', 'middle'); hand(svg, 186, 76, 'here?', 'middle');
+    }
+  };
+  $$('[data-plate]').forEach(svg => {
+    const tape = el('circle', { cx: 120, cy: 120, r: 119, fill: '#E2E7E4' }, svg);
+    plates[svg.dataset.plate](svg);
+  });
+
+  // draw the ink circles as each plate scrolls in (they are drawn by default without JS)
+  if (!reduce && 'IntersectionObserver' in window) {
+    const fs = $$('.finder');
+    fs.forEach(f => f.classList.add('ink-pending'));
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { const f = e.target; f.classList.add('ink-go'); requestAnimationFrame(() => f.classList.remove('ink-pending')); io.unobserve(f); }
+    }), { rootMargin: '0px 0px -12% 0px' });
+    fs.forEach(f => io.observe(f));
+  }
+
+  /* ---------- roof sky (positive print) ---------- */
+  const rs = $('#roof-stars'), r2 = rng(5);
+  for (let i = 0; i < 170; i++) el('circle', { cx: (r2() * 1440).toFixed(0), cy: (r2() * 230).toFixed(0), r: (0.6 + Math.pow(r2(), 4) * 2.2).toFixed(2), fill: '#E9EEF7', opacity: (0.5 + r2() * 0.5).toFixed(2) }, rs);
+
+  /* ---------- seat plan ---------- */
+  const sp = $('#seatplan');
+  el('circle', { cx: 260, cy: 260, r: 246, fill: '#E2E7E4', stroke: '#14171C', 'stroke-width': '5' }, sp);
+  el('rect', { x: 0, y: 0, width: 520, height: 520, fill: 'url(#reseau)', 'clip-path': 'circle(246px at 260px 260px)' }, sp);
+  // five rows curved round the front, sixty seats, wheelchair spaces at the ends of the back row
+  const FX = 260, FY = 84, SP = 30;
+  [[190, 10], [220, 11], [250, 12], [280, 13], [310, 14]].forEach(([rad, n], ri) => {
+    const span = (n - 1) * SP / rad;
+    for (let i = 0; i < n; i++) {
+      const a = Math.PI / 2 + (i - (n - 1) / 2) * (span / (n - 1));
+      const x = FX + Math.cos(a) * rad, y = FY + Math.sin(a) * rad;
+      const isWc = ri === 4 && (i === 0 || i === n - 1);
+      el('rect', { x: (x - 10).toFixed(1), y: (y - 8).toFixed(1), width: 20, height: 16, rx: 3, fill: isWc ? '#E2E7E4' : '#14171C', stroke: '#14171C', 'stroke-width': isWc ? 2.5 : 0, transform: `rotate(${((a - Math.PI / 2) / DEG).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})` }, sp);
+    }
+  });
+  el('circle', { cx: 260, cy: 214, r: 15, fill: '#14171C' }, sp);
+  el('path', { d: 'M160 52 Q260 30 360 52', fill: 'none', stroke: '#A61E17', 'stroke-width': '2.5', 'stroke-linecap': 'round' }, sp);
+  const tl = el('text', { x: 260, y: 86, 'text-anchor': 'middle', 'font-family': 'Cedarville Cursive, cursive', 'font-size': '24', fill: '#A61E17' }, sp); tl.textContent = 'the front: everyone faces here';
+  const t2 = el('text', { x: 284, y: 200, 'text-anchor': 'start', 'font-family': 'Cedarville Cursive, cursive', 'font-size': '22', fill: '#1C3478' }, sp); t2.textContent = 'projector';
+  const t3 = el('text', { x: 260, y: 548, 'text-anchor': 'middle', 'font-family': 'Archivo, sans-serif', 'font-size': '18', 'font-weight': '700', fill: '#14171C' }, sp); t3.textContent = '60 seats, 2 of them wheelchair spaces (open marks)';
+
+  /* ---------- basket ---------- */
+  const basket = [];
+  const bBtn = $('#basket-btn'), bPanel = $('#basket-panel'), bList = $('#basket-list'), bCount = $('#basket-count'), bTotal = $('#basket-total'), bNote = $('#basket-note');
+  function renderBasket(bump) {
+    const n = basket.reduce((a, b) => a + b.qty, 0);
+    bCount.textContent = n;
+    bBtn.setAttribute('aria-label', 'Basket, ' + n + (n === 1 ? ' item' : ' items'));
+    if (bump && !reduce) { bCount.classList.remove('turn'); void bCount.offsetWidth; bCount.classList.add('turn'); }
+    bList.innerHTML = '';
+    basket.forEach((it, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${it.qty} × ${it.name}</span><span class="tab">${money(it.price * it.qty)}</span>`;
+      const rm = document.createElement('button'); rm.type = 'button'; rm.textContent = 'Remove'; rm.setAttribute('aria-label', 'Remove ' + it.name);
+      rm.addEventListener('click', () => { basket.splice(i, 1); renderBasket(true); bBtn.focus(); });
+      li.appendChild(rm); bList.appendChild(li);
+    });
+    bTotal.textContent = money(basket.reduce((a, b) => a + b.price * b.qty, 0));
+    $('#basket-hold').hidden = !n;
+    bNote.textContent = n ? 'Pay and collect at the desk, or ask us to post shop items.' : 'Your basket is empty. Add a star map, a kit or a telescope night below.';
+  }
+  function add(name, price, from) {
+    const f = basket.find(b => b.name === name);
+    if (f) f.qty++; else basket.push({ name, price: +price, qty: 1 });
+    if (from && !reduce) fly(from);
+    renderBasket(true);
+  }
+  function fly(from) {
+    const a = from.getBoundingClientRect(), b = bCount.getBoundingClientRect();
+    const s = document.createElementNS(NS, 'svg'); s.setAttribute('viewBox', '0 0 20 20'); s.setAttribute('class', 'fly'); s.setAttribute('aria-hidden', 'true');
+    el('path', { d: 'M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z', fill: '#A61E17' }, s);
+    document.body.appendChild(s);
+    const x0 = a.left + a.width / 2, y0 = a.top, x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
+    s.style.left = x0 + 'px'; s.style.top = y0 + 'px';
+    const anim = s.animate([
+      { transform: 'translate(-50%,-50%) scale(1) rotate(0)' },
+      { transform: `translate(calc(${(x1 - x0) * 0.5}px - 50%), calc(${Math.min(y1, y0) - y0 - 80}px - 50%)) scale(1.3) rotate(90deg)`, offset: .45 },
+      { transform: `translate(calc(${x1 - x0}px - 50%), calc(${y1 - y0}px - 50%)) scale(.6) rotate(180deg)`, opacity: .9 }
+    ], { duration: 520, easing: 'cubic-bezier(.3,.7,.3,1)' });
+    anim.onfinish = () => s.remove();
+  }
+  $$('.add').forEach(b => b.addEventListener('click', () => {
+    add(b.dataset.name, b.dataset.price, b);
+    const old = b.textContent; b.textContent = 'Added'; b.classList.add('done');
+    clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = old; b.classList.remove('done'); }, 1400);
+  }));
+  $$('.tel-add').forEach(b => b.addEventListener('click', () => {
+    add('Telescope night, ' + b.dataset.date, 14, b);
+    b.textContent = 'Place added'; clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = 'Add a place'; }, 1600);
+  }));
+  const joinNote = $('#join-note');
+  $$('.join').forEach(b => b.addEventListener('click', () => {
+    add(b.dataset.name, b.dataset.price, b);
+    joinNote.textContent = b.dataset.name.replace(' (1 year)', '') + ' added to your basket. Membership starts on your first visit.';
+  }));
+  function closeBasket() { bPanel.hidden = true; bPanel.classList.remove('open'); bBtn.setAttribute('aria-expanded', 'false'); }
+  bBtn.addEventListener('click', () => {
+    const open = bPanel.hidden;
+    if (open) { closeMenu(); bPanel.hidden = false; bPanel.classList.add('open'); bBtn.setAttribute('aria-expanded', 'true'); } else closeBasket();
+  });
+  document.addEventListener('click', e => { if (!bPanel.hidden && !bPanel.contains(e.target) && !bBtn.contains(e.target)) closeBasket(); });
+  $('#basket-hold').addEventListener('click', () => { bNote.textContent = 'Held at the box office for 48 hours under your name. Pay when you collect.'; });
+  renderBasket(false);
+
+  /* ---------- mobile nav ---------- */
+  const nav = $('#nav'), mBtn = $('#menu-btn'), mPath = $('#menu-path');
+  function closeMenu() { nav.classList.remove('open'); mBtn.setAttribute('aria-expanded', 'false'); mBtn.setAttribute('aria-label', 'Open menu'); mPath.setAttribute('d', 'M2 6h18M2 11h18M2 16h18'); document.body.style.overflow = ''; }
+  mBtn.addEventListener('click', () => {
+    if (nav.classList.contains('open')) { closeMenu(); return; }
+    closeBasket();
+    nav.classList.add('open'); mBtn.setAttribute('aria-expanded', 'true'); mBtn.setAttribute('aria-label', 'Close menu'); mPath.setAttribute('d', 'M4 4L18 18M18 4L4 18');
+    document.body.style.overflow = 'hidden';
+    const first = nav.querySelector('a'); if (first) first.focus();
+  });
+  nav.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (nav.classList.contains('open')) { closeMenu(); mBtn.focus(); }
+    if (!bPanel.hidden) { closeBasket(); bBtn.focus(); }
+  });
+  matchMedia('(min-width: 961px)').addEventListener('change', e => { if (e.matches) closeMenu(); });
+
+  /* ---------- booking ---------- */
+  const form = $('#book-form'), fShow = $('#f-show'), fQty = $('#f-qty'), days = $('#days');
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], monNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const longDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], longMon = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(Date.UTC(T.y, T.m - 1, T.d + i));
+    const lab = document.createElement('label'); lab.className = 'chip';
+    const iso = d.toISOString().slice(0, 10);
+    const long = `${longDay[d.getUTCDay()]} ${d.getUTCDate()} ${longMon[d.getUTCMonth()]}`;
+    lab.innerHTML = `<input type="radio" name="date" value="${iso}" data-long="${long}" aria-label="${i === 0 ? 'Today, ' : ''}${long}"><span>${i === 0 ? 'Today' : dayNames[d.getUTCDay()]}<b>${d.getUTCDate()}</b>${monNames[d.getUTCMonth()]}</span>`;
+    days.appendChild(lab);
+  }
+  const tShow = $('#t-show'), tDate = $('#t-date'), tTime = $('#t-time'), tTotal = $('#t-total'), tSeats = $('#t-seats'), fTotal = $('#f-total');
+  function price() { return +fShow.selectedOptions[0].dataset.price; }
+  function qty() { const q = parseInt(fQty.value, 10); return Number.isFinite(q) ? q : 0; }
+  function sync() {
+    const opt = fShow.selectedOptions[0];
+    tShow.textContent = opt.textContent.split(' · ')[0];
+    const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
+    tDate.textContent = d ? d.dataset.long : 'Choose a day';
+    tTime.textContent = t ? t.value : 'Choose a time';
+    const q = Math.max(0, Math.min(12, qty()));
+    tSeats.textContent = q || '–';
+    const tot = money(price() * q);
+    tTotal.textContent = tot; fTotal.textContent = tot;
+  }
+  const errs = {
+    name: () => $('#f-name').value.trim().length < 2 ? 'Add your name so we can put it on the tickets.' : '',
+    email: () => { const v = $('#f-email').value.trim(); return !v ? 'Add an email so we can send the tickets.' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'That email looks incomplete. Check for a missing @ or ending.'); },
+    show: () => fShow.value ? '' : 'Choose a show.',
+    date: () => form.querySelector('input[name=date]:checked') ? '' : 'Choose a day in the next two weeks.',
+    time: () => form.querySelector('input[name=time]:checked') ? '' : 'Choose a session: 11:00, 14:00 or 19:30.',
+    qty: () => { const q = qty(); return q >= 1 && q <= 12 ? '' : 'Choose between 1 and 12 tickets. For bigger groups, call the box office.'; }
+  };
+  const target = { name: '#f-name', email: '#f-email', show: '#f-show', qty: '#f-qty' };
+  function check(k) {
+    const m = errs[k](); $('#e-' + k).textContent = m;
+    if (target[k]) $(target[k]).setAttribute('aria-invalid', m ? 'true' : 'false');
+    return !m;
+  }
+  ['name', 'email'].forEach(k => {
+    const i = $(target[k]);
+    i.addEventListener('blur', () => { if (i.value) check(k); });
+    i.addEventListener('input', () => { if (i.getAttribute('aria-invalid') === 'true') check(k); });
+  });
+  form.addEventListener('change', e => {
+    if (e.target.name === 'date') check('date');
+    if (e.target.name === 'time') check('time');
+    if (e.target === fQty) check('qty');
+    sync();
+  });
+  fQty.addEventListener('input', () => { sync(); if (fQty.getAttribute('aria-invalid') === 'true') check('qty'); });
+  $('#qty-minus').addEventListener('click', () => { fQty.value = Math.max(1, qty() - 1); sync(); check('qty'); });
+  $('#qty-plus').addEventListener('click', () => { fQty.value = Math.min(12, qty() + 1); sync(); check('qty'); });
+  const ticket = $('#ticket'), ok = $('#book-ok'), okText = $('#book-ok-text'), submit = $('#book-submit');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const order = ['name', 'email', 'show', 'date', 'time', 'qty'];
+    const bad = order.filter(k => !check(k));
+    if (bad.length) {
+      const k = bad[0];
+      const f = target[k] ? $(target[k]) : form.querySelector(`input[name=${k}]`);
+      if (f) f.focus();
+      return;
+    }
+    submit.disabled = true; submit.textContent = 'Booking…';
+    setTimeout(() => {
+      const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
+      const q = qty();
+      okText.textContent = `${q} ${q === 1 ? 'seat' : 'seats'} for ${tShow.textContent}, ${d.dataset.long} at ${t.value}. Total ${money(price() * q)}, paid at the desk. Tickets are on their way to ${$('#f-email').value.trim()}.`;
+      $$('.field, fieldset, .submit-row', form).forEach(n => n.hidden = true);
+      ok.hidden = false; ok.focus();
+      ticket.classList.add('booked'); if (!reduce) ticket.classList.add('tear');
+      submit.disabled = false; submit.textContent = 'Book seats';
+    }, reduce ? 0 : 450);
+  });
+  $('#book-again').addEventListener('click', () => {
+    $$('.field, fieldset, .submit-row', form).forEach(n => n.hidden = false);
+    ok.hidden = true; ticket.classList.remove('booked', 'tear');
+    form.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+    sync(); $('#f-show').focus();
+  });
+  $$('.pick').forEach(b => b.addEventListener('click', () => {
+    fShow.value = b.dataset.pick; sync();
+    $('#book').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => fShow.focus({ preventScroll: true }), reduce ? 0 : 450);
+  }));
+  sync();
+
+  /* ---------- next three Fridays ---------- */
+  const fr = $('#fridays');
+  const nowL = new Date();
+  const hourL = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', hourCycle: 'h23' }).format(nowL);
+  const base = new Date(Date.UTC(T.y, T.m - 1, T.d));
+  let add0 = (5 - base.getUTCDay() + 7) % 7; if (add0 === 0 && hourL >= 20) add0 = 7;
+  fr.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(Date.UTC(T.y, T.m - 1, T.d + add0 + i * 7));
+    const long = `Friday ${d.getUTCDate()} ${longMon[d.getUTCMonth()]}`;
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="d">${d.getUTCDate()}</span><span class="m"><b>${long}</b>20:00–22:00</span>`;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'btn sm lite tel-add'; b.textContent = 'Add a place'; b.setAttribute('aria-label', 'Add a place on ' + long);
+    b.addEventListener('click', () => { add('Telescope night, ' + long, 14, b); b.textContent = 'Place added'; clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = 'Add a place'; }, 1600); });
+    li.appendChild(b); fr.appendChild(li);
+  }
+})();
+</script>
+</body>
+</html>

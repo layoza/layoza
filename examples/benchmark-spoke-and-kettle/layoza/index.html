@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spoke &amp; Kettle · Co-op bike workshop &amp; coffee bar, Katendrecht</title>
+<meta name="description" content="Cooperative bicycle repair workshop with a small coffee bar on Katendrecht, Rotterdam. Book a repair, buy parts, or join and use the self-repair benches.">
+<meta name="theme-color" content="#8F3226">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Signage Fallback";src:local("Arial Narrow Bold"),local("ArialNarrow-Bold"),local("Arial Narrow"),local("Arial");font-weight:600 800;size-adjust:88.2%;ascent-override:113%;descent-override:23%;line-gap-override:0%}
+@font-face{font-family:"Text Fallback";src:local("Arial"),local("ArialMT");size-adjust:97%;ascent-override:103%;descent-override:21%;line-gap-override:0%}
+
+:root{
+  --red:#8F3226;        /* fietspad asphalt */
+  --red-deep:#76281E;
+  --red-ink:#F4DCD5;    /* secondary text on red */
+  --paint:#F7F5EF;      /* road-marking white */
+  --blue:#1F4E9C;       /* G11 cycle-sign blue */
+  --blue-deep:#173E7E;
+  --blue-ink:#D9E4F5;
+  --green:#1F6B44;      /* route / rustpunt green */
+  --green-ink:#DCEDE2;
+  --concrete:#E3E4E1;   /* kerb tile */
+  --concrete-2:#D0D3D0;
+  --asphalt:#1E2124;
+  --asphalt-2:#2A2E32;
+  --asphalt-ink:#C9CDD0;
+  --ink:#1E2124;
+  --ink-2:#4A4E52;
+  --yellow:#F3C744;     /* roadworks marking */
+  --error:#9B1C1C;
+  --header-h:4.5rem;
+  --focus:var(--yellow);
+  --display:"Barlow Condensed","Signage Fallback","Arial Narrow",sans-serif;
+  --text:"Barlow","Text Fallback",Arial,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:min(76rem, 100% - 2.5rem);
+  --section-y:clamp(4.5rem, 9vw, 8.5rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--header-h) + 1rem);-webkit-text-size-adjust:100%;scrollbar-color:var(--red) var(--concrete)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--concrete);color:var(--ink);font-family:var(--text);font-size:1.0625rem;line-height:1.55;caret-color:var(--blue);text-rendering:optimizeLegibility}
+::selection{background:var(--yellow);color:var(--asphalt)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1.5px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1;letter-spacing:-.01em;margin:0;text-wrap:balance}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.wrap{width:var(--wrap);margin-inline:auto}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:1rem;top:-4rem;z-index:100;background:var(--yellow);color:var(--asphalt);padding:.75rem 1rem;font-weight:600;border-radius:6px}
+.skip:focus{top:1rem}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:3rem;padding:.7rem 1.35rem;border-radius:999px;border:2px solid transparent;font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:.02em;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s,transform .15s var(--ease)}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:1.1em;height:1.1em;flex:none}
+.btn-paint{background:var(--paint);color:var(--red-deep)}
+.btn-paint:hover{background:#fff;color:var(--asphalt)}
+.btn-line{border-color:currentColor;color:var(--paint);background:transparent}
+.btn-line:hover{background:rgba(247,245,239,.12)}
+.btn-blue{background:var(--blue);color:var(--paint)}
+.btn-blue:hover{background:var(--blue-deep)}
+.btn-dark{background:var(--asphalt);color:var(--paint)}
+.btn-dark:hover{background:#000}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+
+/* ---------- header ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:var(--red);color:var(--paint);border-bottom:1px solid rgba(247,245,239,.18)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;height:var(--header-h)}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;white-space:nowrap}
+.brand svg{width:2.6rem;height:2.6rem;flex:none}
+.brand b{font-family:var(--display);font-weight:800;font-size:1.6rem;letter-spacing:.01em;text-transform:uppercase;line-height:1}
+.brand b span{color:var(--yellow)}
+.nav{display:flex;align-items:center;gap:.25rem}
+.nav a{font-family:var(--display);font-weight:700;font-size:1.15rem;letter-spacing:.03em;text-transform:uppercase;text-decoration:none;padding:.6rem .8rem;border-radius:999px;white-space:nowrap}
+.nav a:hover{background:rgba(247,245,239,.12)}
+.tools{display:flex;align-items:center;gap:.6rem}
+.basket-btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;min-height:2.9rem;padding:.4rem 1rem .4rem .85rem;border-radius:999px;border:2px solid var(--paint);background:transparent;color:var(--paint);cursor:pointer;font-family:var(--display);font-weight:700;font-size:1.1rem;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+.basket-btn:hover{background:rgba(247,245,239,.12)}
+.basket-btn svg{width:1.35rem;height:1.35rem}
+.count{display:inline-grid;place-items:center;min-width:1.6rem;height:1.6rem;padding:0 .35rem;border-radius:999px;background:var(--yellow);color:var(--asphalt);font-family:var(--text);font-weight:600;font-size:.9rem}
+.count.bump{animation:bump .4s var(--ease)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.menu-btn{display:none;width:2.9rem;height:2.9rem;border-radius:999px;border:2px solid var(--paint);background:transparent;color:var(--paint);cursor:pointer;place-items:center;padding:0}
+.menu-btn svg{width:1.3rem;height:1.3rem}
+
+/* basket panel */
+.basket-panel{position:absolute;right:max(1.25rem, (100% - 76rem)/2);top:calc(var(--header-h) + .5rem);width:min(24rem, calc(100% - 2.5rem));background:var(--paint);color:var(--ink);border-radius:14px;box-shadow:0 18px 40px -12px rgba(30,33,36,.45);padding:1.25rem 1.25rem 1.1rem}
+.basket-panel[hidden]{display:none}
+.basket-panel h2{font-size:1.6rem;text-transform:uppercase;margin-bottom:.6rem}
+.basket-list{list-style:none;margin:0;padding:0;max-height:16rem;overflow:auto}
+.basket-list li{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.55rem 0;border-bottom:1px dashed var(--concrete-2)}
+.basket-list .rm{border:0;background:none;color:var(--red);text-decoration:underline;cursor:pointer;min-height:2.75rem;padding:0 .25rem}
+.basket-total{display:flex;justify-content:space-between;font-weight:600;margin:.8rem 0 .3rem}
+.basket-note{font-size:.95rem;color:var(--ink-2)}
+.basket-empty{color:var(--ink-2)}
+
+/* ---------- hero: the fietspad ---------- */
+.hero{position:relative;background:var(--red);color:var(--paint);padding:clamp(2.5rem,5vw,4.5rem) 0 calc(clamp(3rem,6vw,5rem) + 26px);overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22'%3E%3Cpath d='M6 22L22 2l16 20z' fill='%23F7F5EF'/%3E%3C/svg%3E") 0 0/44px 22px repeat-x}
+.hero h1{font-size:clamp(3.2rem, 8.2vw, 7.6rem);text-transform:uppercase;line-height:1;letter-spacing:-.005em}
+.hero h1 > span{display:block}
+.hero h1 em{font-style:normal;color:var(--yellow)}
+.hero-lede{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem 3rem;margin-top:clamp(1.5rem,3vw,2.25rem)}
+.hero-lede p{max-width:38rem;font-size:clamp(1.1rem,1.6vw,1.3rem);color:var(--red-ink)}
+.ctas{display:flex;flex-wrap:wrap;gap:.75rem}
+
+.route{margin-top:clamp(2.25rem,4vw,3.25rem);position:relative}
+.route-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem 1.5rem;margin-bottom:1.1rem}
+.route-head h2{font-size:clamp(1.5rem,2.4vw,2rem);text-transform:uppercase}
+.route-head p{color:var(--red-ink);font-size:1rem}
+.stops{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1.05fr repeat(3,1fr);gap:1rem;position:relative}
+.stops::before{content:"";position:absolute;left:1.6rem;right:1.6rem;top:1.6rem;height:4px;transform:translateY(-50%);
+  background:repeating-linear-gradient(90deg,var(--paint) 0 22px,transparent 22px 36px);
+  clip-path:inset(0 0 0 0)}
+.route.draw .stops::before{animation:draw 1.6s var(--ease) .25s both}
+@keyframes draw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.stop{position:relative;display:flex;flex-direction:column;gap:.75rem}
+.node{position:relative;z-index:1;display:grid;place-items:center;width:3.2rem;height:3.2rem;border-radius:50%;background:var(--paint);color:var(--green);font-family:var(--display);font-weight:800;font-size:1.45rem;border:3px solid var(--green);box-shadow:0 0 0 5px var(--red)}
+.node.home{background:var(--blue);border-color:var(--paint);color:var(--paint)}
+.node.home svg{width:1.9rem;height:1.9rem}
+.stop-card{display:flex;flex-direction:column;gap:.15rem}
+.stop-card .day{font-family:var(--display);font-weight:700;font-size:1.55rem;text-transform:uppercase;line-height:1.05}
+.stop-card .when{color:var(--red-ink);font-size:1rem}
+.slot-btn{align-self:flex-start;margin-top:.55rem;min-height:2.75rem;padding:.5rem 1rem;font-size:1.05rem}
+
+/* ---------- section scaffolding ---------- */
+section{scroll-margin-top:calc(var(--header-h) + .5rem)}
+.sec{padding:var(--section-y) 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:1.25rem 3rem;align-items:end;margin-bottom:clamp(2.25rem,4vw,3.5rem)}
+.sec-head h2{font-size:clamp(2.6rem,6vw,5rem);text-transform:uppercase}
+.sec-head p{max-width:34rem;font-size:1.1rem}
+
+/* ---------- repairs: price board ---------- */
+.repairs{background:var(--concrete)}
+.repairs .sec-head p{color:var(--ink-2)}
+.board{border-top:4px solid var(--asphalt)}
+.board-row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1.6fr) minmax(0,.75fr) minmax(0,.9fr) auto;gap:1.5rem;align-items:start;padding:1.6rem 0;border-bottom:2px dashed rgba(30,33,36,.35)}
+.board-row:last-child{border-bottom:4px solid var(--asphalt)}
+.board-cols{padding:.7rem 0;border-bottom:1px solid var(--asphalt);font-size:.9rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.board-row h3{font-size:clamp(1.8rem,2.6vw,2.4rem);text-transform:uppercase}
+.board-row .nl{display:block;font-family:var(--text);font-weight:500;font-size:.95rem;color:var(--ink-2);text-transform:none;letter-spacing:0;margin-top:.3rem}
+.board-row ul{margin:0;padding-left:1.1rem}
+.board-row li{margin:.1rem 0}
+.board-row li::marker{color:var(--red)}
+.tt{font-weight:600}
+.tt small{display:block;font-weight:400;color:var(--ink-2);font-size:.95rem}
+.price{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1}
+.price small{display:block;font-family:var(--text);font-weight:500;font-size:.95rem;color:var(--blue);margin-top:.35rem}
+.lbl{display:none}
+.board-row .btn{margin-top:.2rem}
+
+/* ---------- booking: the sign plate ---------- */
+.book{background:var(--blue);color:var(--paint);--focus:var(--yellow)}
+.book .sec-head p{color:var(--blue-ink)}
+.plate{border:3px solid var(--paint);border-radius:22px;padding:clamp(1.25rem,3.5vw,2.75rem);box-shadow:inset 0 0 0 6px var(--blue),inset 0 0 0 7px rgba(247,245,239,.35)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem 1.75rem}
+.field{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.field.full{grid-column:1/-1}
+.field label,.field legend{font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:.03em;text-transform:uppercase}
+.field .hint{font-size:.95rem;color:var(--blue-ink)}
+.input,.select{width:100%;min-height:3.1rem;padding:.65rem .9rem;border-radius:10px;border:2px solid var(--paint);background:var(--paint);color:var(--ink);font-size:1.05rem}
+.select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 7.5l5 5 5-5' fill='none' stroke='%231E2124' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;background-size:1.1rem;padding-right:2.6rem}
+.input::placeholder{color:#5D6166}
+.input[aria-invalid="true"],.select[aria-invalid="true"]{border-color:var(--yellow);box-shadow:0 0 0 2px var(--yellow)}
+.err{display:flex;align-items:center;gap:.4rem;min-height:1.4rem;color:var(--yellow);font-weight:600;font-size:.98rem}
+.err:empty{display:none}
+fieldset.field{border:0;margin:0;padding:0}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.45rem}
+.seg label{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:3.6rem;padding:.55rem .9rem;border:2px solid var(--paint);border-radius:10px;cursor:pointer;font-family:var(--text);text-transform:none;letter-spacing:0;font-size:1.02rem;font-weight:600}
+.seg label small{font-weight:400;color:var(--blue-ink);font-size:.92rem}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg input:checked + span{color:var(--blue)}
+.seg label:has(input:checked){background:var(--paint);color:var(--blue)}
+.seg label:has(input:checked) small{color:var(--ink-2)}
+.seg label:has(input:focus-visible){outline:3px solid var(--yellow);outline-offset:3px}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;margin-top:1.9rem;padding-top:1.5rem;border-top:2px dashed rgba(247,245,239,.45)}
+.form-foot p{color:var(--blue-ink);max-width:34rem;font-size:1rem}
+.success{display:grid;gap:1rem;justify-items:start}
+.success[hidden]{display:none}
+.success h3{font-size:clamp(2rem,4vw,3rem);text-transform:uppercase}
+.success p{max-width:38rem;font-size:1.1rem;color:var(--blue-ink)}
+.success dl{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1.25rem;margin:0;font-size:1.05rem}
+.success dt{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.success dd{margin:0}
+
+/* ---------- shop: the pegboard ---------- */
+.shop{background-color:var(--asphalt);color:var(--paint);
+  background-image:radial-gradient(circle at 50% 50%, #0F1113 0 3.2px, transparent 3.8px);
+  background-size:32px 32px;background-position:16px 16px}
+.shop .sec-head p{color:var(--asphalt-ink)}
+.peg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3rem 2rem}
+.part{display:flex;flex-direction:column;align-items:center}
+.hook{width:44px;height:30px;flex:none}
+.part-art{width:100%;max-width:15rem;aspect-ratio:3/2;margin:-.35rem 0 .2rem;color:var(--paint)}
+.tag{position:relative;width:100%;background:var(--paint);color:var(--ink);border-radius:6px 6px 14px 14px;padding:1.4rem 1.25rem 1.2rem;display:grid;gap:.4rem}
+.tag::before{content:"";position:absolute;top:.55rem;left:50%;width:.7rem;height:.7rem;margin-left:-.35rem;border-radius:50%;background:var(--asphalt);box-shadow:inset 0 0 0 2px var(--concrete-2)}
+.tag h3{font-size:1.7rem;text-transform:uppercase;line-height:1.02;margin-top:.35rem}
+.tag p{color:var(--ink-2);font-size:.98rem}
+.tag-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:.5rem}
+.tag .price{font-size:2rem}
+.tag .btn{font-size:1.05rem;padding:.55rem 1rem;min-height:2.85rem}
+.tag .btn.added{background:var(--green)}
+
+/* ---------- membership: three lanes ---------- */
+.member{background:var(--concrete)}
+.member .sec-head p{color:var(--ink-2)}
+.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--asphalt);color:var(--paint);border-radius:18px;overflow:hidden}
+.lane{position:relative;padding:clamp(1.5rem,3vw,2.5rem);display:flex;flex-direction:column;gap:1rem}
+.lane + .lane{background-image:repeating-linear-gradient(180deg,var(--paint) 0 26px,transparent 26px 46px);background-size:4px 100%;background-repeat:no-repeat;background-position:0 0}
+.lane.pick{background-color:var(--asphalt-2)}
+.lane h3{font-size:2.3rem;text-transform:uppercase}
+.lane .for{color:var(--asphalt-ink);font-size:1rem;min-height:3.1em}
+.lane .fee{font-family:var(--display);font-weight:800;font-size:3.6rem;line-height:1}
+.lane .fee small{font-family:var(--text);font-size:1rem;font-weight:500;color:var(--asphalt-ink);margin-left:.3rem}
+.lane ul{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;flex:1}
+.lane li{display:grid;grid-template-columns:1.1rem 1fr;gap:.6rem;align-items:start}
+.lane li svg{width:1.1rem;height:1.1rem;margin-top:.25rem;color:var(--yellow)}
+.lane .btn{align-self:stretch;margin-top:.5rem}
+.lane .flag{position:absolute;top:1.25rem;right:1.25rem;background:var(--yellow);color:var(--asphalt);font-weight:600;font-size:.85rem;padding:.2rem .6rem;border-radius:999px}
+.join-msg{margin-top:1rem;min-height:1.6rem;font-weight:600;color:var(--green)}
+
+/* ---------- cafe: rustpunt ---------- */
+.cafe{background:var(--green);color:var(--paint);--focus:var(--yellow)}
+.cafe-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.cafe h2{font-size:clamp(2.6rem,6vw,5rem);text-transform:uppercase}
+.cafe .intro{margin-top:1.25rem;font-size:1.15rem;color:var(--green-ink);max-width:32rem}
+.rust{display:inline-flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;border:3px solid var(--paint);border-radius:10px;padding:.45rem .9rem .45rem .5rem;font-family:var(--display);font-weight:800;font-size:1.45rem;text-transform:uppercase;letter-spacing:.04em}
+.rust svg{width:2.2rem;height:2.2rem}
+.hours{margin-top:2rem;display:grid;grid-template-columns:auto 1fr;gap:.45rem 1.5rem;font-size:1.05rem;max-width:26rem}
+.hours dt{font-weight:600}
+.hours dd{margin:0}
+.hours .closed{color:var(--green-ink)}
+.menu-board{background:var(--paint);color:var(--ink);border-radius:16px;padding:clamp(1.5rem,3vw,2.25rem)}
+.menu-board h3{font-size:2rem;text-transform:uppercase;padding-bottom:.75rem;border-bottom:4px solid var(--asphalt)}
+.menu-board ul{list-style:none;margin:0;padding:0}
+.menu-board li{display:grid;grid-template-columns:1fr auto;gap:.2rem 1rem;padding:1rem 0;border-bottom:2px dashed var(--concrete-2)}
+.menu-board li:last-child{border-bottom:0;padding-bottom:0}
+.menu-board b{font-family:var(--display);font-weight:700;font-size:1.5rem;text-transform:uppercase;line-height:1.1}
+.menu-board .p{font-family:var(--display);font-weight:800;font-size:1.5rem}
+.menu-board li span{grid-column:1/-1;color:var(--ink-2);font-size:.98rem}
+
+/* ---------- voices ---------- */
+.voices{background:var(--concrete)}
+.quotes{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2.5rem 2rem}
+.quotes figure{margin:0;display:flex;flex-direction:column;gap:1.1rem;padding-top:1.4rem;border-top:4px solid var(--asphalt)}
+.quotes figure:nth-child(1){grid-column:1/8}
+.quotes figure:nth-child(2){grid-column:8/13}
+.quotes figure:nth-child(3){grid-column:3/10}
+.quotes blockquote{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(1.55rem,2.6vw,2.2rem);line-height:1.12;text-transform:none}
+.quotes figure:nth-child(1) blockquote{font-size:clamp(1.9rem,3.4vw,3rem);font-weight:700}
+.quotes figcaption{display:flex;align-items:center;gap:.75rem;color:var(--ink-2);font-size:1rem}
+.quotes figcaption b{color:var(--ink);font-weight:600}
+.badge{flex:none;display:grid;place-items:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--red);color:var(--paint);font-family:var(--display);font-weight:800;font-size:1.15rem}
+
+/* ---------- faq ---------- */
+.faq{background:var(--paint)}
+.faq .sec-head p{color:var(--ink-2)}
+.acc{border-top:4px solid var(--asphalt)}
+.acc-item{border-bottom:2px dashed rgba(30,33,36,.35)}
+.acc-item h3{font-family:var(--text);font-weight:600;font-size:1.2rem;line-height:1.3;letter-spacing:0}
+.acc-btn{display:flex;width:100%;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.25rem 0;min-height:3.5rem;border:0;background:none;text-align:left;cursor:pointer}
+.acc-btn:hover .q{text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:.25em}
+.acc-btn .ico{flex:none;display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--red);color:var(--paint);transition:transform .25s var(--ease)}
+.acc-btn .ico svg{width:1rem;height:1rem}
+.acc-btn[aria-expanded="true"] .ico{transform:rotate(45deg);background:var(--asphalt)}
+.acc-panel{padding:0 3.5rem 1.5rem 0;max-width:46rem;color:var(--ink-2)}
+.acc-panel[hidden]{display:none}
+
+/* ---------- footer ---------- */
+.site-footer{position:relative;background:var(--red);color:var(--paint);padding:calc(clamp(3.5rem,7vw,6rem) + 26px) 0 2rem}
+.site-footer::before{content:"";position:absolute;left:0;right:0;top:6px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22'%3E%3Cpath d='M6 0h32L22 20z' fill='%23F7F5EF'/%3E%3C/svg%3E") 0 0/44px 22px repeat-x}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:2.5rem}
+.site-footer h2{font-size:clamp(2.4rem,5vw,4rem);text-transform:uppercase;max-width:12ch}
+.site-footer h3{font-family:var(--display);font-weight:700;font-size:1.25rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.75rem}
+.site-footer address{font-style:normal}
+.site-footer p,.site-footer address,.site-footer dd{color:var(--red-ink)}
+.site-footer dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem 1rem;margin:0}
+.site-footer dt{font-weight:600}
+.site-footer dd{margin:0}
+.socials{display:flex;gap:.6rem;flex-wrap:wrap}
+.socials a{display:grid;place-items:center;width:2.9rem;height:2.9rem;border-radius:50%;border:2px solid var(--paint)}
+.socials a:hover{background:var(--paint);color:var(--red)}
+.socials svg{width:1.25rem;height:1.25rem}
+.foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem 2rem;margin-top:3.5rem;padding-top:1.25rem;border-top:1px solid rgba(247,245,239,.3);font-size:.95rem;color:var(--red-ink)}
+
+/* ---------- live region ---------- */
+.toast{position:fixed;left:50%;bottom:1.25rem;z-index:60;transform:translate(-50%,0);background:var(--asphalt);color:var(--paint);padding:.75rem 1.1rem;border-radius:999px;font-weight:600;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 2rem);text-align:center;transition:opacity .2s,transform .3s var(--ease)}
+.toast[data-show="false"]{opacity:0;transform:translate(-50%,1rem);pointer-events:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .nav a{padding:.6rem .55rem;font-size:1.05rem}
+  .board-row{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,.9fr);grid-template-areas:"name inc price" "name inc tt" "name inc act"}
+  .board-cols{display:none}
+  .board-row > :nth-child(1){grid-area:name}
+  .board-row > :nth-child(2){grid-area:inc}
+  .board-row > :nth-child(3){grid-area:tt}
+  .board-row > :nth-child(4){grid-area:price}
+  .board-row > :nth-child(5){grid-area:act}
+  .lbl{display:block;font-size:.85rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+}
+@media (max-width:960px){
+  :root{--header-h:4rem}
+  .menu-btn{display:grid}
+  .nav{position:absolute;left:0;right:0;top:var(--header-h);flex-direction:column;align-items:stretch;gap:0;background:var(--red-deep);padding:.5rem 1.25rem 1.5rem;border-bottom:4px solid var(--paint)}
+  .nav[data-open="false"]{display:none}
+  .nav a{font-size:1.9rem;padding:.75rem .25rem;border-bottom:2px dashed rgba(247,245,239,.35);border-radius:0}
+  .nav a:last-child{border-bottom:0}
+  .stops{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem 1.25rem}
+  .stops::before{display:none}
+  .stop{flex-direction:row;align-items:flex-start;gap:1rem}
+  .sec-head{grid-template-columns:1fr}
+  .peg{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lanes{grid-template-columns:1fr}
+  .lane + .lane{background-image:repeating-linear-gradient(90deg,var(--paint) 0 26px,transparent 26px 46px);background-size:100% 4px}
+  .lane .for{min-height:0}
+  .cafe-grid{grid-template-columns:1fr}
+  .quotes figure:nth-child(n){grid-column:1/-1}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .foot-grid > :first-child{grid-column:1/-1}
+}
+@media (max-width:640px){
+  body{font-size:1rem}
+  .brand b{font-size:1.3rem}
+  .brand svg{width:2.25rem;height:2.25rem}
+  .basket-btn .bl{display:none}
+  .basket-btn{padding:.4rem .7rem}
+  .hero h1{font-size:clamp(2.9rem,14.5vw,4.2rem)}
+  .hero-lede .ctas{width:100%}
+  .hero-lede .btn{flex:1 1 100%}
+  .stops{grid-template-columns:1fr;gap:1.4rem}
+  .stops::before{display:block;left:1.6rem;right:auto;top:1.6rem;bottom:1.6rem;width:4px;height:auto;transform:translateX(-50%);
+    background:repeating-linear-gradient(180deg,var(--paint) 0 18px,transparent 18px 30px)}
+  .route.draw .stops::before{animation-name:drawdown}
+  .board-row{grid-template-columns:1fr 1fr;grid-template-areas:"name name" "inc inc" "tt price" "act act";gap:1rem}
+  .board-row .btn{width:100%}
+  .form-grid{grid-template-columns:1fr}
+  .peg{grid-template-columns:1fr}
+  .part-art{max-width:12rem}
+  .foot-grid{grid-template-columns:1fr}
+  .acc-panel{padding-right:0}
+  .lane .fee{font-size:3rem}
+}
+@keyframes drawdown{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .route.draw .stops::before{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-bike" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="31" r="8"/><circle cx="36" cy="31" r="8"/><path d="M12 31l7-13h12l5 13M19 18l6 13h-13M31 18l-2-5h-4M25 31l6-13"/></g></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Spoke and Kettle, home">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#F7F5EF"/><circle cx="24" cy="24" r="20.5" fill="#1F4E9C"/><g transform="translate(5.5 4) scale(.77)" color="#F7F5EF"><use href="#i-bike"/></g><path d="M30 12.5c1.6-1.4-1.2-2.6.4-4" fill="none" stroke="#F3C744" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <b>Spoke <span>&amp;</span> Kettle</b>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main" data-open="false">
+      <a href="#repairs">Repairs</a>
+      <a href="#shop">Shop</a>
+      <a href="#membership">Membership</a>
+      <a href="#cafe">Café</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="tools">
+      <button class="basket-btn" id="basket-btn" type="button" aria-expanded="false" aria-controls="basket-panel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8h17l-1.6 10.2a2 2 0 0 1-2 1.8H7.1a2 2 0 0 1-2-1.8L3.5 8zM8.5 8l2-4M15.5 8l-2-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="bl">Basket</span>
+        <span class="count num" id="basket-count" aria-hidden="true">0</span>
+        <span class="sr-only" id="basket-sr">, 0 items</span>
+      </button>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="m-open" d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="m-close" d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="display:none"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="basket-panel" id="basket-panel" role="region" aria-label="Basket" hidden>
+    <h2>Your basket</h2>
+    <p class="basket-empty" id="basket-empty">Nothing in it yet. Parts and memberships you add show up here.</p>
+    <ul class="basket-list" id="basket-list"></ul>
+    <div class="basket-total" id="basket-total-row" hidden><span>Total</span><span class="num" id="basket-total">€0,00</span></div>
+    <p class="basket-note">Pay and pick up at the workshop counter on Veerlaan. We hold parts for 3 days.</p>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <h1 id="hero-title"><span>Fixed this week.</span> <span><em>Coffee</em> while you wait.</span></h1>
+      <div class="hero-lede">
+        <p>A members' cooperative bike workshop with a small coffee bar on Katendrecht. Book a repair, pick up the part, or fix it yourself at our benches.</p>
+        <div class="ctas">
+          <a class="btn btn-paint" href="#book">Book a repair <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-line" href="#membership">Become a member</a>
+        </div>
+      </div>
+
+      <div class="route" id="route">
+        <div class="route-head">
+          <h2>Next open slots</h2>
+          <p>Pick one and we'll fill in the booking form for you.</p>
+        </div>
+        <ol class="stops" id="stops">
+          <li class="stop">
+            <span class="node home" aria-hidden="true"><svg><use href="#i-bike"/></svg></span>
+            <div class="stop-card">
+              <span class="day">Veerlaan 9</span>
+              <span class="when">Workshop &amp; café, Katendrecht. <span style="white-space:nowrap">Tue–Sat.</span></span>
+            </div>
+          </li>
+          <!-- open slots injected by script; static fallback below -->
+          <li class="stop" data-fallback><span class="node" aria-hidden="true">1</span><div class="stop-card"><span class="day">This week</span><span class="when">Mornings 09:00–12:30</span><a class="btn btn-paint slot-btn" href="#book">Book a slot</a></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec repairs" id="repairs" aria-labelledby="repairs-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="repairs-title">Repairs, priced on the wall</h2>
+        <p>Four packages cover nearly every bike that rolls in. Parts are extra and quoted before we fit them. Members pay the price in blue.</p>
+      </div>
+      <div class="board" role="list">
+        <div class="board-row board-cols" aria-hidden="true"><span>Package</span><span>What we do</span><span>Turnaround</span><span>Price</span><span></span></div>
+        <div class="board-row" role="listitem">
+          <h3>Flat fix<span class="nl">Lekke band</span></h3>
+          <ul><li>Puncture found and patched, or new tube fitted</li><li>Tyre and rim tape checked</li><li>Pressure set for your load</li></ul>
+          <div class="tt"><span class="lbl">Turnaround</span>While you wait<small>About 30 minutes</small></div>
+          <div class="price num"><span class="lbl">Price</span>€15<small>Members €12</small></div>
+          <button class="btn btn-dark" type="button" data-book="Flat fix">Book</button>
+        </div>
+        <div class="board-row" role="listitem">
+          <h3>Tune-up<span class="nl">Kleine beurt</span></h3>
+          <ul><li>Gears and brakes adjusted</li><li>Chain cleaned and oiled</li><li>Every bolt checked, lights tested</li></ul>
+          <div class="tt"><span class="lbl">Turnaround</span>Same day<small>In by 10:00, out by 17:00</small></div>
+          <div class="price num"><span class="lbl">Price</span>€45<small>Members €36</small></div>
+          <button class="btn btn-dark" type="button" data-book="Tune-up">Book</button>
+        </div>
+        <div class="board-row" role="listitem">
+          <h3>Full service<span class="nl">Grote beurt</span></h3>
+          <ul><li>Drivetrain stripped and degreased</li><li>Hub, headset and bottom-bracket bearings serviced</li><li>Wheels trued, cables and housing replaced</li></ul>
+          <div class="tt"><span class="lbl">Turnaround</span>2–3 days<small>We call when it's ready</small></div>
+          <div class="price num"><span class="lbl">Price</span>€119<small>Members €95</small></div>
+          <button class="btn btn-dark" type="button" data-book="Full service">Book</button>
+        </div>
+        <div class="board-row" role="listitem">
+          <h3>Cargo &amp; e-bike check<span class="nl">Bakfiets &amp; e-fiets</span></h3>
+          <ul><li>Motor and battery diagnostics read-out</li><li>Heavy-duty brakes and box frame inspected</li><li>Kickstand, steering and child-seat mounts checked</li></ul>
+          <div class="tt"><span class="lbl">Turnaround</span>2 days<small>Loan bike on request</small></div>
+          <div class="price num"><span class="lbl">Price</span>€79<small>Members €63</small></div>
+          <button class="btn btn-dark" type="button" data-book="Cargo &amp; e-bike check">Book</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec book" id="book" aria-labelledby="book-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="book-title">Book a repair</h2>
+        <p>Drop your bike off in the slot you choose. No payment now: you pay when you collect, and we call before doing anything that costs more.</p>
+      </div>
+      <div class="plate">
+        <form id="book-form" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input class="input" id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name" required>
+              <span class="err" id="e-name" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input class="input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.nl" aria-describedby="e-email" required>
+              <span class="err" id="e-email" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-bike">Bike type</label>
+              <select class="select" id="f-bike" name="bike" aria-describedby="e-bike" required>
+                <option value="">Choose your bike</option>
+                <option>City bike</option>
+                <option>Road bike</option>
+                <option>Cargo bike</option>
+                <option>E-bike</option>
+              </select>
+              <span class="err" id="e-bike" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-pack">Package</label>
+              <select class="select" id="f-pack" name="package" aria-describedby="e-pack" required>
+                <option value="">Choose a package</option>
+                <option value="Flat fix">Flat fix · €15</option>
+                <option value="Tune-up">Tune-up · €45</option>
+                <option value="Full service">Full service · €119</option>
+                <option value="Cargo &amp; e-bike check">Cargo &amp; e-bike check · €79</option>
+              </select>
+              <span class="err" id="e-pack" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-day">Preferred day</label>
+              <select class="select" id="f-day" name="day" aria-describedby="h-day e-day" required>
+                <option value="">Choose a day</option>
+              </select>
+              <span class="hint" id="h-day">Next 7 days. The workshop is closed Sunday and Monday.</span>
+              <span class="err" id="e-day" aria-live="polite"></span>
+            </div>
+            <fieldset class="field" aria-describedby="e-time">
+              <legend>Time slot</legend>
+              <div class="seg">
+                <label><input type="radio" name="time" value="Morning"><span>Morning</span><small>Drop off 09:00–12:30</small></label>
+                <label><input type="radio" name="time" value="Afternoon"><span>Afternoon</span><small>Drop off 13:00–17:30</small></label>
+              </div>
+              <span class="err" id="e-time" aria-live="polite"></span>
+            </fieldset>
+          </div>
+          <div class="form-foot">
+            <p>We'll email a confirmation with your ticket number. Change or cancel any time up to the day before.</p>
+            <button class="btn btn-paint" type="submit">Confirm booking <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </form>
+        <div class="success" id="book-success" role="status" tabindex="-1" hidden>
+          <h3>You're booked in.</h3>
+          <p id="success-text">See you on Veerlaan. Bring the bike, and the keys to the lock.</p>
+          <dl id="success-list"></dl>
+          <button class="btn btn-line" type="button" id="book-again">Book another bike</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec shop" id="shop" aria-labelledby="shop-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="shop-title">Parts off the wall</h2>
+        <p>The things that wear out on a Rotterdam bike, in stock and fitted free when you book a repair the same week.</p>
+      </div>
+      <ul class="peg">
+        <li class="part">
+          <svg class="hook" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 2v14a7 7 0 0 1-14 0" fill="none" stroke="#9AA0A5" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="part-art" viewBox="0 0 150 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><circle cx="75" cy="50" r="40"/><circle cx="75" cy="50" r="30"/><path d="M75 90v8M71 98h8" stroke-linecap="round"/></g></svg>
+          <div class="tag"><h3>Inner tube 28"</h3><p>28 × 1.40–1.75, Dutch (Dunlop) valve. Fits most city bikes.</p><div class="tag-foot"><span class="price num">€7,50</span><button class="btn btn-blue" type="button" data-add="Inner tube 28&quot;" data-price="7.50">Add to basket</button></div></div>
+        </li>
+        <li class="part">
+          <svg class="hook" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 2v14a7 7 0 0 1-14 0" fill="none" stroke="#9AA0A5" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="part-art" viewBox="0 0 150 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="10" y="40" width="34" height="20" rx="10"/><rect x="36" y="40" width="34" height="20" rx="10"/><rect x="62" y="40" width="34" height="20" rx="10"/><rect x="88" y="40" width="34" height="20" rx="10"/><rect x="114" y="40" width="28" height="20" rx="10"/><circle cx="40" cy="50" r="3"/><circle cx="66" cy="50" r="3"/><circle cx="92" cy="50" r="3"/><circle cx="118" cy="50" r="3"/></g></svg>
+          <div class="tag"><h3>Chain, 8-speed</h3><p>116 links with a reusable quick link. Ask us to size it.</p><div class="tag-foot"><span class="price num">€18,95</span><button class="btn btn-blue" type="button" data-add="Chain, 8-speed" data-price="18.95">Add to basket</button></div></div>
+        </li>
+        <li class="part">
+          <svg class="hook" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 2v14a7 7 0 0 1-14 0" fill="none" stroke="#9AA0A5" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="part-art" viewBox="0 0 150 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M22 30h44v18H22zM22 48h44l-6 14H28z"/><path d="M84 30h44v18H84zM84 48h44l-6 14H90z"/><path d="M44 30v-8M106 30v-8" stroke-linecap="round"/></g></svg>
+          <div class="tag"><h3>Brake pads</h3><p>V-brake pair for wet weather. Our most-fitted part, October to March.</p><div class="tag-foot"><span class="price num">€8,50</span><button class="btn btn-blue" type="button" data-add="Brake pads" data-price="8.50">Add to basket</button></div></div>
+        </li>
+        <li class="part">
+          <svg class="hook" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 2v14a7 7 0 0 1-14 0" fill="none" stroke="#9AA0A5" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="part-art" viewBox="0 0 150 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 36h30a14 14 0 0 1 0 28H18z"/><path d="M62 42l10-4M62 50h12M62 58l10 4"/><rect x="98" y="34" width="34" height="32" rx="8"/><path d="M106 44h18M106 50h18M106 56h18"/></g></svg>
+          <div class="tag"><h3>Light set, USB-C</h3><p>Front and rear, road-legal. One charge lasts a fortnight of commuting.</p><div class="tag-foot"><span class="price num">€29,95</span><button class="btn btn-blue" type="button" data-add="Light set, USB-C" data-price="29.95">Add to basket</button></div></div>
+        </li>
+        <li class="part">
+          <svg class="hook" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 2v14a7 7 0 0 1-14 0" fill="none" stroke="#9AA0A5" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="part-art" viewBox="0 0 150 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><ellipse cx="24" cy="30" rx="12" ry="7"/><ellipse cx="42" cy="38" rx="7" ry="12"/><ellipse cx="58" cy="50" rx="12" ry="7"/><ellipse cx="76" cy="58" rx="7" ry="12"/><rect x="88" y="54" width="40" height="32" rx="6"/><path d="M96 54v-9a12 12 0 0 1 24 0v9" stroke-linecap="round"/><circle cx="108" cy="68" r="3.5"/></g></svg>
+          <div class="tag"><h3>Chain lock, ART 2</h3><p>Hardened 9 mm chain, insurer-approved. The second lock every bike here needs.</p><div class="tag-foot"><span class="price num">€54,95</span><button class="btn btn-blue" type="button" data-add="Chain lock, ART 2" data-price="54.95">Add to basket</button></div></div>
+        </li>
+        <li class="part">
+          <svg class="hook" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 2v14a7 7 0 0 1-14 0" fill="none" stroke="#9AA0A5" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="part-art" viewBox="0 0 150 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M45 70a30 30 0 0 1 60 0z"/><path d="M40 70h70"/><path d="M75 40v-8M70 32h10"/><path d="M105 62l18-10M120 48l6 8"/></g></svg>
+          <div class="tag"><h3>Brass bell</h3><p>One loud, long ring. Audible over the Rijnhaven wind and the tram.</p><div class="tag-foot"><span class="price num">€12,50</span><button class="btn btn-blue" type="button" data-add="Brass bell" data-price="12.50">Add to basket</button></div></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec member" id="membership" aria-labelledby="member-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="member-title">Own a share of the workshop</h2>
+        <p>Members run Spoke &amp; Kettle together: one vote each at the yearly meeting, cheaper repairs, and the benches and tool wall whenever we're open. Cancel any month.</p>
+      </div>
+      <div class="lanes">
+        <article class="lane">
+          <h3>Bench</h3>
+          <p class="for">For people who'd rather fix it themselves.</p>
+          <p class="fee num">€9<small>per month</small></p>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Self-repair bench and tool wall, all opening hours</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>10% off repairs and parts</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>A mechanic on hand to show you how</li>
+          </ul>
+          <button class="btn btn-paint" type="button" data-join="Bench membership" data-price="9">Join Bench</button>
+        </article>
+        <article class="lane pick">
+          <span class="flag">Most members</span>
+          <h3>Commuter</h3>
+          <p class="for">For a bike you ride every single day.</p>
+          <p class="fee num">€15<small>per month</small></p>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Everything in Bench</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>20% off repairs, 15% off parts</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>One free flat fix every quarter</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Priority same-day slots</li>
+          </ul>
+          <button class="btn btn-paint" type="button" data-join="Commuter membership" data-price="15">Join Commuter</button>
+        </article>
+        <article class="lane">
+          <h3>Household</h3>
+          <p class="for">Up to four bikes at one address, cargo bikes and e-bikes included.</p>
+          <p class="fee num">€25<small>per month</small></p>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Everything in Commuter, for every bike</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>25% off repairs</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>One tune-up a year included</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Loan bike while yours is in</li>
+          </ul>
+          <button class="btn btn-paint" type="button" data-join="Household membership" data-price="25">Join Household</button>
+        </article>
+      </div>
+      <p class="join-msg" id="join-msg" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="sec cafe" id="cafe" aria-labelledby="cafe-title">
+    <div class="wrap cafe-grid">
+      <div>
+        <span class="rust"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#F7F5EF"/><path d="M11 17h15v6a7 7 0 0 1-7 7h-1a7 7 0 0 1-7-7zM26 19h2.5a3 3 0 0 1 0 6H26" fill="none" stroke="#1F6B44" stroke-width="2.6" stroke-linejoin="round"/><path d="M15 13c1.4-1.3-1-2.4.4-3.7M20 13c1.4-1.3-1-2.4.4-3.7" fill="none" stroke="#1F6B44" stroke-width="2" stroke-linecap="round"/></svg>Rustpunt</span>
+        <h2 id="cafe-title">The kettle's always on</h2>
+        <p class="intro">Six seats at the counter, a window onto the benches, and filter coffee brewed by the kettle-full. You don't need a bike to stop in.</p>
+        <dl class="hours num">
+          <dt>Tue – Fri</dt><dd>08:00 – 18:00</dd>
+          <dt>Saturday</dt><dd>09:00 – 17:00</dd>
+          <dt>Sunday</dt><dd>10:00 – 16:00, café only</dd>
+          <dt>Monday</dt><dd class="closed">Closed</dd>
+        </dl>
+      </div>
+      <div class="menu-board">
+        <h3>On the counter</h3>
+        <ul>
+          <li><b>Kettle filter</b><span class="p num">€3,00</span><span>Batch-brewed, refills free while your bike's on the stand.</span></li>
+          <li><b>Koffie verkeerd</b><span class="p num">€3,60</span><span>Mostly milk, a little coffee. Oat milk at no extra cost.</span></li>
+          <li><b>Espresso</b><span class="p num">€2,40</span><span>Roasted across the water in Rotterdam-West.</span></li>
+          <li><b>Appeltaart</b><span class="p num">€4,20</span><span>A thick slice, baked Thursdays. Add cream for €0,60.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec voices" aria-labelledby="voices-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="voices-title">From the bench</h2>
+      </div>
+      <div class="quotes">
+        <figure>
+          <blockquote>“I came in for a flat and left knowing how to fix the next one myself. Two years later I'm the one showing students the tyre levers.”</blockquote>
+          <figcaption><span class="badge" aria-hidden="true">M</span><span><b>Mirjam</b>, Bench member since 2023, city bike</span></figcaption>
+        </figure>
+        <figure>
+          <blockquote>“Our bakfiets carries two kids and the weekly shop. They had it back the next afternoon, with a loan bike in between.”</blockquote>
+          <figcaption><span class="badge" aria-hidden="true">D</span><span><b>Daan</b>, Household member, cargo bike</span></figcaption>
+        </figure>
+        <figure>
+          <blockquote>“Chain snapped on the Rijnhavenbrug at 8:15. Fixed by 9, with an espresso. Cheapest commute insurance there is.”</blockquote>
+          <figcaption><span class="badge" aria-hidden="true">S</span><span><b>Samira</b>, Commuter member, road bike</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="faq-title">Questions at the counter</h2>
+        <p>Still unsure? Ask us over a coffee, or email the workshop.</p>
+      </div>
+      <div class="acc" id="acc">
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q1" id="q1-b"><span class="q">Do I need to be a member to book a repair?</span><span class="ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q1" role="region" aria-labelledby="q1-b" hidden><p>No. Anyone can book a repair or buy parts at the listed prices. Members get the lower price shown in blue and can use the self-repair benches.</p></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q2" id="q2-b"><span class="q">What if my repair costs more than the package price?</span><span class="ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q2" role="region" aria-labelledby="q2-b" hidden><p>Packages cover the labour listed. If your bike needs parts or extra work, we call or text you with a price first and only go ahead once you say yes.</p></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q3" id="q3-b"><span class="q">Do you work on e-bikes and cargo bikes from any brand?</span><span class="ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q3" role="region" aria-labelledby="q3-b" hidden><p>Yes for brakes, wheels, drivetrains and frames on all brands. For motor and battery faults we can read most common systems; if a part has to go back to the maker, we handle the warranty claim for you.</p></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q4" id="q4-b"><span class="q">How do the self-repair benches work?</span><span class="ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q4" role="region" aria-labelledby="q4-b" hidden><p>Members walk in during opening hours, take a free stand and use the tool wall. A mechanic is always on the floor to help. Parts from the wall get your member discount.</p></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q5" id="q5-b"><span class="q">Can I wait while my bike is fixed?</span><span class="ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q5" role="region" aria-labelledby="q5-b" hidden><p>For a flat fix, yes: it takes about half an hour, and the café counter looks straight onto the benches. Longer jobs are drop-off; we'll message you when it's ready.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h2>See you on Katendrecht.</h2>
+        <p style="margin-top:1rem;max-width:26rem">Over the Rijnhavenbrug, first left after the bridge. Bike racks at the door, coffee inside.</p>
+      </div>
+      <div>
+        <h3>Find us</h3>
+        <address>Spoke &amp; Kettle Coöperatie<br>Veerlaan 9<br>3072 AN Rotterdam<br><a href="mailto:werkplaats@spokeandkettle.nl">werkplaats@spokeandkettle.nl</a><br><a href="tel:+31100000000">010 000 0000</a></address>
+      </div>
+      <div>
+        <h3>Hours</h3>
+        <dl class="num">
+          <dt>Workshop</dt><dd>Tue–Sat</dd>
+          <dt></dt><dd>09:00–17:30</dd>
+          <dt>Café</dt><dd>Tue–Sun</dd>
+          <dt>Monday</dt><dd>Closed</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Follow the workshop</h3>
+        <div class="socials">
+          <a href="https://www.instagram.com/" aria-label="Spoke and Kettle on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a>
+          <a href="https://www.strava.com/" aria-label="Spoke and Kettle club on Strava"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21l6-14 6 14M12 21l3-7 3 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></a>
+          <a href="https://www.facebook.com/" aria-label="Spoke and Kettle on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 21v-8h3l.5-3.5H14V7.6c0-1 .4-1.6 1.7-1.6H18V3.1c-.4 0-1.6-.1-2.9-.1-2.9 0-4.6 1.6-4.6 4.6v1.9H7.5V13h3v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Spoke &amp; Kettle Coöperatie U.A.</span>
+      <span>Spoke &amp; Kettle is a fictional business: prices, slots and member quotes are illustrative.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" data-show="false"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const eur = n => '€' + n.toFixed(2).replace('.', ',');
+
+  /* ---------- toast ---------- */
+  const toast = $('#toast'); let toastT;
+  function say(msg){ toast.textContent = msg; toast.dataset.show = 'true'; clearTimeout(toastT); toastT = setTimeout(() => toast.dataset.show = 'false', 2600); }
+
+  /* ---------- mobile nav ---------- */
+  const nav = $('#site-nav'), menuBtn = $('#menu-btn');
+  const mq = window.matchMedia('(max-width: 960px)');
+  function setMenu(open, returnFocus){
+    nav.dataset.open = String(open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    $('.m-open', menuBtn).style.display = open ? 'none' : '';
+    $('.m-close', menuBtn).style.display = open ? '' : 'none';
+    if (open) nav.querySelector('a').focus();
+    else if (returnFocus) menuBtn.focus();
+  }
+  menuBtn.addEventListener('click', () => setMenu(nav.dataset.open !== 'true'));
+  nav.addEventListener('click', e => { if (e.target.closest('a') && mq.matches) setMenu(false); });
+  mq.addEventListener('change', () => setMenu(false));
+
+  /* ---------- basket ---------- */
+  const basket = [];
+  const countEl = $('#basket-count'), srEl = $('#basket-sr'), panel = $('#basket-panel'), bBtn = $('#basket-btn');
+  function renderBasket(){
+    const n = basket.length;
+    countEl.textContent = n;
+    srEl.textContent = ', ' + n + (n === 1 ? ' item' : ' items');
+    if (!reduce.matches){ countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump'); }
+    const list = $('#basket-list'); list.innerHTML = '';
+    let total = 0;
+    basket.forEach((it, i) => {
+      total += it.price;
+      const li = document.createElement('li');
+      li.innerHTML = '<span></span><span class="num"></span>';
+      li.firstChild.textContent = it.name + (it.monthly ? ' (per month)' : '');
+      li.children[1].textContent = eur(it.price);
+      const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'rm'; rm.textContent = 'Remove';
+      rm.setAttribute('aria-label', 'Remove ' + it.name);
+      rm.addEventListener('click', () => { basket.splice(i, 1); syncButtons(); renderBasket(); say(it.name + ' removed'); bBtn.focus(); });
+      li.appendChild(rm); list.appendChild(li);
+    });
+    $('#basket-empty').hidden = n > 0;
+    $('#basket-total-row').hidden = n === 0;
+    $('#basket-total').textContent = eur(total);
+  }
+  function syncButtons(){
+    $$('[data-join]').forEach(b => {
+      const inB = basket.some(x => x.name === b.dataset.join);
+      b.textContent = inB ? 'In your basket' : 'Join ' + b.dataset.join.replace(' membership', '');
+    });
+  }
+  $$('[data-add]').forEach(b => b.addEventListener('click', () => {
+    basket.push({ name: b.dataset.add, price: parseFloat(b.dataset.price) });
+    renderBasket(); say(b.dataset.add + ' added. Basket: ' + basket.length);
+    b.classList.add('added'); b.textContent = 'Added';
+    setTimeout(() => { b.classList.remove('added'); b.textContent = 'Add to basket'; }, 1400);
+  }));
+  $$('[data-join]').forEach(b => b.addEventListener('click', () => {
+    const name = b.dataset.join;
+    for (let i = basket.length - 1; i >= 0; i--) if (basket[i].monthly) basket.splice(i, 1);
+    basket.push({ name, price: parseFloat(b.dataset.price), monthly: true });
+    syncButtons(); renderBasket();
+    $('#join-msg').textContent = name + ' is in your basket. Sign the member form at the counter when you pay.';
+    say(name + ' added to basket');
+  }));
+  function setBasket(open){
+    panel.hidden = !open; bBtn.setAttribute('aria-expanded', String(open));
+  }
+  bBtn.addEventListener('click', () => setBasket(panel.hidden));
+  document.addEventListener('click', e => { if (!panel.hidden && !panel.contains(e.target) && !bBtn.contains(e.target)) setBasket(false); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!panel.hidden){ setBasket(false); bBtn.focus(); }
+    if (nav.dataset.open === 'true' && mq.matches) setMenu(false, true);
+  });
+
+  /* ---------- days + slots ---------- */
+  const daySel = $('#f-day');
+  const fmt = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const short = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  const days = [];
+  const today = new Date(); today.setHours(12, 0, 0, 0);
+  for (let i = 1; i <= 7; i++){
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const closed = d.getDay() === 0 || d.getDay() === 1;
+    const iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    days.push({ d, iso, closed });
+    const o = document.createElement('option'); o.value = iso;
+    o.textContent = fmt.format(d) + (closed ? ' (closed)' : ''); o.disabled = closed;
+    daySel.appendChild(o);
+  }
+  const stops = $('#stops');
+  $$('[data-fallback]', stops).forEach(n => n.remove());
+  const open = days.filter(x => !x.closed).slice(0, 3);
+  const slotTimes = ['Afternoon', 'Morning', 'Afternoon'];
+  open.forEach((x, i) => {
+    const t = slotTimes[i];
+    const li = document.createElement('li'); li.className = 'stop';
+    li.innerHTML = '<span class="node num" aria-hidden="true">' + (i + 1) + '</span><div class="stop-card"><span class="day"></span><span class="when"></span><button type="button" class="btn btn-paint slot-btn">Book this slot</button></div>';
+    $('.day', li).textContent = short.format(x.d);
+    $('.when', li).textContent = t + (t === 'Morning' ? ' · drop off 09:00–12:30' : ' · drop off 13:00–17:30');
+    const btn = $('button', li);
+    btn.setAttribute('aria-label', 'Book ' + fmt.format(x.d) + ', ' + t.toLowerCase());
+    btn.addEventListener('click', () => {
+      daySel.value = x.iso; clearErr('day');
+      const r = $('input[name="time"][value="' + t + '"]'); r.checked = true; clearErr('time');
+      goToForm();
+      say(short.format(x.d) + ', ' + t.toLowerCase() + ' selected');
+    });
+    stops.appendChild(li);
+  });
+
+  /* signature: the route line paints itself once */
+  const route = $('#route');
+  if (!reduce.matches) route.classList.add('draw');
+
+  /* ---------- booking form ---------- */
+  const form = $('#book-form'), success = $('#book-success');
+  function goToForm(){
+    if (!success.hidden) resetForm();
+    $('#book').scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(() => $('#f-name').focus({ preventScroll: true }), reduce.matches ? 0 : 450);
+  }
+  $$('[data-book]').forEach(b => b.addEventListener('click', () => {
+    $('#f-pack').value = b.dataset.book; clearErr('pack'); goToForm();
+    say(b.dataset.book + ' selected');
+  }));
+  const map = { name: '#f-name', email: '#f-email', bike: '#f-bike', pack: '#f-pack', day: '#f-day' };
+  function setErr(key, msg){
+    $('#e-' + key).textContent = msg;
+    if (map[key]) $(map[key]).setAttribute('aria-invalid', 'true');
+    else $$('input[name="time"]').forEach(r => r.setAttribute('aria-invalid', 'true'));
+  }
+  function clearErr(key){
+    $('#e-' + key).textContent = '';
+    if (map[key]) $(map[key]).removeAttribute('aria-invalid');
+    else $$('input[name="time"]').forEach(r => r.removeAttribute('aria-invalid'));
+  }
+  const rules = {
+    name: () => { const v = $('#f-name').value.trim(); return v.length < 2 ? 'Tell us your name so we can label your bike.' : ''; },
+    email: () => { const v = $('#f-email').value.trim(); if (!v) return 'Add an email so we can send your ticket.'; return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'That email looks incomplete. Check for a typo, e.g. name@example.nl.'; },
+    bike: () => $('#f-bike').value ? '' : 'Choose the kind of bike you are bringing.',
+    pack: () => $('#f-pack').value ? '' : 'Choose a package. Not sure? Pick Tune-up and we will advise.',
+    day: () => $('#f-day').value ? '' : 'Choose a day in the next week.',
+    time: () => $('input[name="time"]:checked') ? '' : 'Choose a morning or afternoon drop-off.'
+  };
+  function check(key){ const m = rules[key](); m ? setErr(key, m) : clearErr(key); return !m; }
+  Object.keys(map).forEach(k => {
+    const el = $(map[k]);
+    el.addEventListener('blur', () => { if (el.value || el.dataset.touched) check(k); el.dataset.touched = '1'; });
+    el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => { if (el.getAttribute('aria-invalid')) check(k); });
+  });
+  $$('input[name="time"]').forEach(r => r.addEventListener('change', () => clearErr('time')));
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const order = ['name', 'email', 'bike', 'pack', 'day', 'time'];
+    const bad = order.filter(k => !check(k));
+    if (bad.length){
+      const first = bad[0] === 'time' ? $('input[name="time"]') : $(map[bad[0]]);
+      first.focus();
+      say(bad.length === 1 ? 'One field needs attention' : bad.length + ' fields need attention');
+      return;
+    }
+    const ticket = 'SK-' + String(Math.floor(1000 + Math.random() * 9000));
+    const dayTxt = daySel.options[daySel.selectedIndex].textContent;
+    const rows = [['Ticket', ticket], ['Bike', $('#f-bike').value], ['Package', $('#f-pack').value], ['Drop off', dayTxt + ', ' + $('input[name="time"]:checked').value.toLowerCase()]];
+    const dl = $('#success-list'); dl.innerHTML = '';
+    rows.forEach(([a, b]) => { const dt = document.createElement('dt'); dt.textContent = a; const dd = document.createElement('dd'); dd.textContent = b; dl.append(dt, dd); });
+    $('#success-text').textContent = 'Thanks, ' + $('#f-name').value.trim().split(' ')[0] + '. A confirmation is on its way to ' + $('#f-email').value.trim() + '. Bring the bike, and the key to its lock.';
+    form.hidden = true; success.hidden = false; success.focus();
+  });
+  function resetForm(){
+    form.reset(); Object.keys(rules).forEach(clearErr); Object.values(map).forEach(s => delete $(s).dataset.touched);
+    success.hidden = true; form.hidden = false;
+  }
+  $('#book-again').addEventListener('click', () => { resetForm(); $('#f-name').focus(); });
+
+  /* ---------- accordion ---------- */
+  $$('.acc-btn').forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') === 'true';
+    b.setAttribute('aria-expanded', String(!open));
+    $('#' + b.getAttribute('aria-controls')).hidden = open;
+  }));
+})();
+</script>
+</body>
+</html>

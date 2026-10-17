@@ -1,0 +1,332 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-ledgerline/layoza/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "6 small labels set in a monospace face outside code, e.g. \"02 Jul\", \"05 Jul\", \"11 Jul\""
+        },
+        {
+          "rule": "craft-hero-art-scale",
+          "severity": "critique",
+          "detail": "largest authored visual in the first viewport covers 0% of it; let the world's artwork carry the first screen, not a widget beside the headline"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.93,
+      "contrast_failures": 0,
+      "lcp_ms": 652,
+      "cls": 0,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-ledgerline\\layoza\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "6 small labels set in a monospace face outside code, e.g. \"02 Jul\", \"05 Jul\", \"11 Jul\""
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.93,
+      "contrast_failures": 0,
+      "lcp_ms": 456,
+      "cls": 0,
+      "inp_proxy_ms": 16,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 7,
+        "opened": true,
+        "screenshot": "examples\\benchmark-ledgerline\\layoza\\qa\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-ledgerline\\layoza\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "6 small labels set in a monospace face outside code, e.g. \"02 Jul\", \"05 Jul\", \"11 Jul\""
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.93,
+      "contrast_failures": 0,
+      "lcp_ms": 312,
+      "cls": 0,
+      "inp_proxy_ms": 24,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 7,
+        "opened": true,
+        "screenshot": "examples\\benchmark-ledgerline\\layoza\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-ledgerline\\layoza\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 4.93,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 312,
+  "contrast_indeterminate_elements": 1,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 23.6,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 652,
+  "cls": 0,
+  "inp_ms": 24,
+  "inp_event_entries": 17,
+  "h1_to_body_ratio": 3.92,
+  "max_line_length_ch": 57,
+  "font_families": [
+    "archivo",
+    "ibm plex mono"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Ledgerline — bank feed in, VAT return out",
+    "lang": "en-GB",
+    "page_background": "#FBF8F7",
+    "text_colors": [
+      {
+        "value": "#47506B",
+        "count": 2861
+      },
+      {
+        "value": "#18264A",
+        "count": 2552
+      },
+      {
+        "value": "#FFF4F0",
+        "count": 827
+      },
+      {
+        "value": "#E4E2EE",
+        "count": 614
+      },
+      {
+        "value": "#F3F1F6",
+        "count": 493
+      },
+      {
+        "value": "#B0301A",
+        "count": 456
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 22
+      },
+      {
+        "value": "#7A4A00",
+        "count": 16
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#F5ECE9",
+        "count": 2476.755
+      },
+      {
+        "value": "#FFFDFC",
+        "count": 2022.079621826172
+      },
+      {
+        "value": "#18264A",
+        "count": 1338.8802138671876
+      },
+      {
+        "value": "#B5331B",
+        "count": 1286.12625
+      },
+      {
+        "value": "#FBF8F7",
+        "count": 653.94
+      },
+      {
+        "value": "#FCEDE8",
+        "count": 244.39499999999998
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 199.21791259765627
+      },
+      {
+        "value": "#C9411F",
+        "count": 23.680187499999988
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Archivo",
+        "count": 7336
+      },
+      {
+        "value": "IBM Plex Mono",
+        "count": 505
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "81.44px",
+        "weight": "800",
+        "line_height": "81.44px",
+        "letter_spacing": "-1.6288px",
+        "family": "Archivo"
+      },
+      "h2": {
+        "size": "76px",
+        "weight": "800",
+        "line_height": "77.52px",
+        "letter_spacing": "-1.52px",
+        "family": "Archivo"
+      },
+      "h3": {
+        "size": "30.72px",
+        "weight": "800",
+        "line_height": "32.256px",
+        "letter_spacing": "-0.3072px",
+        "family": "Archivo"
+      },
+      "p": {
+        "size": "20.8px",
+        "weight": "400",
+        "line_height": "31.2px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      },
+      "small": {
+        "size": "41.664px",
+        "weight": "700",
+        "line_height": "39.5808px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      }
+    },
+    "radii": [
+      {
+        "value": "1px",
+        "count": 36
+      },
+      {
+        "value": "3px",
+        "count": 14
+      },
+      {
+        "value": "2px",
+        "count": 1
+      },
+      {
+        "value": "50%",
+        "count": 1
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1320px",
+        "count": 11
+      },
+      {
+        "value": "330.048px",
+        "count": 7
+      },
+      {
+        "value": "403.392px",
+        "count": 6
+      },
+      {
+        "value": "484.987px",
+        "count": 5
+      },
+      {
+        "value": "639.468px",
+        "count": 5
+      },
+      {
+        "value": "275.04px",
+        "count": 4
+      }
+    ],
+    "css_custom_properties": {
+      "--paper": "#FBF8F7",
+      "--paper-2": "#F5ECE9",
+      "--sheet": "#FFFDFC",
+      "--dropout": "#C9411F",
+      "--dropout-soft": "#EFA594",
+      "--dropout-ink": "#B0301A",
+      "--field-red": "#B5331B",
+      "--ink": "#18264A",
+      "--ink-2": "#47506B",
+      "--flag": "#F5B83D",
+      "--on-red": "#FFF4F0",
+      "--on-ink": "#F3F1F6",
+      "--header-h": "72px",
+      "--sans": "\"Archivo\",\"Archivo Fallback\",system-ui,sans-serif",
+      "--mono": "\"IBM Plex Mono\",\"Plex Mono Fallback\",ui-monospace,monospace",
+      "--ease-out": "cubic-bezier(.23,1,.32,1)",
+      "--gutter": "clamp(16px,4vw,56px)",
+      "--max": "1320px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 2
+  },
+  "craft_critique": {
+    "craft-hero-art-scale": 1,
+    "craft-mono-meta-labels": 1
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-mono-meta-labels": 1,
+      "craft-hero-art-scale": 1
+    },
+    "tablet": {
+      "craft-mono-meta-labels": 1
+    },
+    "mobile": {
+      "craft-mono-meta-labels": 1
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

@@ -1,0 +1,1194 @@
+{
+ "url": "index.html",
+ "at": "2026-10-15T17:56:31.462Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.81,
+    0.42,
+    0.47,
+    0.64,
+    0.94,
+    0.8,
+    0.56,
+    0.51
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 6371,
+     "screens": 7.1,
+     "words": 622,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 58,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": []
+    },
+    "hero": {
+     "text": "Retrofit, civic and timber work",
+     "words": 5,
+     "chars": 31,
+     "lines": 1,
+     "size": 84.8,
+     "vw": 5.9,
+     "font": "Hanken Grotesk",
+     "weight": 400,
+     "tracking": -0.035,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 1,
+     "top": 74,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Retrofit, civic and timber work",
+     "words": 5,
+     "lines": 1,
+     "size": 84.8,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Retrofit, civic and timber work",
+      "words": 5,
+      "chars": 31,
+      "lines": 1,
+      "size": 84.8,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 1,
+      "top": 74,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Work",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 39.4,
+      "vw": 2.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.13,
+      "top": 1073,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Studio",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 39.4,
+      "vw": 2.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.33,
+      "top": 3377,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Six people",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 39.4,
+      "vw": 2.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.97,
+      "top": 3748,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Approach",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 39.4,
+      "vw": 2.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.33,
+      "top": 4356,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Start a project",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 39.4,
+      "vw": 2.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 5454,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      14,
+      19,
+      26,
+      39,
+      85
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 19,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": -0.01,
+      "contrast": 15.4
+     },
+     "measureChars": 43,
+     "max": {
+      "size": 84.8,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "text": "Retrofit, civic and timber work"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#18191b",
+     "bodyBgHsl": {
+      "h": 220,
+      "s": 0.06,
+      "l": 0.1
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#222427",
+       "top": 3205,
+       "hsl": {
+        "h": 216,
+        "s": 0.07,
+        "l": 0.14
+       }
+      },
+      {
+       "color": "#eff0f1",
+       "top": 4183,
+       "hsl": {
+        "h": 210,
+        "s": 0.07,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#18191b",
+       "share": 0.44
+      },
+      {
+       "color": "#eff0f1",
+       "share": 0.42
+      },
+      {
+       "color": "#a3a5aa",
+       "share": 0.12
+      },
+      {
+       "color": "#54575d",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#ff4a1f",
+      "hsl": {
+       "h": 12,
+       "s": 1,
+       "l": 0.56
+      },
+      "fg": "#18191b"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 2,
+     "radius": 0,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to content",
+      "See the work"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 3832
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 5,
+     "fixed": false,
+     "height": 68,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.73,
+    0.39,
+    0.52,
+    0.47,
+    0.89,
+    0.91,
+    0.54
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 6863,
+     "screens": 6.7,
+     "words": 592,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 58,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": []
+    },
+    "hero": {
+     "text": "Retrofit, civic and timber work",
+     "words": 5,
+     "chars": 31,
+     "lines": 1,
+     "size": 51.2,
+     "vw": 6.7,
+     "font": "Hanken Grotesk",
+     "weight": 400,
+     "tracking": -0.035,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 1,
+     "top": 74,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Retrofit, civic and timber work",
+     "words": 5,
+     "lines": 1,
+     "size": 51.2,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Retrofit, civic and timber work",
+      "words": 5,
+      "chars": 31,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 6.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 1,
+      "top": 74,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Work",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.95,
+      "top": 1041,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Studio",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 3937,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Six people",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.95,
+      "top": 4290,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Approach",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 4943,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Start a project",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.34,
+      "top": 5912,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      18,
+      23,
+      30,
+      51
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 17.9,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": -0.01,
+      "contrast": 15.4
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 51.2,
+      "vw": 6.7,
+      "font": "Hanken Grotesk",
+      "text": "Retrofit, civic and timber work"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#18191b",
+     "bodyBgHsl": {
+      "h": 220,
+      "s": 0.06,
+      "l": 0.1
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#222427",
+       "top": 3841,
+       "hsl": {
+        "h": 216,
+        "s": 0.07,
+        "l": 0.14
+       }
+      },
+      {
+       "color": "#eff0f1",
+       "top": 4847,
+       "hsl": {
+        "h": 210,
+        "s": 0.07,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#eff0f1",
+       "share": 0.42
+      },
+      {
+       "color": "#18191b",
+       "share": 0.42
+      },
+      {
+       "color": "#a3a5aa",
+       "share": 0.13
+      },
+      {
+       "color": "#54575d",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#ff4a1f",
+      "hsl": {
+       "h": 12,
+       "s": 1,
+       "l": 0.56
+      },
+      "fg": "#18191b"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 2,
+     "radius": 0,
+     "height": 46,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to content",
+      "See the work"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 4363
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 5,
+     "fixed": false,
+     "height": 68,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 9,
+   "filled": [
+    0.8,
+    0.51,
+    0.53,
+    0.5,
+    0.89,
+    0.93,
+    0.92,
+    0.92,
+    0.59
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 7080,
+     "screens": 8.4,
+     "words": 536,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 58,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": []
+    },
+    "hero": {
+     "text": "Retrofit, civic and timber work",
+     "words": 5,
+     "chars": 31,
+     "lines": 2,
+     "size": 34,
+     "vw": 8.7,
+     "font": "Hanken Grotesk",
+     "weight": 400,
+     "tracking": -0.035,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 1,
+     "top": 66,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Retrofit, civic and timber work",
+     "words": 5,
+     "lines": 2,
+     "size": 34,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Retrofit, civic and timber work",
+      "words": 5,
+      "chars": 31,
+      "lines": 2,
+      "size": 34,
+      "vw": 8.7,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 1,
+      "top": 66,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Work",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1004,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Studio",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3513,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Six people",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3990,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Approach",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 4669,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Start a project",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.82,
+      "top": 5789,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      17,
+      18,
+      19,
+      20,
+      24,
+      28,
+      34
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 17,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": -0.01,
+      "contrast": 15.4
+     },
+     "measureChars": 38,
+     "max": {
+      "size": 34,
+      "vw": 8.7,
+      "font": "Hanken Grotesk",
+      "text": "Retrofit, civic and timber work"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#18191b",
+     "bodyBgHsl": {
+      "h": 220,
+      "s": 0.06,
+      "l": 0.1
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#eff0f1",
+       "top": 174,
+       "hsl": {
+        "h": 210,
+        "s": 0.07,
+        "l": 0.94
+       }
+      },
+      {
+       "color": "#222427",
+       "top": 3417,
+       "hsl": {
+        "h": 216,
+        "s": 0.07,
+        "l": 0.14
+       }
+      },
+      {
+       "color": "#e2e4e6",
+       "top": 5761,
+       "hsl": {
+        "h": 210,
+        "s": 0.07,
+        "l": 0.89
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#18191b",
+       "share": 0.44
+      },
+      {
+       "color": "#eff0f1",
+       "share": 0.41
+      },
+      {
+       "color": "#a3a5aa",
+       "share": 0.12
+      },
+      {
+       "color": "#54575d",
+       "share": 0.04
+      }
+     ],
+     "button": {
+      "bg": "#ff4a1f",
+      "hsl": {
+       "h": 12,
+       "s": 1,
+       "l": 0.56
+      },
+      "fg": "#18191b"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 3,
+     "radius": 0,
+     "height": 45,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to content",
+      "Menu",
+      "See the work"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 4041
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": false,
+     "height": 60,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "few-pictures",
+   "width": 1440,
+   "message": "Only 0 picture(s) on the page (0 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+   "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "FAIL",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Only 0 element(s) moved while the page loaded and scrolled.",
+   "fix": "Build the motion layer (SKILL.md step 9, references/motion.md): the signature move, an entrance for the parts of every section, feedback on every control, and one moving picture. Transform and opacity only, with a reduced-motion fallback."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\desktop-fold.jpg",
+   "pages": [
+    "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\desktop-page-01.jpg",
+    "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\desktop-page-02.jpg"
+   ]
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\tablet-fold.jpg",
+   "pages": [
+    "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\tablet-page-01.jpg",
+    "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\tablet-page-02.jpg"
+   ]
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\mobile-fold.jpg",
+   "pages": [
+    "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\mobile-page-01.jpg",
+    "examples\\benchmark-fold\\taste-skill\\.taste-skill\\inspect\\mobile-page-02.jpg"
+   ]
+  }
+ ]
+}

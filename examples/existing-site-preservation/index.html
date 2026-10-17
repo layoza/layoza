@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velluto Roasters &amp; Botanical Atelier — Existing Brand Site (Mode B Preservation)</title>
+  <style>
+    :root {
+      --color-bg-parchment: #F6F1EA;
+      --color-surface-cream: #FFFDF9;
+      --color-ink-espresso: #1E1815;
+      --color-muted-umber: #5C4E46;
+      --color-accent-terracotta: #B84A27;
+      --color-border-sand: #DFD5C7;
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius-card: 12px;
+      --space-section: clamp(3.5rem, 7vw, 6rem);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--color-bg-parchment);
+      color: var(--color-ink-espresso);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      overflow-x: clip;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-accent-terracotta);
+      outline-offset: 3px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    header.velluto-header {
+      border-bottom: 1px solid var(--color-border-sand);
+      padding: 1.25rem 0;
+    }
+
+    .nav-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-ink-espresso);
+      text-decoration: none;
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-list a {
+      color: var(--color-ink-espresso);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .btn-terracotta {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0.75rem 1.4rem;
+      background-color: var(--color-accent-terracotta);
+      color: #FFFDF9;
+      border-radius: var(--radius-card);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .hero-existing {
+      padding: var(--space-section) 0;
+      border-bottom: 1px solid var(--color-border-sand);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      margin: 0 0 1rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 3.5vw, 2.85rem);
+      line-height: 1.15;
+      margin: 0 0 1rem;
+    }
+
+    .lead {
+      color: var(--color-muted-umber);
+      font-size: 1.125rem;
+      max-width: 60ch;
+      margin: 0 0 1.75rem;
+    }
+
+    /* Mode B Extended Section — Strictly Preserves Existing Site DNA Tokens */
+    .extended-services-section {
+      padding: var(--space-section) 0;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .service-card {
+      background: var(--color-surface-cream);
+      border: 1px solid var(--color-border-sand);
+      border-radius: var(--radius-card);
+      padding: 1.75rem;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      margin: 0 0 0.5rem;
+    }
+
+    .service-price {
+      font-weight: 700;
+      color: var(--color-accent-terracotta);
+      margin-top: 1rem;
+      display: block;
+    }
+
+    footer {
+      border-top: 1px solid var(--color-border-sand);
+      padding: 2rem 0;
+      color: var(--color-muted-umber);
+      font-size: 0.9rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="velluto-header">
+    <div class="container nav-wrap">
+      <a href="#" class="brand-title">Velluto Atelier</a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="#origins">Origins</a></li>
+          <li><a href="#private-tasting">Private Tasting (Mode B Extension)</a></li>
+        </ul>
+      </nav>
+      <a href="#private-tasting" class="btn-terracotta">Reserve Cask</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="origins" class="hero-existing" aria-labelledby="velluto-hero">
+      <div class="container">
+        <h1 id="velluto-hero">Small-lot high-altitude espresso roasted over Piedmont chestnut.</h1>
+        <p class="lead">
+          Harvested from single-family cloud-forest parcels and rested in seasoned terracotta amphorae.
+        </p>
+        <a href="#private-tasting" class="btn-terracotta">Explore Autumn Harvest</a>
+      </div>
+    </section>
+
+    <!-- Added via Layoza Mode B (Extend Existing Website) after inspecting existing CSS custom properties -->
+    <section id="private-tasting" class="extended-services-section" aria-labelledby="tasting-heading">
+      <div class="container">
+        <h2 id="tasting-heading">Private Cupping &amp; Hospitality Program</h2>
+        <p class="lead">
+          Authored via Layoza Mode B (`layoza-extend-website`): inherits 100% of Velluto Atelier's existing `--color-bg-parchment`, `--color-surface-cream`, `--color-accent-terracotta`, and `--font-display` tokens without introducing external CSS frameworks.
+        </p>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <h3>Sommelier Table Cupping</h3>
+            <p>Guided sensory flight across five micro-lot washes with water-mineral calibration.</p>
+            <span class="service-price">$95 / Guest</span>
+          </article>
+          <article class="service-card">
+            <h3>Restaurant Espresso Program</h3>
+            <p>Custom roast curve formulation, La Marzocco pressure profiling, and staff extraction training.</p>
+            <span class="service-price">$1,450 / Quarter</span>
+          </article>
+          <article class="service-card">
+            <h3>Reserve Amphora Subscription</h3>
+            <p>Monthly dispatch of numbered 250g ceramic canisters directly from our Milan roastery.</p>
+            <span class="service-price">$68 / Month</span>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Velluto Roasters &amp; Botanical Atelier. Extended seamlessly with Layoza Mode B Site DNA Preservation.</p>
+    </div>
+  </footer>
+</body>
+</html>

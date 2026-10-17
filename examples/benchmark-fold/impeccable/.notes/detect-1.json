@@ -1,0 +1,109 @@
+[
+  {
+    "antipattern": "low-contrast",
+    "name": "Low contrast text",
+    "description": "Text does not meet WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text). Increase the contrast between text and background.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": ":hover state 1.4:1 (need 4.5:1) — text #143e33 on #1d1c1a"
+  },
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "<section> \"sec\": children flush against bg on all sides (no inset)"
+  },
+  {
+    "antipattern": "flat-type-hierarchy",
+    "name": "Flat type hierarchy",
+    "description": "Dominant heading and body roles are separated by less than 1.25× at every step, leaving the size hierarchy flat. Add at least one stronger size step.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "Role sizes: h2 14px, body 17px, h3 20px (largest adjacent step 1.21:1; target 1.25:1)"
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 57 primitive shapes, ~710x557px, 11 fill colors",
+    "advisory": true
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 33 primitive shapes, ~388x291px, 8 fill colors",
+    "advisory": true
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 32 primitive shapes, ~324x243px, 8 fill colors",
+    "advisory": true
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 19 primitive shapes, ~318x239px, 10 fill colors",
+    "advisory": true
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 20 primitive shapes, ~401x300px, 11 fill colors",
+    "advisory": true
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 15 primitive shapes, ~307x230px, 10 fill colors",
+    "advisory": true
+  },
+  {
+    "antipattern": "shape-assembled-illustration",
+    "name": "Shape-assembled illustration",
+    "description": "A large inline SVG that builds a pictorial scene from a pile of primitive shapes reads as placeholder clip art, not illustration. Icons, logos, and data graphics are fine at their scale; a hero-sized visual deserves real artwork, a photograph, or a deliberately drawn graphic.",
+    "severity": "advisory",
+    "category": "slop",
+    "file": "examples\\benchmark-fold\\impeccable\\index.html",
+    "line": 0,
+    "snippet": "inline <svg> scene: 21 primitive shapes, ~345x259px, 11 fill colors",
+    "advisory": true
+  }
+]

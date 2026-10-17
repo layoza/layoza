@@ -1,0 +1,319 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-tidefest/layoza/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-repeating-stripes-gradient",
+          "severity": "critique",
+          "detail": "repeating-gradient decorative stripes div.neatline"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.92,
+      "contrast_failures": 0,
+      "lcp_ms": 632,
+      "cls": 0.0005,
+      "inp_proxy_ms": 40,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-tidefest\\layoza\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-repeating-stripes-gradient",
+          "severity": "critique",
+          "detail": "repeating-gradient decorative stripes div.neatline"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.92,
+      "contrast_failures": 0,
+      "lcp_ms": 236,
+      "cls": 0.0007,
+      "inp_proxy_ms": 32,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-tidefest\\layoza\\qa\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-tidefest\\layoza\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-repeating-stripes-gradient",
+          "severity": "critique",
+          "detail": "repeating-gradient decorative stripes div.neatline"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.92,
+      "contrast_failures": 0,
+      "lcp_ms": 288,
+      "cls": 0.0001,
+      "inp_proxy_ms": 48,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-tidefest\\layoza\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-tidefest\\layoza\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 5.92,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 137,
+  "contrast_indeterminate_elements": 62,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 30,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 632,
+  "cls": 0.0007,
+  "inp_ms": 48,
+  "inp_event_entries": 29,
+  "h1_to_body_ratio": 2.5,
+  "max_line_length_ch": 62,
+  "font_families": [
+    "schibsted grotesk",
+    "anybody"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Tidefest 2027 · 14–16 August · Newquay, Cornwall",
+    "lang": "en-GB",
+    "page_background": "#F3F7F8",
+    "text_colors": [
+      {
+        "value": "#0D1F33",
+        "count": 2197
+      },
+      {
+        "value": "#D6E8F3",
+        "count": 525
+      },
+      {
+        "value": "#F3F7F8",
+        "count": 494
+      },
+      {
+        "value": "#33475E",
+        "count": 252
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 177
+      },
+      {
+        "value": "#F2C94C",
+        "count": 36
+      },
+      {
+        "value": "#B5136F",
+        "count": 18
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#F3F7F8",
+        "count": 2311.2063498705033
+      },
+      {
+        "value": "#0B3A63",
+        "count": 2205.675
+      },
+      {
+        "value": "#F2C94C",
+        "count": 1308.0980646972657
+      },
+      {
+        "value": "#8FCBE6",
+        "count": 1296
+      },
+      {
+        "value": "#B5136F",
+        "count": 1006.3326284179687
+      },
+      {
+        "value": "#0D1F33",
+        "count": 754.4340146484375
+      },
+      {
+        "value": "#0E4573",
+        "count": 677.67425
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Schibsted Grotesk",
+        "count": 2906
+      },
+      {
+        "value": "Anybody",
+        "count": 793
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "36px",
+        "weight": "700",
+        "line_height": "0px",
+        "letter_spacing": "normal",
+        "family": "Anybody"
+      },
+      "h2": {
+        "size": "91.84px",
+        "weight": "850",
+        "line_height": "91.84px",
+        "letter_spacing": "-2.296px",
+        "family": "Anybody"
+      },
+      "h3": {
+        "size": "41.6px",
+        "weight": "750",
+        "line_height": "43.68px",
+        "letter_spacing": "-0.416px",
+        "family": "Anybody"
+      },
+      "p": {
+        "size": "14.4px",
+        "weight": "500",
+        "line_height": "22.32px",
+        "letter_spacing": "0.144px",
+        "family": "Schibsted Grotesk"
+      },
+      "small": {
+        "size": "16px",
+        "weight": "500",
+        "line_height": "14.4px",
+        "letter_spacing": "normal",
+        "family": "Schibsted Grotesk"
+      }
+    },
+    "radii": [
+      {
+        "value": "3px",
+        "count": 11
+      },
+      {
+        "value": "50%",
+        "count": 9
+      },
+      {
+        "value": "2px",
+        "count": 7
+      },
+      {
+        "value": "6px",
+        "count": 6
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "607.416px",
+        "count": 5
+      },
+      {
+        "value": "618.566px",
+        "count": 4
+      },
+      {
+        "value": "1971.3px",
+        "count": 3
+      },
+      {
+        "value": "547.538px",
+        "count": 2
+      },
+      {
+        "value": "606.438px",
+        "count": 2
+      },
+      {
+        "value": "1491.57px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--ink": "#0D1F33",
+      "--chart": "#F3F7F8",
+      "--sand": "#F2C94C",
+      "--shallow": "#8FCBE6",
+      "--light": "#B5136F",
+      "--deep": "#0B3A63",
+      "--ink-soft": "#33475E",
+      "--deep-text": "#D6E8F3",
+      "--display": "\"Anybody\",\"Display Fallback\",system-ui,sans-serif",
+      "--body": "\"Schibsted Grotesk\",\"Body Fallback\",system-ui,sans-serif",
+      "--header-h": "4.5rem",
+      "--gutter": "clamp(1rem,4vw,3.5rem)",
+      "--max": "1360px",
+      "--ease-out": "cubic-bezier(0.23,1,0.32,1)",
+      "--ease-io": "cubic-bezier(0.77,0,0.175,1)",
+      "--r-ctl": "3px",
+      "--r-box": "6px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [
+      "GSAP",
+      "ScrollTrigger"
+    ],
+    "css_keyframes": 4
+  },
+  "craft_critique": {
+    "craft-repeating-stripes-gradient": 1
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-repeating-stripes-gradient": 1
+    },
+    "tablet": {
+      "craft-repeating-stripes-gradient": 1
+    },
+    "mobile": {
+      "craft-repeating-stripes-gradient": 1
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

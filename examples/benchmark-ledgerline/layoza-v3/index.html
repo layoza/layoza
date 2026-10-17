@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledgerline — bank feed in, VAT return out</title>
+<meta name="description" content="Ledgerline reads your clients' bank feeds, matches transactions to invoices and receipts, flags what it can't match and prepares VAT returns for Making Tax Digital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap"></noscript>
+<style>
+@font-face{font-family:"Display Fallback";src:local("Arial Narrow Bold"),local("ArialNarrow-Bold"),local("Arial Bold"),local("Arial");font-weight:600 800;size-adjust:92%;ascent-override:96%;descent-override:24%;line-gap-override:0%}
+@font-face{font-family:"Body Fallback";src:local("Arial");size-adjust:101%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
+:root{
+  --paper:#FBF8F7;--sheet:#FFFDFC;--red:#B8293A;--red-deep:#9E2030;--tint:#F7DCDA;--tint-2:#FBEDEC;
+  --ink:#16233F;--ink-2:#4A5470;--ink-rule:#2F3D5E;--match:#1D6B4F;--on-red:#FBE4E2;--on-ink:#B9C1D6;
+  --font:"Archivo","Body Fallback",sans-serif;--font-d:"Archivo","Display Fallback",sans-serif;
+  --d1:clamp(2.75rem,8vw,7.5rem);--d2:clamp(2.25rem,4.6vw,4.25rem);--h3:1.375rem;--body:1.125rem;--small:.9375rem;--label:.8125rem;
+  --gut:clamp(16px,3vw,40px);--max:1360px;--header-h:68px;--sec:clamp(80px,8vw,128px);
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:calc(var(--header-h) + 1rem);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:var(--body);line-height:1.55;font-variation-settings:"wdth" 100;text-rendering:optimizeLegibility;caret-color:var(--red)}
+::selection{background:var(--red);color:var(--paper)}
+html{scrollbar-color:var(--red) var(--tint)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.on-dark :focus-visible,.f-red :focus-visible{outline-color:var(--paper)}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gut)}
+.num,.fig{font-variant-numeric:tabular-nums lining-nums}
+h1,h2,h3{margin:0;font-family:var(--font-d);text-wrap:balance}
+h1,h2{font-weight:800;font-variation-settings:"wdth" 72;letter-spacing:-.02em;line-height:1}
+h1{font-size:var(--d1)}
+h2{font-size:var(--d2)}
+h3{font-size:var(--h3);font-weight:700;font-variation-settings:"wdth" 88;letter-spacing:-.005em;line-height:1.2}
+p{margin:0}
+.lede{font-size:var(--h3);line-height:1.45;max-width:34ch;text-wrap:pretty}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:var(--gut);top:-100px;background:var(--ink);color:var(--paper);padding:.75rem 1rem;z-index:60}
+.skip:focus{top:.5rem}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:.75rem 1.35rem;border:1.5px solid var(--red);border-radius:3px;background:var(--red);color:var(--paper);font-weight:650;font-size:1rem;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .12s var(--ease)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.btn:hover{background:var(--red-deep);border-color:var(--red-deep)}.btn-ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}}
+.btn-paper{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.btn-paper:hover{background:var(--tint);border-color:var(--tint)}}
+.btn-sm{min-height:44px;padding:.55rem 1rem;font-size:.9375rem}
+
+/* header */
+.site-head{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--red)}
+.head-in{display:flex;align-items:center;gap:1.5rem;height:var(--header-h)}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 80;font-size:1.375rem;letter-spacing:-.01em}
+.brand svg{width:30px;height:30px;flex:none}
+.nav{display:flex;gap:.25rem;margin-left:auto}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 .75rem;text-decoration:none;font-size:var(--small);font-weight:550;border-radius:2px;transition:color .18s ease,background-color .18s ease}
+@media (hover:hover) and (pointer:fine){.nav a:hover{background:var(--tint)}}
+.head-actions{display:flex;align-items:center;gap:.75rem}
+.signin{font-size:var(--small);font-weight:550;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 .5rem}
+@media (hover:hover) and (pointer:fine){.signin:hover{text-decoration:underline}}
+.menu-btn{display:none;width:44px;height:44px;border:1.5px solid var(--ink);border-radius:3px;background:transparent;align-items:center;justify-content:center;cursor:pointer;transition:background-color .18s ease}
+.menu-btn svg{width:20px;height:20px}
+.menu-btn .i-close{display:none}
+.menu-btn[aria-expanded="true"] .i-open{display:none}
+.menu-btn[aria-expanded="true"] .i-close{display:block}
+.mnav{display:none}
+@media (max-width:1060px){
+  .nav,.signin{display:none}
+  .head-actions{margin-left:auto}
+  .menu-btn{display:inline-flex}
+  .mnav{position:fixed;inset:var(--header-h) 0 auto 0;background:var(--paper);border-bottom:1px solid var(--red);padding:.5rem var(--gut) 1.5rem;display:block;visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .2s var(--ease),transform .24s var(--ease),visibility 0s linear .24s;height:calc(100dvh - var(--header-h));overflow:auto}
+  .mnav.open{visibility:visible;opacity:1;transform:none;transition:opacity .2s var(--ease),transform .24s var(--ease)}
+  .mnav ul{list-style:none;margin:0;padding:0}
+  .mnav li{border-bottom:1px solid var(--tint)}
+  .mnav a{display:flex;align-items:center;justify-content:space-between;min-height:56px;font-family:var(--font-d);font-weight:750;font-variation-settings:"wdth" 80;font-size:1.5rem;text-decoration:none}
+  .mnav a span{font-family:var(--font);font-size:var(--label);font-weight:600;color:var(--red);font-variation-settings:"wdth" 100}
+  .mnav .m-sign{margin-top:1rem;display:inline-flex;min-height:48px;align-items:center;font-size:1.0625rem;font-weight:600}
+}
+@media (max-width:420px){.brand span{font-size:1.25rem}.head-in{gap:.75rem}.head-actions .btn{padding:.55rem .8rem}}
+
+/* ===== hero sheet ===== */
+.hero{padding:clamp(16px,1.6vw,24px) 0 clamp(24px,3vw,48px)}
+.sheet{background:var(--sheet);border:1.5px solid var(--red);position:relative}
+.sheet-top{display:grid;grid-template-columns:minmax(0,6.4fr) 88px minmax(0,5fr);border-bottom:1.5px solid var(--red)}
+.sheet-title{grid-column:1/3}
+.sheet-title{padding:clamp(20px,2.4vw,36px) clamp(18px,2.6vw,40px) clamp(20px,2.2vw,32px);align-self:center}
+.sheet-title h1 span{display:block}
+.sheet-meta{border-left:1px solid var(--red);display:grid;grid-template-rows:auto 1fr}
+.meta-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--red)}
+.meta-cell{padding:.65rem 1rem .7rem;font-size:var(--label);color:var(--red);font-weight:600;line-height:1.3}
+.meta-cell+.meta-cell{border-left:1px solid var(--red)}
+.meta-cell b{display:block;color:var(--ink);font-size:var(--small);font-weight:600;margin-top:.15rem}
+.meta-body{padding:clamp(16px,1.6vw,24px) clamp(18px,2vw,28px);display:flex;flex-direction:column;justify-content:space-between;gap:1.1rem}
+.meta-body .lede{font-size:1.125rem;line-height:1.5}
+.ctas{display:flex;flex-wrap:wrap;gap:.75rem}
+.sheet-body{display:grid;grid-template-columns:minmax(0,6.4fr) 88px minmax(0,5fr);position:relative}
+.channel{border-left:1px dashed var(--tint)}
+.routes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.routes path{fill:none;stroke:var(--red);stroke-width:1.1;opacity:.38;transition:opacity .2s ease,stroke-width .2s ease}
+.routes path.hot{opacity:1;stroke-width:2}
+.routes path.flagged{stroke-dasharray:4 4}
+.routes circle{fill:var(--red)}
+.feed{padding:0}
+.part-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.6rem clamp(18px,2.6vw,40px);border-bottom:1px solid var(--red);font-size:var(--label);font-weight:650;color:var(--red);letter-spacing:.01em}
+.part-head .rhs{font-weight:500}
+.feed ol{list-style:none;margin:0;padding:0}
+.tx{display:grid;grid-template-columns:3.8rem minmax(0,1fr) auto 9.2rem 2.9rem;align-items:center;gap:0 .9rem;padding:.35rem 0 .35rem clamp(18px,2.6vw,40px);border-bottom:1px solid var(--tint);min-height:66px}
+.refs{display:flex;gap:3px;justify-content:flex-end}
+.refs i{font-style:normal;display:grid;place-items:center;width:22px;height:22px;border:1px solid var(--red);color:var(--red);font-size:.8125rem;font-weight:700;background:var(--sheet)}
+.refs i.none{border-style:dashed;color:var(--ink-2);border-color:var(--ink-2)}
+.tx:last-child{border-bottom:0}
+.tx-date{font-size:var(--small);color:var(--ink-2)}
+.tx-who{font-weight:600;font-size:1rem;line-height:1.25;min-width:0}
+.tx-who small{display:block;font-weight:400;color:var(--ink-2);font-size:var(--label)}
+.tx-amt{font-size:1.0625rem;font-weight:600;text-align:right}
+.tx-st{display:flex;align-items:center;gap:.5rem;font-size:var(--label);font-weight:650;line-height:1.2;min-height:44px}
+.tick{width:26px;height:26px;flex:none;color:var(--match)}
+.tick path{stroke-dasharray:40;stroke-dashoffset:0}
+.tx[data-s="pending"] .tick path{stroke-dashoffset:40}
+.tx[data-s="pending"] .st-text{color:var(--ink-2);font-weight:500}
+.tx.drawn .tick path{transition:stroke-dashoffset .36s var(--ease)}
+.st-text{color:var(--match)}
+.tx-flag .st-text{color:var(--red)}
+.flag{width:26px;height:26px;flex:none;color:var(--red)}
+.req{white-space:nowrap;min-height:44px;padding:.35rem .7rem;border:1.5px solid var(--red);background:var(--tint-2);color:var(--red-deep);border-radius:2px;font-size:var(--label);font-weight:700;cursor:pointer;transition:background-color .16s ease,color .16s ease,transform .12s var(--ease)}
+.req:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.req:hover{background:var(--red);color:var(--paper)}}
+.req[disabled]{cursor:progress;opacity:.75}
+.boxes{border-left:1px solid var(--red)}
+.boxes ol{list-style:none;margin:0;padding:0}
+.box{display:grid;grid-template-columns:2.1rem 1fr auto;align-items:center;gap:.75rem;padding:.3rem clamp(14px,1.6vw,24px) .3rem clamp(10px,1vw,14px);border-bottom:1px solid var(--tint);min-height:44px}
+.box:last-child{border-bottom:0}
+.bn{display:grid;place-items:center;width:2.1rem;height:2.1rem;border:1.5px solid var(--red);color:var(--red);font-weight:800;font-size:1rem;background:var(--sheet)}
+.bl{font-size:var(--label);line-height:1.25;color:var(--ink-2)}
+.bv{display:flex;align-items:stretch;border:1px solid var(--red);background:var(--tint-2);min-width:8.5rem;justify-content:flex-end;font-weight:650;font-size:1.0625rem}
+.bv .pd{padding:.2rem .5rem;text-align:right;flex:1}
+.bv .pp{padding:.2rem .4rem;border-left:1px solid var(--red);min-width:2.3rem;text-align:center}
+.bv .pp.pre{color:var(--red);font-weight:500}
+.box.total{background:var(--tint-2)}
+.box.total .bl{color:var(--ink);font-weight:650}
+.box.total .bv{background:var(--sheet);border-width:2px;font-size:1.1875rem}
+.box.bump .bv{animation:bump .42s var(--ease)}
+@keyframes bump{30%{background:var(--tint)}}
+.sheet-foot{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;border-top:1.5px solid var(--red);padding:.6rem clamp(18px,2.6vw,40px);font-size:var(--label);color:var(--ink-2)}
+.replay{min-height:44px;background:none;border:0;padding:0 .25rem;font-weight:650;color:var(--red-deep);text-decoration:underline;text-underline-offset:.25em;cursor:pointer}
+.ready{color:var(--match);font-weight:700}
+
+@media (max-width:1060px){
+  .sheet-top,.sheet-body{grid-template-columns:1fr}
+  .sheet-title{grid-column:auto}
+  .channel,.routes{display:none}
+  .boxes{order:-1;border-top:0;border-bottom:1.5px solid var(--red)}
+  .tx{padding-right:clamp(18px,2.6vw,40px)}
+  .sheet-meta{border-left:0;border-top:1px solid var(--red)}
+  .boxes{border-left:0;border-top:1.5px solid var(--red)}
+}
+@media (max-width:620px){
+  .tx{grid-template-columns:1fr auto auto;grid-template-areas:"who who amt" "date st refs";gap:.15rem .6rem;padding:.65rem 16px}
+  .refs{grid-area:refs;align-self:center}
+  .tx-who{grid-area:who}.tx-amt{grid-area:amt}.tx-date{grid-area:date;align-self:center}.tx-st{grid-area:st;justify-content:flex-end;min-height:36px}
+  .part-head,.sheet-foot{padding-inline:16px}
+  .sheet-title{padding:22px 16px 20px}
+  .meta-body{padding:18px 16px 22px}
+  .meta-row{grid-template-columns:1fr 1fr}
+  .box{padding:.45rem 12px;grid-template-columns:2rem 1fr auto;gap:.6rem}
+  .bn{width:2rem;height:2rem;font-size:.9375rem}
+  .bv{min-width:7.4rem;font-size:1rem}
+  .ctas .btn{flex:1 1 auto}
+}
+
+/* ===== sections ===== */
+section{position:relative}
+.sec{padding-block:var(--sec)}
+.sec-head{display:grid;grid-template-columns:7fr 5fr;gap:2rem clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(48px,6vw,88px)}
+.sec-head p{max-width:46ch;color:var(--ink-2)}
+.sec-head.stack{grid-template-columns:minmax(0,8fr) 4fr}
+.sec-head.stack p{grid-column:1;margin-top:-.75rem}
+@media (max-width:860px){.sec-head,.sec-head.stack{grid-template-columns:1fr}}
+
+/* how */
+.route{position:relative;display:grid;grid-template-columns:repeat(4,1fr);border-top:1.5px solid var(--red);border-bottom:1.5px solid var(--red)}
+.step{padding:clamp(20px,2.4vw,32px) clamp(16px,2vw,28px) clamp(28px,3vw,40px);border-left:1px solid var(--red);display:flex;flex-direction:column;gap:1rem}
+.step:first-child{border-left:0;padding-left:0}
+.step-n{display:flex;align-items:center;gap:.6rem;font-size:var(--label);font-weight:700;color:var(--red)}
+.step-n i{font-style:normal;display:grid;place-items:center;width:2rem;height:2rem;border:1.5px solid var(--red);font-size:1rem}
+.step svg{width:100%;max-width:240px;height:auto;aspect-ratio:240/150}
+.step p{color:var(--ink-2);font-size:1rem;max-width:30ch}
+.draw path.d,.draw line.d,.draw polyline.d{stroke-dasharray:var(--len,300);stroke-dashoffset:0}
+.js .route:not(.in) .draw .d{stroke-dashoffset:var(--len,300)}
+.js .route .draw .d{transition:stroke-dashoffset 1s var(--ease)}
+.js .route .step:nth-child(2) .d{transition-delay:.2s}.js .route .step:nth-child(3) .d{transition-delay:.4s}.js .route .step:nth-child(4) .d{transition-delay:.6s}
+@media (max-width:980px){.route{grid-template-columns:1fr 1fr}.step:nth-child(3){border-left:0;padding-left:0}.step:nth-child(n+3){border-top:1px solid var(--red)}}
+@media (max-width:560px){.route{grid-template-columns:1fr}.step{border-left:0;padding-left:0;display:grid;grid-template-columns:1fr;}.step+.step{border-top:1px solid var(--red)}.step svg{max-width:220px}}
+
+/* product (tint field) */
+.f-tint{background:var(--tint)}
+.caps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1.5px solid var(--red)}
+.cap{display:grid;grid-template-columns:2.5rem 1fr;align-content:start;gap:.25rem 1rem;padding:clamp(22px,2.6vw,34px) clamp(16px,2.4vw,36px);border-bottom:1px solid var(--red);border-left:1px solid var(--red)}
+.cap:nth-child(3n+1){border-left:0;padding-left:0}
+@media (max-width:1060px) and (min-width:761px){.caps{grid-template-columns:1fr 1fr}.cap:nth-child(n){border-left:1px solid var(--red);padding-left:clamp(16px,2.4vw,36px)}.cap:nth-child(odd){border-left:0;padding-left:0}}
+.cap .ltr{grid-row:span 2;font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 72;font-size:2rem;line-height:1;color:var(--red)}
+.cap p{color:#3A3F55;max-width:44ch;font-size:1.0625rem}
+@media (max-width:760px){.caps{grid-template-columns:1fr}.cap:nth-child(n){padding-left:0;padding-right:0;border-left:0}}
+
+/* estimator (red field) */
+.f-red{background:var(--red);color:var(--paper)}
+.f-red .sec-head p{color:var(--on-red)}
+.est{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,5vw,80px);align-items:stretch}
+.est-in{display:flex;flex-direction:column;gap:1.25rem}
+.est-head{margin-bottom:1.25rem}
+.est-head p{color:var(--on-red);margin-top:1.25rem;max-width:42ch}
+.field-box{background:var(--sheet);color:var(--ink);border:1.5px solid var(--paper);padding:1rem 1.1rem 1.15rem}
+.field-box label{display:flex;align-items:center;gap:.6rem;font-weight:650;font-size:1rem}
+.field-box label .bn{width:1.9rem;height:1.9rem;font-size:.875rem}
+.est-row{display:grid;grid-template-columns:1fr 7rem;gap:1rem;align-items:center;margin-top:.75rem}
+.est-row input[type=number]{width:100%;min-height:48px;border:1.5px solid var(--ink);border-radius:2px;background:var(--tint-2);padding:.4rem .6rem;font-size:max(16px,1.125rem);font-weight:650;text-align:right;font-variant-numeric:tabular-nums}
+.est-row input[type=number]:focus-visible{outline-offset:2px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;background:linear-gradient(var(--red),var(--red)) 0/var(--p,50%) 100% no-repeat,var(--tint)}
+input[type=range]::-moz-range-track{height:4px;background:var(--tint)}
+input[type=range]::-moz-range-progress{height:4px;background:var(--red)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-10px;background:var(--sheet);border:2.5px solid var(--red);border-radius:2px;transform:rotate(45deg)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--sheet);border:2.5px solid var(--red);border-radius:2px;transform:rotate(45deg)}
+.hint{font-size:var(--label);color:var(--ink-2);margin-top:.35rem}
+.est-out{border:1.5px solid var(--paper);display:grid;grid-template-rows:auto 1fr auto}
+.est-out .part-head{color:var(--paper);border-color:var(--on-red);padding-inline:clamp(18px,2.4vw,32px)}
+.out-main{padding:clamp(20px,3vw,40px) clamp(18px,2.4vw,32px);display:flex;flex-direction:column;justify-content:center;gap:.5rem}
+.big{font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 72;font-size:clamp(4.5rem,13vw,12.5rem);line-height:1;letter-spacing:-.02em}
+.big small{font-size:.2em;letter-spacing:0;font-variation-settings:"wdth" 90;margin-left:.15em}
+.out-main p{color:var(--on-red);max-width:40ch}
+.out-lines{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--on-red)}
+.out-lines div{padding:.85rem clamp(14px,2vw,24px);font-size:var(--label);color:var(--on-red);line-height:1.3}
+.out-lines div+div{border-left:1px solid var(--on-red)}
+.out-lines b{display:block;color:var(--paper);font-size:1.25rem;font-weight:700;margin-top:.2rem}
+@media (max-width:900px){.est{grid-template-columns:1fr}}
+@media (max-width:520px){.out-lines{grid-template-columns:1fr}.out-lines div+div{border-left:0;border-top:1px solid var(--on-red)}}
+
+/* pricing */
+.bill{display:inline-flex;border:1.5px solid var(--ink);border-radius:3px;padding:3px;gap:3px;margin-top:1.5rem}
+.bill input{position:absolute;opacity:0;width:1px;height:1px}
+.bill label{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:0 1rem;border-radius:2px;font-weight:650;font-size:.9375rem;cursor:pointer;transition:background-color .18s ease,color .18s ease}
+.bill label small{font-weight:500;font-size:var(--label)}
+.bill input:checked+label{background:var(--ink);color:var(--paper)}
+.bill input:focus-visible+label{outline:3px solid var(--red);outline-offset:2px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--red);background:var(--sheet)}
+.plan{display:flex;flex-direction:column;border-left:1px solid var(--red)}
+.plan:first-child{border-left:0}
+.plan-h{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;padding:1rem clamp(18px,2vw,28px);border-bottom:1px solid var(--red)}
+.plan-h h3{font-size:1.625rem}
+.plan-h span{font-size:var(--label);color:var(--red);font-weight:650}
+.price{padding:clamp(20px,2.4vw,32px) clamp(18px,2vw,28px) 1rem;border-bottom:1px solid var(--tint)}
+.price .amt{font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 72;font-size:var(--d2);line-height:1;letter-spacing:-.02em;display:flex;align-items:baseline;gap:.35rem}
+.price .per{font-size:1rem;font-family:var(--font);font-variation-settings:"wdth" 100;font-weight:550;letter-spacing:0;color:var(--ink-2)}
+.price .eq{font-size:var(--small);color:var(--ink-2);margin-top:.5rem;min-height:1.55em}
+.limits{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--red)}
+.limits div{padding:.8rem clamp(18px,2vw,28px);font-size:var(--label);color:var(--red);font-weight:600}
+.limits div+div{border-left:1px solid var(--tint)}
+.limits b{display:block;color:var(--ink);font-size:1.0625rem;font-weight:700}
+.plan ul{list-style:none;margin:0;padding:1rem clamp(18px,2vw,28px) 1.5rem;display:grid;gap:.6rem;flex:1}
+.plan li{display:grid;grid-template-columns:20px 1fr;gap:.6rem;font-size:1rem;line-height:1.4}
+.plan li svg{width:20px;height:20px;color:var(--match);margin-top:.1rem}
+.plan .btn{margin:0 clamp(18px,2vw,28px) clamp(20px,2.4vw,28px)}
+.price-note{margin-top:1.25rem;font-size:var(--small);color:var(--ink-2)}
+@media (max-width:980px){.plans{grid-template-columns:1fr}.plan{border-left:0;border-top:1.5px solid var(--red)}.plan:first-child{border-top:0}}
+
+/* security (ink field) */
+.f-ink{background:var(--ink);color:var(--paper)}
+.sec-top{display:grid;grid-template-columns:7fr 5fr;gap:1.5rem clamp(24px,4vw,64px);align-items:end}
+.sec-top p{color:var(--on-ink);max-width:40ch}
+.region{margin-top:clamp(40px,5vw,72px)}
+.region-l{font-weight:650;font-size:1rem;color:var(--paper)}
+.cells{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));margin-top:.9rem;border:1.5px solid var(--on-ink);border-right:0}
+.cells span{display:grid;place-items:center;aspect-ratio:4/5;border-right:1.5px solid var(--on-ink);font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(1rem,5.4vw,5rem);line-height:1;color:var(--paper)}
+.cells .gap{background:rgba(185,193,214,.14)}
+.region-n{margin-top:.8rem;font-size:var(--small);color:var(--on-ink)}
+.secs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px);margin-top:clamp(48px,6vw,88px);border-top:1.5px solid var(--on-ink);padding-top:1.75rem}
+.sitem{display:grid;grid-template-columns:auto 1fr;gap:.35rem .9rem;align-content:start}
+.sitem .ltr{grid-row:span 2;font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 72;font-size:2rem;line-height:1;color:var(--tint)}
+.sitem ul{margin:.6rem 0 0;padding:0;list-style:none;display:grid;gap:.5rem}
+.sitem li{color:var(--on-ink);font-size:1rem;padding-left:1.1rem;position:relative}
+.sitem li::before{content:"";position:absolute;left:0;top:.7em;width:.55rem;border-top:1.5px solid var(--on-ink)}
+.no-cert{margin-top:2.5rem;font-size:var(--small);color:var(--on-ink)}
+@media (max-width:900px){.sec-top{grid-template-columns:1fr}.secs{grid-template-columns:1fr}}
+
+/* customers */
+.quotes{display:grid;grid-template-columns:7fr 5fr;gap:clamp(32px,5vw,80px)}
+.q-main blockquote{margin:0;font-family:var(--font-d);font-weight:700;font-variation-settings:"wdth" 78;font-size:clamp(1.75rem,3.1vw,2.875rem);line-height:1.12;letter-spacing:-.015em;text-wrap:pretty}
+.q-main blockquote p::before{content:"\201C";color:var(--red);margin-left:-.45em;padding-right:.05em}
+.who{display:flex;align-items:center;gap:.9rem;margin-top:1.75rem;font-size:1rem;line-height:1.35}
+.who b{display:block}
+.who span{color:var(--ink-2);font-size:var(--small)}
+.initials{display:grid;place-items:center;width:3rem;height:3rem;border:1.5px solid var(--red);color:var(--red);font-weight:800;font-size:1rem;flex:none;background:var(--sheet)}
+.q-side{display:grid;gap:0;border-top:1.5px solid var(--red)}
+.q-side figure{margin:0;padding:1.6rem 0;border-bottom:1px solid var(--red)}
+.q-side blockquote{margin:0;font-size:1.1875rem;line-height:1.45}
+.q-side .who{margin-top:1rem}
+.q-note{margin-top:2rem;font-size:var(--label);color:var(--ink-2)}
+@media (max-width:900px){.quotes{grid-template-columns:1fr}.q-main blockquote p::before{margin-left:0}}
+
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:1fr;gap:clamp(36px,4vw,56px)}
+.faq-list{columns:2;column-gap:clamp(32px,5vw,80px);border-top:0}
+.qa{break-inside:avoid;border-top:1.5px solid var(--red);border-bottom:0}
+@media (max-width:860px){.faq-list{columns:1}}
+.faq-list{border-top:1.5px solid var(--red)}
+.qa{border-bottom:1px solid var(--red)}
+.qa h3{font-size:1.1875rem}
+.qa button{width:100%;display:grid;grid-template-columns:1fr 28px;align-items:center;gap:1rem;text-align:left;background:none;border:0;padding:1.15rem 0;min-height:64px;cursor:pointer;font-weight:700;font-variation-settings:"wdth" 88;font-family:var(--font-d);font-size:1.1875rem;line-height:1.3}
+.qa .bn{background:var(--paper);width:2.25rem;height:2.25rem;font-size:.9375rem;font-family:var(--font)}
+.pm{width:28px;height:28px;border:1.5px solid var(--ink);display:grid;place-items:center;transition:transform .24s var(--ease),background-color .18s ease}
+.pm svg{width:14px;height:14px}
+.qa button[aria-expanded="true"] .pm{transform:rotate(45deg);background:var(--paper)}
+@media (hover:hover) and (pointer:fine){.qa button:hover .pm{background:var(--paper)}}
+.qa-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s var(--ease)}
+.qa-panel>div{overflow:hidden}
+.qa-panel p{padding:0 2.5rem 1.4rem 0;max-width:62ch;color:#2C3550}
+.qa.open .qa-panel{grid-template-rows:1fr}
+.no-js .qa-panel{grid-template-rows:1fr}
+
+@media (max-width:560px){.qa-panel p{padding:0 0 1.25rem 0}}
+
+/* trial form */
+.trial-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,96px);align-items:start}
+.trial-grid .lead p{margin-top:1.5rem;color:var(--ink-2);max-width:38ch}
+.trial-list{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:.75rem}
+.trial-list li{display:grid;grid-template-columns:26px 1fr;gap:.6rem;font-size:1rem}
+.trial-list svg{width:26px;height:26px;color:var(--match)}
+.tform{background:var(--sheet);border:1.5px solid var(--red)}
+.tform .part-head{padding-inline:clamp(18px,2.4vw,32px)}
+.tfields{display:grid;grid-template-columns:1fr 1fr}
+.tf{padding:1rem clamp(18px,2.4vw,32px) 1.1rem;border-bottom:1px solid var(--red);display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.tf:nth-child(even){border-left:1px solid var(--red)}
+.tf label{display:flex;align-items:center;gap:.6rem;font-weight:650;font-size:.9375rem}
+.tf label .bn{width:1.75rem;height:1.75rem;font-size:.8125rem}
+.tf input,.tf select{width:100%;min-height:50px;border:1.5px solid var(--ink-2);border-radius:2px;background:var(--tint-2);padding:.55rem .75rem;font-size:max(16px,1.0625rem);transition:border-color .16s ease,background-color .16s ease}
+.tf select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%2316233F' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.4rem}
+.tf input:focus,.tf select:focus{border-color:var(--ink);background-color:var(--sheet)}
+.tf input::placeholder{color:#6A7088}
+.tf[data-invalid] input,.tf[data-invalid] select{border-color:var(--red);background-color:var(--sheet)}
+.err{font-size:var(--label);font-weight:650;color:var(--red-deep);min-height:1.2em;line-height:1.3}
+.tf[data-invalid] .err{animation:errin .26s var(--ease)}
+@keyframes errin{from{transform:translateY(-4px);opacity:0}}
+.decl{padding:1.1rem clamp(18px,2.4vw,32px);font-size:var(--small);color:var(--ink-2);border-bottom:1px solid var(--red)}
+.submit-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;padding:1.1rem clamp(18px,2.4vw,32px) 1.3rem}
+.submit-row p{font-size:var(--label);color:var(--ink-2)}
+.submit-row .btn{min-width:13rem}
+.btn[aria-busy="true"]{opacity:.8;cursor:progress}
+.success{padding:clamp(28px,4vw,48px) clamp(18px,2.4vw,32px);display:grid;grid-template-columns:auto 1fr;gap:1.5rem 2rem;align-items:center}
+.success h3{font-size:var(--d2);font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 72;line-height:1;letter-spacing:-.02em}
+.success p{margin-top:.75rem;color:var(--ink-2);max-width:40ch}
+.stamp{width:150px;height:150px;color:var(--red);transform:rotate(-8deg)}
+.success.arrive .stamp{animation:stamp .5s var(--ease) both}
+@keyframes stamp{from{transform:rotate(-8deg) scale(1.18);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+@media (max-width:900px){.trial-grid{grid-template-columns:1fr}}
+@media (max-width:620px){.tfields{grid-template-columns:1fr}.tf:nth-child(even){border-left:0}.success{grid-template-columns:1fr}.stamp{width:120px;height:120px}.submit-row .btn{width:100%}}
+
+/* footer */
+.foot{background:var(--ink);color:var(--paper);padding-top:clamp(72px,9vw,128px)}
+.decl-line{display:grid;grid-template-columns:7fr 5fr;gap:2rem clamp(24px,4vw,64px);align-items:end;padding-bottom:clamp(40px,5vw,64px);border-bottom:1px solid var(--ink-rule)}
+.decl-line h2{font-size:var(--d2);color:var(--paper)}
+.decl-line p{color:var(--on-ink);max-width:40ch}
+.decl-line .ctas{margin-top:1.5rem}
+.wordmark{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin:clamp(40px,5vw,72px) 0 0;border:2px solid var(--tint);border-right:0}
+.wordmark span{display:grid;place-items:center;aspect-ratio:4/5;border-right:2px solid var(--tint);font-family:var(--font-d);font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(1.25rem,7.4vw,7rem);line-height:1;color:var(--paper)}
+.foot-row{display:grid;grid-template-columns:5fr 4fr 3fr;gap:1.5rem clamp(24px,4vw,64px);padding:2rem 0 2.5rem;margin-top:clamp(12px,2vw,24px);font-size:var(--small);color:var(--on-ink)}
+.foot-row address{font-style:normal;line-height:1.55}
+.foot-row address b{color:var(--paper);font-weight:650}
+.flinks{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem;align-content:start}
+.flinks a,.social a{color:var(--paper);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+@media (hover:hover) and (pointer:fine){.flinks a:hover{text-decoration:underline}}
+.social{display:flex;gap:.5rem;align-content:start;flex-wrap:wrap}
+.social a{width:44px;height:44px;justify-content:center;border:1px solid var(--ink-rule);border-radius:2px;transition:background-color .18s ease,border-color .18s ease}
+@media (hover:hover) and (pointer:fine){.social a:hover{background:var(--ink-rule);border-color:var(--on-ink)}}
+.social svg{width:20px;height:20px}
+.legal{grid-column:1/-1;font-size:var(--label);color:var(--on-ink);border-top:1px solid var(--ink-rule);padding-top:1.25rem}
+@media (max-width:900px){.decl-line{grid-template-columns:1fr}.foot-row{grid-template-columns:1fr 1fr}.foot-row address{grid-column:1/-1}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body class="no-js">
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-tick" viewBox="0 0 26 26"><path d="M5 13.5l5.2 5.3L21.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 20 20"><path d="M4 10.5l3.8 3.8L16 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="#top" aria-label="Ledgerline home">
+      <svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" fill="#FFFDFC" stroke="#B8293A" stroke-width="2"/><path d="M6 10h18M6 15h7M6 20h5" stroke="#B8293A" stroke-width="1.6"/><path d="M13.5 19.5l3.4 3.3 7-9" fill="none" stroke="#16233F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Ledgerline</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#product">Product</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#security">Security</a><a href="#customers">Customers</a>
+    </nav>
+    <div class="head-actions">
+      <a class="signin" href="#signin">Sign in</a>
+      <a class="btn btn-sm" href="#trial">Start free trial</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu">
+        <svg class="i-open" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="2"/></svg>
+        <svg class="i-close" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mnav" id="mnav" aria-label="Mobile">
+    <ul>
+      <li><a href="#product">Product</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#customers">Customers</a></li>
+    </ul>
+    <a class="m-sign" href="#signin">Sign in</a>
+  </nav>
+</header>
+
+<main id="main">
+<!-- HERO: the return sheet -->
+<section class="hero" id="top" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="sheet">
+      <div class="sheet-top">
+        <div class="sheet-title">
+          <h1 id="hero-h"><span>Bank feed in.</span><span>VAT return out.</span></h1>
+        </div>
+        <div class="sheet-meta">
+          <div class="meta-row">
+            <div class="meta-cell">Period<b class="num">01 Jan – 31 Mar 2026</b></div>
+            <div class="meta-cell">Example client<b>Hollis &amp; Daughter Bakery</b></div>
+          </div>
+          <div class="meta-body">
+            <p class="lede">Ledgerline matches every client transaction to its invoice or receipt, flags the few it can’t, and fills in the nine boxes for Making Tax Digital.</p>
+            <div class="ctas">
+              <a class="btn" href="#trial">Start free trial</a>
+              <a class="btn btn-ghost" href="#how">See how it works</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-body">
+        <div class="feed">
+          <div class="part-head"><span>Bank feed · Business current account ••4417</span><span class="rhs num">6 of 214</span></div>
+          <ol>
+            <li class="tx" data-s="ok"><span class="tx-date num">03 Mar</span><span class="tx-who">Grange Café Ltd<small>Faster payment in</small></span><span class="tx-amt num">+1,440.00</span><span class="tx-st"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="st-text">Invoice 0418</span></span><span class="refs"><span class="sr">Feeds boxes 1 and 6</span><i>1</i><i>6</i></span></li>
+            <li class="tx" data-s="ok"><span class="tx-date num">04 Mar</span><span class="tx-who">Northmill Flour Co<small>Direct debit</small></span><span class="tx-amt num">−612.00</span><span class="tx-st"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="st-text">Bill 2231</span></span><span class="refs"><span class="sr">Feeds boxes 4 and 7</span><i>4</i><i>7</i></span></li>
+            <li class="tx" data-s="ok"><span class="tx-date num">05 Mar</span><span class="tx-who">Ellis Packaging<small>Card payment</small></span><span class="tx-amt num">−96.30</span><span class="tx-st"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="st-text">Receipt R-0088</span></span><span class="refs"><span class="sr">Feeds boxes 4 and 7</span><i>4</i><i>7</i></span></li>
+            <li class="tx" data-s="ok" data-scope="out"><span class="tx-date num">06 Mar</span><span class="tx-who">Staff wages<small>Payroll · outside the scope of VAT</small></span><span class="tx-amt num">−2,310.00</span><span class="tx-st"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="st-text">Payroll run</span></span><span class="refs"><span class="sr">Not in any VAT box</span><i class="none">–</i></span></li>
+            <li class="tx" data-s="ok"><span class="tx-date num">06 Mar</span><span class="tx-who">The Corner Deli<small>BACS in</small></span><span class="tx-amt num">+720.00</span><span class="tx-st"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="st-text">Invoice 0421</span></span><span class="refs"><span class="sr">Feeds boxes 1 and 6</span><i>1</i><i>6</i></span></li>
+            <li class="tx tx-flag" data-s="flag" id="flagRow"><span class="tx-date num">07 Mar</span><span class="tx-who">Catering supplies<small>Card payment · no receipt yet</small></span><span class="tx-amt num">−186.00</span><span class="tx-st"><svg class="flag" viewBox="0 0 26 26" aria-hidden="true"><path d="M7 23V4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M7 5h12l-3 4 3 4H7" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><button class="req" type="button" id="reqBtn">Request receipt</button></span><span class="refs"><span class="sr">Will feed boxes 4 and 7</span><i>4</i><i>7</i></span></li>
+          </ol>
+        </div>
+        <div class="channel" aria-hidden="true"><div class="part-head">&nbsp;</div></div>
+        <svg class="routes" id="routes" aria-hidden="true"></svg>
+        <div class="boxes">
+          <div class="part-head"><span>VAT return · boxes 1–9</span><span class="rhs">£</span></div>
+          <ol>
+            <li class="box" data-b="1"><span class="bn">1</span><span class="bl">VAT due on sales</span><span class="bv num"><span class="pd">8,412</span><span class="pp">60</span></span></li>
+            <li class="box" data-b="2"><span class="bn">2</span><span class="bl">VAT due on EU acquisitions</span><span class="bv num"><span class="pd">0</span><span class="pp">00</span></span></li>
+            <li class="box" data-b="3"><span class="bn">3</span><span class="bl">Total VAT due</span><span class="bv num"><span class="pd">8,412</span><span class="pp">60</span></span></li>
+            <li class="box" data-b="4"><span class="bn">4</span><span class="bl">VAT reclaimed on purchases</span><span class="bv num"><span class="pd">2,955</span><span class="pp">35</span></span></li>
+            <li class="box total" data-b="5"><span class="bn">5</span><span class="bl">Net VAT to pay</span><span class="bv num"><span class="pd">5,457</span><span class="pp">25</span></span></li>
+            <li class="box" data-b="6"><span class="bn">6</span><span class="bl">Total sales ex VAT</span><span class="bv num"><span class="pd">42,063</span><span class="pp pre">00</span></span></li>
+            <li class="box" data-b="7"><span class="bn">7</span><span class="bl">Total purchases ex VAT</span><span class="bv num"><span class="pd">14,777</span><span class="pp pre">00</span></span></li>
+            <li class="box" data-b="8"><span class="bn">8</span><span class="bl">Supplies to the EU ex VAT</span><span class="bv num"><span class="pd">0</span><span class="pp pre">00</span></span></li>
+            <li class="box" data-b="9"><span class="bn">9</span><span class="bl">Acquisitions from the EU ex VAT</span><span class="bv num"><span class="pd">0</span><span class="pp pre">00</span></span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="sheet-foot">
+        <span id="sheetStatus" aria-live="polite">213 matched · <strong>1 to review</strong> · example figures</span>
+        <button class="replay" type="button" id="replay">Replay the match</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="how-h">From bank line to filed return in four parts.</h2>
+      <p>Your team stops ticking statements and starts reviewing exceptions. Nothing goes to HMRC until someone in your practice approves it.</p>
+    </div>
+    <ol class="route" style="list-style:none;margin:0;padding:0">
+      <li class="step">
+        <span class="step-n"><i>1</i>Connect</span>
+        <svg class="draw" viewBox="0 0 240 150" aria-hidden="true">
+          <rect x="18" y="14" width="150" height="122" fill="#FBEDEC" stroke="#B8293A" stroke-width="1"/>
+          <path d="M18 34h150" stroke="#B8293A" stroke-width="1"/>
+          <g stroke="#16233F" stroke-width="1.6" stroke-linecap="round"><path d="M30 50h60M128 50h28M30 70h48M128 70h28M30 90h66M128 90h28M30 110h40M128 110h28"/></g>
+          <path class="d" style="--len:120" d="M168 75h56" stroke="#B8293A" stroke-width="2" fill="none"/>
+          <path class="d" style="--len:40" d="M212 64l12 11-12 11" stroke="#B8293A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <path d="M30 24h40" stroke="#B8293A" stroke-width="3"/>
+        </svg>
+        <h3>Connect each client’s bank feed</h3>
+        <p>Read-only Open Banking consent, granted by the client and renewed in one click. Statements can also be imported as CSV or OFX.</p>
+      </li>
+      <li class="step">
+        <span class="step-n"><i>2</i>Match</span>
+        <svg class="draw" viewBox="0 0 240 150" aria-hidden="true">
+          <rect x="10" y="44" width="110" height="34" fill="#FFFDFC" stroke="#16233F" stroke-width="1.4"/>
+          <path d="M20 61h44M88 61h22" stroke="#16233F" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M148 18h70l14 14v100h-84z" fill="#FFFDFC" stroke="#16233F" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M218 18v14h14" fill="none" stroke="#16233F" stroke-width="1.4"/>
+          <path d="M160 46h40M160 62h56M160 78h30M196 112h26" stroke="#4A5470" stroke-width="1.4" stroke-linecap="round"/>
+          <path class="d" style="--len:60" d="M120 61h28" stroke="#B8293A" stroke-width="1.6" stroke-dasharray="3 3" fill="none"/>
+          <path class="d" style="--len:60" d="M44 100l14 14 28-32" fill="none" stroke="#1D6B4F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Match to invoices and receipts</h3>
+        <p>Each line is paired with its sales invoice, supplier bill or receipt by amount, date, payee and reference.</p>
+      </li>
+      <li class="step">
+        <span class="step-n"><i>3</i>Review</span>
+        <svg class="draw" viewBox="0 0 240 150" aria-hidden="true">
+          <g stroke="#16233F" stroke-width="1.4"><rect x="10" y="22" width="160" height="26" fill="#FFFDFC"/><rect x="10" y="58" width="160" height="26" fill="#F7DCDA" stroke="#B8293A"/><rect x="10" y="94" width="160" height="26" fill="#FFFDFC"/></g>
+          <path d="M20 35h50M140 35h20M20 71h60M140 71h20M20 107h40M140 107h20" stroke="#16233F" stroke-width="1.6" stroke-linecap="round"/>
+          <path class="d" style="--len:80" d="M196 120V44" stroke="#B8293A" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M197 46h30l-8 11 8 11h-30z" fill="#B8293A"/>
+          <path class="d" style="--len:30" d="M170 71h18" stroke="#B8293A" stroke-width="1.6" stroke-dasharray="3 3"/>
+        </svg>
+        <h3>Clear the flagged few</h3>
+        <p>Unmatched lines arrive with a reason. Ask the client for the missing receipt from the same screen.</p>
+      </li>
+      <li class="step">
+        <span class="step-n"><i>4</i>Submit</span>
+        <svg class="draw" viewBox="0 0 240 150" aria-hidden="true">
+          <rect x="30" y="10" width="130" height="132" fill="#FFFDFC" stroke="#B8293A" stroke-width="1.4"/>
+          <g fill="none" stroke="#B8293A" stroke-width="1"><rect x="40" y="22" width="14" height="14"/><rect x="40" y="44" width="14" height="14"/><rect x="40" y="66" width="14" height="14"/><rect x="40" y="88" width="14" height="14"/><rect x="40" y="110" width="14" height="14"/></g>
+          <g stroke="#16233F" stroke-width="1.6" stroke-linecap="round"><path d="M110 29h38M118 51h30M110 73h38M118 95h30"/></g>
+          <rect x="104" y="108" width="48" height="18" fill="#F7DCDA" stroke="#16233F" stroke-width="1.4"/>
+          <g transform="rotate(-10 188 96)"><circle class="d" style="--len:200" cx="188" cy="96" r="30" fill="none" stroke="#1D6B4F" stroke-width="2.4"/><path class="d" style="--len:60" d="M174 97l9 9 18-20" fill="none" stroke="#1D6B4F" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+        </svg>
+        <h3>Approve and submit</h3>
+        <p>A named approver signs off, and the return is submitted through Making Tax Digital with the receipt kept on file.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section class="sec f-tint" id="product" aria-labelledby="prod-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="prod-h" style="grid-column:1/-1;max-width:18ch">Six things it does so your team doesn’t have to.</h2>
+    </div>
+    <div class="caps">
+      <div class="cap"><span class="ltr" aria-hidden="true">a</span><h3>Live bank feeds</h3><p>Every client’s business accounts in one place, refreshed daily.</p></div>
+      <div class="cap"><span class="ltr" aria-hidden="true">b</span><h3>Automatic matching</h3><p>Pairs payments with invoices, bills and receipts, including part payments.</p></div>
+      <div class="cap"><span class="ltr" aria-hidden="true">c</span><h3>Exceptions with reasons</h3><p>Each flag says why: no document, amount differs, or possible duplicate.</p></div>
+      <div class="cap"><span class="ltr" aria-hidden="true">d</span><h3>Receipt requests</h3><p>Clients get a link to photograph and upload the missing receipt.</p></div>
+      <div class="cap"><span class="ltr" aria-hidden="true">e</span><h3>VAT return preparation</h3><p>Boxes 1 to 9 filled from matched records, each figure traceable to its lines.</p></div>
+      <div class="cap"><span class="ltr" aria-hidden="true">f</span><h3>Quarter-end overview</h3><p>Every client’s VAT period, due date and review status on one screen.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTIMATOR -->
+<section class="sec f-red" id="estimate" aria-labelledby="est-h">
+  <div class="wrap">
+    <div class="est">
+      <div class="est-in">
+        <div class="est-head">
+          <h2 id="est-h">Work out the hours you get back.</h2>
+          <p>Assumes 40 seconds saved for every transaction your team no longer matches by hand. Change the figures to fit your practice.</p>
+        </div>
+        <div class="field-box">
+          <label for="clientsN">Number of clients</label>
+          <div class="est-row">
+            <input type="range" id="clientsR" min="1" max="600" step="1" value="120" aria-label="Number of clients (slider)">
+            <input type="number" id="clientsN" min="1" max="5000" step="1" value="120" inputmode="numeric">
+          </div>
+          <p class="hint">Clients whose bank feeds you reconcile.</p>
+        </div>
+        <div class="field-box">
+          <label for="txN">Transactions per client, per month</label>
+          <div class="est-row">
+            <input type="range" id="txR" min="1" max="400" step="1" value="80" aria-label="Transactions per client per month (slider)">
+            <input type="number" id="txN" min="1" max="5000" step="1" value="80" inputmode="numeric">
+          </div>
+          <p class="hint">An average across your client list.</p>
+        </div>
+      </div>
+      <div class="est-out" aria-labelledby="out-label">
+        <div class="part-head"><span id="out-label">Estimated time saved each month</span><span class="rhs">40 s per line</span></div>
+        <div class="out-main">
+          <p class="big num" id="hoursOut" aria-hidden="true">107<small>hours</small></p>
+          <p class="sr" id="hoursLive" aria-live="polite">About 107 hours saved per month.</p>
+          <p>Hours a month your team stops spending on matching statements by hand.</p>
+        </div>
+        <div class="out-lines">
+          <div>Transactions a month<b class="num" id="txOut">9,600</b></div>
+          <div>Working days (7.5 h)<b class="num" id="daysOut">14.2</b></div>
+          <div>Hours a year<b class="num" id="yearOut">1,280</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing" aria-labelledby="price-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="price-h">One price per firm, not per client.</h2>
+        <fieldset class="bill" style="border:1.5px solid var(--ink);min-width:0">
+          <legend class="sr">Billing period</legend>
+          <input type="radio" name="bill" id="bm" value="m" checked><label for="bm">Monthly</label>
+          <input type="radio" name="bill" id="by" value="y"><label for="by">Yearly <small>2 months free</small></label>
+        </fieldset>
+      </div>
+      <p>Every plan includes bank feeds, matching, the flag queue and Making Tax Digital submission. Prices exclude VAT. 14-day free trial, no card needed.</p>
+    </div>
+    <div class="plans">
+      <article class="plan" data-m="79">
+        <div class="plan-h"><h3>Desk</h3><span>Suits 3–5 staff</span></div>
+        <div class="price"><p class="amt num"><span class="pv">£79</span><span class="per">/ month</span></p><p class="eq"></p></div>
+        <div class="limits"><div>Clients<b class="num">Up to 40</b></div><div>Team members<b class="num">Up to 5</b></div></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Bank feeds and automatic matching</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>VAT returns with MTD submission</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Flag queue and receipt requests</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Email support</li>
+        </ul>
+        <a class="btn btn-ghost" href="#trial" data-plan="Desk">Start free trial</a>
+      </article>
+      <article class="plan" data-m="189">
+        <div class="plan-h"><h3>Practice</h3><span>Suits 6–20 staff</span></div>
+        <div class="price"><p class="amt num"><span class="pv">£189</span><span class="per">/ month</span></p><p class="eq"></p></div>
+        <div class="limits"><div>Clients<b class="num">Up to 150</b></div><div>Team members<b class="num">Up to 20</b></div></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Everything in Desk</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Preparer and approver roles</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Quarter-end overview for all clients</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Priority email and phone support</li>
+        </ul>
+        <a class="btn" href="#trial" data-plan="Practice">Start free trial</a>
+      </article>
+      <article class="plan" data-m="429">
+        <div class="plan-h"><h3>Firm</h3><span>Suits 21–50 staff</span></div>
+        <div class="price"><p class="amt num"><span class="pv">£429</span><span class="per">/ month</span></p><p class="eq"></p></div>
+        <div class="limits"><div>Clients<b class="num">Up to 500</b></div><div>Team members<b class="num">Up to 50</b></div></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Everything in Practice</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Teams and client groups by office</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Audit log export</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Named onboarding contact</li>
+        </ul>
+        <a class="btn btn-ghost" href="#trial" data-plan="Firm">Start free trial</a>
+      </article>
+    </div>
+    <p class="price-note">Over 500 clients? <a href="#trial">Start a trial</a> and tell us your firm size; we’ll set the right limit.</p>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="sec f-ink on-dark" id="security" aria-labelledby="sec-h">
+  <div class="wrap">
+    <div class="sec-top">
+      <h2 id="sec-h">Your clients’ figures stay in the UK.</h2>
+      <p>Ledgerline reads bank data; it never moves money. Here is how we hold what your clients trust you with.</p>
+    </div>
+    <div class="region">
+      <p class="region-l">Country where client data is stored</p>
+      <p class="sr">United Kingdom</p><p class="cells" aria-hidden="true"><span>U</span><span>N</span><span>I</span><span>T</span><span>E</span><span>D</span><span class="gap"></span><span>K</span><span>I</span><span>N</span><span>G</span><span>D</span><span>O</span><span>M</span></p>
+      <p class="region-n">Primary data and backups, both in UK data centres.</p>
+    </div>
+    <div class="secs">
+      <div class="sitem"><span class="ltr" aria-hidden="true">A</span><h3>Data handling</h3>
+        <ul><li>Bank access is read-only, by consent the client grants and can withdraw at any time.</li><li>Data is encrypted in transit and at rest.</li><li>We never sell or share client data, or use it to train models.</li><li>Leave and we export everything, then delete it within 30 days.</li></ul></div>
+      <div class="sitem"><span class="ltr" aria-hidden="true">B</span><h3>Hosting region</h3>
+        <ul><li>All client data and backups are stored in the United Kingdom.</li><li>Support staff see a client’s records only when your practice grants temporary access.</li></ul></div>
+      <div class="sitem"><span class="ltr" aria-hidden="true">C</span><h3>Access controls</h3>
+        <ul><li>Two-step sign-in for every team member.</li><li>Preparer and approver roles: no return is submitted without approval.</li><li>Restrict staff to the clients they work on; every change is in the audit log.</li></ul></div>
+    </div>
+    <p class="no-cert">We don’t list certifications we don’t hold. Ask us for our current security documentation during your trial.</p>
+  </div>
+</section>
+
+<!-- CUSTOMERS -->
+<section class="sec" id="customers" aria-labelledby="cust-h">
+  <div class="wrap">
+    <h2 id="cust-h" class="sr">What practices say</h2>
+    <div class="quotes">
+      <figure class="q-main" style="margin:0">
+        <blockquote><p>We used to lose the last week of every VAT quarter to ticking statements. Now it’s one afternoon on the lines Ledgerline flags.</p></blockquote>
+        <figcaption class="who"><span><b>Priya Chandran</b><span>Practice manager, Marlow Street Accountants, Sheffield · 14 staff</span></span></figcaption>
+      </figure>
+      <div class="q-side">
+        <figure>
+          <blockquote><p>It tells my team which nine transactions need a phone call, not which nine hundred need a look.</p></blockquote>
+          <figcaption class="who"><span><b>Owen Rhys</b><span>Partner, Rhys &amp; Talbot, Cardiff · 8 staff</span></span></figcaption>
+        </figure>
+        <figure>
+          <blockquote><p>Juniors review the matches, I approve the return. Nobody re-keys a figure any more.</p></blockquote>
+          <figcaption class="who"><span><b>Hannah Okafor</b><span>Director, Okafor Bennett &amp; Co, Norwich · 27 staff</span></span></figcaption>
+        </figure>
+      </div>
+    </div>
+    <p class="q-note">Practices and people quoted here are fictional, written to illustrate the product.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec f-tint" id="faq" aria-labelledby="faq-h">
+  <div class="wrap faq-grid">
+    <h2 id="faq-h">Notes on getting started.</h2>
+    <div class="faq-list">
+      <div class="qa"><h3><button type="button" aria-expanded="false" aria-controls="a1" id="q1"><span>Which banks can Ledgerline read?</span><span class="pm" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span></button></h3>
+        <div class="qa-panel" id="a1" role="region" aria-labelledby="q1"><div><p>Any UK bank or building society that offers Open Banking business account access. For anything else, import statements as CSV or OFX and matching works the same way.</p></div></div></div>
+      <div class="qa"><h3><button type="button" aria-expanded="false" aria-controls="a2" id="q2"><span>Does it submit VAT returns without us?</span><span class="pm" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span></button></h3>
+        <div class="qa-panel" id="a2" role="region" aria-labelledby="q2"><div><p>No. Ledgerline prepares the return; a named approver in your practice reviews it and submits it through Making Tax Digital. Nothing is filed automatically.</p></div></div></div>
+      <div class="qa"><h3><button type="button" aria-expanded="false" aria-controls="a3" id="q3"><span>What happens to transactions it can’t match?</span><span class="pm" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span></button></h3>
+        <div class="qa-panel" id="a3" role="region" aria-labelledby="q3"><div><p>They go to the flag queue with a reason. You can match them by hand, split them, mark them as outside the scope of VAT, or send the client a receipt request.</p></div></div></div>
+      <div class="qa"><h3><button type="button" aria-expanded="false" aria-controls="a4" id="q4"><span>Will it work with our clients’ bookkeeping?</span><span class="pm" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span></button></h3>
+        <div class="qa-panel" id="a4" role="region" aria-labelledby="q4"><div><p>Ledgerline reads invoices and bills from your clients’ existing records by file import, and receipts by photo or email. Your clients keep the bookkeeping software they use today.</p></div></div></div>
+      <div class="qa"><h3><button type="button" aria-expanded="false" aria-controls="a5" id="q5"><span>What happens when the trial ends?</span><span class="pm" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span></button></h3>
+        <div class="qa-panel" id="a5" role="region" aria-labelledby="q5"><div><p>After 14 days, choose a plan to carry on. If you don’t, your account pauses and its data is deleted 30 days later. No card is taken during the trial.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRIAL -->
+<section class="sec" id="trial" aria-labelledby="trial-h">
+  <div class="wrap trial-grid">
+    <div class="lead">
+      <h2 id="trial-h">Run your next quarter through it.</h2>
+      <p>Fourteen days, every feature, your real clients. Bring one client or fifty.</p>
+      <ul class="trial-list">
+        <li><svg aria-hidden="true"><use href="#i-tick"/></svg>No card needed</li>
+        <li><svg aria-hidden="true"><use href="#i-tick"/></svg>Connect a first bank feed in minutes</li>
+        <li><svg aria-hidden="true"><use href="#i-tick"/></svg>Keep everything you set up if you stay</li>
+      </ul>
+    </div>
+    <div class="tform" id="tformWrap">
+      <div class="part-head"><span>Trial application</span><span class="rhs">All boxes required</span></div>
+      <form id="tform" novalidate>
+        <div class="tfields">
+          <div class="tf"><label for="fname"><span class="bn">1</span>Your name</label><input id="fname" name="name" type="text" autocomplete="name" required aria-describedby="e-fname"><span class="err" id="e-fname"></span></div>
+          <div class="tf"><label for="femail"><span class="bn">2</span>Work email</label><input id="femail" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-femail" placeholder="name@yourfirm.co.uk"><span class="err" id="e-femail"></span></div>
+          <div class="tf"><label for="ffirm"><span class="bn">3</span>Firm name</label><input id="ffirm" name="firm" type="text" autocomplete="organization" required aria-describedby="e-ffirm"><span class="err" id="e-ffirm"></span></div>
+          <div class="tf"><label for="fsize"><span class="bn">4</span>Firm size</label><select id="fsize" name="size" required aria-describedby="e-fsize"><option value="">Choose staff count</option><option>1–2</option><option>3–10</option><option>11–50</option></select><span class="err" id="e-fsize"></span></div>
+        </div>
+        <p class="decl" id="planLine">Plan: you can choose after the trial.</p>
+        <div class="submit-row">
+          <p>We’ll email a sign-in link. No card needed.</p>
+          <button class="btn" type="submit" id="tsubmit">Start free trial</button>
+        </div>
+      </form>
+      <div class="success" id="tsuccess" hidden tabindex="-1">
+        <svg class="stamp" viewBox="0 0 150 150" aria-hidden="true">
+          <circle cx="75" cy="75" r="70" fill="none" stroke="currentColor" stroke-width="3"/>
+          <circle cx="75" cy="75" r="62" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path id="arcT" d="M27 75a48 48 0 0 1 96 0" fill="none"/>
+          <path id="arcB" d="M30 80a45 45 0 0 0 90 0" fill="none"/>
+          <text font-family="Archivo, sans-serif" font-size="13" font-weight="800" letter-spacing="3" fill="currentColor"><textPath href="#arcT" startOffset="50%" text-anchor="middle">LEDGERLINE</textPath></text>
+          <text font-family="Archivo, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5" fill="currentColor"><textPath href="#arcB" startOffset="50%" text-anchor="middle">TRIAL RECEIVED</textPath></text>
+          <rect x="30" y="62" width="90" height="26" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text id="stampDate" x="75" y="80" text-anchor="middle" font-family="Archivo, sans-serif" font-size="14" font-weight="800" fill="currentColor">15 OCT 2026</text>
+        </svg>
+        <div>
+          <h3 id="okTitle">Trial started.</h3>
+          <p id="okText">We’ve sent a sign-in link to your work email.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot on-dark">
+  <div class="wrap">
+    <div class="decl-line">
+      <h2>Ledgerline prepares. You approve. You submit.</h2>
+      <div>
+        <p>Accountancy stays your judgement. The ticking doesn’t have to be your job.</p>
+        <div class="ctas"><a class="btn btn-paper" href="#trial">Start free trial</a></div>
+      </div>
+    </div>
+    <p class="wordmark" aria-hidden="true"><span>L</span><span>E</span><span>D</span><span>G</span><span>E</span><span>R</span><span>L</span><span>I</span><span>N</span><span>E</span></p>
+    <div class="foot-row">
+      <address><b>Ledgerline Ltd</b> (fictional)<br>3rd floor, 14 Tallyman Yard<br>Leeds LS1 4QX, United Kingdom<br><a href="mailto:hello@ledgerline.example" style="color:var(--paper)">hello@ledgerline.example</a></address>
+      <nav class="flinks" aria-label="Footer">
+        <a href="#product">Product</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#security">Security</a><a href="#customers">Customers</a><a href="#faq">FAQ</a><a href="#signin">Sign in</a><a href="#privacy">Privacy</a><a href="#terms">Terms</a>
+      </nav>
+      <div class="social" aria-label="Social links" role="group">
+        <a href="#linkedin" aria-label="Ledgerline on LinkedIn"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1.5" y="1.5" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 8.5V14M6 5.6v.2M9.5 14V8.5M9.5 11c0-1.6 1-2.6 2.3-2.6s2.2.9 2.2 2.6V14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        <a href="#youtube" aria-label="Ledgerline on YouTube"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1.5" y="4" width="17" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8.3 7.5v5l4.3-2.5z" fill="currentColor"/></svg></a>
+        <a href="#x" aria-label="Ledgerline on X"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 3h4.6l10.4 14h-4.6z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M16.8 3l-5.9 6.4M3.2 17l5.9-6.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+      </div>
+      <p class="legal">© 2026 Ledgerline Ltd. A fictional company for demonstration. Making Tax Digital is an HMRC programme; Ledgerline is not affiliated with HMRC.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const d = document, b = d.body;
+  b.classList.remove('no-js'); b.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const gbp = (n, dp=2) => n.toLocaleString('en-GB', {minimumFractionDigits:dp, maximumFractionDigits:dp});
+  const int = n => Math.round(n).toLocaleString('en-GB');
+
+  /* ---------- mobile nav ---------- */
+  const mb = d.querySelector('.menu-btn'), mnav = d.getElementById('mnav');
+  const setMenu = open => {
+    mb.setAttribute('aria-expanded', open); mb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    mnav.classList.toggle('open', open);
+    if (open) mnav.querySelector('a').focus();
+  };
+  mb.addEventListener('click', () => setMenu(mb.getAttribute('aria-expanded') !== 'true'));
+  mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  d.addEventListener('keydown', e => { if (e.key === 'Escape' && mb.getAttribute('aria-expanded') === 'true') { setMenu(false); mb.focus(); } });
+  addEventListener('resize', () => { if (innerWidth > 1060 && mnav.classList.contains('open')) setMenu(false); });
+
+  /* ---------- roll helper ---------- */
+  const rolls = new WeakMap();
+  function roll(el, from, to, fmt, ms=320) {
+    cancelAnimationFrame(rolls.get(el));
+    if (reduce.matches || from === to) { el.textContent = fmt(to); return; }
+    const t0 = performance.now();
+    const step = t => {
+      const p = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(from + (to - from) * e);
+      if (p < 1) rolls.set(el, requestAnimationFrame(step));
+    };
+    rolls.set(el, requestAnimationFrame(step));
+  }
+
+  /* ---------- hero return sheet ---------- */
+  const base = {1:8412.60, 2:0, 3:8412.60, 4:2955.35, 5:5457.25, 6:42063, 7:14777, 8:0, 9:0};
+  const resolved = {4:2986.35, 5:5426.25, 7:14932};
+  let cur = {...base};
+  const boxEl = n => d.querySelector('.box[data-b="'+n+'"]');
+  function setBox(n, v, animate=true) {
+    const el = boxEl(n), pd = el.querySelector('.pd'), pp = el.querySelector('.pp');
+    const whole = n >= 6;
+    const fmt = x => { if (whole) return int(x); const s = gbp(x); pp.textContent = s.slice(-2); return s.slice(0, -3); };
+    if (whole) { roll(pd, animate ? cur[n] : v, v, int, 700); }
+    else if (animate && !reduce.matches) {
+      const from = cur[n], t0 = performance.now(), ms = 700;
+      const step = t => { const p = Math.min(1,(t-t0)/ms), e = 1-Math.pow(1-p,3); pd.textContent = fmt(from+(v-from)*e); if (p<1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    } else pd.textContent = fmt(v);
+    if (animate && cur[n] !== v) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+    cur[n] = v;
+  }
+  const rows = [...d.querySelectorAll('.tx[data-s="ok"]')];
+  const flagRow = d.getElementById('flagRow'), reqBtn = d.getElementById('reqBtn'), status = d.getElementById('sheetStatus');
+  const flagHTML = flagRow.querySelector('.tx-st').innerHTML;
+  let timers = [];
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+  function bindReq() {
+    const btn = d.getElementById('reqBtn'); if (!btn) return;
+    btn.addEventListener('click', () => {
+      btn.disabled = true; btn.textContent = 'Requested…';
+      later(() => {
+        flagRow.dataset.s = 'pending';
+        flagRow.classList.remove('tx-flag');
+        flagRow.querySelector('.tx-who small').textContent = 'Card payment · receipt uploaded by client';
+        flagRow.querySelector('.tx-st').innerHTML = '<svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="st-text">Receipt R-0093</span>';
+        flagRow.classList.add('drawn');
+        requestAnimationFrame(() => requestAnimationFrame(() => { flagRow.dataset.s = 'ok'; }));
+        drawRoutes();
+        routes.querySelectorAll('path[data-row="' + rowsAll.indexOf(flagRow) + '"]').forEach(p => { p.style.strokeDashoffset = p.dataset.len; requestAnimationFrame(() => requestAnimationFrame(() => p.style.strokeDashoffset = 0)); });
+        setBox(4, resolved[4]); setBox(7, resolved[7]);
+        later(() => setBox(5, resolved[5]), 260);
+        status.innerHTML = '<span class="ready">214 of 214 matched · ready for approval</span> · example figures';
+      }, reduce.matches ? 0 : 900);
+    });
+  }
+  /* ledger lines: route each matched row to the boxes it feeds */
+  const routes = d.getElementById('routes'), body = d.querySelector('.sheet-body');
+  const rowsAll = [...d.querySelectorAll('.tx')];
+  const refsOf = r => [...r.querySelectorAll('.refs i:not(.none)')].map(i => +i.textContent);
+  const NS = 'http://www.w3.org/2000/svg';
+  function drawRoutes() {
+    routes.innerHTML = '';
+    if (getComputedStyle(routes).display === 'none') return;
+    const bb = body.getBoundingClientRect();
+    rowsAll.forEach((r, ri) => {
+      r.querySelectorAll('.refs i:not(.none)').forEach(chip => {
+        const n = +chip.textContent, bn = boxEl(n).querySelector('.bn');
+        const a = chip.getBoundingClientRect(), z = bn.getBoundingClientRect(), g = chip.parentNode.getBoundingClientRect();
+        const sx = g.right - bb.left, sy = a.top + a.height / 2 - bb.top, ex = z.left - bb.left, ey = z.top + z.height / 2 - bb.top;
+        const mx = (sx + ex) / 2;
+        const path = d.createElementNS(NS, 'path');
+        path.setAttribute('d', `M${sx} ${sy} C${mx} ${sy} ${mx} ${ey} ${ex} ${ey}`);
+        path.dataset.row = ri;
+        if (r.dataset.s === 'flag') path.classList.add('flagged');
+        routes.appendChild(path);
+        const L = Math.ceil(path.getTotalLength()); path.dataset.len = L;
+        if (r.dataset.s !== 'flag') { path.style.strokeDasharray = L; path.style.strokeDashoffset = r.dataset.s === 'pending' ? L : 0; path.style.transition = 'stroke-dashoffset .5s cubic-bezier(.23,1,.32,1)'; }
+      });
+    });
+  }
+  const hot = i => routes.querySelectorAll('path').forEach(p => p.classList.toggle('hot', +p.dataset.row === i));
+  rowsAll.forEach((r, i) => { ['mouseenter','focusin'].forEach(ev => r.addEventListener(ev, () => hot(i))); ['mouseleave','focusout'].forEach(ev => r.addEventListener(ev, () => hot(-1))); });
+  let rT; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(drawRoutes, 120); });
+
+  function resetFlag() {
+    flagRow.dataset.s = 'flag'; flagRow.classList.add('tx-flag'); flagRow.classList.remove('drawn');
+    flagRow.querySelector('.tx-who small').textContent = 'Card payment · no receipt yet';
+    flagRow.querySelector('.tx-st').innerHTML = flagHTML; bindReq();
+  }
+  bindReq();
+
+  const r2 = x => Math.round(x * 100) / 100;
+  function derive() { setBox(3, r2(cur[1] + cur[2])); setBox(5, r2(cur[3] - cur[4])); }
+  function play() {
+    timers.forEach(clearTimeout); timers = [];
+    resetFlag();
+    status.innerHTML = '213 matched · <strong>1 to review</strong> · example figures';
+    if (reduce.matches) { rows.forEach(r => r.dataset.s = 'ok'); Object.entries(base).forEach(([n,v]) => setBox(+n, v, false)); drawRoutes(); return; }
+    rows.forEach(r => { r.classList.remove('drawn'); r.dataset.s = 'pending'; });
+    drawRoutes();
+    Object.keys(base).forEach(n => setBox(+n, 0, false));
+    requestAnimationFrame(() => rows.forEach(r => r.classList.add('drawn')));
+    routes.querySelectorAll('path').forEach(p => p.style.strokeDashoffset = p.dataset.len);
+    rows.forEach((r, i) => later(() => {
+      r.dataset.s = 'ok';
+      const frac = (i + 1) / rows.length;
+      refsOf(r).forEach(n => setBox(n, n >= 6 ? Math.round(base[n] * frac) : Math.round(base[n] * frac * 100) / 100));
+      derive();
+      hot(rowsAll.indexOf(r));
+      routes.querySelectorAll('path[data-row="' + rowsAll.indexOf(r) + '"]').forEach(p => p.style.strokeDashoffset = 0);
+    }, 450 + i * 420));
+    const end = 450 + rows.length * 420;
+    later(() => hot(-1), end + 600);
+    later(() => { setBox(1, base[1]); setBox(6, base[6]); setBox(4, base[4]); setBox(7, base[7]); derive(); }, end);
+  }
+  d.getElementById('replay').addEventListener('click', play);
+  drawRoutes();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawRoutes);
+  if (!reduce.matches) {
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setTimeout(play, 150)); else play();
+  }
+
+  /* ---------- how-it-works route draw ---------- */
+  const route = d.querySelector('.route');
+  d.querySelectorAll('.draw .d').forEach(p => { try { const L = Math.ceil(p.getTotalLength()); p.style.setProperty('--len', L); } catch(e){} });
+  if ('IntersectionObserver' in window && !reduce.matches) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { route.classList.add('in'); io.disconnect(); } }), {threshold:.25});
+    io.observe(route);
+  } else route.classList.add('in');
+
+  /* ---------- estimator ---------- */
+  const cR = d.getElementById('clientsR'), cN = d.getElementById('clientsN'), tR = d.getElementById('txR'), tN = d.getElementById('txN');
+  const hOut = d.getElementById('hoursOut'), live = d.getElementById('hoursLive');
+  const txOut = d.getElementById('txOut'), daysOut = d.getElementById('daysOut'), yearOut = d.getElementById('yearOut');
+  let last = {h:0, t:0, dd:0, y:0}, liveT;
+  const hoursNode = d.createTextNode(''); hOut.firstChild.replaceWith(hoursNode);
+  const fill = r => r.style.setProperty('--p', ((r.value - r.min) / (r.max - r.min) * 100) + '%');
+  function calc(animate=true) {
+    const c = Math.max(0, +cN.value || 0), t = Math.max(0, +tN.value || 0);
+    const tx = c * t, h = tx * 40 / 3600, dd = h / 7.5, y = h * 12;
+    const ms = animate ? 300 : 0;
+    const set = (el, a, z, f) => animate ? roll(el, a, z, f, ms) : (el.textContent = f(z));
+    set(hoursNode, last.h, h, x => h < 10 ? (Math.round(x*10)/10).toLocaleString('en-GB') : int(x));
+    set(txOut, last.t, tx, int);
+    set(daysOut, last.dd, dd, x => (Math.round(x*10)/10).toLocaleString('en-GB', {minimumFractionDigits:1, maximumFractionDigits:1}));
+    set(yearOut, last.y, y, int);
+    last = {h, t:tx, dd, y};
+    clearTimeout(liveT);
+    liveT = setTimeout(() => { live.textContent = 'About ' + (h < 10 ? (Math.round(h*10)/10) : int(h)) + ' hours saved per month, from ' + int(tx) + ' transactions.'; }, 450);
+  }
+  const link = (r, n) => {
+    r.addEventListener('input', () => { n.value = r.value; fill(r); calc(); });
+    n.addEventListener('input', () => { const v = Math.min(+n.max, Math.max(0, Math.round(+n.value || 0))); r.value = Math.min(+r.max, Math.max(+r.min, v)); fill(r); calc(); });
+    n.addEventListener('blur', () => { if (!n.value || +n.value < 1) { n.value = 1; r.value = 1; fill(r); calc(); } });
+    fill(r);
+  };
+  link(cR, cN); link(tR, tN); calc(false);
+
+  /* ---------- pricing toggle ---------- */
+  const plans = [...d.querySelectorAll('.plan')];
+  let yearly = false;
+  function setBill(y) {
+    plans.forEach(p => {
+      const m = +p.dataset.m, pv = p.querySelector('.pv'), per = p.querySelector('.per'), eq = p.querySelector('.eq');
+      const from = yearly ? m*10 : m, to = y ? m*10 : m;
+      roll(pv, from, to, x => '£' + int(x), 320);
+      per.textContent = y ? '/ year' : '/ month';
+      eq.textContent = y ? 'Equal to £' + gbp(m*10/12) + ' a month. Save £' + int(m*2) + '.' : '';
+    });
+    yearly = y;
+  }
+  d.querySelectorAll('input[name="bill"]').forEach(r => r.addEventListener('change', () => setBill(r.value === 'y')));
+  const planLine = d.getElementById('planLine');
+  d.querySelectorAll('[data-plan]').forEach(a => a.addEventListener('click', () => {
+    planLine.textContent = 'Plan noted: ' + a.dataset.plan + ', billed ' + (yearly ? 'yearly' : 'monthly') + '. You can change it after the trial.';
+  }));
+
+  /* ---------- FAQ ---------- */
+  d.querySelectorAll('.qa button').forEach(btn => btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', open);
+    btn.closest('.qa').classList.toggle('open', open);
+  }));
+
+  /* ---------- trial form ---------- */
+  const form = d.getElementById('tform'), ok = d.getElementById('tsuccess'), sub = d.getElementById('tsubmit');
+  const rules = {
+    fname: v => v.trim().length >= 2 || 'Enter your name.',
+    femail: v => !v.trim() ? 'Enter your work email.' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'That email looks incomplete. Check it has an @ and a domain.'),
+    ffirm: v => v.trim().length >= 2 || 'Enter your firm’s name.',
+    fsize: v => !!v || 'Choose your firm size.'
+  };
+  function check(id) {
+    const el = d.getElementById(id), r = rules[id](el.value), box = el.closest('.tf'), err = d.getElementById('e-' + id);
+    if (r === true) { box.removeAttribute('data-invalid'); el.removeAttribute('aria-invalid'); err.textContent = ''; return true; }
+    box.setAttribute('data-invalid', ''); el.setAttribute('aria-invalid', 'true'); err.textContent = r; return false;
+  }
+  Object.keys(rules).forEach(id => {
+    const el = d.getElementById(id);
+    el.addEventListener('blur', () => { if (el.value || el.closest('.tf').hasAttribute('data-invalid')) check(id); });
+    el.addEventListener('input', () => { if (el.closest('.tf').hasAttribute('data-invalid')) check(id); });
+    el.addEventListener('change', () => { if (el.tagName === 'SELECT') check(id); });
+  });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const bad = Object.keys(rules).filter(id => !check(id));
+    if (bad.length) { d.getElementById(bad[0]).focus(); return; }
+    sub.setAttribute('aria-busy', 'true'); sub.textContent = 'Starting trial…';
+    setTimeout(() => {
+      const name = d.getElementById('fname').value.trim().split(/\s+/)[0];
+      const email = d.getElementById('femail').value.trim();
+      d.getElementById('okTitle').textContent = 'Trial started, ' + name + '.';
+      d.getElementById('okText').textContent = 'We’ve sent a sign-in link to ' + email + '. Connect your first client’s bank feed and Ledgerline will start matching.';
+      const now = new Date();
+      d.getElementById('stampDate').textContent = now.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}).toUpperCase();
+      form.hidden = true; ok.hidden = false; ok.classList.add('arrive'); ok.focus();
+    }, reduce.matches ? 0 : 700);
+  });
+})();
+</script>
+</body>
+</html>

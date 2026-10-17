@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold Architects, Glasgow</title>
+<meta name="description" content="Fold is a six-person architecture studio in Glasgow working on housing retrofits, small civic buildings and timber extensions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+<style>
+@font-face {
+  font-family: "Fold Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica");
+  size-adjust: 97%;
+  ascent-override: 100%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+:root {
+  --board: #D4D0C7;
+  --board-deep: #BDB8AD;
+  --card: #F7F6F2;
+  --field: #FDFCFA;
+  --ink: #1C1B19;
+  --ink-2: #4A4741;
+  --rule: #8F8A80;
+  --red: #923620;
+  --red-deep: #6F2716;
+  --font: "Schibsted Grotesk", "Fold Fallback", sans-serif;
+  --display: clamp(2.5rem, 6.4vw, 6.5rem);
+  --title: 1.5rem;
+  --body: 1.125rem;
+  --meta: 0.9375rem;
+  --m: clamp(1rem, 3.6vw, 3.5rem);
+  --gap: clamp(1rem, 2.4vw, 2.5rem);
+  --section: clamp(6rem, 11vw, 10.5rem);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 1.5rem; scrollbar-color: var(--ink-2) var(--board); }
+body {
+  margin: 0;
+  background: var(--board);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--body);
+  line-height: 1.55;
+  font-feature-settings: "kern";
+  caret-color: var(--ink);
+}
+::selection { background: var(--ink); color: var(--card); }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.btn:focus-visible { outline-color: var(--ink); }
+.vh { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: var(--m); top: -4rem; background: var(--ink); color: var(--card); padding: 0.6rem 1rem; z-index: 10; }
+.skip:focus { top: 0.75rem; }
+
+.wrap { padding-inline: var(--m); max-width: 1600px; margin-inline: auto; }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+
+.display { font-size: var(--display); line-height: 0.96; letter-spacing: -0.035em; font-weight: 700; text-wrap: balance; }
+.title { font-size: var(--title); line-height: 1.25; letter-spacing: -0.01em; font-weight: 500; }
+.meta { font-size: var(--meta); line-height: 1.45; color: var(--ink-2); }
+
+/* links and buttons: hover/focus only, no movement */
+@media (hover: hover) {
+  a, .btn, .menu-btn { transition: color 150ms ease, background-color 150ms ease, text-decoration-color 150ms ease, border-color 150ms ease; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+.link { font-weight: 500; text-decoration-thickness: 1px; }
+.link:hover { text-decoration-thickness: 2px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.75rem; padding: 0.55rem 1.1rem;
+  background: var(--red); color: var(--card);
+  border: 1px solid var(--red); border-radius: 0;
+  font: 500 var(--body)/1.2 var(--font); text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.btn:hover { background: var(--red-deep); border-color: var(--red-deep); }
+
+/* header */
+.site-head { padding-block: 1.25rem; }
+.site-head .bar { display: flex; align-items: center; gap: 1.5rem; }
+.wordmark { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.5rem; letter-spacing: -0.03em; text-decoration: none; margin-right: auto; min-height: 2.75rem; }
+.wordmark svg { width: 2rem; height: auto; }
+.nav { display: flex; gap: 2rem; align-items: center; }
+.nav a { text-decoration: none; font-weight: 500; padding-block: 0.6rem; }
+.nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.menu-btn { display: none; }
+.menu { display: none; }
+.menu-btn .i-close, .menu-btn[aria-expanded="true"] .i-open { display: none; }
+.menu-btn[aria-expanded="true"] .i-close { display: inline; }
+
+/* hero */
+.hero { padding-top: clamp(2rem, 5vw, 4.5rem); }
+.hero h1 { grid-column: 1 / -1; max-width: 100%; }
+.hero .lede { grid-column: 1 / 5; align-self: start; padding-top: clamp(1.5rem, 5vw, 5.5rem); }
+.hero .lede p { max-width: 30ch; }
+.hero .lede .link { display: inline-block; margin-top: 1.5rem; padding-block: 0.4rem; }
+.hero figure { grid-column: 5 / -1; margin-right: calc(var(--m) * -1); margin-top: clamp(1rem, 2.5vw, 2.5rem); }
+.hero figure svg { width: 88%; height: auto; margin-left: auto; margin-right: var(--m); }
+.legend { display: grid; gap: 0.5rem; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); max-width: 30ch; }
+.legend span { display: inline-flex; align-items: center; gap: 0.55rem; white-space: nowrap; }
+.legend .sw { width: 1.4rem; height: auto; flex: none; }
+.sw-card { background: var(--card); }
+.sw-red { background: #B04A30; }
+
+/* sections */
+.section { padding-top: var(--section); }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem 2rem; flex-wrap: wrap; margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+
+/* work */
+.seg { display: inline-flex; border: 1px solid var(--ink); }
+.seg button {
+  font: 500 var(--body)/1.2 var(--font); color: var(--ink); background: transparent;
+  border: 0; border-left: 1px solid var(--ink); padding: 0.6rem 1rem; min-height: 2.75rem; cursor: pointer;
+}
+.seg button:first-child { border-left: 0; }
+.seg button:hover { background: var(--board-deep); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+.filter-row { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(3.5rem, 5vw, 5rem) var(--gap); }
+.project[hidden] { display: none; }
+.project figure { aspect-ratio: 5 / 4; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 1.5rem; }
+.project figure svg { width: 100%; height: 100%; }
+.project h3 { margin-bottom: 0.5rem; }
+.project p { max-width: 38ch; }
+.project dl { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; column-gap: 1.75rem; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); }
+.project dt { font-size: var(--meta); color: var(--ink-2); }
+.project dd { font-size: var(--meta); }
+.project dl div:nth-child(2) dd { font-variant-numeric: tabular-nums; }
+.empty { margin-top: 1rem; }
+
+/* approach */
+.principles li { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 0.75rem; padding-block: 1.75rem 2.25rem; border-top: 1px solid var(--ink); }
+.principles li:last-child { border-bottom: 1px solid var(--ink); }
+.principles h3 { grid-column: 1 / 6; }
+.principles p { grid-column: 6 / 12; max-width: 52ch; }
+.title { text-wrap: balance; }
+
+/* studio */
+.studio-h { grid-column: 1 / 6; }
+.studio-text { grid-column: 6 / -1; font-size: var(--title); line-height: 1.4; letter-spacing: -0.01em; max-width: 36ch; padding-top: 0.6rem; }
+.register { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.register li { border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 1.25rem 1.25rem 1.5rem; display: flex; flex-direction: column-reverse; gap: 0.35rem; min-height: 7.5rem; justify-content: flex-end; }
+.register .title { font-weight: 500; }
+
+/* contact */
+.contact-side { grid-column: 1 / 6; }
+.contact-side p { max-width: 32ch; margin-top: 1.75rem; }
+.direct { margin-top: 2rem; display: grid; gap: 0.25rem; }
+.direct a { font-weight: 500; text-decoration-thickness: 1px; padding-block: 0.3rem; display: inline-block; }
+.direct a:hover { text-decoration-thickness: 2px; }
+.sheet { grid-column: 6 / -1; background: var(--card); border: 1px solid var(--ink); padding: clamp(1.25rem, 3vw, 2.75rem); }
+.sheet h3 { margin-bottom: 1.75rem; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem var(--gap); }
+.field { display: grid; gap: 0.4rem; align-content: start; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-weight: 500; font-size: var(--meta); }
+.field input, .field select, .field textarea {
+  width: 100%; font: 400 max(16px, var(--body))/1.4 var(--font); color: var(--ink);
+  background: var(--field); border: 1px solid var(--ink-2); border-radius: 0; padding: 0.7rem 0.8rem; min-height: 3rem;
+}
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231C1B19' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
+.field textarea { min-height: 9rem; resize: vertical; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--ink); }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline-offset: 1px; border-color: var(--ink); }
+.field [aria-invalid="true"] { border-color: var(--ink); border-width: 2px; padding: calc(0.7rem - 1px) calc(0.8rem - 1px); }
+.field select[aria-invalid="true"] { padding-right: calc(2.5rem - 1px); }
+.err { color: var(--ink); font-size: var(--meta); font-weight: 500; display: flex; gap: 0.5rem; align-items: baseline; }
+.err::before { content: ""; flex: none; width: 0.6rem; height: 0.6rem; border: 2px solid var(--ink); transform: rotate(45deg) translateY(-0.05rem); }
+.err:empty { display: none; }
+.submit-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
+.submit-row .btn { min-height: 3.25rem; padding-inline: 1.6rem; }
+.done { display: grid; gap: 1rem; }
+.done[hidden] { display: none; }
+
+/* footer */
+.site-foot { margin-top: var(--section); background: var(--board-deep); padding-top: clamp(3rem, 6vw, 5rem); overflow: hidden; }
+.close { position: relative; }
+.close .mark-big { width: 100%; height: auto; display: block; }
+.close .small-model { position: absolute; right: 0; bottom: 30%; width: clamp(9rem, 24vw, 22rem); }
+.foot-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 2.5rem; padding-block: 1.25rem 2rem; border-top: 1px solid var(--ink); }
+.foot-line address { font-style: normal; margin-right: auto; }
+.foot-line a { text-decoration-thickness: 1px; display: inline-block; padding-block: 0.3rem; }
+.foot-line a:hover { text-decoration-thickness: 2px; }
+.foot-line .social { display: inline-flex; gap: 1.5rem; }
+
+/* tablet */
+@media (max-width: 1023px) {
+  .hero .lede { grid-column: 1 / 6; }
+  .hero figure { grid-column: 6 / -1; }
+  .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :root { --display: clamp(2.75rem, 9vw, 5rem); }
+  .studio-h { grid-column: 1 / -1; margin-bottom: 2rem; }
+  .studio-text { grid-column: 1 / -1; padding-top: 0; }
+  .principles h3 { grid-column: 1 / -1; }
+  .principles p { grid-column: 1 / -1; }
+  .contact-side { grid-column: 1 / -1; margin-bottom: 3rem; }
+  .sheet { grid-column: 1 / -1; }
+}
+@media (max-width: 860px) {
+  .hero .lede { grid-column: 1 / -1; padding-top: 0; }
+  .hero .lede p { max-width: 40ch; }
+  .hero figure { grid-column: 1 / -1; margin-inline: 0; }
+  .hero figure svg { width: 100%; margin: 0; }
+}
+@media (min-width: 720px) and (max-width: 860px) {
+  .hero .lede { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--gap); align-items: end; margin-top: 1.75rem; }
+  .hero .lede .link { margin-top: 0; }
+  .hero .legend { grid-column: 1 / -1; display: flex; gap: 1.75rem; max-width: none; margin-top: 1.25rem; padding-top: 0; border-top: 0; }
+}
+@media (max-width: 719px) {
+  .hero .lede { order: 3; margin-top: 1.5rem; }
+}
+/* phone */
+@media (max-width: 719px) {
+  .nav { display: none; }
+  .menu-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 0.8rem;
+    font: 500 var(--body)/1 var(--font); color: var(--ink); background: transparent; border: 1px solid var(--ink); border-radius: 0; cursor: pointer;
+  }
+  .menu-btn:hover { background: var(--board-deep); }
+  .site-head .bar { gap: 0.6rem; }
+  .head-cta .long { display: none; }
+  .menu:not([hidden]) { display: block; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); margin-top: 1rem; }
+  .menu a { display: block; padding-block: 0.85rem; font-size: var(--title); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .menu li:last-child a { border-bottom: 0; }
+  .projects { grid-template-columns: 1fr; }
+  .principles li { padding-block: 1.5rem 1.75rem; }
+  .register { grid-template-columns: 1fr; }
+  .register li { padding: 0.9rem 1rem 1rem; min-height: 0; }
+  .hero .lede { display: flex; flex-direction: column; }
+  .hero .legend { order: -1; margin: 0 0 1.5rem; padding-top: 0; border-top: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; max-width: none; }
+  .fields { grid-template-columns: 1fr; }
+  .seg { width: 100%; }
+  .seg button { flex: 1 1 auto; padding-inline: 0.5rem; }
+  .foot-line { flex-direction: column; gap: 0.25rem; }
+  .foot-line address { margin-bottom: 0.5rem; }
+  .close .small-model { position: static; width: 11rem; margin: 0.5rem 0 0.75rem auto; }
+  .filter-row { width: 100%; }
+}
+@media (min-width: 720px) { .head-cta .short { display: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head wrap">
+  <div class="bar">
+    <a class="wordmark" href="#top" aria-label="Fold Architects, home">
+      <svg viewBox="0 0 32 24" aria-hidden="true" focusable="false"><path d="M2 17 L13 4 L30 9 L19 22 Z" fill="none"/><path d="M2 17 L13 4 L19 22 Z" fill="#F7F6F2" stroke="#1C1B19" stroke-width="1.4" stroke-linejoin="round"/><path d="M13 4 L30 9 L19 22 Z" fill="#B04A30" stroke="#1C1B19" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Fold
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#studio">Studio</a>
+      <a href="#approach">Approach</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn head-cta" href="#contact"><span class="long">Start an enquiry</span><span class="short">Enquire</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">
+      <svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path class="i-open" d="M0 2h18M0 7h18M0 12h18" stroke="#1C1B19" stroke-width="1.5"/><path class="i-close" d="M3 1l12 12M15 1L3 13" stroke="#1C1B19" stroke-width="1.5"/></svg>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+  <nav class="menu" id="menu" aria-label="Main (mobile)" hidden>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero wrap" id="top" aria-labelledby="hero-h">
+    <div class="grid">
+      <h1 id="hero-h" class="display">Old buildings, new rooms.</h1>
+      <div class="lede">
+        <p>Fold is a six-person architecture studio in Glasgow. We retrofit homes so they stay warm, design small civic buildings, and add timber extensions that sit quietly behind them.</p>
+        <a class="link" href="#work">See the work</a>
+        <p class="legend meta" id="legend">
+          <span><svg class="sw" viewBox="0 0 22 20" aria-hidden="true" focusable="false"><path d="M11 1 20 6 11 11 2 6Z" fill="#FBFAF7"/><path d="M2 6 11 11V19L2 14Z" fill="#EDEBE6"/><path d="M11 11 20 6V14L11 19Z" fill="#D9D5CD"/><path d="M11 1 20 6V14L11 19 2 14V6ZM2 6l9 5 9-5M11 11v8" fill="none" stroke="#1C1B19" stroke-width="1" stroke-linejoin="round"/></svg>Existing building, white card</span>
+          <span><svg class="sw" viewBox="0 0 22 20" aria-hidden="true" focusable="false"><path d="M11 1 20 6 11 11 2 6Z" fill="#B84A30"/><path d="M2 6 11 11V19L2 14Z" fill="#9C3D27"/><path d="M11 11 20 6V14L11 19Z" fill="#7A2D1C"/><path d="M11 1 20 6V14L11 19 2 14V6ZM2 6l9 5 9-5M11 11v8" fill="none" stroke="#1C1B19" stroke-width="1" stroke-linejoin="round"/></svg>Our new work, red</span>
+        </p>
+      </div>
+      <figure>
+        {{hero}}
+      </figure>
+    </div>
+  </section>
+
+  <section class="section wrap" id="work" aria-labelledby="work-h">
+    <div class="section-head">
+      <h2 id="work-h" class="display">Work</h2>
+      <div class="filter-row">
+        <div class="seg" role="group" aria-label="Filter projects by type">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter="housing" aria-pressed="false">Housing</button>
+          <button type="button" data-filter="civic" aria-pressed="false">Civic</button>
+          <button type="button" data-filter="extensions" aria-pressed="false">Extensions</button>
+        </div>
+        <p class="meta" id="work-count" aria-live="polite">Showing all 6 projects</p>
+      </div>
+    </div>
+    <ul class="projects">
+      <li class="project" data-type="housing">
+        <figure>{{close14}}</figure>
+        <h3 class="title">Close 14 retrofit</h3>
+        <p>Eight tenement flats made warm from the inside: wood-fibre lining, new sash windows and one shared heat pump.</p>
+        <dl><div><dt>Place</dt><dd>Hyndland, Glasgow</dd></div><div><dt>Year</dt><dd>2024</dd></div><div><dt>Type</dt><dd>Housing</dd></div></dl>
+      </li>
+      <li class="project" data-type="civic">
+        <figure>{{library}}</figure>
+        <h3 class="title">Back-court reading room</h3>
+        <p>One timber room in a tenement back court, a small library that the neighbours can see into from their kitchens.</p>
+        <dl><div><dt>Place</dt><dd>Govanhill, Glasgow</dd></div><div><dt>Year</dt><dd>2023</dd></div><div><dt>Type</dt><dd>Civic</dd></div></dl>
+      </li>
+      <li class="project" data-type="extensions">
+        <figure>{{kitchen}}</figure>
+        <h3 class="title">Kitchen on the green</h3>
+        <p>A low timber kitchen behind a stone villa, its roof one plane that steps down to the garden.</p>
+        <dl><div><dt>Place</dt><dd>Shawlands, Glasgow</dd></div><div><dt>Year</dt><dd>2025</dd></div><div><dt>Type</dt><dd>Extensions</dd></div></dl>
+      </li>
+      <li class="project" data-type="housing">
+        <figure>{{cottages}}</figure>
+        <h3 class="title">Weavers' row</h3>
+        <p>Four single-storey cottages re-roofed and insulated with lime and wood fibre, so the stone walls can keep breathing.</p>
+        <dl><div><dt>Place</dt><dd>Kilbarchan, Renfrewshire</dd></div><div><dt>Year</dt><dd>2022</dd></div><div><dt>Type</dt><dd>Housing</dd></div></dl>
+      </li>
+      <li class="project" data-type="civic">
+        <figure>{{hall}}</figure>
+        <h3 class="title">Waterside hall</h3>
+        <p>A village hall rebuilt as one tall timber room with a shared kitchen, keeping the old stone porch at the door.</p>
+        <dl><div><dt>Place</dt><dd>Kirkintilloch, East Dunbartonshire</dd></div><div><dt>Year</dt><dd>2021</dd></div><div><dt>Type</dt><dd>Civic</dd></div></dl>
+      </li>
+      <li class="project" data-type="extensions">
+        <figure>{{garden}}</figure>
+        <h3 class="title">Garden room</h3>
+        <p>A two-room studio at the far end of a long garden, clad in charred larch and lit from the north.</p>
+        <dl><div><dt>Place</dt><dd>Pollokshields, Glasgow</dd></div><div><dt>Year</dt><dd>2023</dd></div><div><dt>Type</dt><dd>Extensions</dd></div></dl>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section wrap" id="studio" aria-labelledby="studio-h">
+    <div class="grid">
+      <h2 id="studio-h" class="display studio-h">Studio</h2>
+      <p class="studio-text">Fold is six people in one room in the Merchant City. Everyone draws, everyone makes models, and everyone goes to site. We stay small so the person you meet at the first conversation is the person who sees your building finished.</p>
+      <ul class="register" aria-label="The six people at Fold">
+        <li><span class="title">Morag Lindsay</span><span class="meta">Director, architect</span></li>
+        <li><span class="title">Daniel Okafor</span><span class="meta">Director, architect</span></li>
+        <li><span class="title">Aileen Kerr</span><span class="meta">Architect, retrofit lead</span></li>
+        <li><span class="title">Tomasz Nowak</span><span class="meta">Architect</span></li>
+        <li><span class="title">Isla Reid</span><span class="meta">Architectural assistant</span></li>
+        <li><span class="title">Ewan MacLeod</span><span class="meta">Model maker and studio manager</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section wrap approach" id="approach" aria-labelledby="approach-h">
+    <div class="section-head"><h2 id="approach-h" class="display">Approach</h2></div>
+    <ol class="principles">
+        <li>
+          <h3 class="title">Keep what is already there.</h3>
+          <p>The lowest-carbon building is usually the one standing. We repair stone, slate and sash before we replace anything, and we survey the existing building first so the new work can stay modest.</p>
+        </li>
+        <li>
+          <h3 class="title">Make it warm, and let it breathe.</h3>
+          <p>Old walls need to dry out. We insulate tenements and cottages with breathable materials such as wood fibre, lime and cork, and we draw every junction where damp could gather.</p>
+        </li>
+        <li>
+          <h3 class="title">Build the new rooms in timber.</h3>
+          <p>When a building needs to grow, we frame and clad it in timber: light on old foundations, quick to put up, and quieter for the people next door.</p>
+        </li>
+        <li>
+          <h3 class="title">Design it with the people who use it.</h3>
+          <p>Every project starts at a table with a card model you can pick up and change. Residents, committees and neighbours see the building at 1:100 before anyone signs a drawing.</p>
+        </li>
+    </ol>
+  </section>
+
+  <section class="section wrap" id="contact" aria-labelledby="contact-h">
+    <div class="grid">
+      <div class="contact-side">
+        <h2 id="contact-h" class="display">Contact</h2>
+        <p>Tell us about the building and what it needs. A sketch, a few photos or a single sentence is enough to start. We reply to every enquiry by email.</p>
+        <div class="direct">
+          <a href="mailto:studio@fold.example">studio@fold.example</a>
+          <a href="tel:+441414960732">0141 496 0732</a>
+        </div>
+      </div>
+      <div class="sheet">
+        <form id="enquiry" novalidate>
+          <h3 class="title">Start an enquiry</h3>
+          <div class="fields">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+              <p class="err" id="e-name"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="e-email">
+              <p class="err" id="e-email"></p>
+            </div>
+            <div class="field">
+              <label for="f-type">Project type</label>
+              <select id="f-type" name="type" required aria-describedby="e-type">
+                <option value="">Choose a type</option>
+                <option>Housing retrofit</option>
+                <option>Civic building</option>
+                <option>Timber extension</option>
+                <option>Something else</option>
+              </select>
+              <p class="err" id="e-type"></p>
+            </div>
+            <div class="field">
+              <label for="f-budget">Budget range</label>
+              <select id="f-budget" name="budget" required aria-describedby="e-budget">
+                <option value="">Choose a range</option>
+                <option>Under £50,000</option>
+                <option>£50,000 to £150,000</option>
+                <option>£150,000 to £500,000</option>
+                <option>Over £500,000</option>
+                <option>Not sure yet</option>
+              </select>
+              <p class="err" id="e-budget"></p>
+            </div>
+            <div class="field full">
+              <label for="f-msg">About the building</label>
+              <textarea id="f-msg" name="message" required aria-describedby="e-msg"></textarea>
+              <p class="err" id="e-msg"></p>
+            </div>
+          </div>
+          <div class="submit-row">
+            <p class="meta">All fields are needed.</p>
+            <button class="btn" type="submit">Send enquiry</button>
+          </div>
+        </form>
+        <div class="done" id="done" hidden tabindex="-1">
+          <h3 class="title">Enquiry sent.</h3>
+          <p id="done-text">Thank you. We will read it this week and reply by email.</p>
+          <p><button type="button" class="link again" style="background:none;border:0;padding:0.4rem 0;font:inherit;font-weight:500;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:0.22em">Start another enquiry</button></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="close">
+      <p class="vh">Fold Architects</p>
+      <svg class="mark-big" viewBox="0 0 1000 300" aria-hidden="true" focusable="false"><text x="-12" y="292" font-family="Schibsted Grotesk, Fold Fallback, sans-serif" font-weight="700" font-size="392" letter-spacing="-22" fill="#1C1B19">Fold</text></svg>
+      <div class="small-model">{{footer}}</div>
+    </div>
+    <div class="foot-line">
+      <address>Second floor, 41 Albion Street, Glasgow G1 1LH</address>
+      <a href="mailto:studio@fold.example">studio@fold.example</a>
+      <a href="tel:+441414960732">0141 496 0732</a>
+      <span class="social"><a href="https://www.instagram.com/" rel="noopener">Instagram</a><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // mobile menu
+  var btn = document.querySelector('.menu-btn');
+  var menu = document.getElementById('menu');
+  var label = btn.querySelector('.menu-label');
+  function setMenu(open, returnFocus) {
+    btn.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    label.textContent = open ? 'Close' : 'Menu';
+    if (open) { var first = menu.querySelector('a'); if (first) first.focus(); }
+    else if (returnFocus) btn.focus();
+  }
+  btn.addEventListener('click', function () { setMenu(btn.getAttribute('aria-expanded') !== 'true', false); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false, false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') setMenu(false, true);
+  });
+  var mq = window.matchMedia('(min-width: 720px)');
+  function onMq() { if (mq.matches) setMenu(false, false); }
+  if (mq.addEventListener) mq.addEventListener('change', onMq); else mq.addListener(onMq);
+
+  // project filter
+  var buttons = document.querySelectorAll('.seg button');
+  var items = document.querySelectorAll('.project');
+  var count = document.getElementById('work-count');
+  var names = { all: 'all', housing: 'housing', civic: 'civic', extensions: 'extensions' };
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-filter');
+      buttons.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      var n = 0;
+      items.forEach(function (it) {
+        var show = f === 'all' || it.getAttribute('data-type') === f;
+        it.hidden = !show; if (show) n++;
+      });
+      count.textContent = f === 'all' ? 'Showing all ' + n + ' projects' : 'Showing ' + n + ' of 6, ' + names[f] + ' only';
+    });
+  });
+
+  // enquiry form
+  var form = document.getElementById('enquiry');
+  var done = document.getElementById('done');
+  var tried = false;
+  var rules = {
+    name: function (v) { return v.trim().length >= 2 ? '' : 'Add your name so we know who to reply to.'; },
+    email: function (v) {
+      if (!v.trim()) return 'Add an email address so we can reply.';
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'This email looks incomplete. Check it has an @ and a domain, like name@example.com.';
+    },
+    type: function (v) { return v ? '' : 'Choose the kind of project, or "Something else".'; },
+    budget: function (v) { return v ? '' : 'Choose a budget range, or "Not sure yet".'; },
+    message: function (v) { return v.trim().length >= 20 ? '' : 'Tell us a little more about the building: at least 20 characters.'; }
+  };
+  function check(el) {
+    var msg = rules[el.name](el.value);
+    var err = document.getElementById(el.getAttribute('aria-describedby'));
+    err.textContent = msg;
+    if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    return !msg;
+  }
+  Array.prototype.forEach.call(form.elements, function (el) {
+    if (!rules[el.name]) return;
+    el.addEventListener('blur', function (e) {
+      // the submit button validates everything itself; checking here would shift it mid-click
+      if (e.relatedTarget && e.relatedTarget.type === 'submit') return;
+      if (tried || el.value) check(el);
+    });
+    el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') check(el); });
+    el.addEventListener('change', function () { if (tried) check(el); });
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    tried = true;
+    var firstBad = null;
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (rules[el.name] && !check(el) && !firstBad) firstBad = el;
+    });
+    if (firstBad) { firstBad.focus(); return; }
+    var name = form.elements.name.value.trim().split(/\s+/)[0];
+    document.getElementById('done-text').textContent = 'Thank you, ' + name + '. Your ' + form.elements.type.value.toLowerCase() + ' enquiry is with us. We will read it this week and reply to ' + form.elements.email.value.trim() + '.';
+    form.hidden = true;
+    done.hidden = false;
+    done.focus();
+  });
+  done.querySelector('.again').addEventListener('click', function () {
+    form.reset(); tried = false;
+    form.querySelectorAll('.err').forEach(function (p) { p.textContent = ''; });
+    form.querySelectorAll('[aria-invalid]').forEach(function (el) { el.removeAttribute('aria-invalid'); });
+    done.hidden = true; form.hidden = false;
+    form.elements.name.focus();
+  });
+})();
+</script>
+</body>
+</html>

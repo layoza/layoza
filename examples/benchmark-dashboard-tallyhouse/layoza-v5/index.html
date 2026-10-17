@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="layoza-surface" content="app">
+<meta name="theme-color" content="#F4EEE3">
+<title>Tallyhouse · Morning tally</title>
+<meta name="description" content="Tallyhouse operations dashboard for a four-shop bakery chain. Sample data only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  color-scheme: light;
+  --flour:#F4EEE3; --paper:#FFFBF4; --paper-2:#FAF4E9; --line:#E3D7C4; --line-2:#D3C3AA;
+  --ink:#2A1A10; --ink-2:#4A3527; --muted:#6A5444; --faint:#806957;
+  --crust:#A4441A; --crust-ink:#8A3712; --crust-soft:#F6E2D4; --ghost:#E8DCC8; --ghost-line:#C7B396;
+  --ok:#2F6A3A; --ok-soft:#E3EFDF; --warn:#8A5300; --warn-soft:#FBEBCB; --crit:#A0281C; --crit-soft:#F8DDD8;
+  --bake:#7A4A12; --bake-soft:#F3E2C6; --open:#2F5A6E; --open-soft:#DDEBF1; --close:#5B3A6E; --close-soft:#ECE1F2; --mid:#3F6232; --mid-soft:#E4EEDC;
+  --display:"Fraunces", Georgia, serif; --ui:"Public Sans", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, monospace;
+  --row-h:52px; --cell-px:12px; --r:10px; --gap:20px;
+  --shadow:0 1px 0 rgb(42 26 16 / .04), 0 8px 24px -18px rgb(42 26 16 / .35);
+}
+[data-density="compact"]{ --row-h:40px; --cell-px:10px; }
+*{box-sizing:border-box}
+html{ -webkit-text-size-adjust:100%; scroll-padding-top:110px }
+body{ margin:0; background:var(--flour); color:var(--ink); font:400 15px/1.5 var(--ui); font-variant-numeric:tabular-nums; overflow-x:hidden }
+h1,h2,h3{ margin:0; font-weight:650 }
+button,input,select{ font:inherit; color:inherit }
+:focus-visible{ outline:3px solid var(--crust); outline-offset:2px; border-radius:6px }
+.sr-only{ position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+.skip{ position:absolute; left:12px; top:-60px; background:var(--ink); color:#fff; padding:10px 14px; border-radius:8px; z-index:100 }
+.skip:focus{ top:10px }
+.num{ font-variant-numeric:tabular-nums }
+
+/* ---------- top bar ---------- */
+.topbar{ position:sticky; top:0; z-index:40; background:var(--flour); border-bottom:1px solid var(--line); transition:transform .28s cubic-bezier(.32,.72,0,1) }
+.topbar.is-hidden{ transform:translateY(-100%) }
+.topbar-in{ max-width:1400px; margin:0 auto; padding:10px 32px; display:flex; align-items:center; gap:20px }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); flex:none }
+.brand svg{ width:34px; height:34px }
+.brand b{ font:600 22px/1 var(--display); letter-spacing:-.01em }
+.brand small{ display:block; font:500 11px/1.2 var(--ui); color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-top:3px }
+.controls{ display:flex; align-items:center; gap:14px; margin-left:auto; min-width:0 }
+.seg{ display:flex; gap:2px; padding:3px; background:var(--paper); border:1px solid var(--line); border-radius:999px; min-width:0 }
+.seg button{ border:0; background:transparent; padding:7px 13px; border-radius:999px; font-weight:550; font-size:14px; color:var(--ink-2); cursor:pointer; white-space:nowrap; min-height:34px }
+.seg button[aria-pressed="true"]{ background:var(--ink); color:var(--paper) }
+.scroller{ overflow-x:auto; scrollbar-width:none; -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent) }
+.scroller::-webkit-scrollbar{ display:none }
+.iconbtn{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-2); background:var(--paper); border-radius:999px; padding:7px 14px; min-height:40px; cursor:pointer; font-weight:600; font-size:14px }
+.iconbtn svg{ width:18px; height:18px }
+.stamp{ font-size:13px; color:var(--muted); white-space:nowrap }
+.stamp strong{ color:var(--ink); font-weight:600 }
+.sample{ background:var(--ink); color:#F4EEE3; font-size:12.5px; text-align:center; padding:5px 16px; letter-spacing:.01em }
+.sample b{ font-weight:650 }
+.sample-in{ display:flex; justify-content:center; gap:8px 28px; flex-wrap:wrap }
+
+/* ---------- layout ---------- */
+main{ max-width:1400px; margin:0 auto; padding:24px 32px 40px }
+.grid{ display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:var(--gap); margin-bottom:var(--gap) }
+.panel{ background:var(--paper); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); min-width:0; scroll-margin-top:110px }
+.ph{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding:18px 20px 12px }
+.ph h2{ font:650 19px/1.25 var(--ui); letter-spacing:-.005em }
+.ph p{ margin:2px 0 0; font-size:13px; color:var(--muted) }
+.span-8{ grid-column:span 8 } .span-4{ grid-column:span 4 } .span-12{ grid-column:span 12 }
+
+/* ---------- KPI row ---------- */
+.kpis{ display:grid; grid-template-columns:minmax(0,2.1fr) minmax(0,1fr) minmax(0,1fr); gap:var(--gap); margin-bottom:var(--gap) }
+.kpi-hero{ display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); background:var(--paper); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; position:relative }
+.kpi-hero::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--crust) }
+.kpi{ padding:18px 22px 18px; min-width:0; position:relative }
+.kpi-label{ font-size:13px; font-weight:650; color:var(--ink-2); letter-spacing:.01em; display:flex; align-items:center; gap:8px }
+.kpi-value{ font:600 64px/1.02 var(--display); letter-spacing:-.025em; margin-top:6px; font-variant-numeric:lining-nums tabular-nums; white-space:nowrap }
+.kpi-value .p{ font-size:.5em; letter-spacing:0; vertical-align:.62em; margin-left:2px; color:var(--ink-2) }
+.kpi-sub{ margin-top:6px; font-size:13px; color:var(--muted) }
+.kpi-compare{ border-left:1px dashed var(--line-2); background:var(--paper-2) }
+.delta{ display:inline-flex; align-items:center; gap:6px; font:600 34px/1.1 var(--ui); letter-spacing:-.02em; margin-top:10px }
+.delta svg{ width:22px; height:22px }
+.delta.up{ color:var(--ok) } .delta.down{ color:var(--crit) }
+.kpi-tile{ background:var(--paper); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow) }
+.kpi-tile .kpi-value{ font:600 40px/1.1 var(--ui); letter-spacing:-.02em; margin-top:10px }
+.kpi-tile.is-alert .kpi-value{ color:var(--crit) }
+.kpi-link{ display:table; margin-top:4px; font-size:13px; font-weight:600; color:var(--crust-ink); text-decoration:none }
+.chip{ display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:650; padding:2px 8px; border-radius:999px; white-space:nowrap }
+.chip.crit{ background:var(--crit-soft); color:var(--crit) } .chip.low{ background:var(--warn-soft); color:var(--warn) } .chip.ok{ background:var(--ok-soft); color:var(--ok) }
+
+/* loading skeleton */
+[data-loading="true"] .sk{ position:relative; color:transparent!important }
+[data-loading="true"] .sk *{ visibility:hidden }
+[data-loading="true"] .sk::after{ content:""; position:absolute; inset:2px 0; border-radius:8px; background:linear-gradient(90deg,var(--ghost) 0 40%,#F1E7D8 50%,var(--ghost) 60% 100%); background-size:300% 100% }
+.loading-note{ display:none; font-size:12px; font-weight:600; color:var(--muted); align-items:center; gap:6px }
+[data-loading="true"] .loading-note{ display:inline-flex }
+.spin{ width:12px; height:12px; border:2px solid var(--line-2); border-top-color:var(--crust); border-radius:50% }
+
+/* ---------- chart ---------- */
+.chart-wrap{ padding:0 20px 14px }
+.readout{ display:flex; flex-wrap:wrap; gap:4px 16px; align-items:baseline; min-height:24px; font-size:13px; color:var(--muted); margin-bottom:6px }
+.readout b{ color:var(--ink); font-weight:650 }
+.legend{ display:flex; gap:14px; font-size:12.5px; color:var(--ink-2); white-space:nowrap }
+.legend i{ display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-2px; margin-right:5px }
+#chart{ position:relative; height:280px }
+#chart svg{ display:block; width:100%; height:100% }
+#chart svg:focus-visible{ outline:3px solid var(--crust); outline-offset:4px }
+.axis text{ font:500 11.5px var(--ui); fill:#6A5444 }
+.chart-state{ position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; background:var(--paper); border-radius:8px; padding:20px }
+[data-chart="error"] .chart-state.err{ display:flex }
+[data-loading="true"] .chart-state.load{ display:flex }
+.chart-state.load .bars{ display:flex; gap:8px; align-items:flex-end; height:120px }
+.chart-state.load .bars span{ width:22px; background:var(--ghost); border-radius:5px 5px 2px 2px }
+details.data{ margin:6px 20px 16px; font-size:13px }
+details.data summary{ cursor:pointer; color:var(--crust-ink); font-weight:600; width:max-content; padding:4px 0 }
+details.data table{ width:100%; border-collapse:collapse; margin-top:8px }
+details.data th,details.data td{ padding:5px 8px; border-bottom:1px solid var(--line); text-align:right }
+details.data th:first-child{ text-align:left }
+.tabwrap{ max-height:220px; overflow:auto }
+
+/* ---------- till receipt ---------- */
+.receipt-col{ display:flex; flex-direction:column; padding:0; background:transparent; border:0; box-shadow:none }
+.receipt{ position:relative; background:#FFFDF8; color:#2A1A10; font:500 13px/1.55 var(--mono); padding:20px 20px 30px; box-shadow:0 14px 30px -20px rgb(42 26 16 / .5), 0 0 0 1px var(--line); flex:1;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100% }
+.receipt h2{ font:600 13px/1.4 var(--mono); text-align:center; letter-spacing:.14em; text-transform:uppercase }
+.receipt .rc-meta{ text-align:center; color:#5E4838; font-size:12px; margin-bottom:10px }
+.receipt hr{ border:0; border-top:1.5px dashed #BFA98C; margin:10px 0 }
+.rc-line{ display:grid; grid-template-columns:4.5ch minmax(0,1fr) auto; gap:10px; align-items:baseline }
+.rc-line span:nth-child(2){ overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.rc-line span:last-child{ text-align:right }
+.rc-line span:first-child{ text-align:right }
+.rc-total{ display:flex; justify-content:space-between; font-weight:600; font-size:15px; letter-spacing:.02em }
+.rc-small{ display:flex; justify-content:space-between; color:#5E4838; font-size:12px }
+.rc-foot{ text-align:center; color:#5E4838; font-size:11.5px; margin-top:10px; letter-spacing:.06em }
+
+/* ---------- stock table ---------- */
+.toolbar{ display:flex; gap:10px; padding:0 20px 14px; align-items:end }
+.field{ display:flex; flex-direction:column; gap:4px; min-width:0 }
+.field label{ font-size:12.5px; font-weight:650; color:var(--ink-2) }
+.input{ height:42px; border:1px solid #9C8770; background:#fff; border-radius:8px; padding:0 12px; min-width:0; font-size:16px }
+.input:focus-visible{ outline:3px solid var(--crust); outline-offset:1px }
+.search{ flex:1 }
+.search .input{ padding-left:36px; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236A5444' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") 12px 50% no-repeat }
+select.input{ padding-right:30px; appearance:none; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%232A1A10' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 10px center no-repeat }
+.count{ font-size:13px; color:var(--muted); padding:0 20px 8px }
+.tscroll{ overflow-x:auto }
+table.stock{ width:100%; border-collapse:collapse; font-size:14px }
+table.stock caption{ text-align:left }
+table.stock thead th{ position:sticky; top:0; background:var(--paper-2); font-size:12px; font-weight:650; color:var(--ink-2); text-transform:uppercase; letter-spacing:.06em; text-align:left; padding:9px var(--cell-px); border-block:1px solid var(--line); white-space:nowrap }
+table.stock td, table.stock tbody th{ padding:0 var(--cell-px); height:var(--row-h); border-bottom:1px solid var(--line); text-align:left; font-weight:400; vertical-align:middle }
+table.stock .r{ text-align:right }
+table.stock tbody tr{ transition:background-color .12s ease }
+table.stock tbody tr:hover{ background:#FBF3E6 }
+.item{ display:flex; align-items:center; gap:10px; font-weight:600 }
+.item svg{ width:26px; height:26px; flex:none; color:var(--ink-2) }
+.item small{ display:block; font-weight:400; font-size:12.5px; color:var(--muted) }
+.par{ display:flex; align-items:center; gap:10px; justify-content:flex-end }
+.gauge{ position:relative; width:64px; height:10px; border-radius:3px; background:var(--ghost); flex:none }
+.gauge i{ position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--warn) }
+.gauge i.crit{ background:var(--crit) }
+.gauge::after{ content:""; position:absolute; top:-3px; bottom:-3px; right:0; width:2px; background:var(--ink) }
+.oh{ font-weight:650; min-width:5.5ch; text-align:right }
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:6px; border-radius:8px; border:1px solid transparent; font-weight:650; font-size:14px; min-height:36px; padding:0 14px; cursor:pointer; white-space:nowrap }
+.btn-primary{ background:var(--crust); color:#fff }
+.btn-primary:hover{ background:var(--crust-ink) }
+.btn-ghost{ background:transparent; border-color:var(--line-2); color:var(--ink) }
+.btn-ghost:hover{ background:var(--paper-2) }
+.btn svg{ width:16px; height:16px }
+.empty{ text-align:center; padding:34px 20px 38px }
+.empty svg{ width:72px; height:56px; color:var(--line-2) }
+.empty h3{ font-size:16px; margin-top:8px }
+.empty p{ margin:4px 0 14px; color:var(--muted); font-size:14px }
+
+/* ---------- supplier dockets ---------- */
+.orders-body{ padding:0 18px 18px; display:flex; flex-direction:column; gap:14px }
+.sub-h{ margin-top:4px; font-size:12px; font-weight:650; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-2); display:flex; justify-content:space-between }
+.dockets{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px }
+.docket{ position:relative; background:#FFFDF8; border:1px solid var(--line-2); border-radius:4px; padding:14px 14px 12px 16px; box-shadow:0 6px 14px -12px rgb(42 26 16 / .45) }
+.docket::before{ content:""; position:absolute; left:10px; right:10px; top:-1px; height:0; border-top:2px dotted var(--line-2) }
+.docket .dk-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; font:500 12px var(--mono); color:#5E4838 }
+.docket .dk-top b{ color:var(--crust-ink); font-weight:600 }
+.docket h3{ font-size:15.5px; margin:6px 0 2px; font-weight:650 }
+.docket .dk-qty{ font:600 14px var(--mono); color:var(--ink) }
+.docket dl{ display:grid; grid-template-columns:auto 1fr; gap:2px 12px; margin:8px 0 0; font-size:13px }
+.docket dt{ color:var(--muted) } .docket dd{ margin:0; font-weight:550 }
+.docket.is-new{ border-color:var(--crust) }
+.docket .new-tag{ font:650 11px var(--ui); color:#fff; background:var(--crust); padding:1px 7px; border-radius:999px; margin-left:6px; letter-spacing:.04em }
+.delivered{ list-style:none; margin:0; padding:0; font-size:13.5px }
+.delivered li{ display:grid; grid-template-columns:5.6em minmax(0,1fr) auto; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line-2) }
+.delivered li:last-child{ border-bottom:0 }
+.delivered time{ color:var(--muted) }
+.delivered .ok{ color:var(--ok); font-weight:650 }
+
+/* ---------- rota ---------- */
+.rota-tools{ display:flex; gap:16px; align-items:center; font-size:13px; color:var(--ink-2) }
+.onnow{ display:inline-flex; align-items:center; gap:8px; font-weight:600; background:var(--ok-soft); color:var(--ok); padding:5px 10px; border-radius:999px; white-space:nowrap }
+.onnow i{ width:8px; height:8px; border-radius:50%; background:var(--ok) }
+table.rota{ width:100%; border-collapse:separate; border-spacing:0; table-layout:fixed; font-size:13px }
+table.rota th, table.rota td{ border-bottom:1px solid var(--line); padding:8px 8px; vertical-align:middle }
+table.rota thead th{ font-weight:650; font-size:12.5px; color:var(--ink-2); text-align:left; background:var(--paper-2); border-top:1px solid var(--line); white-space:nowrap }
+table.rota thead th span{ display:block; font-weight:400; color:var(--muted) }
+table.rota tbody th{ text-align:left; font-weight:600; width:200px; padding-left:20px }
+table.rota tbody th small{ display:block; font-weight:400; color:var(--muted); font-size:12.5px }
+table.rota thead th:first-child{ padding-left:20px; width:200px }
+table.rota .hrs{ width:72px; text-align:right; padding-right:20px }
+table.rota .today{ background:#FBEFE3 }
+table.rota thead th.today{ background:var(--crust); color:#fff }
+table.rota thead th.today span{ color:#FBE6D6 }
+.shift{ display:block; border-radius:6px; padding:5px 8px; border-left:4px solid; line-height:1.3 }
+.shift b{ font-weight:650; display:block; font-size:12.5px }
+.shift span{ font:500 12px var(--mono) }
+.shift.B{ background:var(--bake-soft); border-color:var(--bake); color:var(--bake) }
+.shift.O{ background:var(--open-soft); border-color:var(--open); color:var(--open) }
+.shift.C{ background:var(--close-soft); border-color:var(--close); color:var(--close) }
+.shift.M{ background:var(--mid-soft); border-color:var(--mid); color:var(--mid) }
+.off{ color:var(--faint); font-size:12.5px; padding-left:8px }
+.rota-foot{ display:flex; gap:20px; align-items:center; justify-content:space-between; padding:14px 20px 16px; flex-wrap:wrap }
+.keyrow{ display:flex; gap:14px; font-size:12.5px; color:var(--ink-2); flex-wrap:nowrap; overflow-x:auto }
+.keyrow span{ display:inline-flex; align-items:center; gap:6px; white-space:nowrap }
+.keyrow i{ width:12px; height:12px; border-radius:3px; border-left:4px solid }
+.holiday{ display:flex; align-items:center; gap:12px; font-size:13.5px; border-radius:8px; padding:8px 8px 8px 12px; min-height:48px }
+.holiday.err{ background:var(--crit-soft); color:var(--crit) }
+.holiday.err strong{ color:var(--crit) }
+.holiday.ok{ background:var(--paper-2); color:var(--ink-2) }
+.daypick{ display:none }
+.daylist{ display:none }
+
+/* ---------- drawer ---------- */
+dialog.drawer{ margin:0 0 0 auto; height:100dvh; max-height:100dvh; width:min(420px,100vw); border:0; padding:0; background:var(--paper); color:var(--ink); box-shadow:-20px 0 50px -20px rgb(42 26 16 / .45) }
+dialog.drawer::backdrop{ background:rgb(42 26 16 / .38) }
+.dr-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--line) }
+.dr-head h2{ font:600 22px/1.2 var(--display) }
+.dr-body{ padding:18px 20px 30px; display:flex; flex-direction:column; gap:20px }
+.dr-body .field label{ font-size:14px }
+.dr-body .hint{ font-size:13px; color:var(--muted); margin:0 }
+.check{ display:flex; gap:12px; align-items:flex-start; font-size:14px; cursor:pointer }
+.check input{ width:20px; height:20px; accent-color:var(--crust); margin:2px 0 0 }
+.check small{ display:block; color:var(--muted); font-size:13px }
+.saved{ font-size:13px; color:var(--ok); font-weight:600; min-height:20px }
+.demo{ border-top:1px solid var(--line); padding-top:18px; display:flex; flex-direction:column; gap:10px }
+.demo h3{ font-size:14px }
+.demo .btns{ display:flex; gap:10px; flex-wrap:wrap }
+
+/* ---------- toast ---------- */
+.toast{ position:fixed; left:50%; bottom:20px; transform:translateX(-50%); z-index:60; background:var(--ink); color:var(--paper); border-radius:10px; padding:10px 10px 10px 16px; display:none; align-items:center; gap:14px; font-size:14px; box-shadow:0 12px 30px -10px rgb(0 0 0 / .4); max-width:calc(100vw - 32px) }
+.toast.show{ display:flex }
+.toast button{ background:transparent; color:#FFD9C2; border:1px solid #6B4B37; border-radius:7px; padding:6px 12px; font-weight:650; cursor:pointer; min-height:34px }
+footer{ max-width:1400px; margin:0 auto; padding:4px 32px 36px; color:var(--muted); font-size:13px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap }
+
+/* ---------- responsive ---------- */
+@media (max-width:1180px){
+  .kpis{ grid-template-columns:1fr 1fr }
+  .kpi-hero{ grid-column:1 / -1 }
+  .span-8,.span-4{ grid-column:span 12 }
+  .receipt-col{ padding:0 }
+  .orders-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px }
+  .topbar{ position:relative }
+  .topbar-in{ flex-wrap:wrap; row-gap:10px }
+  .controls{ margin-left:0; width:100%; flex-wrap:wrap; order:3 }
+  #openSettings{ margin-left:auto }
+}
+@media (max-width:760px){
+  :root{ --gap:14px }
+  html{ scroll-padding-top:12px }
+  .topbar{ position:relative }
+  .topbar-in{ padding:10px 16px 8px; gap:10px }
+  .brand b{ font-size:20px } .brand small{ display:none }
+  .controls{ display:contents }
+  #openSettings{ margin-left:auto }
+  .iconbtn .lbl{ display:none } .iconbtn{ padding:0; width:44px; justify-content:center; min-height:44px }
+  .shops{ order:5; width:100%; border-radius:12px }
+  .ranges{ order:6; width:100% } .ranges button{ flex:1 }
+  .seg button{ min-height:36px; padding:7px 13px }
+  .sample{ font-size:12px; padding:4px 12px }
+  main{ padding:14px 16px 28px }
+  .kpi-hero{ grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) }
+  .kpi{ padding:14px 14px 14px 18px }
+  .kpi-compare{ padding-left:14px }
+  .kpi-value{ font-size:44px }
+  .delta{ font-size:26px; margin-top:8px }
+  .delta svg{ width:18px; height:18px }
+  .kpi-tile .kpi{ padding:12px 14px }
+  .kpi-tile .kpi-value{ font-size:30px; margin-top:4px }
+  .kpi-sub{ font-size:12.5px }
+  .ph{ padding:16px 16px 10px; flex-wrap:wrap }
+  .chart-wrap{ padding:0 14px 10px }
+  #chart{ height:220px }
+  details.data{ margin:4px 16px 14px }
+  .orders-grid{ grid-template-columns:1fr }
+  .toolbar{ padding:0 16px 12px; flex-wrap:wrap }
+  .toolbar .search{ flex-basis:100% }
+  .toolbar .field:not(.search){ flex:1 }
+  .count{ padding:0 16px 8px }
+  table.stock thead{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0) }
+  table.stock, table.stock tbody, table.stock tr, table.stock td, table.stock tbody th{ display:block }
+  table.stock tbody{ padding:0 12px 4px }
+  table.stock tbody tr{ display:grid; grid-template-columns:1fr auto; grid-template-areas:"item status" "shop shop" "sup sup" "oh act"; gap:8px 10px; border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:10px; background:#fff }
+  table.stock td, table.stock tbody th{ height:auto; padding:0; border:0 }
+  table.stock .c-item{ grid-column:1 }
+  table.stock .c-status{ grid-column:2; grid-row:1; align-self:start }
+  table.stock .c-shop, table.stock .c-sup{ grid-column:1 / -1; font-size:13.5px; color:var(--ink-2) }
+  table.stock .c-shop::before, table.stock .c-sup::before{ content:attr(data-label) "  "; color:var(--muted); font-size:12.5px; font-weight:600; margin-right:4px }
+  table.stock .c-oh{ grid-column:1; align-self:center }
+  table.stock .c-oh .par{ justify-content:flex-start }
+  table.stock .c-oh .gauge{ flex:1 }
+  table.stock .c-act{ grid-column:2; align-self:center }
+  table.stock .c-act .btn{ min-height:44px }
+  .hint-k{ display:none } .hint-t{ display:inline }
+  table.stock .c-item{ grid-area:item } table.stock .c-status{ grid-area:status } table.stock .c-shop{ grid-area:shop } table.stock .c-sup{ grid-area:sup } table.stock .c-oh{ grid-area:oh } table.stock .c-act{ grid-area:act }
+  table.stock .c-shop, table.stock .c-sup{ margin-top:-2px }
+
+  .par-lbl{ display:inline!important }
+  table.rota{ display:none }
+  .daypick{ display:flex; gap:6px; padding:0 16px 10px; overflow-x:auto; scrollbar-width:none }
+  .daypick::-webkit-scrollbar{ display:none }
+  .daypick button{ flex:1 1 0; min-width:44px; border:1px solid var(--line-2); background:var(--paper); border-radius:10px; padding:6px 0; text-align:center; font-size:12px; color:var(--ink-2); cursor:pointer; line-height:1.25; min-height:44px }
+  .daypick button b{ display:block; font-size:15px; color:var(--ink) }
+  .daypick button[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:#E9DCCB }
+  .daypick button[aria-pressed="true"] b{ color:#fff }
+  .daypick button.is-today:not([aria-pressed="true"]){ border-color:var(--crust); border-width:2px }
+  .daylist{ display:block; list-style:none; margin:0; padding:0 16px }
+  .daylist li{ display:grid; grid-template-columns:minmax(0,1fr) 9.5em; gap:10px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line) }
+  .daylist li strong{ display:block; font-size:14.5px }
+  .daylist li small{ color:var(--muted); font-size:12.5px }
+  .rota-foot{ padding:12px 16px 14px }
+  .holiday{ width:100% }
+  .keyrow{ display:none }
+  .toolbar .field.shopf{ display:none }
+  footer{ padding:0 16px 28px }
+}
+@media (pointer:coarse){ .btn{ min-height:44px } }
+table.stock .c-shop, table.stock .c-sup{ white-space:nowrap }
+.del-wrap{ margin-top:18px }
+.cutoff{ display:flex; gap:10px; align-items:flex-start; margin-top:18px; padding:12px 14px; border-radius:8px; background:var(--crust-soft); color:var(--crust-ink); font-size:13.5px; line-height:1.45 }
+.cutoff svg{ flex:none; margin-top:1px }
+.cutoff strong{ display:block }
+.hint-t{ display:none }
+@media (pointer:coarse){ .hint-k{ display:none } .hint-t{ display:inline } }
+.par-lbl{ display:none; font-size:12.5px; color:var(--muted); white-space:nowrap }
+
+/* ---------- motion floor: micro-css-polish ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .kpis > *{ animation:rise .6s cubic-bezier(.22,1,.36,1) both }
+  .kpis > :nth-child(2){ animation-delay:.06s } .kpis > :nth-child(3){ animation-delay:.12s }
+  @keyframes rise{ from{ opacity:0; transform:translateY(12px) } }
+  .btn, .seg button, .iconbtn, .daypick button{ transition:background-color .15s ease, color .15s ease, transform .12s ease }
+  .btn:active, .seg button:active, .iconbtn:active{ transform:scale(.97) }
+  @media (hover:hover) and (pointer:fine){
+    .docket{ transition:transform .2s ease, box-shadow .2s ease }
+    .docket:hover{ transform:translateY(-2px) rotate(-.3deg); box-shadow:0 12px 22px -14px rgb(42 26 16 / .5) }
+  }
+  .kpi-link, details.data summary, .link{ background:linear-gradient(currentColor 0 0) 0 100% / 0 1px no-repeat; transition:background-size .3s ease }
+  .kpi-link:hover, .kpi-link:focus-visible, details.data summary:hover, .link:hover{ background-size:100% 1px }
+  [data-loading="true"] .sk::after{ animation:shimmer 1.1s linear infinite }
+  @keyframes shimmer{ to{ background-position:-150% 0 } }
+  .spin{ animation:turn .8s linear infinite } @keyframes turn{ to{ transform:rotate(360deg) } }
+  .docket.is-new{ animation:drop .42s cubic-bezier(.23,1,.32,1) both }
+  @keyframes drop{ from{ opacity:0; transform:translateY(-14px) rotate(-1.5deg) } }
+  tr.leaving{ animation:leave .28s ease-out forwards }
+  @keyframes leave{ to{ opacity:0; transform:translateX(24px) } }
+  dialog.drawer[open]{ animation:slide .28s cubic-bezier(.32,.72,0,1) }
+  @keyframes slide{ from{ transform:translateX(100%) } }
+  .toast.show{ animation:pop .2s cubic-bezier(.23,1,.32,1) }
+  @keyframes pop{ from{ opacity:0; transform:translate(-50%,8px) } }
+  .bar{ transition:height .28s cubic-bezier(.23,1,.32,1), y .28s cubic-bezier(.23,1,.32,1) }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to dashboard</a>
+<header class="topbar" id="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="10" fill="#2A1A10"/><path d="M8 25c0-7.2 5.4-12 12-12s12 4.8 12 12c0 2.2-1.6 3.5-3.6 3.5H11.6C9.6 28.5 8 27.2 8 25Z" fill="#D9934F"/><path d="M14.5 16.5c1.6 2 1.8 4.6 1 7M20 15c1.6 2.3 1.8 5.4.9 8.5M25.5 16.5c1.6 2 1.8 4.6 1 7" stroke="#2A1A10" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+      <span><h1 style="margin:0;font:600 24px/1 var(--display);letter-spacing:-.01em">Tallyhouse</h1><small>Morning tally</small></span>
+    </div>
+    <div class="controls">
+      <div class="seg scroller shops" role="group" aria-label="Shop" id="shopSeg"></div>
+      <div class="seg ranges" role="group" aria-label="Date range" id="rangeSeg"></div>
+      <button class="iconbtn" id="openSettings" aria-haspopup="dialog" aria-controls="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="lbl">Settings</span><span class="sr-only">Open settings</span></button>
+    </div>
+  </div>
+  <div class="sample"><span class="sample-in"><span><b>Fri 16 Oct 2026</b>, updated 14:02</span><span><b>Sample data:</b> fictional shops, staff, suppliers and figures</span></span></div>
+</header>
+
+<noscript><p style="max-width:700px;margin:24px auto;padding:16px;background:#FFFBF4;border:1px solid #E3D7C4;border-radius:10px">Tallyhouse needs JavaScript to load the sample figures. Enable JavaScript to see sales, stock, orders and the rota.</p></noscript>
+
+<main id="main" tabindex="-1">
+  <div aria-live="polite" class="sr-only" id="live"></div>
+
+  <!-- KPI row -->
+  <section class="kpis" id="kpis" aria-label="Key figures" data-loading="false">
+    <div class="kpi-hero">
+      <div class="kpi">
+        <div class="kpi-label"><span id="kSalesLbl">Today’s sales</span><span class="loading-note"><span class="spin"></span>Loading</span></div>
+        <div class="kpi-value sk" id="kSales">£0</div>
+        <div class="kpi-sub sk" id="kSalesSub">&nbsp;</div>
+      </div>
+      <div class="kpi kpi-compare">
+        <div class="kpi-label" id="kCmpLbl">vs same day last week</div>
+        <div class="delta sk" id="kDelta">&nbsp;</div>
+        <div class="kpi-sub sk" id="kCmpSub">&nbsp;</div>
+      </div>
+    </div>
+    <div class="kpi-tile"><div class="kpi">
+      <div class="kpi-label" id="kItemsLbl">Items sold today</div>
+      <div class="kpi-value sk" id="kItems">0</div>
+      <div class="kpi-sub sk" id="kItemsSub">&nbsp;</div>
+    </div></div>
+    <div class="kpi-tile" id="kLowTile"><div class="kpi">
+      <div class="kpi-label">Low-stock items</div>
+      <div class="kpi-value" id="kLow">0</div>
+      <div class="kpi-sub" id="kLowSub">&nbsp;</div>
+    </div></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel span-8" id="salesPanel" aria-labelledby="chartTitle" data-loading="false" data-chart="ok">
+      <div class="ph">
+        <div><h2 id="chartTitle">Sales by hour, today</h2><p id="chartSub">All shops · bars are this period, shaded blocks are last week</p></div>
+        <div class="legend" aria-hidden="true"><span><i style="background:var(--crust)"></i><span id="lgA">Today</span></span><span><i style="background:var(--ghost);box-shadow:inset 0 0 0 1px var(--ghost-line)"></i><span id="lgB">Fri 9 Oct</span></span></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="readout" id="readout" aria-live="polite"></div>
+        <div id="chart">
+          <div class="chart-state load" aria-hidden="true"><div class="bars"><span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:85%"></span><span style="height:60%"></span><span style="height:75%"></span></div><span class="loading-note" style="display:inline-flex"><span class="spin"></span>Loading sales…</span></div>
+          <div class="chart-state err" role="alert">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#A0281C" stroke-width="1.8" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+            <strong>Sales figures didn’t load</strong>
+            <span style="font-size:13.5px;color:var(--muted);max-width:34ch">The till sync timed out. KPIs, stock and the rota still work. Ref TH-504.</span>
+            <button class="btn btn-primary" id="chartRetry">Retry</button>
+          </div>
+        </div>
+      </div>
+      <details class="data"><summary>Show chart data as a table</summary><div class="tabwrap"><table id="chartTable"><caption class="sr-only">Chart data</caption><thead></thead><tbody></tbody></table></div></details>
+    </section>
+
+    <aside class="panel span-4 receipt-col" aria-label="Till summary" id="receiptPanel" data-loading="false">
+      <div class="receipt sk" id="receipt"></div>
+    </aside>
+
+    <section class="panel span-8" id="stockPanel" aria-labelledby="stockTitle">
+      <div class="ph">
+        <div><h2 id="stockTitle">Low stock</h2><p id="stockRule">Below par level · reorder before the 15:00 supplier cut-off</p></div>
+      </div>
+      <div class="toolbar" role="search">
+        <div class="field search"><label for="q">Search items</label><input class="input" id="q" type="search" placeholder="e.g. flour, butter" autocomplete="off"></div>
+        <div class="field"><label for="supF">Supplier</label><select class="input" id="supF"><option value="">All suppliers</option></select></div>
+      </div>
+      <p class="count" id="stockCount"></p>
+      <div class="tscroll">
+        <table class="stock" id="stockTable">
+          <caption class="sr-only">Items below their par level, with reorder actions</caption>
+          <thead><tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">Shop</th><th scope="col" class="r">On hand / par</th><th scope="col">Supplier</th><th scope="col"><span class="sr-only">Action</span></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div id="stockEmpty"></div>
+    </section>
+
+    <section class="panel span-4" id="orders" aria-labelledby="ordersTitle">
+      <div class="ph"><div><h2 id="ordersTitle">Supplier orders</h2><p id="ordersSub"></p></div></div>
+      <div class="orders-body">
+        <div class="orders-grid">
+          <div>
+            <div class="sub-h"><span>Pending orders</span><span id="pendCount"></span></div>
+            <ul class="dockets" id="dockets" style="margin-top:10px"></ul>
+          </div>
+          <div class="del-wrap">
+            <div class="sub-h"><span>Delivered this week</span></div>
+            <ul class="delivered" id="delivered" style="margin-top:6px"></ul>
+          </div>
+          <div class="cutoff" id="cutoff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg><span><strong>Supplier cut-off 15:00, 58 min left.</strong> Dairy and flour ordered now arrive Sat 17 Oct; eggs, fine foods and coffee Mon 19 Oct.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel span-12" id="rota" aria-labelledby="rotaTitle">
+      <div class="ph">
+        <div><h2 id="rotaTitle">Staff rota, week of Mon 12 Oct</h2><p id="rotaSub"></p></div>
+        <div class="rota-tools"><span class="onnow" id="onNow"><i></i></span></div>
+      </div>
+      <div class="daypick" id="daypick" role="group" aria-label="Choose a day"></div>
+      <ul class="daylist" id="daylist" aria-live="polite"></ul>
+      <div class="tscroll"><table class="rota" id="rotaTable"><caption class="sr-only">Weekly staff rota, staff by day. Today is Friday 16 October.</caption><thead></thead><tbody></tbody></table></div>
+      <div class="rota-foot">
+        <div class="keyrow" aria-label="Shift key"><span><i style="background:var(--bake-soft);border-color:var(--bake)"></i>Bake 04:00–12:00</span><span><i style="background:var(--open-soft);border-color:var(--open)"></i>Open 06:30–14:30</span><span><i style="background:var(--close-soft);border-color:var(--close)"></i>Close 11:30–18:00</span><span><i style="background:var(--mid-soft);border-color:var(--mid)"></i>Sunday 09:00–15:00</span></div>
+        <div class="holiday err" id="holiday" role="status"></div>
+      </div>
+    </section>
+  </div>
+</main>
+<footer><span>Tallyhouse · internal tool for the owner and shop managers</span><span>All figures, names and suppliers are fictional sample data.</span></footer>
+
+<dialog class="drawer" id="settings" aria-labelledby="setTitle">
+  <div class="dr-head"><h2 id="setTitle">Settings</h2><button class="btn btn-ghost" id="closeSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Close</button></div>
+  <div class="dr-body">
+    <p class="hint">Changes save on this device straight away.</p>
+    <div class="field"><label for="setThr">Flag stock as low when it falls below</label>
+      <select class="input" id="setThr"><option value="1">Par level (100%)</option><option value="0.75">75% of par</option><option value="0.5">50% of par (critical only)</option></select>
+    </div>
+    <div class="field"><label for="setShop">Default shop when Tallyhouse opens</label><select class="input" id="setShop"></select></div>
+    <div class="field"><label for="setRange">Default date range</label><select class="input" id="setRange"><option value="today">Today</option><option value="7d">7 days</option><option value="30d">30 days</option></select></div>
+    <label class="check"><input type="checkbox" id="setCompact"><span>Compact rows<small>Tighter stock table for the laptop</small></span></label>
+    <label class="check"><input type="checkbox" id="setGhost" checked><span>Show last week on the sales chart<small>Shaded blocks behind each bar</small></span></label>
+    <p class="saved" id="saved" role="status"></p>
+    <div class="demo">
+      <h3>Preview states</h3>
+      <p class="hint">See how panels behave while loading or when the till sync fails.</p>
+      <div class="btns"><button class="btn btn-ghost" id="demoLoad">Show loading</button><button class="btn btn-ghost" id="demoErr">Fail sales chart</button></div>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button id="toastUndo">Undo</button></div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const GBP = new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'});
+const GBP0 = new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0});
+const INT = new Intl.NumberFormat('en-GB');
+const DSHORT = new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
+const DNUM = new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'2-digit'});
+const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+const store = { get(k,d){ try{ const v=localStorage.getItem('tallyhouse.'+k); return v===null?d:JSON.parse(v);}catch(e){ return d; } },
+                set(k,v){ try{ localStorage.setItem('tallyhouse.'+k, JSON.stringify(v)); }catch(e){} } };
+const plural = (n, one, many) => `${INT.format(n)} ${n===1?one:many}`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------------- sample data ---------------- */
+const TODAY = new Date(2026,9,16); const NOW_H = 14;
+const SHOPS = [
+  {id:'bridge', name:'Bridge Street', mult:1.24, ticket:2.94},
+  {id:'market', name:'Market Square', mult:1.08, ticket:2.81},
+  {id:'mill',   name:'Old Mill Lane', mult:0.79, ticket:3.06},
+  {id:'harbour',name:'Harbour Row',   mult:0.91, ticket:2.88}];
+const HOURS = [7,8,9,10,11,12,13,14,15,16,17];
+const PROFILE = [.055,.105,.115,.098,.092,.128,.112,.082,.078,.072,.063];
+const DOW = [.9,.8,.84,.87,.95,1.07,1.31];
+function rng(a){ return () => { a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const dayDate = off => { const d=new Date(TODAY); d.setDate(d.getDate()+off); return d; };
+const cache = {};
+function dayHours(si, off){
+  const k=si+':'+off; if(cache[k]) return cache[k];
+  const r=rng(si*7919+(off+500)*104729), s=SHOPS[si], d=dayDate(off);
+  const base=1090*s.mult*DOW[d.getDay()]*(0.93+0.14*r());
+  const v=PROFILE.map(p => Math.round(base*p*(0.88+0.24*r())*100)/100);
+  const items=v.map(x => Math.round(x/(s.ticket*(0.96+0.08*r()))));
+  return cache[k]={v,items};
+}
+// sum for shop selection; cut = hour limit (exclusive) or 99
+function agg(shop, off, cut){
+  const idx = shop==='all' ? [0,1,2,3] : [SHOPS.findIndex(s=>s.id===shop)];
+  let v=0,n=0; const hv=HOURS.map(()=>0), hn=HOURS.map(()=>0);
+  idx.forEach(si => { const d=dayHours(si,off); HOURS.forEach((h,i)=>{ if(h<cut){ v+=d.v[i]; n+=d.items[i]; hv[i]+=d.v[i]; hn[i]+=d.items[i]; } }); });
+  return {v:Math.round(v*100)/100, n, hv:hv.map(x=>Math.round(x*100)/100), hn};
+}
+function period(shop, range){
+  const len = range==='today'?1:range==='7d'?7:30;
+  const cur=[], prev=[];
+  for(let i=len-1;i>=0;i--){
+    cur.push({off:-i, ...agg(shop,-i, i===0?NOW_H:99)});
+    const po = range==='today' ? -7 : -i-len;
+    prev.push({off:po, ...agg(shop,po, (i===0)?NOW_H:99)});
+  }
+  const sum=(a,k)=>a.reduce((s,x)=>s+x[k],0);
+  return {len, cur, prev, sales:Math.round(sum(cur,'v')*100)/100, items:sum(cur,'n'), prevSales:Math.round(sum(prev,'v')*100)/100, prevItems:sum(prev,'n')};
+}
+
+const SUPPLIERS = {
+  mill:{name:'Millstone Flour Co.', lead:1}, dairy:{name:'Holloway Dairy', lead:1}, eggs:{name:'Greengate Farm Eggs', lead:2},
+  fine:{name:'Lowther Fine Foods', lead:2}, pack:{name:'Pemberton Packaging', lead:3}, roast:{name:'Ridgeway Roasters', lead:2}};
+const U = { sack:['sack','sacks','16 kg'], sack25:['sack','sacks','25 kg'], block:['block','blocks','2.5 kg'], tray:['tray','trays','30 eggs'], box:['box','boxes','1.6 kg'], tub:['tub','tubs','500 g'], case:['case','cases','500 bags'], carton:['carton','cartons','1 L'], bag:['bag','bags','1 kg'], tubL:['tub','tubs','2 L'] };
+let STOCK = [
+  {id:'s1', item:'Rye flour', kind:'sack', shop:'mill', oh:2, par:6, unit:'sack', sup:'mill'},
+  {id:'s2', item:'Strong white flour', kind:'sack', shop:'bridge', oh:5, par:12, unit:'sack', sup:'mill'},
+  {id:'s3', item:'Unsalted butter', kind:'block', shop:'market', oh:9, par:14, unit:'block', sup:'dairy'},
+  {id:'s4', item:'Free-range eggs', kind:'egg', shop:'harbour', oh:4, par:10, unit:'tray', sup:'eggs'},
+  {id:'s5', item:'Dark chocolate batons', kind:'box', shop:'bridge', oh:3, par:5, unit:'box', sup:'fine'},
+  {id:'s6', item:'Ground cinnamon', kind:'jar', shop:'market', oh:1, par:3, unit:'tub', sup:'fine'},
+  {id:'s7', item:'Kraft bread bags', kind:'bag', shop:'harbour', oh:3, par:4, unit:'case', sup:'pack'},
+  {id:'s8', item:'Oat milk', kind:'carton', shop:'mill', oh:7, par:12, unit:'carton', sup:'dairy'},
+  {id:'s9', item:'Unsalted butter', kind:'block', shop:'mill', oh:6, par:8, unit:'block', sup:'dairy'},
+  {id:'s10', item:'Espresso beans', kind:'bag', shop:'bridge', oh:4, par:6, unit:'bag', sup:'roast'}];
+let PENDING = [
+  {po:'PO-2617', item:'Caster sugar', shop:'market', qty:4, unit:'sack25', sup:'mill', due:dayDate(1), placed:'Thu 15 Oct'},
+  {po:'PO-2618', item:'Double cream', shop:'bridge', qty:6, unit:'tubL', sup:'dairy', due:dayDate(1), placed:'Thu 15 Oct'}];
+const DELIVERED = [
+  {d:'Thu 15 Oct', item:'Strong white flour', shop:'market', qty:10, unit:'sack'},
+  {d:'Wed 14 Oct', item:'Free-range eggs', shop:'bridge', qty:8, unit:'tray'},
+  {d:'Tue 13 Oct', item:'Kraft bread bags', shop:'bridge', qty:3, unit:'case'}];
+let poSeq = 2619;
+const shopName = id => SHOPS.find(s=>s.id===id).name;
+const units = (n,u) => plural(n, U[u][0], U[u][1]);
+
+const SHIFT = { B:{n:'Bake', t:'04:00–12:00', h:8, s:4, e:12}, O:{n:'Open', t:'06:30–14:30', h:8, s:6.5, e:14.5}, C:{n:'Close', t:'11:30–18:00', h:6.5, s:11.5, e:18}, M:{n:'Sunday', t:'09:00–15:00', h:6, s:9, e:15} };
+const STAFF = [
+  {n:'Ruth Calloway', r:'Head baker', shop:'bridge', w:['B','B','B','B','B',null,null]},
+  {n:'Sam Okafor', r:'Baker', shop:'mill', w:[null,'B','B','B','B','B',null]},
+  {n:'Isla Brennan', r:'Shop lead', shop:'bridge', w:['O','O',null,'O','O','O',null]},
+  {n:'Joe Whitlock', r:'Counter', shop:'bridge', w:['C','C','C',null,'C','O',null]},
+  {n:'Hana Mori', r:'Shop lead', shop:'market', w:['O','O','O','O','O',null,null]},
+  {n:'Alfie Dunn', r:'Counter', shop:'market', w:[null,'C','C','C','C','C','M']},
+  {n:'Grace Lowe', r:'Shop lead', shop:'mill', w:['O',null,'O','O','O','O','M']},
+  {n:'Callum Reid', r:'Shop lead', shop:'harbour', w:['O','O','O',null,'O','O',null]},
+  {n:'Nell Ashby', r:'Counter', shop:'harbour', w:['C',null,'C','C','C','M','M']}];
+const WEEK = [0,1,2,3,4,5,6].map(i => dayDate(i-4)); const TODAY_IDX = 4;
+
+const ICON = {
+  sack:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M11 5h10l-1.5 4c4 2 6.5 6.5 6.5 11 0 4.5-3 7-10 7S6 24.5 6 20c0-4.5 2.5-9 6.5-11L11 5Z"/><path d="M12.5 9h7"/><path d="M12 19h8M12 22h5" stroke-linecap="round"/></svg>',
+  block:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 13 13 8l15 5-9 5L4 13Z"/><path d="M4 13v7l15 5v-7M28 13v7l-9 5"/></svg>',
+  egg:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 20h26l-2 6H5l-2-6Z"/><path d="M8 20c0-4 1.6-8 3.5-8S15 16 15 20M17 20c0-4 1.6-8 3.5-8S24 16 24 20"/></svg>',
+  box:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="9" width="22" height="16" rx="1.5"/><path d="M5 14h22M11 18h4M11 21h7"/></svg>',
+  jar:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="10" y="4" width="12" height="4" rx="1"/><path d="M9 8h14v18a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2V8Z"/><path d="M9 14h14v7H9z"/></svg>',
+  bag:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 8h16l1 19H7L8 8Z"/><path d="M8 8l2-3h12l2 3M12 12v2M20 12v2"/></svg>',
+  carton:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 9h12v19H10z"/><path d="M10 9l3-5h6l3 5M13 4v-1h6v1"/><path d="M10 16h12"/></svg>'};
+
+const PRODUCTS = [['Sourdough loaf',4.8,.17],['Flat white',3.2,.14],['Croissant',2.3,.12],['Pain au chocolat',2.6,.1],['Cinnamon bun',3.2,.09],['Baguette',2.1,.06]];
+
+/* ---------------- state ---------------- */
+const S = {
+  shop: store.get('shop','all'), range: store.get('range','today'),
+  thr: store.get('thr',1), compact: store.get('compact',false), ghost: store.get('ghost',true),
+  q:'', sup:'', active:null, chartFail:false };
+if(!['all',...SHOPS.map(s=>s.id)].includes(S.shop)) S.shop='all';
+if(!['today','7d','30d'].includes(S.range)) S.range='today';
+let day = TODAY_IDX;
+
+/* ---------------- top bar controls ---------------- */
+const shopOpts = [['all','All shops'], ...SHOPS.map(s=>[s.id,s.name])];
+const rangeOpts = [['today','Today'],['7d','7 days'],['30d','30 days']];
+function seg(el, opts, key){
+  el.innerHTML = opts.map(([v,l]) => `<button type="button" data-v="${v}" aria-pressed="${S[key]===v}">${l}</button>`).join('');
+  el.addEventListener('click', e => { const b=e.target.closest('button'); if(!b||S[key]===b.dataset.v) return;
+    S[key]=b.dataset.v; el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b)); refresh(true); });
+}
+seg($('#shopSeg'), shopOpts, 'shop'); seg($('#rangeSeg'), rangeOpts, 'range');
+
+/* ---------------- KPIs + receipt ---------------- */
+let P;
+const arrow = up => up ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>';
+function money(v){ const s=GBP.format(v); const i=s.lastIndexOf('.'); return `${esc(s.slice(0,i))}<span class="p">${esc(s.slice(i))}</span>`; }
+function renderKpis(){
+  P = period(S.shop, S.range);
+  const scope = S.shop==='all' ? 'all four shops' : shopName(S.shop);
+  const lastFri = DSHORT.format(dayDate(-7)).replace(',','');
+  const lbl = { today:'Today’s sales', '7d':'Sales, last 7 days', '30d':'Sales, last 30 days' }[S.range];
+  $('#kSalesLbl').textContent = lbl;
+  $('#kSales').innerHTML = money(P.sales);
+  $('#kSalesSub').textContent = S.range==='today' ? `${scope} · 07:00 to 14:00` : `${scope} · to 14:00 today`;
+  const pct = (P.sales-P.prevSales)/P.prevSales*100; const up = pct>=0;
+  $('#kCmpLbl').textContent = S.range==='today' ? 'vs same day last week' : `vs previous ${P.len} days`;
+  $('#kDelta').className = 'delta sk ' + (up?'up':'down');
+  $('#kDelta').innerHTML = `${arrow(up)}<span>${up?'+':'−'}${Math.abs(pct).toFixed(1)}%</span>`;
+  $('#kCmpSub').textContent = S.range==='today' ? `${GBP.format(P.prevSales)} on ${lastFri} by 14:00` : `${GBP.format(P.prevSales)} in the ${P.len} days before`;
+  $('#kItemsLbl').textContent = S.range==='today' ? 'Items sold today' : `Items sold, ${P.len} days`;
+  $('#kItems').textContent = INT.format(P.items);
+  const ipct = (P.items-P.prevItems)/P.prevItems*100;
+  $('#kItemsSub').textContent = `${GBP.format(P.sales/P.items)} average per item · ${Math.abs(ipct)<0.05?'flat':(ipct>0?'+':'−')+Math.abs(ipct).toFixed(1)+'%'}`;
+  renderReceipt();
+}
+function renderReceipt(){
+  const T=P.sales, N=P.items; let sq=0, sa=0;
+  const lines = PRODUCTS.map(([n,p,s]) => { const q=Math.round(T*s/p); sq+=q; sa+=q*p; return [q,n,q*p]; });
+  const oq=N-sq, oa=Math.round((T-sa)*100)/100;
+  const where = S.shop==='all' ? 'All shops' : shopName(S.shop);
+  const when = S.range==='today' ? 'Fri 16/10/2026 · 07:00–14:00' : `${DNUM.format(dayDate(-(P.len-1)))}–16/10/2026`;
+  let shopRows='';
+  if(S.shop==='all'){ shopRows = '<hr>' + SHOPS.map(s => { const x=period(s.id,S.range); return `<div class="rc-small"><span>${esc(s.name)}</span><span>${GBP.format(x.sales)}</span></div>`; }).join(''); }
+  $('#receipt').innerHTML = `<h2>Tallyhouse till</h2><div class="rc-meta">${esc(where)}<br>${when}</div><hr>
+    ${lines.map(([q,n,a]) => `<div class="rc-line"><span>${q}</span><span>${esc(n)}</span><span>${GBP.format(a)}</span></div>`).join('')}
+    <div class="rc-line"><span>${oq}</span><span>Other items</span><span>${GBP.format(oa)}</span></div>
+    ${shopRows}<hr>
+    <div class="rc-total"><span>TOTAL</span><span>${GBP.format(T)}</span></div>
+    <div class="rc-small"><span>Items</span><span>${INT.format(N)}</span></div>
+    <div class="rc-foot">** SAMPLE DATA **</div>`;
+}
+
+/* ---------------- chart ---------------- */
+function chartData(){
+  if(S.range==='today') return HOURS.map((h,i) => ({ lab:String(h).padStart(2,'0'), full:`${String(h).padStart(2,'0')}:00–${String(h+1).padStart(2,'0')}:00`, a: h<NOW_H ? P.cur[0].hv[i] : null, b: agg(S.shop,-7,99).hv[i] }));
+  return P.cur.map((c,i) => { const d=dayDate(c.off); const pd=dayDate(P.prev[i].off);
+    return { lab: P.len===7 ? DSHORT.format(d).split(' ')[0].replace(',','') : DNUM.format(d), full: DSHORT.format(d).replace(',','') + (c.off===0?' (to 14:00)':''), a:c.v, b:P.prev[i].v, bl: DSHORT.format(pd).replace(',','') }; });
+}
+const kfmt = v => v>=1000 ? '£'+(v/1000).toFixed(v>=10000?0:1).replace(/\.0$/,'')+'k' : '£'+Math.round(v);
+function drawChart(){
+  const box=$('#chart'); const old=box.querySelector('svg'); if(old) old.remove();
+  const D=chartData(); const W=box.clientWidth, H=box.clientHeight; if(!W) return;
+  const mob=W<560; const m={l:46,r:6,t:14,b:26}; const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const mx=Math.max(...D.map(d=>Math.max(d.a||0, S.ghost?d.b:0)));
+  const stepRaw=mx/4, mag=Math.pow(10,Math.floor(Math.log10(stepRaw))); const step=[1,2,2.5,5,10].map(x=>x*mag).find(x=>x>=stepRaw); const top=step*Math.ceil(mx/step);
+  const y=v=>m.t+ih-(v/top)*ih; const band=iw/D.length;
+  const bw=Math.min(band*(D.length>20?.7:.56), 40), gw=Math.min(band*(D.length>20?.86:.8), 54);
+  let g=`<g class="axis">`;
+  for(let v=0; v<=top+1e-6; v+=step){ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${v===0?'#B9A588':'#EDE3D3'}"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end">${kfmt(v)}</text>`; }
+  const every = D.length>20 ? (mob?7:5) : (D.length>8 && mob ? 2 : 1);
+  D.forEach((d,i)=>{ const cx=m.l+band*i+band/2; const last=i===D.length-1;
+    if(i%every===0 || (last && D.length>20)) { if(!(D.length>20 && !last && (D.length-1-i)<every)) g+=`<text x="${cx}" y="${H-8}" text-anchor="middle">${d.lab}</text>`; } });
+  g+='</g><g>';
+  D.forEach((d,i)=>{ const cx=m.l+band*i+band/2;
+    if(S.ghost) g+=`<rect class="bar" x="${cx-gw/2}" y="${y(d.b)}" width="${gw}" height="${y(0)-y(d.b)}" rx="3" fill="#E8DCC8" stroke="#C7B396" stroke-width="1"/>`;
+    if(d.a!=null) g+=`<rect class="bar" x="${cx-bw/2}" y="${y(d.a)}" width="${bw}" height="${y(0)-y(d.a)}" rx="${Math.min(6,bw/3)}" fill="${S.active===i?'#7A2F0E':'#A4441A'}"/>`;
+    g+=`<rect x="${m.l+band*i}" y="${m.t}" width="${band}" height="${ih}" fill="transparent" data-i="${i}"/>`;
+  });
+  if(S.range==='today'){ const xi=HOURS.indexOf(NOW_H); const x=m.l+band*xi+2; g+=`<line x1="${x}" x2="${x}" y1="${m.t}" y2="${y(0)}" stroke="#2A1A10" stroke-dasharray="3 3"/><text x="${x+6}" y="${m.t+10}" style="font:600 11.5px Public Sans,sans-serif;fill:#2A1A10">Now 14:02</text>`; }
+  g+='</g>';
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('tabindex','0'); svg.setAttribute('role','img');
+  svg.setAttribute('aria-label', `${$('#chartTitle').textContent}. Total ${GBP.format(P.sales)}. Use left and right arrow keys to read each bar.`);
+  svg.innerHTML=g; box.prepend(svg);
+  svg.addEventListener('pointermove', e => { const t=e.target.closest('[data-i]'); if(t && +t.dataset.i!==S.active){ S.active=+t.dataset.i; drawChart(); readout(); } });
+  svg.addEventListener('keydown', e => { if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft') return; e.preventDefault();
+    const n=D.length; S.active = S.active==null ? (e.key==='ArrowRight'?0:n-1) : (S.active+(e.key==='ArrowRight'?1:-1)+n)%n; drawChart(); readout(); box.querySelector('svg').focus(); });
+  renderChartTable(D);
+}
+function readout(){
+  const D=chartData(); const el=$('#readout');
+  const lastFri = DSHORT.format(dayDate(-7)).replace(',','');
+  if(S.active==null || !D[S.active]){
+    const best=D.reduce((b,d,i)=> (d.a!=null && (b<0 || d.a>D[b].a)) ? i : b, -1);
+    el.innerHTML = `<span>Best ${S.range==='today'?'hour':'day'}: <b>${D[best].full}</b> · ${GBP.format(D[best].a)}</span><span class="hint-k">Hover or use ← → on the chart for each ${S.range==='today'?'hour':'day'}</span><span class="hint-t">Tap a bar for its figures</span>`; return; }
+  const d=D[S.active];
+  el.innerHTML = `<span><b>${d.full}</b></span><span>This period <b>${d.a==null?'not traded yet':GBP.format(d.a)}</b></span><span>${S.range==='today'?lastFri:d.bl} <b>${GBP.format(d.b)}</b></span>`;
+}
+function renderChartTable(D){
+  const t=$('#chartTable'); const lastFri = DSHORT.format(dayDate(-7)).replace(',','');
+  t.querySelector('thead').innerHTML=`<tr><th scope="col">${S.range==='today'?'Hour':'Day'}</th><th scope="col">This period</th><th scope="col">${S.range==='today'?lastFri:'Previous period'}</th></tr>`;
+  t.querySelector('tbody').innerHTML=D.map(d=>`<tr><th scope="row">${d.full}</th><td>${d.a==null?'–':GBP.format(d.a)}</td><td>${GBP.format(d.b)}</td></tr>`).join('');
+}
+function chartText(){
+  const scope = S.shop==='all' ? 'All shops' : shopName(S.shop);
+  $('#chartTitle').textContent = S.range==='today' ? 'Sales by hour, today' : `Sales by day, last ${P.len} days`;
+  $('#chartSub').textContent = S.range==='today' ? `${scope} · 07:00–18:00, shaded blocks show last Friday` : `${scope} · shaded blocks show the ${P.len} days before`;
+  $('#lgA').textContent = S.range==='today' ? 'Today' : `Last ${P.len} days`;
+  $('#lgB').textContent = S.range==='today' ? DSHORT.format(dayDate(-7)).replace(',','') : 'Previous period';
+  document.querySelector('.legend span:nth-child(2)').style.display = S.ghost ? '' : 'none';
+}
+
+/* ---------------- stock ---------------- */
+const isLow = r => r.oh/r.par < S.thr;
+const inShop = r => S.shop==='all' || r.shop===S.shop;
+function suppliersSelect(){
+  const used=[...new Set(STOCK.map(r=>r.sup))];
+  $('#supF').innerHTML = '<option value="">All suppliers</option>' + used.map(k=>`<option value="${k}">${esc(SUPPLIERS[k].name)}</option>`).join('');
+  $('#supF').value = used.includes(S.sup) ? S.sup : (S.sup='');
+}
+function renderStock(focusAfter){
+  const base = STOCK.filter(r=>isLow(r) && inShop(r)).sort((a,b)=>a.oh/a.par-b.oh/b.par);
+  const q=S.q.trim().toLowerCase();
+  const rows = base.filter(r => (!q || (r.item+' '+SUPPLIERS[r.sup].name+' '+shopName(r.shop)).toLowerCase().includes(q)) && (!S.sup || r.sup===S.sup));
+  const thrTxt = {1:'Below par level', 0.75:'Below 75% of par', 0.5:'Below 50% of par'}[S.thr];
+  $('#stockRule').textContent = `${thrTxt}. Critical means under half of par.`;
+  $('#stockCount').textContent = base.length ? (rows.length===base.length ? `${plural(base.length,'item','items')} to reorder` : `Showing ${rows.length} of ${plural(base.length,'low-stock item','low-stock items')}`) : '';
+  $('#stockTable tbody').innerHTML = rows.map(r => {
+    const pct=r.oh/r.par, crit=pct<.5, u=U[r.unit];
+    return `<tr data-id="${r.id}">
+      <th scope="row" class="c-item"><span class="item">${ICON[r.kind]}<span>${esc(r.item)}<small>${u[1]} of ${u[2]}</small></span></span></th>
+      <td class="c-status"><span class="chip ${crit?'crit':'low'}">${crit?'Critical':'Low'}</span></td>
+      <td class="c-shop" data-label="Shop">${esc(shopName(r.shop))}</td>
+      <td class="c-oh r"><span class="par"><span class="par-lbl">On hand</span><span class="gauge" aria-hidden="true"><i class="${crit?'crit':''}" style="width:${Math.round(pct*100)}%"></i></span><span class="oh">${r.oh} / ${r.par}</span><span class="sr-only">${units(r.oh,r.unit)} on hand, par ${r.par}</span></span></td>
+      <td class="c-sup" data-label="Supplier">${esc(SUPPLIERS[r.sup].name)}</td>
+      <td class="c-act r"><button class="btn btn-primary" data-reorder="${r.id}" aria-label="Reorder ${units(reorderQty(r),r.unit)} of ${esc(r.item)} for ${esc(shopName(r.shop))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg>Reorder</button></td></tr>`; }).join('');
+  $('#stockTable').style.display = rows.length ? '' : 'none';
+  const E=$('#stockEmpty');
+  if(rows.length) E.innerHTML='';
+  else if(base.length) E.innerHTML = `<div class="empty"><svg viewBox="0 0 72 56" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 40c0-14 12-24 28-24s28 10 28 24c0 4-3 7-7 7H15c-4 0-7-3-7-7Z"/><circle cx="30" cy="30" r="7"/><path d="m35 35 6 6"/></svg><h3>No low-stock items match “${esc(S.q||SUPPLIERS[S.sup]?.name||'')}”</h3><p>${plural(base.length,'item is','items are')} hidden by your search or supplier filter.</p><button class="btn btn-ghost" id="clearF">Clear filters</button></div>`;
+  else E.innerHTML = `<div class="empty"><svg viewBox="0 0 72 56" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 40c0-14 12-24 28-24s28 10 28 24c0 4-3 7-7 7H15c-4 0-7-3-7-7Z"/><path d="m26 31 7 7 13-13"/></svg><h3>All stocked up</h3><p>Nothing at ${S.shop==='all'?'any shop':esc(shopName(S.shop))} is below the threshold. Orders on the way are listed under Supplier orders.</p></div>`;
+  const lowAll = STOCK.filter(r=>isLow(r)&&inShop(r)); const critN = lowAll.filter(r=>r.oh/r.par<.5).length;
+  $('#kLow').textContent = INT.format(lowAll.length);
+  $('#kLowTile').classList.toggle('is-alert', critN>0);
+  $('#kLowSub').innerHTML = lowAll.length ? `<span>${critN} critical</span> <a class="kpi-link" href="#stockPanel">Review and reorder</a>` : 'Nothing below threshold';
+  if(focusAfter){ const b=$('#stockTable tbody [data-reorder]') ; (b||$('#q')).focus({preventScroll:false}); }
+}
+const reorderQty = r => Math.ceil(r.par*1.5 - r.oh);
+function addDays(n){ const d=dayDate(n); if(d.getDay()===0) d.setDate(d.getDate()+1); return d; }
+let lastUndo=null, toastT;
+function reorder(id){
+  const r=STOCK.find(x=>x.id===id); if(!r) return;
+  const tr=document.querySelector(`tr[data-id="${id}"]`);
+  const go=()=>{
+    STOCK=STOCK.filter(x=>x!==r);
+    const o={po:'PO-'+(poSeq++), item:r.item, shop:r.shop, qty:reorderQty(r), unit:r.unit, sup:r.sup, due:addDays(SUPPLIERS[r.sup].lead), placed:'Today 14:02', fresh:true, from:r};
+    PENDING.unshift(o); lastUndo=o;
+    renderStock(true); renderOrders();
+    const msg=`${r.item} (${shopName(r.shop)}): ${units(o.qty,o.unit)} ordered from ${SUPPLIERS[r.sup].name}, due ${DSHORT.format(o.due).replace(',','')}`;
+    $('#live').textContent = msg + `. ${$('#kLow').textContent} low-stock items left.`;
+    $('#toastMsg').textContent = `${o.po} placed · ${r.item}`; $('#toast').classList.add('show');
+    clearTimeout(toastT); toastT=setTimeout(()=>$('#toast').classList.remove('show'), 7000);
+  };
+  if(tr && !reduce.matches){ tr.classList.add('leaving'); setTimeout(go, 260); } else go();
+}
+$('#toastUndo').addEventListener('click', () => {
+  if(!lastUndo) return; PENDING=PENDING.filter(o=>o!==lastUndo); STOCK.push(lastUndo.from); poSeq--;
+  $('#live').textContent=`Order for ${lastUndo.item} cancelled; back on the low-stock list.`; lastUndo=null;
+  $('#toast').classList.remove('show'); renderStock(); renderOrders(); $('#q').focus();
+});
+$('#stockTable').addEventListener('click', e => { const b=e.target.closest('[data-reorder]'); if(b){ b.disabled=true; reorder(b.dataset.reorder); } });
+$('#stockEmpty').addEventListener('click', e => { if(e.target.id==='clearF'){ S.q=''; S.sup=''; $('#q').value=''; $('#supF').value=''; renderStock(); $('#q').focus(); } });
+let qT; $('#q').addEventListener('input', e => { clearTimeout(qT); qT=setTimeout(()=>{ S.q=e.target.value; renderStock(); $('#live').textContent=$('#stockCount').textContent || 'No matching items'; },120); });
+$('#supF').addEventListener('change', e => { S.sup=e.target.value; renderStock(); $('#live').textContent=$('#stockCount').textContent || 'No matching items'; });
+
+/* ---------------- orders ---------------- */
+function renderOrders(){
+  const list = PENDING.filter(o=>S.shop==='all'||o.shop===S.shop);
+  $('#pendCount').textContent = list.length ? plural(list.length,'order','orders') : '';
+  $('#ordersSub').textContent = S.shop==='all' ? 'Dockets for all four shops' : `Dockets for ${shopName(S.shop)}`;
+  $('#dockets').innerHTML = list.length ? list.map(o => `<li class="docket${o.fresh?' is-new':''}">
+      <div class="dk-top"><span><b>${o.po}</b>${o.fresh?'<span class="new-tag">NEW</span>':''}</span><span>${o.placed}</span></div>
+      <h3>${esc(o.item)}</h3><div class="dk-qty">${units(o.qty,o.unit)} · ${U[o.unit][2]}</div>
+      <dl><dt>Supplier</dt><dd>${esc(SUPPLIERS[o.sup].name)}</dd><dt>For</dt><dd>${esc(shopName(o.shop))}</dd><dt>Expected</dt><dd><time datetime="${o.due.toISOString().slice(0,10)}">${DSHORT.format(o.due).replace(',','')}</time></dd></dl></li>`).join('')
+    : `<li class="empty" style="padding:18px 8px"><h3>Nothing on order</h3><p style="margin:4px 0 0">Reorder from the low-stock list and the docket appears here.</p></li>`;
+  PENDING.forEach(o=>o.fresh=false);
+  const del = DELIVERED.filter(o=>S.shop==='all'||o.shop===S.shop);
+  $('#delivered').innerHTML = del.length ? del.map(o=>`<li><time>${o.d}</time><span>${esc(o.item)}<br><small style="color:var(--muted);font-size:12.5px">${units(o.qty,o.unit)} · ${esc(shopName(o.shop))}</small></span><span class="ok">Received</span></li>`).join('') : '<li style="display:block;color:var(--muted)">No deliveries to this shop yet this week.</li>';
+}
+
+/* ---------------- rota ---------------- */
+function renderRota(){
+  const staff = STAFF.filter(s=>S.shop==='all'||s.shop===S.shop);
+  const on = staff.filter(s=>{ const c=s.w[TODAY_IDX]; return c && SHIFT[c].s<=14.03 && SHIFT[c].e>14.03; }).length;
+  const working = staff.filter(s=>s.w[TODAY_IDX]).length;
+  $('#onNow').innerHTML = `<i></i>${on} on shift now`;
+  $('#rotaSub').textContent = `${S.shop==='all'?'All shops':shopName(S.shop)}: ${working} of ${plural(staff.length,'person','people')} on the rota work today`;
+  $('#rotaTable thead').innerHTML = `<tr><th scope="col">Staff</th>${WEEK.map((d,i)=>`<th scope="col" class="${i===TODAY_IDX?'today':''}"${i===TODAY_IDX?' aria-current="date"':''}>${DSHORT.format(d).split(' ')[0].replace(',','')} ${d.getDate()}<span>${i===TODAY_IDX?'Today':DNUM.format(d)}</span></th>`).join('')}<th scope="col" class="hrs">Hours</th></tr>`;
+  $('#rotaTable tbody').innerHTML = staff.map(s => { const hrs=s.w.reduce((a,c)=>a+(c?SHIFT[c].h:0),0);
+    return `<tr><th scope="row">${esc(s.n)}<small>${s.r} · ${esc(shopName(s.shop))}</small></th>${s.w.map((c,i)=>`<td class="${i===TODAY_IDX?'today':''}">${c?`<span class="shift ${c}"><b>${SHIFT[c].n}</b><span>${SHIFT[c].t}</span></span>`:'<span class="off">Off</span>'}</td>`).join('')}<td class="hrs num">${String(hrs).replace('.5','½')}</td></tr>`; }).join('');
+  $('#daypick').innerHTML = WEEK.map((d,i)=>`<button type="button" class="${i===TODAY_IDX?'is-today':''}" aria-pressed="${i===day}" data-d="${i}">${DSHORT.format(d).split(' ')[0].replace(',','')}<b>${d.getDate()}</b></button>`).join('');
+  const dayStaff = staff.filter(s=>s.w[day]);
+  $('#daylist').innerHTML = dayStaff.length ? dayStaff.map(s=>`<li><span><strong>${esc(s.n)}</strong><small>${s.r} · ${esc(shopName(s.shop))}</small></span><span class="shift ${s.w[day]}"><b>${SHIFT[s.w[day]].n}</b><span>${SHIFT[s.w[day]].t}</span></span></li>`).join('')
+    : '<li style="display:block;color:var(--muted)">Nobody is rostered on this day.</li>';
+}
+$('#daypick').addEventListener('click', e => { const b=e.target.closest('button'); if(!b) return; day=+b.dataset.d; renderRota(); $(`#daypick [data-d="${day}"]`).focus(); });
+let holidayOk=false;
+function renderHoliday(state){
+  const h=$('#holiday');
+  if(state==='loading'){ h.className='holiday ok'; h.innerHTML='<span class="spin"></span><span>Loading holiday requests…</span>'; return; }
+  if(!holidayOk){ h.className='holiday err'; h.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span><strong>Holiday requests didn’t load.</strong> The rota itself is up to date.</span><button class="btn btn-ghost" id="holRetry">Retry</button>'; return; }
+  h.className='holiday ok'; h.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F6A3A" stroke-width="2" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span><strong>2 holiday requests:</strong> Isla Brennan, Mon 26–Tue 27 Oct · Alfie Dunn, Sat 31 Oct</span>';
+}
+$('#holiday').addEventListener('click', e => { if(e.target.id!=='holRetry') return; renderHoliday('loading'); setTimeout(()=>{ holidayOk=true; renderHoliday(); $('#live').textContent='Holiday requests loaded: 2 requests.'; }, 700); });
+
+/* ---------------- refresh / loading ---------------- */
+let loadT;
+function setLoading(on){ ['#kpis','#salesPanel','#receiptPanel'].forEach(s=>$(s).dataset.loading=on); ['#kpis','#salesPanel'].forEach(s=>$(s).setAttribute('aria-busy',on)); }
+function paint(){ renderKpis(); chartText(); S.active=null; if(!S.chartFail){ $('#salesPanel').dataset.chart='ok'; drawChart(); readout(); } else { $('#salesPanel').dataset.chart='error'; const o=$('#chart svg'); if(o) o.remove(); $('#readout').innerHTML=''; } renderStock(); renderOrders(); renderRota(); }
+function refresh(withLoad, ms=550){
+  clearTimeout(loadT);
+  if(!withLoad){ paint(); return; }
+  setLoading(true); $('#live').textContent='Loading figures…';
+  // stock, orders and rota are local: update at once; sales come from the till sync
+  renderStock(); renderOrders(); renderRota();
+  loadT=setTimeout(()=>{ paint(); setLoading(false); $('#live').textContent=`${$('#kSalesLbl').textContent}: ${GBP.format(P.sales)}`; }, ms);
+}
+$('#chartRetry').addEventListener('click', ()=>{ S.chartFail=false; refresh(true, 600); setTimeout(()=>$('#chart svg')?.focus(), 650); });
+let rz; new ResizeObserver(()=>{ cancelAnimationFrame(rz); rz=requestAnimationFrame(()=>{ if(!S.chartFail) drawChart(); }); }).observe($('#chart'));
+
+/* ---------------- settings drawer ---------------- */
+const dlg=$('#settings'), opener=$('#openSettings');
+$('#setShop').innerHTML = shopOpts.map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+$('#setShop').value = store.get('shop','all'); $('#setRange').value = store.get('range','today');
+$('#setThr').value = String(S.thr); $('#setCompact').checked=S.compact; $('#setGhost').checked=S.ghost;
+document.body.dataset.density = S.compact ? 'compact' : 'default';
+opener.addEventListener('click', ()=>{ dlg.showModal(); $('#setThr').focus(); });
+$('#closeSettings').addEventListener('click', ()=>dlg.close());
+dlg.addEventListener('click', e => { if(e.target===dlg) dlg.close(); });
+dlg.addEventListener('close', ()=>opener.focus());
+const saved = what => { $('#saved').textContent = `Saved · ${what}`; };
+$('#setThr').addEventListener('change', e=>{ S.thr=+e.target.value; store.set('thr',S.thr); renderStock(); saved('low-stock threshold'); });
+$('#setShop').addEventListener('change', e=>{ store.set('shop',e.target.value); saved('default shop'); });
+$('#setRange').addEventListener('change', e=>{ store.set('range',e.target.value); saved('default range'); });
+$('#setCompact').addEventListener('change', e=>{ S.compact=e.target.checked; store.set('compact',S.compact); document.body.dataset.density=S.compact?'compact':'default'; saved('row density'); });
+$('#setGhost').addEventListener('change', e=>{ S.ghost=e.target.checked; store.set('ghost',S.ghost); chartText(); if(!S.chartFail) drawChart(); saved('chart comparison'); });
+$('#demoLoad').addEventListener('click', ()=>{ dlg.close(); refresh(true, 2200); });
+$('#demoErr').addEventListener('click', ()=>{ dlg.close(); S.chartFail=true; refresh(true, 600); });
+
+/* ---------------- header hides on scroll down ---------------- */
+let lastY=scrollY; const bar=$('#topbar');
+addEventListener('scroll', ()=>{ const y=scrollY; if(matchMedia('(max-width:760px)').matches){ bar.classList.remove('is-hidden'); lastY=y; return; }
+  bar.classList.toggle('is-hidden', y>lastY && y>120); lastY=y; }, {passive:true});
+
+suppliersSelect(); refresh(false); renderHoliday();
+})();
+</script>
+</body>
+</html>

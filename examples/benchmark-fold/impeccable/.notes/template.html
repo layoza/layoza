@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold Architects, Glasgow</title>
+<meta name="description" content="Fold is a six-person architecture studio in Glasgow working on housing retrofits, small civic buildings and timber extensions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#F3F3F0;
+  --card:#FFFFFF;
+  --card-2:#E6E4DF;
+  --roof:#EEEDE9;
+  --grey:#B9B4AB;
+  --grey-dk:#5E5A53;
+  --board-1:#D3CFC7;
+  --board-2:#A9A39A;
+  --board-3:#8C877E;
+  --balsa-1:#E6D3AC;
+  --balsa-2:#D6BF94;
+  --balsa-3:#BFA474;
+  --mat-soft:#C9D6CF;
+  --ink:#1D1C1A;
+  --ink-2:#56524B;
+  --rule:#CFCBC3;
+  --act:#1F5A4A;
+  --act-hover:#143E33;
+  --error:#9B2C1F;
+  --gutter:clamp(1.25rem,4.5vw,4rem);
+  --max:82rem;
+  --sp-1:.5rem;--sp-2:1rem;--sp-3:1.5rem;--sp-4:2.5rem;--sp-5:4rem;--sp-6:clamp(5rem,9vw,8.5rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:auto;scrollbar-color:var(--board-3) var(--ground)}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;font-variation-settings:"wdth" 100;font-size:1.0625rem;line-height:1.6;font-kerning:normal;text-rendering:optimizeLegibility}
+::selection{background:var(--act);color:#fff}
+input,select,textarea,button{font:inherit;color:inherit}
+a{color:var(--act);text-decoration-thickness:1px;text-underline-offset:.22em}
+a:hover{color:var(--act-hover);text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--act);outline-offset:3px}
+img,svg{display:block;max-width:100%}
+[hidden]{display:none!important}
+.secdraw text{font-family:"Archivo",sans-serif;font-size:9px;fill:var(--ink-2);letter-spacing:.03em}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.skip{position:absolute;left:var(--gutter);top:-4rem;background:var(--ink);color:#fff;padding:.6rem 1rem;z-index:10}
+.skip:focus{top:.75rem;color:#fff}
+.skip:hover{color:#fff}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1,h2,h3{font-weight:400;margin:0;text-wrap:balance}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* Models: solid = cut, dashed = fold */
+svg.model{width:100%;height:auto;stroke:var(--ink);stroke-width:1;stroke-linejoin:round;overflow:visible}
+svg.model *{vector-effect:non-scaling-stroke}
+svg.model .knock{stroke:var(--card-2);stroke-width:2.2}
+svg.model .fold{stroke-dasharray:4 3}
+svg.model .slat{stroke-width:.6;stroke:#7A6743}
+
+/* Header */
+.site-head{border-bottom:1px solid var(--rule)}
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);min-height:4.5rem}
+.mark{display:inline-flex;align-items:center;gap:.6rem;color:var(--ink);text-decoration:none;font-variation-settings:"wdth" 125;font-weight:600;font-size:1.375rem;letter-spacing:-.01em}
+.mark:hover{color:var(--ink);text-decoration:none}
+.mark svg{width:34px;height:auto}
+.nav ul{display:flex;gap:clamp(1.25rem,2.6vw,2.5rem);list-style:none;margin:0;padding:0}
+.nav a{color:var(--ink);text-decoration:none;font-size:1rem;padding:.5rem 0;display:inline-block}
+.nav a:hover{color:var(--act);text-decoration:underline;text-decoration-thickness:1px}
+.menu-btn{display:none;align-items:center;gap:.5rem;background:none;border:1px solid var(--ink);padding:.55rem .9rem;min-height:44px;cursor:pointer;font-size:.95rem}
+.menu-btn:hover{border-color:var(--act);color:var(--act)}
+.menu-btn svg{width:18px;height:18px}
+
+/* Hero */
+.hero{padding-block:clamp(2.5rem,5vw,4rem) 0}
+.hero-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--sp-3)}
+.hero h1{grid-column:1/7;grid-row:1;align-self:start;font-variation-settings:"wdth" 118;font-weight:330;font-size:clamp(2.25rem,4.1vw,3.75rem);line-height:1.08;letter-spacing:-.022em;position:relative;z-index:1;max-width:16ch}
+.hero .lead-link{grid-column:1/6;grid-row:2;align-self:start;margin-top:var(--sp-4);position:relative;z-index:1}
+.hero figure{grid-column:6/13;grid-row:1/4;margin:clamp(3rem,6vw,5rem) 0 0}
+.hero figcaption{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.5rem;margin-top:var(--sp-2);font-size:.875rem;color:var(--ink-2)}
+.scalebar{display:inline-flex;align-items:flex-end;gap:.5rem}
+.scalebar svg{width:120px;height:14px}
+.btn-link{display:inline-flex;align-items:center;gap:.6rem;font-size:1.125rem;font-weight:500;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:.2rem}
+.btn-link:hover{text-decoration:none;border-bottom-width:2px;padding-bottom:calc(.2rem - 1px)}
+.btn-link svg{width:16px;height:16px}
+
+/* Sections */
+section{scroll-margin-top:1rem}
+.sec{padding-block:var(--sp-6)}
+.sec-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--sp-3);align-items:end;margin-bottom:var(--sp-5);border-top:1px solid var(--ink);padding-top:var(--sp-3)}
+.sec-head h2{grid-column:1/7;font-variation-settings:"wdth" 116;font-weight:360;font-size:clamp(1.875rem,3.2vw,2.875rem);line-height:1.08;letter-spacing:-.018em}
+.sec-head p{grid-column:7/13;color:var(--ink-2);max-width:42ch}
+
+/* Work */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 var(--sp-4);padding:0;border:0}
+.filters legend{float:left;margin-right:1rem;padding:.6rem 0;font-size:.9375rem;color:var(--ink-2)}
+.chip{appearance:none;background:transparent;border:1px solid var(--rule);color:var(--ink);padding:.5rem .95rem;min-height:44px;cursor:pointer;font-size:.9375rem;border-radius:0}
+.chip:hover{border-color:var(--act);color:var(--act)}
+.chip[aria-pressed="true"]{background:var(--act);border-color:var(--act);color:#fff}
+.chip .n{opacity:.75;margin-left:.3rem}
+.projects{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-5) var(--sp-4)}
+.project .plate{padding:var(--sp-2) var(--sp-1) 0}
+.project .strip{border-top:1px solid var(--ink);margin-top:var(--sp-2);padding-top:.75rem}
+.project h3{font-variation-settings:"wdth" 112;font-weight:500;font-size:1.25rem;line-height:1.25;letter-spacing:-.01em}
+.project .meta{display:flex;flex-wrap:wrap;gap:.2rem 1rem;font-size:.875rem;color:var(--ink-2);margin-top:.25rem}
+.project .meta .type{color:var(--ink)}
+.project p.desc{margin-top:.6rem;max-width:40ch}
+.empty{margin-top:var(--sp-3);color:var(--ink-2)}
+.status-line{font-size:.9375rem;color:var(--ink-2);margin:-1.5rem 0 var(--sp-4)}
+
+/* Approach */
+.approach{background:var(--card)}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-4) var(--sp-3);counter-reset:s}
+.step svg{width:100%;height:auto;margin-bottom:var(--sp-3)}
+.step svg *{vector-effect:non-scaling-stroke}
+.step svg{border-bottom:1px solid var(--rule);padding-bottom:var(--sp-2)}
+.step h3{display:grid;grid-template-columns:1.6em 1fr}
+.step .sn{color:var(--ink-2);font-weight:400}
+.step h3{font-variation-settings:"wdth" 112;font-weight:500;font-size:1.25rem;line-height:1.25;margin:.35rem 0 .6rem}
+.step p{color:var(--ink);max-width:34ch}
+
+/* Studio */
+.studio-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--sp-3);row-gap:var(--sp-5)}
+.studio-left{grid-column:1/8}
+.studio-plan{margin:0}
+.studio-plan figcaption{font-size:.875rem;color:var(--ink-2);margin-top:var(--sp-2)}
+.studio-intro{max-width:52ch;margin-top:var(--sp-4);font-size:1.1875rem;line-height:1.55}
+.people{grid-column:9/13;list-style:none;margin:0;padding:0;align-self:start}
+.people li{display:grid;grid-template-columns:2.25rem 1fr;gap:.2rem 1rem;padding:.8rem 0;border-top:1px solid var(--rule)}
+.people li:last-child{border-bottom:1px solid var(--rule)}
+.people .ini{font-size:.8125rem;color:var(--ink-2);letter-spacing:.04em;padding-top:.2rem}
+.people .nm{font-weight:500}
+.people .rl{grid-column:2;color:var(--ink-2);font-size:.9375rem;margin-top:-.15rem}
+.plan text{font-family:"Archivo",sans-serif;font-size:11px;fill:var(--ink-2);stroke:none;letter-spacing:.04em}
+
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--sp-3)}
+.contact-aside{grid-column:1/5}
+.contact-aside p{max-width:32ch;color:var(--ink)}
+.contact-aside dl{margin:var(--sp-4) 0 0}
+.contact-aside dt{font-size:.875rem;color:var(--ink-2);margin-top:var(--sp-2)}
+.contact-aside dd{margin:0}
+.form-wrap{grid-column:6/13}
+form{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3) var(--sp-3)}
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field.full{grid-column:1/-1}
+label{font-weight:500;font-size:.9375rem}
+.hint{font-size:.875rem;color:var(--ink-2);font-weight:400}
+input,select,textarea{width:100%;background:var(--card);border:1px solid var(--board-3);border-radius:0;padding:.75rem .85rem;min-height:48px;font-size:1rem;caret-color:var(--act)}
+textarea{min-height:9rem;resize:vertical;line-height:1.5}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231D1C1A' stroke-width='1.4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center;background-size:12px 8px;padding-right:2.5rem}
+input:hover,select:hover,textarea:hover{border-color:var(--ink)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--act);outline-offset:0;border-color:var(--act)}
+input::placeholder,textarea::placeholder{color:#6E6A62}
+[aria-invalid="true"]{border-color:var(--error)}
+.err{font-size:.875rem;color:var(--error);display:flex;gap:.4rem;align-items:flex-start}
+.err:empty{display:none}
+.err svg{width:14px;height:14px;flex:none;margin-top:.2rem}
+.submit-row{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin-top:var(--sp-1)}
+.btn{appearance:none;background:var(--act);color:#fff;border:1px solid var(--act);padding:.85rem 1.5rem;min-height:48px;font-weight:500;font-size:1rem;cursor:pointer;border-radius:0}
+.btn:hover{background:var(--act-hover);border-color:var(--act-hover)}
+.btn:focus-visible{outline-offset:3px}
+.form-note{font-size:.875rem;color:var(--ink-2)}
+.success{border-top:1px solid var(--ink);padding-top:var(--sp-3)}
+.success h3{font-variation-settings:"wdth" 116;font-weight:360;font-size:clamp(1.5rem,2.4vw,2rem);line-height:1.15;margin-bottom:var(--sp-2)}
+.success p{max-width:46ch}
+.success .btn-ghost{margin-top:var(--sp-3);background:none;border:1px solid var(--ink);padding:.7rem 1.1rem;min-height:44px;cursor:pointer}
+.success .btn-ghost:hover{border-color:var(--act);color:var(--act)}
+
+/* Footer */
+.site-foot{background:var(--board-1);padding-block:var(--sp-5) var(--sp-4);margin-top:var(--sp-6)}
+.foot-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--sp-3);row-gap:var(--sp-4)}
+.foot-grid .mark{grid-column:1/4;align-self:start}
+.foot-col{grid-column:span 3}
+.foot-col .foot-h{font-size:.875rem;font-weight:500;color:var(--ink);margin-bottom:.5rem;font-variation-settings:"wdth" 100}
+.foot-col address{font-style:normal}
+.foot-col ul{list-style:none;margin:0;padding:0}
+.foot-col li{padding:.15rem 0}
+.foot-col a{color:var(--act)}
+.foot-base{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 2rem;border-top:1px solid var(--board-3);padding-top:var(--sp-2);font-size:.875rem;color:#46433E}
+
+/* Transitions: hover and focus colour only */
+a,.chip,.btn,.menu-btn,input,select,textarea{transition:color .12s ease-out,background-color .12s ease-out,border-color .12s ease-out}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Tablet */
+@media (max-width:64rem){
+  .hero-grid{display:block}
+  .hero h1{max-width:18ch}
+  .hero figure{margin:var(--sp-4) 0 0 auto;max-width:40rem}
+  .projects{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .studio-left{grid-column:1/-1}
+  .people{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;column-gap:var(--sp-4)}
+  .people li:nth-last-child(2){border-bottom:1px solid var(--rule)}
+  .contact-aside{grid-column:1/-1;margin-bottom:var(--sp-5)}
+  .contact-aside dl{display:flex;flex-wrap:wrap;gap:0 var(--sp-5)}
+  .form-wrap{grid-column:1/-1}
+  .foot-grid .mark{grid-column:1/-1}
+  .foot-col{grid-column:span 4}
+  .sec-head h2{grid-column:1/-1}
+  .sec-head p{grid-column:1/-1;margin-top:var(--sp-2)}
+}
+/* Phone */
+@media (max-width:47.99rem){
+  :root{--gutter:1.25rem}
+  .menu-btn{display:inline-flex}
+  .nav{display:none}
+  .nav.open{display:block;position:absolute;left:0;right:0;top:4.5rem;min-height:calc(100vh - 4.5rem);background:var(--ground);z-index:5}
+  .site-head{position:relative}
+  .nav.open ul{flex-direction:column;gap:0;padding:var(--sp-1) var(--gutter) var(--sp-3)}
+  .nav.open li{border-top:1px solid var(--rule)}
+  .nav.open li:first-child{border-top:0}
+  .nav.open a{display:block;padding:1rem 0;font-size:1.375rem;font-variation-settings:"wdth" 112}
+  .hero-grid{display:block}
+  .hero h1{max-width:none}
+  .hero figure{margin:var(--sp-4) calc(var(--gutter) * -.5) 0}
+  .projects{grid-template-columns:1fr;gap:var(--sp-5)}
+  .steps{grid-template-columns:1fr}
+  .step svg{max-width:20rem}
+  .people{display:block}
+  .people li:nth-last-child(2){border-bottom:0}
+  .plan text{font-size:19px}
+  .contact-aside dl{display:block}
+  form{grid-template-columns:1fr}
+  .foot-col{grid-column:1/-1}
+  .filters legend{float:none;width:100%;padding:0 0 .25rem}
+}
+@media print{.site-head nav,.menu-btn,.filters{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Fold Architects, home">
+      <svg viewBox="0 0 34 24" aria-hidden="true"><path d="M1 22 L12 2 L22 2 L11 22 Z" fill="#fff" stroke="#1D1C1A" stroke-width="1.2" stroke-linejoin="round"/><path d="M11 22 L22 2 L33 8 L22 22 Z" fill="#B9B4AB" stroke="#1D1C1A" stroke-width="1.2" stroke-linejoin="round"/><path d="M11 22 L22 2" stroke="#1D1C1A" stroke-width="1.2" stroke-dasharray="2.4 2"/></svg>
+      <span>Fold</span>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <svg viewBox="0 0 18 18" aria-hidden="true" class="i-open"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <svg viewBox="0 0 18 18" aria-hidden="true" class="i-close" hidden><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <span class="menu-label">Menu</span>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#studio">Studio</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <h1 id="hero-title">We make old Glasgow homes warm, build small civic buildings, and add timber rooms where families need them.</h1>
+      <p class="lead-link"><a class="btn-link" href="#work">See the work<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v11M3 8.5 8 13.5l5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></p>
+      <figure>
+        {{hero}}
+        <figcaption>
+          <span class="scalebar"><svg viewBox="0 0 120 14" aria-hidden="true"><rect x="0.5" y="6.5" width="30" height="5" fill="#1D1C1A"/><rect x="30.5" y="6.5" width="30" height="5" fill="#fff" stroke="#1D1C1A"/><rect x="60.5" y="6.5" width="59" height="5" fill="#1D1C1A"/></svg><span class="num">0&ndash;10 m</span></span>
+          <span>Study model, 1:200. A tenement kept and insulated, with one new timber room at the back.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="work-title">Selected work</h2>
+        <p>Six recent projects, each shown as the card model we built to test it. White card is what was there; balsa is what we added.</p>
+      </div>
+      <fieldset class="filters">
+        <legend>Show</legend>
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">All<span class="n num">6</span></button>
+        <button class="chip" type="button" data-filter="housing" aria-pressed="false">Housing<span class="n num">2</span></button>
+        <button class="chip" type="button" data-filter="civic" aria-pressed="false">Civic<span class="n num">2</span></button>
+        <button class="chip" type="button" data-filter="extensions" aria-pressed="false">Extensions<span class="n num">2</span></button>
+      </fieldset>
+      <p class="status-line" id="work-status" role="status" aria-live="polite">Showing all 6 projects</p>
+      <ul class="projects" id="project-list">
+        <li class="project" data-type="housing">
+          <div class="plate">{{tenement}}</div>
+          <div class="strip">
+            <h3>Close Fourteen</h3>
+            <p class="meta"><span>Dennistoun, Glasgow</span><span class="num">2024</span><span class="type">Housing</span></p>
+            <p class="desc">Whole-building retrofit of a 1900s sandstone tenement: insulated, re-windowed, cornices kept.</p>
+          </div>
+        </li>
+        <li class="project" data-type="housing">
+          <div class="plate">{{backcourt}}</div>
+          <div class="strip">
+            <h3>Back Court Homes</h3>
+            <p class="meta"><span>Govanhill, Glasgow</span><span class="num">2023</span><span class="type">Housing</span></p>
+            <p class="desc">Four low-energy homes set around the back court&rsquo;s old drying green.</p>
+          </div>
+        </li>
+        <li class="project" data-type="civic">
+          <div class="plate">{{reading}}</div>
+          <div class="strip">
+            <h3>The Reading Room</h3>
+            <p class="meta"><span>Partick, Glasgow</span><span class="num">2025</span><span class="type">Civic</span></p>
+            <p class="desc">A former bank hall reopened as a library and meeting room, entered through a small timber porch.</p>
+          </div>
+        </li>
+        <li class="project" data-type="extensions">
+          <div class="plate">{{garden}}</div>
+          <div class="strip">
+            <h3>Larch Kitchen</h3>
+            <p class="meta"><span>Pollokshields, Glasgow</span><span class="num">2022</span><span class="type">Extension</span></p>
+            <p class="desc">A larch-clad kitchen that steps down two levels to meet the garden.</p>
+          </div>
+        </li>
+        <li class="project" data-type="civic">
+          <div class="plate">{{hall}}</div>
+          <div class="strip">
+            <h3>Burnside Hall</h3>
+            <p class="meta"><span>Maryhill, Glasgow</span><span class="num">2024</span><span class="type">Civic</span></p>
+            <p class="desc">Repair of a 1930s timber community hall, with a new kitchen and a level entrance.</p>
+          </div>
+        </li>
+        <li class="project" data-type="extensions">
+          <div class="plate">{{attic}}</div>
+          <div class="strip">
+            <h3>Roofline House</h3>
+            <p class="meta"><span>Shawlands, Glasgow</span><span class="num">2025</span><span class="type">Extension</span></p>
+            <p class="desc">A timber dormer and a rear room that turn a two-bedroom terrace into a four.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec approach" id="approach" aria-labelledby="approach-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="approach-title">Approach</h2>
+        <p>Every project moves through the same four steps, in this order. The drawings follow one wall through all of them.</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          {{sec1}}
+          <h3><span class="sn num" aria-hidden="true">1</span>Measure what is there</h3>
+          <p>We survey before we draw: walls, damp, daylight, and how the rooms are really used.</p>
+        </li>
+        <li class="step">
+          {{sec2}}
+          <h3><span class="sn num" aria-hidden="true">2</span>Keep what still works</h3>
+          <p>Stone, timber and plaster that still do their job stay. Most of a building&rsquo;s carbon is already spent.</p>
+        </li>
+        <li class="step">
+          {{sec3}}
+          <h3><span class="sn num" aria-hidden="true">3</span>Make it warm and dry</h3>
+          <p>Insulation, airtightness and ventilation come first, in that order, before any new heating kit.</p>
+        </li>
+        <li class="step">
+          {{sec4}}
+          <h3><span class="sn num" aria-hidden="true">4</span>Add only what is needed</h3>
+          <p>When a building needs more room, we add it in timber, at the scale of the street around it.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="studio" aria-labelledby="studio-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="studio-title">Studio</h2>
+      </div>
+      <div class="studio-grid">
+        <div class="studio-left">
+        <figure class="studio-plan">
+          {{plan}}
+          <figcaption>The studio table, plan at 1:50. Everyone sits at it; the model of whatever we are working on sits in the middle.</figcaption>
+        </figure>
+          <p class="studio-intro">Fold is six people around one long table in Glasgow. Each project is led by one architect from the first site visit to handover, and the whole studio reviews every drawing set before it leaves the room. We take on a small number of jobs at a time so that stays true.</p>
+        </div>
+          <ul class="people">
+            <li><span class="ini" aria-hidden="true">IB</span><span class="nm">Iona Baird</span><span class="rl">Director, architect</span></li>
+            <li><span class="ini" aria-hidden="true">RK</span><span class="nm">Ruaridh Kerr</span><span class="rl">Director, architect</span></li>
+            <li><span class="ini" aria-hidden="true">AH</span><span class="nm">Amira Haddad</span><span class="rl">Architect, retrofit lead</span></li>
+            <li><span class="ini" aria-hidden="true">CD</span><span class="nm">Calum Doig</span><span class="rl">Architect</span></li>
+            <li><span class="ini" aria-hidden="true">MT</span><span class="nm">Morven Tait</span><span class="rl">Architectural assistant</span></li>
+            <li><span class="ini" aria-hidden="true">SL</span><span class="nm">Sean Lafferty</span><span class="rl">Studio and project manager</span></li>
+          </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="contact-title">Start a project</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-aside">
+          <p>Tell us about the building and what you want it to do. One of the directors will reply within a week, usually with a time to visit.</p>
+          <dl>
+            <dt>Email</dt><dd><a href="mailto:hello@fold.example">hello@fold.example</a></dd>
+            <dt>Phone</dt><dd><a class="num" href="tel:+441414960732">0141 496 0732</a></dd>
+          </dl>
+        </div>
+        <div class="form-wrap">
+          <form id="enquiry" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+              <p class="err" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email">
+              <p class="err" id="e-email" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-type">Project type</label>
+              <select id="f-type" name="type" required aria-describedby="e-type">
+                <option value="">Choose one</option>
+                <option>Housing retrofit</option>
+                <option>Extension</option>
+                <option>Civic or community building</option>
+                <option>Something else</option>
+              </select>
+              <p class="err" id="e-type" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-budget">Budget range</label>
+              <select id="f-budget" name="budget" required aria-describedby="e-budget">
+                <option value="">Choose one</option>
+                <option>Under &pound;50,000</option>
+                <option>&pound;50,000 to &pound;150,000</option>
+                <option>&pound;150,000 to &pound;500,000</option>
+                <option>Over &pound;500,000</option>
+                <option>Not sure yet</option>
+              </select>
+              <p class="err" id="e-budget" aria-live="polite"></p>
+            </div>
+            <div class="field full">
+              <label for="f-msg">About the project <span class="hint">(where it is, what you have in mind)</span></label>
+              <textarea id="f-msg" name="message" required minlength="20" aria-describedby="e-msg"></textarea>
+              <p class="err" id="e-msg" aria-live="polite"></p>
+            </div>
+            <div class="submit-row">
+              <button class="btn" type="submit">Send enquiry</button>
+              <p class="form-note">We only use these details to reply to you.</p>
+            </div>
+          </form>
+          <div class="success" id="enquiry-done" tabindex="-1" hidden>
+            <h3>Thank you, your enquiry is with us.</h3>
+            <p id="done-text">We read every message ourselves and will reply within a week.</p>
+            <button class="btn-ghost" type="button" id="again">Send another enquiry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <a class="mark" href="#top" aria-label="Fold Architects, back to top">
+      <svg viewBox="0 0 34 24" aria-hidden="true"><path d="M1 22 L12 2 L22 2 L11 22 Z" fill="#fff" stroke="#1D1C1A" stroke-width="1.2" stroke-linejoin="round"/><path d="M11 22 L22 2 L33 8 L22 22 Z" fill="#B9B4AB" stroke="#1D1C1A" stroke-width="1.2" stroke-linejoin="round"/><path d="M11 22 L22 2" stroke="#1D1C1A" stroke-width="1.2" stroke-dasharray="2.4 2"/></svg>
+      <span>Fold</span>
+    </a>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <address>Fold Architects<br>Studio 2/1, 38 Inchmurrin Lane<br>Glasgow G3 0XX</address>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Contact</p>
+      <ul>
+        <li><a href="mailto:hello@fold.example">hello@fold.example</a></li>
+        <li><a class="num" href="tel:+441414960732">0141 496 0732</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <ul>
+        <li><a href="#" aria-label="Fold on Instagram (placeholder link)">Instagram</a></li>
+        <li><a href="#" aria-label="Fold on LinkedIn (placeholder link)">LinkedIn</a></li>
+        <li><a href="#" aria-label="Fold on Are.na (placeholder link)">Are.na</a></li>
+      </ul>
+    </div>
+    <div class="foot-base">
+      <span>&copy; <span class="num">2026</span> Fold Architects</span>
+      <span>Fold is a fictional studio. Projects, people and contact details are illustrative.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  /* Mobile navigation */
+  var btn=document.querySelector(".menu-btn"),nav=document.getElementById("site-nav");
+  var iOpen=btn.querySelector(".i-open"),iClose=btn.querySelector(".i-close"),lbl=btn.querySelector(".menu-label");
+  function setNav(open,focusBtn){
+    btn.setAttribute("aria-expanded",open?"true":"false");
+    nav.classList.toggle("open",open);
+    iOpen.toggleAttribute("hidden",open);iClose.toggleAttribute("hidden",!open);lbl.textContent=open?"Close":"Menu";
+    if(open){var a=nav.querySelector("a");if(a)a.focus();}
+    else if(focusBtn){btn.focus();}
+  }
+  btn.addEventListener("click",function(){setNav(btn.getAttribute("aria-expanded")!=="true",true);});
+  nav.addEventListener("click",function(e){if(e.target.closest("a")&&nav.classList.contains("open"))setNav(false,false);});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&nav.classList.contains("open"))setNav(false,true);});
+  document.addEventListener("click",function(e){if(nav.classList.contains("open")&&!e.target.closest(".site-head"))setNav(false,false);});
+  var mq=window.matchMedia("(min-width: 48rem)");
+  function onMq(){if(mq.matches&&nav.classList.contains("open"))setNav(false,false);}
+  if(mq.addEventListener)mq.addEventListener("change",onMq);else mq.addListener(onMq);
+
+  /* Project filter */
+  var chips=document.querySelectorAll(".chip"),items=document.querySelectorAll(".project"),status=document.getElementById("work-status");
+  var names={all:"all",housing:"housing",civic:"civic",extensions:"extension"};
+  Array.prototype.forEach.call(chips,function(c){
+    c.addEventListener("click",function(){
+      var f=c.getAttribute("data-filter"),n=0;
+      Array.prototype.forEach.call(chips,function(o){o.setAttribute("aria-pressed",o===c?"true":"false");});
+      Array.prototype.forEach.call(items,function(it){var show=f==="all"||it.getAttribute("data-type")===f;it.hidden=!show;if(show)n++;});
+      status.textContent=f==="all"?"Showing all "+n+" projects":"Showing "+n+" "+names[f]+" project"+(n===1?"":"s");
+    });
+  });
+
+  /* Enquiry form */
+  var form=document.getElementById("enquiry"),done=document.getElementById("enquiry-done");
+  var icon='<svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M7 3.6v4.2M7 9.6v.9" stroke="currentColor" stroke-width="1.4"/></svg>';
+  var rules={
+    name:function(v){return v.trim()?"":"Please tell us your name.";},
+    email:function(v){v=v.trim();if(!v)return "Please add an email address so we can reply.";return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?"":"This email address looks incomplete. Check it has an @ and a domain, like name@example.com.";},
+    type:function(v){return v?"":"Choose the kind of project, or pick “Something else”.";},
+    budget:function(v){return v?"":"Choose a budget range. “Not sure yet” is fine.";},
+    message:function(v){v=v.trim();if(!v)return "Tell us a little about the building and what you want to change.";return v.length<20?"A little more detail helps us reply properly: at least 20 characters.":"";}
+  };
+  var errIds={name:"e-name",email:"e-email",type:"e-type",budget:"e-budget",message:"e-msg"};
+  var touched={};
+  function check(el){
+    var msg=rules[el.name](el.value),out=document.getElementById(errIds[el.name]);
+    el.setAttribute("aria-invalid",msg?"true":"false");
+    out.innerHTML=msg?icon+"<span>"+msg+"</span>":"";
+    return !msg;
+  }
+  Array.prototype.forEach.call(form.elements,function(el){
+    if(!rules[el.name])return;
+    el.addEventListener("blur",function(){if(el.value.trim()||touched[el.name]){touched[el.name]=true;check(el);}});
+    el.addEventListener("input",function(){if(touched[el.name])check(el);});
+    el.addEventListener("change",function(){if(el.tagName==="SELECT"){touched[el.name]=true;check(el);}});
+  });
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    var first=null;
+    Array.prototype.forEach.call(form.elements,function(el){
+      if(!rules[el.name])return;touched[el.name]=true;
+      if(!check(el)&&!first)first=el;
+    });
+    if(first){first.focus();return;}
+    var nm=form.elements.name.value.trim().split(/\s+/)[0];
+    document.getElementById("done-text").textContent="Thanks, "+nm+". We read every message ourselves and will reply to "+form.elements.email.value.trim()+" within a week.";
+    form.hidden=true;done.hidden=false;done.focus();
+  });
+  document.getElementById("again").addEventListener("click",function(){
+    form.reset();touched={};
+    Array.prototype.forEach.call(form.elements,function(el){if(rules[el.name]){el.removeAttribute("aria-invalid");document.getElementById(errIds[el.name]).innerHTML="";}});
+    done.hidden=true;form.hidden=false;form.elements.name.focus();
+  });
+})();
+</script>
+</body>
+</html>

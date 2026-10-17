@@ -1,0 +1,63 @@
+import pathlib, sys
+from playwright.sync_api import sync_playwright
+
+here = pathlib.Path(__file__).parent
+url = (here.parent / "index.html").resolve().as_uri()
+out = here / "shots"
+out.mkdir(exist_ok=True)
+
+with sync_playwright() as p:
+    b = p.chromium.launch()
+    errors = []
+    for name, w, h in [("desktop", 1440, 900), ("tablet", 768, 1024), ("mobile", 375, 812)]:
+        pg = b.new_page(viewport={"width": w, "height": h})
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        pg.on("console", lambda m: m.type == "error" and errors.append(m.text))
+        pg.goto(url, wait_until="networkidle")
+        pg.wait_for_timeout(500)
+        pg.screenshot(path=str(out / f"{name}-top.png"))
+        pg.screenshot(path=str(out / f"{name}-full.png"), full_page=True)
+        sw = pg.evaluate("document.documentElement.scrollWidth")
+        print(name, "scrollWidth", sw, "viewport", w)
+        if name == "mobile":
+            pg.click(".menu-toggle")
+            pg.wait_for_timeout(300)
+            pg.screenshot(path=str(out / "mobile-nav.png"))
+            print("nav expanded", pg.get_attribute(".menu-toggle", "aria-expanded"))
+            pg.keyboard.press("Escape")
+            pg.wait_for_timeout(300)
+            print("nav after esc", pg.get_attribute(".menu-toggle", "aria-expanded"))
+        if name == "desktop":
+            pg.click("[data-filter=GF]")
+            print("GF:", pg.text_content("#filter-count"), "| empty desserts visible:", pg.is_visible(".course:nth-child(3) .empty"))
+            pg.click("[data-filter=V]")
+            print("V:", pg.text_content("#filter-count"))
+            pg.locator("#menu").screenshot(path=str(out / "menu-V.png"))
+            pg.click("[data-filter=all]")
+            pg.click("#booking button[type=submit]")
+            errs = pg.locator(".error:not(:empty)").all_text_contents()
+            print("errors on empty submit:", len(errs), errs[:2])
+            print("focused:", pg.evaluate("document.activeElement.id"))
+            pg.locator("#book").screenshot(path=str(out / "book-errors.png"))
+            pg.fill("#f-name", "Sam Test")
+            pg.fill("#f-email", "sam@")
+            pg.locator("#f-email").blur()
+            print("bad email:", pg.text_content("#e-email"))
+            pg.fill("#f-email", "sam@example.com")
+            pg.select_option("#f-party", "4")
+            n = pg.locator("#f-date option").count()
+            pg.select_option("#f-date", index=1)
+            pg.select_option("#f-time", "19:30")
+            print("date options:", n - 1, pg.locator("#f-date option").all_text_contents()[1:4])
+            pg.click("#booking button[type=submit]")
+            print("success:", pg.is_visible("#success"), pg.text_content("#success-text"))
+            pg.locator("#book").screenshot(path=str(out / "book-success.png"))
+            pg.locator("#faq summary").first.click()
+            print("faq open:", pg.evaluate("document.querySelector('#faq details').open"))
+            pg.fill("#hour", "420")
+            pg.dispatch_event("#hour", "input")
+            print("scrub:", pg.text_content("#readout-clock"), pg.text_content("#readout-temp"))
+            pg.locator("#oven").screenshot(path=str(out / "oven.png"))
+        pg.close()
+    print("JS errors:", errors)
+    b.close()

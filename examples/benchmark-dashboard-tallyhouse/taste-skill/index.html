@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tallyhouse · the day's tally</title>
+<meta name="description" content="Tallyhouse: the morning tally for a four-shop bakery. Fictional sample data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f9f8; --surface:#ebf0ee; --surface-2:#dbe6e3;
+  --ink:#06525c; --muted:#2f737d; --accent:#06525c; --accent-ink:#f7f9f8;
+  --field:#06525c; --field-ink:#f7f9f8; --field-2:#0b6570; --field-3:#3d8790;
+  --alert:#9b1f2a; --alert-bg:#f6e3e4;
+  --step-small:clamp(.8125rem,.79rem + .1vw,.875rem);
+  --step-body:clamp(1.0625rem,1rem + .25vw,1.1875rem);
+  --step-lead:clamp(1.25rem,1.1rem + .7vw,1.625rem);
+  --step-head:clamp(2.5rem,1.2rem + 5vw,5.5rem);
+  --step-giant:clamp(7rem,3rem + 13vw,15rem);
+  --m:clamp(16px,2.4vw,32px);
+  --t-ui:200ms; --ease-out:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--field);color:var(--ink);font-family:"EB Garamond",Georgia,serif;font-size:var(--step-body);line-height:1.45;font-variant-numeric:lining-nums tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #e8b53a;outline-offset:3px}
+.paper :focus-visible,.sheet :focus-visible,dialog :focus-visible{outline-color:var(--ink)}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0}
+.skip{position:absolute;left:16px;top:-80px;background:var(--bg);color:var(--ink);padding:10px 16px;z-index:60}
+.skip:focus{top:16px}
+.disp{font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;letter-spacing:-.02em;line-height:.85;text-transform:uppercase}
+h1,h2,h3{margin:0;font-weight:400}
+
+/* Buttons: square, flat, one fill */
+.btn{min-height:44px;padding:0 20px;border:0;border-radius:0;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:var(--step-body);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform var(--t-ui) var(--ease-out),background var(--t-ui)}
+.btn:hover{background:#043f47}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.ghost{background:var(--surface);color:var(--ink)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.onfield{background:var(--bg);color:var(--ink)}
+.btn.onfield:hover{background:var(--surface)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.link{background:none;border:0;padding:0;min-height:44px;color:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-weight:600}
+
+/* Top bar */
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:14px var(--m);color:var(--field-ink)}
+.bar .mark{grid-column:2;font-size:clamp(1.75rem,1.4rem + 1vw,2.25rem);margin:0;color:var(--field-ink);letter-spacing:.01em}
+.bar .ctl{grid-column:1;grid-row:1;display:flex;gap:10px;flex-wrap:wrap}
+.bar .ctl label{display:flex;align-items:center;gap:8px;font-size:var(--step-small)}
+.bar select{min-height:44px;border:0;border-radius:0;background:var(--field-2);color:var(--field-ink);padding:0 36px 0 12px;font-size:var(--step-body);appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23f7f9f8' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.bar select:hover{background-color:var(--field-3)}
+.bar .right{grid-column:3;justify-self:end}
+
+/* Hero: tabbed folders */
+.hero{padding:clamp(32px,6vw,84px) var(--m) 0;color:var(--field-ink);text-align:center}
+.hero h1{font-size:clamp(5rem,2rem + 9vw,10rem);margin:0 auto;max-width:14ch}
+.hero .sup{max-width:46ch;margin:22px auto 0;font-size:var(--step-lead);line-height:1.35}
+.hero .sup strong{font-weight:600}
+.folders{position:relative;margin:clamp(40px,6vw,72px) auto 0;width:min(100%,1180px);height:232px}
+.folder{position:absolute;left:0;right:0;bottom:0;display:block;text-decoration:none}
+.folder .tab{position:absolute;top:-38px;height:40px;padding:0 34px;display:flex;align-items:center;font-size:18px;font-weight:600;clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 100%,0 100%);transition:transform var(--t-ui) var(--ease-out)}
+.folder .band{position:absolute;inset:0}
+.folder:hover .tab,.folder:focus-visible .tab{transform:translateY(-4px)}
+.folder:focus-visible{outline:none}
+.folder:focus-visible .tab{outline:3px solid #e8b53a;outline-offset:-3px}
+.f1{top:40px;z-index:1}.f1 .tab{left:4%}
+.f2{top:88px;z-index:2}.f2 .tab{left:27%}
+.f3{top:136px;z-index:3}.f3 .tab{left:52%}
+.f4{top:184px;z-index:4}.f4 .tab{right:4%}
+.f1 .band,.f1 .tab{background:var(--field-3);color:#fff}
+.f2 .band,.f2 .tab{background:var(--surface-2);color:var(--ink)}
+.f3 .band,.f3 .tab{background:var(--surface);color:var(--ink)}
+.f4 .band,.f4 .tab{background:var(--bg);color:var(--ink)}
+.f1 .tab{color:#fff;background:#2b7983}
+
+/* Front folder = takings */
+.paper{background:var(--bg);color:var(--ink);width:min(1180px,calc(100% - 2*var(--m)));margin:0 auto;padding:clamp(28px,4vw,56px) clamp(20px,4vw,56px) clamp(40px,5vw,72px);position:relative}
+.takings{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 24px}
+.takings .left{grid-column:1/8;display:flex;flex-direction:column;min-height:540px}
+.takings h2{font-size:clamp(2.5rem,1.6rem + 2.4vw,3.5rem)}
+.note{margin:10px 0 0;max-width:44ch}
+.total{margin-top:auto;container-type:inline-size}
+.total .num{font-size:min(var(--step-giant),calc(225cqi / var(--len,6)));display:block;line-height:.8;letter-spacing:-.03em}
+.total .cap{margin:14px 0 0;font-size:var(--step-lead)}
+.kpis{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:12px 48px;margin:36px 0 0;padding:0}
+.kpis div{margin:0;display:flex;flex-direction:column-reverse;justify-content:flex-end}
+.kpis dt{font-size:var(--step-small);font-weight:600}
+.kpis dd{margin:0 0 6px;font-family:"Bebas Neue",Impact,sans-serif;font-size:clamp(2.5rem,1.6rem + 2.4vw,3.5rem);line-height:.9}
+.kpis dd small{display:block;font-family:"EB Garamond",Georgia,serif;font-size:var(--step-small);line-height:1.3;margin-top:6px}
+.kpis .warn dd{color:var(--alert)}
+.slip{grid-column:8/13;align-self:start;background:var(--surface);padding:28px 28px 48px;clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),95% 100%,90% calc(100% - 14px),85% 100%,80% calc(100% - 14px),75% 100%,70% calc(100% - 14px),65% 100%,60% calc(100% - 14px),55% 100%,50% calc(100% - 14px),45% 100%,40% calc(100% - 14px),35% 100%,30% calc(100% - 14px),25% 100%,20% calc(100% - 14px),15% 100%,10% calc(100% - 14px),5% 100%,0 calc(100% - 14px))}
+.slip h3{font-family:"Bebas Neue",Impact,sans-serif;font-size:2.25rem;line-height:1;margin:0 0 4px}
+.slip p{margin:0 0 16px;font-size:var(--step-small)}
+.slip table{width:100%;border-collapse:collapse;font-size:16px}
+.slip th,.slip td{padding:3px 0;text-align:left;font-weight:400}
+.slip thead th{font-weight:600}
+.slip tbody th[scope=rowgroup]{font-weight:600;padding-top:12px}
+.slip td.v{text-align:right;white-space:nowrap}
+.slip .lead{width:100%;position:relative}
+.slip .lead span{display:flex;align-items:baseline;gap:6px}
+.slip .lead span::after{content:"";flex:1;border-bottom:4px dotted var(--surface-2);transform:translateY(-4px)}
+.slip tfoot td,.slip tfoot th{background:var(--ink);color:var(--accent-ink);padding:8px 10px;font-weight:600}
+
+.chartwrap{grid-column:1/-1;margin-top:clamp(40px,5vw,72px)}
+.chartwrap .head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.chartwrap h3{font-size:clamp(2rem,1.4rem + 1.6vw,2.75rem)}
+.key{display:flex;gap:22px;flex-wrap:wrap;margin:0;padding:0;list-style:none;font-size:var(--step-small)}
+.key i{display:inline-block;width:18px;height:10px;margin-right:8px;vertical-align:0}
+.key .k1{background:var(--ink)} .key .k2{background:var(--surface-2)}
+.cbox{position:relative;margin-top:16px}
+svg.chart{display:block;width:100%;height:auto;overflow:visible}
+.chart text{fill:var(--muted);font-family:"EB Garamond",Georgia,serif;font-size:15px}
+.chart .gl{stroke:var(--surface);stroke-width:1}
+.chart .prev{fill:var(--surface-2)}
+.chart .cur{fill:var(--ink)}
+.chart .cur.today{fill:var(--field-3)}
+.chart g.pt{cursor:default;outline:none}
+.chart g.pt:focus-visible .hit{stroke:var(--ink);stroke-width:3}
+.chart .hit{fill:transparent}
+.chart g.pt:hover .cur,.chart g.pt:focus .cur{fill:#043f47}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--accent-ink);padding:8px 12px;font-size:var(--step-small);width:max-content;max-width:260px;transform:translate(-50%,calc(-100% - 10px));opacity:0;transition:opacity var(--t-ui)}
+.tip.on{opacity:1}
+.csum{margin:14px 0 0;max-width:70ch}
+details.fig{margin-top:8px}
+details.fig summary{cursor:pointer;font-weight:600;min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;text-underline-offset:4px}
+.figt{width:100%;max-width:520px;border-collapse:collapse;font-size:16px}
+.figt th,.figt td{padding:6px 8px;border-bottom:1px solid var(--surface-2);text-align:left}
+.figt td{text-align:right}
+
+/* Orders: slips on the field */
+.orders{color:var(--field-ink);padding:clamp(80px,8vw,120px) var(--m) 0;position:relative;overflow:hidden;width:min(100%,1244px);margin:0 auto}
+.orders .copy{margin-left:8%;max-width:40ch}
+.orders .copy p{font-size:clamp(1.375rem,1rem + 1.2vw,2rem);line-height:1.3;margin:0 0 18px}
+.orders .copy p:first-child strong{font-weight:500}
+.orders .copy p.ordsub{font-size:var(--step-body);line-height:1.45}
+.orders .act{margin-left:8%;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.orders .act p{margin:0;font-size:var(--step-small)}
+.dockets{list-style:none;margin:56px 0 0;padding:0 0 0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end;min-height:0;padding:0 8px}
+.docket{background:var(--bg);color:var(--ink);padding:18px 18px 28px;font-size:15px;line-height:1.4;min-height:220px}
+.docket:nth-child(2n){min-height:250px}
+.docket:nth-child(3n){min-height:280px;transform:rotate(-1.2deg)}
+.docket:nth-child(4n+1){transform:rotate(1deg)}
+.docket b{display:block;font-size:var(--step-body);font-weight:600}
+.docket .typed{display:block;letter-spacing:.1em;color:var(--muted);margin:4px 0 8px;overflow:hidden;white-space:nowrap}
+.docket .dst{display:block;margin-top:10px;font-weight:600}
+.docket.sent{background:var(--surface-2)}
+.docket .cancel{display:block;margin-top:6px;color:var(--alert)}
+.docket.empty .typed{color:#c9e3e6}
+.docket.empty{grid-column:1/3;font-size:16px;background:var(--field-2);color:var(--field-ink)}
+.docket.blank{background:var(--field-2);min-height:160px}
+
+/* Stock: the printed sheet */
+.stockband{background:var(--surface);padding:clamp(80px,9vw,140px) var(--m)}
+.sheet{background:var(--bg);width:min(100%,1120px);margin:0 auto;padding:64px clamp(18px,4vw,64px);position:relative;
+  -webkit-mask:radial-gradient(circle 9px at 50% 0,transparent 98%,#000) top/24px 51% repeat-x,radial-gradient(circle 9px at 50% 100%,transparent 98%,#000) bottom/24px 51% repeat-x; /* taste-skill-ignore: mask for scalloped paper edge, not a fill */
+  mask:radial-gradient(circle 9px at 50% 0,transparent 98%,#000) top/24px 51% repeat-x,radial-gradient(circle 9px at 50% 100%,transparent 98%,#000) bottom/24px 51% repeat-x} /* taste-skill-ignore: scallop mask */
+.sheet>header{text-align:center;max-width:56ch;margin:0 auto 36px}
+.sheet h2{font-size:clamp(2.5rem,1.6rem + 2.4vw,3.5rem)}
+.sheet>header p{margin:10px 0 0}
+.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:end;justify-content:center;margin-bottom:28px}
+.filters label{display:flex;flex-direction:column;gap:4px;font-size:var(--step-small);font-weight:600}
+.filters input,.filters select{min-height:44px;border:1.5px solid var(--muted);border-radius:0;background:var(--bg);padding:0 12px;font-size:var(--step-body)}
+.filters input{width:300px;max-width:100%}
+.filters .count{width:100%;text-align:center;margin:0;font-size:var(--step-small)}
+.stockgrid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:32px;align-items:start}
+.tw{position:relative;overflow-x:auto}
+.st{width:100%;border-collapse:collapse;font-size:16px}
+.st th,.st td{padding:10px 10px;border-bottom:1px solid var(--surface-2);text-align:left;vertical-align:middle}
+.st thead th{font-size:var(--step-small);font-weight:600;border-bottom:2px solid var(--ink);white-space:nowrap}
+.st tbody th{font-weight:600}
+.st .n{text-align:right;white-space:nowrap}
+.st.compact th,.st.compact td{padding:5px 10px}
+@media (hover:hover) and (pointer:fine){
+  .st tbody tr{transition:opacity var(--t-ui)}
+  .st tbody:hover tr:not(:hover):not(:focus-within){opacity:.55}
+}
+.st tbody tr:focus-within{background:var(--surface)}
+.crit{color:var(--alert);font-weight:600}
+.lvlbar{display:inline-block;width:64px;height:10px;background:var(--surface-2);vertical-align:middle;margin-right:8px;position:relative}
+.lvlbar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.lvlbar.c i{background:var(--alert)}
+.preview{position:sticky;top:24px;background:var(--surface);padding:24px;min-height:360px}
+.preview h3{font-size:2.25rem;line-height:.95}
+.preview p{margin:8px 0 0;font-size:16px}
+.preview svg{display:block;margin:16px auto 8px;width:150px;height:auto}
+.empty,.err{padding:40px 16px;text-align:center}
+.err{background:var(--alert-bg);color:var(--alert)}
+.err strong{display:block;font-size:var(--step-lead);font-weight:600;margin-bottom:6px}
+.err p{color:var(--ink)}
+
+/* Rota */
+.rotaband{background:var(--field);color:var(--field-ink);padding:clamp(100px,10vw,160px) var(--m)}
+.rotahead{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;width:min(100%,1240px);margin:0 auto 28px}
+.rotaband h2{font-size:clamp(2.5rem,1.6rem + 2.4vw,3.5rem)}
+.rotahead p{margin:8px 0 0;max-width:52ch}
+.rotahead label{display:flex;flex-direction:column;gap:4px;font-size:var(--step-small);font-weight:600}
+.rotahead select{min-height:44px;border:0;border-radius:0;background:var(--field-2);color:var(--field-ink);padding:0 12px;font-size:var(--step-body)}
+.rotacard{background:var(--bg);color:var(--ink);width:min(100%,1240px);margin:0 auto;padding:clamp(12px,2vw,28px)}
+.rt{width:100%;border-collapse:collapse;font-size:16px;min-width:900px;table-layout:fixed}
+.rt th,.rt td{padding:10px 8px;border-bottom:1px solid var(--surface-2);text-align:left;vertical-align:top}
+.rt thead th{font-weight:600;font-size:var(--step-small);border-bottom:2px solid var(--ink)}
+.rt thead th:first-child{width:180px}
+.rt .today{background:var(--ink);color:var(--accent-ink)}
+.rt thead .today{border-bottom-color:var(--ink)}
+.rt td.today{background:var(--surface)}
+.rt td.today{color:var(--ink)}
+.rt .shift{display:block;font-weight:600}
+.rt .role{display:block;font-size:var(--step-small)}
+.rt .off{color:var(--muted);font-style:italic}
+.rt tfoot th,.rt tfoot td{border-bottom:0;font-size:var(--step-small)}
+.rt .gap{color:var(--alert);font-weight:600}
+.daytabs{display:none}
+
+/* Footer */
+.foot{background:var(--field);padding:0 var(--m) clamp(40px,6vw,80px)}
+.back{background:var(--bg);color:var(--ink);width:min(100%,1060px);margin:0 auto;padding:72px clamp(20px,4vw,64px) 32px;display:grid;grid-template-columns:1fr 1fr;gap:32px 56px;
+  -webkit-mask:radial-gradient(circle 44px at 50% 0,transparent 98%,#000) top/calc(100%/12) 100% repeat-x;mask:radial-gradient(circle 44px at 50% 0,transparent 98%,#000) top/calc(100%/12) 100% repeat-x} /* taste-skill-ignore: scallop mask */
+.back h2{font-size:2rem;font-weight:600;font-family:"EB Garamond",Georgia,serif;line-height:1.1}
+.back p{margin:12px 0 0}
+.back ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.back .imprint{grid-column:1/-1;text-align:center;font-size:var(--step-small);margin:16px 0 0}
+
+/* Drawer */
+dialog.drawer{margin:0 0 0 auto;height:100%;max-height:100%;width:min(440px,100%);border:0;padding:0;background:var(--bg);color:var(--ink);box-shadow:-20px 0 60px rgba(3,40,45,.35)} /* taste-skill-ignore: dialog overlay shadow */
+dialog.drawer::backdrop{background:rgba(3,40,45,.55)}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;background:var(--ink);color:var(--accent-ink)}
+.dh h2{font-size:2.25rem;line-height:1}
+.dh button{width:44px;height:44px;border:0;background:var(--field-2);color:var(--accent-ink);cursor:pointer;display:grid;place-items:center}
+.dh :focus-visible{outline-color:#e8b53a}
+.dbody{padding:24px;display:grid;gap:24px}
+.dbody fieldset{border:0;margin:0;padding:0;display:grid;gap:14px}
+.dbody legend{font-family:"Bebas Neue",Impact,sans-serif;font-size:2.25rem;line-height:1;margin-bottom:10px;padding:0}
+.dbody label.f{display:grid;gap:6px;font-weight:600;font-size:16px}
+.dbody select{min-height:44px;border:1.5px solid var(--muted);border-radius:0;background:var(--bg);padding:0 12px;font-size:var(--step-body)}
+.dbody .hint{font-weight:400;font-size:var(--step-small)}
+.chk{display:flex;gap:12px;align-items:flex-start;font-size:16px}
+.chk input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--ink)}
+.dfoot{display:flex;justify-content:flex-end;gap:12px;padding:20px 24px;background:var(--surface)}
+.drawer form{display:flex;flex-direction:column;min-height:100%}
+.drawer .dbody{flex:1}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:var(--accent-ink);padding:12px 16px;display:flex;gap:16px;align-items:center;opacity:0;visibility:hidden;pointer-events:none;z-index:50;max-width:calc(100% - 32px);transition:opacity var(--t-ui),transform var(--t-ui) var(--ease-out);font-size:16px}
+.toast.on{visibility:visible;opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{background:var(--field-2);color:var(--accent-ink);border:0;min-height:36px;padding:0 12px;cursor:pointer;font-weight:600}
+
+.loading .lv{opacity:.35}
+.busy{display:none;font-size:var(--step-small)}
+.loading .busy{display:block}
+.skel{background:var(--surface);height:14px;margin:12px 0}
+
+/* entrance motion: only when JS marks the page ready and motion is allowed */
+@media (prefers-reduced-motion:no-preference){
+  .js .rise{opacity:0;transform:translateY(24px);transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out);transition-delay:calc(var(--i,0)*75ms)}
+  .js .rise.in{opacity:1;transform:none}
+  .hero h1{animation:land 700ms var(--ease-out) both}
+  .folder{animation:slideup 600ms var(--ease-out) both;animation-delay:calc(var(--i,0)*90ms + 150ms)}
+  @keyframes land{from{opacity:0;transform:translateY(20px)}}
+  @keyframes slideup{from{transform:translateY(40px)}}
+  dialog.drawer[open]{animation:drawin 240ms var(--ease-out)}
+  @keyframes drawin{from{transform:translateX(40px);opacity:.4}}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
+}
+
+@media (max-width:1100px){
+  .stockgrid{grid-template-columns:1fr}
+  .preview{display:none}
+  .dockets{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .bar{grid-template-columns:1fr auto;gap:12px}
+  .bar .mark{grid-column:1;grid-row:1;justify-self:start}
+  .bar .right{grid-column:2;grid-row:1}
+  .bar .ctl{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr 1fr}
+  .bar .ctl label{flex-direction:column;align-items:stretch;gap:4px}
+  .bar select{width:100%}
+  .hero{padding-top:56px}
+  .hero h1{font-size:clamp(4rem,15vw,6rem)}
+  .hero .sup{font-size:17px}
+  .folders{width:100%;height:192px}
+  .folder .tab{height:34px;top:-32px;font-size:15px;padding:0 18px}
+  .f1{top:32px}.f2{top:72px}.f3{top:112px}.f4{top:152px}
+  .f1 .tab{left:0}.f2 .tab{left:30%}.f3 .tab{left:auto;right:18%}.f4 .tab{right:0}
+  .paper{padding:28px 16px 48px}
+  .takings{display:block}
+  .takings .left{min-height:0}
+  .total{margin-top:28px}
+  .total .num{font-size:min(34vw,calc(225cqi / var(--len,6)))}
+  .kpis{grid-template-columns:1fr 1fr;gap:20px 24px}
+  .slip{margin-top:36px;padding:22px 18px 44px}
+  .orders{padding-top:96px}
+  .orders .copy,.orders .act{margin-left:0}
+  .orders .copy p{font-size:22px}
+  .dockets{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-left:calc(-1*var(--m));margin-right:calc(-1*var(--m));padding:20px var(--m) 0;min-height:0;align-items:flex-end}
+  .docket{flex:0 0 72vw;scroll-snap-align:start;min-height:220px}
+  .docket.empty{flex-basis:100%}
+  .docket.blank{display:none}
+  .docket:nth-child(2n){min-height:250px}.docket:nth-child(3n){min-height:280px}
+  .stockband{padding:64px 0}
+  .sheet{padding:48px 16px}
+  .filters{justify-content:stretch}
+  .filters label{flex:1 1 100%}
+  .filters input{width:100%}
+  .st thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .st,.st tbody,.st tr,.st td,.st tbody th{display:block}
+  .st tr{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:14px 0;border-bottom:1px solid var(--surface-2)}
+  .st td,.st tbody th{border:0;padding:0}
+  .st tbody th{font-size:17px}
+  .st td[data-l]::before{content:attr(data-l) " ";font-weight:600}
+  .st td.n{text-align:left}
+  .st td.act{grid-column:2;grid-row:1/span 5;align-self:center}
+  .st tr.none{display:block}
+  .rotaband{padding:72px var(--m)}
+  .rotacard{padding:8px}
+  .daytabs{display:flex;gap:4px;margin:0 0 12px}
+  .daytabs button{flex:1;min-width:0;min-height:44px;border:0;background:var(--field-2);color:var(--field-ink);cursor:pointer;font-size:15px;padding:0}
+  .daytabs button[aria-pressed=true]{background:var(--bg);color:var(--ink);font-weight:600}
+  .rt{min-width:0}
+  .rt thead th:first-child{width:52%}
+  #rt[data-day] [data-d]{display:none}
+  #rt[data-day="0"] [data-d="0"],#rt[data-day="1"] [data-d="1"],#rt[data-day="2"] [data-d="2"],#rt[data-day="3"] [data-d="3"],#rt[data-day="4"] [data-d="4"],#rt[data-day="5"] [data-d="5"],#rt[data-day="6"] [data-d="6"]{display:table-cell}
+  .back{grid-template-columns:1fr;padding-top:64px;-webkit-mask-size:calc(100%/6) 100%;mask-size:calc(100%/6) 100%}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#takings">Skip to the takings</a>
+<header class="bar">
+  <p class="mark disp">Tallyhouse</p>
+  <div class="ctl">
+    <label for="shop"><span>Shop</span>
+      <select id="shop"><option value="all">All four shops</option><option value="bridge">Bridge Street</option><option value="market">Market Square</option><option value="mill">Old Mill Lane</option><option value="harbour">Harbour Row</option></select></label>
+    <label for="range"><span>Period</span>
+      <select id="range"><option value="1">Today</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></label>
+  </div>
+  <div class="right"><button class="btn onfield" id="openSet" type="button" aria-haspopup="dialog" aria-controls="settings">Settings</button></div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="dayH">
+  <h1 class="disp" id="dayH">Friday 16 Oct</h1>
+  <p class="sup" id="heroLine">Counting the morning…</p>
+  <nav class="folders" aria-label="Sections">
+    <a class="folder f1" href="#orders" style="--i:0"><span class="band"></span><span class="tab">Orders</span></a>
+    <a class="folder f2" href="#rota" style="--i:1"><span class="band"></span><span class="tab">Rota</span></a>
+    <a class="folder f3" href="#stock" style="--i:2"><span class="band"></span><span class="tab">Low stock</span></a>
+    <a class="folder f4" href="#takings" style="--i:3"><span class="band"></span><span class="tab">Takings</span></a>
+  </nav>
+</section>
+
+<section class="paper" id="takings" aria-labelledby="takH" tabindex="-1">
+  <div class="takings" id="takBody">
+    <div class="left">
+      <h2 class="disp rise" id="takH">The takings so far</h2>
+      <p class="note rise" style="--i:1" id="takNote"></p>
+      <p class="busy" role="status" id="busy">Updating figures…</p>
+      <div class="total lv rise" style="--i:2">
+        <span class="num disp" id="kSales">£0</span>
+        <p class="cap" id="kSalesCap"></p>
+      </div>
+      <dl class="kpis lv" id="kpis">
+        <div><dt id="kDeltaL">Against last Friday</dt><dd id="kDelta">–</dd></div>
+        <div><dt>Items sold</dt><dd id="kItems">–</dd></div>
+        <div id="kLowBox"><dt>Low-stock items</dt><dd id="kLow">–</dd></div>
+      </dl>
+    </div>
+    <aside class="slip lv rise" style="--i:3" aria-labelledby="slipH">
+      <h3 id="slipH">The till roll</h3>
+      <p id="slipNote"></p>
+      <table id="slipT"></table>
+    </aside>
+    <div class="chartwrap rise">
+      <div class="head"><h3 class="disp" id="chartH">Sales by hour</h3>
+        <ul class="key"><li><i class="k1"></i><span id="k1">Today</span></li><li><i class="k2"></i><span id="k2">Last Friday</span></li></ul></div>
+      <div class="cbox lv" id="cbox"></div>
+      <p class="csum" id="csum"></p>
+      <details class="fig"><summary>Read the figures as a table</summary><div class="tw"><table class="figt" id="figt"></table></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="orders" id="orders" aria-labelledby="ordH" tabindex="-1">
+  <div class="copy rise">
+    <p><strong id="ordH">Pending orders</strong> wait here as dockets.</p><p class="ordsub" id="ordLine"></p>
+  </div>
+  <div class="act rise" style="--i:1"><button class="btn onfield" id="sendAll" type="button">Send dockets to suppliers</button><p>Demo only: nothing leaves this page.</p></div>
+  <ul class="dockets" id="dockets" aria-live="polite"></ul>
+</section>
+
+<section class="stockband" id="stock" aria-labelledby="stockH" tabindex="-1">
+  <div class="sheet">
+    <header class="rise"><h2 class="disp" id="stockH">Low stock</h2><p id="stockNote"></p></header>
+    <div class="filters rise" style="--i:1">
+      <label for="q">Search items or suppliers<input id="q" type="search" placeholder="Butter, rye, Hollins…" autocomplete="off"></label>
+      <label for="sup">Supplier<select id="sup"><option value="">Every supplier</option></select></label>
+      <p class="count" id="count" aria-live="polite"></p>
+    </div>
+    <div class="stockgrid">
+      <div id="stockSlot"></div>
+      <aside class="preview" id="preview" aria-live="polite" aria-label="Item preview"></aside>
+    </div>
+  </div>
+</section>
+
+<section class="rotaband" id="rota" aria-labelledby="rotaH" tabindex="-1">
+  <div class="rotahead">
+    <div class="rise"><h2 class="disp" id="rotaH">This week's rota</h2><p id="rotaNote"></p></div>
+    <label for="rotaShop" id="rotaShopL">Shop<select id="rotaShop"><option value="bridge">Bridge Street</option><option value="market">Market Square</option><option value="mill">Old Mill Lane</option><option value="harbour">Harbour Row</option></select></label>
+  </div>
+  <div class="rotacard rise" style="--i:1">
+    <div class="daytabs" id="daytabs" role="group" aria-label="Day shown"></div>
+    <div class="tw" id="rotaSlot"></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="back">
+    <div>
+      <h2>That's the tally.</h2>
+      <p>Everything on this page is fictional sample data: the shops, the staff, the suppliers and every figure. The demo clock is fixed at Friday 16 October 2026, 09:40.</p>
+    </div>
+    <ul aria-label="Shops (fictional)">
+      <li>Tallyhouse, 4 Bridge Street</li>
+      <li>Tallyhouse, 11 Market Square</li>
+      <li>Tallyhouse, 2 Old Mill Lane</li>
+      <li>Tallyhouse, 27 Harbour Row</li>
+    </ul>
+    <p class="imprint">Tallyhouse demo · sample data · prices in pounds sterling</p>
+  </div>
+</footer>
+
+<dialog class="drawer" id="settings" aria-labelledby="setH">
+  <form id="setForm" method="dialog">
+    <div class="dh"><h2 class="disp" id="setH">Settings</h2><button type="button" id="setX" aria-label="Close settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+    <div class="dbody">
+      <fieldset><legend>Stock</legend>
+        <label class="f" for="sThr">Low-stock threshold<select id="sThr"><option value="20">At or below 20% of par</option><option value="35">At or below 35% of par</option><option value="50">At or below 50% of par</option></select><span class="hint">Decides what goes on the Low stock sheet.</span></label>
+        <label class="f" for="sCut">Order cut-off<select id="sCut"><option>14:00</option><option>16:00</option><option>18:00</option></select></label>
+      </fieldset>
+      <fieldset><legend>Display</legend>
+        <label class="f" for="sShop">Shop to open with<select id="sShop"><option value="all">All four shops</option><option value="bridge">Bridge Street</option><option value="market">Market Square</option><option value="mill">Old Mill Lane</option><option value="harbour">Harbour Row</option></select></label>
+        <label class="chk"><input type="checkbox" id="sCompact"> Compact rows on the stock sheet</label>
+      </fieldset>
+      <fieldset><legend>Demo states</legend>
+        <label class="chk"><input type="checkbox" id="sFail"> Make the next stock refresh fail</label>
+        <label class="chk"><input type="checkbox" id="sSlow"> Slow connection (longer loading)</label>
+      </fieldset>
+    </div>
+    <div class="dfoot"><button type="button" class="btn ghost" id="setCancel">Cancel</button><button type="submit" class="btn" id="setSave">Save</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button type="button" id="undo" hidden>Undo</button></div>
+
+<script>
+(()=>{
+"use strict";
+document.documentElement.classList.add('js');
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const NOW=new Date(2026,9,16,9,40),NOWH=9+40/60;
+const L=new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0});
+const L2=new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'});
+const NF=new Intl.NumberFormat('en-GB');
+const day=(d,o)=>d.toLocaleDateString('en-GB',o||{weekday:'short',day:'numeric',month:'short'});
+const plus=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const SHOPS={bridge:['Bridge Street',2350],market:['Market Square',2980],mill:['Old Mill Lane',1420],harbour:['Harbour Row',1760]};
+const WEEK=[.72,.86,.9,.94,1,1.16,1.38];
+const CATS=[['Bread',.34],['Viennoiserie',.27],['Cakes and buns',.21],['Drinks',.18]];
+function prng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const h=s=>{let x=2166136261;for(const c of s)x=Math.imul(x^c.charCodeAt(0),16777619);return x>>>0};
+const shopDay=(s,d)=>{const r=prng(h(s+d.toDateString()));return Math.round(SHOPS[s][1]*WEEK[d.getDay()]*(.88+r()*.24))};
+const list=sel=>sel==='all'?Object.keys(SHOPS):[sel];
+const sales=(sel,d)=>list(sel).reduce((a,s)=>a+shopDay(s,d),0);
+const HRS=[6,7,8,9,10,11,12,13,14,15,16,17],SHAPE=[.03,.09,.13,.12,.09,.1,.13,.1,.07,.06,.05,.03];
+const soFar=SHAPE.reduce((a,v,i)=>a+(HRS[i]+1<=NOWH?v:HRS[i]<NOWH?v*(NOWH-HRS[i]):0),0);
+const hm=x=>String(Math.floor(x)).padStart(2,'0')+':'+String(Math.round((x%1)*60)).padStart(2,'0');
+
+/* settings */
+const DEF={thr:35,cut:'16:00',shop:'all',compact:false,fail:false,slow:false};
+let S={...DEF};try{S={...DEF,...JSON.parse(localStorage.getItem('tallyhouse-tally')||'{}')}}catch(e){}
+const keep=()=>{try{localStorage.setItem('tallyhouse-tally',JSON.stringify({...S,fail:false}))}catch(e){}};
+
+/* stock */
+const SUP={hollins:'Hollins Mill Flour',vale:'Vale Dairy Co.',foldway:'Foldway Eggs',larder:'Larder & Sons',northgate:'Northgate Packaging'};
+const LEAD={hollins:1,vale:1,foldway:1,larder:2,northgate:3};
+const ITEMS=[['Strong white flour','16 kg sack','hollins',14],['Dark rye flour','16 kg sack','hollins',6],['Wholemeal flour','16 kg sack','hollins',8],['Unsalted butter','10 kg block','vale',9],['Butter sheets for laminating','2 kg pack','vale',20],['Double cream','2 L tub','vale',12],['Free-range eggs','tray of 30','foldway',16],['Fresh yeast','1 kg block','larder',6],['Chocolate batons','1.6 kg box','larder',8],['Ground cinnamon','500 g tub','larder',4],['Caster sugar','25 kg sack','larder',4],['Sesame seeds','1 kg bag','larder',5],['Kraft bread bags','case of 500','northgate',6],['Cake boxes, 8 inch','case of 50','northgate',5]];
+const stock=[];{const r=prng(2026);let n=0;for(const s in SHOPS)for(const [name,pack,sup,par] of ITEMS){const a=r(),b=r();stock.push({id:'i'+(n++),name,pack,sup,par,shop:s,on:Math.round(par*(a<.2?b*.4:.45+b*.6))})}}
+let orders=[];
+const ratio=i=>i.on/i.par;
+const low=sel=>stock.filter(i=>(sel==='all'||i.shop===sel)&&ratio(i)<=S.thr/100&&!orders.some(o=>o.id===i.id));
+const isCrit=i=>ratio(i)<=.15;
+
+/* rota */
+const STAFF={bridge:[['Ellie Marsh','Baker'],['Tomasz Nowak','Baker'],['Priya Shah','Shop lead'],['Rhys Owen','Counter'],['Jodie Kerr','Counter']],market:[['Callum Hart','Baker'],['Dev Patel','Baker'],['Aoife Byrne','Shop lead'],['Sam Okafor','Counter'],['Hannah Lee','Counter']],mill:[['Marek Zielinski','Baker'],['Grace Whitlock','Shop lead'],['Lucy Fenn','Counter']],harbour:[['Owen Pryce','Baker'],['Nia Roberts','Shop lead'],['Ben Ashworth','Counter'],['Freya Lund','Counter']]};
+const PAT={Baker:[[4.5,12.5],[5,13]],Counter:[[7,15],[11,18.5],[8,14]],'Shop lead':[[7.5,16],[9,17.5]]};
+const MON=plus(NOW,-((NOW.getDay()+6)%7)),TI=(NOW.getDay()+6)%7;
+
+const st={shop:S.shop,range:'1',rotaShop:S.shop==='all'?'bridge':S.shop,day:TI,q:'',sup:'',err:false};
+
+/* ---------- takings ---------- */
+function takings(){
+  const sel=st.shop,n=+st.range,where=sel==='all'?'all four shops':SHOPS[sel][0];
+  let cur=0,prev=0;const perShop={};
+  if(n===1){for(const s of list(sel)){perShop[s]=Math.round(shopDay(s,NOW)*soFar);cur+=perShop[s];prev+=Math.round(shopDay(s,plus(NOW,-7))*soFar)}}
+  else for(const s of list(sel)){perShop[s]=0;for(let i=0;i<n;i++){perShop[s]+=shopDay(s,plus(NOW,-i));prev+=shopDay(s,plus(NOW,-i-7))}cur+=perShop[s]}
+  const pct=(cur-prev)/prev*100,items=Math.round(cur/2.85);
+  $('#takH').textContent=n===1?'The takings so far':'The last '+n+' days';
+  $('#takNote').textContent=n===1?'Across '+where+', from opening at 06:00 to '+hm(NOWH)+' this morning.':'Across '+where+', '+day(plus(NOW,-(n-1)),{day:'numeric',month:'short'})+' to '+day(NOW,{day:'numeric',month:'short',year:'numeric'})+'.';
+  $('#kSales').textContent=L.format(cur);$('#kSales').style.setProperty('--len',L.format(cur).length);
+  $('#kSalesCap').textContent=(n===1?'taken by '+hm(NOWH):'taken in '+n+' days')+', '+where+'.';
+  $('#kDeltaL').textContent=n===1?'Against last Friday':'Against the week before';
+  $('#kDelta').innerHTML=(pct>=0?'+':'−')+Math.abs(pct).toFixed(1)+'%<small>'+L.format(prev)+(n===1?' by this time on '+day(plus(NOW,-7),{day:'numeric',month:'short'}):' in the matching days')+'</small>';
+  $('#kItems').innerHTML=NF.format(items)+'<small>at about '+L2.format(2.85)+' each</small>';
+  lowKpi();
+  // slip
+  let t='<caption class="sr">Takings broken down by shop and by what was sold</caption><tbody><tr><th scope="rowgroup" colspan="2">By shop</th></tr>';
+  let sum=0;for(const s of list(sel)){sum+=perShop[s];t+='<tr><th scope="row" class="lead"><span>'+SHOPS[s][0]+'</span></th><td class="v">'+L.format(perShop[s])+'</td></tr>'}
+  t+='<tr><th scope="rowgroup" colspan="2">By counter</th></tr>';let acc=0;
+  CATS.forEach(([c,w],i)=>{const v=i===CATS.length-1?cur-acc:Math.round(cur*w);acc+=v;t+='<tr><th scope="row" class="lead"><span>'+c+'</span></th><td class="v">'+L.format(v)+'</td></tr>'});
+  t+='</tbody><tfoot><tr><th scope="row">Total</th><td class="v">'+L.format(cur)+'</td></tr></tfoot>';
+  $('#slipT').innerHTML=t;
+  $('#slipNote').textContent=(n===1?day(NOW,{weekday:'long',day:'numeric',month:'long'})+', to '+hm(NOWH):'Last '+n+' days')+'. Both groups add up to the total.';
+  chart();
+}
+function lowKpi(){
+  const l=low(st.shop),c=l.filter(isCrit).length,open=orders.filter(o=>!o.sent).length;
+  $('#kLow').innerHTML=l.length+'<small>'+(c?c+' critical, ':'')+open+' on order</small>';
+  $('#kLowBox').classList.toggle('warn',c>0);
+  const n=+st.range,cur=$('#kSales').textContent;
+  $('#heroLine').innerHTML=(n===1?'<strong>'+cur+'</strong> taken by '+hm(NOWH)+'. ':'')+(l.length?'<strong>'+l.length+' item'+(l.length>1?'s are':' is')+' low</strong>; order by '+S.cut+' for delivery tomorrow.':'Nothing is low. The shelves can wait.');
+  $('#ordLine').textContent=orders.length?(open?open+' not yet sent. ':'All sent. ')+'Cut-off today is '+S.cut+'.':'None yet: press Reorder on the Low stock sheet and a docket lands here.';
+  $('#sendAll').disabled=!open;
+}
+
+/* ---------- chart ---------- */
+const tip=document.createElement('div');tip.className='tip';tip.setAttribute('aria-hidden','true');
+function chart(){
+  const sel=st.shop,n=+st.range;let data;
+  if(n===1){const a=sales(sel,NOW),b=sales(sel,plus(NOW,-7));data=HRS.map((x,i)=>({k:String(x).padStart(2,'0'),full:hm(x)+' to '+hm(x+1),v:x+1<=NOWH?Math.round(a*SHAPE[i]):x<NOWH?Math.round(a*SHAPE[i]*(NOWH-x)):null,p:Math.round(b*SHAPE[i]),now:x<NOWH&&x+1>NOWH}))}
+  else{data=[];for(let i=n-1;i>=0;i--){const d=plus(NOW,-i);data.push({k:n>7?String(d.getDate()):day(d,{weekday:'short'}),full:day(d),v:sales(sel,d),p:sales(sel,plus(d,-7)),now:i===0})}}
+  $('#chartH').textContent=n===1?'Sales by the hour':'Sales by the day';
+  $('#k1').textContent=n===1?'Today':'Each day';$('#k2').textContent=n===1?'Last Friday':'Same day a week before';
+  const W=1100,H=340,PL=60,PB=40,PT=10,iw=W-PL-10,ih=H-PB-PT;
+  const mx=Math.max(...data.map(d=>Math.max(d.v||0,d.p)))*1.05;
+  const steps=[100,250,500,1000,2500,5000,10000];const step=steps.find(s=>s*4>=mx)||20000,top=step*4;
+  const y=v=>PT+ih-v/top*ih,bw=iw/data.length;
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="group" aria-labelledby="chartH csum">';
+  for(let g=0;g<=4;g++){const v=g*step;s+='<line class="gl" x1="'+PL+'" x2="'+W+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text x="'+(PL-10)+'" y="'+(y(v)+5)+'" text-anchor="end">'+(v>=1000?'£'+v/1000+'k':'£'+v)+'</text>'}
+  const every=data.length>14?3:1;
+  data.forEach((d,i)=>{const x=PL+i*bw,w=bw*.36;
+    s+='<g class="pt" data-i="'+i+'" tabindex="'+(i===data.length-1?0:-1)+'" role="img" aria-label="'+d.full+': '+(d.v==null?'not traded yet':L.format(d.v))+'; week before '+L.format(d.p)+'">';
+    s+='<rect class="hit" x="'+x+'" y="'+PT+'" width="'+bw+'" height="'+ih+'"/>';
+    s+='<rect class="prev" x="'+(x+bw*.12)+'" y="'+y(d.p)+'" width="'+w+'" height="'+(PT+ih-y(d.p))+'"/>';
+    if(d.v!=null)s+='<rect class="cur'+(d.now?' today':'')+'" x="'+(x+bw*.12+w)+'" y="'+y(d.v)+'" width="'+w+'" height="'+(PT+ih-y(d.v))+'"/>';
+    s+='</g>';
+    if(i%every===0||i===data.length-1)s+='<text x="'+(x+bw/2)+'" y="'+(H-12)+'" text-anchor="middle">'+d.k+'</text>'});
+  s+='</svg>';
+  const box=$('#cbox');box.innerHTML=s;box.appendChild(tip);
+  const traded=data.filter(d=>d.v!=null),tot=traded.reduce((a,d)=>a+d.v,0),ptot=traded.reduce((a,d)=>a+d.p,0),best=traded.reduce((a,d)=>d.v>a.v?d:a);
+  $('#csum').textContent=L.format(tot)+' against '+L.format(ptot)+' a week earlier. Best '+(n===1?'hour':'day')+' so far: '+best.full+', '+L.format(best.v)+'. Arrow keys step through the bars.';
+  $('#figt').innerHTML='<caption class="sr">Sales figures</caption><thead><tr><th scope="col">'+(n===1?'Hour':'Day')+'</th><th scope="col">Sales</th><th scope="col">Week before</th></tr></thead><tbody>'+data.map(d=>'<tr><th scope="row">'+d.full+'</th><td>'+(d.v==null?'–':L.format(d.v))+'</td><td>'+L.format(d.p)+'</td></tr>').join('')+'</tbody>';
+  const pts=[...box.querySelectorAll('g.pt')];
+  const show=g=>{const d=data[+g.dataset.i],r=g.getBoundingClientRect(),b=box.getBoundingClientRect();const bar=g.querySelector('.cur')||g.querySelector('.prev');
+    tip.textContent=d.full+': '+(d.v==null?'not traded yet':L.format(d.v))+' (week before '+L.format(d.p)+')';
+    tip.style.left=Math.max(140,Math.min(b.width-140,r.left-b.left+r.width/2))+'px';tip.style.top=(bar.getBoundingClientRect().top-b.top)+'px';tip.classList.add('on')};
+  pts.forEach(g=>{g.onmouseenter=g.onfocus=()=>show(g);g.onmouseleave=g.onblur=()=>tip.classList.remove('on');
+    g.onkeydown=e=>{let i=+g.dataset.i;if(e.key==='ArrowRight')i++;else if(e.key==='ArrowLeft')i--;else if(e.key==='Home')i=0;else if(e.key==='End')i=pts.length-1;else return;
+      e.preventDefault();i=Math.max(0,Math.min(pts.length-1,i));g.tabIndex=-1;pts[i].tabIndex=0;pts[i].focus()}});
+}
+
+/* ---------- stock sheet ---------- */
+for(const k in SUP){const o=document.createElement('option');o.value=k;o.textContent=SUP[k];$('#sup').appendChild(o)}
+const esc=s=>s.replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+function sheet(focusIdx){
+  const slot=$('#stockSlot'),where=st.shop==='all'?'all four shops':SHOPS[st.shop][0];
+  $('#stockNote').textContent='Everything at or below '+S.thr+'% of its par level, across '+where+', lowest first. Hover or focus a row to read it in full.';
+  if(st.err){slot.innerHTML='<div class="err" role="alert"><strong>The stock count did not arrive.</strong><p>The stock service did not answer (a simulated fault). Sales and the rota are unaffected.</p><button class="btn" id="retry" type="button">Try again</button></div>';$('#count').textContent='';$('#preview').innerHTML='';
+    $('#retry').onclick=()=>{S.fail=false;refresh(['stock'],'#stockH')};return}
+  const all=low(st.shop),q=st.q.trim().toLowerCase();
+  const rows=all.filter(i=>(!st.sup||i.sup===st.sup)&&(!q||(i.name+' '+i.pack+' '+SUP[i.sup]+' '+SHOPS[i.shop][0]).toLowerCase().includes(q))).sort((a,b)=>ratio(a)-ratio(b));
+  $('#count').textContent=rows.length===all.length?all.length+' items on the sheet':rows.length+' of '+all.length+' items shown';
+  let t='<div class="tw"><table class="st'+(S.compact?' compact':'')+'"><caption class="sr">Low-stock items</caption><thead><tr><th scope="col">Item</th><th scope="col">Shop</th><th scope="col" class="n">On hand</th><th scope="col" class="n">Par</th><th scope="col">Level</th><th scope="col">Supplier</th><th scope="col"><span class="sr">Action</span></th></tr></thead><tbody>';
+  if(!rows.length)t+='<tr class="none"><td colspan="7"><div class="empty"><p>'+(all.length?'Nothing on the sheet matches '+(q?'“'+esc(st.q.trim())+'”':'')+(q&&st.sup?' from ':'')+(st.sup?SUP[st.sup]:'')+'.':'Nothing is at or below '+S.thr+'% of par. The shelves are full.')+'</p>'+(all.length?'<button class="btn ghost" id="clear" type="button">Clear the search</button>':'')+'</div></td></tr>';
+  rows.forEach(i=>{const p=Math.round(ratio(i)*100),c=isCrit(i);
+    t+='<tr data-row="'+i.id+'"><th scope="row">'+i.name+' <span style="font-weight:400">('+i.pack+')</span></th><td>'+SHOPS[i.shop][0]+'</td><td class="n" data-l="On hand:">'+i.on+'</td><td class="n" data-l="Par:">'+i.par+'</td><td><span class="lvlbar'+(c?' c':'')+'" aria-hidden="true"><i style="width:'+Math.max(4,p)+'%"></i></span><span class="'+(c?'crit':'')+'">'+p+'%'+(c?' critical':'')+'</span></td><td>'+SUP[i.sup]+'</td><td class="act"><button class="btn" type="button" data-re="'+i.id+'" aria-label="Reorder '+i.name+' for '+SHOPS[i.shop][0]+'">Reorder</button></td></tr>'});
+  t+='</tbody></table></div>';slot.innerHTML=t;
+  const cl=$('#clear');if(cl)cl.onclick=()=>{st.q='';st.sup='';$('#q').value='';$('#sup').value='';sheet();$('#q').focus()};
+  rows.length?preview(rows[0]):$('#preview').innerHTML='<p>No item selected.</p>';
+  if(focusIdx!=null){const b=$$('[data-re]');(b[focusIdx]||b[b.length-1]||$('#q')).focus()}
+}
+function preview(i){
+  const p=ratio(i),fill=Math.max(.03,p),c=isCrit(i);
+  $('#preview').innerHTML='<h3 class="disp">'+i.name+'</h3><p>'+i.pack+', '+SHOPS[i.shop][0]+'</p>'+
+  '<svg viewBox="0 0 120 150" aria-hidden="true"><path d="M20 22 Q60 6 100 22 L108 140 Q60 150 12 140 Z" fill="#dbe6e3"/><clipPath id="sk"><path d="M20 22 Q60 6 100 22 L108 140 Q60 150 12 140 Z"/></clipPath><rect clip-path="url(#sk)" x="0" y="'+(150-fill*130)+'" width="120" height="150" fill="'+(c?'#9b1f2a':'#06525c')+'"/><path d="M34 16 Q60 2 86 16" fill="none" stroke="#06525c" stroke-width="4"/></svg>'+
+  '<p><strong>'+i.on+' of '+i.par+'</strong> on the shelf ('+Math.round(p*100)+'%).</p><p>Reorder brings '+(i.par-i.on)+' from '+SUP[i.sup]+', arriving '+day(plus(NOW,LEAD[i.sup]))+'.</p>';
+}
+$('#stockSlot').addEventListener('mouseover',e=>{const r=e.target.closest('[data-row]');if(r)preview(stock.find(s=>s.id===r.dataset.row))});
+$('#stockSlot').addEventListener('focusin',e=>{const r=e.target.closest('[data-row]');if(r)preview(stock.find(s=>s.id===r.dataset.row))});
+function skel(){$('#stockSlot').innerHTML='<div aria-hidden="true">'+'<div class="skel"></div>'.repeat(7)+'</div><p class="sr" role="status">Loading the stock count</p>';$('#count').textContent='Counting…'}
+
+/* ---------- orders ---------- */
+function dockets(){
+  const ul=$('#dockets');
+  if(!orders.length){ul.innerHTML='<li class="docket empty"><b>No dockets yet</b><span class="typed" aria-hidden="true">- - - - - - - - - - - -</span>Press Reorder on the Low stock sheet. Each one becomes a docket here, with its supplier, quantity and delivery day.</li>'+'<li class="docket blank" aria-hidden="true"></li>'.repeat(4);lowKpi();return}
+  ul.innerHTML=orders.map(o=>{const i=stock.find(s=>s.id===o.id);return '<li class="docket'+(o.sent?' sent':'')+'"><b>'+i.name+'</b><span class="typed" aria-hidden="true">- - - - - - - - - - - -</span>'+o.qty+' × '+i.pack+'<br>for '+SHOPS[i.shop][0]+'<br>'+SUP[i.sup]+'<br>Expected '+day(o.eta)+'<span class="dst">'+(o.sent?'Sent':'Not sent yet')+'</span>'+(o.sent?'':'<button class="link cancel" type="button" data-cancel="'+o.id+'" aria-label="Cancel the docket for '+i.name+', '+SHOPS[i.shop][0]+'">Cancel docket</button>')+'</li>'}).join('');
+  lowKpi();
+}
+let undo=null,tt;
+function toast(m,u){$('#toastMsg').textContent=m;$('#undo').hidden=!u;undo=u||null;$('#toast').classList.add('on');clearTimeout(tt);tt=setTimeout(()=>$('#toast').classList.remove('on'),6000)}
+$('#undo').onclick=()=>{undo&&undo();$('#toast').classList.remove('on')};
+document.addEventListener('click',e=>{
+  const r=e.target.closest('[data-re]');
+  if(r){const i=stock.find(s=>s.id===r.dataset.re),idx=$$('[data-re]').indexOf(r);orders.unshift({id:i.id,qty:i.par-i.on,eta:plus(NOW,LEAD[i.sup]),sent:false});dockets();sheet(idx);
+    toast(i.name+' for '+SHOPS[i.shop][0]+' is now a pending order.',()=>{orders=orders.filter(o=>o.id!==i.id);dockets();sheet()});return}
+  const c=e.target.closest('[data-cancel]');
+  if(c){const i=stock.find(s=>s.id===c.dataset.cancel);orders=orders.filter(o=>o.id!==i.id);dockets();sheet();toast('Docket cancelled. '+i.name+' is back on the Low stock sheet.');($('[data-cancel]')||$('#sendAll')).focus()}
+});
+$('#sendAll').onclick=()=>{const n=orders.filter(o=>!o.sent).length;orders.forEach(o=>o.sent=true);dockets();toast(n+' docket'+(n>1?'s':'')+' marked as sent (demo).')};
+
+/* ---------- rota ---------- */
+function rota(){
+  const shop=st.rotaShop;$('#rotaShop').value=shop;
+  const r0=STAFF[shop].map(([n,role])=>{const r=prng(h(shop+n)),off=new Set([Math.floor(r()*7),Math.floor(r()*7)]);if(shop==='mill'&&role==='Baker')off.add(0);return{n,role,days:[0,1,2,3,4,5,6].map(d=>off.has(d)?null:PAT[role][Math.floor(r()*PAT[role].length)])}});
+  $('#rotaNote').textContent='Week of '+day(MON,{weekday:'long',day:'numeric',month:'long'})+' at '+SHOPS[shop][0]+'. Today, '+day(NOW,{weekday:'long'})+', is the dark column.';
+  let t='<table class="rt" id="rt" data-day="'+st.day+'"><caption class="sr">Rota for '+SHOPS[shop][0]+', week starting '+day(MON,{day:'numeric',month:'long',year:'numeric'})+'</caption><thead><tr><th scope="col">Staff</th>';
+  for(let d=0;d<7;d++)t+='<th scope="col" data-d="'+d+'"'+(d===TI?' class="today" aria-current="date"':'')+'>'+day(plus(MON,d),{weekday:'short',day:'numeric'})+(d===TI?' (today)':'')+'</th>';
+  t+='</tr></thead><tbody>';
+  r0.forEach(p=>{const tot=p.days.reduce((a,s)=>a+(s?s[1]-s[0]:0),0);t+='<tr><th scope="row"><span class="shift">'+p.n+'</span><span class="role">'+p.role+', '+tot+' h</span></th>';
+    p.days.forEach((s,d)=>{t+='<td data-d="'+d+'"'+(d===TI?' class="today"':'')+'>'+(s?'<span class="shift">'+hm(s[0])+' to '+hm(s[1])+'</span>':'<span class="off">Off</span>')+'</td>'});t+='</tr>'});
+  t+='</tbody><tfoot><tr><th scope="row">Baker in before 06:00</th>';
+  for(let d=0;d<7;d++){const n=r0.filter(p=>p.role==='Baker'&&p.days[d]&&p.days[d][0]<6).length;t+='<td data-d="'+d+'"'+(d===TI?' class="today"':'')+'>'+(n?n+' in':'<span class="gap">Nobody</span>')+'</td>'}
+  t+='</tr></tfoot></table>';$('#rotaSlot').innerHTML=t;
+  $('#daytabs').innerHTML=[0,1,2,3,4,5,6].map(d=>'<button type="button" data-day="'+d+'" aria-pressed="'+(d===st.day)+'">'+day(plus(MON,d),{weekday:'short'})+'</button>').join('');
+}
+$('#rotaShop').onchange=e=>{st.rotaShop=e.target.value;rota()};
+$('#daytabs').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;st.day=+b.dataset.day;rota();$('#daytabs [data-day="'+st.day+'"]').focus()});
+
+/* ---------- loading ---------- */
+let lt;
+function refresh(parts,focus){
+  clearTimeout(lt);document.body.classList.add('loading');$('#takings').setAttribute('aria-busy','true');
+  if(parts.includes('stock'))skel();
+  lt=setTimeout(()=>{document.body.classList.remove('loading');$('#takings').setAttribute('aria-busy','false');
+    if(parts.includes('stock'))st.err=!!S.fail;
+    if(parts.includes('kpi'))takings();
+    if(parts.includes('stock'))sheet();
+    lowKpi();
+    if(focus){const f=$(focus);f.tabIndex=-1;f.focus()}},S.slow?1800:450);
+}
+$('#shop').onchange=e=>{st.shop=e.target.value;if(st.shop!=='all'){st.rotaShop=st.shop;rota()}refresh(['kpi','stock'])};
+$('#range').onchange=e=>{st.range=e.target.value;refresh(['kpi'])};
+$('#q').oninput=e=>{st.q=e.target.value;sheet()};
+$('#sup').onchange=e=>{st.sup=e.target.value;sheet()};
+
+/* ---------- settings ---------- */
+const dlg=$('#settings');
+$('#openSet').onclick=()=>{$('#sThr').value=S.thr;$('#sCut').value=S.cut;$('#sShop').value=S.shop;$('#sCompact').checked=S.compact;$('#sFail').checked=S.fail;$('#sSlow').checked=S.slow;dlg.showModal();$('#sThr').focus()};
+$('#setX').onclick=$('#setCancel').onclick=()=>dlg.close();
+dlg.addEventListener('close',()=>$('#openSet').focus());
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+$('#setForm').onsubmit=e=>{e.preventDefault();S.thr=+$('#sThr').value;S.cut=$('#sCut').value;S.shop=$('#sShop').value;S.compact=$('#sCompact').checked;S.fail=$('#sFail').checked;S.slow=$('#sSlow').checked;keep();dlg.close();
+  if(S.fail)refresh(['stock']);else{sheet();lowKpi()}toast('Settings saved.')};
+
+/* ---------- entrance ---------- */
+const rises=$$('.rise');
+if('IntersectionObserver' in window&&!reduced.matches){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{rootMargin:'0px 0px -8% 0px'});rises.forEach(r=>io.observe(r))}
+else rises.forEach(r=>r.classList.add('in'));
+setTimeout(()=>rises.forEach(r=>r.classList.add('in')),4000); // never leave content hidden
+
+$('#shop').value=st.shop;$('#dayH').textContent=day(NOW,{weekday:'long',day:'numeric',month:'short'});
+takings();dockets();rota();refresh(['stock']);
+})();
+</script>
+</body>
+</html>

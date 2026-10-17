@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest an improvement or a new kind of site Layoza should handle
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like Layoza to do?
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples or references
+      description: Links or screenshots of sites that show what you mean.

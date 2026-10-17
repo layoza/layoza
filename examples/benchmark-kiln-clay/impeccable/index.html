@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiln &amp; Clay — Handmade tableware from Lahore</title>
+<meta name="description" content="Small-batch stoneware tableware thrown, glazed and fired in Lahore, plus weekend wheel-throwing workshops.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,650;1,400&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cobalt:#17348A;
+  --cobalt-deep:#0D1F5C;
+  --ink:#0B1A44;
+  --tin:#EEF2F4;
+  --tin-2:#E1E8EC;
+  --grout:#C3CED6;
+  --ochre:#E8AE3A;
+  --ochre-deep:#B97D12;
+  --turq:#2A9A98;
+  --turq-pale:#BFE3E0;
+  --leaf:#3F7D4E;
+  --on-cobalt:#EEF2F4;
+  --on-cobalt-2:#BCCAF0;
+  --error:#B3261E;
+  --display:"Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --body:"Hanken Grotesk", system-ui, sans-serif;
+  --urdu:"Noto Nastaliq Urdu", serif;
+  --gutter:clamp(16px, 4vw, 56px);
+  --max:1280px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --space-section:clamp(72px, 10vw, 140px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%;scrollbar-color:var(--cobalt) var(--tin-2)}
+body{margin:0;background:var(--tin);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;caret-color:var(--cobalt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--ochre);color:var(--ink)}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--tin-2)}
+::-webkit-scrollbar-thumb{background:var(--cobalt);border:3px solid var(--tin-2)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:.22em}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+.on-ochre :focus-visible,.newsletter :focus-visible{outline-color:var(--cobalt-deep)}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.02;letter-spacing:-.025em;margin:0;text-wrap:balance}
+h2{font-size:clamp(2.2rem, 4.6vw, 4rem)}
+h3{font-size:1.35rem;letter-spacing:-.01em;line-height:1.15}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--ochre);color:var(--ink);padding:10px 16px;font-weight:650}
+.skip:focus{top:12px}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:52px;padding:0 1.6em;border:2px solid transparent;font-weight:650;font-size:1rem;letter-spacing:.005em;text-decoration:none;cursor:pointer;border-radius:2px;transition:background-color .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-ochre{background:var(--ochre);color:var(--ink);box-shadow:0 2px 0 var(--ochre-deep), 0 10px 22px -12px rgba(0,0,0,.55)}
+.btn-ochre:hover{background:#F2BD52;transform:translateY(-1px)}
+.btn-ochre:active{transform:translateY(1px);box-shadow:0 0 0 var(--ochre-deep)}
+.btn-line{border-color:rgba(238,242,244,.7);color:var(--on-cobalt)}
+.btn-line:hover{background:var(--on-cobalt);color:var(--cobalt-deep);border-color:var(--on-cobalt)}
+.btn-cobalt{background:var(--cobalt);color:var(--on-cobalt)}
+.btn-cobalt:hover{background:var(--cobalt-deep)}
+.btn[disabled],.btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ---------- header ---------- */
+.site-head{position:sticky;top:0;z-index:50;background:var(--cobalt-deep);color:var(--on-cobalt);border-bottom:3px solid var(--ochre)}
+.head-in{display:flex;align-items:center;gap:24px;height:68px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;margin-right:auto}
+.brand svg{width:34px;height:34px}
+.brand-name{font-family:var(--display);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;line-height:1}
+.brand-ur{font-family:var(--urdu);font-size:.82rem;line-height:1;color:var(--on-cobalt-2);margin-top:2px;padding-top:2px}
+.brand-txt{display:flex;flex-direction:column}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav a{display:block;padding:10px 14px;text-decoration:none;font-weight:500;color:var(--on-cobalt);border-radius:2px;transition:background-color .2s}
+.nav a:hover{background:rgba(238,242,244,.1)}
+.cart-wrap{position:relative}
+.cart-btn{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px 0 12px;background:var(--on-cobalt);color:var(--cobalt-deep);border:0;border-radius:2px;font-weight:650;cursor:pointer;transition:background-color .2s}
+.cart-btn:hover{background:#fff}
+.cart-btn svg{width:20px;height:20px}
+.cart-count{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;background:var(--ochre);color:var(--ink);font-size:.85rem;font-weight:800;border-radius:2px;font-variant-numeric:tabular-nums}
+.cart-count.bump{animation:bump .5s var(--ease)}
+@keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.35) rotate(-8deg)}100%{transform:scale(1)}}
+.cart-panel{position:absolute;right:0;top:calc(100% + 14px);width:min(360px, calc(100vw - 32px));background:var(--tin);color:var(--ink);border:1px solid var(--grout);box-shadow:0 24px 48px -20px rgba(11,26,68,.55), 0 4px 10px -4px rgba(11,26,68,.25);padding:20px}
+.cart-panel[hidden]{display:none}
+.cart-panel h2{font-size:1.35rem;margin-bottom:12px;letter-spacing:-.01em}
+.cart-list{list-style:none;margin:0;padding:0}
+.cart-list li{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--grout);font-size:.95rem}
+.cart-list button{background:none;border:0;padding:4px;color:var(--cobalt);text-decoration:underline;text-underline-offset:.2em;cursor:pointer;font-size:.85rem}
+.cart-empty{color:#3E4C70;font-size:.95rem}
+.cart-total{display:flex;justify-content:space-between;padding-top:12px;margin-top:4px;border-top:2px solid var(--ink);font-weight:650}
+.cart-note{margin-top:12px;font-size:.85rem;color:#3E4C70}
+.menu-btn{display:none;width:44px;height:44px;place-items:center;background:none;border:2px solid rgba(238,242,244,.35);color:var(--on-cobalt);border-radius:2px;cursor:pointer}
+.menu-btn svg{width:22px;height:22px}
+
+/* ---------- hero wall ---------- */
+.wall{position:relative;overflow:hidden;background:var(--tin);isolation:isolate}
+.wall-art{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.wall-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(520px 420px at var(--mx,70%) var(--my,30%), rgba(255,255,255,.55), rgba(255,255,255,0) 70%);mix-blend-mode:soft-light;transition:background-position .2s}
+.wall-in{display:grid;grid-template-columns:repeat(12, minmax(0,1fr));gap:24px;align-items:end;padding-top:clamp(40px, 6vw, 84px);padding-bottom:clamp(40px, 6vw, 84px);min-height:min(calc(100svh - 71px), 820px)}
+.panel{grid-column:1 / span 8;position:relative;background:var(--cobalt);color:var(--on-cobalt);padding:clamp(28px, 4.4vw, 64px);outline:10px solid var(--tin);box-shadow:0 0 0 13px var(--ochre), 0 0 0 16px var(--tin), 0 30px 60px -30px rgba(11,26,68,.8)}
+.panel::before{content:"";position:absolute;inset:10px;border:1px solid rgba(232,174,58,.55);pointer-events:none}
+.panel h1{font-size:clamp(2.7rem, 6.4vw, 5.6rem);letter-spacing:-.035em;line-height:.96;max-width:12ch}
+.panel h1 span{color:var(--ochre)}
+.panel .lede{margin-top:22px;max-width:46ch;font-size:clamp(1.05rem, 1.35vw, 1.22rem);color:var(--on-cobalt-2);line-height:1.55}
+.panel .ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.panel-ur{position:absolute;top:clamp(20px,3vw,40px);right:clamp(24px,3.6vw,52px);font-family:var(--urdu);font-size:clamp(1rem,1.6vw,1.35rem);color:var(--ochre);line-height:1.8}
+
+/* the tile set into the wall */
+.wall-tile{grid-column:10 / span 3;align-self:center;background:var(--tin);border:10px solid var(--tin);box-shadow:0 0 0 1px var(--grout), 0 24px 40px -24px rgba(11,26,68,.7)}
+.wall-tile .t-art{aspect-ratio:1;background:var(--cobalt-deep);position:relative}
+.wall-tile .t-art svg{width:100%;height:100%}
+.wall-tile .t-body{padding:14px 4px 4px}
+.wall-tile .t-tag{font-size:.82rem;color:#3E4C70;margin-bottom:6px}
+.wall-tile h2{font-size:1.3rem;letter-spacing:-.01em}
+.wall-tile .t-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.price{font-weight:650;font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+
+/* ---------- shop ---------- */
+.section{padding:var(--space-section) 0}
+.sec-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{grid-column:1 / span 7}
+.sec-head p{grid-column:8 / span 5;color:#33416A;max-width:44ch}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;background:var(--grout);padding:12px;box-shadow:inset 0 0 0 1px #AFBCC6}
+.tile{background:var(--tin);display:flex;flex-direction:column;position:relative}
+.tile .t-art{aspect-ratio:5/4;position:relative;overflow:hidden}
+.tile .t-art svg{width:100%;height:100%;transition:transform .7s var(--ease)}
+.tile:hover .t-art svg.vessel{transform:translateY(-4px) scale(1.025)}
+.tile .t-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:6px;flex:1;border-top:1px solid var(--grout)}
+.tile h3{font-size:1.4rem}
+.glaze{display:flex;align-items:flex-start;gap:10px;color:#33416A;font-size:.98rem}
+.chip{width:16px;height:16px;flex:none;margin-top:.22em;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(11,26,68,.25), inset -3px -3px 4px rgba(0,0,0,.15)}
+.tile .t-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px}
+.tile .price{font-size:1.15rem}
+.add{min-height:46px;padding:0 1.15em;font-size:.95rem}
+.add.is-added{background:var(--leaf);color:#fff}
+.stamp{position:absolute;right:16px;top:16px;width:68px;height:68px;opacity:0;transform:scale(1.6) rotate(-18deg);pointer-events:none;transition:opacity .35s var(--ease), transform .45s var(--ease)}
+.tile.stamped .stamp,.wall-tile.stamped .stamp{opacity:1;transform:scale(1) rotate(-12deg)}
+.shop-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:28px;color:#33416A;font-size:.98rem}
+
+/* ---------- workshops ---------- */
+.on-ochre{background:var(--ochre);color:var(--ink);position:relative}
+.frieze{height:28px;background-color:var(--cobalt-deep)}
+.ws-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start}
+.ws-intro{grid-column:1 / span 6}
+.ws-intro p{margin-top:20px;max-width:46ch;font-size:1.1rem}
+.ws-intro .fee{margin-top:14px;font-weight:650}
+.sessions{list-style:none;margin:40px 0 0;padding:0;border-top:2px solid var(--ink)}
+.session{display:grid;grid-template-columns:7.5rem 1fr auto;gap:20px;align-items:center;padding:22px 0;border-bottom:1px solid rgba(11,26,68,.35)}
+.s-date{font-family:var(--display);line-height:.9}
+.s-date b{display:block;font-size:3rem;font-weight:800;letter-spacing:-.04em}
+.s-date span{font-size:.95rem;font-weight:600;letter-spacing:.02em}
+.s-info h3{font-size:1.3rem}
+.s-meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:6px;font-size:.95rem}
+.level{font-weight:650}
+.seats{display:flex;align-items:center;gap:8px}
+.seat-row{display:flex;gap:3px}
+.seat-row i{width:10px;height:10px;background:var(--ink);display:block}
+.seat-row i.taken{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(11,26,68,.45)}
+.s-pick{min-height:44px;padding:0 1em;background:transparent;border:2px solid var(--ink);color:var(--ink);font-size:.92rem}
+.s-pick:hover{background:var(--ink);color:var(--ochre)}
+.s-pick[aria-pressed="true"]{background:var(--ink);color:var(--ochre)}
+
+.book{grid-column:8 / span 5;background:var(--tin);padding:clamp(24px,3vw,40px);box-shadow:0 30px 50px -30px rgba(11,26,68,.6);position:relative}
+.book h3{font-size:1.65rem;margin-bottom:6px}
+.book > p{color:#33416A;font-size:.98rem;margin-bottom:22px}
+.field{margin-bottom:18px}
+.field label,.field legend{display:block;font-weight:650;font-size:.95rem;margin-bottom:6px}
+.field input,.field select{width:100%;height:50px;padding:0 14px;background:#fff;border:1.5px solid #8C9AB3;border-radius:2px;transition:border-color .2s, box-shadow .2s}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317348A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px;padding-right:44px}
+.field input:hover,.field select:hover{border-color:var(--cobalt)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 3px rgba(23,52,138,.25)}
+.field input::placeholder{color:#5D6886}
+.field [aria-invalid="true"]{border-color:var(--error);box-shadow:0 0 0 3px rgba(179,38,30,.15)}
+.err{display:flex;gap:6px;align-items:flex-start;color:var(--error);font-size:.9rem;margin-top:6px;font-weight:500}
+.err:empty{display:none}
+.err svg{width:16px;height:16px;flex:none;margin-top:3px}
+fieldset.field{border:0;padding:0;margin:0 0 18px}
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stepper label{margin:0;position:relative}
+.stepper input{position:absolute;opacity:0;width:1px;height:1px}
+.stepper span{display:grid;place-items:center;height:50px;border:1.5px solid #8C9AB3;background:#fff;font-family:var(--display);font-weight:800;font-size:1.25rem;cursor:pointer;border-radius:2px;transition:background-color .2s, border-color .2s, color .2s}
+.stepper input:checked + span{background:var(--cobalt);border-color:var(--cobalt);color:var(--on-cobalt)}
+.stepper input:focus-visible + span{outline:3px solid var(--ochre);outline-offset:2px}
+.stepper input:disabled + span{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.stepper label:hover input:not(:disabled):not(:checked) + span{border-color:var(--cobalt)}
+.hint{font-size:.85rem;color:#3E4C70;margin-top:6px}
+.book .btn{width:100%}
+.success{display:grid;gap:12px;padding:8px 0}
+.success[hidden]{display:none}
+.success svg{width:56px;height:56px}
+.success h3{font-size:1.65rem}
+.success p{color:#33416A}
+.success button{justify-self:start;background:none;border:0;padding:0;color:var(--cobalt);text-decoration:underline;text-underline-offset:.22em;font-weight:650;cursor:pointer}
+
+/* ---------- studio ---------- */
+.studio{background:var(--cobalt);color:var(--on-cobalt);overflow:hidden}
+.studio-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
+.wheel{grid-column:1 / span 5;position:relative;aspect-ratio:1}
+.wheel svg{width:100%;height:100%}
+.wheel .spin{transform-origin:200px 200px;animation:spin 18s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.story{grid-column:7 / span 6}
+.story h2{max-width:13ch}
+.story p{margin-top:22px;color:var(--on-cobalt-2);max-width:58ch;font-size:1.1rem}
+.story p:first-of-type{color:var(--on-cobalt);font-size:1.25rem;line-height:1.5}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border-top:1px solid rgba(238,242,244,.3)}
+.facts div{padding:18px 16px 0 0}
+.facts dt{font-size:.88rem;color:var(--on-cobalt-2)}
+.facts dd{margin:4px 0 0;font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.2}
+.journal{margin-top:var(--space-section);border-top:1px solid rgba(238,242,244,.3);padding-top:36px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
+.journal h2{grid-column:1 / span 4;font-size:clamp(1.8rem,3vw,2.6rem)}
+.journal ol{grid-column:5 / span 8;list-style:none;margin:0;padding:0}
+.journal li a{display:grid;grid-template-columns:7rem 1fr auto;gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid rgba(238,242,244,.2);text-decoration:none;transition:color .2s, padding .3s var(--ease)}
+.journal li a:hover{color:var(--ochre);padding-left:8px}
+.journal time{font-size:.9rem;color:var(--on-cobalt-2);font-variant-numeric:tabular-nums}
+.journal .j-title{font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.25}
+.journal svg{width:20px;height:20px}
+
+/* ---------- testimonials ---------- */
+.quotes{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
+.q{margin:0;position:relative}
+.q blockquote{margin:0}
+.q-big{grid-column:1 / span 7;grid-row:1 / span 2;background:var(--cobalt-deep);color:var(--on-cobalt);padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:space-between;gap:40px}
+.q-big blockquote p{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,2.8vw,2.45rem);line-height:1.15;letter-spacing:-.02em;text-wrap:pretty}
+.q-sm{grid-column:8 / span 5;border:1px solid var(--grout);background:#fff;padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:22px;justify-content:space-between}
+.q-sm blockquote p{font-size:1.15rem;line-height:1.55;text-wrap:pretty}
+.q figcaption{display:flex;align-items:center;gap:12px;font-size:.95rem}
+.q figcaption b{display:block;font-weight:650}
+.q figcaption span{color:#3E4C70}
+.q-big figcaption span{color:var(--on-cobalt-2)}
+.mark{width:40px;height:40px;flex:none}
+
+/* ---------- faq ---------- */
+.faq-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
+.faq-grid > div:first-child{grid-column:1 / span 4}
+.faq-grid > div:first-child p{margin-top:18px;color:#33416A;max-width:32ch}
+.faq-list{grid-column:6 / span 7;border-top:2px solid var(--ink)}
+.faq-item{border-bottom:1px solid var(--grout)}
+.faq-item h3{font-family:var(--body);font-size:1.15rem;font-weight:650;letter-spacing:0}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;background:none;border:0;text-align:left;cursor:pointer;font-weight:650;line-height:1.35}
+.faq-q:hover{color:var(--cobalt)}
+.faq-q svg{width:22px;height:22px;flex:none;transition:transform .4s var(--ease)}
+.faq-q[aria-expanded="true"] svg{transform:rotate(45deg)}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+.faq-a > div{overflow:hidden}
+.faq-a p{padding:0 48px 24px 0;color:#2B3963;max-width:62ch}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+
+/* ---------- newsletter ---------- */
+.newsletter{background:var(--turq);color:var(--ink);padding:clamp(56px,7vw,96px) 0;position:relative;overflow:hidden}
+.nl-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;position:relative}
+.nl-grid h2{grid-column:1 / span 6;font-size:clamp(2rem,4vw,3.4rem)}
+.nl-grid h2 + p{grid-column:1 / span 6;max-width:44ch;margin-top:-6px;font-size:1.08rem}
+.nl-form{grid-column:8 / span 5;grid-row:1 / span 2;align-self:center}
+.nl-row{display:flex;gap:10px}
+.nl-row input{flex:1;min-width:0;height:54px;padding:0 16px;border:2px solid var(--ink);background:var(--tin);border-radius:2px}
+.nl-row input:focus{outline:none;box-shadow:0 0 0 3px var(--cobalt-deep)}
+.nl-row input::placeholder{color:#4A5576}
+.nl-row .btn{min-height:54px;background:var(--ink);color:var(--tin)}
+.nl-row .btn:hover{background:var(--cobalt-deep)}
+.nl-form .err{color:#5E0F0A;font-weight:650}
+.nl-ok{font-weight:650;font-size:1.1rem;display:flex;gap:10px;align-items:center}
+.nl-ok[hidden]{display:none}
+.nl-ok svg{width:28px;height:28px;flex:none}
+.nl-art{position:absolute;right:-60px;top:-60px;width:260px;height:260px;opacity:.22;pointer-events:none}
+
+/* ---------- footer ---------- */
+.foot{background:var(--cobalt-deep);color:var(--on-cobalt)}
+.foot-in{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding-top:clamp(56px,7vw,96px);padding-bottom:40px}
+.foot-brand{grid-column:1 / span 4}
+.foot-brand .brand-name{font-size:2.2rem}
+.foot-brand .brand-ur{font-size:1.1rem;margin-top:8px}
+.foot-brand p{margin-top:18px;color:var(--on-cobalt-2);max-width:34ch}
+.foot-col{grid-column:span 2}
+.foot-col.wide{grid-column:span 3}
+.foot h2{font-family:var(--body);font-size:.95rem;font-weight:650;color:var(--ochre);margin-bottom:12px;letter-spacing:0}
+.foot address{font-style:normal;color:var(--on-cobalt);line-height:1.7}
+.foot dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px}
+.foot dt{color:var(--on-cobalt-2)}
+.foot dd{margin:0;font-variant-numeric:tabular-nums}
+.socials{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.socials a{display:flex;align-items:center;gap:10px;padding:6px 0;text-decoration:none}
+.socials a:hover{color:var(--ochre)}
+.socials svg{width:20px;height:20px}
+.foot-base{border-top:1px solid rgba(238,242,244,.2);padding-top:22px;padding-bottom:28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.88rem;color:var(--on-cobalt-2)}
+.foot a{text-underline-offset:.22em}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%, calc(100% + 40px));visibility:hidden;background:var(--ink);color:var(--tin);padding:14px 20px;border-left:0;box-shadow:0 18px 36px -16px rgba(0,0,0,.6);display:flex;gap:12px;align-items:center;z-index:60;transition:transform .5s var(--ease), visibility 0s linear .5s;max-width:calc(100vw - 32px);font-size:.98rem}
+.toast.show{transform:translate(-50%, 0);visibility:visible;transition:transform .5s var(--ease), visibility 0s}
+.toast svg{width:22px;height:22px;flex:none;color:var(--ochre)}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px){
+  .panel{grid-column:1 / span 8}
+  .wall-tile{grid-column:9 / span 4}
+}
+@media (max-width: 960px){
+  .menu-btn{display:grid}
+  .nav{position:absolute;left:0;right:0;top:100%;background:var(--cobalt-deep);border-bottom:3px solid var(--ochre);display:none}
+  .nav.open{display:block}
+  .nav ul{flex-direction:column;padding:8px var(--gutter) 20px}
+  .nav a{padding:14px 0;font-family:var(--display);font-weight:600;font-size:1.6rem;border-bottom:1px solid rgba(238,242,244,.15);border-radius:0}
+  .nav a:hover{background:none;color:var(--ochre)}
+  .head-in{gap:12px}
+  .wall-in{grid-template-columns:1fr;min-height:0;align-items:start}
+  .panel{grid-column:1}
+  .wall-tile{grid-column:1;display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:20px;align-items:center;max-width:560px}
+  .wall-tile .t-body{padding:0}
+  .sec-head{grid-template-columns:1fr;gap:16px}
+  .sec-head h2,.sec-head p{grid-column:1}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ws-grid{grid-template-columns:1fr;gap:48px}
+  .ws-intro,.book{grid-column:1}
+  .studio-grid{grid-template-columns:1fr;gap:40px}
+  .wheel{grid-column:1;max-width:420px;width:70%;margin:0 auto}
+  .story{grid-column:1}
+  .journal{grid-template-columns:1fr}
+  .journal h2,.journal ol{grid-column:1}
+  .quotes{grid-template-columns:1fr 1fr}
+  .q-big{grid-column:1 / -1;grid-row:auto}
+  .q-sm{grid-column:auto}
+  .faq-grid{grid-template-columns:1fr;gap:32px}
+  .faq-grid > div:first-child,.faq-list{grid-column:1}
+  .nl-grid{grid-template-columns:1fr;gap:16px}
+  .nl-grid h2,.nl-grid h2 + p,.nl-form{grid-column:1;grid-row:auto}
+  .nl-form{margin-top:12px}
+  .foot-in{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 24px}
+  .foot-brand{grid-column:1 / -1}
+  .foot-col,.foot-col.wide{grid-column:span 1}
+}
+@media (max-width: 600px){
+  body{font-size:1rem}
+  .brand-ur{display:none}
+  .cart-btn .cart-word{display:none}
+  .panel{outline-width:6px;box-shadow:0 0 0 8px var(--ochre), 0 0 0 10px var(--tin), 0 24px 40px -24px rgba(11,26,68,.8)}
+  .panel::before{inset:7px}
+  .panel-ur{position:static;display:block;margin-bottom:10px}
+  .panel .ctas .btn{flex:1 1 100%}
+  .wall-in{padding:36px 28px 44px;gap:32px}
+  .wall-tile{grid-template-columns:104px 1fr;gap:14px;border-width:8px}
+  .wall-tile .glaze{font-size:.9rem}
+  .wall-tile .t-tag{margin-bottom:2px}
+  .wall-tile h2{font-size:1.15rem}
+  .wall-tile .t-row{flex-wrap:wrap}
+  .tiles{grid-template-columns:1fr;padding:8px;gap:8px}
+  .tile .t-art{aspect-ratio:16/10}
+  .session{grid-template-columns:4.6rem 1fr;gap:6px 16px;padding:20px 0}
+  .s-date b{font-size:2.3rem}
+  .s-pick{grid-column:2;justify-self:start;margin-top:8px}
+  .quotes{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr 1fr}
+  .facts div:last-child{grid-column:1 / -1}
+  .journal li a{grid-template-columns:1fr auto;gap:4px 12px}
+  .journal time{grid-column:1}
+  .journal .j-title{grid-column:1}
+  .journal li a svg{grid-row:1 / span 2;grid-column:2;align-self:center}
+  .faq-a p{padding-right:0}
+  .nl-row{flex-direction:column}
+  .foot-in{grid-template-columns:1fr}
+  .foot-col,.foot-col.wide{grid-column:1}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .wall-sheen{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- kashi tile: eight-point star and cross -->
+    <pattern id="kashi" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="#EEF2F4"/>
+      <g id="cross">
+        <polygon points="0,-30 9,-21 9,-9 21,-9 30,0 21,9 9,9 9,21 0,30 -9,21 -9,9 -21,9 -30,0 -21,-9 -9,-9 -9,-21" fill="#E8AE3A" stroke="#0D1F5C" stroke-width="1.5"/>
+        <rect x="-4" y="-4" width="8" height="8" transform="rotate(45)" fill="#0D1F5C"/>
+      </g>
+      <use href="#cross" x="120" y="0"/><use href="#cross" x="0" y="120"/><use href="#cross" x="120" y="120"/>
+      <polygon points="106.0,60.0 92.5,73.5 92.5,92.5 73.5,92.5 60.0,106.0 46.5,92.5 27.5,92.5 27.5,73.5 14.0,60.0 27.5,46.5 27.5,27.5 46.5,27.5 60.0,14.0 73.5,27.5 92.5,27.5 92.5,46.5" fill="#17348A" stroke="#0D1F5C" stroke-width="1.5"/>
+      <polygon points="87.7,71.5 76.2,76.2 71.5,87.7 60.0,83.0 48.5,87.7 43.8,76.2 32.3,71.5 37.0,60.0 32.3,48.5 43.8,43.8 48.5,32.3 60.0,37.0 71.5,32.3 76.2,43.8 87.7,48.5 83.0,60.0" fill="#2A9A98"/>
+      <polygon points="76.6,66.9 66.9,76.6 53.1,76.6 43.4,66.9 43.4,53.1 53.1,43.4 66.9,43.4 76.6,53.1" fill="#EEF2F4"/>
+      <circle cx="60" cy="60" r="5" fill="#E8AE3A"/>
+      <path d="M60 0v8M60 112v8M0 60h8M112 60h8" stroke="#2A9A98" stroke-width="3"/>
+      <path d="M0 .5H120M.5 0V120" stroke="#C3CED6" stroke-width="1"/>
+    </pattern>
+    <!-- small border frieze -->
+    <pattern id="frieze" width="28" height="28" patternUnits="userSpaceOnUse">
+      <rect width="28" height="28" fill="#0D1F5C"/>
+      <polygon points="14,4 24,14 14,24 4,14" fill="none" stroke="#E8AE3A" stroke-width="1.5"/>
+      <circle cx="14" cy="14" r="3" fill="#2A9A98"/>
+      <circle cx="0" cy="14" r="2" fill="#EEF2F4"/><circle cx="28" cy="14" r="2" fill="#EEF2F4"/>
+    </pattern>
+    <!-- tile corner motif for product tiles -->
+    <g id="corner">
+      <path d="M0 0h34v6c-10 0-18 4-22 10s-6 12-6 18H0z" fill="currentColor" opacity=".9"/>
+      <circle cx="10" cy="10" r="3.2" fill="#E8AE3A"/>
+    </g>
+    <!-- kiln stamp -->
+    <symbol id="stamp" viewBox="0 0 68 68">
+      <circle cx="34" cy="34" r="31" fill="none" stroke="#17348A" stroke-width="2.5"/>
+      <circle cx="34" cy="34" r="25" fill="none" stroke="#17348A" stroke-width="1" stroke-dasharray="2 3"/>
+      <text x="34" y="31" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="11" fill="#17348A">IN YOUR</text>
+      <text x="34" y="44" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="11" fill="#17348A">CART</text>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v6M12 16.5v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 120 120"><polygon points="106.0,60.0 92.5,73.5 92.5,92.5 73.5,92.5 60.0,106.0 46.5,92.5 27.5,92.5 27.5,73.5 14.0,60.0 27.5,46.5 27.5,27.5 46.5,27.5 60.0,14.0 73.5,27.5 92.5,27.5 92.5,46.5" fill="#E8AE3A"/><polygon points="76.6,66.9 66.9,76.6 53.1,76.6 43.4,66.9 43.4,53.1 53.1,43.4 66.9,43.4 76.6,53.1" fill="#2A9A98"/><circle cx="60" cy="60" r="8" fill="#EEF2F4"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="#top" aria-label="Kiln and Clay, home">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#i-star"/></svg>
+      <span class="brand-txt"><span class="brand-name">Kiln &amp; Clay</span><span class="brand-ur" lang="ur" dir="rtl">بھٹی اور مٹی</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <ul>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#workshops">Workshops</a></li>
+        <li><a href="#studio">Studio</a></li>
+        <li><a href="#journal">Journal</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="cart-wrap">
+      <button class="cart-btn" id="cartBtn" aria-expanded="false" aria-controls="cartPanel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>
+        <span class="cart-word">Cart</span>
+        <span class="cart-count" id="cartCount" aria-hidden="true">0</span>
+        <span class="sr-only" id="cartLabel">, 0 items</span>
+      </button>
+      <div class="cart-panel" id="cartPanel" hidden>
+        <h2>Your cart</h2>
+        <p class="cart-empty" id="cartEmpty">Nothing yet. Pieces from the current firing are below.</p>
+        <ul class="cart-list" id="cartList"></ul>
+        <div class="cart-total" id="cartTotalRow" hidden><span>Subtotal</span><span class="num" id="cartTotal">PKR 0</span></div>
+        <p class="cart-note" id="cartNote" hidden>Delivery across Pakistan is calculated at checkout.</p>
+      </div>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path class="m-open" d="M4 7h16M4 12h16M4 17h16"/><path class="m-close" d="M6 6l12 12M18 6 6 18" style="display:none"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="wall" id="top" aria-labelledby="hero-title">
+    <svg class="wall-art" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#kashi)"/></svg>
+    <div class="wall-sheen" aria-hidden="true"></div>
+    <div class="wrap wall-in">
+      <div class="panel">
+        <span class="panel-ur" lang="ur" dir="rtl" aria-hidden="true">ہاتھ سے بنی، لاہور میں پکی</span>
+        <h1 id="hero-title">Made for the dastarkhwan. <span>Fired in Lahore.</span></h1>
+        <p class="lede">Plates, bowls and chai cups thrown by hand in small batches from one gas kiln in Gulberg. Each firing makes about sixty pieces, and when they’re gone, they’re gone. On weekends, the wheels are yours.</p>
+        <div class="ctas">
+          <a class="btn btn-ochre" href="#shop">Shop this firing <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-line" href="#workshops">Book a wheel class</a>
+        </div>
+      </div>
+
+      <article class="wall-tile" data-tile="shalimar">
+        <div class="t-art">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <rect width="200" height="200" fill="#0D1F5C"/>
+            <circle cx="100" cy="100" r="78" fill="none" stroke="#17348A" stroke-width="18"/>
+            <ellipse cx="100" cy="168" rx="58" ry="7" fill="#06123A" opacity=".7"/>
+            <path d="M28 82 Q32 158 100 162 Q168 158 172 82 Z" fill="#1E43A0"/>
+            <path d="M42 112 Q100 128 158 112" fill="none" stroke="#EEF2F4" stroke-width="2.5" opacity=".85"/>
+            <g fill="#EEF2F4" opacity=".9"><circle cx="70" cy="128" r="5"/><circle cx="100" cy="134" r="5"/><circle cx="130" cy="128" r="5"/></g>
+            <ellipse cx="100" cy="82" rx="72" ry="16" fill="#EEF2F4"/>
+            <ellipse cx="100" cy="85" rx="62" ry="11" fill="#2A57C2"/>
+            <path d="M40 96 Q44 140 74 152" fill="none" stroke="#fff" stroke-width="4" opacity=".25" stroke-linecap="round"/>
+          </svg>
+          <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+        </div>
+        <div class="t-body">
+          <p class="t-tag">Out of Friday’s kiln</p>
+          <h2>Shalimar Bowl</h2>
+          <p class="glaze"><span class="chip" style="background:#1E43A0"></span>Multani cobalt over white slip</p>
+          <div class="t-row">
+            <span class="price">PKR 2,800</span>
+            <button class="btn btn-cobalt add" data-id="shalimar">Add to cart</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="shop" aria-labelledby="shop-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="shop-title">From the October firing</h2>
+        <p>Six forms, glazed in the colours of the old city’s tilework. Stoneware fired to 1,220°C: food-safe, dishwasher-safe, made to be used daily.</p>
+      </div>
+
+      <div class="tiles" id="tiles">
+        <article class="tile">
+          <div class="t-art" style="background:#E3ECE6;color:#8DB5A0">
+            <svg viewBox="0 0 250 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <use href="#corner"/><use href="#corner" transform="translate(250 0) scale(-1 1)"/><use href="#corner" transform="translate(0 200) scale(1 -1)"/><use href="#corner" transform="translate(250 200) scale(-1 -1)"/>
+              <g class="vessel" style="transform-origin:125px 110px">
+                <ellipse cx="125" cy="132" rx="88" ry="22" fill="#5C7E6D" opacity=".35"/>
+                <ellipse cx="125" cy="112" rx="92" ry="38" fill="#7FAA93"/>
+                <ellipse cx="125" cy="110" rx="86" ry="34" fill="#9DC3AE"/>
+                <ellipse cx="125" cy="114" rx="56" ry="20" fill="#7FAA93"/>
+                <ellipse cx="125" cy="116" rx="48" ry="15" fill="#6E9A84"/>
+                <path d="M54 98 Q80 82 118 80" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+              </g>
+            </svg>
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+          </div>
+          <div class="t-body">
+            <h3>Ravi Dinner Plate</h3>
+            <p class="glaze"><span class="chip" style="background:#7FAA93"></span>Indus celadon, pooling green at the rim</p>
+            <div class="t-row"><span class="price">PKR 3,400</span><button class="btn btn-cobalt add" data-id="ravi">Add to cart</button></div>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="t-art" style="background:#DCE4F3;color:#1E43A0">
+            <svg viewBox="0 0 250 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <use href="#corner"/><use href="#corner" transform="translate(250 0) scale(-1 1)"/><use href="#corner" transform="translate(0 200) scale(1 -1)"/><use href="#corner" transform="translate(250 200) scale(-1 -1)"/>
+              <g class="vessel" style="transform-origin:125px 110px">
+                <ellipse cx="125" cy="160" rx="62" ry="8" fill="#0D1F5C" opacity=".2"/>
+                <path d="M55 78 Q58 150 125 156 Q192 150 195 78 Z" fill="#1E43A0"/>
+                <path d="M68 110 Q125 128 182 110" fill="none" stroke="#EEF2F4" stroke-width="2.5"/>
+                <g fill="#EEF2F4"><circle cx="95" cy="126" r="4.5"/><circle cx="125" cy="131" r="4.5"/><circle cx="155" cy="126" r="4.5"/></g>
+                <ellipse cx="125" cy="78" rx="70" ry="15" fill="#EEF2F4"/>
+                <ellipse cx="125" cy="81" rx="60" ry="10" fill="#2A57C2"/>
+                <rect x="104" y="154" width="42" height="6" fill="#C9A37E"/>
+              </g>
+            </svg>
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+          </div>
+          <div class="t-body">
+            <h3>Shalimar Bowl</h3>
+            <p class="glaze"><span class="chip" style="background:#1E43A0"></span>Multani cobalt over white slip</p>
+            <div class="t-row"><span class="price">PKR 2,800</span><button class="btn btn-cobalt add" data-id="shalimar">Add to cart</button></div>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="t-art" style="background:#F6E7C4;color:#D9962B">
+            <svg viewBox="0 0 250 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <use href="#corner"/><use href="#corner" transform="translate(250 0) scale(-1 1)"/><use href="#corner" transform="translate(0 200) scale(1 -1)"/><use href="#corner" transform="translate(250 200) scale(-1 -1)"/>
+              <g class="vessel" style="transform-origin:125px 110px">
+                <ellipse cx="125" cy="158" rx="80" ry="8" fill="#6B4510" opacity=".2"/>
+                <g>
+                  <path d="M58 82 L64 150 Q86 158 108 150 L114 82 Z" fill="#D9962B"/>
+                  <path d="M60 108 L62 150 Q86 158 110 150 L112 112 Q86 118 60 108Z" fill="#B87A1C" opacity=".5"/>
+                  <ellipse cx="86" cy="82" rx="28" ry="7" fill="#F0C46A"/>
+                  <ellipse cx="86" cy="83" rx="23" ry="5" fill="#8C5A12"/>
+                </g>
+                <g>
+                  <path d="M136 92 L141 152 Q162 159 183 152 L188 92 Z" fill="#D9962B"/>
+                  <path d="M137 116 L139 152 Q162 159 185 152 L187 120 Q162 126 137 116Z" fill="#B87A1C" opacity=".5"/>
+                  <ellipse cx="162" cy="92" rx="26" ry="6.5" fill="#F0C46A"/>
+                  <ellipse cx="162" cy="93" rx="21" ry="4.5" fill="#8C5A12"/>
+                </g>
+                <path d="M68 92 L72 136" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>
+              </g>
+            </svg>
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+          </div>
+          <div class="t-body">
+            <h3>Anarkali Chai Cups, pair</h3>
+            <p class="glaze"><span class="chip" style="background:#D9962B"></span>Saffron honey glaze, darker where it breaks</p>
+            <div class="t-row"><span class="price">PKR 3,600</span><button class="btn btn-cobalt add" data-id="anarkali">Add to cart</button></div>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="t-art" style="background:#E6ECF1;color:#17348A">
+            <svg viewBox="0 0 250 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <use href="#corner"/><use href="#corner" transform="translate(250 0) scale(-1 1)"/><use href="#corner" transform="translate(0 200) scale(1 -1)"/><use href="#corner" transform="translate(250 200) scale(-1 -1)"/>
+              <g class="vessel" style="transform-origin:125px 110px">
+                <ellipse cx="125" cy="134" rx="98" ry="20" fill="#0D1F5C" opacity=".18"/>
+                <ellipse cx="125" cy="112" rx="104" ry="40" fill="#D5DEE5"/>
+                <ellipse cx="125" cy="108" rx="98" ry="35" fill="#F7F9FA"/>
+                <ellipse cx="125" cy="112" rx="72" ry="22" fill="#EEF2F4" stroke="#D5DEE5"/>
+                <path d="M62 120 C 90 96, 140 128, 190 98" fill="none" stroke="#1E43A0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M74 126 C 100 108, 140 134, 178 112" fill="none" stroke="#1E43A0" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+              </g>
+            </svg>
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+          </div>
+          <div class="t-body">
+            <h3>Mall Road Serving Platter</h3>
+            <p class="glaze"><span class="chip" style="background:#F7F9FA"></span>Tin white with one cobalt brushline</p>
+            <div class="t-row"><span class="price">PKR 7,900</span><button class="btn btn-cobalt add" data-id="mallroad">Add to cart</button></div>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="t-art" style="background:#D3ECEA;color:#2A9A98">
+            <svg viewBox="0 0 250 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <use href="#corner"/><use href="#corner" transform="translate(250 0) scale(-1 1)"/><use href="#corner" transform="translate(0 200) scale(1 -1)"/><use href="#corner" transform="translate(250 200) scale(-1 -1)"/>
+              <g class="vessel" style="transform-origin:125px 110px">
+                <ellipse cx="125" cy="164" rx="64" ry="8" fill="#0B4A49" opacity=".22"/>
+                <path d="M168 104 C 196 96, 200 72, 214 64 L 218 70 C 206 80, 202 110, 172 124 Z" fill="#2A9A98"/>
+                <path d="M78 96 C 52 94, 50 140, 82 138" fill="none" stroke="#1F7F7D" stroke-width="9" stroke-linecap="round"/>
+                <path d="M78 80 Q66 160 125 162 Q184 160 172 80 Q125 66 78 80Z" fill="#2A9A98"/>
+                <g stroke="#1F7F7D" stroke-width="1" fill="none" opacity=".7"><path d="M92 96 l14 18 l-8 20"/><path d="M140 92 l-6 22 l18 14"/><path d="M110 140 l20 -6 l12 16"/><path d="M150 112 l14 -4"/></g>
+                <ellipse cx="125" cy="78" rx="46" ry="9" fill="#5BBDB9"/>
+                <path d="M100 76 Q125 52 150 76" fill="#2A9A98"/>
+                <circle cx="125" cy="56" r="7" fill="#1F7F7D"/>
+                <path d="M90 100 Q86 128 98 148" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".35"/>
+              </g>
+            </svg>
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+          </div>
+          <div class="t-body">
+            <h3>Kahwa Teapot</h3>
+            <p class="glaze"><span class="chip" style="background:#2A9A98"></span>Turquoise crackle, pours four cups</p>
+            <div class="t-row"><span class="price">PKR 9,500</span><button class="btn btn-cobalt add" data-id="kahwa">Add to cart</button></div>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="t-art" style="background:#EEE4D4;color:#B98F5E">
+            <svg viewBox="0 0 250 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <use href="#corner"/><use href="#corner" transform="translate(250 0) scale(-1 1)"/><use href="#corner" transform="translate(0 200) scale(1 -1)"/><use href="#corner" transform="translate(250 200) scale(-1 -1)"/>
+              <g class="vessel" style="transform-origin:125px 110px">
+                <ellipse cx="120" cy="162" rx="58" ry="7" fill="#5A3A1A" opacity=".2"/>
+                <path d="M160 88 C 196 84, 198 140, 160 140" fill="none" stroke="#CDB28C" stroke-width="12" stroke-linecap="round"/>
+                <path d="M78 74 L80 150 Q120 162 160 150 L162 74 Z" fill="#D9C4A1"/>
+                <path d="M79 140 L80 150 Q120 162 160 150 L161 140 Q120 150 79 140Z" fill="#B9774F"/>
+                <g fill="#7A5A3A" opacity=".55"><circle cx="96" cy="96" r="1.6"/><circle cx="112" cy="110" r="1.2"/><circle cx="130" cy="92" r="1.8"/><circle cx="146" cy="118" r="1.3"/><circle cx="104" cy="126" r="1.5"/><circle cx="138" cy="132" r="1.2"/><circle cx="120" cy="84" r="1.1"/><circle cx="152" cy="98" r="1.5"/><circle cx="90" cy="116" r="1.2"/><circle cx="124" cy="120" r="1.6"/></g>
+                <ellipse cx="120" cy="74" rx="42" ry="9" fill="#E9DCC3"/>
+                <ellipse cx="120" cy="75" rx="36" ry="6.5" fill="#B49A72"/>
+                <path d="M88 86 L90 132" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".35"/>
+              </g>
+            </svg>
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+          </div>
+          <div class="t-body">
+            <h3>Badami Mug</h3>
+            <p class="glaze"><span class="chip" style="background:#D9C4A1"></span>Almond speckle with a raw clay foot</p>
+            <div class="t-row"><span class="price">PKR 2,400</span><button class="btn btn-cobalt add" data-id="badami">Add to cart</button></div>
+          </div>
+        </article>
+      </div>
+      <div class="shop-foot">
+        <p>Every piece is thrown by hand, so sizes and glaze breaks vary slightly. That’s the point.</p>
+        <p>Delivery across Pakistan, double-boxed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="on-ochre" id="workshops" aria-labelledby="ws-title">
+    <div class="frieze" style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' fill='%230D1F5C'/%3E%3Cpolygon points='14,4 24,14 14,24 4,14' fill='none' stroke='%23E8AE3A' stroke-width='1.5'/%3E%3Ccircle cx='14' cy='14' r='3' fill='%232A9A98'/%3E%3Ccircle cx='0' cy='14' r='2' fill='%23EEF2F4'/%3E%3Ccircle cx='28' cy='14' r='2' fill='%23EEF2F4'/%3E%3C/svg%3E&quot;)" aria-hidden="true"></div>
+    <div class="wrap section">
+      <div class="ws-grid">
+        <div class="ws-intro">
+          <h2 id="ws-title">Weekend wheel classes</h2>
+          <p>Eight people, four wheels, one patient potter. You’ll centre, open and pull your own pieces; we trim, glaze and fire the best two, ready to collect three weeks later.</p>
+          <p class="fee">PKR 8,500 per person. Clay, aprons, tea and firing included.</p>
+          <ul class="sessions" id="sessions">
+            <li class="session" data-session="s1">
+              <div class="s-date"><b class="num">24</b><span>Sat · Oct</span></div>
+              <div class="s-info">
+                <h3>First Pull</h3>
+                <div class="s-meta"><span class="level">Beginner</span><span>10:00–13:00</span><span class="seats"><span class="seat-row" aria-hidden="true"></span><span class="seat-txt num"></span></span></div>
+              </div>
+              <button class="btn s-pick" aria-pressed="false" data-pick="s1">Choose</button>
+            </li>
+            <li class="session" data-session="s2">
+              <div class="s-date"><b class="num">01</b><span>Sun · Nov</span></div>
+              <div class="s-info">
+                <h3>Trimming &amp; Feet</h3>
+                <div class="s-meta"><span class="level">Intermediate</span><span>10:00–14:00</span><span class="seats"><span class="seat-row" aria-hidden="true"></span><span class="seat-txt num"></span></span></div>
+              </div>
+              <button class="btn s-pick" aria-pressed="false" data-pick="s2">Choose</button>
+            </li>
+            <li class="session" data-session="s3">
+              <div class="s-date"><b class="num">07</b><span>Sat · Nov</span></div>
+              <div class="s-info">
+                <h3>Glaze Day: dip, pour, brush</h3>
+                <div class="s-meta"><span class="level">All levels</span><span>11:00–15:00</span><span class="seats"><span class="seat-row" aria-hidden="true"></span><span class="seat-txt num"></span></span></div>
+              </div>
+              <button class="btn s-pick" aria-pressed="false" data-pick="s3">Choose</button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="book" id="book">
+          <form id="bookForm" novalidate>
+            <h3>Book your seats</h3>
+            <p>We’ll email a confirmation and directions to the studio.</p>
+            <div class="field">
+              <label for="b-name">Full name</label>
+              <input id="b-name" name="name" type="text" autocomplete="name" placeholder="Ayesha Khan" aria-describedby="e-name">
+              <p class="err" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="b-email">Email</label>
+              <input id="b-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="e-email">
+              <p class="err" id="e-email" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="b-session">Session</label>
+              <select id="b-session" name="session" aria-describedby="e-session">
+                <option value="">Choose a session</option>
+                <option value="s1">Sat 24 Oct · First Pull · Beginner</option>
+                <option value="s2">Sun 1 Nov · Trimming &amp; Feet · Intermediate</option>
+                <option value="s3">Sat 7 Nov · Glaze Day · All levels</option>
+              </select>
+              <p class="err" id="e-session" aria-live="polite"></p>
+            </div>
+            <fieldset class="field" aria-describedby="e-people p-hint">
+              <legend>Participants</legend>
+              <div class="stepper">
+                <label><input type="radio" name="people" value="1" checked><span>1</span></label>
+                <label><input type="radio" name="people" value="2"><span>2</span></label>
+                <label><input type="radio" name="people" value="3"><span>3</span></label>
+                <label><input type="radio" name="people" value="4"><span>4</span></label>
+              </div>
+              <p class="hint" id="p-hint">Up to 4 per booking.</p>
+              <p class="err" id="e-people" aria-live="polite"></p>
+            </fieldset>
+            <button class="btn btn-cobalt" type="submit" id="bookSubmit">Reserve seats</button>
+          </form>
+          <div class="success" id="bookOk" hidden tabindex="-1">
+            <svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="27" fill="#3F7D4E"/><path d="m16 29 8 8 16-17" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>You’re on the wheel.</h3>
+            <p id="bookOkMsg"></p>
+            <button type="button" id="bookAgain">Make another booking</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="studio section" id="studio" aria-labelledby="studio-title">
+    <div class="wrap">
+      <div class="studio-grid">
+        <div class="wheel" aria-hidden="true">
+          <svg viewBox="0 0 400 400">
+            <circle cx="200" cy="200" r="196" fill="#0D1F5C"/>
+            <circle cx="200" cy="200" r="196" fill="none" stroke="#E8AE3A" stroke-width="2" stroke-dasharray="3 9"/>
+            <g class="spin">
+              <circle cx="200" cy="200" r="168" fill="#2C2A33"/>
+              <circle cx="200" cy="200" r="168" fill="none" stroke="#45434F" stroke-width="6"/>
+              <g fill="none" stroke="#3A3843" stroke-width="1.2"><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="132"/><circle cx="200" cy="200" r="116"/></g>
+              <circle cx="200" cy="200" r="98" fill="#A8775A"/>
+              <g fill="none" stroke="#8C5E44" stroke-width="2.2"><circle cx="200" cy="200" r="88"/><circle cx="200" cy="200" r="76"/><circle cx="200" cy="200" r="62"/><circle cx="200" cy="200" r="47"/></g>
+              <circle cx="200" cy="200" r="34" fill="#7A4F38"/>
+              <path d="M200 32 a168 168 0 0 1 120 50" fill="none" stroke="#E8AE3A" stroke-width="6" stroke-linecap="round"/>
+              <path d="M272 158 q20 30 6 64" fill="none" stroke="#C99A7E" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+              <path d="M138 252 q-14 -26 -4 -58" fill="none" stroke="#C99A7E" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+            </g>
+          </svg>
+        </div>
+        <div class="story">
+          <h2 id="studio-title">One kiln, two wheels and a courtyard in Gulberg.</h2>
+          <p>Kiln &amp; Clay began in 2019 as a shared studio for two potters trained between Multan’s blue-pottery workshops and a ceramics degree at NCA.</p>
+          <p>We mix our own stoneware body from Punjab clays, throw every form on the wheel, and glaze in colours lifted from the kashi tilework a short drive away at Wazir Khan. We fire roughly every three weeks, and each batch goes on this page the morning the kiln is cool enough to open.</p>
+          <p>Nothing is slip-cast and nothing is outsourced. If a piece cracks, warps or crawls in the kiln, it never reaches you.</p>
+          <dl class="facts">
+            <div><dt>Firing</dt><dd class="num">1,220°C</dd></div>
+            <div><dt>Per batch</dt><dd>About 60 pieces</dd></div>
+            <div><dt>Glazes</dt><dd>Lead-free, mixed in-house</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="journal" id="journal">
+        <h2>From the journal</h2>
+        <ol>
+          <li><a href="#journal"><time datetime="2026-10-09">9 Oct 2026</time><span class="j-title">Opening the October kiln: what the celadon did this time</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a href="#journal"><time datetime="2026-09-21">21 Sep 2026</time><span class="j-title">Why our chai cups have no handles</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a href="#journal"><time datetime="2026-08-30">30 Aug 2026</time><span class="j-title">A day in Multan with the blue-pottery masters</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="q-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="q-title">On tables across Pakistan</h2>
+        <p>Notes from people who eat off, drink from and make our work.</p>
+      </div>
+      <div class="quotes">
+        <figure class="q q-big">
+          <blockquote><p>“I bought four Ravi plates for my mother’s Eid table and they’ve been through the dishwasher every week since. The green still pools at the rim exactly the way it did on day one.”</p></blockquote>
+          <figcaption><svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><use href="#i-star"/></svg><span><b>Sana Malik</b><span>Model Town, Lahore</span></span></figcaption>
+        </figure>
+        <figure class="q q-sm">
+          <blockquote><p>“Came to First Pull having never touched clay. Left with two wobbly bowls and the calmest Saturday I’ve had all year.”</p></blockquote>
+          <figcaption><span><b>Hamza Rauf</b><span>Workshop student, DHA</span></span></figcaption>
+        </figure>
+        <figure class="q q-sm">
+          <blockquote><p>“The kahwa teapot pours without a single drip. I didn’t know a handmade pot could do that.”</p></blockquote>
+          <figcaption><span><b>Ayesha Qureshi</b><span>Islamabad</span></span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 id="faq-title">Questions before you buy or book</h2>
+        <p>Anything else, write to <a href="mailto:hello@kilnandclay.pk">hello@kilnandclay.pk</a> and a potter will answer.</p>
+      </div>
+      <div class="faq-list" id="faq">
+        <div class="faq-item">
+          <h3><button class="faq-q" aria-expanded="false" aria-controls="fa1" id="fq1">Is the tableware food-safe and dishwasher-safe?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-a" id="fa1" role="region" aria-labelledby="fq1"><div><p>Yes. Every glaze is lead-free and fired to 1,220°C stoneware, so pieces are safe for food, the dishwasher and the microwave. Avoid moving them straight from the freezer into a hot oven.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" aria-expanded="false" aria-controls="fa2" id="fq2">Will my piece look exactly like the picture?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-a" id="fa2" role="region" aria-labelledby="fq2"><div><p>Close, never identical. Each piece is thrown by hand and glazes move in the kiln, so expect small differences in size, colour depth and where the glaze breaks over edges.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" aria-expanded="false" aria-controls="fa3" id="fq3">Do you deliver outside Lahore?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-a" id="fa3" role="region" aria-labelledby="fq3"><div><p>Yes, anywhere in Pakistan by courier, double-boxed. Lahore orders arrive in 2–3 days, other cities in 4–6. If anything arrives broken, send a photo within 48 hours and we’ll replace it.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" aria-expanded="false" aria-controls="fa4" id="fq4">What should I bring to a workshop?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-a" id="fa4" role="region" aria-labelledby="fq4"><div><p>Just clothes you don’t mind getting muddy and short fingernails. Clay, tools, aprons and tea are provided. Your fired pieces are ready to collect about three weeks later.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" aria-expanded="false" aria-controls="fa5" id="fq5">Can I book a private class for a group?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-a" id="fa5" role="region" aria-labelledby="fq5"><div><p>Yes. We host private sessions for groups of 4 to 8 on Fridays, for birthdays, teams and families. Email us with a date and group size.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter" aria-labelledby="nl-title">
+    <svg class="nl-art" viewBox="0 0 120 120" aria-hidden="true"><use href="#i-star"/></svg>
+    <div class="wrap nl-grid">
+      <h2 id="nl-title">Hear when the kiln opens</h2>
+      <p>About once a month, the morning a firing comes out, before anything goes on the shop. No other email.</p>
+      <form class="nl-form" id="nlForm" novalidate>
+        <label class="sr-only" for="nl-email">Email address</label>
+        <div class="nl-row">
+          <input id="nl-email" type="email" name="email" autocomplete="email" placeholder="you@example.com" aria-describedby="e-nl">
+          <button class="btn" type="submit">Sign me up</button>
+        </div>
+        <p class="err" id="e-nl" aria-live="polite"></p>
+        <p class="nl-ok" id="nlOk" hidden role="status"><svg aria-hidden="true"><use href="#i-check"/></svg><span>You’re on the list. Next letter goes out when the November kiln opens.</span></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot" id="contact">
+  <div class="frieze" style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' fill='%230D1F5C'/%3E%3Cpolygon points='14,4 24,14 14,24 4,14' fill='none' stroke='%23E8AE3A' stroke-width='1.5'/%3E%3Ccircle cx='14' cy='14' r='3' fill='%232A9A98'/%3E%3Ccircle cx='0' cy='14' r='2' fill='%23EEF2F4'/%3E%3Ccircle cx='28' cy='14' r='2' fill='%23EEF2F4'/%3E%3C/svg%3E&quot;);border-bottom:1px solid rgba(238,242,244,.15)" aria-hidden="true"></div>
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <span class="brand-name">Kiln &amp; Clay</span>
+      <span class="brand-ur" lang="ur" dir="rtl" style="display:block">بھٹی اور مٹی</span>
+      <p>Handmade stoneware and weekend wheel classes from a small studio in Lahore.</p>
+    </div>
+    <div class="foot-col wide">
+      <h2>Visit</h2>
+      <address>Plot 22, Street 4<br>Gulberg III, Lahore 54660<br>Pakistan<br><a href="mailto:hello@kilnandclay.pk">hello@kilnandclay.pk</a></address>
+    </div>
+    <div class="foot-col wide">
+      <h2>Studio hours</h2>
+      <dl>
+        <dt>Tue–Sat</dt><dd>11:00–19:00</dd>
+        <dt>Sunday</dt><dd>Workshops only</dd>
+        <dt>Monday</dt><dd>Closed, kiln day</dd>
+      </dl>
+    </div>
+    <div class="foot-col">
+      <h2>Follow</h2>
+      <ul class="socials">
+        <li><a href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg>Instagram</a></li>
+        <li><a href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="m10 9.2 5 2.8-5 2.8z" fill="currentColor"/></svg>YouTube</a></li>
+        <li><a href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19z"/><path d="M9 9.5c.3 2.2 2.3 4.3 4.6 4.9l1.2-1.1 1.7.8"/></svg>WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <span>© 2026 Kiln &amp; Clay Studio. Made by hand in Lahore.</span>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><svg aria-hidden="true"><use href="#i-check"/></svg><span id="toastMsg"></span></div>
+
+<script>
+(function(){
+  const products = {
+    ravi:{name:"Ravi Dinner Plate",price:3400},
+    shalimar:{name:"Shalimar Bowl",price:2800},
+    anarkali:{name:"Anarkali Chai Cups, pair",price:3600},
+    mallroad:{name:"Mall Road Serving Platter",price:7900},
+    kahwa:{name:"Kahwa Teapot",price:9500},
+    badami:{name:"Badami Mug",price:2400}
+  };
+  const sessions = {
+    s1:{label:"Sat 24 Oct, First Pull (10:00–13:00)",seats:3,total:8},
+    s2:{label:"Sun 1 Nov, Trimming & Feet (10:00–14:00)",seats:5,total:8},
+    s3:{label:"Sat 7 Nov, Glaze Day (11:00–15:00)",seats:1,total:8}
+  };
+  const fmt = n => "PKR " + n.toLocaleString("en-US");
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+  /* ---- cart ---- */
+  const cart = {};
+  const countEl = $("#cartCount"), labelEl = $("#cartLabel");
+  const toast = $("#toast"), toastMsg = $("#toastMsg");
+  let toastT;
+  function renderCart(){
+    const ids = Object.keys(cart).filter(k => cart[k] > 0);
+    const count = ids.reduce((a,k) => a + cart[k], 0);
+    const total = ids.reduce((a,k) => a + cart[k]*products[k].price, 0);
+    countEl.textContent = count;
+    labelEl.textContent = ", " + count + (count === 1 ? " item" : " items");
+    $("#cartEmpty").hidden = count > 0;
+    $("#cartTotalRow").hidden = count === 0;
+    $("#cartNote").hidden = count === 0;
+    $("#cartTotal").textContent = fmt(total);
+    $("#cartList").innerHTML = ids.map(k =>
+      `<li><span>${products[k].name} <span class="num">× ${cart[k]}</span></span><span class="num">${fmt(cart[k]*products[k].price)}</span><button type="button" data-remove="${k}">Remove<span class="sr-only"> ${products[k].name}</span></button></li>`
+    ).join("");
+    $$(".add").forEach(b => {
+      const holder = b.closest(".tile, .wall-tile");
+      if (holder) holder.classList.toggle("stamped", (cart[b.dataset.id]||0) > 0);
+    });
+  }
+  function say(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastT);
+    toastT = setTimeout(() => toast.classList.remove("show"), 2600);
+  }
+  document.addEventListener("click", e => {
+    const add = e.target.closest(".add");
+    if (add){
+      const id = add.dataset.id;
+      cart[id] = (cart[id]||0) + 1;
+      renderCart();
+      countEl.classList.remove("bump"); void countEl.offsetWidth; countEl.classList.add("bump");
+      const orig = add.dataset.label || add.textContent;
+      add.dataset.label = orig;
+      add.textContent = "Added";
+      add.classList.add("is-added");
+      clearTimeout(add._t);
+      add._t = setTimeout(() => { add.textContent = orig; add.classList.remove("is-added"); }, 1400);
+      const n = Object.values(cart).reduce((a,b)=>a+b,0);
+      say(`${products[id].name} added. ${n} ${n===1?"item":"items"} in your cart.`);
+      return;
+    }
+    const rm = e.target.closest("[data-remove]");
+    if (rm){
+      const id = rm.dataset.remove;
+      delete cart[id];
+      renderCart();
+      say(`${products[id].name} removed.`);
+      $("#cartBtn").focus();
+    }
+  });
+  const cartBtn = $("#cartBtn"), cartPanel = $("#cartPanel");
+  function setCart(open){
+    cartPanel.hidden = !open;
+    cartBtn.setAttribute("aria-expanded", open);
+  }
+  cartBtn.addEventListener("click", () => setCart(cartPanel.hidden));
+  document.addEventListener("click", e => {
+    if (!cartPanel.hidden && !e.target.closest(".cart-wrap") && !e.target.closest("[data-remove]")) setCart(false);
+  });
+
+  /* ---- mobile nav ---- */
+  const menuBtn = $("#menuBtn"), nav = $("#nav");
+  function setMenu(open){
+    nav.classList.toggle("open", open);
+    menuBtn.setAttribute("aria-expanded", open);
+    menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    $(".m-open", menuBtn).style.display = open ? "none" : "";
+    $(".m-close", menuBtn).style.display = open ? "" : "none";
+  }
+  menuBtn.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+  $$("a", nav).forEach(a => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (nav.classList.contains("open")){ setMenu(false); menuBtn.focus(); }
+    if (!cartPanel.hidden){ setCart(false); cartBtn.focus(); }
+  });
+
+  /* ---- sessions ---- */
+  function renderSessions(){
+    $$(".session").forEach(li => {
+      const s = sessions[li.dataset.session];
+      $(".seat-row", li).innerHTML = Array.from({length:s.total}, (_,i) => `<i class="${i < s.total - s.seats ? "taken" : ""}"></i>`).join("");
+      $(".seat-txt", li).textContent = s.seats === 0 ? "Full" : `${s.seats} ${s.seats===1?"seat":"seats"} left`;
+      const btn = $(".s-pick", li);
+      btn.disabled = s.seats === 0;
+      if (s.seats === 0) btn.textContent = "Full";
+    });
+    $$("#b-session option").forEach(o => { if (o.value && sessions[o.value].seats === 0) o.disabled = true; });
+  }
+  renderSessions();
+
+  const form = $("#bookForm"), sel = $("#b-session");
+  function syncPeople(){
+    const s = sessions[sel.value];
+    const max = s ? Math.min(4, s.seats) : 4;
+    $$('input[name="people"]').forEach(r => { r.disabled = +r.value > max; });
+    const checked = $('input[name="people"]:checked');
+    if (!checked || checked.disabled){ $('input[name="people"][value="1"]').checked = true; }
+    $("#p-hint").textContent = s ? (s.seats < 4 ? `Only ${s.seats} ${s.seats===1?"seat":"seats"} left in this session.` : "Up to 4 per booking.") : "Up to 4 per booking.";
+    $$(".s-pick").forEach(b => b.setAttribute("aria-pressed", b.dataset.pick === sel.value));
+  }
+  sel.addEventListener("change", () => { syncPeople(); if (sel.value) validate("session"); });
+  $$(".s-pick").forEach(b => b.addEventListener("click", () => {
+    sel.value = b.dataset.pick; syncPeople(); validate("session");
+    $("#book").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+    $("#b-name").focus({preventScroll:true});
+  }));
+
+  const icon = '<svg aria-hidden="true"><use href="#i-alert"/></svg>';
+  function setErr(input, errEl, msg){
+    errEl.innerHTML = msg ? icon + "<span>" + msg + "</span>" : "";
+    if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
+    return !msg;
+  }
+  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  function validate(field){
+    const name = $("#b-name"), email = $("#b-email");
+    if (field === "name"){
+      const v = name.value.trim();
+      return setErr(name, $("#e-name"), !v ? "Enter your name so we know who’s coming." : v.length < 2 ? "That name looks too short." : "");
+    }
+    if (field === "email"){
+      const v = email.value.trim();
+      return setErr(email, $("#e-email"), !v ? "Enter an email for your confirmation." : !emailOk(v) ? "Check the email address, it needs an @ and a domain like gmail.com." : "");
+    }
+    if (field === "session"){
+      return setErr(sel, $("#e-session"), !sel.value ? "Pick one of the three sessions." : "");
+    }
+    if (field === "people"){
+      const p = +($('input[name="people"]:checked')||{}).value || 0;
+      const s = sessions[sel.value];
+      const msg = (p < 1 || p > 4) ? "Choose between 1 and 4 participants." : (s && p > s.seats) ? `Only ${s.seats} ${s.seats===1?"seat is":"seats are"} left in this session.` : "";
+      return setErr(null, $("#e-people"), msg);
+    }
+  }
+  ["name","email"].forEach(f => {
+    const el = $("#b-" + f);
+    el.addEventListener("blur", () => { if (el.value.trim()) validate(f); });
+    el.addEventListener("input", () => { if (el.getAttribute("aria-invalid") === "true") validate(f); });
+  });
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const results = ["name","email","session","people"].map(validate);
+    if (results.includes(false)){
+      const first = $('[aria-invalid="true"]', form);
+      if (first) first.focus();
+      return;
+    }
+    const btn = $("#bookSubmit");
+    btn.disabled = true; btn.textContent = "Reserving…";
+    setTimeout(() => {
+      const s = sessions[sel.value];
+      const p = +$('input[name="people"]:checked').value;
+      s.seats -= p;
+      renderSessions();
+      $("#bookOkMsg").textContent = `${p} ${p===1?"seat":"seats"} held for ${$("#b-name").value.trim()} on ${s.label}. A confirmation is on its way to ${$("#b-email").value.trim()}.`;
+      form.hidden = true;
+      const ok = $("#bookOk"); ok.hidden = false; ok.focus();
+      btn.disabled = false; btn.textContent = "Reserve seats";
+    }, 650);
+  });
+  $("#bookAgain").addEventListener("click", () => {
+    form.reset(); $$("[aria-invalid]", form).forEach(i => i.setAttribute("aria-invalid","false"));
+    $$(".err", form).forEach(e => e.innerHTML = "");
+    syncPeople();
+    $("#bookOk").hidden = true; form.hidden = false; $("#b-name").focus();
+  });
+
+  /* ---- faq ---- */
+  $$(".faq-q").forEach(q => q.addEventListener("click", () => {
+    const open = q.getAttribute("aria-expanded") === "true";
+    q.setAttribute("aria-expanded", !open);
+    q.closest(".faq-item").classList.toggle("open", !open);
+  }));
+
+  /* ---- newsletter ---- */
+  $("#nlForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const inp = $("#nl-email"), v = inp.value.trim();
+    const ok = setErr(inp, $("#e-nl"), !v ? "Enter your email to get the kiln letter." : !emailOk(v) ? "That email doesn’t look complete." : "");
+    if (!ok){ inp.focus(); return; }
+    $(".nl-row").hidden = true; $("#nlOk").hidden = false;
+  });
+
+  /* ---- glaze sheen on the tile wall ---- */
+  const wall = $(".wall");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches && matchMedia("(pointer: fine)").matches){
+    let raf;
+    wall.addEventListener("pointermove", e => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = wall.getBoundingClientRect();
+        wall.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        wall.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+  }
+
+  renderCart();
+})();
+</script>
+</body>
+</html>

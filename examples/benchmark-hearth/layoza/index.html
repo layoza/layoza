@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth &amp; Rye — wood-fired restaurant and morning bakery, Northern Quarter, Manchester</title>
+<meta name="description" content="One wood-fired oven, lit before dawn: bread from six, supper until late. A 40-cover restaurant and morning bakery in Manchester's Northern Quarter.">
+<meta name="theme-color" content="#E9ECE3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@75..112.5,400..600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@75..112.5,400..600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@75..112.5,400..600&display=swap" rel="stylesheet"></noscript>
+<style>
+@font-face { font-family: "Archivo Fallback"; src: local("Arial Narrow"), local("Arial"); size-adjust: 96%; ascent-override: 92%; descent-override: 24%; }
+@font-face { font-family: "Mono Fallback"; src: local("Consolas"), local("Courier New"); size-adjust: 100%; }
+:root {
+  --paper: #E9ECE3;
+  --paper-2: #DFE4D8;
+  --grid-major: #CCD5CB;
+  --grid-minor: #DDE2D8;
+  --soot: #171B19;
+  --soot-2: #222825;
+  --ink-2: #47504A;
+  --pen: #C42B17;
+  --pen-deep: #9E2010;
+  --brick: #6E2316;
+  --brick-ink: #F1DCCF;
+  --ember: #F08A3C;
+  --crust: #8A5528;
+  --sans: "Archivo", "Archivo Fallback", sans-serif;
+  --mono: "Martian Mono", "Mono Fallback", monospace;
+  --gut: clamp(1.25rem, 4vw, 3.5rem);
+  --max: 1360px;
+  --header-h: 68px;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --display: clamp(3.3rem, 8.6vw, 8.4rem);
+  --h2: clamp(2.5rem, 5.4vw, 5rem);
+  --h3: 1.3rem;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--header-h) + 1rem); -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { margin: 0; background: var(--paper); color: var(--soot); font-family: var(--sans); font-size: 1.125rem; line-height: 1.55; font-variation-settings: "wdth" 100; }
+::selection { background: var(--pen); color: #fff; }
+input, textarea, select { caret-color: var(--pen); }
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+:focus-visible { outline: 3px solid var(--pen); outline-offset: 3px; }
+.dark :focus-visible, .brick :focus-visible { outline-color: var(--ember); }
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; font-variation-settings: "wdth" 88; letter-spacing: 0; }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 1rem; top: -4rem; z-index: 99; background: var(--soot); color: var(--paper); padding: .7rem 1rem; }
+.skip:focus { top: .75rem; }
+.skip, .linkbtn, .faq button, .mark, .drawer a, .foot a, .book-side a { transition: color .18s ease, background-color .18s ease, opacity .18s ease, transform .12s var(--ease); }
+.skip:active, .linkbtn:active, .faq button:active, .mark:active, .drawer a:active, .foot a:active, .menu-btn:active, .nav a:active { transform: translateY(1px); }
+.menu-btn { transition: background-color .18s ease, transform .12s var(--ease); }
+html::-webkit-scrollbar { width: 12px; } html::-webkit-scrollbar-track { background: var(--paper-2); } html::-webkit-scrollbar-thumb { background: var(--soot); border: 3px solid var(--paper-2); }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
+.paper { background-color: var(--paper);
+  background-image: linear-gradient(var(--grid-major) 1px, transparent 1px), linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+                    linear-gradient(var(--grid-minor) 1px, transparent 1px), linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px; background-position: -1px -1px; }
+.dark { background-color: var(--soot); color: var(--paper);
+  background-image: linear-gradient(#262C29 1px, transparent 1px), linear-gradient(90deg, #262C29 1px, transparent 1px);
+  background-size: 120px 120px; background-position: -1px -1px; }
+.brick { background: var(--brick); color: var(--brick-ink); }
+.section { padding-block: clamp(4.5rem, 8.4vw, 7.5rem); }
+.display { font-size: min(7.2vw, 7rem); font-weight: 850; font-variation-settings: "wdth" 66; line-height: .9; letter-spacing: -0.025em; text-transform: uppercase; }
+.h2 { font-size: var(--h2); font-weight: 820; font-variation-settings: "wdth" 74; line-height: .95; letter-spacing: -0.02em; text-transform: uppercase; }
+.lede { font-size: clamp(1.125rem, 1.35vw, 1.3rem); max-width: 40ch; }
+
+/* buttons */
+.btn { --b: var(--pen); display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 48px; padding: .8rem 1.35rem; border: 2px solid var(--b); border-radius: 2px;
+  font: 700 1rem/1 var(--sans); font-variation-settings: "wdth" 90; letter-spacing: .02em; text-transform: uppercase; text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .12s var(--ease); }
+.btn:active { transform: translateY(1px) scale(.98); }
+.btn-pen { background: var(--pen); color: #FFF7F2; }
+.btn-line { background: transparent; color: var(--soot); --b: var(--soot); }
+.dark .btn-line, .brick .btn-line { color: var(--paper); --b: var(--paper); }
+.btn-paper { background: var(--paper); color: var(--soot); --b: var(--paper); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-pen:hover { background: var(--pen-deep); --b: var(--pen-deep); }
+  .btn-line:hover { background: var(--soot); color: var(--paper); }
+  .dark .btn-line:hover, .brick .btn-line:hover { background: var(--paper); color: var(--soot); }
+  .btn-paper:hover { background: #fff; --b: #fff; }
+}
+.btn .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
+
+/* header */
+.site-head { position: sticky; top: 0; z-index: 50; height: var(--header-h); background: var(--paper); border-bottom: 2px solid var(--soot); }
+.site-head .wrap { height: 100%; display: flex; align-items: center; gap: 1.5rem; }
+.mark { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; font-weight: 880; font-variation-settings: "wdth" 70; font-size: 1.45rem; letter-spacing: -0.01em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
+.mark svg { width: 30px; height: 26px; flex: none; }
+.nav { margin-left: auto; display: flex; gap: clamp(1rem, 2vw, 2rem); }
+.nav a { font-weight: 600; font-size: 1rem; text-decoration: none; padding: .5rem 0; background: linear-gradient(var(--pen), var(--pen)) 0 100% / 0 2px no-repeat; transition: background-size .2s var(--ease); white-space: nowrap; }
+.nav a:hover { background-size: 100% 2px; }
+.head-book { margin-left: 1rem; }
+.menu-btn { display: none; width: 48px; height: 48px; border: 2px solid var(--soot); background: transparent; border-radius: 2px; cursor: pointer; color: var(--soot); align-items: center; justify-content: center; transition: background-color .18s ease; }
+.menu-btn svg { width: 22px; height: 22px; }
+.menu-btn .x { display: none; }
+.menu-btn[aria-expanded="true"] .x { display: block; } .menu-btn[aria-expanded="true"] .bars { display: none; }
+.drawer { position: fixed; inset: var(--header-h) 0 auto 0; z-index: 49; background: var(--soot); color: var(--paper); padding: 1.5rem var(--gut) 2rem; border-bottom: 4px solid var(--pen);
+  display: grid; gap: .25rem; transform-origin: top; }
+.drawer[hidden] { display: none; }
+.drawer a { font-size: 2.1rem; font-weight: 820; font-variation-settings: "wdth" 74; text-transform: uppercase; text-decoration: none; padding: .35rem 0; border-bottom: 1px solid #333A36; display: flex; justify-content: space-between; align-items: baseline; }
+.drawer a span { font: 400 .8rem var(--mono); color: var(--ember); }
+.drawer .btn { margin-top: 1.25rem; font-size: 1.05rem; justify-content: center; padding: .9rem 1.2rem; border-bottom: 2px solid var(--pen); font-variation-settings: "wdth" 90; }
+@media (prefers-reduced-motion: no-preference) { .drawer:not([hidden]) { animation: drop .26s var(--ease); } }
+@keyframes drop { from { opacity: 0; transform: translateY(-8px); } }
+@media (max-width: 960px) {
+  .nav { display: none; }
+  .menu-btn { display: inline-flex; }
+  .head-book { margin-left: auto; }
+}
+@media (max-width: 400px) { .mark { font-size: 1.2rem; } .mark svg { width: 24px; } .head-book { padding-inline: .9rem; } .site-head .wrap { gap: .6rem; } }
+
+/* hero */
+.hero { padding-top: clamp(1.25rem, 3vw, 2.5rem); overflow: clip; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(1rem, 3vw, 3rem); align-items: end; }
+.hero-copy { padding-bottom: clamp(1rem, 3vw, 3rem); display: grid; gap: 1.6rem; align-content: end; }
+.hero h1 .ln { display: block; overflow: hidden; padding-bottom: .04em; white-space: nowrap; }
+.hero h1 .ln > span { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 .ln > span { animation: rise 1s var(--ease) both; }
+  .hero h1 .ln:nth-child(2) > span { animation-delay: .1s; }
+}
+@keyframes rise { from { transform: translateY(105%); } }
+.hero h1 .ln:nth-child(2) { color: var(--pen); }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.oven-fig { position: relative; margin: 0; align-self: end; justify-self: end; width: min(100%, 600px); }
+.oven .load { transform-box: view-box; transform-origin: 365px 446px; transform: scale(1.22); }
+.oven-fig .oven { width: 100%; height: auto; aspect-ratio: 640 / 600; }
+.oven-art { position: relative; }
+.oven-fig canvas { position: absolute; left: 27.8%; top: 30%; width: 44.4%; height: 45.4%; pointer-events: none; }
+.oven .fl { transform-box: fill-box; transform-origin: 50% 100%; }
+.oven .flames { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(var(--heat, 1)); transition: transform .25s var(--ease); }
+.oven .glow { opacity: var(--glow, .8); transition: opacity .25s ease; }
+.oven .needle { transform: rotate(var(--needle, 0deg)); transition: transform .3s var(--ease); }
+.oven .load { opacity: 0; transition: opacity .2s ease, transform .2s ease; }
+.oven .load.on { opacity: 1; }
+.oven .refire-logs { opacity: 0; transition: opacity .2s ease; }
+.oven.refire .refire-logs { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .oven .fl1 { animation: flick 1.7s ease-in-out infinite alternate; }
+  .oven .fl2 { animation: flick 1.1s ease-in-out infinite alternate-reverse; }
+  .oven .fl3 { animation: flick .8s ease-in-out infinite alternate; }
+  .oven .steam { animation: steam 2.4s ease-in-out infinite; }
+  .paused .fl, .paused .steam { animation-play-state: paused; }
+}
+@keyframes flick { 0% { transform: scale(1, 1) skewX(0deg); } 50% { transform: scale(.96, 1.06) skewX(-3deg); } 100% { transform: scale(1.03, .94) skewX(2deg); } }
+@keyframes steam { 0%, 100% { opacity: .2; transform: translateY(2px); } 50% { opacity: .8; transform: translateY(-4px); } }
+.readout { position: absolute; right: 0; top: 2%; background: var(--soot); color: var(--paper); padding: .7rem .9rem; display: grid; gap: .15rem; min-width: 15.5rem; border-left: 4px solid var(--pen); }
+.readout .t { font-size: 1.6rem; font-weight: 600; line-height: 1.1; }
+.readout .t b { color: var(--ember); font-weight: 600; }
+.readout .what { font-size: .95rem; font-weight: 600; }
+.readout .sub { font-size: .875rem; color: #C3CBC4; max-width: 26ch; line-height: 1.4; }
+
+/* the strip (hour scrubber) */
+.strip-wrap { padding-block: .5rem 2rem; }
+.strip-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .5rem; flex-wrap: wrap; }
+.strip-top label { font-weight: 700; font-size: 1rem; }
+.strip-top .hint { font-size: .875rem; color: var(--ink-2); }
+.linkbtn { background: none; border: 0; padding: .4rem 0; font: inherit; font-weight: 600; color: var(--pen); text-decoration: underline; text-underline-offset: .2em; cursor: pointer; min-height: 32px; }
+.linkbtn:hover { color: var(--pen-deep); }
+.strip { position: relative; height: 96px; border-top: 2px solid var(--soot); border-bottom: 2px solid var(--soot); background: rgba(233,236,227,.6); }
+.strip svg, .chart svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.band { position: absolute; top: 0; bottom: 0; background: rgba(23,27,25,.07); border-inline: 1px dashed rgba(23,27,25,.35); }
+.band span { position: absolute; bottom: .3rem; left: .45rem; font-size: .8rem; font-weight: 600; white-space: nowrap; color: var(--ink-2); }
+.cursor { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px solid var(--pen); pointer-events: none; transition: left .12s linear; }
+.cursor i { position: absolute; left: -8px; width: 14px; height: 14px; border-radius: 50%; background: var(--pen); box-shadow: 0 0 0 4px rgba(196,43,23,.2); transform: translateY(-50%); transition: top .12s linear; }
+.strip input[type=range] { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; appearance: none; -webkit-appearance: none; background: transparent; cursor: ew-resize; }
+.strip input[type=range]:focus-visible { outline: 3px solid var(--pen); outline-offset: 4px; }
+.strip input[type=range]::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+.strip input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 44px; height: 96px; background: transparent; border: 0; }
+.strip input[type=range]::-moz-range-thumb { width: 44px; height: 96px; background: transparent; border: 0; }
+.axis { position: relative; height: 1.6rem; }
+.axis span { position: absolute; top: .35rem; transform: translateX(-50%); font-size: .8rem; color: var(--ink-2); }
+.axis span:first-child { transform: none; } .axis span:last-child { transform: translateX(-100%); }
+@media (max-width: 640px) { .axis .odd { display: none; } }
+
+/* oven story */
+.story-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.story-head p { color: #D7DDD6; max-width: 52ch; }
+.story-head p + p { margin-top: 1rem; }
+.chart { position: relative; height: clamp(260px, 34vw, 460px); border-bottom: 2px solid var(--paper); border-left: 2px solid var(--paper); }
+.chart .reveal { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--p, 100%)) -20px 0); }
+.chart .pen { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 0 6px rgba(240,138,60,.22); pointer-events: none; }
+.chart .ylab { position: absolute; left: .5rem; font-size: .8rem; color: #AEB8B0; transform: translateY(-50%); }
+.chart .yline { position: absolute; left: 0; right: 0; border-top: 1px dashed #3A423E; }
+.pin { position: absolute; transform: translate(-50%, -50%); }
+.pin::before { content: ""; display: block; width: 12px; height: 12px; border-radius: 50%; background: var(--soot); border: 3px solid var(--ember); }
+.pin span { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: .8rem; white-space: nowrap; background: var(--soot); padding: .1rem .35rem; color: var(--paper); }
+.dark .axis span { color: #AEB8B0; }
+.log { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem clamp(1.5rem, 3vw, 3rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
+.log li { border-top: 2px solid var(--ember); padding-top: .9rem; }
+.log .when { display: block; color: var(--ember); font-size: .875rem; margin-bottom: .35rem; }
+.log h3 { font-size: var(--h3); font-weight: 750; font-variation-settings: "wdth" 85; margin-bottom: .35rem; line-height: 1.15; }
+.log p { color: #C9D0CA; font-size: 1rem; }
+.note { font-size: .875rem; color: #AEB8B0; margin-top: 2rem; }
+
+/* bakery */
+.bake-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.bake-head p { max-width: 46ch; color: var(--ink-2); }
+.bake-head p strong { color: var(--soot); }
+.bake { border-top: 2px solid var(--soot); }
+.bake-axis { display: grid; grid-template-columns: 120px minmax(0, 4fr) 5rem minmax(0, 5fr); gap: 1.5rem; border-bottom: 1px solid var(--soot); }
+.bake-axis .axis { grid-column: 4; }
+.bake li { display: grid; grid-template-columns: 120px minmax(0, 4fr) 5rem minmax(0, 5fr); gap: 1.5rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--grid-major); }
+.bake li:last-child { border-bottom: 2px solid var(--soot); }
+.bake h3 { font-size: var(--h3); font-weight: 750; font-variation-settings: "wdth" 85; line-height: 1.15; }
+.bake .desc { font-size: 1rem; color: var(--ink-2); margin-top: .2rem; }
+.bake .price { font-size: 1rem; font-weight: 600; text-align: right; }
+.track { position: relative; height: 52px; }
+.track .bar { position: absolute; left: var(--s); width: calc(var(--e) - var(--s)); bottom: 6px; height: 20px; background: var(--crust); transform-origin: left; }
+.track .bar::after { content: ""; position: absolute; right: -2px; top: -26px; bottom: -6px; border-right: 2px solid var(--pen); }
+.track .gone { position: absolute; left: var(--e); top: 0; transform: translateX(calc(-100% - .5rem)); font-size: .875rem; font-weight: 600; color: var(--pen); white-space: nowrap; }
+
+.track::before { content: ""; position: absolute; left: 0; right: 0; bottom: 16px; border-top: 1px dashed var(--grid-major); }
+.bake-foot { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center; margin-top: 1.5rem; font-size: 1rem; color: var(--ink-2); }
+
+/* menu */
+.menu-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+.menu-head p { max-width: 44ch; margin-top: 1.25rem; }
+.filter { border: 0; padding: 0; margin: 0; }
+.filter legend { font-weight: 700; font-size: 1rem; margin-bottom: .6rem; padding: 0; }
+.seg { display: flex; flex-wrap: wrap; border: 2px solid var(--brick-ink); width: fit-content; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span { display: flex; align-items: center; min-height: 46px; padding: .5rem 1rem; font-weight: 650; font-size: 1rem; cursor: pointer; transition: background-color .16s ease, color .16s ease; white-space: nowrap; }
+.seg label + label span { border-left: 2px solid var(--brick-ink); }
+.seg input:checked + span { background: var(--brick-ink); color: var(--brick); }
+.seg input:focus-visible + span { outline: 3px solid var(--ember); outline-offset: 2px; position: relative; z-index: 1; }
+@media (hover: hover) { .seg label:hover input:not(:checked) + span { background: rgba(241,220,207,.14); } }
+.count { font-size: .875rem; margin-top: .6rem; min-height: 1.4em; }
+.courses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 4rem); }
+.course > h3 { font-size: var(--h3); font-weight: 800; font-variation-settings: "wdth" 80; text-transform: uppercase; letter-spacing: .02em; padding-bottom: .7rem; border-bottom: 2px solid var(--brick-ink); }
+.dish { padding: 1.1rem 0; border-bottom: 1px solid rgba(241,220,207,.32); }
+.dish[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) { .dish.in { animation: dishin .24s var(--ease); } }
+@keyframes dishin { from { opacity: 0; transform: translateY(6px); } }
+.dish .row { display: flex; align-items: baseline; gap: .6rem; }
+.dish h4 { font-size: 1.15rem; font-weight: 720; line-height: 1.25; }
+.dish .lead { flex: 1; border-bottom: 2px dotted rgba(241,220,207,.5); transform: translateY(-4px); min-width: 1rem; }
+.dish .price { font-size: 1rem; font-weight: 600; white-space: nowrap; }
+.dish p { font-size: 1rem; margin-top: .3rem; color: #EBCFC0; }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .6rem; align-items: center; }
+.tag { font-size: .75rem; font-weight: 600; border: 1.5px solid var(--brick-ink); padding: .15rem .4rem; line-height: 1.3; }
+.heat { font-size: .875rem; font-style: italic; font-weight: 500; color: #F6C7A8; margin-left: auto; }
+.empty { padding: 1.2rem 0; font-size: 1rem; color: #EBCFC0; border-bottom: 1px solid rgba(241,220,207,.32); }
+.legend { margin-top: 2.5rem; font-size: .875rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+
+/* booking */
+.book-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.book-side { display: grid; gap: 1.5rem; position: sticky; top: calc(var(--header-h) + 2rem); }
+.book-side p { max-width: 40ch; color: var(--ink-2); }
+.minichart { position: relative; border-left: 2px solid var(--soot); border-bottom: 2px solid var(--soot); height: 170px; margin-top: .5rem; }
+.minichart svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.minichart .pen { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--pen); box-shadow: 0 0 0 5px rgba(196,43,23,.2); transition: left .25s var(--ease), top .25s var(--ease); }
+.minichart .cap { position: absolute; font-size: .8rem; white-space: nowrap; transform: translate(-50%, -150%); background: var(--soot); color: var(--paper); padding: .15rem .4rem; transition: left .25s var(--ease), top .25s var(--ease); }
+.minichart + .axis span { color: var(--ink-2); }
+.chit { background: var(--paper); border: 2px solid var(--soot); padding: clamp(1.25rem, 3vw, 2.5rem); position: relative; }
+.chit::before { content: ""; position: absolute; left: -2px; right: -2px; top: -12px; height: 12px; background: radial-gradient(circle at 6px 12px, transparent 5px, var(--soot) 5.5px, var(--soot) 6.5px, transparent 7px) 0 0 / 12px 12px repeat-x; }
+.field { display: grid; gap: .45rem; margin-bottom: 1.4rem; border: 0; padding: 0; min-width: 0; }
+.field > label, .field > legend { font-weight: 700; font-size: 1rem; padding: 0; }
+.field .opt { font-weight: 400; color: var(--ink-2); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.25rem; }
+input[type=text], input[type=email], input[type=date], select, textarea { width: 100%; font: 400 max(16px, 1.05rem) / 1.4 var(--sans); color: var(--soot); background: #F6F7F2; border: 2px solid #59615B; border-radius: 2px; padding: .75rem .85rem; min-height: 50px; transition: border-color .16s ease, box-shadow .16s ease; }
+select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--soot) 50%), linear-gradient(135deg, var(--soot) 50%, transparent 50%); background-position: calc(100% - 20px) 55%, calc(100% - 14px) 55%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 2.5rem; }
+textarea { min-height: 96px; resize: vertical; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; border-color: var(--soot); box-shadow: 0 0 0 3px var(--pen); }
+[aria-invalid=true] { border-color: var(--pen) !important; }
+.err { color: var(--pen-deep); font-size: .95rem; font-weight: 600; min-height: 0; }
+.err:empty { display: none; }
+@media (prefers-reduced-motion: no-preference) { .err.show { animation: nudge .28s var(--ease); } }
+@keyframes nudge { 0% { transform: translateX(-4px); opacity: 0; } 60% { transform: translateX(2px); } 100% { transform: none; opacity: 1; } }
+.pick { display: flex; flex-wrap: wrap; gap: .4rem; }
+.pick label { position: relative; }
+.pick input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.pick span { display: grid; place-items: center; min-width: 48px; min-height: 46px; padding: .4rem .7rem; border: 2px solid #59615B; border-radius: 2px; font: 500 .95rem var(--mono); font-variation-settings: "wdth" 88; cursor: pointer; background: #F6F7F2; transition: background-color .14s ease, color .14s ease, border-color .14s ease; }
+.pick input:checked + span { background: var(--soot); color: var(--paper); border-color: var(--soot); }
+.pick input:focus-visible + span { outline: 3px solid var(--pen); outline-offset: 2px; }
+@media (hover: hover) { .pick label:hover input:not(:checked) + span { border-color: var(--soot); } }
+.pick.bad span { border-color: var(--pen); }
+.submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: .5rem; }
+.submit-row .btn { min-height: 54px; font-size: 1.05rem; }
+.submit-row small { font-size: .9rem; color: var(--ink-2); }
+.success { display: grid; gap: 1rem; }
+.success[hidden] { display: none; }
+.success h3 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 850; font-variation-settings: "wdth" 72; text-transform: uppercase; line-height: .95; color: var(--pen); }
+.success dl { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1.5rem; margin: 0; border-top: 2px solid var(--soot); padding-top: 1rem; }
+.success dt { font-weight: 700; } .success dd { margin: 0; }
+@media (prefers-reduced-motion: no-preference) { .success:not([hidden]) { animation: stamp .45s var(--ease); } }
+@keyframes stamp { from { opacity: 0; transform: scale(.97) rotate(-.6deg); } }
+
+/* chef's table */
+.chef-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+.chef-grid .plan { width: 100%; height: auto; }
+.plan-wrap { position: relative; }
+.plan-lab { position: absolute; transform: translate(-50%, -50%); font-size: .875rem; font-weight: 600; background: var(--soot); color: var(--paper); padding: .15rem .45rem; white-space: nowrap; border: 1px solid #3A423E; }
+.plan-lab.e { color: var(--ember); border-color: var(--ember); }
+.chef-copy { display: grid; gap: 1.5rem; }
+.chef-copy > p { color: #D7DDD6; max-width: 46ch; }
+.incl { border-top: 2px solid var(--ember); }
+.incl li { padding: .75rem 0 .75rem 2rem; border-bottom: 1px solid #333A36; position: relative; font-size: 1.05rem; }
+.incl li::before { content: ""; position: absolute; left: 0; top: 1.15rem; width: 12px; height: 12px; border-radius: 50%; background: var(--soot); border: 3px solid var(--ember); }
+.enquiry { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s var(--ease); }
+.enquiry.open { grid-template-rows: 1fr; }
+.enquiry > div { overflow: hidden; }
+.enquiry form, .enquiry .success { margin-top: 1.5rem; background: var(--paper); color: var(--soot); padding: 1.5rem; border-top: 4px solid var(--ember); }
+
+/* reviews */
+.quotes { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 5rem); }
+.quotes .h2 { grid-column: 1 / -1; margin-bottom: clamp(1rem, 3vw, 2rem); }
+blockquote { margin: 0; }
+.big q { display: block; font-size: clamp(1.7rem, 3.1vw, 2.9rem); font-weight: 650; font-variation-settings: "wdth" 88; line-height: 1.12; letter-spacing: -0.01em; quotes: "“" "”"; text-wrap: balance; }
+.small-q { display: grid; gap: 2.5rem; align-content: start; }
+.small-q q { display: block; font-size: 1.2rem; line-height: 1.45; }
+.quotes footer, .small-q footer { margin-top: 1rem; font-size: .875rem; color: #F6C7A8; }
+.small-q blockquote { border-top: 2px solid var(--brick-ink); padding-top: 1rem; }
+
+/* faq */
+.faq-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 5rem); }
+.faq-grid > div p { color: var(--ink-2); margin-top: 1.25rem; max-width: 34ch; }
+.faq { border-top: 2px solid var(--soot); }
+.faq li { border-bottom: 1px solid var(--soot); }
+.faq h3 { font-size: inherit; }
+.faq button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 1.25rem; text-align: left; background: none; border: 0; padding: 1.25rem 0; font: 700 1.2rem/1.3 var(--sans); font-variation-settings: "wdth" 90; color: var(--soot); cursor: pointer; }
+.faq button:hover { color: var(--pen); }
+.dial { flex: none; width: 34px; height: 34px; }
+.dial .nd { transform-origin: 17px 17px; transform: rotate(-60deg); transition: transform .28s var(--ease); }
+.faq button[aria-expanded=true] .nd { transform: rotate(60deg); }
+.ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .28s var(--ease); }
+.ans.open { grid-template-rows: 1fr; }
+.ans > div { overflow: hidden; }
+.ans p { padding: 0 3.5rem 1.4rem 0; max-width: 62ch; color: #2C332F; }
+
+/* footer */
+.foot { padding-top: clamp(4rem, 8vw, 7rem); padding-bottom: 1.5rem; overflow: clip; }
+.foot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; }
+.foot h2 { font-size: 1.05rem; font-weight: 750; font-variation-settings: "wdth" 90; color: var(--paper); margin-bottom: .6rem; padding-top: .7rem; border-top: 2px solid var(--ember); }
+.foot p, .foot li, .foot dd, .foot dt { font-size: 1rem; color: #D7DDD6; }
+.foot dl { margin: 0; font-size: .9rem; display: grid; grid-template-columns: auto 1fr; gap: .3rem 1rem; }
+.foot dd { margin: 0; }
+.foot a { color: var(--paper); }
+.foot a:hover { color: var(--ember); }
+.foot ul { display: grid; gap: .35rem; }
+.foot-curve { position: relative; height: 90px; margin-top: clamp(3rem, 6vw, 5rem); }
+.foot-curve svg { width: 100%; height: 100%; }
+.foot-curve .pin span { display: block; bottom: 18px; color: var(--ember); border: 1px solid var(--ember); }
+.foot-curve .pin span { font-size: .8rem; }
+.foot .foot-name { font-size: min(16.4vw, 15.6rem); font-weight: 880; font-variation-settings: "wdth" 66; text-transform: uppercase; line-height: .85; letter-spacing: -0.03em; white-space: nowrap; margin-top: -.12em; color: var(--paper); }
+.foot-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; border-top: 1px solid #333A36; padding-top: 1rem; margin-top: 1.5rem; font-size: .875rem; color: #AEB8B0; }
+
+/* responsive */
+@media (max-width: 1100px) { .log { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .display { font-size: 14.2vw; }
+  .oven-fig { justify-self: center; }
+  .hero-copy { padding-bottom: 0; }
+  .oven-fig { max-width: 640px; width: 100%; justify-self: center; }
+  .story-head, .bake-head, .book-grid, .chef-grid, .quotes, .faq-grid { grid-template-columns: 1fr; }
+  .book-side { position: static; }
+  .courses { grid-template-columns: 1fr 1fr; }
+  .courses .course:last-child { grid-column: 1 / -1; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .pin span { display: none; }
+}
+@media (max-width: 960px) {
+  .bake-axis { grid-template-columns: 1fr; }
+  .bake-axis .axis { grid-column: 1; }
+  .bake li { grid-template-columns: 84px minmax(0, 1fr) auto; gap: .4rem 1rem; }
+  .bake li svg { width: 84px; height: 56px; }
+  .bake .track { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .courses { grid-template-columns: 1fr; }
+  .courses .course:last-child { grid-column: auto; }
+}
+@media (max-width: 640px) {
+  :root { --header-h: 62px; }
+  .hero { padding-top: 1.1rem; }
+  .hero-copy { gap: 1rem; }
+  .lede { font-size: 1rem; line-height: 1.5; }
+  .actions .btn { flex: 1 1 auto; }
+  .oven-fig { margin-top: -.25rem; }
+  .readout { position: static; margin-top: -.5rem; min-width: 0; }
+  .readout .sub, .readout .what { display: none; }
+  .readout { display: flex; gap: .8rem; align-items: baseline; padding: .4rem .7rem; margin-top: .25rem; }
+  .readout .t { font-size: 1.1rem; white-space: nowrap; }
+  .readout::after { content: attr(data-what); font-size: .875rem; font-weight: 600; white-space: nowrap; }
+  .readout { margin-inline: -12%; }
+  .xw { display: none; }
+  .actions { flex-wrap: nowrap; }
+  .actions .btn { padding-inline: .8rem; font-size: .95rem; }
+  .oven-fig { width: 76%; }
+  .strip-top .hint { font-size: 0; }
+  .strip-top .hint .linkbtn { font-size: .875rem; }
+  .strip-top { margin-bottom: .25rem; }
+  .strip { height: 56px; }
+  .strip input[type=range]::-webkit-slider-thumb { height: 56px; }
+  .band span { font-size: .75rem; }
+  .log { grid-template-columns: 1fr; }
+  .two { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .ans p { padding-right: 0; }
+  .seg { width: 100%; }
+  .seg label { flex: 1 1 auto; }
+  .seg span { justify-content: center; padding-inline: .7rem; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Hearth and Rye, home">
+      <svg viewBox="0 0 30 26" aria-hidden="true"><path d="M2 25 V13 C2 6 8 1.5 15 1.5 C22 1.5 28 6 28 13 V25 Z" fill="#6E2316"/><path d="M8 25 V16 A7 7 0 0 1 22 16 V25 Z" fill="#171B19"/><path d="M12 25 C11 21 14 20 13.5 17 C16 19.5 17.5 21 17 25 Z" fill="#F08A3C"/></svg>
+      Hearth &amp; Rye
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#menu">Menu</a><a href="#bakery">Bakery</a><a href="#book">Book</a><a href="#chefs-table">Private dining</a><a href="#visit">Visit</a>
+    </nav>
+    <a class="btn btn-pen head-book" href="#book">Book a table</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+      <svg class="bars" viewBox="0 0 22 22" aria-hidden="true"><path d="M2 5h18M2 11h18M2 17h18" stroke="currentColor" stroke-width="2.2"/></svg>
+      <svg class="x" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="2.2"/></svg>
+    </button>
+  </div>
+</header>
+<nav id="drawer" class="drawer" aria-label="Mobile" hidden>
+  <a href="#menu">Menu <span>17:30</span></a>
+  <a href="#bakery">Bakery <span>07:30</span></a>
+  <a href="#book">Book <span>Wed–Sun</span></a>
+  <a href="#chefs-table">Private dining <span>up to 10</span></a>
+  <a href="#visit">Visit <span>NQ, M4</span></a>
+  <a class="btn btn-pen" href="#book">Book a table</a>
+</nav>
+
+<main id="main">
+<section class="hero paper" id="top" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-h" class="display"><span class="ln"><span>Bread at six.</span></span><span class="ln"><span>Supper at nine.</span></span></h1>
+        <p class="lede">A 40-cover wood-fired restaurant and morning bakery in Manchester’s Northern Quarter. One oven, lit before dawn, cooks everything we serve.</p>
+        <div class="actions">
+          <a class="btn btn-pen" href="#book">Book a table</a>
+          <a class="btn btn-line" href="#menu"><span class="xw">See&nbsp;</span>tonight’s menu</a>
+        </div>
+      </div>
+      <figure class="oven-fig" id="ovenFig">
+        <div class="oven-art"><svg class="oven" viewBox="0 0 640 600" role="img" aria-labelledby="ovenT" preserveAspectRatio="xMidYMax meet"><title id="ovenT">The wood-fired oven: a brick dome with an arched mouth, fire burning at the back and today's bake on the hearth</title><defs>
+<clipPath id="facade"><path d="M40 600 L40 214 C40 128 160 92 320 90 C480 92 600 128 600 214 L600 600 Z"/></clipPath>
+<clipPath id="mouth"><path d="M178 452 L178 332 A142 142 0 0 1 462 332 L462 452 Z"/></clipPath>
+<radialGradient id="glow" cx="0.34" cy="0.78" r="0.85"><stop offset="0" stop-color="#F6B64B"/><stop offset="0.28" stop-color="#E06A2B"/><stop offset="0.62" stop-color="#6E2316"/><stop offset="1" stop-color="#171B19" stop-opacity="0"/></radialGradient>
+<linearGradient id="hearthG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1A14"/><stop offset="1" stop-color="#5A2A18"/></linearGradient>
+</defs><g class="flue"><path d="M296 0 H344 V64 H296 Z" fill="#2B312E"/><path d="M296 0 V64" stroke="#4A524C" stroke-width="3"/><path d="M248 92 L392 92 L364 58 L276 58 Z" fill="#171B19"/><path d="M276 58 L364 58" stroke="#4A524C" stroke-width="2"/><circle cx="290" cy="80" r="2.2" fill="#4A524C"/><circle cx="320" cy="80" r="2.2" fill="#4A524C"/><circle cx="350" cy="80" r="2.2" fill="#4A524C"/></g><g clip-path="url(#facade)"><rect x="40" y="80" width="560" height="520" fill="#E3D6C9"/><path fill="#843322" d="M41.5 81.5h43v16h-43zM409.5 81.5h43v16h-43zM593.5 119.5h43v16h-43zM248.5 138.5h43v16h-43zM87.5 157.5h43v16h-43zM64.5 176.5h43v16h-43zM248.5 176.5h43v16h-43zM294.5 176.5h43v16h-43zM41.5 195.5h43v16h-43zM179.5 195.5h43v16h-43zM317.5 195.5h43v16h-43zM18.5 214.5h43v16h-43zM432.5 214.5h43v16h-43zM478.5 214.5h43v16h-43zM570.5 214.5h43v16h-43zM317.5 233.5h43v16h-43zM64.5 252.5h43v16h-43zM294.5 252.5h43v16h-43zM478.5 252.5h43v16h-43zM41.5 271.5h43v16h-43zM363.5 271.5h43v16h-43zM294.5 290.5h43v16h-43zM478.5 290.5h43v16h-43zM41.5 309.5h43v16h-43zM110.5 328.5h43v16h-43zM156.5 328.5h43v16h-43zM386.5 328.5h43v16h-43zM524.5 328.5h43v16h-43zM570.5 366.5h43v16h-43zM409.5 385.5h43v16h-43zM202.5 404.5h43v16h-43zM248.5 404.5h43v16h-43zM340.5 404.5h43v16h-43zM133.5 423.5h43v16h-43zM363.5 423.5h43v16h-43zM455.5 423.5h43v16h-43zM202.5 442.5h43v16h-43zM478.5 442.5h43v16h-43zM87.5 461.5h43v16h-43zM179.5 461.5h43v16h-43zM271.5 461.5h43v16h-43zM501.5 461.5h43v16h-43zM432.5 480.5h43v16h-43zM41.5 499.5h43v16h-43zM133.5 499.5h43v16h-43zM317.5 499.5h43v16h-43zM455.5 499.5h43v16h-43zM501.5 499.5h43v16h-43zM202.5 518.5h43v16h-43zM570.5 518.5h43v16h-43zM547.5 537.5h43v16h-43zM363.5 575.5h43v16h-43zM524.5 594.5h43v16h-43z"/><path fill="#6E2316" d="M87.5 81.5h43v16h-43zM593.5 81.5h43v16h-43zM248.5 100.5h43v16h-43zM570.5 100.5h43v16h-43zM409.5 119.5h43v16h-43zM547.5 119.5h43v16h-43zM64.5 138.5h43v16h-43zM386.5 138.5h43v16h-43zM41.5 157.5h43v16h-43zM455.5 157.5h43v16h-43zM340.5 176.5h43v16h-43zM386.5 176.5h43v16h-43zM478.5 176.5h43v16h-43zM593.5 195.5h43v16h-43zM64.5 214.5h43v16h-43zM87.5 271.5h43v16h-43zM317.5 271.5h43v16h-43zM409.5 271.5h43v16h-43zM501.5 271.5h43v16h-43zM110.5 290.5h43v16h-43zM340.5 290.5h43v16h-43zM179.5 309.5h43v16h-43zM225.5 309.5h43v16h-43zM317.5 309.5h43v16h-43zM363.5 309.5h43v16h-43zM409.5 309.5h43v16h-43zM501.5 309.5h43v16h-43zM64.5 328.5h43v16h-43zM248.5 328.5h43v16h-43zM570.5 328.5h43v16h-43zM294.5 366.5h43v16h-43zM386.5 366.5h43v16h-43zM478.5 366.5h43v16h-43zM271.5 385.5h43v16h-43zM593.5 385.5h43v16h-43zM110.5 404.5h43v16h-43zM225.5 423.5h43v16h-43zM593.5 423.5h43v16h-43zM110.5 442.5h43v16h-43zM248.5 442.5h43v16h-43zM225.5 461.5h43v16h-43zM317.5 461.5h43v16h-43zM593.5 461.5h43v16h-43zM64.5 480.5h43v16h-43zM110.5 480.5h43v16h-43zM248.5 480.5h43v16h-43zM294.5 480.5h43v16h-43zM179.5 499.5h43v16h-43zM593.5 499.5h43v16h-43zM64.5 518.5h43v16h-43zM156.5 518.5h43v16h-43zM248.5 518.5h43v16h-43zM317.5 537.5h43v16h-43zM409.5 537.5h43v16h-43zM340.5 556.5h43v16h-43zM386.5 556.5h43v16h-43zM432.5 556.5h43v16h-43zM524.5 556.5h43v16h-43zM133.5 575.5h43v16h-43zM409.5 575.5h43v16h-43zM547.5 575.5h43v16h-43zM294.5 594.5h43v16h-43zM386.5 594.5h43v16h-43zM432.5 594.5h43v16h-43zM570.5 594.5h43v16h-43z"/><path fill="#69251A" d="M133.5 81.5h43v16h-43zM110.5 100.5h43v16h-43zM156.5 100.5h43v16h-43zM386.5 100.5h43v16h-43zM317.5 119.5h43v16h-43zM18.5 138.5h43v16h-43zM501.5 157.5h43v16h-43zM18.5 176.5h43v16h-43zM110.5 176.5h43v16h-43zM202.5 176.5h43v16h-43zM133.5 195.5h43v16h-43zM271.5 195.5h43v16h-43zM547.5 195.5h43v16h-43zM110.5 214.5h43v16h-43zM156.5 214.5h43v16h-43zM87.5 233.5h43v16h-43zM179.5 233.5h43v16h-43zM363.5 233.5h43v16h-43zM248.5 252.5h43v16h-43zM386.5 252.5h43v16h-43zM570.5 252.5h43v16h-43zM225.5 271.5h43v16h-43zM547.5 271.5h43v16h-43zM593.5 271.5h43v16h-43zM18.5 290.5h43v16h-43zM156.5 290.5h43v16h-43zM202.5 290.5h43v16h-43zM386.5 290.5h43v16h-43zM570.5 290.5h43v16h-43zM133.5 309.5h43v16h-43zM593.5 309.5h43v16h-43zM294.5 328.5h43v16h-43zM363.5 347.5h43v16h-43zM501.5 347.5h43v16h-43zM547.5 347.5h43v16h-43zM593.5 347.5h43v16h-43zM18.5 366.5h43v16h-43zM110.5 366.5h43v16h-43zM202.5 366.5h43v16h-43zM432.5 366.5h43v16h-43zM64.5 404.5h43v16h-43zM386.5 404.5h43v16h-43zM524.5 404.5h43v16h-43zM570.5 404.5h43v16h-43zM41.5 423.5h43v16h-43zM87.5 423.5h43v16h-43zM501.5 423.5h43v16h-43zM156.5 480.5h43v16h-43zM386.5 480.5h43v16h-43zM87.5 499.5h43v16h-43zM363.5 499.5h43v16h-43zM110.5 518.5h43v16h-43zM294.5 518.5h43v16h-43zM478.5 518.5h43v16h-43zM225.5 537.5h43v16h-43zM363.5 537.5h43v16h-43zM455.5 537.5h43v16h-43zM64.5 556.5h43v16h-43zM110.5 556.5h43v16h-43zM156.5 556.5h43v16h-43zM41.5 575.5h43v16h-43zM271.5 575.5h43v16h-43zM340.5 594.5h43v16h-43z"/><path fill="#5F1F14" d="M179.5 81.5h43v16h-43zM41.5 119.5h43v16h-43zM87.5 119.5h43v16h-43zM340.5 138.5h43v16h-43zM570.5 138.5h43v16h-43zM225.5 157.5h43v16h-43zM547.5 157.5h43v16h-43zM432.5 176.5h43v16h-43zM225.5 195.5h43v16h-43zM248.5 214.5h43v16h-43zM524.5 214.5h43v16h-43zM409.5 233.5h43v16h-43zM455.5 233.5h43v16h-43zM593.5 233.5h43v16h-43zM18.5 252.5h43v16h-43zM110.5 252.5h43v16h-43zM202.5 252.5h43v16h-43zM340.5 252.5h43v16h-43zM432.5 252.5h43v16h-43zM455.5 271.5h43v16h-43zM524.5 290.5h43v16h-43zM87.5 309.5h43v16h-43zM455.5 309.5h43v16h-43zM41.5 347.5h43v16h-43zM179.5 347.5h43v16h-43zM225.5 347.5h43v16h-43zM271.5 347.5h43v16h-43zM409.5 347.5h43v16h-43zM156.5 366.5h43v16h-43zM156.5 404.5h43v16h-43zM317.5 423.5h43v16h-43zM409.5 423.5h43v16h-43zM547.5 423.5h43v16h-43zM294.5 442.5h43v16h-43zM524.5 442.5h43v16h-43zM41.5 461.5h43v16h-43zM547.5 461.5h43v16h-43zM202.5 480.5h43v16h-43zM478.5 480.5h43v16h-43zM225.5 499.5h43v16h-43zM409.5 499.5h43v16h-43zM524.5 518.5h43v16h-43zM41.5 537.5h43v16h-43zM133.5 537.5h43v16h-43zM271.5 537.5h43v16h-43zM501.5 537.5h43v16h-43zM18.5 556.5h43v16h-43zM202.5 556.5h43v16h-43zM294.5 556.5h43v16h-43zM87.5 575.5h43v16h-43zM317.5 575.5h43v16h-43zM64.5 594.5h43v16h-43zM110.5 594.5h43v16h-43zM248.5 594.5h43v16h-43z"/><path fill="#7A2A1A" d="M225.5 81.5h43v16h-43zM271.5 81.5h43v16h-43zM363.5 81.5h43v16h-43zM501.5 81.5h43v16h-43zM18.5 100.5h43v16h-43zM64.5 100.5h43v16h-43zM202.5 100.5h43v16h-43zM294.5 100.5h43v16h-43zM432.5 100.5h43v16h-43zM524.5 100.5h43v16h-43zM179.5 119.5h43v16h-43zM363.5 119.5h43v16h-43zM455.5 119.5h43v16h-43zM156.5 138.5h43v16h-43zM432.5 138.5h43v16h-43zM133.5 157.5h43v16h-43zM271.5 157.5h43v16h-43zM363.5 157.5h43v16h-43zM524.5 176.5h43v16h-43zM409.5 195.5h43v16h-43zM455.5 195.5h43v16h-43zM202.5 214.5h43v16h-43zM294.5 214.5h43v16h-43zM225.5 233.5h43v16h-43zM271.5 233.5h43v16h-43zM501.5 233.5h43v16h-43zM547.5 233.5h43v16h-43zM524.5 252.5h43v16h-43zM179.5 271.5h43v16h-43zM271.5 271.5h43v16h-43zM64.5 290.5h43v16h-43zM271.5 309.5h43v16h-43zM547.5 309.5h43v16h-43zM202.5 328.5h43v16h-43zM317.5 347.5h43v16h-43zM64.5 366.5h43v16h-43zM248.5 366.5h43v16h-43zM340.5 366.5h43v16h-43zM524.5 366.5h43v16h-43zM87.5 385.5h43v16h-43zM133.5 385.5h43v16h-43zM179.5 385.5h43v16h-43zM363.5 385.5h43v16h-43zM501.5 385.5h43v16h-43zM547.5 385.5h43v16h-43zM432.5 404.5h43v16h-43zM478.5 404.5h43v16h-43zM179.5 423.5h43v16h-43zM271.5 423.5h43v16h-43zM64.5 442.5h43v16h-43zM386.5 442.5h43v16h-43zM570.5 442.5h43v16h-43zM524.5 480.5h43v16h-43zM570.5 480.5h43v16h-43zM547.5 499.5h43v16h-43zM18.5 518.5h43v16h-43zM432.5 518.5h43v16h-43zM87.5 537.5h43v16h-43zM179.5 537.5h43v16h-43zM593.5 537.5h43v16h-43zM248.5 556.5h43v16h-43zM478.5 556.5h43v16h-43zM593.5 575.5h43v16h-43zM18.5 594.5h43v16h-43zM156.5 594.5h43v16h-43zM478.5 594.5h43v16h-43z"/><path fill="#8C3A26" d="M317.5 81.5h43v16h-43zM455.5 81.5h43v16h-43zM547.5 81.5h43v16h-43zM340.5 100.5h43v16h-43zM478.5 100.5h43v16h-43zM133.5 119.5h43v16h-43zM225.5 119.5h43v16h-43zM271.5 119.5h43v16h-43zM501.5 119.5h43v16h-43zM110.5 138.5h43v16h-43zM202.5 138.5h43v16h-43zM294.5 138.5h43v16h-43zM478.5 138.5h43v16h-43zM524.5 138.5h43v16h-43zM179.5 157.5h43v16h-43zM317.5 157.5h43v16h-43zM409.5 157.5h43v16h-43zM593.5 157.5h43v16h-43zM156.5 176.5h43v16h-43zM570.5 176.5h43v16h-43zM87.5 195.5h43v16h-43zM363.5 195.5h43v16h-43zM501.5 195.5h43v16h-43zM340.5 214.5h43v16h-43zM386.5 214.5h43v16h-43zM41.5 233.5h43v16h-43zM133.5 233.5h43v16h-43zM156.5 252.5h43v16h-43zM133.5 271.5h43v16h-43zM248.5 290.5h43v16h-43zM432.5 290.5h43v16h-43zM18.5 328.5h43v16h-43zM340.5 328.5h43v16h-43zM432.5 328.5h43v16h-43zM478.5 328.5h43v16h-43zM87.5 347.5h43v16h-43zM133.5 347.5h43v16h-43zM455.5 347.5h43v16h-43zM41.5 385.5h43v16h-43zM225.5 385.5h43v16h-43zM317.5 385.5h43v16h-43zM455.5 385.5h43v16h-43zM18.5 404.5h43v16h-43zM294.5 404.5h43v16h-43zM18.5 442.5h43v16h-43zM156.5 442.5h43v16h-43zM340.5 442.5h43v16h-43zM432.5 442.5h43v16h-43zM133.5 461.5h43v16h-43zM363.5 461.5h43v16h-43zM409.5 461.5h43v16h-43zM455.5 461.5h43v16h-43zM18.5 480.5h43v16h-43zM340.5 480.5h43v16h-43zM271.5 499.5h43v16h-43zM340.5 518.5h43v16h-43zM386.5 518.5h43v16h-43zM570.5 556.5h43v16h-43zM179.5 575.5h43v16h-43zM225.5 575.5h43v16h-43zM455.5 575.5h43v16h-43zM501.5 575.5h43v16h-43zM202.5 594.5h43v16h-43z"/></g><path d="M40 600 L40 214 C40 128 160 92 320 90 C480 92 600 128 600 214 L600 600" fill="none" stroke="#171B19" stroke-width="4"/><path d="M214 196 C250 150 390 150 426 196 C400 120 240 120 214 196 Z" fill="#171B19" opacity="0.32"/><path d="M178.0 331.1 L136.0 330.9 A184 184 0 0 1 138.9 299.3 L180.3 306.7 A142 142 0 0 0 178.0 331.1 Z" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><path d="M180.6 305.1 L139.3 297.1 A184 184 0 0 1 148.0 266.6 L187.3 281.5 A142 142 0 0 0 180.6 305.1 Z" fill="#843322" stroke="#E3D6C9" stroke-width="2"/><path d="M187.9 279.9 L148.8 264.5 A184 184 0 0 1 163.0 236.1 L198.8 258.0 A142 142 0 0 0 187.9 279.9 Z" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><path d="M199.7 256.5 L164.1 234.2 A184 184 0 0 1 183.3 208.9 L214.5 237.0 A142 142 0 0 0 199.7 256.5 Z" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><path d="M215.6 235.7 L184.8 207.2 A184 184 0 0 1 208.2 185.8 L233.7 219.2 A142 142 0 0 0 215.6 235.7 Z" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><path d="M235.1 218.2 L210.0 184.5 A184 184 0 0 1 237.0 167.8 L255.9 205.3 A142 142 0 0 0 235.1 218.2 Z" fill="#843322" stroke="#E3D6C9" stroke-width="2"/><path d="M257.5 204.5 L239.0 166.8 A184 184 0 0 1 268.6 155.3 L280.3 195.7 A142 142 0 0 0 257.5 204.5 Z" fill="#7A2A1A" stroke="#E3D6C9" stroke-width="2"/><path d="M282.0 195.2 L270.7 154.7 A184 184 0 0 1 301.9 148.9 L306.0 190.7 A142 142 0 0 0 282.0 195.2 Z" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><path d="M307.7 190.5 L304.1 148.7 A184 184 0 0 1 335.9 148.7 L332.3 190.5 A142 142 0 0 0 307.7 190.5 Z" fill="#4E1A10" stroke="#E3D6C9" stroke-width="2"/><path d="M334.0 190.7 L338.1 148.9 A184 184 0 0 1 369.3 154.7 L358.0 195.2 A142 142 0 0 0 334.0 190.7 Z" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><path d="M359.7 195.7 L371.4 155.3 A184 184 0 0 1 401.0 166.8 L382.5 204.5 A142 142 0 0 0 359.7 195.7 Z" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><path d="M384.1 205.3 L403.0 167.8 A184 184 0 0 1 430.0 184.5 L404.9 218.2 A142 142 0 0 0 384.1 205.3 Z" fill="#843322" stroke="#E3D6C9" stroke-width="2"/><path d="M406.3 219.2 L431.8 185.8 A184 184 0 0 1 455.2 207.2 L424.4 235.7 A142 142 0 0 0 406.3 219.2 Z" fill="#843322" stroke="#E3D6C9" stroke-width="2"/><path d="M425.5 237.0 L456.7 208.9 A184 184 0 0 1 475.9 234.2 L440.3 256.5 A142 142 0 0 0 425.5 237.0 Z" fill="#7A2A1A" stroke="#E3D6C9" stroke-width="2"/><path d="M441.2 258.0 L477.0 236.1 A184 184 0 0 1 491.2 264.5 L452.1 279.9 A142 142 0 0 0 441.2 258.0 Z" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><path d="M452.7 281.5 L492.0 266.6 A184 184 0 0 1 500.7 297.1 L459.4 305.1 A142 142 0 0 0 452.7 281.5 Z" fill="#843322" stroke="#E3D6C9" stroke-width="2"/><path d="M459.7 306.7 L501.1 299.3 A184 184 0 0 1 504.0 330.9 L462.0 331.1 A142 142 0 0 0 459.7 306.7 Z" fill="#7A2A1A" stroke="#E3D6C9" stroke-width="2"/><rect x="137" y="333" width="40" height="18" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><rect x="137" y="353" width="40" height="18" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><rect x="137" y="373" width="40" height="18" fill="#6E2316" stroke="#E3D6C9" stroke-width="2"/><rect x="137" y="393" width="40" height="18" fill="#69251A" stroke="#E3D6C9" stroke-width="2"/><rect x="137" y="413" width="40" height="18" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><rect x="137" y="433" width="40" height="18" fill="#5F1F14" stroke="#E3D6C9" stroke-width="2"/><rect x="463" y="333" width="40" height="18" fill="#7A2A1A" stroke="#E3D6C9" stroke-width="2"/><rect x="463" y="353" width="40" height="18" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><rect x="463" y="373" width="40" height="18" fill="#7A2A1A" stroke="#E3D6C9" stroke-width="2"/><rect x="463" y="393" width="40" height="18" fill="#843322" stroke="#E3D6C9" stroke-width="2"/><rect x="463" y="413" width="40" height="18" fill="#5F1F14" stroke="#E3D6C9" stroke-width="2"/><rect x="463" y="433" width="40" height="18" fill="#8C3A26" stroke="#E3D6C9" stroke-width="2"/><g clip-path="url(#mouth)"><rect x="170" y="180" width="300" height="280" fill="#171B19"/><rect class="glow" x="170" y="180" width="300" height="280" fill="url(#glow)"/><path d="M206 400 A114 98 0 0 1 434 400" fill="none" stroke="#3A221A" stroke-width="3"/><path d="M178 452 L462 452 L432 398 L208 398 Z" fill="url(#hearthG)"/><path d="M225.3 452 L245.3 398" stroke="#171B19" stroke-width="1.2" opacity="0.6"/><path d="M272.7 452 L282.7 398" stroke="#171B19" stroke-width="1.2" opacity="0.6"/><path d="M320.0 452 L320.0 398" stroke="#171B19" stroke-width="1.2" opacity="0.6"/><path d="M367.3 452 L357.3 398" stroke="#171B19" stroke-width="1.2" opacity="0.6"/><path d="M414.7 452 L394.7 398" stroke="#171B19" stroke-width="1.2" opacity="0.6"/><path d="M193 425 L447 425" stroke="#171B19" stroke-width="1.2" opacity="0.5"/><g class="fire"><path d="M196 412 L268 394 L272 404 L200 422 Z" fill="#3B2216"/><path d="M268 394 a5 5 0 0 1 4 10" fill="#C9874A"/><path d="M206 392 L262 414 L258 423 L202 401 Z" fill="#4A2B1B"/><path d="M202 401 a5 5 0 0 1 4 -9" fill="#C9874A"/><g class="flames"><path class="fl fl1" d="M200 404 C188 372 214 352 210 316 C232 344 240 330 236 304 C262 336 272 370 262 404 Z" fill="#E06A2B"/><path class="fl fl2" d="M210 404 C204 380 222 366 222 342 C236 360 244 352 244 336 C258 362 260 384 252 404 Z" fill="#F08A3C"/><path class="fl fl3" d="M220 404 C218 388 228 378 230 364 C238 376 246 380 244 404 Z" fill="#FBE3A0"/></g><g class="refire-logs"><path d="M214 396 L280 384 L282 392 L216 404 Z" fill="#5A3420"/><path d="M280 384 a4 4 0 0 1 2 8" fill="#D9A06A"/></g><g class="embers-bed"><ellipse cx="232" cy="410" rx="44" ry="7" fill="#E06A2B" opacity="0.85"/><ellipse cx="226" cy="409" rx="22" ry="3.5" fill="#F6B64B"/></g></g><g class="load" data-load="bread"><path d="M300 432 C300 404 360 404 360 432 Z" fill="#8A5528"/><path d="M300 432 C300 404 360 404 360 432" fill="none" stroke="#5A3418" stroke-width="2"/><path d="M314 418 C324 410 338 410 348 418" stroke="#E9D2B0" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M368 434 L374 412 L422 412 L428 434 Z" fill="#2B312E"/><path d="M372 414 C380 398 416 398 424 414 Z" fill="#5A3418"/><path d="M384 408 L392 404 M402 403 L410 407" stroke="#A9733F" stroke-width="2" stroke-linecap="round"/><path d="M272 440 C272 420 300 418 302 440 Z" fill="#9A6230"/><path d="M280 432 L294 426" stroke="#E9D2B0" stroke-width="2" stroke-linecap="round"/></g><g class="load" data-load="pastry"><path d="M296 430 L428 430 L420 422 L304 422 Z" fill="#2B312E"/><path d="M318 418 c-7 0 -9 -9 -1 -11 c7 -2 11 5 6 9 c-4 3 -9 0 -7 -4" fill="none" stroke="#C07A3A" stroke-width="4" stroke-linecap="round"/><path d="M344 418 c-7 0 -9 -9 -1 -11 c7 -2 11 5 6 9 c-4 3 -9 0 -7 -4" fill="none" stroke="#C07A3A" stroke-width="4" stroke-linecap="round"/><path d="M370 418 c-7 0 -9 -9 -1 -11 c7 -2 11 5 6 9 c-4 3 -9 0 -7 -4" fill="none" stroke="#C07A3A" stroke-width="4" stroke-linecap="round"/><path d="M396 418 c-7 0 -9 -9 -1 -11 c7 -2 11 5 6 9 c-4 3 -9 0 -7 -4" fill="none" stroke="#C07A3A" stroke-width="4" stroke-linecap="round"/></g><g class="load" data-load="pots"><path d="M316 438 C316 404 392 404 392 438 Z" fill="#2B312E"/><path d="M310 410 H398 V416 H310 Z" fill="#171B19"/><path d="M346 404 h16 v-6 h-16 Z" fill="#171B19"/><path d="M308 420 h-8 M400 420 h8" stroke="#171B19" stroke-width="5" stroke-linecap="round"/><path class="steam" d="M338 392 c-6 -10 6 -14 0 -26 M362 392 c-6 -10 6 -14 0 -26" stroke="#B9C7BC" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/></g><g class="load" data-load="service"><path d="M300 436 C300 422 420 422 420 436 C420 446 300 446 300 436 Z" fill="#2B312E"/><path d="M318 432 C340 414 384 414 398 428 L414 418 L410 434 L414 446 L398 438 C384 450 340 450 318 432 Z" fill="#C9A27A"/><path d="M330 431 C346 424 370 424 386 430" stroke="#8A5528" stroke-width="1.6" fill="none"/><circle cx="328" cy="430" r="2.2" fill="#171B19"/><path d="M338 426 C341 431 341 435 338 440" stroke="#8A5528" stroke-width="1.6" fill="none"/><path d="M354 418 l4 -3 M364 417 l4 -3 M374 418 l4 -3" stroke="#6E2316" stroke-width="2" stroke-linecap="round"/></g><g class="load" data-load="banked"><path d="M336 436 C336 412 384 412 384 436 Z" fill="#2B312E"/><path d="M332 416 H388 V421 H332 Z" fill="#171B19"/><path d="M354 410 h12 v-5 h-12 Z" fill="#171B19"/></g></g><path d="M150 452 H490 V462 H150 Z" fill="#CFC7BB"/><path d="M144 462 H496 V476 H144 Z" fill="#A79E92"/><path d="M144 476 H496" stroke="#171B19" stroke-width="2"/><path d="M86 600 V552 A40 40 0 0 1 166 552 V600 Z" fill="#171B19"/><path d="M474 600 V552 A40 40 0 0 1 554 552 V600 Z" fill="#171B19"/><circle cx="104" cy="586" r="10.8" fill="#C9874A"/><circle cx="104" cy="586" r="6.7" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="104" cy="586" r="3.0" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="126" cy="588" r="10.7" fill="#C9874A"/><circle cx="126" cy="588" r="6.6" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="126" cy="588" r="3.0" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="148" cy="586" r="11.2" fill="#C9874A"/><circle cx="148" cy="586" r="6.9" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="148" cy="586" r="3.1" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="114" cy="566" r="11.3" fill="#C9874A"/><circle cx="114" cy="566" r="7.0" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="114" cy="566" r="3.2" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="138" cy="566" r="10.1" fill="#C9874A"/><circle cx="138" cy="566" r="6.3" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="138" cy="566" r="2.8" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="126" cy="548" r="10.3" fill="#C9874A"/><circle cx="126" cy="548" r="6.4" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="126" cy="548" r="2.9" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="492" cy="586" r="10.1" fill="#C9874A"/><circle cx="492" cy="586" r="6.2" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="492" cy="586" r="2.8" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="514" cy="588" r="10.1" fill="#C9874A"/><circle cx="514" cy="588" r="6.3" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="514" cy="588" r="2.8" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="536" cy="586" r="10.7" fill="#C9874A"/><circle cx="536" cy="586" r="6.6" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="536" cy="586" r="3.0" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="502" cy="566" r="10.0" fill="#C9874A"/><circle cx="502" cy="566" r="6.2" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="502" cy="566" r="2.8" fill="none" stroke="#8A5528" stroke-width="1"/><circle cx="526" cy="566" r="11.3" fill="#C9874A"/><circle cx="526" cy="566" r="7.0" fill="none" stroke="#8A5528" stroke-width="1.2"/><circle cx="526" cy="566" r="3.2" fill="none" stroke="#8A5528" stroke-width="1"/><g class="gauge" transform="translate(522 196)"><circle r="36" fill="#171B19"/><circle r="30" fill="#E9ECE3"/><path d="M-15.6 9.0 L-23.4 13.5" stroke="#171B19" stroke-width="2"/><path d="M-21.9 2.3 L-26.9 2.8" stroke="#171B19" stroke-width="1.2"/><path d="M-20.9 -6.8 L-25.7 -8.3" stroke="#171B19" stroke-width="1.2"/><path d="M-16.3 -14.7 L-20.1 -18.1" stroke="#171B19" stroke-width="1.2"/><path d="M-8.9 -20.1 L-11.0 -24.7" stroke="#171B19" stroke-width="1.2"/><path d="M0.0 -18.0 L0.0 -27.0" stroke="#171B19" stroke-width="2"/><path d="M8.9 -20.1 L11.0 -24.7" stroke="#171B19" stroke-width="1.2"/><path d="M16.3 -14.7 L20.1 -18.1" stroke="#171B19" stroke-width="1.2"/><path d="M20.9 -6.8 L25.7 -8.3" stroke="#171B19" stroke-width="1.2"/><path d="M21.9 2.3 L26.9 2.8" stroke="#171B19" stroke-width="1.2"/><path d="M15.6 9.0 L23.4 13.5" stroke="#171B19" stroke-width="2"/><path d="M18 -12 A22 22 0 0 1 22 6" stroke="#C42B17" stroke-width="3" fill="none"/><g class="needle"><path d="M0 3 L25 0 L0 -3 Z" fill="#C42B17"/></g><circle r="4" fill="#171B19"/></g><g class="peel"><path d="M606 600 L586 300" stroke="#9A6230" stroke-width="9" stroke-linecap="round"/><path d="M606 600 L586 300" stroke="#C9874A" stroke-width="3" stroke-linecap="round"/><path d="M560 298 C556 246 562 206 582 204 C604 202 612 244 610 294 Z" fill="#B88A55" stroke="#5A3418" stroke-width="2.5"/><path d="M572 290 C570 250 574 222 584 220" stroke="#D9B585" stroke-width="2" fill="none"/></g></svg>
+        <canvas id="sparks" aria-hidden="true"></canvas></div>
+        <figcaption class="readout" aria-live="polite">
+          <span class="t mono"><span id="roTime">06:00</span> <b id="roTemp">305°C</b></span>
+          <span class="what" id="roWhat">Bread on the hearth</span>
+          <span class="sub" id="roSub">Rye tins and country loaves go straight onto the hot brick.</span>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="strip-wrap">
+      <div class="strip-top">
+        <label for="hour">Drag through the oven’s day</label>
+        <span class="hint">Temperatures are illustrative. <button type="button" class="linkbtn" id="nowBtn">Show right now</button></span>
+      </div>
+      <div class="strip" id="strip">
+        <div class="band" style="left:17.5%;width:27.5%"><span>Bakery counter</span></div>
+        <div class="band" style="left:67.5%;width:27.5%"><span>Dinner</span></div>
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0.0 109.2 L1.4 109.2 L3.3 109.3 L5.4 109.5 L7.8 109.7 L10.4 109.8 L13.1 110.0 L16.0 110.0 L18.9 109.8 L21.8 109.5 L24.7 109.0 L27.4 108.1 L30.0 107.0 L32.5 105.5 L35.0 103.8 L37.5 101.7 L40.0 99.5 L42.5 97.1 L45.0 94.5 L47.5 91.8 L50.0 89.0 L52.5 86.2 L55.0 83.3 L57.5 80.5 L60.0 77.7 L62.5 74.9 L65.1 71.8 L67.7 68.5 L70.3 65.0 L73.0 61.6 L75.6 58.1 L78.1 54.8 L80.7 51.6 L83.1 48.6 L85.5 45.9 L87.8 43.6 L90.0 41.8 L92.1 40.3 L94.2 39.2 L96.2 38.3 L98.1 37.7 L100.0 37.4 L101.8 37.2 L103.6 37.3 L105.2 37.4 L106.8 37.6 L108.3 37.8 L109.7 38.1 L111.0 38.4 L112.0 38.7 L112.6 39.2 L112.9 39.8 L113.0 40.5 L113.0 41.3 L113.1 42.2 L113.2 43.1 L113.7 44.0 L114.4 44.9 L115.7 45.8 L117.5 46.6 L120.0 47.4 L123.2 48.1 L127.0 48.7 L131.4 49.4 L136.2 50.0 L141.4 50.6 L146.8 51.3 L152.4 51.9 L158.1 52.5 L163.8 53.1 L169.4 53.7 L174.8 54.2 L180.0 54.8 L185.0 55.4 L190.0 55.9 L195.0 56.4 L200.0 57.0 L205.0 57.5 L210.0 58.0 L215.0 58.5 L220.0 59.0 L225.0 59.5 L230.0 59.9 L235.0 60.4 L240.0 60.9 L245.0 61.3 L250.0 61.8 L255.0 62.3 L260.0 62.7 L265.0 63.2 L270.0 63.6 L275.0 64.0 L280.0 64.5 L285.0 64.9 L290.0 65.3 L295.0 65.7 L300.0 66.0 L305.0 66.4 L310.0 66.8 L315.0 67.1 L320.0 67.5 L325.0 67.8 L330.0 68.1 L335.0 68.4 L340.0 68.7 L345.0 69.0 L350.0 69.3 L355.0 69.6 L360.0 69.9 L365.0 70.2 L370.0 70.4 L375.0 70.7 L380.0 71.0 L385.0 71.2 L390.0 71.5 L395.0 71.7 L400.0 71.9 L405.0 72.2 L410.0 72.4 L415.0 72.6 L420.0 72.8 L425.0 73.0 L430.0 73.2 L435.0 73.4 L440.0 73.6 L445.0 73.7 L450.0 73.9 L455.0 74.1 L460.0 74.2 L465.0 74.4 L470.0 74.5 L475.0 74.7 L480.0 74.8 L485.0 75.0 L490.0 75.1 L495.0 75.3 L500.0 75.4 L505.0 75.5 L510.0 75.7 L515.0 75.8 L520.0 75.9 L525.0 76.0 L530.0 76.2 L535.0 76.3 L540.0 76.4 L545.0 76.5 L550.0 76.6 L555.0 76.8 L560.0 76.9 L565.0 77.0 L570.0 77.1 L575.0 77.2 L580.0 77.3 L585.0 77.4 L590.0 77.6 L595.0 77.7 L600.0 77.7 L605.1 77.9 L610.3 78.0 L615.7 78.2 L621.1 78.3 L626.5 78.5 L631.9 78.6 L637.1 78.7 L642.2 78.8 L647.1 78.9 L651.7 78.9 L656.1 78.8 L660.0 78.7 L663.6 78.5 L666.7 78.3 L669.6 78.2 L672.2 78.0 L674.6 77.8 L676.9 77.6 L679.0 77.2 L681.1 76.7 L683.2 76.1 L685.3 75.3 L687.6 74.4 L690.0 73.3 L692.5 71.8 L695.0 70.2 L697.5 68.3 L700.0 66.2 L702.5 64.0 L705.0 61.7 L707.5 59.4 L710.0 57.1 L712.5 54.7 L715.0 52.5 L717.5 50.4 L720.0 48.5 L722.5 46.7 L725.0 44.9 L727.5 43.1 L730.0 41.3 L732.5 39.6 L735.0 38.0 L737.5 36.3 L740.0 34.8 L742.5 33.3 L745.0 31.9 L747.5 30.6 L750.0 29.4 L752.5 28.3 L755.0 27.2 L757.5 26.3 L760.0 25.4 L762.5 24.6 L765.0 23.9 L767.5 23.2 L770.0 22.5 L772.5 22.0 L775.0 21.4 L777.5 20.9 L780.0 20.4 L782.4 19.9 L784.7 19.5 L786.8 19.2 L788.9 18.9 L791.0 18.7 L793.1 18.4 L795.4 18.3 L797.8 18.1 L800.4 17.9 L803.3 17.8 L806.4 17.6 L810.0 17.5 L813.9 17.3 L818.3 17.1 L822.9 16.9 L827.8 16.7 L832.9 16.6 L838.1 16.4 L843.5 16.3 L848.9 16.1 L854.3 16.0 L859.7 16.0 L864.9 15.9 L870.0 15.9 L875.0 15.9 L880.0 15.9 L885.0 16.0 L890.0 16.0 L895.0 16.1 L900.0 16.2 L905.0 16.3 L910.0 16.5 L915.0 16.6 L920.0 16.7 L925.0 16.9 L930.0 17.0 L935.0 17.1 L940.0 17.3 L945.0 17.4 L950.0 17.5 L955.0 17.7 L960.0 17.8 L965.0 18.0 L970.0 18.1 L975.0 18.3 L980.0 18.4 L985.0 18.6 L990.0 18.8 L995.1 19.0 L1000.3 19.1 L1005.7 19.2 L1011.1 19.4 L1016.5 19.5 L1021.9 19.6 L1027.1 19.8 L1032.2 20.0 L1037.1 20.3 L1041.7 20.6 L1046.1 21.0 L1050.0 21.5 L1053.6 22.1 L1056.7 22.7 L1059.6 23.4 L1062.2 24.1 L1064.6 24.9 L1066.9 25.7 L1069.0 26.6 L1071.1 27.5 L1073.2 28.4 L1075.3 29.5 L1077.6 30.5 L1080.0 31.6 L1082.5 32.8 L1085.0 34.1 L1087.5 35.5 L1090.0 37.0 L1092.5 38.5 L1095.0 40.1 L1097.5 41.6 L1100.0 43.1 L1102.5 44.6 L1105.0 46.0 L1107.5 47.3 L1110.0 48.5 L1112.4 49.6 L1114.7 50.6 L1116.8 51.5 L1118.9 52.4 L1121.0 53.3 L1123.1 54.1 L1125.4 54.8 L1127.8 55.6 L1130.4 56.3 L1133.3 57.1 L1136.4 57.8 L1140.0 58.6 L1144.1 59.4 L1149.0 60.3 L1154.3 61.2 L1160.0 62.0 L1165.9 62.9 L1171.9 63.8 L1177.7 64.6 L1183.3 65.3 L1188.5 66.0 L1193.1 66.7 L1197.0 67.2 L1200.0 67.6 L1200 120 L0 120 Z" fill="rgba(196,43,23,.09)"/>
+          <path d="M0.0 109.2 L1.4 109.2 L3.3 109.3 L5.4 109.5 L7.8 109.7 L10.4 109.8 L13.1 110.0 L16.0 110.0 L18.9 109.8 L21.8 109.5 L24.7 109.0 L27.4 108.1 L30.0 107.0 L32.5 105.5 L35.0 103.8 L37.5 101.7 L40.0 99.5 L42.5 97.1 L45.0 94.5 L47.5 91.8 L50.0 89.0 L52.5 86.2 L55.0 83.3 L57.5 80.5 L60.0 77.7 L62.5 74.9 L65.1 71.8 L67.7 68.5 L70.3 65.0 L73.0 61.6 L75.6 58.1 L78.1 54.8 L80.7 51.6 L83.1 48.6 L85.5 45.9 L87.8 43.6 L90.0 41.8 L92.1 40.3 L94.2 39.2 L96.2 38.3 L98.1 37.7 L100.0 37.4 L101.8 37.2 L103.6 37.3 L105.2 37.4 L106.8 37.6 L108.3 37.8 L109.7 38.1 L111.0 38.4 L112.0 38.7 L112.6 39.2 L112.9 39.8 L113.0 40.5 L113.0 41.3 L113.1 42.2 L113.2 43.1 L113.7 44.0 L114.4 44.9 L115.7 45.8 L117.5 46.6 L120.0 47.4 L123.2 48.1 L127.0 48.7 L131.4 49.4 L136.2 50.0 L141.4 50.6 L146.8 51.3 L152.4 51.9 L158.1 52.5 L163.8 53.1 L169.4 53.7 L174.8 54.2 L180.0 54.8 L185.0 55.4 L190.0 55.9 L195.0 56.4 L200.0 57.0 L205.0 57.5 L210.0 58.0 L215.0 58.5 L220.0 59.0 L225.0 59.5 L230.0 59.9 L235.0 60.4 L240.0 60.9 L245.0 61.3 L250.0 61.8 L255.0 62.3 L260.0 62.7 L265.0 63.2 L270.0 63.6 L275.0 64.0 L280.0 64.5 L285.0 64.9 L290.0 65.3 L295.0 65.7 L300.0 66.0 L305.0 66.4 L310.0 66.8 L315.0 67.1 L320.0 67.5 L325.0 67.8 L330.0 68.1 L335.0 68.4 L340.0 68.7 L345.0 69.0 L350.0 69.3 L355.0 69.6 L360.0 69.9 L365.0 70.2 L370.0 70.4 L375.0 70.7 L380.0 71.0 L385.0 71.2 L390.0 71.5 L395.0 71.7 L400.0 71.9 L405.0 72.2 L410.0 72.4 L415.0 72.6 L420.0 72.8 L425.0 73.0 L430.0 73.2 L435.0 73.4 L440.0 73.6 L445.0 73.7 L450.0 73.9 L455.0 74.1 L460.0 74.2 L465.0 74.4 L470.0 74.5 L475.0 74.7 L480.0 74.8 L485.0 75.0 L490.0 75.1 L495.0 75.3 L500.0 75.4 L505.0 75.5 L510.0 75.7 L515.0 75.8 L520.0 75.9 L525.0 76.0 L530.0 76.2 L535.0 76.3 L540.0 76.4 L545.0 76.5 L550.0 76.6 L555.0 76.8 L560.0 76.9 L565.0 77.0 L570.0 77.1 L575.0 77.2 L580.0 77.3 L585.0 77.4 L590.0 77.6 L595.0 77.7 L600.0 77.7 L605.1 77.9 L610.3 78.0 L615.7 78.2 L621.1 78.3 L626.5 78.5 L631.9 78.6 L637.1 78.7 L642.2 78.8 L647.1 78.9 L651.7 78.9 L656.1 78.8 L660.0 78.7 L663.6 78.5 L666.7 78.3 L669.6 78.2 L672.2 78.0 L674.6 77.8 L676.9 77.6 L679.0 77.2 L681.1 76.7 L683.2 76.1 L685.3 75.3 L687.6 74.4 L690.0 73.3 L692.5 71.8 L695.0 70.2 L697.5 68.3 L700.0 66.2 L702.5 64.0 L705.0 61.7 L707.5 59.4 L710.0 57.1 L712.5 54.7 L715.0 52.5 L717.5 50.4 L720.0 48.5 L722.5 46.7 L725.0 44.9 L727.5 43.1 L730.0 41.3 L732.5 39.6 L735.0 38.0 L737.5 36.3 L740.0 34.8 L742.5 33.3 L745.0 31.9 L747.5 30.6 L750.0 29.4 L752.5 28.3 L755.0 27.2 L757.5 26.3 L760.0 25.4 L762.5 24.6 L765.0 23.9 L767.5 23.2 L770.0 22.5 L772.5 22.0 L775.0 21.4 L777.5 20.9 L780.0 20.4 L782.4 19.9 L784.7 19.5 L786.8 19.2 L788.9 18.9 L791.0 18.7 L793.1 18.4 L795.4 18.3 L797.8 18.1 L800.4 17.9 L803.3 17.8 L806.4 17.6 L810.0 17.5 L813.9 17.3 L818.3 17.1 L822.9 16.9 L827.8 16.7 L832.9 16.6 L838.1 16.4 L843.5 16.3 L848.9 16.1 L854.3 16.0 L859.7 16.0 L864.9 15.9 L870.0 15.9 L875.0 15.9 L880.0 15.9 L885.0 16.0 L890.0 16.0 L895.0 16.1 L900.0 16.2 L905.0 16.3 L910.0 16.5 L915.0 16.6 L920.0 16.7 L925.0 16.9 L930.0 17.0 L935.0 17.1 L940.0 17.3 L945.0 17.4 L950.0 17.5 L955.0 17.7 L960.0 17.8 L965.0 18.0 L970.0 18.1 L975.0 18.3 L980.0 18.4 L985.0 18.6 L990.0 18.8 L995.1 19.0 L1000.3 19.1 L1005.7 19.2 L1011.1 19.4 L1016.5 19.5 L1021.9 19.6 L1027.1 19.8 L1032.2 20.0 L1037.1 20.3 L1041.7 20.6 L1046.1 21.0 L1050.0 21.5 L1053.6 22.1 L1056.7 22.7 L1059.6 23.4 L1062.2 24.1 L1064.6 24.9 L1066.9 25.7 L1069.0 26.6 L1071.1 27.5 L1073.2 28.4 L1075.3 29.5 L1077.6 30.5 L1080.0 31.6 L1082.5 32.8 L1085.0 34.1 L1087.5 35.5 L1090.0 37.0 L1092.5 38.5 L1095.0 40.1 L1097.5 41.6 L1100.0 43.1 L1102.5 44.6 L1105.0 46.0 L1107.5 47.3 L1110.0 48.5 L1112.4 49.6 L1114.7 50.6 L1116.8 51.5 L1118.9 52.4 L1121.0 53.3 L1123.1 54.1 L1125.4 54.8 L1127.8 55.6 L1130.4 56.3 L1133.3 57.1 L1136.4 57.8 L1140.0 58.6 L1144.1 59.4 L1149.0 60.3 L1154.3 61.2 L1160.0 62.0 L1165.9 62.9 L1171.9 63.8 L1177.7 64.6 L1183.3 65.3 L1188.5 66.0 L1193.1 66.7 L1197.0 67.2 L1200.0 67.6" fill="none" stroke="#C42B17" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="cursor" id="cursor" style="left:10%"><i style="top:30%"></i></div>
+        <input type="range" id="hour" min="270" max="1380" step="15" value="360" aria-valuetext="06:00, about 305 degrees, bread on the hearth">
+      </div>
+      <div class="axis mono" aria-hidden="true">
+        <span style="left:0">04:00</span><span class="odd" style="left:10%">06:00</span><span style="left:20%">08:00</span><span class="odd" style="left:30%">10:00</span><span style="left:40%">12:00</span><span class="odd" style="left:50%">14:00</span><span style="left:60%">16:00</span><span class="odd" style="left:70%">18:00</span><span style="left:80%">20:00</span><span class="odd" style="left:90%">22:00</span><span style="left:100%">24:00</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark" id="oven" aria-labelledby="oven-h">
+  <div class="wrap">
+    <div class="story-head">
+      <h2 id="oven-h" class="h2">One fire runs the whole day.</h2>
+      <div>
+        <p>The fire goes in at half past four. By six the dome is white-hot, the embers are pushed to one side and the first rye tins go onto bare brick.</p>
+        <p>As the heat falls it takes the next job: buns at nine, pots of beans and stock through the quiet middle of the day. At half three we feed it again, so that when the first table sits down the hearth is back above four hundred degrees.</p>
+      </div>
+    </div>
+    <div class="chart" id="storyChart">
+      <div class="yline" style="top:21.7%"></div><span class="ylab mono" style="top:21.7%">400°C</span>
+      <div class="yline" style="top:47.8%"></div><span class="ylab mono" style="top:47.8%">200°C</span>
+      <svg class="ghost" viewBox="0 0 1200 460" preserveAspectRatio="none" aria-hidden="true"><path d="M0.0 432.5 L1.4 432.4 L3.3 432.8 L5.4 433.4 L7.8 434.2 L10.4 434.9 L13.1 435.4 L16.0 435.4 L18.9 434.9 L21.8 433.6 L24.7 431.3 L27.4 428.0 L30.0 423.3 L32.5 417.3 L35.0 410.2 L37.5 401.9 L40.0 392.8 L42.5 382.9 L45.0 372.3 L47.5 361.3 L50.0 350.0 L52.5 338.5 L55.0 326.9 L57.5 315.4 L60.0 304.2 L62.5 292.5 L65.1 279.8 L67.7 266.3 L70.3 252.4 L73.0 238.3 L75.6 224.2 L78.1 210.6 L80.7 197.6 L83.1 185.5 L85.5 174.6 L87.8 165.2 L90.0 157.5 L92.1 151.5 L94.2 146.9 L96.2 143.5 L98.1 141.2 L100.0 139.8 L101.8 139.2 L103.6 139.2 L105.2 139.7 L106.8 140.5 L108.3 141.6 L109.7 142.7 L111.0 143.8 L112.0 145.1 L112.6 147.0 L112.9 149.5 L113.0 152.5 L113.0 155.8 L113.1 159.3 L113.2 163.0 L113.7 166.8 L114.4 170.5 L115.7 174.1 L117.5 177.4 L120.0 180.4 L123.2 183.2 L127.0 185.9 L131.4 188.6 L136.2 191.2 L141.4 193.8 L146.8 196.3 L152.4 198.8 L158.1 201.2 L163.8 203.6 L169.4 206.0 L174.8 208.4 L180.0 210.7 L185.0 212.9 L190.0 215.2 L195.0 217.3 L200.0 219.5 L205.0 221.6 L210.0 223.6 L215.0 225.6 L220.0 227.6 L225.0 229.6 L230.0 231.6 L235.0 233.5 L240.0 235.4 L245.0 237.3 L250.0 239.2 L255.0 241.1 L260.0 242.9 L265.0 244.7 L270.0 246.5 L275.0 248.3 L280.0 250.0 L285.0 251.7 L290.0 253.3 L295.0 254.9 L300.0 256.5 L305.0 258.0 L310.0 259.5 L315.0 260.9 L320.0 262.2 L325.0 263.6 L330.0 264.9 L335.0 266.1 L340.0 267.4 L345.0 268.6 L350.0 269.8 L355.0 270.9 L360.0 272.1 L365.0 273.2 L370.0 274.3 L375.0 275.4 L380.0 276.5 L385.0 277.5 L390.0 278.5 L395.0 279.5 L400.0 280.4 L405.0 281.4 L410.0 282.3 L415.0 283.1 L420.0 284.0 L425.0 284.8 L430.0 285.6 L435.0 286.4 L440.0 287.1 L445.0 287.8 L450.0 288.5 L455.0 289.1 L460.0 289.8 L465.0 290.4 L470.0 291.0 L475.0 291.6 L480.0 292.2 L485.0 292.9 L490.0 293.4 L495.0 294.0 L500.0 294.6 L505.0 295.1 L510.0 295.6 L515.0 296.2 L520.0 296.7 L525.0 297.2 L530.0 297.7 L535.0 298.2 L540.0 298.7 L545.0 299.2 L550.0 299.7 L555.0 300.1 L560.0 300.6 L565.0 301.1 L570.0 301.6 L575.0 302.1 L580.0 302.5 L585.0 302.9 L590.0 303.4 L595.0 303.8 L600.0 304.2 L605.1 304.6 L610.3 305.2 L615.7 305.8 L621.1 306.5 L626.5 307.1 L631.9 307.7 L637.1 308.2 L642.2 308.6 L647.1 308.8 L651.7 308.7 L656.1 308.4 L660.0 307.8 L663.6 307.1 L666.7 306.6 L669.6 306.0 L672.2 305.3 L674.6 304.5 L676.9 303.4 L679.0 301.9 L681.1 300.0 L683.2 297.5 L685.3 294.4 L687.6 290.5 L690.0 285.8 L692.5 280.1 L695.0 273.3 L697.5 265.6 L700.0 257.2 L702.5 248.2 L705.0 238.9 L707.5 229.4 L710.0 219.8 L712.5 210.4 L715.0 201.4 L717.5 192.9 L720.0 185.0 L722.5 177.6 L725.0 170.2 L727.5 162.9 L730.0 155.8 L732.5 148.8 L735.0 142.0 L737.5 135.5 L740.0 129.2 L742.5 123.1 L745.0 117.4 L747.5 112.1 L750.0 107.1 L752.5 102.5 L755.0 98.3 L757.5 94.4 L760.0 90.9 L762.5 87.6 L765.0 84.6 L767.5 81.9 L770.0 79.3 L772.5 76.9 L775.0 74.6 L777.5 72.5 L780.0 70.4 L782.4 68.5 L784.7 66.9 L786.8 65.6 L788.9 64.4 L791.0 63.4 L793.1 62.6 L795.4 61.8 L797.8 61.1 L800.4 60.5 L803.3 59.9 L806.4 59.2 L810.0 58.5 L813.9 57.7 L818.3 57.0 L822.9 56.3 L827.8 55.5 L832.9 54.9 L838.1 54.3 L843.5 53.7 L848.9 53.2 L854.3 52.8 L859.7 52.5 L864.9 52.2 L870.0 52.1 L875.0 52.1 L880.0 52.2 L885.0 52.4 L890.0 52.7 L895.0 53.1 L900.0 53.5 L905.0 54.0 L910.0 54.5 L915.0 55.1 L920.0 55.6 L925.0 56.2 L930.0 56.7 L935.0 57.2 L940.0 57.7 L945.0 58.2 L950.0 58.8 L955.0 59.3 L960.0 59.9 L965.0 60.5 L970.0 61.2 L975.0 61.8 L980.0 62.5 L985.0 63.3 L990.0 64.0 L995.1 64.7 L1000.3 65.3 L1005.7 65.8 L1011.1 66.3 L1016.5 66.8 L1021.9 67.4 L1027.1 68.1 L1032.2 69.0 L1037.1 70.0 L1041.7 71.4 L1046.1 73.0 L1050.0 75.0 L1053.6 77.3 L1056.7 79.8 L1059.6 82.5 L1062.2 85.5 L1064.6 88.7 L1066.9 92.0 L1069.0 95.6 L1071.1 99.3 L1073.2 103.3 L1075.3 107.4 L1077.6 111.8 L1080.0 116.2 L1082.5 121.1 L1085.0 126.4 L1087.5 132.1 L1090.0 138.1 L1092.5 144.3 L1095.0 150.6 L1097.5 156.9 L1100.0 163.1 L1102.5 169.1 L1105.0 174.8 L1107.5 180.1 L1110.0 185.0 L1112.4 189.4 L1114.7 193.5 L1116.8 197.4 L1118.9 201.0 L1121.0 204.4 L1123.1 207.6 L1125.4 210.8 L1127.8 213.9 L1130.4 216.9 L1133.3 220.0 L1136.4 223.1 L1140.0 226.2 L1144.1 229.6 L1149.0 233.1 L1154.3 236.6 L1160.0 240.2 L1165.9 243.7 L1171.9 247.2 L1177.7 250.5 L1183.3 253.6 L1188.5 256.4 L1193.1 259.0 L1197.0 261.2 L1200.0 262.9" fill="none" stroke="#5B6560" stroke-width="2" stroke-dasharray="4 6" vector-effect="non-scaling-stroke"/></svg>
+      <div class="reveal">
+        <svg viewBox="0 0 1200 460" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0.0 432.5 L1.4 432.4 L3.3 432.8 L5.4 433.4 L7.8 434.2 L10.4 434.9 L13.1 435.4 L16.0 435.4 L18.9 434.9 L21.8 433.6 L24.7 431.3 L27.4 428.0 L30.0 423.3 L32.5 417.3 L35.0 410.2 L37.5 401.9 L40.0 392.8 L42.5 382.9 L45.0 372.3 L47.5 361.3 L50.0 350.0 L52.5 338.5 L55.0 326.9 L57.5 315.4 L60.0 304.2 L62.5 292.5 L65.1 279.8 L67.7 266.3 L70.3 252.4 L73.0 238.3 L75.6 224.2 L78.1 210.6 L80.7 197.6 L83.1 185.5 L85.5 174.6 L87.8 165.2 L90.0 157.5 L92.1 151.5 L94.2 146.9 L96.2 143.5 L98.1 141.2 L100.0 139.8 L101.8 139.2 L103.6 139.2 L105.2 139.7 L106.8 140.5 L108.3 141.6 L109.7 142.7 L111.0 143.8 L112.0 145.1 L112.6 147.0 L112.9 149.5 L113.0 152.5 L113.0 155.8 L113.1 159.3 L113.2 163.0 L113.7 166.8 L114.4 170.5 L115.7 174.1 L117.5 177.4 L120.0 180.4 L123.2 183.2 L127.0 185.9 L131.4 188.6 L136.2 191.2 L141.4 193.8 L146.8 196.3 L152.4 198.8 L158.1 201.2 L163.8 203.6 L169.4 206.0 L174.8 208.4 L180.0 210.7 L185.0 212.9 L190.0 215.2 L195.0 217.3 L200.0 219.5 L205.0 221.6 L210.0 223.6 L215.0 225.6 L220.0 227.6 L225.0 229.6 L230.0 231.6 L235.0 233.5 L240.0 235.4 L245.0 237.3 L250.0 239.2 L255.0 241.1 L260.0 242.9 L265.0 244.7 L270.0 246.5 L275.0 248.3 L280.0 250.0 L285.0 251.7 L290.0 253.3 L295.0 254.9 L300.0 256.5 L305.0 258.0 L310.0 259.5 L315.0 260.9 L320.0 262.2 L325.0 263.6 L330.0 264.9 L335.0 266.1 L340.0 267.4 L345.0 268.6 L350.0 269.8 L355.0 270.9 L360.0 272.1 L365.0 273.2 L370.0 274.3 L375.0 275.4 L380.0 276.5 L385.0 277.5 L390.0 278.5 L395.0 279.5 L400.0 280.4 L405.0 281.4 L410.0 282.3 L415.0 283.1 L420.0 284.0 L425.0 284.8 L430.0 285.6 L435.0 286.4 L440.0 287.1 L445.0 287.8 L450.0 288.5 L455.0 289.1 L460.0 289.8 L465.0 290.4 L470.0 291.0 L475.0 291.6 L480.0 292.2 L485.0 292.9 L490.0 293.4 L495.0 294.0 L500.0 294.6 L505.0 295.1 L510.0 295.6 L515.0 296.2 L520.0 296.7 L525.0 297.2 L530.0 297.7 L535.0 298.2 L540.0 298.7 L545.0 299.2 L550.0 299.7 L555.0 300.1 L560.0 300.6 L565.0 301.1 L570.0 301.6 L575.0 302.1 L580.0 302.5 L585.0 302.9 L590.0 303.4 L595.0 303.8 L600.0 304.2 L605.1 304.6 L610.3 305.2 L615.7 305.8 L621.1 306.5 L626.5 307.1 L631.9 307.7 L637.1 308.2 L642.2 308.6 L647.1 308.8 L651.7 308.7 L656.1 308.4 L660.0 307.8 L663.6 307.1 L666.7 306.6 L669.6 306.0 L672.2 305.3 L674.6 304.5 L676.9 303.4 L679.0 301.9 L681.1 300.0 L683.2 297.5 L685.3 294.4 L687.6 290.5 L690.0 285.8 L692.5 280.1 L695.0 273.3 L697.5 265.6 L700.0 257.2 L702.5 248.2 L705.0 238.9 L707.5 229.4 L710.0 219.8 L712.5 210.4 L715.0 201.4 L717.5 192.9 L720.0 185.0 L722.5 177.6 L725.0 170.2 L727.5 162.9 L730.0 155.8 L732.5 148.8 L735.0 142.0 L737.5 135.5 L740.0 129.2 L742.5 123.1 L745.0 117.4 L747.5 112.1 L750.0 107.1 L752.5 102.5 L755.0 98.3 L757.5 94.4 L760.0 90.9 L762.5 87.6 L765.0 84.6 L767.5 81.9 L770.0 79.3 L772.5 76.9 L775.0 74.6 L777.5 72.5 L780.0 70.4 L782.4 68.5 L784.7 66.9 L786.8 65.6 L788.9 64.4 L791.0 63.4 L793.1 62.6 L795.4 61.8 L797.8 61.1 L800.4 60.5 L803.3 59.9 L806.4 59.2 L810.0 58.5 L813.9 57.7 L818.3 57.0 L822.9 56.3 L827.8 55.5 L832.9 54.9 L838.1 54.3 L843.5 53.7 L848.9 53.2 L854.3 52.8 L859.7 52.5 L864.9 52.2 L870.0 52.1 L875.0 52.1 L880.0 52.2 L885.0 52.4 L890.0 52.7 L895.0 53.1 L900.0 53.5 L905.0 54.0 L910.0 54.5 L915.0 55.1 L920.0 55.6 L925.0 56.2 L930.0 56.7 L935.0 57.2 L940.0 57.7 L945.0 58.2 L950.0 58.8 L955.0 59.3 L960.0 59.9 L965.0 60.5 L970.0 61.2 L975.0 61.8 L980.0 62.5 L985.0 63.3 L990.0 64.0 L995.1 64.7 L1000.3 65.3 L1005.7 65.8 L1011.1 66.3 L1016.5 66.8 L1021.9 67.4 L1027.1 68.1 L1032.2 69.0 L1037.1 70.0 L1041.7 71.4 L1046.1 73.0 L1050.0 75.0 L1053.6 77.3 L1056.7 79.8 L1059.6 82.5 L1062.2 85.5 L1064.6 88.7 L1066.9 92.0 L1069.0 95.6 L1071.1 99.3 L1073.2 103.3 L1075.3 107.4 L1077.6 111.8 L1080.0 116.2 L1082.5 121.1 L1085.0 126.4 L1087.5 132.1 L1090.0 138.1 L1092.5 144.3 L1095.0 150.6 L1097.5 156.9 L1100.0 163.1 L1102.5 169.1 L1105.0 174.8 L1107.5 180.1 L1110.0 185.0 L1112.4 189.4 L1114.7 193.5 L1116.8 197.4 L1118.9 201.0 L1121.0 204.4 L1123.1 207.6 L1125.4 210.8 L1127.8 213.9 L1130.4 216.9 L1133.3 220.0 L1136.4 223.1 L1140.0 226.2 L1144.1 229.6 L1149.0 233.1 L1154.3 236.6 L1160.0 240.2 L1165.9 243.7 L1171.9 247.2 L1177.7 250.5 L1183.3 253.6 L1188.5 256.4 L1193.1 259.0 L1197.0 261.2 L1200.0 262.9 L1200 460 L0 460 Z" fill="rgba(240,138,60,.12)"/>
+          <path d="M0.0 432.5 L1.4 432.4 L3.3 432.8 L5.4 433.4 L7.8 434.2 L10.4 434.9 L13.1 435.4 L16.0 435.4 L18.9 434.9 L21.8 433.6 L24.7 431.3 L27.4 428.0 L30.0 423.3 L32.5 417.3 L35.0 410.2 L37.5 401.9 L40.0 392.8 L42.5 382.9 L45.0 372.3 L47.5 361.3 L50.0 350.0 L52.5 338.5 L55.0 326.9 L57.5 315.4 L60.0 304.2 L62.5 292.5 L65.1 279.8 L67.7 266.3 L70.3 252.4 L73.0 238.3 L75.6 224.2 L78.1 210.6 L80.7 197.6 L83.1 185.5 L85.5 174.6 L87.8 165.2 L90.0 157.5 L92.1 151.5 L94.2 146.9 L96.2 143.5 L98.1 141.2 L100.0 139.8 L101.8 139.2 L103.6 139.2 L105.2 139.7 L106.8 140.5 L108.3 141.6 L109.7 142.7 L111.0 143.8 L112.0 145.1 L112.6 147.0 L112.9 149.5 L113.0 152.5 L113.0 155.8 L113.1 159.3 L113.2 163.0 L113.7 166.8 L114.4 170.5 L115.7 174.1 L117.5 177.4 L120.0 180.4 L123.2 183.2 L127.0 185.9 L131.4 188.6 L136.2 191.2 L141.4 193.8 L146.8 196.3 L152.4 198.8 L158.1 201.2 L163.8 203.6 L169.4 206.0 L174.8 208.4 L180.0 210.7 L185.0 212.9 L190.0 215.2 L195.0 217.3 L200.0 219.5 L205.0 221.6 L210.0 223.6 L215.0 225.6 L220.0 227.6 L225.0 229.6 L230.0 231.6 L235.0 233.5 L240.0 235.4 L245.0 237.3 L250.0 239.2 L255.0 241.1 L260.0 242.9 L265.0 244.7 L270.0 246.5 L275.0 248.3 L280.0 250.0 L285.0 251.7 L290.0 253.3 L295.0 254.9 L300.0 256.5 L305.0 258.0 L310.0 259.5 L315.0 260.9 L320.0 262.2 L325.0 263.6 L330.0 264.9 L335.0 266.1 L340.0 267.4 L345.0 268.6 L350.0 269.8 L355.0 270.9 L360.0 272.1 L365.0 273.2 L370.0 274.3 L375.0 275.4 L380.0 276.5 L385.0 277.5 L390.0 278.5 L395.0 279.5 L400.0 280.4 L405.0 281.4 L410.0 282.3 L415.0 283.1 L420.0 284.0 L425.0 284.8 L430.0 285.6 L435.0 286.4 L440.0 287.1 L445.0 287.8 L450.0 288.5 L455.0 289.1 L460.0 289.8 L465.0 290.4 L470.0 291.0 L475.0 291.6 L480.0 292.2 L485.0 292.9 L490.0 293.4 L495.0 294.0 L500.0 294.6 L505.0 295.1 L510.0 295.6 L515.0 296.2 L520.0 296.7 L525.0 297.2 L530.0 297.7 L535.0 298.2 L540.0 298.7 L545.0 299.2 L550.0 299.7 L555.0 300.1 L560.0 300.6 L565.0 301.1 L570.0 301.6 L575.0 302.1 L580.0 302.5 L585.0 302.9 L590.0 303.4 L595.0 303.8 L600.0 304.2 L605.1 304.6 L610.3 305.2 L615.7 305.8 L621.1 306.5 L626.5 307.1 L631.9 307.7 L637.1 308.2 L642.2 308.6 L647.1 308.8 L651.7 308.7 L656.1 308.4 L660.0 307.8 L663.6 307.1 L666.7 306.6 L669.6 306.0 L672.2 305.3 L674.6 304.5 L676.9 303.4 L679.0 301.9 L681.1 300.0 L683.2 297.5 L685.3 294.4 L687.6 290.5 L690.0 285.8 L692.5 280.1 L695.0 273.3 L697.5 265.6 L700.0 257.2 L702.5 248.2 L705.0 238.9 L707.5 229.4 L710.0 219.8 L712.5 210.4 L715.0 201.4 L717.5 192.9 L720.0 185.0 L722.5 177.6 L725.0 170.2 L727.5 162.9 L730.0 155.8 L732.5 148.8 L735.0 142.0 L737.5 135.5 L740.0 129.2 L742.5 123.1 L745.0 117.4 L747.5 112.1 L750.0 107.1 L752.5 102.5 L755.0 98.3 L757.5 94.4 L760.0 90.9 L762.5 87.6 L765.0 84.6 L767.5 81.9 L770.0 79.3 L772.5 76.9 L775.0 74.6 L777.5 72.5 L780.0 70.4 L782.4 68.5 L784.7 66.9 L786.8 65.6 L788.9 64.4 L791.0 63.4 L793.1 62.6 L795.4 61.8 L797.8 61.1 L800.4 60.5 L803.3 59.9 L806.4 59.2 L810.0 58.5 L813.9 57.7 L818.3 57.0 L822.9 56.3 L827.8 55.5 L832.9 54.9 L838.1 54.3 L843.5 53.7 L848.9 53.2 L854.3 52.8 L859.7 52.5 L864.9 52.2 L870.0 52.1 L875.0 52.1 L880.0 52.2 L885.0 52.4 L890.0 52.7 L895.0 53.1 L900.0 53.5 L905.0 54.0 L910.0 54.5 L915.0 55.1 L920.0 55.6 L925.0 56.2 L930.0 56.7 L935.0 57.2 L940.0 57.7 L945.0 58.2 L950.0 58.8 L955.0 59.3 L960.0 59.9 L965.0 60.5 L970.0 61.2 L975.0 61.8 L980.0 62.5 L985.0 63.3 L990.0 64.0 L995.1 64.7 L1000.3 65.3 L1005.7 65.8 L1011.1 66.3 L1016.5 66.8 L1021.9 67.4 L1027.1 68.1 L1032.2 69.0 L1037.1 70.0 L1041.7 71.4 L1046.1 73.0 L1050.0 75.0 L1053.6 77.3 L1056.7 79.8 L1059.6 82.5 L1062.2 85.5 L1064.6 88.7 L1066.9 92.0 L1069.0 95.6 L1071.1 99.3 L1073.2 103.3 L1075.3 107.4 L1077.6 111.8 L1080.0 116.2 L1082.5 121.1 L1085.0 126.4 L1087.5 132.1 L1090.0 138.1 L1092.5 144.3 L1095.0 150.6 L1097.5 156.9 L1100.0 163.1 L1102.5 169.1 L1105.0 174.8 L1107.5 180.1 L1110.0 185.0 L1112.4 189.4 L1114.7 193.5 L1116.8 197.4 L1118.9 201.0 L1121.0 204.4 L1123.1 207.6 L1125.4 210.8 L1127.8 213.9 L1130.4 216.9 L1133.3 220.0 L1136.4 223.1 L1140.0 226.2 L1144.1 229.6 L1149.0 233.1 L1154.3 236.6 L1160.0 240.2 L1165.9 243.7 L1171.9 247.2 L1177.7 250.5 L1183.3 253.6 L1188.5 256.4 L1193.1 259.0 L1197.0 261.2 L1200.0 262.9" fill="none" stroke="#F08A3C" stroke-width="3" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <span class="pin" data-h="4.5"><span class="mono">04:30</span></span>
+        <span class="pin" data-h="6"><span class="mono">06:00</span></span>
+        <span class="pin" data-h="9"><span class="mono">09:00</span></span>
+        <span class="pin" data-h="13"><span class="mono">13:00</span></span>
+        <span class="pin" data-h="15.5"><span class="mono">15:30</span></span>
+        <span class="pin" data-h="17.5"><span class="mono">17:30</span></span>
+        <span class="pin" data-h="22.5"><span class="mono">22:30</span></span>
+      </div>
+      <span class="pen" id="storyPen" aria-hidden="true"></span>
+    </div>
+    <div class="axis mono" aria-hidden="true">
+      <span style="left:0">04:00</span><span class="odd" style="left:10%">06:00</span><span style="left:20%">08:00</span><span class="odd" style="left:30%">10:00</span><span style="left:40%">12:00</span><span class="odd" style="left:50%">14:00</span><span style="left:60%">16:00</span><span class="odd" style="left:70%">18:00</span><span style="left:80%">20:00</span><span class="odd" style="left:90%">22:00</span><span style="left:100%">24:00</span>
+    </div>
+    <ol class="log">
+      <li><span class="when mono">04:30</span><h3>Oak and ash, burning down</h3><p>Two hours of fire to soak heat into the dome and the hearth.</p></li>
+      <li><span class="when mono">06:00, 300°C</span><h3>Bread on bare brick</h3><p>Embers raked aside, rye tins and country loaves go in by peel.</p></li>
+      <li><span class="when mono">09:00 → 15:00</span><h3>Falling heat, slow jobs</h3><p>Buns, then beans, stock and tomorrow’s braise in lidded pots.</p></li>
+      <li><span class="when mono">15:30 → 22:30</span><h3>Refire, service, bank down</h3><p>Back above 400°C for dinner. Overnight, a pot of grains for the next rye.</p></li>
+    </ol>
+    <p class="note">The curve shows illustrative hearth temperatures through one service day.</p>
+  </div>
+</section>
+
+<section class="section paper" id="bakery" aria-labelledby="bake-h">
+  <div class="wrap">
+    <div class="bake-head">
+      <h2 id="bake-h" class="h2">The morning bake, until it’s gone.</h2>
+      <p>The counter opens <strong>Tuesday to Sunday at 07:30</strong> and closes when the shelves are empty. Bars show when each bake usually sells out. Saturdays run earlier.</p>
+    </div>
+    <div class="bake">
+      <div class="bake-axis" aria-hidden="true"><div class="axis mono"><span style="left:0">07:00</span><span class="odd" style="left:14.3%">08:00</span><span style="left:28.6%">09:00</span><span class="odd" style="left:42.9%">10:00</span><span style="left:57.1%">11:00</span><span class="odd" style="left:71.4%">12:00</span><span style="left:85.7%">13:00</span><span class="odd" style="left:100%">14:00</span></div></div>
+      <ol>
+        <li><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M14 66 L22 30 L98 30 L106 66 Z" fill="#2B312E"/><path d="M20 34 C30 6 90 6 100 34 Z" fill="#5A3418"/><path d="M36 22 L48 17 M58 14 L70 16 M80 19 L90 25" stroke="#A9733F" stroke-width="3" stroke-linecap="round"/><g fill="#C9A27A"><circle cx="44" cy="27" r="1.4"/><circle cx="62" cy="22" r="1.4"/><circle cx="76" cy="27" r="1.4"/><circle cx="54" cy="30" r="1.2"/></g></svg><div><h3>Northern rye tin</h3><p class="desc">All rye, caraway, a long cold prove.</p></div><span class="price mono">£6.50</span><div class="track" data-end="10:30"><span class="bar"></span><span class="gone mono">Sold out by 10:30</span></div></li>
+        <li><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M12 64 C10 22 110 22 108 64 Z" fill="#8A5528"/><path d="M12 64 C10 22 110 22 108 64" fill="none" stroke="#5A3418" stroke-width="2.5"/><path d="M30 44 C46 30 74 30 90 44" stroke="#E9D2B0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M44 54 C54 48 66 48 76 54" stroke="#C9A27A" stroke-width="2" fill="none" stroke-linecap="round"/></svg><div><h3>Country sourdough</h3><p class="desc">Wheat and a little rye, deep-baked crust.</p></div><span class="price mono">£5.80</span><div class="track" data-end="12:30"><span class="bar"></span><span class="gone mono">Sold out by 12:30</span></div></li>
+        <li><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M8 58 C10 30 110 30 112 58 C110 70 10 70 8 58 Z" fill="#6A3E1C"/><g fill="#E9D2B0"><ellipse cx="30" cy="44" rx="4" ry="1.8" transform="rotate(-20 30 44)"/><ellipse cx="48" cy="40" rx="4" ry="1.8" transform="rotate(15 48 40)"/><ellipse cx="66" cy="39" rx="4" ry="1.8" transform="rotate(-10 66 39)"/><ellipse cx="84" cy="42" rx="4" ry="1.8" transform="rotate(25 84 42)"/><ellipse cx="58" cy="48" rx="4" ry="1.8" transform="rotate(-30 58 48)"/><ellipse cx="40" cy="50" rx="4" ry="1.8"/><ellipse cx="96" cy="50" rx="4" ry="1.8" transform="rotate(10 96 50)"/></g></svg><div><h3>Treacle and oat loaf</h3><p class="desc">Black treacle, rolled oats, a soft crumb.</p></div><span class="price mono">£5.20</span><div class="track" data-end="13:00"><span class="bar"></span><span class="gone mono">Sold out by 13:00</span></div></li>
+        <li><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M60 64 C26 66 22 30 46 26 C70 22 84 46 66 54 C52 60 42 46 52 40 C60 35 68 42 62 46" fill="none" stroke="#C07A3A" stroke-width="13" stroke-linecap="round"/><path d="M60 64 C26 66 22 30 46 26 C70 22 84 46 66 54" fill="none" stroke="#8A5528" stroke-width="2" stroke-linecap="round"/><g fill="#3B2216"><circle cx="40" cy="40" r="1.3"/><circle cx="56" cy="30" r="1.3"/><circle cx="72" cy="44" r="1.3"/></g></svg><div><h3>Cardamom knot</h3><p class="desc">Laminated dough, cardamom sugar.</p></div><span class="price mono">£3.40</span><div class="track" data-end="09:45"><span class="bar"></span><span class="gone mono">Sold out by 09:45</span></div></li>
+        <li><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><ellipse cx="60" cy="50" rx="46" ry="16" fill="#A9733F"/><ellipse cx="60" cy="46" rx="46" ry="16" fill="#C9874A"/><path d="M42 46 l8 -6 M56 48 l8 -6 M70 50 l8 -6" stroke="#3B2216" stroke-width="3" stroke-linecap="round"/><g fill="#F3EBDD"><circle cx="34" cy="44" r="1.3"/><circle cx="50" cy="52" r="1.3"/><circle cx="66" cy="40" r="1.3"/><circle cx="84" cy="48" r="1.3"/><circle cx="76" cy="54" r="1.2"/></g></svg><div><h3>Eccles cake</h3><p class="desc">Currants, butter pastry, eaten with Lancashire cheese.</p></div><span class="price mono">£3.20</span><div class="track" data-end="11:15"><span class="bar"></span><span class="gone mono">Sold out by 11:15</span></div></li>
+        <li><svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" focusable="false"><path d="M8 40 L112 34 L114 62 L10 66 Z" fill="#D9A659"/><path d="M8 40 L112 34 L114 40 L8 46 Z" fill="#B88440"/><g fill="#9A6230"><circle cx="26" cy="54" r="2.5"/><circle cx="44" cy="50" r="2.5"/><circle cx="62" cy="55" r="2.5"/><circle cx="80" cy="49" r="2.5"/><circle cx="98" cy="54" r="2.5"/><circle cx="36" cy="60" r="2.2"/><circle cx="90" cy="60" r="2.2"/></g><path d="M50 58 l6 -8 M54 56 l4 2 M86 54 l6 -8 M90 52 l4 2" stroke="#3F5A2E" stroke-width="2" stroke-linecap="round"/></svg><div><h3>Hearth focaccia</h3><p class="desc">Olive oil, rosemary, sea salt, by the slab.</p></div><span class="price mono">£4.20</span><div class="track" data-end="12:00"><span class="bar"></span><span class="gone mono">Sold out by 12:00</span></div></li>
+      </ol>
+    </div>
+    <div class="bake-foot"><p>Want a loaf held? Order by 16:00 the day before and collect by 10:00.</p><a class="btn btn-line" href="tel:+441614960731">Call the counter</a></div>
+  </div>
+</section>
+
+<section class="section brick" id="menu" aria-labelledby="menu-h">
+  <div class="wrap">
+    <div class="menu-head">
+      <div>
+        <h2 id="menu-h" class="h2">Tonight, from the hearth.</h2>
+        <p>Wednesday to Sunday from 17:30. The menu moves with the market and what the oven does best that week.</p>
+      </div>
+      <fieldset class="filter">
+        <legend>Show dishes that are</legend>
+        <div class="seg" role="radiogroup">
+          <label><input type="radio" name="diet" value="all" checked><span>All</span></label>
+          <label><input type="radio" name="diet" value="V"><span>Vegetarian</span></label>
+          <label><input type="radio" name="diet" value="VG"><span>Vegan</span></label>
+          <label><input type="radio" name="diet" value="GF"><span>Gluten-free</span></label>
+        </div>
+        <p class="count mono" id="count" aria-live="polite">11 dishes</p>
+      </fieldset>
+    </div>
+    <div class="courses">
+      <div class="course" data-course="small plates">
+        <h3>Small plates</h3>
+        <ul>
+          <li class="dish" data-tags="V"><div class="row"><h4>Hearth flatbread</h4><span class="lead"></span><span class="price mono">£6</span></div><p>Cultured butter, smoked salt.</p><div class="tags"><span class="tag mono" title="Vegetarian">V</span><span class="heat">430°C hearth</span></div></li>
+          <li class="dish" data-tags="V GF"><div class="row"><h4>Leeks from the embers</h4><span class="lead"></span><span class="price mono">£9</span></div><p>Hazelnut, buttermilk, chive oil.</p><div class="tags"><span class="tag mono" title="Vegetarian">V</span><span class="tag mono" title="Gluten-free">GF</span><span class="heat">in the embers</span></div></li>
+          <li class="dish" data-tags="GF"><div class="row"><h4>Cured mackerel</h4><span class="lead"></span><span class="price mono">£11</span></div><p>Blistered cucumber, dill, horseradish cream.</p><div class="tags"><span class="tag mono" title="Gluten-free">GF</span><span class="heat">flash at the mouth</span></div></li>
+          <li class="dish" data-tags="VG V GF"><div class="row"><h4>Beetroot baked in ash</h4><span class="lead"></span><span class="price mono">£9</span></div><p>Walnut, pickled shallot, toasted seeds.</p><div class="tags"><span class="tag mono" title="Vegan">VG</span><span class="tag mono" title="Gluten-free">GF</span><span class="heat">in the ash</span></div></li>
+        </ul>
+      </div>
+      <div class="course" data-course="large plates">
+        <h3>Large plates</h3>
+        <ul>
+          <li class="dish" data-tags="GF"><div class="row"><h4>Whole plaice off the hearth</h4><span class="lead"></span><span class="price mono">£28</span></div><p>Brown shrimp butter, charred lemon.</p><div class="tags"><span class="tag mono" title="Gluten-free">GF</span><span class="heat">430°C hearth</span></div></li>
+          <li class="dish" data-tags="GF"><div class="row"><h4>Lamb shoulder</h4><span class="lead"></span><span class="price mono">£27</span></div><p>Eight hours in the falling heat, flageolet beans, salsa verde.</p><div class="tags"><span class="tag mono" title="Gluten-free">GF</span><span class="heat">falling heat</span></div></li>
+          <li class="dish" data-tags="VG V"><div class="row"><h4>Salt-baked celeriac</h4><span class="lead"></span><span class="price mono">£19</span></div><p>Pickled walnut, rye crumb, burnt onion broth.</p><div class="tags"><span class="tag mono" title="Vegan">VG</span><span class="heat">falling heat</span></div></li>
+          <li class="dish" data-tags=""><div class="row"><h4>Chicken over the coals</h4><span class="lead"></span><span class="price mono">£22</span></div><p>Skewered thigh, flatbread, garlic sauce, pickled chilli.</p><div class="tags"><span class="heat">over the coals</span></div></li>
+        </ul>
+      </div>
+      <div class="course" data-course="desserts">
+        <h3>Desserts</h3>
+        <ul>
+          <li class="dish" data-tags="V"><div class="row"><h4>Burnt honey tart</h4><span class="lead"></span><span class="price mono">£8</span></div><p>Crème fraîche, bee pollen.</p><div class="tags"><span class="tag mono" title="Vegetarian">V</span><span class="heat">last of the heat</span></div></li>
+          <li class="dish" data-tags="VG V"><div class="row"><h4>Rye and dark chocolate pot</h4><span class="lead"></span><span class="price mono">£8</span></div><p>Sour cherries, oat cream.</p><div class="tags"><span class="tag mono" title="Vegan">VG</span><span class="heat">baked in the pot</span></div></li>
+          <li class="dish" data-tags="V"><div class="row"><h4>Apple from the embers</h4><span class="lead"></span><span class="price mono">£7.50</span></div><p>Oat crumble, custard.</p><div class="tags"><span class="tag mono" title="Vegetarian">V</span><span class="heat">in the embers</span></div></li>
+        </ul>
+        <p class="empty" hidden>No gluten-free dessert tonight. Ask at the pass and the kitchen will poach you some fruit.</p>
+      </div>
+    </div>
+    <p class="legend mono"><span>V vegetarian</span><span>VG vegan</span><span>GF gluten-free</span><span>Tell us about allergies when you book.</span></p>
+  </div>
+</section>
+
+<section class="section paper" id="book" aria-labelledby="book-h">
+  <div class="wrap book-grid">
+    <div class="book-side">
+      <h2 id="book-h" class="h2">Book a table.</h2>
+      <p>Dinner Wednesday to Sunday, tables from 17:30 to 21:30 for up to 8. For more, take the <a href="#chefs-table">chef’s table</a>. We keep the counter seats for walk-ins.</p>
+      <div>
+        <div class="minichart" id="mini" aria-hidden="true">
+          <svg viewBox="0 0 600 160" preserveAspectRatio="none"><path d="M0.0 31.1 L4.4 29.3 L8.5 27.7 L12.4 26.4 L16.2 25.3 L20.0 24.3 L23.9 23.5 L28.0 22.8 L32.3 22.1 L37.1 21.5 L42.3 20.9 L48.1 20.3 L54.5 19.6 L61.7 18.8 L69.6 18.1 L78.0 17.4 L86.9 16.7 L96.1 16.0 L105.7 15.4 L115.4 14.9 L125.3 14.4 L135.1 14.0 L144.8 13.7 L154.4 13.5 L163.6 13.3 L172.7 13.3 L181.8 13.4 L190.9 13.6 L200.0 13.9 L209.1 14.3 L218.2 14.7 L227.3 15.2 L236.4 15.7 L245.5 16.2 L254.5 16.8 L263.6 17.3 L272.7 17.8 L281.8 18.3 L290.9 18.8 L300.0 19.3 L309.1 19.8 L318.2 20.4 L327.3 20.9 L336.4 21.5 L345.5 22.2 L354.5 22.8 L363.6 23.5 L372.7 24.2 L381.8 24.9 L391.1 25.6 L400.6 26.1 L410.4 26.6 L420.2 27.1 L430.0 27.6 L439.8 28.2 L449.3 28.9 L458.6 29.7 L467.5 30.7 L475.9 32.0 L483.7 33.6 L490.9 35.6 L497.4 37.8 L503.2 40.2 L508.4 42.9 L513.1 45.7 L517.5 48.8 L521.6 52.1 L525.5 55.5 L529.3 59.2 L533.1 63.0 L537.0 67.0 L541.1 71.2 L545.5 75.6 L550.0 80.3 L554.5 85.4 L559.1 91.0 L563.6 96.8 L568.2 102.8 L572.7 108.9 L577.3 115.0 L581.8 121.0 L586.4 126.8 L590.9 132.3 L595.5 137.5 L600.0 142.2" fill="none" stroke="#C42B17" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
+          <span class="pen" id="miniPen"></span><span class="cap mono" id="miniCap">Pick a time</span>
+        </div>
+        <div class="axis mono" aria-hidden="true"><span style="left:0">17:00</span><span class="odd" style="left:18.2%">18:00</span><span style="left:36.4%">19:00</span><span class="odd" style="left:54.5%">20:00</span><span style="left:72.7%">21:00</span><span style="left:100%">22:30</span></div>
+      </div>
+    </div>
+    <div class="chit">
+      <form id="bookForm" novalidate>
+        <div class="two">
+          <div class="field"><label for="bName">Name</label><input id="bName" name="guestName" type="text" autocomplete="name" aria-describedby="bNameErr"><p class="err" id="bNameErr"></p></div>
+          <div class="field"><label for="bEmail">Email</label><input id="bEmail" name="email" type="email" inputmode="email" autocomplete="email" aria-describedby="bEmailErr"><p class="err" id="bEmailErr"></p></div>
+        </div>
+        <fieldset class="field" id="partyField" aria-describedby="bPartyErr"><legend>How many of you?</legend>
+          <div class="pick" id="party">
+            <label><input type="radio" name="party" value="1"><span>1</span></label><label><input type="radio" name="party" value="2"><span>2</span></label><label><input type="radio" name="party" value="3"><span>3</span></label><label><input type="radio" name="party" value="4"><span>4</span></label><label><input type="radio" name="party" value="5"><span>5</span></label><label><input type="radio" name="party" value="6"><span>6</span></label><label><input type="radio" name="party" value="7"><span>7</span></label><label><input type="radio" name="party" value="8"><span>8</span></label>
+          </div><p class="err" id="bPartyErr"></p>
+        </fieldset>
+        <div class="field"><label for="bDate">Date <span class="opt">(Wednesday to Sunday, next 30 days)</span></label>
+          <select id="bDate" name="date" aria-describedby="bDateErr"><option value="">Choose a date</option></select><p class="err" id="bDateErr"></p></div>
+        <fieldset class="field" id="timeField" aria-describedby="bTimeErr"><legend>Time</legend>
+          <div class="pick" id="times"></div><p class="err" id="bTimeErr"></p>
+        </fieldset>
+        <div class="field"><label for="bNotes">Dietary notes <span class="opt">(optional)</span></label><textarea id="bNotes" name="notes" rows="3" maxlength="500" placeholder="Allergies, intolerances, a high chair…"></textarea></div>
+        <div class="submit-row"><button class="btn btn-pen" type="submit">Book this table</button><small>We hold tables for 15 minutes.</small></div>
+      </form>
+      <div class="success" id="bookOk" hidden tabindex="-1">
+        <h3>Table booked.</h3>
+        <p id="okLine">We’ll see you at the pass.</p>
+        <dl id="okList"></dl>
+        <p>A confirmation is on its way to <strong id="okEmail"></strong>. To change it, reply to that email or call 0161 496 0731.</p>
+        <div><button class="btn btn-line" type="button" id="again">Book another table</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark" id="chefs-table" aria-labelledby="chef-h">
+  <div class="wrap chef-grid">
+    <figure class="plan-wrap" style="margin:0">
+      <svg class="plan" viewBox="0 0 640 420" role="img" aria-labelledby="planT"><title id="planT">Plan of the chef&#8217;s table: the oven dome at the top, the kitchen, then one long counter with ten place settings and ten stools facing the oven mouth</title><path d="M190 0 A130 130 0 0 0 450 0" fill="#6E2316"/><path d="M220 0 A100 100 0 0 0 420 0" fill="#2B1A14"/><path d="M223.4 25.9 L194.4 33.6" stroke="#171B19" stroke-width="1.5"/><path d="M233.4 50.0 L207.4 65.0" stroke="#171B19" stroke-width="1.5"/><path d="M249.3 70.7 L228.1 91.9" stroke="#171B19" stroke-width="1.5"/><path d="M270.0 86.6 L255.0 112.6" stroke="#171B19" stroke-width="1.5"/><path d="M294.1 96.6 L286.4 125.6" stroke="#171B19" stroke-width="1.5"/><path d="M320.0 100.0 L320.0 130.0" stroke="#171B19" stroke-width="1.5"/><path d="M345.9 96.6 L353.6 125.6" stroke="#171B19" stroke-width="1.5"/><path d="M370.0 86.6 L385.0 112.6" stroke="#171B19" stroke-width="1.5"/><path d="M390.7 70.7 L411.9 91.9" stroke="#171B19" stroke-width="1.5"/><path d="M406.6 50.0 L432.6 65.0" stroke="#171B19" stroke-width="1.5"/><path d="M416.6 25.9 L445.6 33.6" stroke="#171B19" stroke-width="1.5"/><path d="M296 96 H344 V134 H296 Z" fill="#2B1A14"/><path d="M286 134 H354 V146 H286 Z" fill="#A79E92"/><path d="M250 40 C262 22 286 26 284 46 C280 62 256 62 250 40 Z" fill="#F08A3C"/><path d="M258 42 C264 32 276 34 275 45 C272 53 262 53 258 42 Z" fill="#FBE3A0"/><path d="M190 0 A130 130 0 0 0 450 0" fill="none" stroke="#E9ECE3" stroke-width="2"/><rect x="70" y="40" width="96" height="120" fill="none" stroke="#E9ECE3" stroke-width="1.5"/><path d="M70 70 H166 M70 100 H166 M70 130 H166" stroke="#E9ECE3" stroke-width="1" opacity=".5"/><rect x="474" y="40" width="96" height="120" fill="none" stroke="#E9ECE3" stroke-width="1.5"/><circle cx="500" cy="70" r="12" fill="none" stroke="#E9ECE3" stroke-width="1.2"/><circle cx="544" cy="70" r="12" fill="none" stroke="#E9ECE3" stroke-width="1.2"/><circle cx="500" cy="118" r="12" fill="none" stroke="#E9ECE3" stroke-width="1.2"/><circle cx="544" cy="118" r="12" fill="none" stroke="#E9ECE3" stroke-width="1.2"/><path d="M196 200 L268 156" stroke="#C9874A" stroke-width="4" stroke-linecap="round"/><path d="M262 146 C276 138 290 150 280 162 L272 168 C262 170 254 158 262 146 Z" fill="#B88A55"/><rect x="50" y="236" width="540" height="56" fill="#222825" stroke="#E9ECE3" stroke-width="2.5"/><path d="M50 252 H590" stroke="#E9ECE3" stroke-width="1" opacity=".35"/><circle cx="77.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="77.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M59.0 264 v16 M95.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="131.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="131.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M113.0 264 v16 M149.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="185.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="185.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M167.0 264 v16 M203.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="239.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="239.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M221.0 264 v16 M257.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="293.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="293.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M275.0 264 v16 M311.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="347.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="347.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M329.0 264 v16 M365.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="401.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="401.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M383.0 264 v16 M419.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="455.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="455.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M437.0 264 v16 M473.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="509.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="509.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M491.0 264 v16 M527.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><circle cx="563.0" cy="272" r="12" fill="#E9ECE3"/><circle cx="563.0" cy="272" r="7.5" fill="none" stroke="#B9C7BC" stroke-width="1"/><path d="M545.0 264 v16 M581.0 264 v16" stroke="#B9C7BC" stroke-width="1.6" stroke-linecap="round"/><path d="M77.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M131.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M185.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M239.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M293.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M347.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M401.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M455.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M509.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><path d="M563.0 312 L320 146" stroke="#F08A3C" stroke-width="1" opacity=".28" stroke-dasharray="2 5"/><circle cx="77.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="77.0" cy="326" r="5" fill="#F08A3C"/><circle cx="131.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="131.0" cy="326" r="5" fill="#F08A3C"/><circle cx="185.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="185.0" cy="326" r="5" fill="#F08A3C"/><circle cx="239.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="239.0" cy="326" r="5" fill="#F08A3C"/><circle cx="293.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="293.0" cy="326" r="5" fill="#F08A3C"/><circle cx="347.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="347.0" cy="326" r="5" fill="#F08A3C"/><circle cx="401.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="401.0" cy="326" r="5" fill="#F08A3C"/><circle cx="455.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="455.0" cy="326" r="5" fill="#F08A3C"/><circle cx="509.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="509.0" cy="326" r="5" fill="#F08A3C"/><circle cx="563.0" cy="326" r="16" fill="#171B19" stroke="#F08A3C" stroke-width="2.5"/><circle cx="563.0" cy="326" r="5" fill="#F08A3C"/><path d="M50 372 H590" stroke="#E9ECE3" stroke-width="1" stroke-dasharray="6 6" opacity=".5"/><path d="M50 366 v12 M590 366 v12" stroke="#E9ECE3" stroke-width="1.2"/></svg>
+      <figcaption>
+        <span class="plan-lab mono e" style="left:66%;top:6%">The oven</span>
+        <span class="plan-lab mono" style="left:19%;top:44%">Bench</span>
+        <span class="plan-lab mono" style="left:81%;top:44%">Pots</span>
+        <span class="plan-lab mono" style="left:50%;top:57.5%">The pass</span>
+        <span class="plan-lab mono e" style="left:50%;top:93%">Ten seats, one sitting at 19:00</span>
+      </figcaption>
+    </figure>
+    <div class="chef-copy">
+      <h2 id="chef-h" class="h2">Ten seats facing the fire.</h2>
+      <p>The chef’s table is one long counter at the pass, close enough to feel the oven. Private dining for up to 10, Wednesday to Sunday, one sitting from 19:00.</p>
+      <ul class="incl">
+        <li>The whole counter to yourselves, for up to 10 guests</li>
+        <li>A set menu cooked through the evening’s heat, bread to dessert</li>
+        <li>That morning’s rye with cultured butter</li>
+        <li>The chef at the pass, talking you through each course</li>
+        <li>An optional drinks pairing</li>
+      </ul>
+      <div><button class="btn btn-paper" type="button" id="enqBtn" aria-expanded="false" aria-controls="enq">Enquire about the chef’s table</button></div>
+      <div class="enquiry" id="enq">
+        <div>
+          <form id="enqForm" novalidate>
+            <div class="two">
+              <div class="field"><label for="eName">Name</label><input id="eName" type="text" autocomplete="name" aria-describedby="eNameErr"><p class="err" id="eNameErr"></p></div>
+              <div class="field"><label for="eEmail">Email</label><input id="eEmail" type="email" inputmode="email" autocomplete="email" aria-describedby="eEmailErr"><p class="err" id="eEmailErr"></p></div>
+            </div>
+            <div class="two">
+              <div class="field"><label for="eDate">Preferred date</label><input id="eDate" type="date" aria-describedby="eDateErr"><p class="err" id="eDateErr"></p></div>
+              <div class="field"><label for="eGuests">Guests</label><select id="eGuests"><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
+            </div>
+            <button class="btn btn-pen" type="submit">Send enquiry</button>
+          </form>
+          <div class="success" id="enqOk" hidden tabindex="-1"><h3>Enquiry sent.</h3><p>We’ll reply within two working days with dates and the menu for your evening.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section brick" aria-labelledby="rev-h">
+  <div class="wrap quotes">
+    <h2 id="rev-h" class="h2">Overheard at the pass.</h2>
+    <blockquote class="big"><q>We sat at the counter and watched the fire that baked our morning loaf finish a whole plaice. It’s the only restaurant that made me want to come back for breakfast.</q><footer class="mono">Priya, dinner for two</footer></blockquote>
+    <div class="small-q">
+      <blockquote><q>The rye tin was gone by half ten, so now I set an alarm on Saturdays. Worth it.</q><footer class="mono">Tom, bakery regular</footer></blockquote>
+      <blockquote><q>Ten of us at the chef’s table for my dad’s sixtieth. He watched the lamb come out of the oven and still talks about it.</q><footer class="mono">Aisha, chef’s table</footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="section paper" aria-labelledby="faq-h">
+  <div class="wrap faq-grid">
+    <div><h2 id="faq-h" class="h2">Before you come.</h2><p>Anything else, call the counter on 0161 496 0731.</p></div>
+    <ul class="faq" id="faq">
+      <li><h3><button type="button" aria-expanded="false" aria-controls="a1" id="q1">Do you take walk-ins?<svg class="dial" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21 A11 11 0 0 1 27 21" fill="none" stroke="#C42B17" stroke-width="2"/><path class="nd" d="M17 17 L17 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="17" r="2.6" fill="currentColor"/></svg></button></h3>
+        <div class="ans" id="a1" role="region" aria-labelledby="q1"><div><p>Yes. The eight seats at the counter are kept for walk-ins every night we’re open. Come early on Fridays and Saturdays.</p></div></div></li>
+      <li><h3><button type="button" aria-expanded="false" aria-controls="a2" id="q2">Can you cook around allergies?<svg class="dial" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21 A11 11 0 0 1 27 21" fill="none" stroke="#C42B17" stroke-width="2"/><path class="nd" d="M17 17 L17 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="17" r="2.6" fill="currentColor"/></svg></button></h3>
+        <div class="ans" id="a2" role="region" aria-labelledby="q2"><div><p>Usually, yes. Put it in the dietary notes when you book and we’ll plan around it. Flour is in the air every morning, so we can’t promise a gluten-free kitchen.</p></div></div></li>
+      <li><h3><button type="button" aria-expanded="false" aria-controls="a3" id="q3">Can I reserve bread?<svg class="dial" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21 A11 11 0 0 1 27 21" fill="none" stroke="#C42B17" stroke-width="2"/><path class="nd" d="M17 17 L17 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="17" r="2.6" fill="currentColor"/></svg></button></h3>
+        <div class="ans" id="a3" role="region" aria-labelledby="q3"><div><p>Call the counter by 16:00 the day before and we’ll hold it for you until 10:00.</p></div></div></li>
+      <li><h3><button type="button" aria-expanded="false" aria-controls="a4" id="q4">Are children welcome?<svg class="dial" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21 A11 11 0 0 1 27 21" fill="none" stroke="#C42B17" stroke-width="2"/><path class="nd" d="M17 17 L17 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="17" r="2.6" fill="currentColor"/></svg></button></h3>
+        <div class="ans" id="a4" role="region" aria-labelledby="q4"><div><p>Always at the bakery, and at dinner for tables booked before 19:30. We have two high chairs; mention one when you book.</p></div></div></li>
+      <li><h3><button type="button" aria-expanded="false" aria-controls="a5" id="q5">Is the restaurant step-free?<svg class="dial" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21 A11 11 0 0 1 27 21" fill="none" stroke="#C42B17" stroke-width="2"/><path class="nd" d="M17 17 L17 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="17" r="2.6" fill="currentColor"/></svg></button></h3>
+        <div class="ans" id="a5" role="region" aria-labelledby="q5"><div><p>Yes, from the street to the tables, with an accessible toilet on the same floor. The counter stools are high, so ask for a table if you’d rather.</p></div></div></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="foot dark" id="visit">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h2>Visit</h2><p>18 Hilton Street<br>Northern Quarter<br>Manchester M4</p></div>
+      <div><h2>Opening hours</h2><dl class="mono"><dt>Bakery</dt><dd>Tue–Sun 07:30 till sold out</dd><dt>Dinner</dt><dd>Wed–Sun 17:30–23:00</dd><dt>Closed</dt><dd>Monday</dd></dl></div>
+      <div><h2>Call</h2><p><a href="tel:+441614960731">0161 496 0731</a></p><p style="margin-top:.6rem"><a href="#book">Book a table</a></p></div>
+      <div><h2>Follow the oven</h2><ul><li><a href="https://www.instagram.com/hearthandrye" rel="noopener">Instagram</a></li><li><a href="https://www.facebook.com/hearthandrye" rel="noopener">Facebook</a></li><li><a href="https://www.tiktok.com/@hearthandrye" rel="noopener">TikTok</a></li></ul></div>
+    </div>
+    <div class="foot-curve" aria-hidden="true"><span class="pin" data-h="7.5" data-box="120"><span class="mono">07:30 counter opens</span></span><span class="pin" data-h="17.5" data-box="120"><span class="mono">17:30 first tables</span></span><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0.0 109.2 L1.4 109.2 L3.3 109.3 L5.4 109.5 L7.8 109.7 L10.4 109.8 L13.1 110.0 L16.0 110.0 L18.9 109.8 L21.8 109.5 L24.7 109.0 L27.4 108.1 L30.0 107.0 L32.5 105.5 L35.0 103.8 L37.5 101.7 L40.0 99.5 L42.5 97.1 L45.0 94.5 L47.5 91.8 L50.0 89.0 L52.5 86.2 L55.0 83.3 L57.5 80.5 L60.0 77.7 L62.5 74.9 L65.1 71.8 L67.7 68.5 L70.3 65.0 L73.0 61.6 L75.6 58.1 L78.1 54.8 L80.7 51.6 L83.1 48.6 L85.5 45.9 L87.8 43.6 L90.0 41.8 L92.1 40.3 L94.2 39.2 L96.2 38.3 L98.1 37.7 L100.0 37.4 L101.8 37.2 L103.6 37.3 L105.2 37.4 L106.8 37.6 L108.3 37.8 L109.7 38.1 L111.0 38.4 L112.0 38.7 L112.6 39.2 L112.9 39.8 L113.0 40.5 L113.0 41.3 L113.1 42.2 L113.2 43.1 L113.7 44.0 L114.4 44.9 L115.7 45.8 L117.5 46.6 L120.0 47.4 L123.2 48.1 L127.0 48.7 L131.4 49.4 L136.2 50.0 L141.4 50.6 L146.8 51.3 L152.4 51.9 L158.1 52.5 L163.8 53.1 L169.4 53.7 L174.8 54.2 L180.0 54.8 L185.0 55.4 L190.0 55.9 L195.0 56.4 L200.0 57.0 L205.0 57.5 L210.0 58.0 L215.0 58.5 L220.0 59.0 L225.0 59.5 L230.0 59.9 L235.0 60.4 L240.0 60.9 L245.0 61.3 L250.0 61.8 L255.0 62.3 L260.0 62.7 L265.0 63.2 L270.0 63.6 L275.0 64.0 L280.0 64.5 L285.0 64.9 L290.0 65.3 L295.0 65.7 L300.0 66.0 L305.0 66.4 L310.0 66.8 L315.0 67.1 L320.0 67.5 L325.0 67.8 L330.0 68.1 L335.0 68.4 L340.0 68.7 L345.0 69.0 L350.0 69.3 L355.0 69.6 L360.0 69.9 L365.0 70.2 L370.0 70.4 L375.0 70.7 L380.0 71.0 L385.0 71.2 L390.0 71.5 L395.0 71.7 L400.0 71.9 L405.0 72.2 L410.0 72.4 L415.0 72.6 L420.0 72.8 L425.0 73.0 L430.0 73.2 L435.0 73.4 L440.0 73.6 L445.0 73.7 L450.0 73.9 L455.0 74.1 L460.0 74.2 L465.0 74.4 L470.0 74.5 L475.0 74.7 L480.0 74.8 L485.0 75.0 L490.0 75.1 L495.0 75.3 L500.0 75.4 L505.0 75.5 L510.0 75.7 L515.0 75.8 L520.0 75.9 L525.0 76.0 L530.0 76.2 L535.0 76.3 L540.0 76.4 L545.0 76.5 L550.0 76.6 L555.0 76.8 L560.0 76.9 L565.0 77.0 L570.0 77.1 L575.0 77.2 L580.0 77.3 L585.0 77.4 L590.0 77.6 L595.0 77.7 L600.0 77.7 L605.1 77.9 L610.3 78.0 L615.7 78.2 L621.1 78.3 L626.5 78.5 L631.9 78.6 L637.1 78.7 L642.2 78.8 L647.1 78.9 L651.7 78.9 L656.1 78.8 L660.0 78.7 L663.6 78.5 L666.7 78.3 L669.6 78.2 L672.2 78.0 L674.6 77.8 L676.9 77.6 L679.0 77.2 L681.1 76.7 L683.2 76.1 L685.3 75.3 L687.6 74.4 L690.0 73.3 L692.5 71.8 L695.0 70.2 L697.5 68.3 L700.0 66.2 L702.5 64.0 L705.0 61.7 L707.5 59.4 L710.0 57.1 L712.5 54.7 L715.0 52.5 L717.5 50.4 L720.0 48.5 L722.5 46.7 L725.0 44.9 L727.5 43.1 L730.0 41.3 L732.5 39.6 L735.0 38.0 L737.5 36.3 L740.0 34.8 L742.5 33.3 L745.0 31.9 L747.5 30.6 L750.0 29.4 L752.5 28.3 L755.0 27.2 L757.5 26.3 L760.0 25.4 L762.5 24.6 L765.0 23.9 L767.5 23.2 L770.0 22.5 L772.5 22.0 L775.0 21.4 L777.5 20.9 L780.0 20.4 L782.4 19.9 L784.7 19.5 L786.8 19.2 L788.9 18.9 L791.0 18.7 L793.1 18.4 L795.4 18.3 L797.8 18.1 L800.4 17.9 L803.3 17.8 L806.4 17.6 L810.0 17.5 L813.9 17.3 L818.3 17.1 L822.9 16.9 L827.8 16.7 L832.9 16.6 L838.1 16.4 L843.5 16.3 L848.9 16.1 L854.3 16.0 L859.7 16.0 L864.9 15.9 L870.0 15.9 L875.0 15.9 L880.0 15.9 L885.0 16.0 L890.0 16.0 L895.0 16.1 L900.0 16.2 L905.0 16.3 L910.0 16.5 L915.0 16.6 L920.0 16.7 L925.0 16.9 L930.0 17.0 L935.0 17.1 L940.0 17.3 L945.0 17.4 L950.0 17.5 L955.0 17.7 L960.0 17.8 L965.0 18.0 L970.0 18.1 L975.0 18.3 L980.0 18.4 L985.0 18.6 L990.0 18.8 L995.1 19.0 L1000.3 19.1 L1005.7 19.2 L1011.1 19.4 L1016.5 19.5 L1021.9 19.6 L1027.1 19.8 L1032.2 20.0 L1037.1 20.3 L1041.7 20.6 L1046.1 21.0 L1050.0 21.5 L1053.6 22.1 L1056.7 22.7 L1059.6 23.4 L1062.2 24.1 L1064.6 24.9 L1066.9 25.7 L1069.0 26.6 L1071.1 27.5 L1073.2 28.4 L1075.3 29.5 L1077.6 30.5 L1080.0 31.6 L1082.5 32.8 L1085.0 34.1 L1087.5 35.5 L1090.0 37.0 L1092.5 38.5 L1095.0 40.1 L1097.5 41.6 L1100.0 43.1 L1102.5 44.6 L1105.0 46.0 L1107.5 47.3 L1110.0 48.5 L1112.4 49.6 L1114.7 50.6 L1116.8 51.5 L1118.9 52.4 L1121.0 53.3 L1123.1 54.1 L1125.4 54.8 L1127.8 55.6 L1130.4 56.3 L1133.3 57.1 L1136.4 57.8 L1140.0 58.6 L1144.1 59.4 L1149.0 60.3 L1154.3 61.2 L1160.0 62.0 L1165.9 62.9 L1171.9 63.8 L1177.7 64.6 L1183.3 65.3 L1188.5 66.0 L1193.1 66.7 L1197.0 67.2 L1200.0 67.6" fill="none" stroke="#F08A3C" stroke-width="2" vector-effect="non-scaling-stroke"/></svg></div>
+    <p class="foot-name" aria-hidden="true">Hearth &amp; Rye</p>
+    <div class="foot-base"><span>© 2026 Hearth &amp; Rye. One oven, lit at 04:30.</span><a href="#top">Back to the top</a></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const CURVE = [30,29,27,27,28,32,40,54,73,96,120,145,170,196,225,254,283,309,330,343,349,350,346,314,305,301,297,294,291,289,286,284,281,279,277,274,272,270,267,265,262,260,258,256,253,251,249,247,245,243,241,239,237,235,233,231,229,227,225,224,222,220,219,217,216,214,213,211,210,209,208,206,205,204,203,201,200,199,198,197,196,195,194,193,192,191,190,189,189,188,187,186,186,185,184,184,183,182,182,181,180,180,179,179,178,178,177,177,176,175,175,174,174,173,173,172,172,171,171,170,170,170,169,168,168,167,166,166,165,165,165,165,166,167,168,170,173,180,190,204,221,241,262,282,300,316,332,347,361,374,385,395,403,410,415,420,425,429,432,434,436,437,438,439,440,441,442,442,443,443,444,444,445,445,445,445,445,445,444,444,443,443,442,442,441,441,440,439,439,438,438,437,436,436,435,434,434,433,432,431,431,430,430,429,429,428,427,426,425,423,420,416,411,404,396,385,375,364,351,338,324,311,300,290,281,272,266,260,255,251,247,243,240,237,233,230,227,224,221,218,215]; // °C every 5 min from 04:00
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  const tempAt = (min) => CURVE[Math.max(0, Math.min(CURVE.length - 1, Math.round((min - 240) / 5)))];
+  const hhmm = (m) => String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+  const xPct = (min) => (min - 240) / (1440 - 240) * 100;
+
+  /* ---------- mobile nav ---------- */
+  const mb = document.querySelector(".menu-btn"), drawer = document.getElementById("drawer");
+  const setNav = (open) => {
+    mb.setAttribute("aria-expanded", open); mb.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    drawer.hidden = !open;
+    if (open) drawer.querySelector("a").focus();
+  };
+  mb.addEventListener("click", () => setNav(mb.getAttribute("aria-expanded") !== "true"));
+  drawer.addEventListener("click", (e) => { if (e.target.closest("a")) setNav(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !drawer.hidden) { setNav(false); mb.focus(); } });
+  matchMedia("(min-width: 961px)").addEventListener("change", (e) => { if (e.matches) setNav(false); });
+
+  /* ---------- hero: oven through the day ---------- */
+  const PHASES = [
+    [270, "fire", "Fire lit", "Oak and ash burning down. Nothing goes in yet."],
+    [345, "bread", "Bread on the hearth", "Rye tins and country loaves go straight onto the hot brick."],
+    [540, "pastry", "Buns in the falling heat", "Cardamom knots and Eccles cakes, a tray at a time."],
+    [720, "pots", "Slow pots", "Beans, stock and tomorrow’s braise, lids on."],
+    [930, "refire", "Refire for service", "Fresh logs. The dome climbs back past 400°C."],
+    [1050, "service", "Dinner service", "Flatbreads, whole fish and the large plates, on the hearth."],
+    [1320, "banked", "Banked down", "The fire is covered. A pot of grains soaks up the last heat."]
+  ];
+  const oven = document.querySelector(".oven"), fig = document.getElementById("ovenFig");
+  const range = document.getElementById("hour"), cursor = document.getElementById("cursor"), dot = cursor.querySelector("i");
+  const roTime = document.getElementById("roTime"), roTemp = document.getElementById("roTemp"), roWhat = document.getElementById("roWhat"), roSub = document.getElementById("roSub");
+  const loads = oven.querySelectorAll(".load");
+  let heat = 0.6, shown = -1;
+  const phaseOf = (m) => { let p = PHASES[0]; for (const ph of PHASES) if (m >= ph[0]) p = ph; return p; };
+  function setHour(m) {
+    const t = tempAt(m), ph = phaseOf(m);
+    heat = t / 445;
+    oven.style.setProperty("--heat", (0.45 + 0.7 * heat).toFixed(3));
+    oven.style.setProperty("--glow", (0.25 + 0.75 * heat).toFixed(3));
+    oven.style.setProperty("--needle", (-210 + Math.min(t, 500) / 500 * 240).toFixed(1) + "deg");
+    oven.classList.toggle("refire", ph[1] === "refire");
+    loads.forEach((g) => g.classList.toggle("on", g.dataset.load === ph[1]));
+    if (shown !== m) {
+      roTime.textContent = hhmm(m); roTemp.textContent = t + "°C";
+      roWhat.textContent = ph[2]; roSub.textContent = ph[3]; roWhat.parentElement.dataset.what = ph[2]; shown = m;
+    }
+    cursor.style.left = xPct(m) + "%";
+    dot.style.top = (8 + (1 - t / 480) * 108) / 120 * 100 + "%";
+    range.setAttribute("aria-valuetext", `${hhmm(m)}, about ${t} degrees, ${ph[2].toLowerCase()}`);
+  }
+  range.addEventListener("input", () => setHour(+range.value));
+  document.getElementById("nowBtn").addEventListener("click", () => {
+    const d = new Date(); let m = d.getHours() * 60 + d.getMinutes();
+    m = Math.round(m / 15) * 15; if (m < 270 || m > 1380) m = 360;
+    range.value = m; setHour(m); range.focus();
+  });
+  setHour(+range.value);
+
+  /* sparks in the oven mouth */
+  const cv = document.getElementById("sparks"), ctx = cv.getContext("2d");
+  let parts = [], raf = 0, visible = true, W = 0, H = 0;
+  const size = () => { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = Math.round(W * d); cv.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0); };
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.save(); ctx.beginPath(); // clip to the arch
+    ctx.moveTo(0, H); ctx.lineTo(0, H * 0.54); ctx.arc(W / 2, H * 0.54, W / 2, Math.PI, 0); ctx.lineTo(W, H); ctx.closePath(); ctx.clip();
+    if (Math.random() < 0.15 + heat * 0.7) parts.push({ x: W * (0.12 + Math.random() * 0.2), y: H * 0.8, vx: (Math.random() - 0.3) * 0.5, vy: -(0.6 + Math.random() * 1.2 * heat), life: 1 });
+    for (const p of parts) {
+      p.x += p.vx + Math.sin(p.y / 14) * 0.25; p.y += p.vy; p.life -= 0.012;
+      ctx.fillStyle = `rgba(${246},${Math.round(150 + 80 * p.life)},${Math.round(60 * p.life)},${Math.max(0, p.life)})`;
+      ctx.fillRect(p.x, p.y, 1.8, 1.8);
+    }
+    parts = parts.filter((p) => p.life > 0 && p.y > 0);
+    ctx.restore();
+    raf = requestAnimationFrame(tick);
+  }
+  const startSparks = () => { if (!raf && visible && !reduce.matches && !document.hidden) { size(); raf = requestAnimationFrame(tick); } };
+  const stopSparks = () => { cancelAnimationFrame(raf); raf = 0; };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; fig.classList.toggle("paused", !visible); visible ? startSparks() : stopSparks(); }).observe(fig);
+  document.addEventListener("visibilitychange", () => document.hidden ? stopSparks() : startSparks());
+  reduce.addEventListener("change", () => reduce.matches ? (stopSparks(), ctx.clearRect(0, 0, W, H)) : startSparks());
+  addEventListener("resize", () => { if (raf) size(); });
+
+  /* ---------- oven story: pen draws with scroll ---------- */
+  const chart = document.getElementById("storyChart"), pen = document.getElementById("storyPen");
+  const yOf = (t) => (20 + (1 - t / 480) * 440) / 460 * 100;
+  chart.querySelectorAll(".pin").forEach((p) => { const m = +p.dataset.h * 60; p.style.left = xPct(m) + "%"; p.style.top = yOf(tempAt(m)) + "%"; });
+  function drawStory() {
+    let prog = 1;
+    if (!reduce.matches) {
+      const r = chart.getBoundingClientRect(), vh = innerHeight;
+      prog = Math.min(1, Math.max(0, (vh * 0.95 - r.top) / (r.height * 0.9)));
+    }
+    const m = 240 + prog * 1200;
+    chart.style.setProperty("--p", (prog * 100).toFixed(2) + "%");
+    pen.style.left = (prog * 100) + "%"; pen.style.top = yOf(tempAt(Math.min(m, 1440))) + "%";
+    pen.style.opacity = prog >= 1 ? 0 : 1;
+  }
+  let ticking = false;
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { drawStory(); ticking = false; }); } }, { passive: true });
+  drawStory();
+
+  document.querySelectorAll(".foot-curve .pin").forEach((p) => { const m = +p.dataset.h * 60; p.style.left = xPct(m) + "%"; p.style.top = (8 + (1 - tempAt(m) / 480) * 108) / 120 * 100 + "%"; });
+
+  /* ---------- bakery bars ---------- */
+  const toMin = (s) => { const [h, m] = s.split(":").map(Number); return h * 60 + m; };
+  const bx = (min) => (min - 420) / (840 - 420) * 100;
+  const tracks = document.querySelectorAll(".track");
+  tracks.forEach((t) => { const e = toMin(t.dataset.end); t.style.setProperty("--s", bx(450) + "%"); t.style.setProperty("--e", bx(e) + "%"); });
+
+  if (!reduce.matches && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => es.forEach((en) => {
+      if (!en.isIntersecting) return; io.unobserve(en.target);
+      [...en.target.querySelectorAll(".bar")].forEach((b, i) => b.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 900, delay: 80 * i, easing: "cubic-bezier(0.23,1,0.32,1)", fill: "backwards" }));
+    }), { threshold: 0.35 });
+    io.observe(document.querySelector(".bake"));
+  }
+
+  /* ---------- menu filter ---------- */
+  const dishes = [...document.querySelectorAll(".dish")], count = document.getElementById("count");
+  document.querySelectorAll('input[name=diet]').forEach((r) => r.addEventListener("change", () => {
+    const v = r.value; let n = 0;
+    dishes.forEach((d) => { const ok = v === "all" || d.dataset.tags.split(" ").includes(v); d.hidden = !ok; d.classList.remove("in"); if (ok) { n++; void d.offsetWidth; d.classList.add("in"); } });
+    document.querySelectorAll(".course").forEach((c) => { const e = c.querySelector(".empty"); if (e) e.hidden = !!c.querySelector(".dish:not([hidden])"); });
+    count.textContent = n + (n === 1 ? " dish" : " dishes") + (v === "all" ? "" : ", " + r.nextElementSibling.textContent.toLowerCase());
+  }));
+
+  /* ---------- booking ---------- */
+  const sel = document.getElementById("bDate"), today = new Date(); today.setHours(0, 0, 0, 0);
+  const fmt = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  const fmtLong = new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long" });
+  for (let i = 0; i <= 30; i++) { const d = new Date(today); d.setDate(d.getDate() + i); const wd = d.getDay(); if (wd === 1 || wd === 2) continue; const o = new Option(fmt.format(d), d.toISOString().slice(0, 10)); o.dataset.long = fmtLong.format(d); sel.add(o); }
+  const times = document.getElementById("times");
+  for (let m = 1050; m <= 1290; m += 30) times.insertAdjacentHTML("beforeend", `<label><input type="radio" name="time" value="${hhmm(m)}"><span>${hhmm(m)}</span></label>`);
+  const miniPen = document.getElementById("miniPen"), miniCap = document.getElementById("miniCap");
+  const placeMini = (m) => { const x = (m - 1020) / (1350 - 1020) * 100, y = (1 - (tempAt(m) - 280) / 180) * 100; miniPen.style.left = miniCap.style.left = x + "%"; miniPen.style.top = miniCap.style.top = y + "%"; miniCap.textContent = hhmm(m) + ", hearth " + tempAt(m) + "°C"; };
+  placeMini(1170);
+  times.addEventListener("change", (e) => placeMini(toMin(e.target.value)));
+
+  const form = document.getElementById("bookForm");
+  const setErr = (el, errEl, msg) => { errEl.textContent = msg; errEl.classList.toggle("show", !!msg); if (el.matches("input,select,textarea")) el.setAttribute("aria-invalid", msg ? "true" : "false"); else el.classList.toggle("bad", !!msg); };
+  const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  const checks = {
+    name: () => [form.elements.guestName, document.getElementById("bNameErr"), form.elements.guestName.value.trim().length < 2 ? "Add the name for the booking." : ""],
+    email: () => [form.email, document.getElementById("bEmailErr"), !form.email.value.trim() ? "Add an email so we can confirm." : !emailOk(form.email.value.trim()) ? "That email looks incomplete. Check the part after the @." : ""],
+    party: () => [document.getElementById("party"), document.getElementById("bPartyErr"), form.querySelector("input[name=party]:checked") ? "" : "Choose how many are coming, 1 to 8."],
+    date: () => [form.date, document.getElementById("bDateErr"), form.date.value ? "" : "Pick a date. We cook Wednesday to Sunday."],
+    time: () => [times, document.getElementById("bTimeErr"), form.querySelector("input[name=time]:checked") ? "" : "Pick a time between 17:30 and 21:30."]
+  };
+  const run = (k) => { const [el, er, msg] = checks[k](); setErr(el, er, msg); return !msg; };
+  form.elements.guestName.addEventListener("blur", () => form.elements.guestName.value && run("name"));
+  form.email.addEventListener("blur", () => form.email.value && run("email"));
+  [["name", "guestName"], ["email", "email"]].forEach(([k, f]) => form.elements[f].addEventListener("input", () => { if (form.elements[f].getAttribute("aria-invalid") === "true") run(k); }));
+  form.addEventListener("change", (e) => { const n = e.target.name; if (n === "party" || n === "time" || n === "date") run(n); });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const bad = Object.keys(checks).filter((k) => !run(k));
+    if (bad.length) { const first = { name: form.elements.guestName, email: form.email, party: form.querySelector("input[name=party]"), date: form.date, time: form.querySelector("input[name=time]") }[bad[0]]; first.focus(); return; }
+    const p = form.querySelector("input[name=party]:checked").value, t = form.querySelector("input[name=time]:checked").value;
+    document.getElementById("okList").innerHTML = "";
+    [["Name", form.elements.guestName.value.trim()], ["Guests", p], ["Date", sel.selectedOptions[0].dataset.long], ["Time", t], ["Notes", form.notes.value.trim() || "None"]].forEach(([a, b]) => { const dt = document.createElement("dt"), dd = document.createElement("dd"); dt.textContent = a; dd.textContent = b; document.getElementById("okList").append(dt, dd); });
+    document.getElementById("okEmail").textContent = form.email.value.trim();
+    document.getElementById("okLine").textContent = `Table for ${p} at ${t}. The hearth will be about ${tempAt(toMin(t))}°C when you sit down.`;
+    placeMini(toMin(t)); miniCap.textContent = t + ", your table";
+    form.hidden = true; const ok = document.getElementById("bookOk"); ok.hidden = false; ok.focus();
+  });
+  document.getElementById("again").addEventListener("click", () => { form.reset(); form.hidden = false; document.getElementById("bookOk").hidden = true; form.elements.guestName.focus(); });
+
+  /* ---------- chef's table enquiry ---------- */
+  const enqBtn = document.getElementById("enqBtn"), enq = document.getElementById("enq"), ef = document.getElementById("enqForm");
+  enq.inert = true;
+  enqBtn.addEventListener("click", () => { const o = enqBtn.getAttribute("aria-expanded") !== "true"; enqBtn.setAttribute("aria-expanded", o); enq.classList.toggle("open", o); enq.inert = !o; if (o) setTimeout(() => document.getElementById("eName").focus(), 60); });
+  const eMin = new Date(today); eMin.setDate(eMin.getDate() + 1); document.getElementById("eDate").min = eMin.toISOString().slice(0, 10);
+  ef.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const n = document.getElementById("eName"), m = document.getElementById("eEmail"), d = document.getElementById("eDate");
+    const r = [[n, document.getElementById("eNameErr"), n.value.trim().length < 2 ? "Add your name." : ""],
+               [m, document.getElementById("eEmailErr"), !emailOk(m.value.trim()) ? "Add a full email address." : ""],
+               [d, document.getElementById("eDateErr"), !d.value ? "Pick a date you’d like." : (new Date(d.value) < eMin ? "Choose a date from tomorrow on." : "")]];
+    r.forEach(([a, b, c]) => setErr(a, b, c));
+    const bad = r.find((x) => x[2]); if (bad) { bad[0].focus(); return; }
+    ef.hidden = true; const ok = document.getElementById("enqOk"); ok.hidden = false; ok.focus();
+  });
+
+  /* ---------- FAQ ---------- */
+  document.querySelectorAll("#faq button").forEach((b) => {
+    const a = document.getElementById(b.getAttribute("aria-controls")); a.inert = true;
+    b.addEventListener("click", () => { const o = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", o); a.classList.toggle("open", o); a.inert = !o; });
+  });
+})();
+</script>
+</body>
+</html>

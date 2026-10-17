@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIX // ATELIER — Spatial 3D, Motion &amp; AI Creative Studio</title>
+  <meta name="description" content="KINETIX ATELIER is an award-winning digital agency crafting branding, spatial 3D WebGL experiences, motion design, UI/UX, and AI-powered systems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #0D0E11;
+      --bg-surface: #17191E;
+      --bg-elevated: #21242C;
+      --bg-glass: rgba(23, 25, 30, 0.82);
+      --text-primary: #F5F3EF;
+      --text-secondary: #B8BCC6;
+      --text-muted: #9CA3AF;
+      --accent-primary: #FF4D2D;
+      --accent-secondary: #E2F163;
+      --accent-tertiary: #38BDF8;
+      --border-subtle: rgba(245, 243, 239, 0.12);
+      --border-strong: rgba(245, 243, 239, 0.28);
+      --font-display: 'Syne', system-ui, -apple-system, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+      --container-max: 1400px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      min-width: 0;
+    }
+
+    html {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    ::selection {
+      background: var(--accent-primary);
+      color: #0D0E11;
+    }
+
+    /* Accessibility Skip Link & Focus */
+    .skip-link {
+      position: fixed;
+      top: -100px;
+      left: 1.5rem;
+      z-index: 9999;
+      background: var(--accent-secondary);
+      color: #0D0E11;
+      padding: 0.75rem 1.25rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: top 0.25s var(--ease-out-expo);
+    }
+    .skip-link:focus {
+      top: 1.25rem;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-secondary);
+      outline-offset: 4px;
+    }
+
+    /* Custom Pointer Follower (Desktop Precise Pointer Only) */
+    .cursor-Follower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      border: 1.5px solid var(--accent-secondary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9000;
+      transform: translate3d(-100px, -100px, 0);
+      transition: width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo), background-color 0.25s ease, border-color 0.25s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-Follower.is-active {
+      width: 56px;
+      height: 56px;
+      background-color: rgba(226, 241, 99, 0.18);
+      border-color: var(--accent-primary);
+    }
+    @media (pointer: coarse), (max-width: 900px) {
+      .cursor-Follower {
+        display: none !important;
+      }
+    }
+
+    /* Utility Layout */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-secondary);
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent-primary);
+    }
+
+    /* 3. HEADER & FLOATING NAVIGATION */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.1rem 0;
+      transition: background-color 0.35s var(--ease-out-expo), padding 0.35s var(--ease-out-expo), border-color 0.35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    .site-header.is-scrolled {
+      background-color: rgba(13, 14, 17, 0.88);
+      backdrop-filter: blur(16px);
+      padding: 0.75rem 0;
+      border-bottom-color: var(--border-subtle);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+      min-height: 44px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--accent-primary);
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+    .brand-logo:hover .brand-mark {
+      transform: rotate(90deg);
+    }
+    .brand-mark span {
+      width: 12px;
+      height: 12px;
+      background: var(--accent-secondary);
+      display: block;
+      transform: rotate(45deg);
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(23, 25, 30, 0.75);
+      border: 1px solid var(--border-subtle);
+      padding: 0.3rem;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 500;
+      padding: 0.5rem 0.85rem;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.25s ease, background-color 0.25s ease;
+    }
+    .nav-link:hover, .nav-link:focus-visible {
+      color: var(--text-primary);
+      background: rgba(245, 243, 239, 0.08);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .btn-magnetic {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      min-height: 46px;
+      padding: 0.7rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: transform 0.25s var(--ease-out-expo), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+    .btn-primary {
+      background: var(--accent-primary);
+      color: #0D0E11;
+      border: 1.5px solid var(--accent-primary);
+    }
+    .btn-primary:hover {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+      color: #0D0E11;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-strong);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent-secondary);
+      color: var(--accent-secondary);
+    }
+
+    .menu-toggle-btn {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      min-height: 46px;
+      padding: 0.65rem 1.1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .menu-toggle-btn:hover {
+      border-color: var(--accent-primary);
+    }
+
+    /* Full-Screen Navigation Overlay */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 995;
+      background: rgba(13, 14, 17, 0.97);
+      backdrop-filter: blur(24px);
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s var(--ease-out-expo);
+    }
+    .nav-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-overlay-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      width: 100%;
+    }
+    .overlay-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .overlay-link {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 1.25rem;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.75rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      text-decoration: none;
+      line-height: 1.1;
+      transition: color 0.25s ease, transform 0.3s var(--ease-out-expo);
+      padding: 0.25rem 0;
+    }
+    .overlay-link span {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--accent-primary);
+    }
+    .overlay-link:hover {
+      color: var(--accent-secondary);
+      transform: translateX(16px);
+    }
+    .overlay-preview-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 2.25rem;
+      border-radius: 16px;
+    }
+    .overlay-preview-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.75rem;
+    }
+    .overlay-preview-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* 4. HERO: SIGNATURE CINEMATIC EXPERIENCE */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      padding: 8.5rem 0 4.5rem;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 5.8vw, 5.8rem);
+      font-weight: 800;
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+    }
+    .hero-headline .line-mask {
+      display: block;
+      overflow: hidden;
+    }
+    .hero-headline .line-inner {
+      display: inline-block;
+      transform: translateY(0);
+      transition: transform 0.8s var(--ease-out-expo);
+    }
+    .hero-headline .accent-word {
+      color: var(--accent-primary);
+      font-style: normal;
+    }
+    .hero-headline .chartreuse-word {
+      color: var(--accent-secondary);
+    }
+    .hero-lead {
+      font-size: clamp(1.05rem, 1.35vw, 1.28rem);
+      color: var(--text-secondary);
+      max-width: 58ch;
+      margin-bottom: 2.2rem;
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-discipline-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .discipline-pill {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.55rem 0.95rem;
+      min-height: 40px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+    }
+    .discipline-pill:hover,
+    .discipline-pill[aria-pressed="true"] {
+      background: var(--accent-primary);
+      color: #0D0E11;
+      border-color: var(--accent-primary);
+      font-weight: 700;
+    }
+
+    /* 3D Sculpture Stage */
+    .hero-stage-card {
+      position: relative;
+      background: radial-gradient(circle at 50% 40%, rgba(255, 77, 45, 0.16), rgba(13, 14, 17, 0.95) 72%);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      height: clamp(380px, 54vh, 560px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.25rem;
+    }
+    #hero-sculpture-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+    .stage-hud-top, .stage-hud-bottom {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+    .hud-badge {
+      background: rgba(13, 14, 17, 0.8);
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .scroll-indicator {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      min-height: 44px;
+    }
+    .scroll-indicator-line {
+      width: 42px;
+      height: 2px;
+      background: var(--border-strong);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-indicator-line::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: var(--accent-secondary);
+      animation: pulseSlide 2.2s infinite var(--ease-in-out-quart);
+    }
+    @keyframes pulseSlide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(220%); }
+    }
+
+    /* Section Spacing & Headers */
+    .section-block {
+      padding: clamp(5rem, 9vw, 8.5rem) 0;
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+    .section-header-split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: clamp(3rem, 5vw, 4.5rem);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 3.85rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+    }
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    /* 5. SECTION TWO: INTERACTIVE SERVICES SHOWCASE */
+    .services-interactive-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: stretch;
+    }
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .service-row-btn {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 1.35rem 1rem;
+      text-align: left;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      transition: background-color 0.3s ease, padding-left 0.3s var(--ease-out-expo);
+      min-height: 68px;
+    }
+    .service-row-btn:hover,
+    .service-row-btn[aria-selected="true"] {
+      background: rgba(255, 77, 45, 0.1);
+      padding-left: 1.65rem;
+    }
+    .service-row-btn[aria-selected="true"] .srv-index {
+      color: var(--accent-primary);
+    }
+    .service-row-btn[aria-selected="true"] .srv-name {
+      color: var(--accent-secondary);
+    }
+    .srv-index {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .srv-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2vw, 1.65rem);
+      font-weight: 700;
+    }
+    .srv-tag {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .service-stage-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      min-height: 460px;
+    }
+    #services-stage-canvas {
+      width: 100%;
+      height: 270px;
+      border-radius: 14px;
+      background: #0B0C0F;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .service-detail-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-primary);
+    }
+    .service-detail-desc {
+      color: var(--text-secondary);
+      margin-bottom: 1.2rem;
+    }
+    .service-deliverables {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      list-style: none;
+    }
+    .service-deliverables li {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: var(--bg-elevated);
+      color: var(--accent-secondary);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    /* 6. SELECTED WORK: IMMERSIVE PROJECT SHOWCASE */
+    .pinned-project-feature {
+      background: linear-gradient(135deg, #17191E 0%, #0D0E11 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: 28px;
+      padding: clamp(1.75rem, 4vw, 3.5rem);
+      margin-bottom: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .project-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--accent-secondary);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .project-title-xl {
+      font-family: var(--font-display);
+      font-size: clamp(1.45rem, 3.4vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .project-visual-frame {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: #090A0D;
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .project-visual-frame svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: transform 0.6s var(--ease-out-expo);
+    }
+    .project-card:hover .project-visual-frame svg,
+    .pinned-project-feature:hover .project-visual-frame svg {
+      transform: scale(1.04);
+    }
+
+    .work-staggered-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(1.75rem, 3.5vw, 3rem);
+    }
+    .project-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: transform 0.4s var(--ease-out-expo), border-color 0.3s ease;
+    }
+    .project-card:nth-child(even) {
+      transform: translateY(2rem);
+    }
+    .project-card:hover {
+      border-color: var(--accent-primary);
+    }
+    .project-card-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+    }
+
+    /* 7. ABOUT US: ANIMATED BRAND STORY */
+    .about-manifesto-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .manifesto-giant-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 3.5vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.14;
+      margin-bottom: 2rem;
+    }
+    .manifesto-giant-text .highlight {
+      color: var(--accent-secondary);
+      text-decoration: underline;
+      text-decoration-color: var(--accent-primary);
+      text-underline-offset: 8px;
+    }
+    .about-pillars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .pillar-box {
+      border-left: 2px solid var(--accent-primary);
+      padding-left: 1.15rem;
+    }
+    .pillar-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+    .about-sculpture-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* 8. CAPABILITIES: INTERACTIVE CREATIVE PLAYGROUND */
+    .playground-shell {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 26px;
+      padding: clamp(1.5rem, 3.5vw, 3rem);
+    }
+    .playground-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 1.25rem;
+    }
+    .mode-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .lab-mode-btn {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 0.6rem 1.15rem;
+      min-height: 44px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .lab-mode-btn[aria-pressed="true"] {
+      background: var(--accent-secondary);
+      color: #0D0E11;
+      border-color: var(--accent-secondary);
+      font-weight: 700;
+    }
+    .playground-stage-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    #playground-canvas {
+      width: 100%;
+      height: 340px;
+      background: #090A0D;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      display: block;
+      cursor: crosshair;
+    }
+    .lab-sliders {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .slider-field label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      margin-bottom: 0.45rem;
+      color: var(--text-secondary);
+    }
+    .slider-field input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-primary);
+      min-height: 32px;
+      cursor: pointer;
+    }
+
+    /* 9. OUR PROCESS: 01 - 05 SCROLL-DRIVEN STORYTELLING */
+    .process-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .process-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .process-step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 1.65rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease, transform 0.3s var(--ease-out-expo);
+    }
+    .process-step-card.is-active,
+    .process-step-card:hover {
+      border-color: var(--accent-secondary);
+      transform: translateX(8px);
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.65rem;
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      background: rgba(255, 77, 45, 0.14);
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+    }
+    .process-visualizer-box {
+      position: sticky;
+      top: 6.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 2.25rem;
+      text-align: center;
+    }
+    #process-canvas {
+      width: 100%;
+      height: 300px;
+      background: #0A0B0E;
+      border-radius: 14px;
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    /* 10. IMPACT & NUMBERS (DEMO DISCLOSURE) */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 2.4vw, 2.55rem);
+      font-weight: 800;
+      color: var(--accent-secondary);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.65rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .metric-label {
+      font-weight: 600;
+      font-size: 1.02rem;
+      margin-bottom: 0.35rem;
+    }
+    .metric-note {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .demo-disclaimer-banner {
+      margin-top: 1.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+    }
+
+    /* 11. TESTIMONIALS & CLIENTS (DEMO BRANDS) */
+    .client-logo-wall {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+    .client-demo-tile {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.25rem 0.75rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+    .client-demo-tile:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+    .testimonial-stage {
+      background: linear-gradient(145deg, #17191E, #111318);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: clamp(2rem, 4vw, 3.5rem);
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .testimonial-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.3vw, 2.1rem);
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+    }
+    .testimonial-controls {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    /* 12. EXPERIMENTAL FULL-SCREEN SPATIAL TRANSITION */
+    .spatial-portal-section {
+      padding: clamp(5rem, 10vw, 9rem) 0;
+      background: radial-gradient(circle at 50% 50%, rgba(226, 241, 99, 0.14), rgba(255, 77, 45, 0.08) 45%, #0D0E11 75%);
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: center;
+      overflow: hidden;
+    }
+    .portal-ring-frame {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: clamp(1.75rem, 4.5vw, 4.5rem);
+      border: 1px solid var(--border-strong);
+      border-radius: 32px;
+      background: rgba(13, 14, 17, 0.78);
+      backdrop-filter: blur(12px);
+      transition: transform 0.5s var(--ease-out-expo), border-color 0.4s ease;
+    }
+    .portal-ring-frame:hover {
+      transform: scale(1.015);
+      border-color: var(--accent-secondary);
+    }
+    .portal-giant-statement {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 4.4vw, 3.9rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    /* 13. CONTACT: SPECTACULAR FINAL CTA */
+    .contact-section {
+      padding: clamp(5.5rem, 10vw, 9rem) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(2.5rem, 5vw, 4.5rem);
+      align-items: start;
+    }
+    .contact-mega-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.45rem, 3.6vw, 3.55rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .contact-form-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: clamp(1.75rem, 3.5vw, 2.75rem);
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .form-control {
+      width: 100%;
+      background: #0D0E11;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      min-height: 46px;
+    }
+    .form-control:focus {
+      border-color: var(--accent-secondary);
+      outline: none;
+    }
+    .form-status {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent-secondary);
+      min-height: 1.4rem;
+    }
+
+    /* 14. FOOTER */
+    .site-footer {
+      padding: 4rem 0 3rem;
+      background: #090A0D;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .footer-col h3 {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-secondary);
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: var(--accent-primary);
+    }
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1120px) {
+      .desktop-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .services-interactive-layout,
+      .pinned-project-feature,
+      .about-manifesto-grid,
+      .playground-stage-grid,
+      .process-layout,
+      .testimonial-stage,
+      .contact-grid,
+      .nav-overlay-grid {
+        grid-template-columns: 1fr;
+      }
+      .impact-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .client-logo-wall {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .project-card:nth-child(even) {
+        transform: none;
+      }
+      .process-visualizer-box {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-actions .btn-primary {
+        display: none;
+      }
+      .header-inner {
+        gap: 0.5rem;
+      }
+      .brand-logo {
+        font-size: 0.76rem;
+        gap: 0.4rem;
+        letter-spacing: 0.01em;
+      }
+      .brand-mark {
+        width: 24px;
+        height: 24px;
+      }
+      .menu-toggle-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.68rem;
+      }
+      .step-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      .step-title {
+        font-size: 1.25rem;
+      }
+      .stage-hud-top,
+      .stage-hud-bottom,
+      .demo-disclaimer-banner {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .hud-badge {
+        font-size: 0.66rem;
+        padding: 0.25rem 0.5rem;
+      }
+      .section-header-split,
+      .work-staggered-grid,
+      .about-pillars,
+      .impact-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .client-logo-wall {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .service-row-btn {
+        grid-template-columns: 42px 1fr;
+      }
+      .srv-tag {
+        display: none;
+      }
+    }
+
+    /* 16. PREFERS-REDUCED-MOTION GUARDRAIL */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="cursor-Follower" id="custom-cursor" aria-hidden="true"></div>
+
+  <!-- 3. HEADER & FLOATING NAVIGATION -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand-logo" aria-label="KINETIX ATELIER Home">
+        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span>KINETIX // ATELIER</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Primary Navigation">
+        <a href="#services" class="nav-link">Disciplines</a>
+        <a href="#work" class="nav-link">Selected Work</a>
+        <a href="#about" class="nav-link">Philosophy</a>
+        <a href="#playground" class="nav-link">3D Lab</a>
+        <a href="#process" class="nav-link">Process</a>
+        <a href="#contact" class="nav-link">Initiate</a>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="menu-toggle-btn" id="menu-toggle" aria-expanded="false" aria-controls="nav-overlay">
+          <span id="menu-toggle-label">Index [+]</span>
+        </button>
+        <a href="#contact" class="btn-magnetic btn-primary">Start Project</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Full-Screen Overlay Menu -->
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true" role="dialog" aria-label="Full Screen Studio Index">
+    <div class="container nav-overlay-grid">
+      <ul class="overlay-links">
+        <li><a href="#services" class="overlay-link" data-preview="Interactive 6-discipline spatial &amp; motion architecture."><span>01</span> Services &amp; Capabilities</a></li>
+        <li><a href="#work" class="overlay-link" data-preview="5 bespoke digital worlds, WebGL flagships &amp; brand systems."><span>02</span> Selected Case Studies</a></li>
+        <li><a href="#about" class="overlay-link" data-preview="Why we replace static templates with living choreography."><span>03</span> Studio Manifesto</a></li>
+        <li><a href="#playground" class="overlay-link" data-preview="Real-time 3D shader, kinetic type &amp; spring physics sandbox."><span>04</span> Interactive Playground</a></li>
+        <li><a href="#process" class="overlay-link" data-preview="01 Discover to 05 Launch — deterministic engineering."><span>05</span> 01–05 Process</a></li>
+        <li><a href="#contact" class="overlay-link" data-preview="Commission a flagship digital experience for Q3/Q4."><span>06</span> Initiate Mandate</a></li>
+      </ul>
+      <div class="overlay-preview-card">
+        <div class="overlay-preview-tag">STUDIO TELEMETRY // MODE A</div>
+        <h2 class="overlay-preview-title" id="overlay-preview-title">Spatial WebGL &amp; Kinetic Brand Architecture</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;" id="overlay-preview-desc">
+          Hover any chapter to preview our multidisciplinary creative studio output across Zurich, Tokyo, and New York.
+        </p>
+        <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-secondary);">
+          LATENCY BUDGET: &lt;16.6ms (60FPS) · WCAG 2.2 AA VERIFIED
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+    <!-- 4. HERO: SIGNATURE CINEMATIC EXPERIENCE -->
+    <section class="hero-section" id="top" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">AWWWARDS-GRADE DIGITAL ATELIER // ZURICH · TOKYO · NYC</div>
+            <h1 class="hero-headline" id="hero-title">
+              <span class="line-mask"><span class="line-inner">WE MAKE</span></span>
+              <span class="line-mask"><span class="line-inner"><span class="accent-word">DIGITAL</span> FEEL</span></span>
+              <span class="line-mask"><span class="line-inner"><span class="chartreuse-word">ALIVE.</span></span></span>
+            </h1>
+            <p class="hero-lead">
+              We are a multidisciplinary creative direction, real-time 3D WebGL, kinetic identity, and AI automation studio. We build flagship digital experiences that refuse to look like templates.
+            </p>
+            <div class="hero-cta-row">
+              <a href="#work" class="btn-magnetic btn-primary">Explore Selected Work</a>
+              <a href="#playground" class="btn-magnetic btn-outline">Launch 3D Playground</a>
+            </div>
+
+            <div class="hero-discipline-bar" role="group" aria-label="Morph 3D Hero Sculpture by Discipline">
+              <button type="button" class="discipline-pill" data-morph="0" aria-pressed="true">01 // Spatial 3D</button>
+              <button type="button" class="discipline-pill" data-morph="1" aria-pressed="false">02 // Brand Identity</button>
+              <button type="button" class="discipline-pill" data-morph="2" aria-pressed="false">03 // Motion Systems</button>
+              <button type="button" class="discipline-pill" data-morph="3" aria-pressed="false">04 // AI Automation</button>
+            </div>
+
+            <a href="#services" class="scroll-indicator">
+              <span class="scroll-indicator-line" aria-hidden="true"></span>
+              <span>SCROLL TO SYNCHRONIZE // 01–14</span>
+            </a>
+          </div>
+
+          <div class="hero-stage-card" aria-label="Interactive 3D Digital Sculpture">
+            <div class="stage-hud-top">
+              <span class="hud-badge" id="sculpture-hud-mode">MESH: ORBITAL TORUS LATTICE</span>
+              <span class="hud-badge">DPR &lt;= 2.0 · 60FPS</span>
+            </div>
+            <canvas id="hero-sculpture-canvas" width="640" height="520"></canvas>
+            <div class="stage-hud-bottom">
+              <span class="hud-badge">POINTER: REACTIVE TILT</span>
+              <span class="hud-badge" id="sculpture-hud-coords">ROT: 0.42 rad/s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SECTION TWO: INTERACTIVE SERVICES SHOWCASE -->
+    <section class="section-block" id="services" aria-labelledby="services-heading">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <div class="eyebrow">02 // MULTIDISCIPLINARY CAPABILITIES</div>
+            <h2 class="section-title" id="services-heading">Six Disciplines. One Living Stage.</h2>
+          </div>
+          <p class="section-subtitle">
+            Select or hover any discipline below to morph our real-time visual engine and inspect the underlying deliverable architecture.
+          </p>
+        </div>
+
+        <div class="services-interactive-layout">
+          <div class="services-list" role="tablist" aria-label="Agency Services">
+            <button type="button" class="service-row-btn" role="tab" aria-selected="true" data-service="0">
+              <span class="srv-index">01</span>
+              <span class="srv-name">Creative Branding &amp; Identity</span>
+              <span class="srv-tag">Variable Type · Design DNA</span>
+            </button>
+            <button type="button" class="service-row-btn" role="tab" aria-selected="false" data-service="1">
+              <span class="srv-index">02</span>
+              <span class="srv-name">Website Design &amp; Engineering</span>
+              <span class="srv-tag">Next.js · Astro · WebGL</span>
+            </button>
+            <button type="button" class="service-row-btn" role="tab" aria-selected="false" data-service="2">
+              <span class="srv-index">03</span>
+              <span class="srv-name">3D &amp; Motion Choreography</span>
+              <span class="srv-tag">Three.js · GSAP · Shaders</span>
+            </button>
+            <button type="button" class="service-row-btn" role="tab" aria-selected="false" data-service="3">
+              <span class="srv-index">04</span>
+              <span class="srv-name">AI-Powered Solutions &amp; Automation</span>
+              <span class="srv-tag">Agentic Workflows · RAG</span>
+            </button>
+            <button type="button" class="service-row-btn" role="tab" aria-selected="false" data-service="4">
+              <span class="srv-index">05</span>
+              <span class="srv-name">Digital Marketing &amp; Growth</span>
+              <span class="srv-tag">Conversion Velocity · CRO</span>
+            </button>
+            <button type="button" class="service-row-btn" role="tab" aria-selected="false" data-service="5">
+              <span class="srv-index">06</span>
+              <span class="srv-name">UI/UX &amp; Spatial Interfaces</span>
+              <span class="srv-tag">Design Systems · WCAG 2.2 AA</span>
+            </button>
+          </div>
+
+          <div class="service-stage-panel" role="tabpanel" id="service-tabpanel" aria-live="polite">
+            <canvas id="services-stage-canvas" width="600" height="270"></canvas>
+            <div>
+              <div class="eyebrow" id="service-stage-kicker">DISCIPLINE 01 // IDENTITY ARCHITECTURE</div>
+              <h3 class="service-detail-title" id="service-stage-title">Algorithmic Brand Systems &amp; Kinetic Typography</h3>
+              <p class="service-detail-desc" id="service-stage-desc">
+                We craft generative visual identities, bespoke display typography, and motion-first brand books that scale effortlessly from spatial 3D stages to high-contrast editorial print.
+              </p>
+              <ul class="service-deliverables" id="service-stage-tags">
+                <li>Generative Marks</li>
+                <li>Kinetic Type Rules</li>
+                <li>Google DESIGN.md Spec</li>
+                <li>Sonic &amp; Motion Tokens</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SELECTED WORK: IMMERSIVE PROJECT SHOWCASE -->
+    <section class="section-block" id="work" aria-labelledby="work-heading">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <div class="eyebrow">03 // SELECTED ARCHIVE (2025–2026)</div>
+            <h2 class="section-title" id="work-heading">Engineered to Command Attention.</h2>
+          </div>
+          <p class="section-subtitle">
+            Five fictional flagship commissions demonstrating our bespoke spatial storytelling, custom shaders, and conversion precision.
+          </p>
+        </div>
+
+        <!-- Full-Screen Pinned Feature Project -->
+        <article class="pinned-project-feature" aria-labelledby="proj-featured-title">
+          <div>
+            <div class="project-meta-row">
+              <span>FEATURED FLAGSHIP // 01</span>
+              <span>·</span>
+              <span>PHOTONIC COMPUTING</span>
+              <span>·</span>
+              <span>3D WEBGL + BRAND SYSTEM</span>
+            </div>
+            <h3 class="project-title-xl" id="proj-featured-title">AETHERIA QUANTUM — Optical Processor Launch</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.75rem;">
+              We transformed Aetheria's sub-nanometer optical lattice into an interactive real-time raymarched browser experience that increased institutional developer signups by 310%.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+              <button type="button" class="btn-magnetic btn-primary" id="toggle-shader-btn">Invert Optical Lattice</button>
+              <a href="#contact" class="btn-magnetic btn-outline">Inspect Case Architecture</a>
+            </div>
+          </div>
+          <div class="project-visual-frame" id="featured-visual-frame">
+            <svg viewBox="0 0 640 400" role="img" aria-label="Aetheria Quantum Optical Lattice Visualization">
+              <defs>
+                <radialGradient id="aetheriaGlow" cx="50%" cy="50%" r="55%">
+                  <stop offset="0%" stop-color="#FF4D2D" stop-opacity="0.55" />
+                  <stop offset="55%" stop-color="#E2F163" stop-opacity="0.18" />
+                  <stop offset="100%" stop-color="#090A0D" stop-opacity="1" />
+                </radialGradient>
+              </defs>
+              <rect width="640" height="400" fill="url(#aetheriaGlow)" />
+              <g stroke="#E2F163" stroke-width="1.2" fill="none" opacity="0.75" id="aetheria-rings">
+                <ellipse cx="320" cy="200" rx="220" ry="88" transform="rotate(-18 320 200)" />
+                <ellipse cx="320" cy="200" rx="220" ry="88" transform="rotate(18 320 200)" />
+                <ellipse cx="320" cy="200" rx="160" ry="140" />
+                <circle cx="320" cy="200" r="54" stroke="#FF4D2D" stroke-width="2.5" />
+                <path d="M100 200 H540 M320 40 V360" stroke="rgba(245,243,239,0.22)" stroke-dasharray="4 6" />
+              </g>
+              <text x="28" y="368" fill="#F5F3EF" font-family="Space Mono, monospace" font-size="13">OPTICAL COHERENCE // 128 QUBIT WAVEGUIDE</text>
+            </svg>
+          </div>
+        </article>
+
+        <!-- Staggered 4-Project Archive -->
+        <div class="work-staggered-grid">
+          <article class="project-card">
+            <div class="project-visual-frame">
+              <svg viewBox="0 0 560 350" role="img" aria-label="Kronos Horology Spatial Configurator">
+                <rect width="560" height="350" fill="#0E1015" />
+                <circle cx="280" cy="175" r="118" fill="none" stroke="#FF4D2D" stroke-width="2" stroke-dasharray="8 6" />
+                <circle cx="280" cy="175" r="82" fill="none" stroke="#E2F163" stroke-width="1.5" />
+                <polygon points="280,75 365,225 195,225" fill="rgba(255,77,45,0.16)" stroke="#F5F3EF" stroke-width="1.5" />
+                <text x="24" y="324" fill="#E2F163" font-family="Space Mono, monospace" font-size="12">02 // HAUTE HORLOGERIE · 3D COMMERCE</text>
+              </svg>
+            </div>
+            <div class="project-meta-row"><span>02 // KRONOS GENEVE</span><span>·</span><span>SPATIAL E-COMMERCE &amp; SHADERS</span></div>
+            <h3 class="project-card-title">Chronograph Calibre 99 — Mechanical 3D Exploded View</h3>
+            <p style="color: var(--text-secondary);">Interactive 144-part mechanical tourbillon disassembled in real time on scroll with physically based brushed titanium shaders.</p>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual-frame">
+              <svg viewBox="0 0 560 350" role="img" aria-label="Valkyrie Aerospace Telemetry Cockpit">
+                <rect width="560" height="350" fill="#0B0E14" />
+                <path d="M60 260 Q280 60 500 260" fill="none" stroke="#38BDF8" stroke-width="2.5" />
+                <path d="M90 290 L280 95 L470 290 Z" fill="rgba(56,189,248,0.12)" stroke="#E2F163" stroke-width="1.4" />
+                <line x1="60" y1="175" x2="500" y2="175" stroke="#FF4D2D" stroke-width="1.2" stroke-dasharray="5 5" />
+                <text x="24" y="324" fill="#38BDF8" font-family="Space Mono, monospace" font-size="12">03 // SUPERSONIC AVIATION · UI/UX TELEMETRY</text>
+              </svg>
+            </div>
+            <div class="project-meta-row"><span>03 // VALKYRIE AERO</span><span>·</span><span>FLIGHT DECK UI/UX &amp; IDENTITY</span></div>
+            <h3 class="project-card-title">Mach-2.2 Autonomous Flight Command Interface</h3>
+            <p style="color: var(--text-secondary);">Zero-latency mission control interface and variable typographic system engineered for high-glare cockpit readability.</p>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual-frame">
+              <svg viewBox="0 0 560 350" role="img" aria-label="Synthoma Bio Protein Folding Visualizer">
+                <rect width="560" height="350" fill="#110E14" />
+                <path d="M80 180 C160 60, 240 300, 320 150 C380 40, 440 280, 500 160" fill="none" stroke="#E2F163" stroke-width="3" />
+                <circle cx="160" cy="128" r="14" fill="#FF4D2D" />
+                <circle cx="320" cy="150" r="18" fill="#E2F163" />
+                <circle cx="440" cy="210" r="14" fill="#38BDF8" />
+                <text x="24" y="324" fill="#FF4D2D" font-family="Space Mono, monospace" font-size="12">04 // GENERATIVE BIOTECH · AI WORKBENCH</text>
+              </svg>
+            </div>
+            <div class="project-meta-row"><span>04 // SYNTHOMA BIO</span><span>·</span><span>AI PLATFORM &amp; MOTION SYSTEM</span></div>
+            <h3 class="project-card-title">Molecular Folding Studio &amp; Generative Brand Identity</h3>
+            <p style="color: var(--text-secondary);">Interactive WebGPU molecular folding visualizer paired with an algorithmic brand identity that mutates with amino sequences.</p>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual-frame">
+              <svg viewBox="0 0 560 350" role="img" aria-label="Nocturne Sonic Spatial Acoustic Synthesizer">
+                <rect width="560" height="350" fill="#0D0F12" />
+                <g stroke="#F5F3EF" stroke-width="1.5" fill="none">
+                  <rect x="130" y="75" width="300" height="200" rx="18" stroke="#FF4D2D" />
+                  <circle cx="230" cy="175" r="56" stroke="#E2F163" stroke-width="2" />
+                  <circle cx="355" cy="175" r="34" stroke="#38BDF8" stroke-width="2" />
+                </g>
+                <text x="24" y="324" fill="#F5F3EF" font-family="Space Mono, monospace" font-size="12">05 // SPATIAL AUDIO · INDUSTRIAL LAUNCH</text>
+              </svg>
+            </div>
+            <div class="project-meta-row"><span>05 // NOCTURNE SONIC</span><span>·</span><span>3D PRODUCT LAUNCH &amp; SOUND</span></div>
+            <h3 class="project-card-title">Monolith One — Tactile Acoustic Synthesizer Reveal</h3>
+            <p style="color: var(--text-secondary);">Audio-reactive shaders and tactile knob microinteractions that let visitors play the hardware synthesizer directly in the browser.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ABOUT US: ANIMATED BRAND STORY -->
+    <section class="section-block" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-manifesto-grid">
+          <div>
+            <div class="eyebrow">04 // STUDIO PHILOSOPHY &amp; MANIFESTO</div>
+            <h2 class="manifesto-giant-text" id="about-heading">
+              Template culture made the web forget how to feel. We architect <span class="highlight">kinetic digital instruments</span> where code, sculpture, and typography move as one organism.
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1.08rem;">
+              Founded by principal graphics engineers, type directors, and conversion strategists, KINETIX // ATELIER bridges the chasm between experimental Awwwards artistry and deterministic production engineering.
+            </p>
+            <div class="about-pillars">
+              <div class="pillar-box">
+                <h3>Zero Stock Clichés</h3>
+                <p style="color: var(--text-secondary); font-size: 0.92rem;">Every surface, shader, and geometric primitive is custom-authored for your domain narrative.</p>
+              </div>
+              <div class="pillar-box">
+                <h3>60 FPS Discipline</h3>
+                <p style="color: var(--text-secondary); font-size: 0.92rem;">Capped DPR, off-screen observer pausing, and strict WCAG 2.2 AA accessibility guardrails.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-sculpture-card">
+            <div class="eyebrow">PHILOSOPHY ARTIFACT // GYRO-01</div>
+            <svg viewBox="0 0 360 320" width="100%" height="260" role="img" aria-label="Studio Architectural Gyroscope">
+              <circle cx="180" cy="160" r="110" fill="none" stroke="#FF4D2D" stroke-width="2" />
+              <ellipse cx="180" cy="160" rx="110" ry="42" fill="none" stroke="#E2F163" stroke-width="1.8" transform="rotate(35 180 160)" />
+              <ellipse cx="180" cy="160" rx="110" ry="42" fill="none" stroke="#38BDF8" stroke-width="1.8" transform="rotate(-35 180 160)" />
+              <circle cx="180" cy="160" r="18" fill="#E2F163" />
+            </svg>
+            <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">
+              ART DIRECTION × REAL-TIME 3D × MEASURABLE GROWTH
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CAPABILITIES: INTERACTIVE CREATIVE PLAYGROUND -->
+    <section class="section-block" id="playground" aria-labelledby="playground-heading">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <div class="eyebrow">05 // INTERACTIVE CREATIVE PLAYGROUND</div>
+            <h2 class="section-title" id="playground-heading">Test-Drive Our Motion Engine.</h2>
+          </div>
+          <p class="section-subtitle">
+            Interact with our live physics, 3D material lattice, and kinetic typography synthesizer right inside the page. Move your pointer across the canvas or adjust parameters.
+          </p>
+        </div>
+
+        <div class="playground-shell">
+          <div class="playground-controls">
+            <div class="mode-btn-group" role="group" aria-label="Select Playground Experiment">
+              <button type="button" class="lab-mode-btn" data-lab="0" aria-pressed="true">01 // 3D Shader Lattice</button>
+              <button type="button" class="lab-mode-btn" data-lab="1" aria-pressed="false">02 // Kinetic Wave Type</button>
+              <button type="button" class="lab-mode-btn" data-lab="2" aria-pressed="false">03 // Elastic Physics Field</button>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-secondary);" id="lab-telemetry">
+              STATE: ACTIVE · POINTER REPULSION ENABLED
+            </span>
+          </div>
+
+          <div class="playground-stage-grid">
+            <canvas id="playground-canvas" width="760" height="340" aria-label="Interactive Creative Sandbox Canvas"></canvas>
+            <div class="lab-sliders">
+              <div class="slider-field">
+                <label for="lab-frequency"><span>Harmonic Frequency</span><span id="freq-val">64 Hz</span></label>
+                <input type="range" id="lab-frequency" min="16" max="120" value="64" />
+              </div>
+              <div class="slider-field">
+                <label for="lab-distortion"><span>Spatial Warp Amplitude</span><span id="warp-val">48%</span></label>
+                <input type="range" id="lab-distortion" min="5" max="100" value="48" />
+              </div>
+              <div class="slider-field">
+                <label for="lab-density"><span>Lattice Node Density</span><span id="density-val">24 Nodes</span></label>
+                <input type="range" id="lab-density" min="8" max="48" value="24" />
+              </div>
+              <button type="button" class="btn-magnetic btn-outline" id="lab-impulse-btn" style="width: 100%;">
+                Trigger Kinetic Impulse
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. OUR PROCESS: SCROLL-DRIVEN STORYTELLING (01 - 05) -->
+    <section class="section-block" id="process" aria-labelledby="process-heading">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <div class="eyebrow">06 // DETERMINISTIC METHODOLOGY</div>
+            <h2 class="section-title" id="process-heading">Five Stages from Signal to Launch.</h2>
+          </div>
+          <p class="section-subtitle">
+            Select or scroll through stages 01 to 05 to inspect how our geometry and engineering pipeline evolves from initial discovery to zero-regression launch.
+          </p>
+        </div>
+
+        <div class="process-layout">
+          <div class="process-steps-list" role="tablist" aria-label="Creative Process Stages">
+            <div class="process-step-card is-active" tabindex="0" role="tab" aria-selected="true" data-step="0">
+              <div class="step-header">
+                <span class="step-num">01. Discover</span>
+                <h3 class="step-title">Domain Forensics &amp; Site DNA Extraction</h3>
+              </div>
+              <p style="color: var(--text-secondary);">We audit competitive ergonomics, extract semantic tokens, and establish measurable conversion and latency baselines before sketching a single pixel.</p>
+            </div>
+
+            <div class="process-step-card" tabindex="0" role="tab" aria-selected="false" data-step="1">
+              <div class="step-header">
+                <span class="step-num">02. Imagine</span>
+                <h3 class="step-title">Three Divergent Creative Directions</h3>
+              </div>
+              <p style="color: var(--text-secondary);">We prototype three genuinely distinct architectural directions—varying layout composition, typographic voice, and 3D choreography.</p>
+            </div>
+
+            <div class="process-step-card" tabindex="0" role="tab" aria-selected="false" data-step="2">
+              <div class="step-header">
+                <span class="step-num">03. Design</span>
+                <h3 class="step-title">Spatial Systems &amp; Motion Storyboarding</h3>
+              </div>
+              <p style="color: var(--text-secondary);">Every scroll transition, bespoke 3D model, and microinteraction is storyboarded alongside a machine-readable DESIGN.md specification.</p>
+            </div>
+
+            <div class="process-step-card" tabindex="0" role="tab" aria-selected="false" data-step="3">
+              <div class="step-header">
+                <span class="step-num">04. Build</span>
+                <h3 class="step-title">Production WebGL &amp; Framework Engineering</h3>
+              </div>
+              <p style="color: var(--text-secondary);">Clean-room implementation in Next.js, Astro, or native WebGL/GSAP with strict frame-budget management, GPU disposal, and reduced-motion fallbacks.</p>
+            </div>
+
+            <div class="process-step-card" tabindex="0" role="tab" aria-selected="false" data-step="4">
+              <div class="step-header">
+                <span class="step-num">05. Launch</span>
+                <h3 class="step-title">Multi-Viewport Browser QA &amp; Growth Telemetry</h3>
+              </div>
+              <p style="color: var(--text-secondary);">Automated Chromium verification across desktop, tablet, and mobile viewports ensuring zero horizontal overflow and sub-second LCP.</p>
+            </div>
+          </div>
+
+          <div class="process-visualizer-box" aria-live="polite">
+            <div class="eyebrow" id="process-stage-label">STAGE 01 // POINT CLOUD DISCOVERY</div>
+            <canvas id="process-canvas" width="520" height="300"></canvas>
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.4rem;" id="process-stage-title">01. Discover — Signal Acquisition</h3>
+            <p style="color: var(--text-secondary); font-size: 0.92rem;" id="process-stage-caption">
+              Raw domain telemetry condenses into structured architectural coordinates.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. IMPACT AND NUMBERS -->
+    <section class="section-block" id="impact" aria-labelledby="impact-heading">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <div class="eyebrow">07 // QUANTIFIED VELOCITY</div>
+            <h2 class="section-title" id="impact-heading">Artistry Measured in Outcomes.</h2>
+          </div>
+          <p class="section-subtitle">
+            High-craft motion and spatial storytelling engineered to accelerate enterprise pipeline velocity without sacrificing Core Web Vitals.
+          </p>
+        </div>
+
+        <div class="impact-grid">
+          <div class="metric-card">
+            <div class="metric-value">+284%</div>
+            <div class="metric-label">Qualified Enterprise Pipeline</div>
+            <div class="metric-note">BENCHMARK SIMULATION // DEMO METRIC</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">59.8fps</div>
+            <div class="metric-label">Sustained WebGL Frame Pacing</div>
+            <div class="metric-note">LAB TELEMETRY // DPR &lt;= 2.0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">16.4:1</div>
+            <div class="metric-label">Primary Editorial Contrast</div>
+            <div class="metric-note">WCAG 2.2 AAA VERIFIED</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">0.0px</div>
+            <div class="metric-label">Viewport Overflow Bleed</div>
+            <div class="metric-note">375PX · 768PX · 1440PX GATES</div>
+          </div>
+        </div>
+
+        <div class="demo-disclaimer-banner">
+          <span>[DEMO TELEMETRY DISCLOSURE]</span>
+          <span>All performance uplifts and client counters above represent illustrative studio benchmark targets for demonstration purposes.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. TESTIMONIALS AND CLIENTS -->
+    <section class="section-block" id="clients" aria-labelledby="clients-heading">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <div class="eyebrow">08 // PARTNER ECOSYSTEM (ILLUSTRATIVE DEMO BRANDS)</div>
+            <h2 class="section-title" id="clients-heading">Trusted by Category Architects.</h2>
+          </div>
+          <p class="section-subtitle">
+            Clearly labeled fictional partner brands showcasing how our design system adapts across deep tech, luxury, and aerospace.
+          </p>
+        </div>
+
+        <div class="client-logo-wall" aria-label="Demo Partner Brands">
+          <div class="client-demo-tile">AETHERIA QUANTUM [DEMO]</div>
+          <div class="client-demo-tile">KRONOS GENEVE [DEMO]</div>
+          <div class="client-demo-tile">VALKYRIE AERO [DEMO]</div>
+          <div class="client-demo-tile">SYNTHOMA BIO [DEMO]</div>
+          <div class="client-demo-tile">NOCTURNE SONIC [DEMO]</div>
+          <div class="client-demo-tile">HELIOS ORBITAL [DEMO]</div>
+        </div>
+
+        <div class="testimonial-stage" aria-live="polite">
+          <div>
+            <div class="eyebrow" id="testimonial-tag">PARTNER PERSPECTIVE // 01 OF 03 (FICTIONAL DEMO QUOTE)</div>
+            <blockquote class="testimonial-quote" id="testimonial-quote">
+              “KINETIX // ATELIER turned our quantum processor documentation into a living 3D optical instrument. Investors understood our architecture in thirty seconds instead of thirty slides.”
+            </blockquote>
+            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-secondary);" id="testimonial-author">
+              — DR. ELENA VANCE, VP OF PHOTONIC ARCHITECTURE AT AETHERIA QUANTUM (DEMO PARTNER)
+            </div>
+          </div>
+          <div class="testimonial-controls">
+            <button type="button" class="btn-magnetic btn-outline" id="prev-testimonial" aria-label="Previous Testimonial">Prev</button>
+            <button type="button" class="btn-magnetic btn-primary" id="next-testimonial" aria-label="Next Testimonial">Next Quote</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. EXPERIMENTAL FULL-SCREEN SPATIAL TRANSITION -->
+    <section class="spatial-portal-section" aria-labelledby="portal-heading">
+      <div class="container">
+        <div class="portal-ring-frame" id="spatial-portal">
+          <div class="eyebrow">09 // SPATIAL THRESHOLD TRANSITION</div>
+          <h2 class="portal-giant-statement" id="portal-heading">
+            Stop Shipping Flat Pages.<br />Step Into Living Space.
+          </h2>
+          <p style="color: var(--text-secondary); max-width: 56ch; margin: 0 auto 2rem;">
+            Toggle our spatial coordinate shift below to morph the studio ambient field before initiating your commission brief.
+          </p>
+          <button type="button" class="btn-magnetic btn-primary" id="portal-shift-btn">
+            Trigger Spatial Atmosphere Shift
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. CONTACT: SPECTACULAR FINAL CTA -->
+    <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-grid">
+          <div>
+            <div class="eyebrow">10 // COMMISSION A FLAGSHIP EXPERIENCE</div>
+            <h2 class="contact-mega-headline" id="contact-heading">
+              LET'S MAKE SOMETHING <span style="color: var(--accent-primary);">IMPOSSIBLE</span> TO <span style="color: var(--accent-secondary);">IGNORE.</span>
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem;">
+              We partner with ambitious founders, VPs of Design, and category challengers for 6-to-12 week flagship transformations.
+            </p>
+            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.65rem;">
+              <div>DIRECT DISPATCH: <a href="mailto:atelier@kinetix.studio" style="color: var(--accent-secondary); display: inline-flex; align-items: center; min-height: 36px;">atelier@kinetix.studio</a></div>
+              <div>AVAILABILITY: 2 MANDATE SLOTS OPEN FOR Q4</div>
+              <div>LOCATIONS: ZURICH · TOKYO · NEW YORK</div>
+            </div>
+          </div>
+
+          <form class="contact-form-card" id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="client-name">Your Name &amp; Role</label>
+              <input type="text" id="client-name" name="name" class="form-control" aria-label="Your Name and Role" placeholder="Alex Rivera — VP of Brand" required />
+            </div>
+            <div class="form-group">
+              <label for="client-email">Work Email</label>
+              <input type="email" id="client-email" name="email" class="form-control" aria-label="Work Email" placeholder="alex@company.com" required />
+            </div>
+            <div class="form-group">
+              <label for="client-discipline">Primary Discipline</label>
+              <select id="client-discipline" name="discipline" class="form-control" aria-label="Primary Discipline">
+                <option value="flagship">Full Flagship Website + 3D WebGL</option>
+                <option value="branding">Creative Branding &amp; Kinetic Identity</option>
+                <option value="motion">3D &amp; Motion Design System</option>
+                <option value="ai">AI-Powered Product &amp; Automation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="client-brief">Project Ambition</label>
+              <textarea id="client-brief" name="brief" rows="3" class="form-control" aria-label="Project Ambition" placeholder="Tell us about your launch timeline and creative goals..." required></textarea>
+            </div>
+            <button type="submit" class="btn-magnetic btn-primary" style="width: 100%;">
+              Transmit Project Brief
+            </button>
+            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 14. FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#top" class="brand-logo" style="margin-bottom: 1rem;">
+            <span class="brand-mark" aria-hidden="true"><span></span></span>
+            <span>KINETIX // ATELIER</span>
+          </a>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; max-width: 34ch;">
+            Crafted with the Layoza MCP Design Engineering System — verified across Desktop, Tablet, and Mobile viewports.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h3>Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="#services">01 // Services</a></li>
+            <li><a href="#work">02 // Selected Work</a></li>
+            <li><a href="#about">03 // Manifesto</a></li>
+            <li><a href="#playground">04 // 3D Playground</a></li>
+            <li><a href="#process">05 // 01–05 Process</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Studios</h3>
+          <ul class="footer-links">
+            <li><a href="#contact">Zurich — Bahnhofstrasse 42</a></li>
+            <li><a href="#contact">Tokyo — Shibuya-ku 2-24</a></li>
+            <li><a href="#contact">New York — Crosby St, SoHo</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Connect</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:atelier@kinetix.studio">atelier@kinetix.studio</a></li>
+            <li><a href="#top">Back to Top ↑</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 KINETIX // ATELIER. ALL DEMO BRANDS &amp; METRICS ARE ILLUSTRATIVE.</span>
+        <span>ENGINEERED VIA LAYOZA MCP · OBSIDIAN-VERMILION PALETTE</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 1. Header Scroll State & Full-Screen Overlay Menu
+      const header = document.getElementById('site-header');
+      const menuBtn = document.getElementById('menu-toggle');
+      const menuLabel = document.getElementById('menu-toggle-label');
+      const overlay = document.getElementById('nav-overlay');
+      const previewTitle = document.getElementById('overlay-preview-title');
+      const previewDesc = document.getElementById('overlay-preview-desc');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 36) {
+          header.classList.add('is-scrolled');
+        } else {
+          header.classList.remove('is-scrolled');
+        }
+      }, { passive: true });
+
+      function toggleMenu(forceClose) {
+        const isOpen = forceClose ? false : !overlay.classList.contains('is-open');
+        overlay.classList.toggle('is-open', isOpen);
+        overlay.setAttribute('aria-hidden', String(!isOpen));
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
+        menuLabel.textContent = isOpen ? 'Close [×]' : 'Index [+]';
+      }
+
+      menuBtn.addEventListener('click', () => toggleMenu(false));
+      document.querySelectorAll('.overlay-link').forEach((link) => {
+        link.addEventListener('mouseenter', () => {
+          previewTitle.textContent = link.textContent.replace(/^\d+\s*/, '');
+          previewDesc.textContent = link.getAttribute('data-preview') || '';
+        });
+        link.addEventListener('click', () => toggleMenu(true));
+      });
+
+      // 2. Custom Cursor Follower (Precise Pointer)
+      const cursor = document.getElementById('custom-cursor');
+      if (cursor && !prefersReducedMotion) {
+        window.addEventListener('pointermove', (e) => {
+          cursor.style.transform = `translate3d(${e.clientX - 14}px, ${e.clientY - 14}px, 0)`;
+        }, { passive: true });
+        document.querySelectorAll('a, button, input, select, textarea').forEach((el) => {
+          el.addEventListener('pointerenter', () => cursor.classList.add('is-active'));
+          el.addEventListener('pointerleave', () => cursor.classList.remove('is-active'));
+        });
+      }
+
+      // 3. HERO 3D SCULPTURE ENGINE (Parametric Multi-Mode 3D Projection)
+      const heroCanvas = document.getElementById('hero-sculpture-canvas');
+      const hudMode = document.getElementById('sculpture-hud-mode');
+      const hudCoords = document.getElementById('sculpture-hud-coords');
+      let heroMorphMode = 0;
+      let pointerX = 0;
+      let pointerY = 0;
+      let heroVisible = true;
+
+      const modeNames = [
+        'MESH: ORBITAL TORUS LATTICE',
+        'MESH: CONSTRUCTIVIST IDENTITY PRISM',
+        'MESH: HARMONIC KINETIC RIBBON',
+        'MESH: NEURAL SYNAPSE MATRIX'
+      ];
+
+      document.querySelectorAll('.discipline-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.discipline-pill').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          btn.setAttribute('aria-pressed', 'true');
+          heroMorphMode = Number(btn.getAttribute('data-morph') || 0);
+          if (hudMode) hudMode.textContent = modeNames[heroMorphMode];
+        });
+      });
+
+      if (heroCanvas) {
+        const ctx = heroCanvas.getContext('2d');
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        function resizeHeroCanvas() {
+          const rect = heroCanvas.getBoundingClientRect();
+          heroCanvas.width = Math.max(300, rect.width * dpr);
+          heroCanvas.height = Math.max(260, rect.height * dpr);
+        }
+        resizeHeroCanvas();
+        window.addEventListener('resize', resizeHeroCanvas);
+
+        heroCanvas.addEventListener('pointermove', (e) => {
+          const rect = heroCanvas.getBoundingClientRect();
+          pointerX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+          pointerY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+          if (hudCoords) {
+            hudCoords.textContent = `TILT: ${pointerX.toFixed(2)}, ${pointerY.toFixed(2)}`;
+          }
+        });
+
+        let t = 0;
+        function drawHeroSculpture() {
+          if (heroVisible && ctx) {
+            const w = heroCanvas.width;
+            const h = heroCanvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const cx = w / 2;
+            const cy = h / 2;
+            const radius = Math.min(w, h) * 0.31;
+            const rotY = t * 0.016 + pointerX * 0.65;
+            const rotX = t * 0.011 + pointerY * 0.65;
+
+            const rings = 14;
+            const segments = 24;
+
+            for (let i = 0; i < rings; i++) {
+              const u = (i / rings) * Math.PI * 2;
+              ctx.beginPath();
+              for (let j = 0; j <= segments; j++) {
+                const v = (j / segments) * Math.PI * 2;
+                let x, y, z;
+                if (heroMorphMode === 0) {
+                  const r2 = radius * 0.38;
+                  x = (radius + r2 * Math.cos(v)) * Math.cos(u);
+                  y = (radius + r2 * Math.cos(v)) * Math.sin(u);
+                  z = r2 * Math.sin(v);
+                } else if (heroMorphMode === 1) {
+                  const scale = radius * (0.75 + 0.35 * Math.sin(3 * u));
+                  x = scale * Math.cos(v) * Math.cos(u);
+                  y = scale * Math.sin(v);
+                  z = scale * Math.cos(v) * Math.sin(u);
+                } else if (heroMorphMode === 2) {
+                  x = radius * 1.15 * Math.cos(u + v * 0.5);
+                  y = radius * 0.75 * Math.sin(v * 2 + t * 0.03);
+                  z = radius * 0.85 * Math.sin(u - v);
+                } else {
+                  const pulse = radius * (0.8 + 0.25 * Math.cos(4 * v + t * 0.04));
+                  x = pulse * Math.sin(u) * Math.cos(v);
+                  y = pulse * Math.sin(u) * Math.sin(v);
+                  z = pulse * Math.cos(u);
+                }
+
+                // 3D rotation
+                const y1 = y * Math.cos(rotX) - z * Math.sin(rotX);
+                const z1 = y * Math.sin(rotX) + z * Math.cos(rotX);
+                const x2 = x * Math.cos(rotY) + z1 * Math.sin(rotY);
+                const z2 = -x * Math.sin(rotY) + z1 * Math.cos(rotY);
+
+                const perspective = 620 / (620 + z2);
+                const px = cx + x2 * perspective;
+                const py = cy + y1 * perspective;
+
+                if (j === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+              }
+              ctx.strokeStyle = i % 2 === 0 ? 'rgba(255, 77, 45, 0.72)' : 'rgba(226, 241, 99, 0.62)';
+              ctx.lineWidth = 1.4 * dpr;
+              ctx.stroke();
+            }
+
+            if (!prefersReducedMotion) t += 1;
+          }
+          if (!prefersReducedMotion) requestAnimationFrame(drawHeroSculpture);
+        }
+        drawHeroSculpture();
+      }
+
+      // 4. SECTION TWO: INTERACTIVE 6-DISCIPLINE STAGE
+      const serviceData = [
+        {
+          kicker: 'DISCIPLINE 01 // IDENTITY ARCHITECTURE',
+          title: 'Algorithmic Brand Systems & Kinetic Typography',
+          desc: 'We craft generative visual identities, bespoke display typography, and motion-first brand books that scale effortlessly from spatial 3D stages to high-contrast editorial print.',
+          tags: ['Generative Marks', 'Kinetic Type Rules', 'Google DESIGN.md Spec', 'Sonic & Motion Tokens']
+        },
+        {
+          kicker: 'DISCIPLINE 02 // FLAGSHIP WEB ENGINEERING',
+          title: 'Spatial Next.js, Astro & WebGL Flagship Experiences',
+          desc: 'Layered perspective viewports, sub-second Core Web Vitals, and custom page transitions that feel like native desktop cinema.',
+          tags: ['Next.js App Router', 'Astro Islands', 'View Transitions API', 'Sub-2.5s LCP']
+        },
+        {
+          kicker: 'DISCIPLINE 03 // 3D & MOTION CHOREOGRAPHY',
+          title: 'Real-Time Three.js, Custom GLSL Shaders & GSAP Timelines',
+          desc: 'Bespoke 3D sculptures, scroll-scrubbed camera paths, and tactile spring physics engineered with strict GPU disposal.',
+          tags: ['Three.js / R3F', 'Custom GLSL Shaders', 'GSAP ScrollTrigger', '60FPS Frame Budget']
+        },
+        {
+          kicker: 'DISCIPLINE 04 // AI & AUTOMATION WORKFLOWS',
+          title: 'Autonomous Agentic Interfaces & Intelligent Pipelines',
+          desc: 'We design and wire real-time streaming AI copilots, multi-agent orchestration dashboards, and deterministic design-to-code pipelines.',
+          tags: ['MCP Server Tooling', 'Streaming Generative UI', 'RAG Architecture', 'Workflow Automation']
+        },
+        {
+          kicker: 'DISCIPLINE 05 // DIGITAL MARKETING & GROWTH',
+          title: 'High-Velocity Conversion Architecture & Attribution',
+          desc: 'Every visual flourish serves conversion momentum—combining interactive product proof above the fold with precision telemetry.',
+          tags: ['Interactive Proof', 'Funnel Velocity', 'A/B Telemetry', 'Technical SEO']
+        },
+        {
+          kicker: 'DISCIPLINE 06 // UI/UX & SPATIAL INTERFACES',
+          title: 'Adaptive Design Systems & WCAG 2.2 AA Ergonomics',
+          desc: 'Tokenized component ecosystems with verified 16.4:1 contrast, 44px touch targets, and effortless keyboard navigation.',
+          tags: ['Token Architecture', 'WCAG 2.2 AA', 'Multi-Viewport QA', 'Figma-to-Code Sync']
+        }
+      ];
+
+      let activeServiceIdx = 0;
+      const srvCanvas = document.getElementById('services-stage-canvas');
+      const srvKicker = document.getElementById('service-stage-kicker');
+      const srvTitle = document.getElementById('service-stage-title');
+      const srvDesc = document.getElementById('service-stage-desc');
+      const srvTags = document.getElementById('service-stage-tags');
+
+      function updateServiceStage(idx) {
+        activeServiceIdx = idx;
+        const item = serviceData[idx];
+        if (!item) return;
+        srvKicker.textContent = item.kicker;
+        srvTitle.textContent = item.title;
+        srvDesc.textContent = item.desc;
+        srvTags.innerHTML = item.tags.map((t) => `<li>${t}</li>`).join('');
+        drawServiceCanvas(idx);
+      }
+
+      function drawServiceCanvas(idx) {
+        if (!srvCanvas) return;
+        const ctx = srvCanvas.getContext('2d');
+        const w = srvCanvas.width;
+        const h = srvCanvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(245, 243, 239, 0.08)';
+        for (let x = 0; x < w; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        ctx.save();
+        ctx.translate(w / 2, h / 2);
+        for (let i = 0; i < 6; i++) {
+          ctx.beginPath();
+          const r = 30 + i * 16;
+          if (idx % 2 === 0) {
+            ctx.arc(0, 0, r, 0, Math.PI * (1.2 + idx * 0.15));
+          } else {
+            ctx.rect(-r, -r * 0.6, r * 2, r * 1.2);
+          }
+          ctx.strokeStyle = i % 2 === 0 ? '#FF4D2D' : '#E2F163';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          ctx.rotate(0.22 * (idx + 1));
+        }
+        ctx.restore();
+      }
+      drawServiceCanvas(0);
+
+      document.querySelectorAll('.service-row-btn').forEach((btn) => {
+        const selectHandler = () => {
+          document.querySelectorAll('.service-row-btn').forEach((b) => b.setAttribute('aria-selected', 'false'));
+          btn.setAttribute('aria-selected', 'true');
+          updateServiceStage(Number(btn.getAttribute('data-service') || 0));
+        };
+        btn.addEventListener('click', selectHandler);
+        btn.addEventListener('mouseenter', selectHandler);
+      });
+
+      // 5. Featured Project Shader Invert Button
+      const toggleShaderBtn = document.getElementById('toggle-shader-btn');
+      const aetheriaRings = document.getElementById('aetheria-rings');
+      let shaderInverted = false;
+      if (toggleShaderBtn && aetheriaRings) {
+        toggleShaderBtn.addEventListener('click', () => {
+          shaderInverted = !shaderInverted;
+          aetheriaRings.setAttribute('stroke', shaderInverted ? '#38BDF8' : '#E2F163');
+          aetheriaRings.style.transform = shaderInverted ? 'scale(1.08) rotate(12deg)' : 'scale(1) rotate(0deg)';
+          aetheriaRings.style.transformOrigin = 'center';
+        });
+      }
+
+      // 6. CAPABILITIES PLAYGROUND ENGINE
+      const labCanvas = document.getElementById('playground-canvas');
+      const freqInput = document.getElementById('lab-frequency');
+      const warpInput = document.getElementById('lab-distortion');
+      const densityInput = document.getElementById('lab-density');
+      const impulseBtn = document.getElementById('lab-impulse-btn');
+      let labMode = 0;
+      let impulseBoost = 1;
+
+      function renderPlayground() {
+        if (!labCanvas) return;
+        const ctx = labCanvas.getContext('2d');
+        const w = labCanvas.width;
+        const h = labCanvas.height;
+        const freq = Number(freqInput ? freqInput.value : 64);
+        const warp = Number(warpInput ? warpInput.value : 48);
+        const density = Number(densityInput ? densityInput.value : 24);
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#090A0D';
+        ctx.fillRect(0, 0, w, h);
+
+        for (let i = 0; i < density; i++) {
+          const ratio = i / density;
+          const x = 60 + ratio * (w - 120);
+          const waveY = h / 2 + Math.sin(ratio * (freq * 0.15) + labMode) * (warp * 1.1 * impulseBoost);
+
+          ctx.beginPath();
+          if (labMode === 0) {
+            ctx.arc(x, waveY, 8 + (i % 4) * 3, 0, Math.PI * 2);
+            ctx.strokeStyle = i % 2 === 0 ? '#FF4D2D' : '#E2F163';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          } else if (labMode === 1) {
+            ctx.fillStyle = i % 2 === 0 ? '#E2F163' : '#F5F3EF';
+            ctx.font = '700 18px Syne, sans-serif';
+            ctx.fillText('KINETIX', x - 30, waveY);
+          } else {
+            ctx.moveTo(w / 2, h / 2);
+            ctx.lineTo(x, waveY);
+            ctx.strokeStyle = '#38BDF8';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(x, waveY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#FF4D2D';
+            ctx.fill();
+          }
+        }
+      }
+
+      document.querySelectorAll('.lab-mode-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.lab-mode-btn').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          btn.setAttribute('aria-pressed', 'true');
+          labMode = Number(btn.getAttribute('data-lab') || 0);
+          renderPlayground();
+        });
+      });
+
+      [freqInput, warpInput, densityInput].forEach((input) => {
+        if (!input) return;
+        input.addEventListener('input', () => {
+          document.getElementById('freq-val').textContent = `${freqInput.value} Hz`;
+          document.getElementById('warp-val').textContent = `${warpInput.value}%`;
+          document.getElementById('density-val').textContent = `${densityInput.value} Nodes`;
+          renderPlayground();
+        });
+      });
+
+      if (impulseBtn) {
+        impulseBtn.addEventListener('click', () => {
+          impulseBoost = impulseBoost > 1.2 ? 1 : 1.45;
+          renderPlayground();
+        });
+      }
+      renderPlayground();
+
+      // 7. PROCESS 01-05 VISUALIZER
+      const processCanvas = document.getElementById('process-canvas');
+      const processStages = [
+        { label: 'STAGE 01 // POINT CLOUD DISCOVERY', title: '01. Discover — Signal Acquisition', caption: 'Raw domain telemetry condenses into structured architectural coordinates.' },
+        { label: 'STAGE 02 // DIVERGENT TOPOLOGY', title: '02. Imagine — Three Concept Directions', caption: 'Three distinct spatial hypotheses are stress-tested against brand positioning.' },
+        { label: 'STAGE 03 // DESIGN.MD SPECIFICATION', title: '03. Design — Token & Motion Choreography', caption: 'Typography scales, color contrast, and timeline curves lock into a single spec.' },
+        { label: 'STAGE 04 // CLEAN-ROOM COMPILATION', title: '04. Build — Production WebGL & Next.js', caption: 'Deterministic rendering, GPU resource disposal, and accessible DOM semantics.' },
+        { label: 'STAGE 05 // MULTI-VIEWPORT VERIFICATION', title: '05. Launch — Zero-Regression Deployment', caption: 'Live Chromium QA across 1440px, 768px, and 375px viewports.' }
+      ];
+
+      function drawProcessStage(stepIdx) {
+        if (!processCanvas) return;
+        const ctx = processCanvas.getContext('2d');
+        const w = processCanvas.width;
+        const h = processCanvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const sides = stepIdx + 3;
+        const cx = w / 2;
+        const cy = h / 2;
+        const r = 95;
+
+        ctx.beginPath();
+        for (let i = 0; i <= sides; i++) {
+          const angle = (i / sides) * Math.PI * 2 - Math.PI / 2;
+          const x = cx + Math.cos(angle) * r;
+          const y = cy + Math.sin(angle) * r;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = '#E2F163';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 28 + stepIdx * 10, 0, Math.PI * 2);
+        ctx.strokeStyle = '#FF4D2D';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+      drawProcessStage(0);
+
+      document.querySelectorAll('.process-step-card').forEach((card) => {
+        const activate = () => {
+          document.querySelectorAll('.process-step-card').forEach((c) => {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-selected', 'false');
+          });
+          card.classList.add('is-active');
+          card.setAttribute('aria-selected', 'true');
+          const idx = Number(card.getAttribute('data-step') || 0);
+          const st = processStages[idx];
+          if (st) {
+            document.getElementById('process-stage-label').textContent = st.label;
+            document.getElementById('process-stage-title').textContent = st.title;
+            document.getElementById('process-stage-caption').textContent = st.caption;
+          }
+          drawProcessStage(idx);
+        };
+        card.addEventListener('click', activate);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate();
+          }
+        });
+      });
+
+      // 8. Testimonials Switcher
+      const quotes = [
+        {
+          tag: 'PARTNER PERSPECTIVE // 01 OF 03 (FICTIONAL DEMO QUOTE)',
+          quote: '“KINETIX // ATELIER turned our quantum processor documentation into a living 3D optical instrument. Investors understood our architecture in thirty seconds instead of thirty slides.”',
+          author: '— DR. ELENA VANCE, VP OF PHOTONIC ARCHITECTURE AT AETHERIA QUANTUM (DEMO PARTNER)'
+        },
+        {
+          tag: 'PARTNER PERSPECTIVE // 02 OF 03 (FICTIONAL DEMO QUOTE)',
+          quote: '“Our mechanical tourbillon configurator runs at 60 FPS on mobile while preserving every brushed-titanium reflection. Online collector reservations tripled in week one.”',
+          author: '— HENRI LAURENT, CHIEF DIGITAL OFFICER AT KRONOS GENEVE (DEMO PARTNER)'
+        },
+        {
+          tag: 'PARTNER PERSPECTIVE // 03 OF 03 (FICTIONAL DEMO QUOTE)',
+          quote: '“Rarely do you find a studio that obsesses equally over custom GLSL shaders and strict WCAG 2.2 AA keyboard accessibility.”',
+          author: '— SOREN LINDQVIST, HEAD OF DESIGN SYSTEMS AT VALKYRIE AERO (DEMO PARTNER)'
+        }
+      ];
+      let quoteIdx = 0;
+      function updateQuote(idx) {
+        quoteIdx = (idx + quotes.length) % quotes.length;
+        const q = quotes[quoteIdx];
+        document.getElementById('testimonial-tag').textContent = q.tag;
+        document.getElementById('testimonial-quote').textContent = q.quote;
+        document.getElementById('testimonial-author').textContent = q.author;
+      }
+      document.getElementById('prev-testimonial').addEventListener('click', () => updateQuote(quoteIdx - 1));
+      document.getElementById('next-testimonial').addEventListener('click', () => updateQuote(quoteIdx + 1));
+
+      // 9. Spatial Portal Transition Button
+      const portalBtn = document.getElementById('portal-shift-btn');
+      const portalFrame = document.getElementById('spatial-portal');
+      let portalShifted = false;
+      if (portalBtn && portalFrame) {
+        portalBtn.addEventListener('click', () => {
+          portalShifted = !portalShifted;
+          portalFrame.style.borderColor = portalShifted ? '#FF4D2D' : '#E2F163';
+          portalFrame.style.background = portalShifted
+            ? 'radial-gradient(circle at 50% 50%, rgba(255, 77, 45, 0.22), rgba(13, 14, 17, 0.92))'
+            : 'rgba(13, 14, 17, 0.78)';
+        });
+      }
+
+      // 10. Accessible Contact Form Submission
+      const contactForm = document.getElementById('contact-form');
+      const formStatus = document.getElementById('form-status');
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('client-name').value.trim();
+          const email = document.getElementById('client-email').value.trim();
+          if (!name || !email) {
+            formStatus.textContent = 'Please provide your name and work email to initiate a mandate.';
+            return;
+          }
+          formStatus.textContent = `Mandate brief received for ${name}. Our Zurich/NYC directors will respond within 24 hours.`;
+          contactForm.reset();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

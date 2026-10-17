@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orrery — Planetarium &amp; Night-Sky Shop, Bristol Harbourside</title>
+<meta name="description" content="Orrery is a 60-seat planetarium dome with live, presenter-led shows, Friday rooftop telescope nights and a small night-sky shop on Bristol's harbourside.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0D1120;
+  --night:#141A2E;
+  --panel:#1B2239;
+  --panel-2:#222A44;
+  --line:rgba(243,235,221,.14);
+  --line-strong:rgba(243,235,221,.28);
+  --paper:#F3EBDD;
+  --paper-2:#E9DFCC;
+  --text:#F3EBDD;
+  --muted:#AEB3C6;
+  --brass:#D9A752;
+  --brass-deep:#8A5D17;
+  --ink-text:#1A1F33;
+  --ink-muted:#4E5468;
+  --error:#FF9B8A;
+  --error-ink:#A3271A;
+  --ok:#8FD3A8;
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --wrap:1200px;
+  --gutter:clamp(16px,4vw,40px);
+  --radius:14px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;letter-spacing:-.01em}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--brass);color:var(--ink);padding:10px 16px;border-radius:8px;z-index:100;font-weight:600}
+.skip:focus{left:16px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+.sec{padding:clamp(72px,10vw,128px) 0;position:relative}
+.sec-head{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:clamp(36px,5vw,56px);max-width:760px}
+.sec-head h2{font-size:clamp(34px,5vw,56px)}
+.sec-head p{color:var(--muted);font-size:18px;max-width:600px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.btn-primary{background:var(--brass);color:var(--ink)}
+.btn-primary:hover{background:#E6B865}
+.btn-ghost{border-color:var(--line-strong);color:var(--text);background:transparent}
+.btn-ghost:hover{border-color:var(--brass);color:var(--brass)}
+.btn:active{transform:translateY(1px)}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:50;background:rgba(13,17,32,.86);backdrop-filter:saturate(140%) blur(10px);-webkit-backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line)}
+.header-row{display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand-mark{width:34px;height:34px}
+.brand-word{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:.01em}
+.nav{display:flex;align-items:center;gap:4px}
+.nav a{text-decoration:none;font-size:15px;color:var(--muted);padding:10px 12px;border-radius:8px;transition:color .2s}
+.nav a:hover{color:var(--text)}
+.header-actions{display:flex;align-items:center;gap:10px}
+.basket{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 14px 0 12px;border-radius:999px;border:1px solid var(--line-strong);background:transparent;cursor:pointer;font-size:15px;font-weight:500}
+.basket:hover{border-color:var(--brass)}
+.basket svg{width:20px;height:20px}
+.count{min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--brass);color:var(--ink);font-family:var(--mono);font-size:13px;font-weight:500;display:inline-grid;place-items:center}
+.count.bump{animation:bump .4s ease}
+@keyframes bump{40%{transform:scale(1.3)}}
+.menu-btn{display:none;width:44px;height:44px;border-radius:999px;border:1px solid var(--line-strong);background:transparent;cursor:pointer;align-items:center;justify-content:center}
+.menu-btn svg{width:20px;height:20px}
+.mobile-nav{display:none}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding:clamp(48px,7vw,96px) 0 clamp(64px,8vw,112px);border-bottom:1px solid var(--line)}
+#stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(32px,5vw,72px);align-items:center}
+.hero h1{font-size:clamp(44px,5.6vw,82px);font-weight:400;letter-spacing:-.025em;margin:22px 0 24px}
+.hero h1 em{font-style:italic;color:var(--brass)}
+.hero-lede{font-size:clamp(18px,1.6vw,21px);color:#D3D6E2;max-width:520px}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.hero-facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:28px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line)}
+.hero-facts dt{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hero-facts dd{margin:4px 0 0;font-family:var(--serif);font-size:24px}
+.orrery-wrap{position:relative;aspect-ratio:1;width:100%;max-width:560px;justify-self:end}
+.orrery{width:100%;height:100%}
+.orbit-spin{transform-origin:300px 300px;animation:spin linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.o1{animation-duration:14s}.o2{animation-duration:26s}.o3{animation-duration:44s;animation-delay:-20s}.o4{animation-duration:80s;animation-delay:-50s}
+.orrery-cap{position:absolute;bottom:2%;left:0;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+
+/* Shows */
+.shows-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.show{position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:border-color .25s,transform .25s}
+.show:hover{border-color:rgba(217,167,82,.55);transform:translateY(-3px)}
+.show-art{aspect-ratio:4/3;background:var(--night);border-bottom:1px solid var(--line)}
+.show-art svg{width:100%;height:100%}
+.show-body{padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.show h3{font-size:25px}
+.show p{color:var(--muted);font-size:15.5px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:8px}
+.tag{font-family:var(--mono);font-size:12px;padding:4px 9px;border:1px solid var(--line-strong);border-radius:999px;color:#D3D6E2}
+.show-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:16px;margin-top:6px}
+.price{font-family:var(--serif);font-size:24px}
+.price small{font-family:var(--sans);font-size:13px;color:var(--muted);margin-left:4px}
+.link-btn{background:none;border:0;padding:8px 0;color:var(--brass);font-weight:600;cursor:pointer;font-size:15px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.link-btn:hover{text-decoration-thickness:2px}
+
+/* Booking */
+.booking{background:var(--night);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.booking-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,6vw,88px);align-items:start}
+.booking-aside .sec-head{margin-bottom:28px}
+.notes{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.notes li{display:grid;grid-template-columns:28px 1fr;gap:12px;color:#D3D6E2;font-size:15.5px}
+.notes svg{width:22px;height:22px;color:var(--brass);margin-top:2px}
+form.book{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3.4vw,40px);display:grid;grid-template-columns:1fr 1fr;gap:20px 18px}
+.field{display:grid;gap:7px;align-content:start}
+.field.full{grid-column:1/-1}
+.field label,.field legend{font-size:14px;font-weight:600;letter-spacing:.01em}
+.field .hint{font-size:13px;color:var(--muted);font-weight:400}
+.input{width:100%;min-height:50px;padding:12px 14px;border-radius:10px;background:var(--ink);border:1px solid var(--line-strong);color:var(--text);font-size:16px;transition:border-color .2s}
+select.input{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23D9A752' stroke-width='1.8'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px;padding-right:44px}
+.input:hover{border-color:rgba(243,235,221,.45)}
+.input:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 3px rgba(217,167,82,.25)}
+.field.invalid .input{border-color:var(--error)}
+.err{font-size:13.5px;color:var(--error);min-height:0}
+.err:empty{display:none}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.times{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.time input{position:absolute;opacity:0;pointer-events:none}
+.time span{display:grid;place-items:center;min-height:50px;border:1px solid var(--line-strong);border-radius:10px;font-family:var(--mono);font-size:15px;cursor:pointer;transition:all .2s;background:var(--ink)}
+.time span:hover{border-color:rgba(243,235,221,.5)}
+.time input:checked+span{background:var(--brass);color:var(--ink);border-color:var(--brass);font-weight:500}
+.time input:focus-visible+span{outline:2px solid var(--brass);outline-offset:3px}
+.field.invalid .time span{border-color:var(--error)}
+.stepper{display:grid;grid-template-columns:50px 1fr 50px;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;background:var(--ink)}
+.stepper button{background:transparent;border:0;cursor:pointer;font-size:22px;color:var(--brass)}
+.stepper button:hover{background:var(--panel-2)}
+.stepper input{border:0;background:transparent;text-align:center;font-family:var(--mono);font-size:17px;min-height:48px;width:100%;-moz-appearance:textfield}
+.stepper input::-webkit-inner-spin-button,.stepper input::-webkit-outer-spin-button{-webkit-appearance:none}
+.stepper input:focus{outline:none}
+.stepper:focus-within{border-color:var(--brass);box-shadow:0 0 0 3px rgba(217,167,82,.25)}
+.total{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;border-top:1px solid var(--line)}
+.total-line{font-size:15px;color:var(--muted)}
+.total-line strong{display:block;font-family:var(--serif);font-weight:500;font-size:30px;color:var(--text)}
+.success{grid-column:1/-1;display:none;gap:10px;padding:20px;border-radius:12px;background:rgba(143,211,168,.1);border:1px solid rgba(143,211,168,.45)}
+.success.show{display:grid}
+.success h3{font-size:24px;color:var(--ok)}
+.success p{color:#D3D6E2}
+
+/* Shop (paper) */
+.shop{background:var(--paper);color:var(--ink-text)}
+.shop .sec-head p{color:var(--ink-muted)}
+.shop .eyebrow{color:var(--brass-deep)}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.item{background:#FBF6EC;border:1px solid rgba(26,31,51,.12);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden}
+.item-art{aspect-ratio:16/10;background:var(--paper-2);border-bottom:1px solid rgba(26,31,51,.1)}
+.item-art svg{width:100%;height:100%}
+.item-body{padding:22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.item h3{font-size:23px}
+.item p{color:var(--ink-muted);font-size:15.5px}
+.item-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px}
+.item .price{font-size:24px}
+.add{min-height:44px;padding:0 18px;border-radius:999px;background:var(--ink-text);color:var(--paper);border:0;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s}
+.add:hover{background:#2B3150}
+.add.added{background:var(--brass-deep);color:#fff}
+.basket-note{margin-top:28px;font-size:15px;color:var(--ink-muted)}
+.basket-note strong{color:var(--ink-text)}
+
+/* Membership */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.tier{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;gap:18px;position:relative}
+.tier.feature{background:linear-gradient(180deg,#26304F 0%,var(--panel) 70%);border-color:rgba(217,167,82,.6)}
+.tier-flag{position:absolute;top:-13px;left:28px;background:var(--brass);color:var(--ink);font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.tier h3{font-size:30px}
+.tier .who{color:var(--muted);font-size:15px;margin-top:-8px}
+.tier .amt{font-family:var(--serif);font-size:48px;line-height:1}
+.tier .amt small{font-family:var(--sans);font-size:15px;color:var(--muted)}
+.perks{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:11px;font-size:15.5px;color:#D3D6E2}
+.perks li{display:grid;grid-template-columns:18px 1fr;gap:10px}
+.perks li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brass);margin-top:9px;justify-self:center}
+.tier .btn{margin-top:auto;width:100%}
+.join-msg{font-size:14px;color:var(--ok);min-height:20px}
+
+/* Telescope */
+.scope{background:var(--night);border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,80px);align-items:start}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:0}
+.steps li{counter-increment:s;display:grid;grid-template-columns:56px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);color:var(--brass);font-size:15px;padding-top:3px}
+.steps h3{font-size:22px;margin-bottom:6px}
+.steps p{color:var(--muted);font-size:15.5px}
+.cloudy{margin-top:28px;padding:24px;border-radius:var(--radius);border:1px dashed rgba(217,167,82,.55);display:grid;grid-template-columns:44px 1fr;gap:16px}
+.cloudy svg{width:40px;height:40px;color:var(--brass)}
+.cloudy h3{font-size:22px;margin-bottom:6px}
+.cloudy p{color:#D3D6E2;font-size:15.5px}
+.dates{display:grid;gap:14px}
+.dates-title{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.date{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:20px 22px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+.date-num{font-family:var(--serif);font-size:44px;line-height:1;min-width:56px;text-align:center}
+.date-num small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--brass);text-transform:uppercase;margin-top:6px}
+.date-info strong{display:block;font-size:17px}
+.date-info span{color:var(--muted);font-size:14.5px}
+.moon{width:34px;height:34px}
+.date .btn{min-height:42px;padding:0 16px;font-size:14.5px}
+.date-cta{display:flex;align-items:center;gap:14px}
+
+/* Testimonials */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.quote{margin:0;padding:30px 28px;border-top:2px solid var(--brass);background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);display:flex;flex-direction:column;gap:22px}
+.quote blockquote{margin:0;font-family:var(--serif);font-size:22px;line-height:1.38;font-weight:400}
+.quote figcaption{margin-top:auto;font-size:15px;color:var(--muted)}
+.quote figcaption strong{color:var(--text);font-weight:600;display:block}
+
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:clamp(32px,6vw,88px)}
+.faq-list{border-top:1px solid var(--line)}
+.qa{border-bottom:1px solid var(--line)}
+.qa h3{font-family:var(--sans);font-size:inherit;font-weight:inherit}
+.qa-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;background:none;border:0;text-align:left;cursor:pointer;font-family:var(--serif);font-size:clamp(19px,2vw,23px);font-weight:500;color:var(--text)}
+.qa-btn:hover{color:var(--brass)}
+.qa-icon{flex:none;width:32px;height:32px;border:1px solid var(--line-strong);border-radius:50%;position:relative;transition:transform .3s,border-color .2s}
+.qa-icon::before,.qa-icon::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:var(--brass);transform:translate(-50%,-50%)}
+.qa-icon::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .3s}
+.qa-btn[aria-expanded="true"] .qa-icon::after{transform:translate(-50%,-50%) rotate(0)}
+.qa-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.qa-panel>div{overflow:hidden}
+.qa-panel p{color:#C9CDDA;padding:0 48px 24px 0;max-width:640px}
+.qa.open .qa-panel{grid-template-rows:1fr}
+
+/* Footer */
+.footer{background:#090C17;border-top:1px solid var(--line);padding:72px 0 32px}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
+.foot-grid h3{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);font-weight:500;margin-bottom:16px}
+.foot-grid p,.foot-grid address,.foot-grid dl{font-style:normal;color:#C9CDDA;font-size:15.5px;margin:0}
+.hours{display:grid;grid-template-columns:auto auto;justify-content:start;gap:4px 18px}
+.hours dt{color:var(--muted)}
+.hours dd{margin:0}
+.foot-grid a{text-decoration:none}
+.foot-grid a:hover{color:var(--brass)}
+.social{display:flex;gap:10px;margin-top:4px}
+.social a{width:44px;height:44px;border:1px solid var(--line-strong);border-radius:50%;display:grid;place-items:center;color:var(--text)}
+.social a:hover{border-color:var(--brass)}
+.social svg{width:18px;height:18px}
+.foot-brand p{max-width:300px;margin-top:16px}
+.foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:var(--paper);color:var(--ink-text);padding:12px 18px;border-radius:999px;font-size:15px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:opacity .25s,transform .25s;z-index:80;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Responsive */
+@media (max-width:1100px){
+  .shows-grid{grid-template-columns:repeat(2,1fr)}
+  .nav a{padding:10px 8px;font-size:14.5px}
+}
+@media (max-width:960px){
+  .nav{display:none}
+  .menu-btn{display:inline-flex}
+  .mobile-nav{display:block;position:fixed;inset:72px 0 0 0;background:var(--ink);z-index:45;padding:24px var(--gutter);transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s;overflow-y:auto}
+  .mobile-nav.open{opacity:1;transform:none;visibility:visible;transition:opacity .25s,transform .25s}
+  .mobile-nav a{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:30px;text-decoration:none}
+  .mobile-nav a span{font-family:var(--mono);font-size:13px;color:var(--brass)}
+  .mobile-nav a.btn{margin-top:28px;width:100%;justify-content:center;padding:0 22px;border-bottom:0;font-family:var(--sans);font-size:17px;min-height:52px}
+  .hero-grid{grid-template-columns:1fr}
+  .orrery-wrap{justify-self:center;max-width:460px;order:-1;margin-bottom:-12px}
+  .booking-grid,.scope-grid,.faq-grid{grid-template-columns:1fr}
+  .shop-grid{grid-template-columns:repeat(2,1fr)}
+  .tiers{grid-template-columns:1fr;max-width:560px}
+  .quotes{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .header-row{height:64px}
+  .mobile-nav{inset:64px 0 0 0}
+  .brand-word{font-size:23px}
+  .basket-label{display:none}
+  .orrery-wrap{max-width:230px}
+  .hero{padding-top:28px}
+  .hero h1{margin:16px 0 18px}
+  .orrery-cap{display:none}
+  .hero-facts{grid-template-columns:repeat(3,1fr);gap:14px}
+  .hero-facts dd{font-size:20px}
+  .hero-ctas .btn{flex:1 1 100%}
+  .shows-grid,.shop-grid{grid-template-columns:1fr}
+  form.book{grid-template-columns:1fr}
+  .total .btn{width:100%}
+  .date{grid-template-columns:auto 1fr;gap:14px 16px}
+  .date-cta{grid-column:1/-1;justify-content:space-between}
+  .foot-grid{grid-template-columns:1fr;gap:32px}
+  .qa-panel p{padding-right:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .orbit-spin{animation:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#top" aria-label="Orrery, home">
+      <svg class="brand-mark" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <circle cx="17" cy="17" r="15.5" stroke="#D9A752" stroke-width="1.2"/>
+        <ellipse cx="17" cy="17" rx="15.5" ry="6" stroke="#D9A752" stroke-width="1" opacity=".6" transform="rotate(-24 17 17)"/>
+        <circle cx="17" cy="17" r="4.2" fill="#D9A752"/>
+        <circle cx="29.5" cy="11" r="2.2" fill="#F3EBDD"/>
+      </svg>
+      <span class="brand-word">Orrery</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#shows">Shows</a>
+      <a href="#telescope">Telescope nights</a>
+      <a href="#shop">Shop</a>
+      <a href="#schools">Schools</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <div class="header-actions">
+      <button class="basket" type="button" id="basketBtn" aria-label="Basket, 0 items">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16l-1.5 12.5a1.5 1.5 0 0 1-1.5 1.5H7a1.5 1.5 0 0 1-1.5-1.5L4 7Z"/><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9"/></svg>
+        <span class="basket-label">Basket</span>
+        <span class="count" id="basketCount" aria-hidden="true">0</span>
+      </button>
+      <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" id="menuIcon"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <a href="#shows">Shows <span>01</span></a>
+    <a href="#telescope">Telescope nights <span>02</span></a>
+    <a href="#shop">Shop <span>03</span></a>
+    <a href="#schools">Schools <span>04</span></a>
+    <a href="#visit">Visit <span>05</span></a>
+    <a class="btn btn-primary" href="#book">Book a show</a>
+  </nav>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Planetarium &amp; night-sky shop · Bristol Harbourside</p>
+      <h1 id="hero-title">The whole sky, <em>told live</em> under one small dome.</h1>
+      <p class="hero-lede">Sixty seats, one presenter, and a real conversation about what’s above us. Then, on clear Fridays, climb to the roof and see it for yourself.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#book">Book a dome show
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+        <a class="btn btn-ghost" href="#telescope">See telescope nights</a>
+      </div>
+      <dl class="hero-facts">
+        <div><dt>Dome</dt><dd>60 seats</dd></div>
+        <div><dt>Shows</dt><dd>Presenter-led</dd></div>
+        <div><dt>Rooftop</dt><dd>Clear Fridays</dd></div>
+      </dl>
+    </div>
+    <div class="orrery-wrap" aria-hidden="true">
+      <svg class="orrery" viewBox="0 0 600 600" fill="none">
+        <defs>
+          <radialGradient id="sun" cx="50%" cy="45%" r="60%">
+            <stop offset="0" stop-color="#FFE3A6"/><stop offset=".55" stop-color="#D9A752"/><stop offset="1" stop-color="#8A5D17"/>
+          </radialGradient>
+          <radialGradient id="glow"><stop offset="0" stop-color="#D9A752" stop-opacity=".35"/><stop offset="1" stop-color="#D9A752" stop-opacity="0"/></radialGradient>
+          <radialGradient id="p-blue" cx="35%" cy="35%"><stop offset="0" stop-color="#B8D4F0"/><stop offset="1" stop-color="#3C5E8C"/></radialGradient>
+          <radialGradient id="p-rust" cx="35%" cy="35%"><stop offset="0" stop-color="#F0B08A"/><stop offset="1" stop-color="#8C3E22"/></radialGradient>
+          <radialGradient id="p-sand" cx="35%" cy="35%"><stop offset="0" stop-color="#F5E2BE"/><stop offset="1" stop-color="#A27D45"/></radialGradient>
+          <radialGradient id="p-teal" cx="35%" cy="35%"><stop offset="0" stop-color="#BFEAE3"/><stop offset="1" stop-color="#3C7A78"/></radialGradient>
+        </defs>
+        <!-- graduated ring -->
+        <circle cx="300" cy="300" r="286" stroke="#D9A752" stroke-opacity=".5"/>
+        <circle cx="300" cy="300" r="270" stroke="#D9A752" stroke-opacity=".22"/>
+        <g id="ticks" stroke="#D9A752" stroke-opacity=".55"></g>
+        <!-- orbits -->
+        <circle cx="300" cy="300" r="92" stroke="#F3EBDD" stroke-opacity=".18"/>
+        <circle cx="300" cy="300" r="146" stroke="#F3EBDD" stroke-opacity=".18"/>
+        <circle cx="300" cy="300" r="200" stroke="#F3EBDD" stroke-opacity=".18" stroke-dasharray="2 6"/>
+        <circle cx="300" cy="300" r="250" stroke="#F3EBDD" stroke-opacity=".14"/>
+        <!-- sun -->
+        <circle cx="300" cy="300" r="110" fill="url(#glow)"/>
+        <circle cx="300" cy="300" r="40" fill="url(#sun)"/>
+        <circle cx="300" cy="300" r="52" stroke="#D9A752" stroke-opacity=".6"/>
+        <!-- planets on arms -->
+        <g class="orbit-spin o1"><line x1="300" y1="300" x2="392" y2="300" stroke="#D9A752" stroke-opacity=".5"/><circle cx="392" cy="300" r="9" fill="url(#p-rust)"/></g>
+        <g class="orbit-spin o2" style="animation-delay:-9s"><line x1="300" y1="300" x2="300" y2="154" stroke="#D9A752" stroke-opacity=".5"/><circle cx="300" cy="154" r="14" fill="url(#p-blue)"/><circle cx="300" cy="154" r="26" stroke="#F3EBDD" stroke-opacity=".25"/><circle cx="324" cy="146" r="3.5" fill="#E8E2D4"/></g>
+        <g class="orbit-spin o3"><line x1="300" y1="300" x2="159" y2="441" stroke="#D9A752" stroke-opacity=".5"/><ellipse cx="159" cy="441" rx="34" ry="9" stroke="#E7CF9C" stroke-width="2.5" stroke-opacity=".8" transform="rotate(-20 159 441)"/><circle cx="159" cy="441" r="19" fill="url(#p-sand)"/></g>
+        <g class="orbit-spin o4"><line x1="300" y1="300" x2="523" y2="187" stroke="#D9A752" stroke-opacity=".4"/><circle cx="523" cy="187" r="12" fill="url(#p-teal)"/></g>
+        <!-- pivot -->
+        <circle cx="300" cy="300" r="5" fill="#0D1120" stroke="#D9A752"/>
+      </svg>
+      <p class="orrery-cap">Fig. 1 — Our namesake, after the 1712 design</p>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWS -->
+<section class="sec" id="shows" aria-labelledby="shows-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">In the dome</p>
+      <h2 id="shows-title">Four shows, all presented live</h2>
+      <p>No pre-recorded narration. Every show is run by one of our presenters, who takes questions and steers the sky to wherever the room is curious.</p>
+    </div>
+    <div class="shows-grid" id="showsGrid"></div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="sec booking" id="book" aria-labelledby="book-title">
+  <div class="wrap booking-grid">
+    <div class="booking-aside">
+      <div class="sec-head">
+        <p class="eyebrow">Book seats</p>
+        <h2 id="book-title">Reserve your place under the dome</h2>
+        <p>Three sessions a day. Seats are unreserved, so arrive ten minutes early for the middle of the room.</p>
+      </div>
+      <ul class="notes">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Sessions at 11:00, 14:00 and 19:30. Doors close when the dome darkens.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h16M12 4v16"/></svg><span>Up to 8 tickets per booking. For larger groups, get in touch.</span></li>
+        <li id="schools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5Z"/><path d="M7 11v5c0 1.5 2.5 3 5 3s5-1.5 5-3v-5"/></svg><span><strong>Schools:</strong> weekday morning sessions are held for school groups, matched to the curriculum by key stage. Email <a href="mailto:schools@orrery.example">schools@orrery.example</a> to arrange a visit.</span></li>
+      </ul>
+    </div>
+
+    <form class="book" id="bookForm" novalidate aria-describedby="formIntro">
+      <p id="formIntro" class="sr">All fields are required.</p>
+      <div class="field" data-field="name">
+        <label for="f-name">Full name</label>
+        <input class="input" id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+        <p class="err" id="e-name" aria-live="polite"></p>
+      </div>
+      <div class="field" data-field="email">
+        <label for="f-email">Email <span class="hint">— for your e-tickets</span></label>
+        <input class="input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
+        <p class="err" id="e-email" aria-live="polite"></p>
+      </div>
+      <div class="field full" data-field="show">
+        <label for="f-show">Show</label>
+        <select class="input" id="f-show" name="show" aria-describedby="e-show">
+          <option value="">Choose a show…</option>
+        </select>
+        <p class="err" id="e-show" aria-live="polite"></p>
+      </div>
+      <div class="field" data-field="date">
+        <label for="f-date">Date <span class="hint">— next 14 days</span></label>
+        <select class="input" id="f-date" name="date" aria-describedby="e-date">
+          <option value="">Choose a date…</option>
+        </select>
+        <p class="err" id="e-date" aria-live="polite"></p>
+      </div>
+      <div class="field" data-field="tickets">
+        <label for="f-tickets">Tickets</label>
+        <div class="stepper">
+          <button type="button" id="tMinus" aria-label="Remove a ticket">−</button>
+          <input id="f-tickets" name="tickets" type="number" min="1" max="8" value="2" inputmode="numeric" aria-describedby="e-tickets">
+          <button type="button" id="tPlus" aria-label="Add a ticket">+</button>
+        </div>
+        <p class="err" id="e-tickets" aria-live="polite"></p>
+      </div>
+      <fieldset class="field full" data-field="time" aria-describedby="e-time">
+        <legend>Session time</legend>
+        <div class="times" style="margin-top:7px">
+          <label class="time"><input type="radio" name="time" value="11:00"><span>11:00</span></label>
+          <label class="time"><input type="radio" name="time" value="14:00"><span>14:00</span></label>
+          <label class="time"><input type="radio" name="time" value="19:30"><span>19:30</span></label>
+        </div>
+        <p class="err" id="e-time" aria-live="polite"></p>
+      </fieldset>
+      <div class="total">
+        <p class="total-line">Estimated total<strong id="totalAmt">£0.00</strong></p>
+        <button class="btn btn-primary" type="submit">Book tickets</button>
+      </div>
+      <div class="success" id="success" role="status" tabindex="-1">
+        <h3>You’re booked in.</h3>
+        <p id="successMsg"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section class="sec shop" id="shop" aria-labelledby="shop-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The shop</p>
+      <h2 id="shop-title">Take a piece of the sky home</h2>
+      <p>A small, carefully chosen shelf: things our presenters actually use and recommend for getting started under Bristol’s skies.</p>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+    <p class="basket-note" aria-live="polite" id="basketNote">Your basket is empty.</p>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="sec" id="membership" aria-labelledby="mem-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Membership</p>
+      <h2 id="mem-title">Come back every season</h2>
+      <p>The sky changes through the year, and so do our shows. Membership makes it easy to keep up.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <h3>Stargazer</h3>
+        <p class="who">For one curious adult</p>
+        <p class="amt">£45<small> / year</small></p>
+        <ul class="perks">
+          <li>Four dome shows a year</li>
+          <li>10% off in the shop</li>
+          <li>Monthly sky guide by email</li>
+        </ul>
+        <button class="btn btn-ghost join" type="button" data-tier="Stargazer">Join Stargazer</button>
+        <p class="join-msg" aria-live="polite"></p>
+      </article>
+      <article class="tier feature">
+        <span class="tier-flag">Most chosen</span>
+        <h3>Constellation</h3>
+        <p class="who">For two adults and up to three children</p>
+        <p class="amt">£110<small> / year</small></p>
+        <ul class="perks">
+          <li>Unlimited dome shows for the household</li>
+          <li>Two telescope nights a year</li>
+          <li>15% off in the shop</li>
+          <li>Early booking for school-holiday shows</li>
+        </ul>
+        <button class="btn btn-primary join" type="button" data-tier="Constellation">Join Constellation</button>
+        <p class="join-msg" aria-live="polite"></p>
+      </article>
+      <article class="tier">
+        <h3>Observatory</h3>
+        <p class="who">For the committed observer</p>
+        <p class="amt">£190<small> / year</small></p>
+        <ul class="perks">
+          <li>Unlimited dome shows for two</li>
+          <li>Every Friday telescope night included</li>
+          <li>20% off in the shop</li>
+          <li>An annual one-to-one telescope set-up session</li>
+        </ul>
+        <button class="btn btn-ghost join" type="button" data-tier="Observatory">Join Observatory</button>
+        <p class="join-msg" aria-live="polite"></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TELESCOPE -->
+<section class="sec scope" id="telescope" aria-labelledby="scope-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Rooftop telescope nights</p>
+      <h2 id="scope-title">Clear Friday? Meet us on the roof.</h2>
+      <p>On clear Friday evenings we set up telescopes on the rooftop above the dome, looking out over the harbour.</p>
+    </div>
+    <div class="scope-grid">
+      <div>
+        <ol class="steps">
+          <li><div><h3>Book a place</h3><p>Places are limited so everyone gets proper time at the eyepiece. Tickets are £12, members per their tier.</p></div></li>
+          <li><div><h3>We check the sky at 4pm</h3><p>Our team looks at the forecast and the sky itself, then emails every booking with a go or no-go.</p></div></li>
+          <li><div><h3>Arrive after sunset</h3><p>Meet in the foyer. A presenter takes you up, explains the kit, and points the telescopes at whatever is best that night.</p></div></li>
+          <li><div><h3>Wrap up warm</h3><p>The roof is exposed to the wind off the water. Bring layers, a hat and gloves, even in summer.</p></div></li>
+        </ol>
+        <div class="cloudy">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 30h17a6 6 0 0 0 .8-11.95A9 9 0 0 0 12.5 19 5.5 5.5 0 0 0 12 30Z"/><path d="M15 34l-1 3M21 34l-1 3M27 34l-1 3"/></svg>
+          <div>
+            <h3>If it’s cloudy</h3>
+            <p>If we call it off at 4pm, you can move to any future telescope night or take a seat at the 19:30 dome show that evening instead, at no extra cost. If neither suits, we’ll refund you in full.</p>
+          </div>
+        </div>
+      </div>
+      <div class="dates">
+        <p class="dates-title">Next three Friday sessions</p>
+        <div id="datesList" class="dates"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec" aria-labelledby="quotes-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">From our visitors</p>
+      <h2 id="quotes-title">What people say on the way out</h2>
+    </div>
+    <div class="quotes">
+      <figure class="quote">
+        <blockquote>“My daughter asked about black holes halfway through and the presenter just took us there. She hasn’t stopped talking about it.”</blockquote>
+        <figcaption><strong>Priya S.</strong>Saw <em>Small Worlds</em> with family</figcaption>
+      </figure>
+      <figure class="quote">
+        <blockquote>“The 4pm cloud email was clear and honest. We swapped to the evening dome show and still had a lovely night out.”</blockquote>
+        <figcaption><strong>Tom &amp; Gareth</strong>Booked a telescope night</figcaption>
+      </figure>
+      <figure class="quote">
+        <blockquote>“I came for one show and left with a red torch and a star map. Found Andromeda from my garden the next week.”</blockquote>
+        <figcaption><strong>Helen M.</strong>Stargazer member</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq" aria-labelledby="faq-title" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div class="sec-head">
+      <p class="eyebrow">Questions</p>
+      <h2 id="faq-title">Before you visit</h2>
+      <p>Anything else, call us or ask at the shop counter.</p>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="qa">
+        <h3><button class="qa-btn" aria-expanded="false" aria-controls="qa1" id="qb1">Is the dome suitable for young children?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+        <div class="qa-panel" id="qa1" role="region" aria-labelledby="qb1"><div><p>Yes, with the age guidance on each show as a guide. The dome gets fully dark for part of every show, and presenters will raise the lights a little if anyone gets unsettled. Under-12s must be with an adult.</p></div></div>
+      </div>
+      <div class="qa">
+        <h3><button class="qa-btn" aria-expanded="false" aria-controls="qa2" id="qb2">Is Orrery accessible?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+        <div class="qa-panel" id="qa2" role="region" aria-labelledby="qb2"><div><p>The dome and shop are step-free with two wheelchair spaces in each show; mention it when you book so we can hold them. The rooftop is reached by lift. Assistance dogs are welcome everywhere.</p></div></div>
+      </div>
+      <div class="qa">
+        <h3><button class="qa-btn" aria-expanded="false" aria-controls="qa3" id="qb3">Can I arrive late to a show?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+        <div class="qa-panel" id="qa3" role="region" aria-labelledby="qb3"><div><p>Once the dome darkens we close the doors so everyone’s eyes can adjust. If you miss the start, we’ll move you to a later session that day where seats allow.</p></div></div>
+      </div>
+      <div class="qa">
+        <h3><button class="qa-btn" aria-expanded="false" aria-controls="qa4" id="qb4">How do school bookings work?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+        <div class="qa-panel" id="qa4" role="region" aria-labelledby="qb4"><div><p>Weekday morning sessions are reserved for schools. Email us with your year group and topic, and a presenter will shape the session around what your class is studying.</p></div></div>
+      </div>
+      <div class="qa">
+        <h3><button class="qa-btn" aria-expanded="false" aria-controls="qa5" id="qb5">Can I return something from the shop?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+        <div class="qa-panel" id="qa5" role="region" aria-labelledby="qb5"><div><p>Unused items can be returned within 30 days with proof of purchase. If a telescope isn’t working the way you hoped, bring it in and we’ll help you set it up first.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer" id="visit">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top" aria-label="Orrery, back to top">
+          <svg class="brand-mark" viewBox="0 0 34 34" fill="none" aria-hidden="true"><circle cx="17" cy="17" r="15.5" stroke="#D9A752" stroke-width="1.2"/><ellipse cx="17" cy="17" rx="15.5" ry="6" stroke="#D9A752" stroke-width="1" opacity=".6" transform="rotate(-24 17 17)"/><circle cx="17" cy="17" r="4.2" fill="#D9A752"/><circle cx="29.5" cy="11" r="2.2" fill="#F3EBDD"/></svg>
+          <span class="brand-word">Orrery</span>
+        </a>
+        <p>A small independent planetarium and night-sky shop on Bristol’s harbourside.</p>
+      </div>
+      <div>
+        <h3>Find us</h3>
+        <address>Orrery<br>14 Wapping Wharf<br>Bristol BS1 4RW</address>
+      </div>
+      <div>
+        <h3>Opening hours</h3>
+        <dl class="hours">
+          <dt>Mon–Thu</dt><dd>10:00–17:00</dd>
+          <dt>Fri</dt><dd>10:00–22:30</dd>
+          <dt>Sat</dt><dd>10:00–21:00</dd>
+          <dt>Sun</dt><dd>11:00–17:00</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p><a href="tel:+441179000000">0117 900 0000</a><br><a href="mailto:hello@orrery.example">hello@orrery.example</a></p>
+        <div class="social" style="margin-top:18px">
+          <a href="#" aria-label="Orrery on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Orrery on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 21v-8h3l.5-3.5H14V7.5c0-1 .4-1.8 1.9-1.8h1.7V2.6A22 22 0 0 0 15 2.4c-2.6 0-4.4 1.6-4.4 4.5v2.6H7.7V13h2.9v8"/></svg></a>
+          <a href="#" aria-label="Orrery on Mastodon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20.5 13.5c-.3 1.4-2.5 3-5 3.3-1.3.2-2.6.3-4 .2-2.2-.1-4-.5-4-.5v.6c.3 2.2 2.2 2.3 4 2.4 1.8 0 3.4-.4 3.4-.4l.1 1.6s-1.3.7-3.5.8c-1.3.1-2.8 0-4.6-.5C3.2 20 2.6 16.3 2.5 12.5V8.8C2.5 4.6 5.3 3.4 5.3 3.4 6.7 2.7 9.2 2.5 11.8 2.5h.1c2.6 0 5 .2 6.5.9 0 0 2.7 1.2 2.7 5.4 0 0 0 3.1-.6 4.7Z"/><path d="M17 8.8v5.1h-2V9c0-1-.4-1.6-1.3-1.6-1 0-1.4.6-1.4 1.9v2.7h-2V9.3c0-1.3-.5-1.9-1.4-1.9-.9 0-1.3.5-1.3 1.6v4.9h-2V8.8c0-1 .3-1.9.8-2.5.5-.6 1.2-.9 2.1-.9 1 0 1.8.4 2.3 1.2l.5.8.5-.8c.5-.8 1.3-1.2 2.3-1.2.9 0 1.6.3 2.1.9.5.6.8 1.4.8 2.5Z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="yr"></span> Orrery Planetarium. A fictional venue.</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var gbp = new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP"});
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* ---------- Orrery ticks ---------- */
+  var ticks = document.getElementById("ticks"), NS="http://www.w3.org/2000/svg";
+  for (var i=0;i<72;i++){
+    var a=i*5*Math.PI/180, long=i%6===0, r1=long?270:276, r2=286;
+    var l=document.createElementNS(NS,"line");
+    l.setAttribute("x1",300+r1*Math.cos(a)); l.setAttribute("y1",300+r1*Math.sin(a));
+    l.setAttribute("x2",300+r2*Math.cos(a)); l.setAttribute("y2",300+r2*Math.sin(a));
+    ticks.appendChild(l);
+  }
+
+  /* ---------- Starfield ---------- */
+  var cv=document.getElementById("stars"), ctx=cv.getContext("2d"), stars=[], raf=null;
+  function sizeStars(){
+    var dpr=Math.min(window.devicePixelRatio||1,2), w=cv.offsetWidth, h=cv.offsetHeight;
+    cv.width=w*dpr; cv.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.round(w*h/5200); stars=[];
+    for(var i=0;i<n;i++) stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.2,p:Math.random()*6.28,s:.4+Math.random()*1.2});
+    drawStars(0);
+  }
+  function drawStars(t){
+    var w=cv.offsetWidth,h=cv.offsetHeight; ctx.clearRect(0,0,w,h);
+    for(var i=0;i<stars.length;i++){var s=stars[i];
+      var al=reduce?.6:.35+.45*(0.5+0.5*Math.sin(s.p+t*.001*s.s));
+      ctx.globalAlpha=al; ctx.fillStyle=s.r>1.1?"#F7DFAE":"#F3EBDD";
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();}
+    ctx.globalAlpha=1;
+  }
+  function loop(t){drawStars(t); raf=requestAnimationFrame(loop);}
+  sizeStars();
+  var heroVisible=true;
+  if(!reduce){
+    raf=requestAnimationFrame(loop);
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(e){
+        heroVisible=e[0].isIntersecting;
+        if(heroVisible && !raf){raf=requestAnimationFrame(loop);}
+        if(!heroVisible && raf){cancelAnimationFrame(raf);raf=null;}
+      }).observe(cv);
+    }
+  }
+  var rt; window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(sizeStars,150);});
+
+  /* ---------- Shows ---------- */
+  var shows=[
+    {id:"small-worlds",title:"Small Worlds",about:"A tour of the planets, from Mercury’s scorched rock to the ice moons of Saturn, with plenty of time for questions.",dur:"35 min",age:"Ages 5+",price:9,art:"planets"},
+    {id:"tonights-sky",title:"Tonight’s Sky over Bristol",about:"What you can see from the harbour this week: bright planets, seasonal constellations and how to find them yourself.",dur:"45 min",age:"Ages 8+",price:11,art:"constellation"},
+    {id:"moonwalkers",title:"Moonwalkers",about:"Phases, tides and the people who walked there. A gentle, story-led show built for younger visitors.",dur:"30 min",age:"Ages 4+",price:8,art:"moon"},
+    {id:"deep-field",title:"Deep Field",about:"Out past the Milky Way to colliding galaxies and the oldest light we can detect. Our most ambitious journey.",dur:"55 min",age:"Ages 12+",price:13,art:"galaxy"}
+  ];
+  function showArt(kind){
+    var bg='<rect width="400" height="300" fill="#141A2E"/>';
+    var dots=""; for(var i=0;i<40;i++){dots+='<circle cx="'+((i*97)%400)+'" cy="'+((i*53+17)%300)+'" r="'+(i%5===0?1.4:.8)+'" fill="#F3EBDD" opacity="'+(i%3?.5:.85)+'"/>';}
+    var art={
+      planets:'<circle cx="80" cy="210" r="120" fill="#D9A752" opacity=".12"/><circle cx="60" cy="230" r="70" fill="#D9A752"/><circle cx="190" cy="170" r="14" fill="#C9734A"/><circle cx="260" cy="140" r="24" fill="#6E93C2"/><ellipse cx="335" cy="105" rx="44" ry="10" fill="none" stroke="#E7CF9C" stroke-width="3" transform="rotate(-18 335 105)"/><circle cx="335" cy="105" r="22" fill="#D7B98A"/>',
+      constellation:'<path d="M0 260 Q 60 240 100 250 L 120 225 L 140 250 L 190 238 L 205 210 L 230 240 L 300 232 L 330 250 L 400 245 V300 H0Z" fill="#0D1120"/><g stroke="#D9A752" stroke-opacity=".7" fill="none"><path d="M80 70 L140 95 L190 80 L240 110 L300 100 L330 60"/><path d="M240 110 L250 170"/></g><g fill="#F7DFAE"><circle cx="80" cy="70" r="4"/><circle cx="140" cy="95" r="3.5"/><circle cx="190" cy="80" r="3"/><circle cx="240" cy="110" r="4.5"/><circle cx="300" cy="100" r="3.5"/><circle cx="330" cy="60" r="3"/><circle cx="250" cy="170" r="3"/></g>',
+      moon:'<circle cx="200" cy="150" r="88" fill="#E9DFCC"/><circle cx="232" cy="134" r="88" fill="#141A2E"/><g fill="#C9BEA8"><circle cx="150" cy="120" r="10"/><circle cx="140" cy="180" r="7"/><circle cx="168" cy="205" r="5"/></g><circle cx="200" cy="150" r="104" fill="none" stroke="#D9A752" stroke-opacity=".4" stroke-dasharray="3 6"/>',
+      galaxy:'<g transform="translate(200 150) rotate(-24)"><ellipse rx="150" ry="44" fill="#D9A752" opacity=".08"/><ellipse rx="110" ry="30" fill="#D9A752" opacity=".14"/><ellipse rx="64" ry="17" fill="#E7CF9C" opacity=".35"/><ellipse rx="22" ry="8" fill="#FFF1D0"/></g><g transform="translate(320 70) rotate(30)"><ellipse rx="26" ry="7" fill="#8FA9D6" opacity=".5"/><ellipse rx="8" ry="3" fill="#DCE7F7"/></g>'
+    };
+    return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+bg+dots+art[kind]+'</svg>';
+  }
+  var sg=document.getElementById("showsGrid"), sel=document.getElementById("f-show");
+  shows.forEach(function(s){
+    var el=document.createElement("article"); el.className="show";
+    el.innerHTML='<div class="show-art">'+showArt(s.art)+'</div><div class="show-body"><h3>'+s.title+'</h3><p>'+s.about+'</p>'+
+      '<div class="meta"><span class="tag"><span class="sr">Duration </span>'+s.dur+'</span><span class="tag"><span class="sr">Age guidance </span>'+s.age+'</span></div>'+
+      '<div class="show-foot"><p class="price">'+gbp.format(s.price)+'<small>per seat</small></p><button class="link-btn" type="button" data-book="'+s.id+'">Book this show<span class="sr">: '+s.title+'</span></button></div></div>';
+    sg.appendChild(el);
+    var o=document.createElement("option"); o.value=s.id; o.textContent=s.title+" — "+s.dur+", "+gbp.format(s.price); sel.appendChild(o);
+  });
+  sg.addEventListener("click",function(e){
+    var b=e.target.closest("[data-book]"); if(!b) return;
+    sel.value=b.getAttribute("data-book"); validate("show"); updateTotal();
+    document.getElementById("book").scrollIntoView({behavior:reduce?"auto":"smooth"});
+    setTimeout(function(){document.getElementById("f-name").focus({preventScroll:true});}, reduce?0:500);
+  });
+
+  /* ---------- Dates ---------- */
+  var dsel=document.getElementById("f-date"), today=new Date(); today.setHours(0,0,0,0);
+  var dfmt=new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short"});
+  for(var d=0; d<14; d++){
+    var dt=new Date(today); dt.setDate(today.getDate()+d);
+    var o=document.createElement("option");
+    o.value=dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");
+    o.textContent=(d===0?"Today, ":d===1?"Tomorrow, ":"")+dfmt.format(dt);
+    dsel.appendChild(o);
+  }
+
+  /* ---------- Telescope dates (next 3 Fridays) ---------- */
+  var list=document.getElementById("datesList"), f=new Date(today);
+  var diff=(5-f.getDay()+7)%7; f.setDate(f.getDate()+diff);
+  var phases=["waxing","full","waning"];
+  var monF=new Intl.DateTimeFormat("en-GB",{month:"short"}), longF=new Intl.DateTimeFormat("en-GB",{weekday:"long",day:"numeric",month:"long"});
+  for(var k=0;k<3;k++){
+    var fd=new Date(f); fd.setDate(f.getDate()+k*7);
+    var spots=[8,14,20][k];
+    var row=document.createElement("div"); row.className="date";
+    row.innerHTML='<p class="date-num">'+fd.getDate()+'<small>'+monF.format(fd)+'</small></p>'+
+      '<div class="date-info"><strong>'+longF.format(fd)+'</strong><span>From 20:00 · '+spots+' places left · weather decision at 16:00</span></div>'+
+      '<div class="date-cta"><button class="btn btn-ghost scope-book" type="button" data-date="'+longF.format(fd)+'">Reserve<span class="sr"> for '+longF.format(fd)+'</span></button></div>';
+    list.appendChild(row);
+  }
+  list.addEventListener("click",function(e){
+    var b=e.target.closest(".scope-book"); if(!b) return;
+    b.textContent="Reserved ✓"; b.disabled=true;
+    toast("Telescope night held for "+b.getAttribute("data-date")+". We’ll email the 4pm weather call.");
+  });
+
+  /* ---------- Shop ---------- */
+  var items=[
+    {n:"Planisphere, 51°N",d:"A rotating star wheel set for Bristol’s latitude. Dial the date and time to see tonight’s sky.",p:14.5,a:"wheel"},
+    {n:"Harbour Sky Print",d:"A2 star map of the sky above the harbour on a date you choose, printed on heavy cotton paper.",p:32,a:"map"},
+    {n:"First Light Refractor",d:"A 70mm beginner’s telescope with a sturdy tripod. Easy to set up and good for the Moon and planets.",p:189,a:"scope"},
+    {n:"Red Night Torch",d:"Dimmable red light that reads charts without ruining your night vision. Pocket sized, USB-C.",p:16,a:"torch"},
+    {n:"Build-a-Sundial Kit",d:"A wooden sundial kit for ages 8 and up, with a short guide to how the Sun moves through the year.",p:22,a:"sundial"},
+    {n:"Moon Atlas Binoculars",d:"10×50 binoculars paired with a fold-out map of lunar seas and craters to find on clear nights.",p:74,a:"bino"}
+  ];
+  function itemArt(a){
+    var c="#1A1F33",b="#8A5D17";
+    var m={
+      wheel:'<circle cx="200" cy="125" r="92" fill="#1A1F33"/><circle cx="200" cy="125" r="92" fill="none" stroke="'+b+'" stroke-width="3"/><ellipse cx="200" cy="115" rx="62" ry="52" fill="#F3EBDD" opacity=".1"/><g fill="#F3EBDD"><circle cx="180" cy="100" r="2.5"/><circle cx="215" cy="92" r="2"/><circle cx="230" cy="130" r="2.5"/><circle cx="170" cy="140" r="2"/><circle cx="205" cy="150" r="1.8"/></g><circle cx="200" cy="125" r="5" fill="'+b+'"/>',
+      map:'<rect x="130" y="30" width="140" height="190" fill="#1A1F33"/><rect x="138" y="38" width="124" height="174" fill="none" stroke="'+b+'"/><circle cx="200" cy="112" r="50" fill="none" stroke="#F3EBDD" stroke-opacity=".5"/><g stroke="'+b+'" fill="none"><path d="M175 95 L198 110 L222 98 L215 130"/></g><g fill="#F3EBDD"><circle cx="175" cy="95" r="2"/><circle cx="198" cy="110" r="2.4"/><circle cx="222" cy="98" r="2"/><circle cx="215" cy="130" r="2"/></g><rect x="170" y="182" width="60" height="3" fill="'+b+'"/>',
+      scope:'<g transform="rotate(-24 200 120)"><rect x="110" y="98" width="190" height="34" rx="6" fill="'+c+'"/><rect x="290" y="92" width="22" height="46" rx="4" fill="'+b+'"/><rect x="96" y="106" width="18" height="18" rx="3" fill="'+c+'"/></g><path d="M200 140 L160 225 M200 140 L240 225 M200 140 L200 225" stroke="'+c+'" stroke-width="5" stroke-linecap="round"/>',
+      torch:'<rect x="120" y="105" width="150" height="40" rx="20" fill="'+c+'"/><rect x="262" y="98" width="28" height="54" rx="8" fill="#9B2C1E"/><circle cx="160" cy="125" r="6" fill="'+b+'"/><path d="M296 110 L360 80 L360 170 L296 140Z" fill="#C0392B" opacity=".25"/>',
+      sundial:'<ellipse cx="200" cy="170" rx="110" ry="34" fill="#C9A878"/><ellipse cx="200" cy="162" rx="110" ry="34" fill="#E2C899" stroke="'+b+'"/><path d="M200 162 L200 82 L250 162Z" fill="'+c+'"/><g stroke="'+b+'"><path d="M200 162 L110 150 M200 162 L130 186 M200 162 L270 186 M200 162 L290 150 M200 162 L200 196"/></g>',
+      bino:'<g fill="'+c+'"><rect x="120" y="85" width="64" height="100" rx="14"/><rect x="216" y="85" width="64" height="100" rx="14"/><rect x="178" y="110" width="44" height="22" rx="6"/></g><circle cx="152" cy="190" r="26" fill="'+c+'"/><circle cx="248" cy="190" r="26" fill="'+c+'"/><circle cx="152" cy="190" r="17" fill="#3C5E8C"/><circle cx="248" cy="190" r="17" fill="#3C5E8C"/><circle cx="146" cy="184" r="5" fill="#F3EBDD" opacity=".6"/><circle cx="242" cy="184" r="5" fill="#F3EBDD" opacity=".6"/>'
+    };
+    return '<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+m[a]+'</svg>';
+  }
+  var shopGrid=document.getElementById("shopGrid"), basket={count:0,total:0};
+  items.forEach(function(it,i){
+    var el=document.createElement("article"); el.className="item";
+    el.innerHTML='<div class="item-art">'+itemArt(it.a)+'</div><div class="item-body"><h3>'+it.n+'</h3><p>'+it.d+'</p>'+
+      '<div class="item-foot"><p class="price">'+gbp.format(it.p)+'</p><button class="add" type="button" data-i="'+i+'">Add to basket<span class="sr">: '+it.n+'</span></button></div></div>';
+    shopGrid.appendChild(el);
+  });
+  var countEl=document.getElementById("basketCount"), basketBtn=document.getElementById("basketBtn"), note=document.getElementById("basketNote");
+  function renderBasket(){
+    countEl.textContent=basket.count;
+    basketBtn.setAttribute("aria-label","Basket, "+basket.count+(basket.count===1?" item":" items"));
+    note.innerHTML = basket.count ? 'Basket: <strong>'+basket.count+(basket.count===1?' item':' items')+'</strong>, '+gbp.format(basket.total)+'.' : 'Your basket is empty.';
+    if(!reduce){countEl.classList.remove("bump"); void countEl.offsetWidth; countEl.classList.add("bump");}
+  }
+  shopGrid.addEventListener("click",function(e){
+    var b=e.target.closest(".add"); if(!b) return;
+    var it=items[+b.getAttribute("data-i")];
+    basket.count++; basket.total+=it.p; renderBasket();
+    b.classList.add("added"); b.firstChild.textContent="Added ✓";
+    clearTimeout(b._t); b._t=setTimeout(function(){b.classList.remove("added"); b.firstChild.textContent="Add to basket";},1600);
+    toast(it.n+" added to your basket.");
+  });
+  basketBtn.addEventListener("click",function(){
+    toast(basket.count ? basket.count+(basket.count===1?" item":" items")+" · "+gbp.format(basket.total)+". Checkout is a demo here." : "Your basket is empty. Browse the shop below.");
+  });
+
+  /* ---------- Toast ---------- */
+  var tEl=document.getElementById("toast"), tT;
+  function toast(msg){tEl.textContent=msg; tEl.classList.add("show"); clearTimeout(tT); tT=setTimeout(function(){tEl.classList.remove("show");},3200);}
+
+  /* ---------- Membership ---------- */
+  document.querySelectorAll(".join").forEach(function(b){
+    b.addEventListener("click",function(){
+      var msg=b.parentNode.querySelector(".join-msg");
+      msg.textContent="Thanks — we’ve started your "+b.dataset.tier+" membership. Check your email to finish.";
+    });
+  });
+
+  /* ---------- Mobile nav ---------- */
+  var menuBtn=document.getElementById("menuBtn"), mnav=document.getElementById("mobileNav"), icon=document.getElementById("menuIcon");
+  function setMenu(open){
+    mnav.classList.toggle("open",open);
+    menuBtn.setAttribute("aria-expanded",open);
+    menuBtn.setAttribute("aria-label",open?"Close menu":"Open menu");
+    icon.innerHTML = open ? '<path d="M6 6l12 12M18 6L6 18"/>' : '<path d="M4 8h16M4 16h16"/>';
+    document.body.style.overflow = open ? "hidden" : "";
+    if(open){ var first=mnav.querySelector("a"); first && first.focus(); }
+  }
+  menuBtn.addEventListener("click",function(){setMenu(!mnav.classList.contains("open"));});
+  mnav.addEventListener("click",function(e){ if(e.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape" && mnav.classList.contains("open")){ setMenu(false); menuBtn.focus(); }});
+  window.addEventListener("resize",function(){ if(window.innerWidth>960 && mnav.classList.contains("open")) setMenu(false); });
+
+  /* ---------- FAQ ---------- */
+  document.querySelectorAll(".qa-btn").forEach(function(b){
+    b.addEventListener("click",function(){
+      var open=b.getAttribute("aria-expanded")!=="true";
+      b.setAttribute("aria-expanded",open);
+      b.closest(".qa").classList.toggle("open",open);
+    });
+  });
+
+  /* ---------- Booking form ---------- */
+  var form=document.getElementById("bookForm"), tIn=document.getElementById("f-tickets");
+  var touched={};
+  function val(n){ if(n==="time"){var c=form.querySelector('input[name="time"]:checked'); return c?c.value:"";} return (form.elements[n].value||"").trim(); }
+  var rules={
+    name:function(v){ if(!v) return "Please enter your name."; if(v.length<2) return "Your name looks too short."; return ""; },
+    email:function(v){ if(!v) return "Please enter your email so we can send your tickets."; if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "That email doesn’t look right — check for a typo."; return ""; },
+    show:function(v){ return v?"":"Choose which show you’d like to see."; },
+    date:function(v){ return v?"":"Choose a date in the next 14 days."; },
+    time:function(v){ return v?"":"Pick a session time."; },
+    tickets:function(v){ var n=Number(v); if(!v||!Number.isInteger(n)) return "Enter a number of tickets."; if(n<1) return "Book at least 1 ticket."; if(n>8) return "Up to 8 tickets per booking — contact us for groups."; return ""; }
+  };
+  function validate(n){
+    var msg=rules[n](val(n)), f=form.querySelector('[data-field="'+n+'"]'), e=document.getElementById("e-"+n);
+    f.classList.toggle("invalid",!!msg); e.textContent=msg;
+    var inputs = n==="time" ? form.querySelectorAll('input[name="time"]') : [form.elements[n]];
+    Array.prototype.forEach.call(inputs,function(i){ if(msg) i.setAttribute("aria-invalid","true"); else i.removeAttribute("aria-invalid"); });
+    return !msg;
+  }
+  ["name","email"].forEach(function(n){
+    form.elements[n].addEventListener("blur",function(){ if(val(n)) touched[n]=true; if(touched[n]) validate(n); });
+    form.elements[n].addEventListener("input",function(){ if(touched[n]) validate(n); });
+  });
+  ["show","date"].forEach(function(n){ form.elements[n].addEventListener("change",function(){touched[n]=true; validate(n); updateTotal();}); });
+  form.querySelectorAll('input[name="time"]').forEach(function(r){ r.addEventListener("change",function(){ validate("time"); }); });
+  tIn.addEventListener("input",function(){ validate("tickets"); updateTotal(); });
+  function step(d){ var n=parseInt(tIn.value,10)||0; n=Math.min(8,Math.max(1,n+d)); tIn.value=n; validate("tickets"); updateTotal(); }
+  document.getElementById("tMinus").addEventListener("click",function(){step(-1);});
+  document.getElementById("tPlus").addEventListener("click",function(){step(1);});
+  function updateTotal(){
+    var s=shows.find(function(x){return x.id===sel.value;}), n=parseInt(tIn.value,10);
+    document.getElementById("totalAmt").textContent = gbp.format(s && n>0 && n<=8 ? s.price*n : 0);
+  }
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    var order=["name","email","show","date","tickets","time"], firstBad=null;
+    order.forEach(function(n){ touched[n]=true; if(!validate(n) && !firstBad) firstBad=n; });
+    var succ=document.getElementById("success");
+    if(firstBad){
+      succ.classList.remove("show");
+      var target = firstBad==="time" ? form.querySelector('input[name="time"]') : form.elements[firstBad];
+      target.focus();
+      return;
+    }
+    var s=shows.find(function(x){return x.id===sel.value;}), n=parseInt(tIn.value,10);
+    var dateTxt=dsel.options[dsel.selectedIndex].textContent.replace(/^(Today|Tomorrow), /,"");
+    document.getElementById("successMsg").textContent =
+      n+(n===1?" ticket":" tickets")+" for "+s.title+" on "+dateTxt+" at "+val("time")+" ("+gbp.format(s.price*n)+"). Confirmation is on its way to "+val("email")+". Pay on arrival at the shop counter.";
+    succ.classList.add("show"); succ.focus();
+    form.querySelector('button[type="submit"]').textContent="Book another";
+    form.reset(); tIn.value=2; touched={}; updateTotal();
+    Array.prototype.forEach.call(form.querySelectorAll(".invalid"),function(x){x.classList.remove("invalid");});
+  });
+})();
+</script>
+</body>
+</html>

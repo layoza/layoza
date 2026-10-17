@@ -1,0 +1,249 @@
+---
+name: layoza-art-direction
+description: >-
+  World-class art direction for new websites, apps and redesigns (Mode A/D):
+  turn a brief into ONE committed visual world that is unmistakably about its
+  subject, build it at studio quality (art, type, colour, layout, motion), and
+  iterate on screenshots until it beats what a top studio would ship, with
+  measured `layoza qa` as the floor. In Mode B/C use only its preservation and
+  finish rules; the existing brand DNA wins.
+---
+<!-- Adapted from pbakaus/impeccable (Apache-2.0), commit 2f98774: reference/new-work.md (rut, seven candidates, fusion and raises, calibration and rendition prior, "build the assigned direction", web leverage), reference/visualize.md ("commitment is depth"), reference/mode-persuade.md, and agents/impeccable-finish-reviewer.md (TYPE / MATERIAL / GROUND / ceiling checks). Modified by Layoza: rewritten around `layoza design-system --json`, `layoza deal` (offline, reproducible candidate deal) and measured `layoza qa`; "world from far, subject up close" fusion; Mode B/C brand preservation; impeccable engine plumbing (concept-seed catalog, serve-question, build-phase, comp-spec, plates) removed. Ideas adapted in Layoza's own words: subject inventory, section argument, idea sentence, copy-deck-first, scored screenshot critique with caps (Leonxlnx/taste-skill, MIT); subject grounding and token plan with ASCII wireframes (anthropics/skills frontend-design, Apache-2.0). See LICENSE and NOTICE.md in this folder. -->
+
+# Layoza: Art Direction
+
+You are the best designer in the world on this job. Your page has to be
+unmistakably about its subject, impossible to guess from the category name, and
+better than what any top studio would ship, while still working perfectly as a
+page. Passing `layoza qa` is the floor. The goal is the design.
+
+| Reference | Load when |
+| :--- | :--- |
+| [reference/world.md](reference/world.md) | Steps 2–4: candidates, deal, fusion |
+| [reference/art-production.md](reference/art-production.md) | Step 6: drawing the subject, illustration, assets, type as image |
+| [reference/craft-floor.md](reference/craft-floor.md) | Just before the first UI edit |
+| [reference/system-passes.md](reference/system-passes.md) | A colour, type, layout, or "make it bolder" pass |
+| [reference/finish.md](reference/finish.md) | Step 8: art loop, reviewer, QA |
+| [reference/surfaces.md](reference/surfaces.md) | App/dashboard (Operate), docs/article (Read), portfolio (Experience) |
+| [reference/engineering-lessons.md](reference/engineering-lessons.md) | CLS, sticky headers, font swap, canvas sizing |
+| [../layoza-animations/SKILL.md](../layoza-animations/SKILL.md) | Step 7: motion |
+
+## 0. Authority (decide first)
+
+1. **The user's prompt wins.** A named style, palette, font, library, "minimal",
+   or "no animation" is followed exactly; a pinned world pins the world, not its
+   softest rendition. Everything below governs only what the prompt leaves open.
+2. **Mode A** (new): this whole skill. **Mode D** (redesign): keep product truth,
+   content, routes, functions and explicit brand commitments; replace the
+   visual world. **Mode B** (extend): inherit `SITE-DNA.json` / `DESIGN.md` /
+   `MOTION.md`; use steps 6–8 only. **Mode C** (improve): steps 6–8 only, inside
+   the incumbent world.
+3. Bans here apply to new work. A brand's own DNA (Inter, cream, numbered
+   sections) is kept in B/C, and in D unless the user drops it.
+
+## 1. Inventory the subject (before any look)
+
+```bash
+layoza design-system "<brief>" --mode new --json
+```
+
+Treat the engine output as raw material, not answers: `distinctiveness` (place
+and material cues, category clichés), `match_confidence`, and three structural
+directions. Its palettes and fonts are a fallback register only. Then write:
+
+- **Subject facts:** 8–12 concrete facts from the brief (who, where, what is
+  sold or done, prices, people, hours, what makes it different).
+- **Subject objects:** the 5 things a visitor sees and handles in this
+  business. Circle the most characteristic one.
+- **Argument:** one claim and its proof per section. A section with no claim is
+  cut; the order follows the argument, not a stock template.
+- **Scene:** who uses it, where, under what light. This decides light or dark,
+  never the category.
+
+## 2. Name the rut (treatments, both ends)
+
+- **Reflex:** the layout, palette and type this category always ships (start
+  from `category_cliches`).
+- **Obvious opposite:** the predictable reaction against the reflex (cream
+  craft → black brutalist craft). Both ends are the rut.
+- **Calibration:** generated pages cluster on cream + serif + terracotta;
+  near-black + one neon accent + glow; broadsheet hairlines + italic serif +
+  tiny mono labels; flat ink + black boxes + hard offset shadows. **Treat your
+  first palette as already spent:** if OWN-WORLD reads cream, paper, parchment
+  or lamplight and the brief didn't pin it, rework it from the world's real,
+  saturated materials.
+
+The subject is never the rut. Its objects are your best material; only the
+generic *treatments* are banned.
+
+## 3. Seven worlds, then deal
+
+List **seven** candidate worlds the audience knows by heart, across at least
+three families: place (architecture, signage, transit, landscape, light);
+notation and print (charts, maps, tickets, labels, manuals, packaging); material
+and process; ritual; and the subject's own objects. Give each two lines: why it
+fits and can carry the argument, and how it looks (ground, colours, type voices,
+one signature). Order them by resonance, then let the dealer pick from your top four:
+
+```bash
+layoza deal "<the seven candidates, one per line>" --top 4
+```
+
+Build the dealt world. The deal exists because a model's first pick converges
+on the category; overrule it only when the dealt world fails truth or clarity,
+and say why. Detail and a worked example: [reference/world.md](reference/world.md).
+
+## 4. Fuse: world from far, subject up close
+
+- The dealt world supplies the **ground, palette, type voice and structure**.
+- The circled subject object becomes the **signature**: drawn at scale in the
+  first screen and, ideally, the thing the visitor operates. Example: a
+  harbour-chart world for an optician, with a lens loupe that magnifies it.
+- Write the **idea sentence**: "On this page, [subject thing] becomes [device]."
+  If a competitor could use that sentence unchanged, it isn't an idea yet.
+- Weigh the next two candidates as challengers on **audience recognition** and
+  **product clarity**. A declined challenger donates one *discipline* (total
+  palette commitment, a grid's density courage), written as a "raise" line;
+  never donate clothes.
+- **Subject test:** cover every word on the planned first screen. A stranger
+  must still name the business from the picture.
+- **Sibling test:** would you write this exact plan for a neighbouring
+  business in the same category? Every block that matches is a default: revise
+  it and note what changed.
+
+## 5. Contract and copy (before code)
+
+Write `.layoza/direction.md`, a dev-only file that is never served:
+
+- **THESIS:** the idea sentence and the category arrangement it refuses.
+- **OWN-WORLD:** palette roles, materials and component language, recognisable
+  with all content removed.
+- **TOKENS:** 4–6 named hex values, 1–2 families with roles, a 5-step type
+  scale, the alignment rule.
+- **FIRST VIEWPORT:** an ASCII wireframe for desktop and for phone. Mark where
+  the subject art sits (the dominant mass, about 40% or more) and where the real
+  action works (buy, book, try; compact, never a second focal panel).
+- **SECTIONS:** one line each: claim, proof, and the composition that fits its
+  content (a wall of objects, a ticket, a diagram, a map, a single quote at
+  scale). No two consecutive sections share a composition.
+- **ART PLAN:** one row per section: the object drawn, its named parts, light,
+  people or props, and what moves (`reference/art-production.md` §5). Build
+  the weakest row first.
+- **MOTION:** what moves and why, chosen per design (see step 7).
+- **FINISH:** "Unverified is unfinished: art loop done, `layoza qa` 0 errors."
+
+Then write the **copy deck**: headlines of two lines or fewer; CTAs that name
+the outcome and keep that name through the flow; no invented proof (prices,
+awards, customers); illustrative content labelled as such.
+
+## 6. Build the committed world at full strength
+
+Load [reference/craft-floor.md](reference/craft-floor.md) and
+[reference/art-production.md](reference/art-production.md).
+
+- **Build the dealt world, not a safer interpretation of it.** In unattended
+  work, the safe rendition is the known risk. Land the first build fully
+  committed; later passes clarify and never dilute.
+- **Commit every atom:** nav, buttons, inputs, links, focus rings, selection,
+  scrollbars and the bag/cart are rebuilt in the world's vocabulary. A stock
+  component in a committed world is a lapse.
+- **Author the assets** at production fidelity (the art-production fidelity
+  bar). Gradients, glass and icon tiles where an asset belongs are the gap
+  wearing chrome.
+- **Build the form's web leverage:** when the world implies a technique
+  (canvas, WebGL, SVG drawing, scroll-driven change, view transitions), build
+  the technique itself, not a static imitation of it.
+- **Type:**
+  - Display tracking −0.02 to −0.05em, leading 0.85–1.05, about 4× body size
+    (3× is the floor).
+  - Headlines run two lines or fewer at every width: cut words first, then
+    widen the measure, and resize last. Large intro sentences are paragraphs
+    (about 25 words, statement size), not headlines.
+  - Break display lines by hand: no orphan word, and no line ending on "a",
+    "the" or "of". Pull round or pointed capitals (O, C, A, V) slightly left
+    so the edge reads straight.
+  - Body 16–20px, leading 1.45–1.6, 45–75ch.
+  - One family first, two at most, paired by era and skeleton
+    (`reference/ceiling.md` §2). Use two or three display sizes and nothing
+    in between.
+  - Type may *be* the image.
+- **Space and colour:**
+  - Section gaps of 120–220px on desktop, clearly larger than gaps inside a section.
+  - Count the left edges in the screenshot. Text blocks share 2–3 anchor lines,
+    and headings, prices and footer links start on them too.
+  - Colour owns whole sections (fields, not sprinkled accents):
+    - the ground covers 70–90% of the page;
+    - the accent stays under 5% of any screen and marks the action;
+    - each field has its own ink at full contrast;
+    - neighbouring fields differ in lightness, not only in hue.
+  - One depth strategy.
+- **Quiet, minimal, simple or calm in the prompt** overrides the colour fields
+  and house moves:
+  - one ground and one accent;
+  - no coloured section blocks unless the user asks for them;
+  - ornament only where the world needs it.
+
+  Restraint still needs substance, so fill freed space with scale (bigger
+  type), real content and one carefully drawn artefact, never with another
+  ornament. Short pages are fine. A page built only by removing things reads
+  as thin, not quiet.
+- **The idea reaches the end:** pricing, FAQ, form and footer speak the world
+  too. The footer is a designed close (the name again, the place, the
+  signature object small), not a link-column template. A strong hero followed
+  by stock blocks is the most common way a good page loses.
+- **Controls mean what they do:** one-of-many choices (billing period, sizes,
+  days) are radio groups or segmented controls. Never use checkboxes that
+  could both be ticked.
+- **Commitment is depth:** one dominant move per screen, supported by material,
+  type and spacing; regions that compete with the lead at the same scale make
+  the page louder, not bolder.
+
+## 7. Motion: designed, not defaulted
+
+Decide what motion makes *this* subject understood or felt (load choreography,
+a scroll story showing something from the subject's world, content-shaped
+section entrances, tactile micro-interactions), then pick the lightest tool that
+does it well. Values, tools and guardrails:
+[layoza-animations](../layoza-animations/SKILL.md). Never one identical fade-up
+on every section; content is visible without JS; reduced motion is honoured.
+
+## 8. Art loop, then the floor
+
+Load [reference/finish.md](reference/finish.md).
+
+1. **Screenshots:** `layoza qa <file>` captures 1440/768/375. Also capture
+   the first screen and a mid-scroll frame of the signature.
+2. **Art loop (at least 3 rounds; art has no two-round cap):**
+   1. Critique like the harshest art director: subject test, the one-second
+      test, squint test, cover-the-logo, sameness, the phone composition, and
+      the TYPE / MATERIAL / GROUND checks.
+   2. Score it as 0.4 design + 0.3 usability + 0.2 creativity + 0.1 content.
+   3. Fix the top 3 problems in order: idea → hierarchy → composition → type →
+      art → colour → detail → motion.
+   4. Run the usability pass (finish.md) every round, and the ceiling pass
+      (`reference/ceiling.md`) once the score reaches 8.
+   5. Stop when the score is ≥ 9 and the fresh-eyes reviewer agrees, or after
+      6 rounds; report the reviewer's score.
+3. **Fresh-eyes reviewer:** when subagents are available, spawn one with no
+   build context. Give it the screenshots, the brief and `direction.md`. It
+   returns ship / fix / rebuild using the finish.md checklist.
+4. **QA floor:** fix every `layoza qa` error at the cause; never game a
+   checker. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
+5. **Report honestly:** the score, QA errors (0 or a list), metrics with nulls
+   named, what is still open, and anything the user should confirm.
+
+## Absolute refusals for new work (the worst tells only)
+
+Each is allowed only when the prompt or brand asks for it:
+- gradient text;
+- a side-stripe accent border on cards;
+- kicker/eyebrow labels above headings;
+- the hero-metric block;
+- identical icon-card grids as the page structure;
+- nested cards;
+- glass and glow as decoration;
+- fake material (CSS bevels, embossing, chalk and metal effects imitating
+  something the page doesn't render).
+
+Every other habit on the craft floor is a **reflex check**: allowed when you can
+state why this world needs it.

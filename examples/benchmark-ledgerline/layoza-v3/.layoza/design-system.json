@@ -1,0 +1,249 @@
+{
+  "mode": "new_website",
+  "query": "Ledgerline: B2B software for small and mid-size UK accountancy firms (3-50 staff). Reads clients' bank feeds, matches transactions to invoices and receipts, flags unmatched ones, prepares VAT returns for Making Tax Digital submission. Buyers: practice owners and practice managers. Landing page with savings estimator, pricing, security, trial signup.",
+  "matched_industry": {
+    "slug": "saas-startup",
+    "name": "SaaS & Modern Startups",
+    "keywords": [
+      "saas",
+      "startup",
+      "workflow",
+      "productivity",
+      "platform",
+      "b2b",
+      "collaboration"
+    ],
+    "recommended_styles": [
+      "crisp-product-workbench",
+      "swiss-editorial-grid"
+    ],
+    "layout_archetype": "Interactive Product Stage Hero + Workflow Proof Sequence",
+    "first_viewport_priority": "Concrete product outcome headline, live interactive UI preview, and friction-free primary CTA",
+    "typography_pairing": {
+      "id": "bricolage-inter-tight",
+      "display_font": "Bricolage Grotesque",
+      "body_font": "Plus Jakarta Sans",
+      "mono_font": "JetBrains Mono",
+      "mood": "Crisp, engineered, approachable",
+      "scale_ratio": "1.250 (Major Third)",
+      "google_fonts_url": "https://fonts.google.com/share?selection.family=Bricolage+Grotesque:wght@600;700|Plus+Jakarta+Sans:wght@400;500;600"
+    },
+    "palette": {
+      "id": "paper-cobalt",
+      "background": "#FCFCFA",
+      "surface": "#F2F3EE",
+      "foreground": "#11151C",
+      "muted": "#525B6C",
+      "primary_accent": "#1D4ED8",
+      "secondary_accent": "#0D9488",
+      "wcag_body_contrast": 17.81,
+      "notes": "Engineered warm paper surface with high-contrast ink and cobalt interactive states"
+    },
+    "conversion_trust_elements": [
+      "Interactive product state switcher",
+      "Transparent pricing matrix",
+      "Quantified customer time-saved proof"
+    ],
+    "motion_language": "State-driven UI micro-interactions, spring layout transitions, choreographed feature tabs",
+    "anti_patterns": [
+      "Predictable AI purple-to-pink glowing blobs",
+      "Fake empty decorative cards"
+    ],
+    "default_dials": {
+      "design_variance": 5,
+      "motion_intensity": 6,
+      "visual_density": 5
+    },
+    "provenance": "adapted:ui-ux-pro-max+taste-skill+layoza"
+  },
+  "match_score": 3,
+  "match_confidence": "weak",
+  "alternative_industries": [],
+  "distinctiveness": {
+    "place_cues": [],
+    "material_cues": [],
+    "category_cliches": [
+      "Purple-to-blue gradient hero with glowing orbs",
+      "Bento grid of feature cards with icons",
+      "Logo cloud + three-tier pricing table straight from a template",
+      "Dark mode with neon accent and terminal mockup by default"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "matched_styles": [
+    {
+      "slug": "swiss-editorial-grid",
+      "name": "Swiss Editorial Grid",
+      "category": "Architectural & Editorial",
+      "keywords": [
+        "swiss",
+        "editorial",
+        "grid",
+        "corporate",
+        "hairline",
+        "typography"
+      ],
+      "characteristics": [
+        "Exposed structural grid borders (`1px solid`) with generous internal cell padding",
+        "High-contrast serif or neo-grotesque display headlines paired with crisp body copy",
+        "Asymmetric column ratios (e.g., 4:8 or 5:7) with clear typographic hierarchy"
+      ],
+      "best_for": [
+        "Corporate & Enterprise",
+        "Editorial Publishing",
+        "Finance & Fintech",
+        "Architecture"
+      ],
+      "avoid_when": [
+        "Playful children's apps"
+      ],
+      "provenance": "adapted:awesome-design-skills+taste-skill+layoza"
+    },
+    {
+      "slug": "crisp-product-workbench",
+      "name": "Crisp Product Workbench",
+      "category": "Product & SaaS",
+      "keywords": [
+        "saas",
+        "workbench",
+        "product",
+        "bento",
+        "clean",
+        "startup"
+      ],
+      "characteristics": [
+        "Interactive live product state demonstrations in the hero instead of static screenshots",
+        "Subtle surface layering (`#FCFCFA` -> `#F2F3EE`) with crisp 1px borders",
+        "Clear scannable feature proof and transparent pricing architecture"
+      ],
+      "best_for": [
+        "SaaS Startups",
+        "Productivity Tools",
+        "B2B Platforms"
+      ],
+      "avoid_when": [
+        "Experimental art installations"
+      ],
+      "provenance": "adapted:ui-ux-pro-max+impeccable+layoza"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 5,
+    "motion_intensity": 6,
+    "visual_density": 5
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — SaaS & Modern Startups (Editorial & Structural Clarity)",
+      "style_family": "swiss-editorial-grid",
+      "layout_composition": "Interactive Product Stage Hero + Workflow Proof Sequence on an exposed structural grid where type and the subject's object share one asymmetric 7:5 composition, generous section rhythm (clamp(5.5rem, 9vw, 9rem)), and each section shaped by its content",
+      "visual_identity": "Type as image: display set large enough to become architecture, ruled structure drawn from the subject's own notation (charts, labels, tickets), no floating card clutter",
+      "typography": {
+        "id": "bricolage-inter-tight",
+        "display_font": "Bricolage Grotesque",
+        "body_font": "Plus Jakarta Sans",
+        "mono_font": "JetBrains Mono",
+        "mood": "Crisp, engineered, approachable",
+        "scale_ratio": "1.250 (Major Third)",
+        "google_fonts_url": "https://fonts.google.com/share?selection.family=Bricolage+Grotesque:wght@600;700|Plus+Jakarta+Sans:wght@400;500;600"
+      },
+      "palette": {
+        "id": "paper-cobalt",
+        "background": "#FCFCFA",
+        "surface": "#F2F3EE",
+        "foreground": "#11151C",
+        "muted": "#525B6C",
+        "primary_accent": "#1D4ED8",
+        "secondary_accent": "#0D9488",
+        "wcag_body_contrast": 17.81,
+        "notes": "Engineered warm paper surface with high-contrast ink and cobalt interactive states"
+      },
+      "content_treatment": "Lead with the subject's most characteristic object at scale and the real action (buy, book) working in the first viewport; specifics as scannable tables, never big-number stat blocks",
+      "motion_choreography": "Decide per content: a typographic load sequence, content-shaped section entrances, crisp 160-240ms ease-out interactions; reduced-motion keeps fades only",
+      "dials": {
+        "design_variance": 5,
+        "motion_intensity": 5,
+        "visual_density": 5
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — SaaS & Modern Startups (Kinetic Narrative & Choreographed Stage)",
+      "style_family": "kinetic-editorial",
+      "layout_composition": "Full-bleed choreographed stage with pinned ScrollTrigger narrative sequence, staggered asymmetric showcase, and magnetic CTA rail",
+      "visual_identity": "High-drama contrast stage with expressive display typography, tactile depth planes, and bespoke SVG/3D focal points",
+      "typography": {
+        "id": "instrument-serif-inter-tight",
+        "display_font": "Instrument Serif",
+        "body_font": "Inter Tight",
+        "mono_font": "IBM Plex Mono",
+        "mood": "Cinematic, editorial contrast",
+        "scale_ratio": "1.5 (Perfect Fifth)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=IBM+Plex+Mono&display=swap"
+      },
+      "palette": {
+        "id": "forest-night-chartreuse",
+        "background": "#0F1F17",
+        "surface": "#16291F",
+        "foreground": "#EEF3EC",
+        "muted": "#9FB5A6",
+        "primary_accent": "#C7F25C",
+        "secondary_accent": "#7FD1FF",
+        "wcag_body_contrast": 15.19,
+        "notes": "Night-forest stage with chartreuse signal colour"
+      },
+      "content_treatment": "Story-driven sequential progression: Problem tension -> Interactive live artifact -> Quantified proof",
+      "motion_choreography": "GSAP timeline entrance + ScrollTrigger pinned sequence + pointer parallax with `gsap.matchMedia()` reduced-motion guard",
+      "dials": {
+        "design_variance": 8,
+        "motion_intensity": 9,
+        "visual_density": 4
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — SaaS & Modern Startups (Tactile Product Workbench & Interactive Proof)",
+      "style_family": "crisp-product-workbench",
+      "layout_composition": "Interactive hero where the visitor operates the subject itself (try a frame, fit a part, set a date) immediately above the fold, then sections built from real product structure",
+      "visual_identity": "Tactile, rebuilt controls in the world's own material (dials, tickets, swatches), one depth strategy, every atom (buttons, inputs, focus) redrawn in that vocabulary",
+      "typography": {
+        "id": "manrope-dm-mono",
+        "display_font": "Manrope",
+        "body_font": "Manrope",
+        "mono_font": "DM Mono",
+        "mood": "Calm, precise, product-like",
+        "scale_ratio": "1.250 (Major Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;700;800&display=swap"
+      },
+      "palette": {
+        "id": "sage-graphite",
+        "background": "#EEF2EE",
+        "surface": "#FFFFFF",
+        "foreground": "#1A1F1B",
+        "muted": "#4D5A50",
+        "primary_accent": "#2F6B4F",
+        "secondary_accent": "#B4542B",
+        "wcag_body_contrast": 14.79,
+        "notes": "Sage daylight with graphite text and rust accents"
+      },
+      "content_treatment": "Interactive proof-first: let the user manipulate live tabs, filters, or calculators right inside the hero",
+      "motion_choreography": "State-driven spring transitions (180ms–280ms) and FLIP layout morphs on user interaction",
+      "dials": {
+        "design_variance": 5,
+        "motion_intensity": 6,
+        "visual_density": 7
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error."
+  ]
+}

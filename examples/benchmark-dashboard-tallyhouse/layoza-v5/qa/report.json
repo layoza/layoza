@@ -1,0 +1,369 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-dashboard-tallyhouse/layoza-v5/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; inp_ms is a lab interaction proxy (worst Event Timing duration >= 16ms across scripted Tab/Shift+Tab presses and, when a mobile menu toggle exists, its click), not field INP. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-cream-palette",
+          "severity": "critique",
+          "detail": "cream/beige page background rgb(244, 238, 227)"
+        },
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "14 small labels set in a monospace face outside code, e.g. \"Tallyhouse till\", \"All shops Fri 16/10/2026 · 07:00–14:00\", \"Sourdough loaf\""
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.99,
+      "contrast_failures": 0,
+      "lcp_ms": 1624,
+      "cls": 0.0024,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-dashboard-tallyhouse\\layoza-v5\\qa\\screenshots\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-cream-palette",
+          "severity": "critique",
+          "detail": "cream/beige page background rgb(244, 238, 227)"
+        },
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "14 small labels set in a monospace face outside code, e.g. \"Tallyhouse till\", \"All shops Fri 16/10/2026 · 07:00–14:00\", \"Sourdough loaf\""
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.99,
+      "contrast_failures": 0,
+      "lcp_ms": 1632,
+      "cls": 0.0038,
+      "inp_proxy_ms": 8,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-dashboard-tallyhouse\\layoza-v5\\qa\\screenshots\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-cream-palette",
+          "severity": "critique",
+          "detail": "cream/beige page background rgb(244, 238, 227)"
+        },
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "14 small labels set in a monospace face outside code, e.g. \"Tallyhouse till\", \"All shops Fri 16/10/2026 · 07:00–14:00\", \"Sourdough loaf\""
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.38,
+      "contrast_failures": 0,
+      "lcp_ms": 128,
+      "cls": 0.0025,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-dashboard-tallyhouse\\layoza-v5\\qa\\screenshots\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 4.99,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 378,
+  "contrast_indeterminate_elements": 19,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 19.5,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1632,
+  "cls": 0.0038,
+  "inp_ms": 16,
+  "inp_metric": "lab_interaction_proxy",
+  "inp_event_entries": 7,
+  "h1_to_body_ratio": 1.85,
+  "max_line_length_ch": null,
+  "font_families": [
+    "public sans",
+    "fraunces",
+    "jetbrains mono"
+  ],
+  "font_family_count": 3,
+  "site_dna": {
+    "title": "Tallyhouse · Morning tally",
+    "lang": "en-GB",
+    "page_background": "#F4EEE3",
+    "text_colors": [
+      {
+        "value": "#2A1A10",
+        "count": 1745
+      },
+      {
+        "value": "#6A5444",
+        "count": 1031
+      },
+      {
+        "value": "#4A3527",
+        "count": 384
+      },
+      {
+        "value": "#2F5A6E",
+        "count": 315
+      },
+      {
+        "value": "#8A3712",
+        "count": 217
+      },
+      {
+        "value": "#5B3A6E",
+        "count": 208
+      },
+      {
+        "value": "#5E4838",
+        "count": 164
+      },
+      {
+        "value": "#7A4A12",
+        "count": 150
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#FFFBF4",
+        "count": 2687.085734375
+      },
+      {
+        "value": "#FFFDF8",
+        "count": 324.89975
+      },
+      {
+        "value": "#FAF4E9",
+        "count": 142.88903906250005
+      },
+      {
+        "value": "#F4EEE3",
+        "count": 133.56
+      },
+      {
+        "value": "#DDEBF1",
+        "count": 123.08467016601557
+      },
+      {
+        "value": "#FBEFE3",
+        "count": 82.11168676757812
+      },
+      {
+        "value": "#ECE1F2",
+        "count": 76.25012915039062
+      },
+      {
+        "value": "#F3E2C6",
+        "count": 58.68717626953125
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Public Sans",
+        "count": 3809
+      },
+      {
+        "value": "JetBrains Mono",
+        "count": 912
+      },
+      {
+        "value": "Fraunces",
+        "count": 22
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "24px",
+        "weight": "600",
+        "line_height": "24px",
+        "letter_spacing": "-0.24px",
+        "family": "Fraunces"
+      },
+      "h2": {
+        "size": "19px",
+        "weight": "650",
+        "line_height": "23.75px",
+        "letter_spacing": "-0.095px",
+        "family": "Public Sans"
+      },
+      "h3": {
+        "size": "15.5px",
+        "weight": "650",
+        "line_height": "23.25px",
+        "letter_spacing": "normal",
+        "family": "Public Sans"
+      },
+      "p": {
+        "size": "13px",
+        "weight": "400",
+        "line_height": "19.5px",
+        "letter_spacing": "normal",
+        "family": "Public Sans"
+      },
+      "small": {
+        "size": "11px",
+        "weight": "500",
+        "line_height": "13.2px",
+        "letter_spacing": "0.66px",
+        "family": "Public Sans"
+      }
+    },
+    "radii": [
+      {
+        "value": "6px",
+        "count": 48
+      },
+      {
+        "value": "3px",
+        "count": 26
+      },
+      {
+        "value": "999px",
+        "count": 22
+      },
+      {
+        "value": "8px",
+        "count": 16
+      },
+      {
+        "value": "10px",
+        "count": 8
+      },
+      {
+        "value": "4px",
+        "count": 2
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1400px",
+        "count": 3
+      }
+    ],
+    "css_custom_properties": {
+      "--flour": "#F4EEE3",
+      "--paper": "#FFFBF4",
+      "--paper-2": "#FAF4E9",
+      "--line": "#E3D7C4",
+      "--line-2": "#D3C3AA",
+      "--ink": "#2A1A10",
+      "--ink-2": "#4A3527",
+      "--muted": "#6A5444",
+      "--faint": "#806957",
+      "--crust": "#A4441A",
+      "--crust-ink": "#8A3712",
+      "--crust-soft": "#F6E2D4",
+      "--ghost": "#E8DCC8",
+      "--ghost-line": "#C7B396",
+      "--ok": "#2F6A3A",
+      "--ok-soft": "#E3EFDF",
+      "--warn": "#8A5300",
+      "--warn-soft": "#FBEBCB",
+      "--crit": "#A0281C",
+      "--crit-soft": "#F8DDD8",
+      "--bake": "#7A4A12",
+      "--bake-soft": "#F3E2C6",
+      "--open": "#2F5A6E",
+      "--open-soft": "#DDEBF1",
+      "--close": "#5B3A6E",
+      "--close-soft": "#ECE1F2",
+      "--mid": "#3F6232",
+      "--mid-soft": "#E4EEDC",
+      "--display": "\"Fraunces\", Georgia, serif",
+      "--ui": "\"Public Sans\", system-ui, sans-serif",
+      "--mono": "\"JetBrains Mono\", ui-monospace, monospace",
+      "--row-h": "52px",
+      "--cell-px": "12px",
+      "--r": "10px",
+      "--gap": "20px",
+      "--shadow": "0 1px 0 rgb(42 26 16 / .04), 0 8px 24px -18px rgb(42 26 16 / .35)"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 0
+  },
+  "craft_critique": {
+    "craft-cream-palette": 1,
+    "craft-mono-meta-labels": 1
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-cream-palette": 1,
+      "craft-mono-meta-labels": 1
+    },
+    "tablet": {
+      "craft-cream-palette": 1,
+      "craft-mono-meta-labels": 1
+    },
+    "mobile": {
+      "craft-cream-palette": 1,
+      "craft-mono-meta-labels": 1
+    }
+  },
+  "craft_critique_suppressed": [
+    {
+      "rule": "craft-hero-metric",
+      "allowed_by": "surface:app",
+      "detail": "first viewport leads with big-number stats +3.2%, 1,150, 10; open with the subject's most characteristic thing instead"
+    },
+    {
+      "rule": "craft-hero-art-scale",
+      "allowed_by": "surface:app",
+      "detail": "largest authored visual in the first viewport covers 18% of it (svg); let the world's artwork carry the first screen, not a widget beside the headline"
+    },
+    {
+      "rule": "craft-display-scale",
+      "allowed_by": "surface:app",
+      "detail": "largest text is 64px (4.4vw) at 1440px; let one headline or the name reach about 8vw, or declare the small-type direction on purpose"
+    },
+    {
+      "rule": "craft-hero-art-mobile",
+      "allowed_by": "surface:app",
+      "detail": "largest authored visual in the first 375-class screen covers 12% of it (svg); keep the signature art large on phones (crop it, place it behind the headline, or bring it above the fold)"
+    }
+  ],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [
+    "max_line_length_ch"
+  ],
+  "design_tokens": null,
+  "design_system": null
+}

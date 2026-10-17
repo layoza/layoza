@@ -1,0 +1,309 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-halden-eyecare/layoza/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-oversized-h1",
+          "severity": "critique",
+          "detail": "72px h1, 59 chars, 33vh \"Eye tests, frames and repairs, under one roof on the Shore.\""
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.5,
+      "contrast_failures": 0,
+      "lcp_ms": 1620,
+      "cls": 0.0085,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-halden-eyecare\\layoza\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.5,
+      "contrast_failures": 0,
+      "lcp_ms": 1232,
+      "cls": 0.0327,
+      "inp_proxy_ms": 16,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 5,
+        "opened": true,
+        "screenshot": "examples\\benchmark-halden-eyecare\\layoza\\qa\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-halden-eyecare\\layoza\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.5,
+      "contrast_failures": 0,
+      "lcp_ms": 1288,
+      "cls": 0.0288,
+      "inp_proxy_ms": 16,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 5,
+        "opened": true,
+        "screenshot": "examples\\benchmark-halden-eyecare\\layoza\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-halden-eyecare\\layoza\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 5.5,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 196,
+  "contrast_indeterminate_elements": 10,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 27,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1620,
+  "cls": 0.0327,
+  "inp_ms": 16,
+  "inp_event_entries": 16,
+  "h1_to_body_ratio": 3.46,
+  "max_line_length_ch": 58,
+  "font_families": [
+    "atkinson hyperlegible",
+    "archivo"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Halden Eyecare — optician and frame workshop on the Shore, Leith",
+    "lang": "en-GB",
+    "page_background": "#EEF2EC",
+    "text_colors": [
+      {
+        "value": "#46564F",
+        "count": 2277
+      },
+      {
+        "value": "#142420",
+        "count": 1323
+      },
+      {
+        "value": "#EEF2EC",
+        "count": 953
+      },
+      {
+        "value": "#BFCDC6",
+        "count": 770
+      },
+      {
+        "value": "#FFF7F4",
+        "count": 56
+      },
+      {
+        "value": "#F2B8A8",
+        "count": 19
+      },
+      {
+        "value": "#12362F",
+        "count": 15
+      },
+      {
+        "value": "#B3302A",
+        "count": 3
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#12362F",
+        "count": 3150.95725
+      },
+      {
+        "value": "#F8FAF6",
+        "count": 2290.9603544921874
+      },
+      {
+        "value": "#0C2722",
+        "count": 1056.015
+      },
+      {
+        "value": "#142420",
+        "count": 29.097749999999998
+      },
+      {
+        "value": "#B3302A",
+        "count": 28.431906494140627
+      },
+      {
+        "value": "#EEF2EC",
+        "count": 14.00027978515625
+      },
+      {
+        "value": "#1A453C",
+        "count": 13.6605
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Atkinson Hyperlegible",
+        "count": 3337
+      },
+      {
+        "value": "Archivo",
+        "count": 2079
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "72px",
+        "weight": "780",
+        "line_height": "73.44px",
+        "letter_spacing": "-1.8px",
+        "family": "Archivo"
+      },
+      "h2": {
+        "size": "54.4px",
+        "weight": "750",
+        "line_height": "56.576px",
+        "letter_spacing": "-1.088px",
+        "family": "Archivo"
+      },
+      "h3": {
+        "size": "21.6px",
+        "weight": "700",
+        "line_height": "24.84px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      },
+      "p": {
+        "size": "20.8px",
+        "weight": "400",
+        "line_height": "31.2px",
+        "letter_spacing": "normal",
+        "family": "Atkinson Hyperlegible"
+      },
+      "small": {
+        "size": "14.4px",
+        "weight": "600",
+        "line_height": "22.32px",
+        "letter_spacing": "0.288px",
+        "family": "Archivo"
+      }
+    },
+    "radii": [
+      {
+        "value": "6px",
+        "count": 32
+      },
+      {
+        "value": "50%",
+        "count": 15
+      },
+      {
+        "value": "14px",
+        "count": 6
+      },
+      {
+        "value": "999px",
+        "count": 4
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1320px",
+        "count": 10
+      },
+      {
+        "value": "547.43px",
+        "count": 3
+      },
+      {
+        "value": "506.736px",
+        "count": 2
+      },
+      {
+        "value": "690.48px",
+        "count": 1
+      },
+      {
+        "value": "620.006px",
+        "count": 1
+      },
+      {
+        "value": "462.672px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--velvet": "#12362F",
+      "--velvet-deep": "#0C2722",
+      "--velvet-raised": "#1A453C",
+      "--paper": "#EEF2EC",
+      "--paper-white": "#F8FAF6",
+      "--ink": "#142420",
+      "--ink-muted": "#46564F",
+      "--nickel": "#B7C2BC",
+      "--nickel-soft": "#8FA29A",
+      "--rule": "#C7D1CA",
+      "--tab-red": "#B3302A",
+      "--tab-red-dark": "#8F231E",
+      "--tab-red-tint": "#F2B8A8",
+      "--on-velvet": "#EEF2EC",
+      "--on-velvet-muted": "#BFCDC6",
+      "--font-display": "\"Archivo\", \"Display Fallback\", sans-serif",
+      "--font-body": "\"Atkinson Hyperlegible\", \"Body Fallback\", sans-serif",
+      "--header-h": "4.5rem",
+      "--gutter": "clamp(1rem, 4vw, 3.5rem)",
+      "--max": "1320px",
+      "--r-control": "6px",
+      "--r-tray": "14px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 3
+  },
+  "craft_critique": {
+    "craft-oversized-h1": 1
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-oversized-h1": 1
+    },
+    "tablet": {},
+    "mobile": {}
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

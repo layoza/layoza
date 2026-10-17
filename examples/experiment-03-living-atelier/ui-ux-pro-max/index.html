@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUSEUM OF KINETIC CRAFT — The Living Atelier (UI UX Pro Max Edition)</title>
+  <meta name="description" content="The Living Atelier built with UI UX Pro Max: Editorial digital art gallery, 3D living sculptures, and interactive installations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Libre+Bodoni:ital,wght@0,500;0,700;1,400;1,600&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-gallery: #FAF8F4;
+      --bg-plinth: #F0ECE1;
+      --ink-obsidian: #0B1021;
+      --ink-slate: #2D364D;
+      --cobalt-prime: #0047FF;
+      --coral-spark: #FF4D2D;
+      --grid-border: rgba(11, 16, 33, 0.18);
+      --font-heading: 'Libre Bodoni', Georgia, serif;
+      --font-body: 'Public Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-gallery);
+      color: var(--ink-obsidian);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    a, button, input, select, textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--cobalt-prime);
+      outline-offset: 3px;
+    }
+
+    .pro-container {
+      width: 100%;
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 0 clamp(1.15rem, 4vw, 3.5rem);
+    }
+
+    /* Header */
+    .pro-header {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      background: rgba(250, 248, 244, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid var(--ink-obsidian);
+    }
+
+    .pro-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 68px;
+    }
+
+    .pro-brand {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.12rem;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pro-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .pro-nav a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.45rem 0.8rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pro-nav a:hover {
+      color: var(--cobalt-prime);
+    }
+
+    .pro-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1.15rem;
+      background: var(--cobalt-prime);
+      color: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1.5px solid var(--ink-obsidian);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 44px;
+      box-shadow: 3px 3px 0 var(--ink-obsidian);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .pro-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0 var(--ink-obsidian);
+    }
+
+    /* Section 3: HERO — THE LIVING SCULPTURE */
+    .pro-hero {
+      position: relative;
+      min-height: calc(100vh - 68px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+      border-bottom: 1.5px solid var(--ink-obsidian);
+      overflow: hidden;
+    }
+
+    #proHeroCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .pro-hero-layer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: calc(100vh - 10rem);
+      gap: 2rem;
+    }
+
+    .pro-hero-h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.05rem, 6.8vw, 6.2rem);
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+      margin: auto 0;
+      max-width: 15ch;
+    }
+
+    .pro-hero-h1 em {
+      color: var(--cobalt-prime);
+      font-style: italic;
+    }
+
+    .pro-hero-h1 span {
+      color: var(--coral-spark);
+      font-style: italic;
+    }
+
+    .pro-hero-bar {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr auto;
+      gap: 1.25rem;
+      align-items: center;
+      background: rgba(250, 248, 244, 0.9);
+      border: 1.5px solid var(--ink-obsidian);
+      padding: 1.25rem;
+      box-shadow: 6px 6px 0 var(--ink-obsidian);
+    }
+
+    .pro-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .pro-pill {
+      padding: 0.45rem 0.85rem;
+      border: 1.5px solid var(--ink-obsidian);
+      background: #FFFFFF;
+      font-family: var(--font-code);
+      font-size: 0.72rem;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 44px;
+    }
+
+    .pro-pill[aria-pressed="true"] {
+      background: var(--ink-obsidian);
+      color: #FFFFFF;
+    }
+
+    /* Section Frame */
+    .pro-section {
+      padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+      border-bottom: 1.5px solid var(--ink-obsidian);
+    }
+
+    .pro-sec-header {
+      margin-bottom: 2.75rem;
+    }
+
+    .pro-kicker {
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      color: var(--cobalt-prime);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .pro-h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 4.4vw, 4rem);
+      line-height: 1.04;
+      margin: 0 0 0.75rem 0;
+    }
+
+    /* Section 4: SIX INTERACTIVE ART INSTALLATIONS */
+    .pro-installations-box {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      border: 1.5px solid var(--ink-obsidian);
+      box-shadow: 8px 8px 0 var(--ink-obsidian);
+      background: var(--bg-plinth);
+    }
+
+    .pro-install-tabs {
+      border-right: 1.5px solid var(--ink-obsidian);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pro-install-btn {
+      padding: 1.1rem 1.25rem;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--grid-border);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 56px;
+      font-weight: 600;
+    }
+
+    .pro-install-btn[aria-selected="true"] {
+      background: var(--cobalt-prime);
+      color: #FFFFFF;
+    }
+
+    .pro-install-stage {
+      position: relative;
+      min-height: 480px;
+      background: #0B1021;
+      color: #FAF8F4;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.75rem;
+      overflow: hidden;
+    }
+
+    #proInstallCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Section 5: WORK — CINEMATIC PROJECT EXHIBITION */
+    .pro-works-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+
+    .pro-work-card {
+      border: 1.5px solid var(--ink-obsidian);
+      background: var(--bg-plinth);
+      box-shadow: 6px 6px 0 var(--ink-obsidian);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .span-12 { grid-column: span 12; }
+    .span-6 { grid-column: span 6; }
+
+    /* Section 6: MANIFESTO */
+    .pro-manifesto-quote {
+      font-family: var(--font-heading);
+      font-size: clamp(1.9rem, 5vw, 4.6rem);
+      line-height: 1;
+      margin: 0 0 1.75rem 0;
+    }
+
+    /* Section 7: LAB */
+    .pro-lab-grid {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      border: 1.5px solid var(--ink-obsidian);
+      box-shadow: 8px 8px 0 var(--ink-obsidian);
+      background: #0B1021;
+      color: #FFFFFF;
+      min-height: 440px;
+    }
+
+    /* Section 8: PROCESS */
+    .pro-process-steps {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .pro-step-card {
+      border: 1.5px solid var(--ink-obsidian);
+      background: #FFFFFF;
+      padding: 1.25rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .pro-step-card[aria-current="step"] {
+      background: var(--cobalt-prime);
+      color: #FFFFFF;
+    }
+
+    /* Section 9: IMPOSSIBLE MOMENT */
+    .pro-impossible {
+      position: relative;
+      min-height: 75vh;
+      background: #080E1E;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.25rem;
+      border-bottom: 1.5px solid var(--ink-obsidian);
+      overflow: hidden;
+    }
+
+    .pro-impossible-title {
+      position: relative;
+      z-index: 2;
+      font-family: var(--font-heading);
+      font-size: clamp(1.85rem, 6vw, 5.4rem);
+      line-height: 0.98;
+      margin: 0 auto 1.5rem;
+      max-width: 15ch;
+    }
+
+    /* Section 10 & 11 */
+    .pro-3col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .pro-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 1024px) {
+      .pro-nav {
+        display: none;
+      }
+      .pro-hero-bar,
+      .pro-installations-box,
+      .pro-lab-grid,
+      .pro-process-steps,
+      .pro-3col,
+      .pro-2col,
+      .pro-works-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .span-12, .span-6 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .pro-brand {
+        font-size: 0.78rem;
+      }
+      .pro-btn {
+        padding: 0.4rem 0.65rem;
+        font-size: 0.7rem;
+      }
+      .pro-hero-h1 {
+        font-size: clamp(1.8rem, 8.2vw, 3rem);
+      }
+      .pro-h2,
+      .pro-manifesto-quote,
+      .pro-impossible-title {
+        font-size: clamp(1.5rem, 6.8vw, 2.35rem);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="pro-header" role="banner">
+    <div class="pro-container pro-header-row">
+      <a href="#top" class="pro-brand">MUSEUM OF KINETIC CRAFT</a>
+      <nav class="pro-nav" aria-label="Primary">
+        <a href="#installations">Installations</a>
+        <a href="#works">Exhibition</a>
+        <a href="#manifesto">Manifesto</a>
+        <a href="#lab">Creative Lab</a>
+        <a href="#process">Journey</a>
+      </nav>
+      <a href="#contact" class="pro-btn">Start Commission</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- 3. HERO -->
+    <section class="pro-hero" aria-labelledby="pro-hero-heading">
+      <canvas id="proHeroCanvas" aria-hidden="true"></canvas>
+      <div class="pro-container pro-hero-layer">
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; font-family:var(--font-code); font-size:0.75rem;">
+          <span>EDITION 03 // THE LIVING ATELIER</span>
+          <span id="proMatStatus">SCULPTURE: PORCELAIN &amp; COBALT TORUS</span>
+        </div>
+
+        <h1 id="pro-hero-heading" class="pro-hero-h1">
+          WE DON’T JUST <em>DESIGN.</em> WE MAKE IDEAS FEEL <span>ALIVE.</span>
+        </h1>
+
+        <div class="pro-hero-bar">
+          <p style="margin:0; color:var(--ink-slate); font-size:0.95rem;">
+            An interactive digital exhibition blending Swiss editorial typography, physical 3D sculpture, and intelligent motion systems.
+          </p>
+          <div class="pro-pill-row" role="group" aria-label="Material Mode">
+            <button type="button" class="pro-pill" data-pro-mat="0" aria-pressed="true">01 Porcelain</button>
+            <button type="button" class="pro-pill" data-pro-mat="1" aria-pressed="false">02 Cobalt Glass</button>
+            <button type="button" class="pro-pill" data-pro-mat="2" aria-pressed="false">03 Coral Alloy</button>
+          </div>
+          <a href="#installations" class="pro-btn">Enter Gallery</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SIX INTERACTIVE ART INSTALLATIONS -->
+    <section id="installations" class="pro-section" aria-labelledby="pro-inst-h2">
+      <div class="pro-container">
+        <div class="pro-sec-header">
+          <div class="pro-kicker">01 // SIX INTERACTIVE ART INSTALLATIONS</div>
+          <h2 id="pro-inst-h2" class="pro-h2">Six Disciplines, One Living Stage</h2>
+        </div>
+
+        <div class="pro-installations-box">
+          <div class="pro-install-tabs" role="tablist" aria-label="Six Disciplines">
+            <button type="button" class="pro-install-btn" role="tab" aria-selected="true" data-pro-inst="0"><span>01. Brand Identity</span><span>→</span></button>
+            <button type="button" class="pro-install-btn" role="tab" aria-selected="false" data-pro-inst="1"><span>02. Digital Experiences</span><span>→</span></button>
+            <button type="button" class="pro-install-btn" role="tab" aria-selected="false" data-pro-inst="2"><span>03. Creative Development</span><span>→</span></button>
+            <button type="button" class="pro-install-btn" role="tab" aria-selected="false" data-pro-inst="3"><span>04. Motion &amp; 3D</span><span>→</span></button>
+            <button type="button" class="pro-install-btn" role="tab" aria-selected="false" data-pro-inst="4"><span>05. AI &amp; Intelligent Products</span><span>→</span></button>
+            <button type="button" class="pro-install-btn" role="tab" aria-selected="false" data-pro-inst="5"><span>06. Marketing &amp; Growth</span><span>→</span></button>
+          </div>
+
+          <div class="pro-install-stage" role="tabpanel" aria-live="polite">
+            <canvas id="proInstallCanvas" aria-hidden="true"></canvas>
+            <div style="position:relative; z-index:2; background:rgba(11,16,33,0.88); padding:1.5rem; border:1px solid rgba(255,255,255,0.2);">
+              <h3 id="proInstTitle" style="font-family:var(--font-heading); font-size:1.75rem; margin:0 0 0.45rem;">01. Brand Identity — Sculptural Visual Systems</h3>
+              <p id="proInstDesc" style="margin:0 0 1rem; color:#CBD5E1; font-size:0.94rem;">
+                Custom editorial typography, 3D material tokens, and iconic visual architectures that elevate brands into cultural landmarks.
+              </p>
+              <a href="#contact" class="pro-btn">Commission This Installation</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CINEMATIC PROJECT EXHIBITION -->
+    <section id="works" class="pro-section" aria-labelledby="pro-works-h2">
+      <div class="pro-container">
+        <div class="pro-sec-header">
+          <div class="pro-kicker">02 // CINEMATIC PROJECT EXHIBITION (FICTIONAL CONCEPT WORKS)</div>
+          <h2 id="pro-works-h2" class="pro-h2">Five Curated Exhibition Monographs</h2>
+        </div>
+
+        <div class="pro-works-grid">
+          <article class="pro-work-card span-12">
+            <div style="height:400px; background:#0B1021;">
+              <svg viewBox="0 0 1400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Luxury Fashion Concept: Maison Orphée">
+                <rect width="1400" height="400" fill="#0B1021"/>
+                <circle cx="700" cy="200" r="140" fill="#0047FF"/>
+                <path d="M 150 350 C 450 60, 950 60, 1250 350" fill="none" stroke="#FAF8F4" stroke-width="10"/>
+                <circle cx="780" cy="145" r="42" fill="#FF4D2D"/>
+              </svg>
+            </div>
+            <div style="padding:1.5rem;">
+              <div class="pro-kicker">01 · LUXURY FASHION (FICTIONAL CONCEPT)</div>
+              <h3 style="font-family:var(--font-heading); font-size:2rem; margin:0.25rem 0;">MAISON ORPHÉE — Digital Couture Exhibition</h3>
+              <p style="margin:0; color:var(--ink-slate);">Full-screen scroll-expanding garment exhibition with real-time silk refraction shaders.</p>
+            </div>
+          </article>
+
+          <article class="pro-work-card span-6">
+            <div style="height:260px; background:#101B3B;">
+              <svg viewBox="0 0 700 260" width="100%" height="100%" role="img" aria-label="Futuristic Mobility Concept: Hyperion Aero">
+                <rect width="700" height="260" fill="#101B3B"/>
+                <path d="M 60 190 Q 350 65 640 180 Z" fill="#FAF8F4"/>
+                <line x1="40" y1="140" x2="660" y2="140" stroke="#FF4D2D" stroke-width="4"/>
+              </svg>
+            </div>
+            <div style="padding:1.5rem;">
+              <div class="pro-kicker">02 · FUTURISTIC MOBILITY (FICTIONAL CONCEPT)</div>
+              <h3 style="font-family:var(--font-heading); font-size:1.6rem; margin:0.25rem 0;">HYPERION AERO — Electric Grand Tourer</h3>
+              <p style="margin:0; color:var(--ink-slate);">Aerodynamic light-tunnel telemetry and spatial glass cockpit architecture.</p>
+            </div>
+          </article>
+
+          <article class="pro-work-card span-6">
+            <div style="height:260px; background:#E6DFD1;">
+              <svg viewBox="0 0 700 260" width="100%" height="100%" role="img" aria-label="Architecture and Interiors Concept: Tadao Light Sanctuary">
+                <rect width="700" height="260" fill="#E6DFD1"/>
+                <rect x="110" y="30" width="210" height="200" fill="#0B1021"/>
+                <circle cx="460" cy="130" r="75" fill="#0047FF"/>
+              </svg>
+            </div>
+            <div style="padding:1.5rem;">
+              <div class="pro-kicker">03 · ARCHITECTURE &amp; INTERIORS (FICTIONAL CONCEPT)</div>
+              <h3 style="font-family:var(--font-heading); font-size:1.6rem; margin:0.25rem 0;">KYOTO LIGHT SANCTUARY — Spatial Monograph</h3>
+              <p style="margin:0; color:var(--ink-slate);">Interactive daylight angle study across travertine and porcelain courtyards.</p>
+            </div>
+          </article>
+
+          <article class="pro-work-card span-6">
+            <div style="height:260px; background:#0F172A;">
+              <svg viewBox="0 0 700 260" width="100%" height="100%" role="img" aria-label="Consumer Technology Concept: Reference Ceramic DAC">
+                <rect width="700" height="260" fill="#0F172A"/>
+                <circle cx="350" cy="130" r="88" fill="#FAF8F4"/>
+                <circle cx="350" cy="130" r="36" fill="#FF4D2D"/>
+              </svg>
+            </div>
+            <div style="padding:1.5rem;">
+              <div class="pro-kicker">04 · CONSUMER TECHNOLOGY (FICTIONAL CONCEPT)</div>
+              <h3 style="font-family:var(--font-heading); font-size:1.6rem; margin:0.25rem 0;">AURA ACOUSTIC — Ceramic Sound Sculpture</h3>
+              <p style="margin:0; color:var(--ink-slate);">Precision hardware reveal and interactive acoustic frequency visualizer.</p>
+            </div>
+          </article>
+
+          <article class="pro-work-card span-6">
+            <div style="height:260px; background:#090E1E;">
+              <svg viewBox="0 0 700 260" width="100%" height="100%" role="img" aria-label="Creative Entertainment Concept: Synesthesia Stage">
+                <rect width="700" height="260" fill="#090E1E"/>
+                <path d="M 50 210 C 230 30, 470 230, 650 60" fill="none" stroke="#0047FF" stroke-width="12"/>
+                <path d="M 50 140 C 260 220, 440 40, 650 180" fill="none" stroke="#FF4D2D" stroke-width="8"/>
+              </svg>
+            </div>
+            <div style="padding:1.5rem;">
+              <div class="pro-kicker">05 · CREATIVE ENTERTAINMENT (FICTIONAL CONCEPT)</div>
+              <h3 style="font-family:var(--font-heading); font-size:1.6rem; margin:0.25rem 0;">SYNESTHESIA LIVE — Interactive Stage Architecture</h3>
+              <p style="margin:0; color:var(--ink-slate);">Audio-reactive 3D stage typography and companion web experience.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. THE MANIFESTO -->
+    <section id="manifesto" class="pro-section" aria-labelledby="pro-man-h2">
+      <div class="pro-container">
+        <div class="pro-kicker">03 // THE MANIFESTO</div>
+        <h2 id="pro-man-h2" class="pro-manifesto-quote">
+          “THE FUTURE ISN’T WAITING TO BE <em style="color:var(--cobalt-prime);">DESIGNED.</em>”
+        </h2>
+        <div class="pro-2col">
+          <p style="font-size:1.05rem; color:var(--ink-slate); margin:0;">
+            We believe every brand deserves a digital presence worthy of a permanent museum collection. By uniting Swiss editorial clarity, physically based 3D materials, and purposeful motion choreography, we turn browsers into living galleries.
+          </p>
+          <div style="padding:1.75rem; background:var(--bg-plinth); border:1.5px solid var(--ink-obsidian); box-shadow:6px 6px 0 var(--ink-obsidian);">
+            <strong style="font-family:var(--font-heading); font-size:1.35rem;">Zero Templates. 100% Bespoke Craft.</strong>
+            <p style="margin:0.5rem 0 0; font-size:0.92rem; color:var(--ink-slate);">Every typography scale, shader uniform, and interaction curve is authored from scratch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. INTERACTIVE CREATIVE LAB -->
+    <section id="lab" class="pro-section" aria-labelledby="pro-lab-h2">
+      <div class="pro-container">
+        <div class="pro-sec-header">
+          <div class="pro-kicker">04 // INTERACTIVE CREATIVE LAB</div>
+          <h2 id="pro-lab-h2" class="pro-h2">Three Live Experimental Instruments</h2>
+        </div>
+
+        <div class="pro-pill-row" role="tablist" style="margin-bottom:1.25rem;">
+          <button type="button" class="pro-pill" role="tab" aria-pressed="true" data-pro-lab="material">Experience A: Material Lab</button>
+          <button type="button" class="pro-pill" role="tab" aria-pressed="false" data-pro-lab="kinetic">Experience B: Kinetic Type</button>
+          <button type="button" class="pro-pill" role="tab" aria-pressed="false" data-pro-lab="composition">Experience C: Motion Composition</button>
+        </div>
+
+        <div class="pro-lab-grid">
+          <div style="padding:1.65rem; border-right:1px solid rgba(255,255,255,0.18);">
+            <h3 id="proLabModeTitle" style="font-family:var(--font-heading); font-size:1.5rem; margin:0 0 0.75rem;">Experience A: Material Lab</h3>
+            <label style="display:block; font-family:var(--font-code); font-size:0.75rem; margin-bottom:1rem;">
+              Sculptural Harmonics
+              <input id="proLabSlider" type="range" min="15" max="100" value="65" style="width:100%; margin-top:0.4rem;" />
+            </label>
+            <label style="display:block; font-family:var(--font-code); font-size:0.75rem;">
+              Kinetic Specimen Text
+              <input id="proLabText" type="text" value="ATELIER 03" maxlength="16" style="width:100%; margin-top:0.4rem; padding:0.5rem; background:#16213E; color:#FFF; border:1px solid rgba(255,255,255,0.3);" />
+            </label>
+          </div>
+          <div style="position:relative; height:440px; overflow:hidden;">
+            <canvas id="proLabCanvas" style="position:absolute; inset:0; width:100%; height:100%; display:block;" aria-label="Creative Lab Canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. PROCESS -->
+    <section id="process" class="pro-section" aria-labelledby="pro-proc-h2">
+      <div class="pro-container">
+        <div class="pro-sec-header">
+          <div class="pro-kicker">05 // A CINEMATIC CREATIVE JOURNEY</div>
+          <h2 id="pro-proc-h2" class="pro-h2">From Unformed Clay to Living Monument</h2>
+        </div>
+
+        <div style="height:200px; background:#0B1021; border:1.5px solid var(--ink-obsidian); margin-bottom:1.25rem;">
+          <canvas id="proProcessCanvas" style="width:100%; height:100%; display:block;" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="pro-process-steps">
+          <button type="button" class="pro-step-card" data-pro-step="0" aria-current="step">
+            <div class="pro-kicker" style="color:inherit;">01. DISCOVER</div>
+            <strong style="font-family:var(--font-heading); font-size:1.25rem;">Raw Clay</strong>
+            <p style="margin:0.4rem 0 0; font-size:0.84rem;">Research, curatorial thesis, and brand essence.</p>
+          </button>
+          <button type="button" class="pro-step-card" data-pro-step="1">
+            <div class="pro-kicker" style="color:inherit;">02. EXPLORE</div>
+            <strong style="font-family:var(--font-heading); font-size:1.25rem;">Wire Contours</strong>
+            <p style="margin:0.4rem 0 0; font-size:0.84rem;">Asymmetric layouts and editorial type systems.</p>
+          </button>
+          <button type="button" class="pro-step-card" data-pro-step="2">
+            <div class="pro-kicker" style="color:inherit;">03. IMAGINE</div>
+            <strong style="font-family:var(--font-heading); font-size:1.25rem;">Cobalt Firing</strong>
+            <p style="margin:0.4rem 0 0; font-size:0.84rem;">3D sculptures, shaders, and interactive prototypes.</p>
+          </button>
+          <button type="button" class="pro-step-card" data-pro-step="3">
+            <div class="pro-kicker" style="color:inherit;">04. CREATE</div>
+            <strong style="font-family:var(--font-heading); font-size:1.25rem;">Precision Polish</strong>
+            <p style="margin:0.4rem 0 0; font-size:0.84rem;">Production code, accessibility, and 60fps QA.</p>
+          </button>
+          <button type="button" class="pro-step-card" data-pro-step="4">
+            <div class="pro-kicker" style="color:inherit;">05. LAUNCH</div>
+            <strong style="font-family:var(--font-heading); font-size:1.25rem;">Exhibition Live</strong>
+            <p style="margin:0.4rem 0 0; font-size:0.84rem;">Global premiere and growth instrumentation.</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. THE IMPOSSIBLE MOMENT -->
+    <section class="pro-impossible" aria-labelledby="pro-imp-h2">
+      <canvas id="proImpossibleCanvas" style="position:absolute; inset:0; width:100%; height:100%; display:block;" aria-hidden="true"></canvas>
+      <div style="position:relative; z-index:2;">
+        <h2 id="pro-imp-h2" class="pro-impossible-title">
+          “ORDINARY IS <em style="color:var(--coral-spark);">NOT</em> OUR LANGUAGE.”
+        </h2>
+        <button type="button" class="pro-btn" id="proInvertBtn">Invert Sculptural Field</button>
+      </div>
+    </section>
+
+    <!-- 10. STUDIO CULTURE -->
+    <section class="pro-section" aria-labelledby="pro-cult-h2">
+      <div class="pro-container">
+        <div class="pro-sec-header">
+          <div class="pro-kicker">06 // STUDIO CULTURE</div>
+          <h2 id="pro-cult-h2" class="pro-h2">The Curatorial Collective</h2>
+        </div>
+        <div class="pro-3col">
+          <div style="padding:1.75rem; background:var(--bg-plinth); border:1.5px solid var(--ink-obsidian);">
+            <h3 style="font-family:var(--font-heading); margin:0 0 0.5rem;">Multidisciplinary Residency</h3>
+            <p style="margin:0; color:var(--ink-slate);">Architects, shader mathematicians, and typographers sharing one studio table.</p>
+          </div>
+          <div style="padding:1.75rem; background:var(--bg-plinth); border:1.5px solid var(--ink-obsidian);">
+            <h3 style="font-family:var(--font-heading); margin:0 0 0.5rem;">Tactile Materiality</h3>
+            <p style="margin:0; color:var(--ink-slate);">Every digital surface is calibrated against real ceramic, glass, and paper studies.</p>
+          </div>
+          <div style="padding:1.75rem; background:var(--bg-plinth); border:1.5px solid var(--ink-obsidian);">
+            <h3 style="font-family:var(--font-heading); margin:0 0 0.5rem;">Verified Engineering</h3>
+            <p style="margin:0; color:var(--ink-slate);">WCAG 2.2 AA accessibility and responsive precision across every viewport.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. CONTACT -->
+    <section id="contact" class="pro-section" aria-labelledby="pro-cont-h2">
+      <div class="pro-container pro-2col">
+        <div>
+          <div class="pro-kicker">07 // THE FINAL MASTERPIECE</div>
+          <h2 id="pro-cont-h2" class="pro-h2">Your Next Big Idea Starts Here.</h2>
+          <p style="color:var(--ink-slate); margin:0 0 1.25rem;">
+            Our living sculpture returns in completed form. Submit your commission inquiry below.
+          </p>
+          <div style="height:240px; background:#0B1021; border:1.5px solid var(--ink-obsidian);">
+            <canvas id="proFinaleCanvas" style="width:100%; height:100%; display:block;" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <form id="proContactForm" style="padding:2rem; background:var(--bg-plinth); border:1.5px solid var(--ink-obsidian); box-shadow:8px 8px 0 var(--ink-obsidian);" novalidate>
+          <div style="margin-bottom:1rem;">
+            <label for="proName" style="display:block; font-family:var(--font-code); font-size:0.75rem; margin-bottom:0.35rem;">NAME</label>
+            <input id="proName" type="text" required placeholder="Clara Beaumont" style="width:100%; padding:0.75rem; border:1.5px solid var(--ink-obsidian); background:#FFF;" />
+          </div>
+          <div style="margin-bottom:1rem;">
+            <label for="proEmail" style="display:block; font-family:var(--font-code); font-size:0.75rem; margin-bottom:0.35rem;">EMAIL</label>
+            <input id="proEmail" type="email" required placeholder="clara@orphee.fr" style="width:100%; padding:0.75rem; border:1.5px solid var(--ink-obsidian); background:#FFF;" />
+          </div>
+          <div style="margin-bottom:1rem;">
+            <label for="proMsg" style="display:block; font-family:var(--font-code); font-size:0.75rem; margin-bottom:0.35rem;">PROJECT VISION</label>
+            <textarea id="proMsg" rows="3" required placeholder="Describe your project..." style="width:100%; padding:0.75rem; border:1.5px solid var(--ink-obsidian); background:#FFF;"></textarea>
+          </div>
+          <button type="submit" class="pro-btn" style="width:100%;">Send Commission Request</button>
+          <div id="proFormStatus" role="status" aria-live="polite" style="margin-top:0.75rem; font-family:var(--font-code); font-size:0.78rem; color:var(--cobalt-prime);"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:var(--ink-obsidian); color:var(--bg-gallery); padding:2.5rem 0;">
+    <div class="pro-container" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; font-size:0.84rem;">
+      <span>© 2026 MUSEUM OF KINETIC CRAFT — The Living Atelier (Fictional Concept Agency)</span>
+      <span style="font-family:var(--font-code);">BUILT WITH UI-UX-PRO-MAX SKILL</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function size(c) {
+        const r = c.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        if (c.width !== Math.floor(r.width * dpr) || c.height !== Math.floor(r.height * dpr)) {
+          c.width = Math.max(1, Math.floor(r.width * dpr));
+          c.height = Math.max(1, Math.floor(r.height * dpr));
+        }
+        return { w: c.width, h: c.height, dpr };
+      }
+
+      let mat = 0;
+      document.querySelectorAll('[data-pro-mat]').forEach((b) => {
+        b.addEventListener('click', () => {
+          mat = Number(b.getAttribute('data-pro-mat')) || 0;
+          document.querySelectorAll('[data-pro-mat]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        });
+      });
+
+      const instTitles = [
+        '01. Brand Identity — Sculptural Visual Systems',
+        '02. Digital Experiences — Flagship Interactive Exhibitions',
+        '03. Creative Development — WebGL & Clean Architecture',
+        '04. Motion & 3D — Physically Inspired Choreography',
+        '05. AI & Intelligent Products — Spatial Generative Tools',
+        '06. Marketing & Growth — High-Craft Launch Campaigns'
+      ];
+      let instIdx = 0;
+      document.querySelectorAll('[data-pro-inst]').forEach((b) => {
+        b.addEventListener('click', () => {
+          instIdx = Number(b.getAttribute('data-pro-inst')) || 0;
+          document.querySelectorAll('[data-pro-inst]').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+          document.getElementById('proInstTitle').textContent = instTitles[instIdx];
+        });
+      });
+
+      let labMode = 'material';
+      let labVal = 65;
+      let labTxt = 'ATELIER 03';
+      document.querySelectorAll('[data-pro-lab]').forEach((b) => {
+        b.addEventListener('click', () => {
+          labMode = b.getAttribute('data-pro-lab');
+          document.querySelectorAll('[data-pro-lab]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          document.getElementById('proLabModeTitle').textContent = b.textContent;
+        });
+      });
+      document.getElementById('proLabSlider').addEventListener('input', (e) => { labVal = Number(e.target.value); });
+      document.getElementById('proLabText').addEventListener('input', (e) => { labTxt = (e.target.value || 'ATELIER 03').toUpperCase(); });
+
+      let stepIdx = 0;
+      document.querySelectorAll('[data-pro-step]').forEach((b) => {
+        b.addEventListener('click', () => {
+          stepIdx = Number(b.getAttribute('data-pro-step')) || 0;
+          document.querySelectorAll('[data-pro-step]').forEach((x) => {
+            if (x === b) x.setAttribute('aria-current', 'step');
+            else x.removeAttribute('aria-current');
+          });
+        });
+      });
+
+      let inv = false;
+      document.getElementById('proInvertBtn').addEventListener('click', () => { inv = !inv; });
+
+      const cHero = document.getElementById('proHeroCanvas');
+      const cInst = document.getElementById('proInstallCanvas');
+      const cLab = document.getElementById('proLabCanvas');
+      const cProc = document.getElementById('proProcessCanvas');
+      const cImp = document.getElementById('proImpossibleCanvas');
+      const cFin = document.getElementById('proFinaleCanvas');
+
+      function loop(now) {
+        const t = reduced ? 1 : now * 0.001;
+
+        const h = size(cHero);
+        const hctx = cHero.getContext('2d');
+        hctx.clearRect(0, 0, h.w, h.h);
+        for (let i = 0; i < 18; i++) {
+          hctx.save();
+          hctx.translate(h.w * 0.52, h.h * 0.46);
+          hctx.rotate(i * 0.25 + t * 0.5);
+          hctx.strokeStyle = mat === 1 ? '#0047FF' : mat === 2 ? '#FF4D2D' : (i % 3 === 0 ? '#0047FF' : 'rgba(11,16,33,0.22)');
+          hctx.lineWidth = 2 * h.dpr;
+          const r = Math.min(h.w, h.h) * (0.1 + (i / 18) * 0.26);
+          hctx.strokeRect(-r, -r * 0.45, r * 2, r * 0.9);
+          hctx.restore();
+        }
+
+        const ins = size(cInst);
+        const ictx = cInst.getContext('2d');
+        ictx.clearRect(0, 0, ins.w, ins.h);
+        for (let i = 0; i < 12; i++) {
+          ictx.beginPath();
+          ictx.arc(ins.w * 0.5, ins.h * 0.45, (i + 1) * 16 * ins.dpr, 0, Math.PI * 2);
+          ictx.strokeStyle = i % 2 === 0 ? '#0047FF' : '#FF4D2D';
+          ictx.stroke();
+        }
+
+        const lb = size(cLab);
+        const lctx = cLab.getContext('2d');
+        lctx.clearRect(0, 0, lb.w, lb.h);
+        if (labMode === 'kinetic') {
+          lctx.textAlign = 'center';
+          lctx.textBaseline = 'middle';
+          lctx.font = `700 ${Math.floor(42 * lb.dpr)}px "Libre Bodoni", serif`;
+          lctx.fillStyle = '#FAF8F4';
+          lctx.fillText(labTxt, lb.w * 0.5 + Math.sin(t * 2) * labVal * lb.dpr, lb.h * 0.5);
+        } else {
+          for (let i = 0; i < 10; i++) {
+            lctx.beginPath();
+            lctx.ellipse(lb.w * 0.5, lb.h * 0.5, (i + 2) * 15 * lb.dpr, (i + 2) * 9 * lb.dpr, t + i * 0.3, 0, Math.PI * 2);
+            lctx.strokeStyle = i % 2 === 0 ? '#0047FF' : '#FF4D2D';
+            lctx.stroke();
+          }
+        }
+
+        const pr = size(cProc);
+        const pctx = cProc.getContext('2d');
+        pctx.clearRect(0, 0, pr.w, pr.h);
+        for (let s = 0; s < 5; s++) {
+          pctx.beginPath();
+          pctx.arc(pr.w * ((s + 0.5) / 5), pr.h * 0.5, (s === stepIdx ? 34 : 20) * pr.dpr, 0, Math.PI * 2);
+          pctx.fillStyle = s === stepIdx ? '#FF4D2D' : '#0047FF';
+          pctx.fill();
+        }
+
+        const im = size(cImp);
+        const imctx = cImp.getContext('2d');
+        imctx.clearRect(0, 0, im.w, im.h);
+        for (let i = 0; i < 8; i++) {
+          imctx.beginPath();
+          const y = im.h * ((i + 1) / 9);
+          imctx.moveTo(0, y);
+          imctx.lineTo(im.w, y + Math.sin(t + i) * 35 * im.dpr);
+          imctx.strokeStyle = inv ? '#FF4D2D' : '#0047FF';
+          imctx.lineWidth = 2 * im.dpr;
+          imctx.stroke();
+        }
+
+        const fn = size(cFin);
+        const fnctx = cFin.getContext('2d');
+        fnctx.clearRect(0, 0, fn.w, fn.h);
+        for (let i = 0; i < 7; i++) {
+          fnctx.beginPath();
+          fnctx.arc(fn.w * 0.5, fn.h * 0.5, (i + 1) * 14 * fn.dpr, 0, Math.PI * 2);
+          fnctx.strokeStyle = '#FAF8F4';
+          fnctx.stroke();
+        }
+
+        if (!reduced) requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+
+      document.getElementById('proContactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('proFormStatus').textContent = 'Commission Inquiry Recorded.';
+        e.target.reset();
+      });
+    })();
+  </script>
+</body>
+</html>

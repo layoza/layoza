@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saltmarsh, seafood in the boathouse at Thornham Staithe</title>
+<meta name="description" content="Saltmarsh is a fictional forty-cover seafood restaurant in a converted boathouse on the Norfolk coast. The menu follows what the day boats land.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#F6F7F4; --plank:#E6E9E4; --plank-2:#D8DDD6;
+  --ink:#18262E; --ink-2:#47555C;
+  --red:#8E3A2B; --marsh:#46624A; --lav:#6A5B8E; --lav-hi:#584a7b; --lav-wash:#E9E5F1; --mud:#6E6455;
+  --err:#A42A1A;
+  --display:"Big Shoulders Display",Impact,sans-serif;
+  --serif:"Source Serif 4",Georgia,serif;
+  --s-1:.875rem; --s0:1.0625rem; --s1:1.3125rem; --s2:1.75rem; --s3:2.5rem; --s4:clamp(2.75rem,5vw,4.25rem);
+  --gut:clamp(16px,5vw,72px); --max:1240px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:80px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--white);color:var(--ink);font:400 var(--s0)/1.65 var(--serif);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.18em}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--lav);outline-offset:3px}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;z-index:60;background:var(--ink);color:var(--white);padding:10px 16px}
+.skip:focus{top:12px}
+.in{max-width:var(--max);margin-inline:auto;padding-inline:var(--gut)}
+h1,h2,h3{margin:0;font-weight:600;line-height:1.1}
+h2{font-family:var(--display);font-weight:800;font-size:var(--s4);line-height:.95;letter-spacing:.005em}
+h3{font-size:var(--s1)}
+p{margin:0 0 1em;max-width:66ch}
+.lede{font-size:var(--s1);line-height:1.5;max-width:52ch}
+.sec{padding-block:clamp(72px,10vw,140px)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;border:0;border-radius:3px;background:var(--lav);color:#fff;font-weight:600;text-decoration:none;transition:background .15s}
+.btn:hover{background:var(--lav-hi)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.ghost:hover{background:var(--plank)}
+
+/* header */
+.bar{position:sticky;top:0;z-index:40;background:var(--white);border-bottom:2px solid var(--ink)}
+.bar .in{display:flex;align-items:center;gap:24px;min-height:64px}
+.reg{font-family:var(--display);font-weight:800;font-size:1.5rem;text-decoration:none;letter-spacing:.02em;line-height:1}
+.reg small{font-size:.75em;color:var(--red);margin-left:6px}
+.bar nav{margin-left:auto}
+.bar nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+.bar nav a{text-decoration:none;font-size:var(--s-1);padding:6px 0}
+.bar nav a:hover{text-decoration:underline}
+.menu-btn{display:none;margin-left:auto;background:none;border:2px solid var(--ink);border-radius:3px;min-height:44px;padding:0 14px;font-weight:600}
+@media (max-width:900px){
+  .menu-btn{display:inline-flex;align-items:center}
+  .bar nav{position:absolute;left:0;right:0;top:100%;background:var(--white);border-bottom:2px solid var(--ink);display:none;margin:0}
+  .bar nav.open{display:block}
+  .bar nav ul{flex-direction:column;gap:0;padding:8px var(--gut) 16px}
+  .bar nav a{display:block;padding:12px 0;font-size:var(--s0)}
+  .bar .btn{display:none}
+}
+
+/* hero: the hull */
+.hero{position:relative;background:var(--plank);overflow:hidden}
+.hull{position:relative;height:min(86svh,820px);min-height:520px}
+.hull svg.planks{position:absolute;inset:0;width:100%;height:100%}
+.paint{position:absolute;left:var(--gut);right:var(--gut);top:14%;display:flex;flex-wrap:wrap;align-items:flex-end;gap:0 3vw}
+.paint h1{font-family:var(--display);font-weight:800;font-size:clamp(4.5rem,15.5vw,15rem);line-height:.82;letter-spacing:.01em;color:var(--ink);text-transform:uppercase}
+.paint .kl{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,7vw,7rem);line-height:.82;color:var(--red);padding-bottom:.08em}
+.under{position:absolute;left:var(--gut);bottom:calc(22% + 24px);max-width:40ch;font-size:var(--s1);line-height:1.45}
+.under .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.water{position:absolute;left:0;right:0;bottom:0;height:22%}
+.water svg{width:100%;height:100%}
+@media (prefers-reduced-motion:no-preference){
+  .js .water{animation:rise 1.4s cubic-bezier(.2,.8,.2,1) .2s both}
+  .js .paint .kl{animation:paintin .6s ease-out 1.2s both}
+}
+@keyframes rise{from{transform:translateY(100%)}to{transform:none}}
+@keyframes paintin{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.hero-note{background:var(--ink);color:var(--white)}
+.hero-note .in{display:flex;flex-wrap:wrap;gap:6px 28px;padding-block:14px;font-size:var(--s-1)}
+.hero-note b{font-weight:600}
+@media (max-width:640px){
+  .hull{height:auto;min-height:0;padding:56px 0 calc(110px)}
+  .paint{position:relative;left:auto;right:auto;top:auto;padding:0 var(--gut)}
+  .under{position:relative;left:auto;bottom:auto;padding:24px var(--gut) 0;font-size:var(--s0)}
+  .water{height:96px}
+}
+
+/* about */
+.about .in{display:grid;grid-template-columns:5fr 7fr;gap:48px clamp(32px,6vw,96px);align-items:start}
+.about .chef svg{width:100%;height:auto;background:var(--plank)}
+.about .chef p{font-size:var(--s-1);color:var(--ink-2);margin-top:12px}
+.register{margin-top:40px}
+.register h3{margin-bottom:14px}
+.register dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:0}
+.register dt{font-family:var(--display);font-weight:800;font-size:var(--s2);line-height:1;color:var(--red);padding:14px 24px 14px 0;white-space:nowrap}
+.register dd{margin:0;padding:14px 0}
+.register dt,.register dd{border-top:2px solid var(--plank-2)}
+.register dd b{display:block;font-weight:600}
+@media (max-width:860px){.about .in{grid-template-columns:minmax(0,1fr)}.about .chef{max-width:420px}}
+
+/* menu */
+.menu{background:var(--ink);color:var(--white)}
+.menu :focus-visible{outline-color:#C9C0E4}
+.menu .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px 40px;margin-bottom:36px}
+.menu .head p{color:#C5CDD0;margin:12px 0 0;max-width:48ch}
+[role=tablist]{display:flex;gap:0;border-bottom:2px solid #3A4A52}
+[role=tab]{background:none;border:0;color:#C5CDD0;font-family:var(--display);font-weight:800;font-size:var(--s2);line-height:1;padding:14px 22px 12px;margin-bottom:-2px;border-bottom:4px solid transparent;min-height:48px}
+[role=tab]:hover{color:var(--white)}
+[role=tab][aria-selected=true]{color:var(--white);border-bottom-color:#C9C0E4}
+.diet{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:24px 0 6px}
+.diet legend{float:left;margin-right:6px;color:#C5CDD0;font-size:var(--s-1)}
+.diet fieldset{border:0;padding:0;margin:0;display:contents}
+.chip{min-height:44px;padding:0 16px;border-radius:22px;border:2px solid #61707A;background:transparent;color:var(--white);font-size:var(--s-1);display:inline-flex;gap:8px;align-items:center}
+.chip:hover{border-color:#C9C0E4}
+.chip[aria-pressed=true]{background:#C9C0E4;border-color:#C9C0E4;color:var(--ink);font-weight:600}
+.chip .tick{width:14px;height:14px;display:none}
+.chip[aria-pressed=true] .tick{display:block}
+.status{min-height:1.6em;color:#C5CDD0;font-size:var(--s-1);margin:4px 0 24px}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(32px,5vw,72px)}
+.panel[hidden]{display:none}
+.course h3{font-family:var(--display);font-weight:800;font-size:var(--s1);letter-spacing:.02em;color:#C9C0E4;margin:8px 0 6px}
+.course ul{list-style:none;margin:0 0 28px;padding:0}
+.dish{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:12px 0}
+.dish[hidden]{display:none}
+.dish .n{font-weight:600}
+.dish .p{font-variant-numeric:tabular-nums}
+.dish .d{grid-column:1/-1;color:#C5CDD0;font-size:var(--s-1);font-style:italic}
+.dish .from{font-style:normal;color:#9FB09A}
+.tags{display:inline-flex;gap:4px;margin-left:8px;vertical-align:2px}
+.tags abbr{font:600 .75rem/1 var(--serif);text-decoration:none;border:1.5px solid currentColor;border-radius:9px;padding:3px 6px;color:#C9C0E4}
+.empty{grid-column:1/-1;padding:24px;background:#22333C;border-radius:3px}
+.empty[hidden]{display:none}
+.empty button{background:none;border:0;padding:0;color:#C9C0E4;text-decoration:underline;font-weight:600}
+.menu .fine{font-size:var(--s-1);color:#C5CDD0;margin-top:12px}
+@media (max-width:760px){.panel{grid-template-columns:1fr}[role=tab]{padding:12px 14px 10px;font-size:var(--s1)}}
+
+/* booking */
+.book .in{display:grid;grid-template-columns:4fr 8fr;gap:40px clamp(32px,6vw,96px)}
+.book .intro p{color:var(--ink-2)}
+.book .intro .hours-mini{margin-top:28px;font-size:var(--s-1)}
+form .group{border:0;padding:0;margin:0 0 32px;min-width:0}
+form .group legend,.lbl{font-weight:600;font-size:var(--s1);padding:0;margin-bottom:10px}
+.hint{color:var(--ink-2);font-size:var(--s-1);margin:-4px 0 12px}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.ch{position:relative}
+.ch input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.ch span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:48px;min-height:48px;padding:6px 10px;border:2px solid var(--plank-2);border-radius:3px;background:var(--white);line-height:1.15;font-variant-numeric:tabular-nums;transition:border-color .12s,background .12s}
+.ch:hover span{border-color:var(--ink-2)}
+.ch input:checked+span{background:var(--lav);border-color:var(--lav);color:#fff}
+.ch input:focus-visible+span{outline:3px solid var(--lav);outline-offset:3px}
+.ch input:disabled{cursor:not-allowed}
+.ch input:disabled+span{background:var(--plank);border-color:var(--plank);color:#6C767B;text-decoration:line-through}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;max-width:560px}
+.cal .dow{font-size:var(--s-1);color:var(--ink-2);text-align:center}
+.cal .ch span{min-width:0;min-height:54px;padding:4px}
+.cal .ch small{font-size:.75rem}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;max-width:560px}
+.slots .svc{grid-column:1/-1;font-size:var(--s-1);color:var(--ink-2);margin:6px 0 0}
+.slots .ch span small{font-size:.75rem;color:inherit;opacity:.85}
+.field{margin-bottom:20px;max-width:440px}
+.field label{display:block;font-weight:600;margin-bottom:6px}
+.field input,.field textarea{width:100%;min-height:48px;padding:10px 12px;border:2px solid var(--ink-2);border-radius:3px;background:#fff}
+.field textarea{min-height:110px;resize:vertical}
+.field input[aria-invalid=true],.field textarea[aria-invalid=true]{border-color:var(--err);border-width:3px}
+.err{color:var(--err);font-size:var(--s-1);font-weight:600;margin:6px 0 0}
+.err:empty{display:none}
+.group[aria-invalid=true] legend{color:var(--err)}
+.sum{border-left:6px solid var(--err);background:#F8E9E6;padding:16px 20px;margin-bottom:28px;max-width:560px}
+.sum[hidden]{display:none}
+.sum h3{color:var(--err);font-size:var(--s0);margin-bottom:6px}
+.sum ul{margin:0;padding-left:20px}
+.ticket{background:var(--plank);border-radius:3px;padding:28px;max-width:560px}
+.ticket[hidden]{display:none}
+.ticket h3{font-family:var(--display);font-weight:800;font-size:var(--s3);line-height:1}
+.ticket h3:focus{outline:none}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:6px 24px;margin:18px 0 22px}
+.ticket dt{color:var(--ink-2)}
+.ticket dd{margin:0;font-weight:600}
+@media (max-width:860px){.book .in{grid-template-columns:minmax(0,1fr)}}
+
+/* sail loft + vouchers */
+.pair{background:var(--plank)}
+.pair .in{display:grid;grid-template-columns:1fr 1fr;gap:56px clamp(32px,6vw,96px)}
+.pair h2{font-size:var(--s3)}
+.pair .two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.pair .field{max-width:none}
+.ok{background:#E3ECE3;border-left:6px solid var(--marsh);padding:14px 18px;margin-top:16px}
+.ok[hidden]{display:none}
+.tag-card{display:block;position:relative;cursor:pointer}
+.tag-card input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.tag-card .t{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px 16px;padding:14px 16px;background:var(--white);border:2px solid transparent;border-radius:3px;margin-bottom:8px;transition:border-color .12s}
+.tag-card .hole{width:14px;height:14px;border-radius:50%;background:var(--plank-2);box-shadow:inset 0 0 0 2px var(--ink-2)}
+.tag-card .amt{font-family:var(--display);font-weight:800;font-size:var(--s2);line-height:1}
+.tag-card small{display:block;color:var(--ink-2);font-size:var(--s-1)}
+.tag-card:hover .t{border-color:var(--ink-2)}
+.tag-card input:checked+.t{border-color:var(--lav);background:var(--lav-wash)}
+.tag-card input:checked+.t .hole{background:var(--lav);box-shadow:none}
+.tag-card input:focus-visible+.t{outline:3px solid var(--lav);outline-offset:2px}
+@media (max-width:860px){.pair .in{grid-template-columns:minmax(0,1fr)}.pair .two{grid-template-columns:minmax(0,1fr)}}
+
+/* press */
+.press .in{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.press h2{grid-column:1/-1;font-size:var(--s3)}
+.press figure{margin:0}
+.press blockquote{margin:0 0 12px;font-size:var(--s1);line-height:1.4;font-style:italic}
+.press figure:first-of-type{grid-column:1/3}
+.press figure:first-of-type blockquote{font-size:clamp(1.5rem,2.6vw,2.125rem);line-height:1.25}
+.press figcaption{color:var(--ink-2);font-size:var(--s-1)}
+.press .fine{grid-column:1/-1;font-size:var(--s-1);color:var(--ink-2);margin:0}
+@media (max-width:860px){.press .in{grid-template-columns:1fr}.press figure:first-of-type{grid-column:auto}}
+
+/* find us */
+.find{background:var(--marsh);color:var(--white)}
+.find .in{display:grid;grid-template-columns:5fr 7fr;gap:40px clamp(32px,6vw,80px);align-items:start}
+.find h2{font-size:var(--s3)}
+.find address{font-style:normal;font-size:var(--s1);line-height:1.45;margin:18px 0 24px}
+.hours{border-collapse:collapse;width:100%;max-width:440px}
+.hours caption{text-align:left;font-weight:600;margin-bottom:8px}
+.hours th,.hours td{padding:9px 0;border-top:2px solid rgba(255,255,255,.22);text-align:left;font-weight:400}
+.hours td{text-align:right;font-variant-numeric:tabular-nums}
+.hours tr.today th,.hours tr.today td{font-weight:600}
+.hours tr.today th::after{content:" · today";font-weight:400}
+.find .map svg{width:100%;height:auto;border-radius:3px}
+.find .map p{font-size:var(--s-1);margin-top:10px;color:#DDE6DC}
+.find a{color:var(--white)}
+.find :focus-visible{outline-color:var(--white)}
+@media (max-width:860px){.find .in{grid-template-columns:minmax(0,1fr)}}
+
+/* footer: the waterline */
+.foot{background:var(--red);color:var(--white);padding-block:48px 28px}
+.foot .in{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px}
+.foot .reg{font-size:clamp(2.5rem,6vw,4.5rem);display:block;color:var(--white)}
+.foot .reg small{color:#F2C8BE}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li{margin-bottom:6px}
+.foot p{font-size:var(--s-1)}
+.foot :focus-visible{outline-color:var(--white)}
+.foot .base{grid-column:1/-1;border-top:2px solid rgba(255,255,255,.3);padding-top:16px;font-size:var(--s-1);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+@media (max-width:760px){.foot .in{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+  <div class="in">
+    <a class="reg" href="#main">Saltmarsh<small>KL 40</small></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav id="nav" aria-label="Main">
+      <ul>
+        <li><a href="#about">The boats</a></li>
+        <li><a href="#food">Menu</a></li>
+        <li><a href="#loft">Private dining</a></li>
+        <li><a href="#vouchers">Vouchers</a></li>
+        <li><a href="#find">Hours and map</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#book">Book a table</a>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" aria-labelledby="h1">
+  <div class="hull">
+    <svg class="planks" viewBox="0 0 1440 820" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="1440" height="820" fill="#E6E9E4"/>
+      <g fill="none" stroke="#C9CFC7" stroke-width="3">
+        <path d="M0 96C480 70 960 70 1440 104"/><path d="M0 196C480 168 960 168 1440 206"/><path d="M0 296C480 266 960 266 1440 308"/>
+        <path d="M0 396C480 364 960 364 1440 410"/><path d="M0 496C480 462 960 462 1440 512"/><path d="M0 596C480 560 960 560 1440 614"/>
+      </g>
+      <g fill="#D8DDD6"><path d="M0 98C480 72 960 72 1440 106v10C960 82 480 82 0 108z"/><path d="M0 198C480 170 960 170 1440 208v10C960 180 480 180 0 208z"/><path d="M0 298C480 268 960 268 1440 310v10C960 278 480 278 0 308z"/><path d="M0 398C480 366 960 366 1440 412v10C960 376 480 376 0 408z"/><path d="M0 498C480 464 960 464 1440 514v10C960 474 480 474 0 508z"/></g>
+      <g fill="#9AA39C"><circle cx="220" cy="148" r="4"/><circle cx="220" cy="248" r="4"/><circle cx="220" cy="348" r="4"/><circle cx="220" cy="448" r="4"/><circle cx="1180" cy="150" r="4"/><circle cx="1180" cy="252" r="4"/><circle cx="1180" cy="354" r="4"/><circle cx="1180" cy="456" r="4"/></g>
+    </svg>
+    <div class="paint">
+      <h1 id="h1">Saltmarsh</h1>
+      <span class="kl" aria-hidden="true">KL 40</span>
+    </div>
+    <div class="under">
+      <p style="margin:0">Forty covers in the old boathouse at Thornham Staithe. We cook what the day boats land, and the menu changes when they do.</p>
+      <div class="row"><a class="btn" href="#book">Book a table</a><a class="btn ghost" href="#food">See this week’s menu</a></div>
+    </div>
+    <div class="water" aria-hidden="true">
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none">
+        <rect y="0" width="1440" height="26" fill="#18262E"/>
+        <rect y="26" width="1440" height="154" fill="#8E3A2B"/>
+        <path d="M0 70c120-18 240 18 360 0s240-18 360 0 240 18 360 0 240-18 360 0v110H0z" fill="#46624A"/>
+        <path d="M0 110c120-14 240 14 360 0s240-14 360 0 240 14 360 0 240-14 360 0v70H0z" fill="#3A5240"/>
+      </svg>
+    </div>
+  </div>
+  <div class="hero-note"><div class="in"><span><b>KL 40</b> is our number: forty seats, like a boat registered at King’s Lynn.</span><span id="open-now">Open Tuesday to Sunday. Closed Mondays.</span></div></div>
+</section>
+
+<section class="sec about" id="about" aria-labelledby="about-h">
+  <div class="in">
+    <div class="chef">
+      <svg viewBox="0 0 500 600" role="img" aria-label="Drawing of chef Tamsin Rook on the staithe holding a crab, boats behind her">
+        <rect width="500" height="600" fill="#E6E9E4"/>
+        <rect y="300" width="500" height="300" fill="#C9D3CB"/>
+        <path d="M0 330c90-14 180 10 260 0s160-20 240-6v40H0z" fill="#46624A"/>
+        <g fill="#18262E"><path d="M40 300h120c-10 22-30 30-70 30H70c-18 0-26-12-30-30z"/><rect x="96" y="220" width="5" height="80"/></g>
+        <path d="M101 228l46 64h-46z" fill="#F6F7F4"/>
+        <g fill="#8E3A2B"><path d="M360 296h110c-8 20-26 28-60 28h-24c-16 0-22-10-26-28z"/></g>
+        <path d="M160 600c0-120 40-190 100-190s100 70 100 190z" fill="#18262E"/>
+        <path d="M206 600V470h108v130z" fill="#46555C"/>
+        <rect x="236" y="360" width="48" height="60" fill="#B98568"/>
+        <ellipse cx="260" cy="320" rx="56" ry="66" fill="#C99677"/>
+        <path d="M200 304c4-60 112-70 120 0-20-26-50-34-60-30-14-6-40 2-60 30z" fill="#6E6455"/>
+        <ellipse cx="260" cy="500" rx="56" ry="32" fill="#8E3A2B"/>
+        <path d="M206 494c-26-12-36-36-26-52 16 6 22 22 30 40zM314 494c26-12 36-36 26-52-16 6-22 22-30 40z" fill="#8E3A2B"/>
+        <rect x="236" y="314" width="10" height="4" fill="#18262E"/><rect x="274" y="314" width="10" height="4" fill="#18262E"/>
+      </svg>
+      <p>Tamsin Rook, chef and owner, on the staithe at low water.</p>
+    </div>
+    <div>
+      <h2 id="about-h">Cooked a few yards from where it lands</h2>
+      <p class="lede" style="margin-top:22px">Tamsin grew up three doors from the boathouse. After ten years cooking in Norwich and London she came back, bought the shed her grandfather mended nets in, and built a kitchen where the slipway used to be.</p>
+      <p>Each morning she walks down to the staithe and buys from four boats she has known all her life. If the weather keeps them in, the dish comes off the board. Vegetables come from one farm two miles inland.</p>
+      <div class="register">
+        <h3>The boats we buy from</h3>
+        <dl>
+          <dt>KL 112</dt><dd><b>Grey Heron, skipper Ned Farrow</b>Brown crab and lobster from pots off Scolt Head.</dd>
+          <dt>KL 87</dt><dd><b>Kittiwake, skipper Sally Crane</b>Sea bass and mackerel on hand lines, May to October.</dd>
+          <dt>KL 203</dt><dd><b>Two Sisters, the Dunnett family</b>Mussels and oysters from the harbour lays.</dd>
+          <dt>KL 54</dt><dd><b>Morning Star, skipper Joe Pell</b>Plaice, dab and skate from a small inshore trawl.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec menu" id="food" aria-labelledby="food-h">
+  <div class="in">
+    <div class="head">
+      <div><h2 id="food-h">This week’s menu</h2><p>Written on Monday, when we are closed, and changed when the boats bring something better.</p></div>
+    </div>
+    <div role="tablist" aria-label="Menus">
+      <button role="tab" type="button" id="tab-lunch" aria-selected="true" aria-controls="panel-lunch">Lunch</button>
+      <button role="tab" type="button" id="tab-dinner" aria-selected="false" aria-controls="panel-dinner" tabindex="-1">Dinner</button>
+      <button role="tab" type="button" id="tab-drinks" aria-selected="false" aria-controls="panel-drinks" tabindex="-1">Drinks</button>
+    </div>
+    <div class="diet" role="group" aria-labelledby="diet-l">
+      <span id="diet-l" class="vh">Dietary filter</span><span aria-hidden="true" style="color:#C5CDD0;font-size:var(--s-1)">Only show dishes that are</span>
+      <button type="button" class="chip" data-tag="V" aria-pressed="false"><svg class="tick" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>Vegetarian</button>
+      <button type="button" class="chip" data-tag="VG" aria-pressed="false"><svg class="tick" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>Vegan</button>
+      <button type="button" class="chip" data-tag="GF" aria-pressed="false"><svg class="tick" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>Gluten free</button>
+    </div>
+    <p class="status" id="menu-status" role="status" aria-live="polite"></p>
+    <div id="panels"></div>
+    <p class="fine">V vegetarian, VG vegan, GF gluten free. Vegan dishes are vegetarian too. Our kitchen handles shellfish, nuts and gluten, so tell us about allergies when you book. Prices in pounds sterling; service is not added.</p>
+  </div>
+</section>
+
+<section class="sec book" id="book" aria-labelledby="book-h">
+  <div class="in">
+    <div class="intro">
+      <h2 id="book-h">Book a table</h2>
+      <p class="lede" style="margin-top:20px">For one to eight people, up to three weeks ahead. Only sittings with room for your party can be picked.</p>
+      <p class="hours-mini">Lunch Tuesday to Sunday from 12:00. Dinner Tuesday to Saturday from 18:00. Closed Mondays. For nine or more, use the Sail Loft enquiry.</p>
+    </div>
+    <div>
+      <form id="bk" novalidate>
+        <div class="sum" id="bk-sum" role="alert" tabindex="-1" hidden><h3>There is a problem with the booking</h3><ul></ul></div>
+        <fieldset class="group" id="g-party"><legend>Party size</legend><div class="choices" id="party"></div></fieldset>
+        <fieldset class="group" id="g-date" aria-describedby="date-hint e-date"><legend>Date</legend><p class="hint" id="date-hint">Mondays are closed and crossed out.</p><div class="cal" id="cal"></div><p class="err" id="e-date"></p></fieldset>
+        <fieldset class="group" id="g-time" aria-describedby="time-hint e-time"><legend>Time</legend><p class="hint" id="time-hint">Pick a date to see open sittings.</p><div class="slots" id="slots"></div><p class="err" id="e-time"></p></fieldset>
+        <div class="field"><label for="bk-name">Name</label><input id="bk-name" autocomplete="name" aria-describedby="e-name"><p class="err" id="e-name"></p></div>
+        <div class="field"><label for="bk-email">Email</label><input id="bk-email" type="email" autocomplete="email" spellcheck="false" aria-describedby="e-email"><p class="err" id="e-email"></p></div>
+        <button class="btn" type="submit">Book the table</button>
+      </form>
+      <div class="ticket" id="bk-done" hidden>
+        <h3 id="done-h" tabindex="-1">Table booked</h3>
+        <dl id="done-dl"></dl>
+        <p id="done-p"></p>
+        <button class="btn ghost" type="button" id="again">Make another booking</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec pair">
+  <div class="in">
+    <section id="loft" aria-labelledby="loft-h">
+      <h2 id="loft-h">The Sail Loft</h2>
+      <p class="lede" style="margin-top:16px">The room upstairs, under the old sail rack. One long table for ten to twenty-two, a set menu from £65 a head, and room hire free from Tuesday to Thursday.</p>
+      <form id="pd" novalidate>
+        <div class="sum" id="pd-sum" role="alert" tabindex="-1" hidden><h3>There is a problem with the enquiry</h3><ul></ul></div>
+        <div class="two">
+          <div class="field"><label for="pd-name">Name</label><input id="pd-name" autocomplete="name" aria-describedby="e-pd-name"><p class="err" id="e-pd-name"></p></div>
+          <div class="field"><label for="pd-email">Email</label><input id="pd-email" type="email" autocomplete="email" aria-describedby="e-pd-email"><p class="err" id="e-pd-email"></p></div>
+          <div class="field"><label for="pd-date">Date</label><input id="pd-date" type="date" aria-describedby="e-pd-date"><p class="err" id="e-pd-date"></p></div>
+          <div class="field"><label for="pd-guests">Guests (10 to 22)</label><input id="pd-guests" type="number" inputmode="numeric" min="10" max="22" aria-describedby="e-pd-guests"><p class="err" id="e-pd-guests"></p></div>
+        </div>
+        <div class="field" style="max-width:none"><label for="pd-note">Anything we should know (optional)</label><textarea id="pd-note"></textarea></div>
+        <button class="btn" type="submit">Send enquiry</button>
+        <p class="ok" id="pd-ok" role="status" hidden></p>
+      </form>
+    </section>
+    <section id="vouchers" aria-labelledby="v-h">
+      <h2 id="v-h">Gift vouchers</h2>
+      <p class="lede" style="margin-top:16px">Printed on card, tied with net twine and posted, or emailed the same day. Valid for a year, at lunch or dinner.</p>
+      <form id="vf" novalidate>
+        <fieldset style="border:0;padding:0;margin:0 0 16px"><legend class="lbl">Choose a voucher</legend>
+          <label class="tag-card"><input type="radio" name="amt" value="50"><span class="t"><span class="hole"></span><span>Lunch for two<small>Two courses each and a glass</small></span><span class="amt num">£50</span></span></label>
+          <label class="tag-card"><input type="radio" name="amt" value="90" checked><span class="t"><span class="hole"></span><span>Dinner for two<small>Three courses each</small></span><span class="amt num">£90</span></span></label>
+          <label class="tag-card"><input type="radio" name="amt" value="150"><span class="t"><span class="hole"></span><span>Lobster and wine for two<small>Half lobster each and a bottle</small></span><span class="amt num">£150</span></span></label>
+        </fieldset>
+        <div class="field"><label for="v-to">Recipient’s name (optional)</label><input id="v-to" autocomplete="off"></div>
+        <button class="btn" type="submit">Buy voucher</button>
+        <p class="ok" id="v-ok" role="status" hidden></p>
+      </form>
+    </section>
+  </div>
+</div>
+
+<section class="sec press" aria-labelledby="press-h">
+  <div class="in">
+    <h2 id="press-h">What people wrote</h2>
+    <figure><blockquote>“The crab on toast is worth the drive from London. The view of the creek at dusk is worth staying the night.”</blockquote><figcaption>Imogen Thackeray, The Weekend Larder</figcaption></figure>
+    <figure><blockquote>“Lamplight, tarred rope and the best mussels on the coast.”</blockquote><figcaption>Rafe Okonjo, East Anglian Plate</figcaption></figure>
+    <figure><blockquote>“Rook cooks fish like she has nothing to prove.”</blockquote><figcaption>Priya Lindqvist, Coast and Cellar</figcaption></figure>
+    <figure><blockquote>“Book the window table and order whatever the Grey Heron brought in.”</blockquote><figcaption>Owen Marsh, North Norfolk Notes</figcaption></figure>
+    <p class="fine">These writers and publications are invented for this demonstration site.</p>
+  </div>
+</section>
+
+<section class="sec find" id="find" aria-labelledby="find-h">
+  <div class="in">
+    <div>
+      <h2 id="find-h">Find us</h2>
+      <address>The Old Boathouse, Staithe Lane<br>Thornham Staithe, Norfolk PE00 4SM<br><a href="tel:+441485555014">01485 555 014</a></address>
+      <table class="hours" id="hours">
+        <caption>Opening hours</caption>
+        <tr data-d="1"><th scope="row">Monday</th><td>Closed</td></tr>
+        <tr data-d="2,3,4"><th scope="row">Tuesday to Thursday</th><td>12:00–14:30, 18:00–21:30</td></tr>
+        <tr data-d="5,6"><th scope="row">Friday and Saturday</th><td>12:00–14:30, 18:00–22:00</td></tr>
+        <tr data-d="0"><th scope="row">Sunday</th><td>12:00–16:00</td></tr>
+      </table>
+    </div>
+    <div class="map">
+      <svg viewBox="0 0 700 460" role="img" aria-labelledby="mt md">
+        <title id="mt">Map of Thornham Staithe</title>
+        <desc id="md">The coast road runs east to west. Staithe Lane leaves it at the church and runs north for about half a mile to the boathouse on the creek. Parking is beside the boathouse. The bus stops on the coast road at the end of the lane.</desc>
+        <rect width="700" height="460" fill="#E6E9E4"/>
+        <path d="M0 0h700v150c-90 20-170-10-260 6s-160 34-250 14S60 150 0 166z" fill="#B9C9CF"/>
+        <path d="M0 166c60-16 120-6 190 14s160-2 250-18 170 14 260-12v60c-90 20-170 0-260 12s-170 30-250 12S60 220 0 232z" fill="#9FB09A"/>
+        <path d="M380 0c-10 50 10 90-10 150" fill="none" stroke="#B9C9CF" stroke-width="22"/>
+        <path d="M0 370c200-14 480 14 700-6" fill="none" stroke="#18262E" stroke-width="16"/>
+        <path d="M0 370c200-14 480 14 700-6" fill="none" stroke="#F6F7F4" stroke-width="2" stroke-dasharray="14 12"/>
+        <path d="M356 366V200" fill="none" stroke="#6E6455" stroke-width="10"/>
+        <rect x="330" y="160" width="56" height="40" fill="#8E3A2B"/>
+        <polygon points="324,160 358,138 392,160" fill="#18262E"/>
+        <rect x="250" y="190" width="64" height="44" fill="#F6F7F4" stroke="#6E6455" stroke-width="2"/>
+        <text x="282" y="217" text-anchor="middle" font-family="Source Serif 4, serif" font-size="15" fill="#18262E">P</text>
+        <rect x="372" y="380" width="14" height="22" fill="#6A5B8E"/>
+        <path d="M300 396h20v-16l10-10 10 10v16h20" fill="none" stroke="#18262E" stroke-width="3"/>
+        <g font-family="Source Serif 4, serif" font-size="16" fill="#18262E">
+          <text x="400" y="170" font-weight="600">Saltmarsh</text>
+          <text x="368" y="290">Staithe Lane</text>
+          <text x="40" y="350">A149 coast road</text>
+          <text x="392" y="400">Bus stop</text>
+          <text x="250" y="420">Church</text>
+          <text x="30" y="60" font-style="italic">Thornham Creek</text>
+          <text x="520" y="200" font-style="italic">Salt marsh</text>
+        </g>
+        <g transform="translate(640 60)"><path d="M0 -22l8 22H-8z" fill="#18262E"/><text y="20" text-anchor="middle" font-family="Source Serif 4, serif" font-size="14" fill="#18262E">N</text></g>
+      </svg>
+      <p>Not to scale. Free parking beside the boathouse; step-free entrance and toilet. The Coasthopper bus stops at the end of the lane.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="in">
+    <div><span class="reg">Saltmarsh<small>KL 40</small></span><p style="margin-top:14px">The Old Boathouse, Staithe Lane, Thornham Staithe, Norfolk</p></div>
+    <nav aria-label="Footer"><ul><li><a href="#food">Menu</a></li><li><a href="#book">Book a table</a></li><li><a href="#loft">Private dining</a></li><li><a href="#vouchers">Gift vouchers</a></li></ul></nav>
+    <div><p><a href="tel:+441485555014">01485 555 014</a><br><a href="mailto:tables@saltmarsh.example">tables@saltmarsh.example</a></p><p>Closed Mondays</p></div>
+    <p class="base"><span>A fictional restaurant. All names, boats and quotes are invented.</span><span>Drawings made for this page.</span></p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  document.documentElement.classList.add('js');
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const pad = (n) => String(n).padStart(2, '0');
+  const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const hm = (m) => `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+  const long = (d) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+
+  /* mobile nav */
+  const mb = $('.menu-btn'), nav = $('#nav');
+  const setNav = (o) => { nav.classList.toggle('open', o); mb.setAttribute('aria-expanded', o); mb.textContent = o ? 'Close' : 'Menu'; };
+  mb.addEventListener('click', () => setNav(mb.getAttribute('aria-expanded') !== 'true'));
+  nav.addEventListener('click', (e) => { if (e.target.closest('a')) setNav(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && nav.classList.contains('open')) { setNav(false); mb.focus(); } });
+
+  /* open now line */
+  const HOURS = { 0: [[720, 960]], 2: [[720, 870], [1080, 1290]], 3: [[720, 870], [1080, 1290]], 4: [[720, 870], [1080, 1290]], 5: [[720, 870], [1080, 1320]], 6: [[720, 870], [1080, 1320]] };
+  (() => { const n = new Date(), m = n.getHours() * 60 + n.getMinutes(), s = (HOURS[n.getDay()] || []).find(([a, b]) => m >= a && m < b);
+    $('#open-now').textContent = n.getDay() === 1 ? 'Closed today: we are shut on Mondays.' : s ? `Open now until ${hm(s[1])}.` : 'Closed right now. Open Tuesday to Sunday.'; })();
+  const wd = new Date().getDay();
+  $$('#hours tr').forEach((tr) => { if (tr.dataset.d.split(',').map(Number).includes(wd)) tr.classList.add('today'); });
+
+  /* menu */
+  const MENU = {
+    lunch: [['Small plates', [
+      ['Crab on toast', 'Grey Heron', 'White and brown crab, sourdough, pickled cucumber', 14, []],
+      ['Smoked mackerel', 'Kittiwake', 'New potatoes, beetroot, horseradish', 12, ['GF']],
+      ['Hispi cabbage', 'Lane End Farm', 'Miso butter, crisp shallots, seeds', 10, ['V', 'GF']]]],
+      ['Mains', [
+      ['Harbour mussels', 'Two Sisters', 'Cider, leeks and cream, with chips', 16, ['GF']],
+      ['Fried plaice', 'Morning Star', 'Chips, crushed peas, tartare', 19, []],
+      ['Squash and chickpea stew', 'Lane End Farm', 'Saffron, kale, flatbread', 14, ['V', 'VG']]]],
+      ['Puddings', [
+      ['Brown butter tart', '', 'Crème fraîche, poached plums', 8, ['V']],
+      ['Sea buckthorn sorbet', '', 'Served with a shortbread', 6, ['V', 'VG', 'GF']]]]],
+    dinner: [['To start', [
+      ['Six oysters', 'Two Sisters', 'Shallot vinegar and lemon', 18, ['GF']],
+      ['Bass crudo', 'Kittiwake', 'Blood orange, fennel, chilli', 13, ['GF']],
+      ['Roast beetroot', 'Lane End Farm', 'Whipped feta, hazelnuts, dill', 11, ['V', 'GF']]]],
+      ['Mains', [
+      ['Half lobster', 'Grey Heron', 'Garlic butter, chips, leaves', 34, ['GF']],
+      ['Skate wing', 'Morning Star', 'Brown shrimp, capers, brown butter', 27, ['GF']],
+      ['Charred cauliflower', 'Lane End Farm', 'Romesco, almonds, capers', 19, ['V', 'VG', 'GF']]]],
+      ['Puddings', [
+      ['Treacle tart', '', 'Clotted cream', 8, ['V']],
+      ['Dark chocolate pot', '', 'Olive oil and sea salt', 8, ['V', 'VG', 'GF']]]]],
+    drinks: [['Wine and fizz', [
+      ['English sparkling', 'by the glass', 'From a vineyard near Diss', 11, ['V', 'VG', 'GF']],
+      ['Picpoul de Pinet', 'bottle', 'Salty and bright, made for oysters', 34, ['V', 'VG', 'GF']],
+      ['Staithe spritz', 'glass', 'Norfolk gin, sea buckthorn, soda', 10, ['V', 'VG', 'GF']]]],
+      ['Beer and soft', [
+      ['Thornham pale ale', 'pint', 'Brewed four miles away', 6, ['V', 'VG']],
+      ['Oyster stout', 'half', 'Brewed with oyster shells', 4, []],
+      ['Elderflower pressé', 'bottle', 'Alcohol free', 4, ['V', 'VG', 'GF']],
+      ['Apple juice', 'glass', 'Pressed at Lane End Farm', 4, ['V', 'VG', 'GF']]]]],
+  };
+  const TAG = { V: 'vegetarian', VG: 'vegan', GF: 'gluten free' };
+  const panels = $('#panels');
+  Object.entries(MENU).forEach(([k, courses], i) => {
+    const p = document.createElement('div');
+    p.className = 'panel'; p.id = 'panel-' + k; p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', 'tab-' + k); p.tabIndex = 0; p.hidden = i > 0;
+    p.innerHTML = courses.map(([c, items]) => `<div class="course"><h3>${esc(c)}</h3><ul>${items.map(([n, from, d, pr, t]) =>
+      `<li class="dish" data-tags="${t.join(' ')}"><span class="n">${esc(n)}${t.length ? `<span class="tags">${t.map((x) => `<abbr title="${TAG[x]}">${x}</abbr>`).join('')}</span>` : ''}</span><span class="p">£${pr}</span><span class="d">${esc(d)}${from ? ` <span class="from">· ${esc(from)}</span>` : ''}</span></li>`).join('')}</ul></div>`).join('') +
+      '<p class="empty" hidden>No dishes on this menu match every filter you picked. <button type="button" class="clear">Clear the filters</button></p>';
+    panels.appendChild(p);
+  });
+  const tabs = $$('[role=tab]'), chips = $$('.chip'), status = $('#menu-status');
+  const want = () => chips.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.tag);
+  function filter(say) {
+    const w = want(); let shown = 0, total = 0, label = '';
+    $$('[role=tabpanel]').forEach((p) => {
+      let n = 0; const ds = $$('.dish', p);
+      ds.forEach((d) => { const ok = w.every((x) => d.dataset.tags.split(' ').includes(x)); d.hidden = !ok; n += ok; });
+      $$('.course', p).forEach((c) => { c.hidden = !$$('.dish', c).some((d) => !d.hidden); });
+      $('.empty', p).hidden = n > 0;
+      if (!p.hidden) { shown = n; total = ds.length; label = $('#' + p.getAttribute('aria-labelledby')).textContent.toLowerCase(); }
+    });
+    if (say) status.textContent = w.length ? `${shown} of ${total} ${label === 'drinks' ? 'drinks' : label + ' dishes'} are ${w.map((x) => TAG[x]).join(' and ')}.` : `Showing all ${total} ${label === 'drinks' ? 'drinks' : label + ' dishes'}.`;
+  }
+  function select(t, focus) {
+    tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).hidden = !on; });
+    if (focus) t.focus(); filter(want().length > 0);
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => { const j = { ArrowRight: (i + 1) % 3, ArrowLeft: (i + 2) % 3, Home: 0, End: 2 }[e.key]; if (j !== undefined) { e.preventDefault(); select(tabs[j], true); } });
+  });
+  chips.forEach((c) => c.addEventListener('click', () => { c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); filter(true); }));
+  panels.addEventListener('click', (e) => { if (e.target.closest('.clear')) { chips.forEach((c) => c.setAttribute('aria-pressed', 'false')); filter(true); chips[0].focus(); } });
+
+  /* booking */
+  const SIT = { 0: [['Lunch', [720, 765, 810, 855, 900]]] };
+  [2, 3, 4].forEach((d) => SIT[d] = [['Lunch', [720, 765, 810]], ['Dinner', [1080, 1125, 1170, 1215, 1260]]]);
+  [5, 6].forEach((d) => SIT[d] = [['Lunch', [720, 765, 810]], ['Dinner', [1080, 1125, 1170, 1215, 1260, 1290]]]);
+  const free = (k) => { let h = 7; for (const c of k) h = (h * 31 + c.charCodeAt(0)) >>> 0; const v = h % 13; return v < 3 ? 0 : Math.min(v - 1, 10); };
+  const B = { party: 2, date: null, time: null };
+  const party = $('#party');
+  for (let n = 1; n <= 8; n++) party.insertAdjacentHTML('beforeend', `<label class="ch"><input type="radio" name="party" value="${n}" ${n === 2 ? 'checked' : ''} aria-label="${n} ${n === 1 ? 'person' : 'people'}"><span aria-hidden="true">${n}</span></label>`);
+  party.addEventListener('change', (e) => { B.party = +e.target.value; slots(); });
+  const cal = $('#cal');
+  ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach((d) => cal.insertAdjacentHTML('beforeend', `<span class="dow" aria-hidden="true">${d}</span>`));
+  const lead = (today.getDay() + 6) % 7;
+  for (let i = 0; i < lead; i++) cal.insertAdjacentHTML('beforeend', '<span aria-hidden="true"></span>');
+  for (let i = 0; i < 21; i++) {
+    const d = new Date(today); d.setDate(d.getDate() + i); const mon = d.getDay() === 1;
+    cal.insertAdjacentHTML('beforeend', `<label class="ch"><input type="radio" name="date" value="${iso(d)}" ${mon ? 'disabled' : ''} aria-label="${long(d)}${mon ? ', closed' : ''}"><span aria-hidden="true">${d.getDate()}<small>${d.toLocaleDateString('en-GB', { month: 'short' })}</small></span></label>`);
+  }
+  cal.addEventListener('change', (e) => { B.date = e.target.value; B.time = null; mark('g-date', 'e-date', ''); slots(); });
+  const sl = $('#slots');
+  function slots() {
+    if (!B.date) return;
+    const d = parse(B.date), now = new Date(); let h = '', open = 0;
+    (SIT[d.getDay()] || []).forEach(([svc, ts]) => {
+      h += `<p class="svc">${svc}</p>`;
+      ts.forEach((m) => {
+        const left = free(B.date + m), past = B.date === iso(now) && m <= now.getHours() * 60 + now.getMinutes() + 30, ok = !past && left >= B.party;
+        if (ok) open++;
+        const note = past ? 'gone' : left === 0 ? 'full' : left < B.party ? `${left} seats` : `${left} seats`;
+        h += `<label class="ch"><input type="radio" name="time" value="${hm(m)}" ${ok ? '' : 'disabled'} aria-label="${svc}, ${hm(m)}${ok ? '' : ', not available'}"><span aria-hidden="true">${hm(m)}<small>${note}</small></span></label>`;
+      });
+    });
+    if (!open) h += `<p class="svc">No sitting that day has room for ${B.party}. Try another date or a smaller party.</p>`;
+    sl.innerHTML = h; $('#time-hint').textContent = 'Crossed-out sittings are full or have passed.'; B.time = null;
+  }
+  sl.addEventListener('change', (e) => { B.time = e.target.value; mark('g-time', 'e-time', ''); });
+  function mark(id, eid, msg) { const el = document.getElementById(id); document.getElementById(eid).textContent = msg; msg ? el.setAttribute('aria-invalid', 'true') : el.removeAttribute('aria-invalid'); }
+  function summarise(box, list) {
+    const ul = $('ul', box); ul.innerHTML = '';
+    list.forEach(([id, msg]) => {
+      const li = document.createElement('li'), a = document.createElement('a'); a.href = '#' + id; a.textContent = msg;
+      a.addEventListener('click', (e) => { e.preventDefault(); const el = document.getElementById(id); const t = el.matches('input,textarea') ? el : $('input:not(:disabled)', el); (t || el).focus(); });
+      li.appendChild(a); ul.appendChild(li);
+    });
+    box.hidden = !list.length; if (list.length) box.focus();
+  }
+  const okMail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  const chkName = (id, eid, m) => { const msg = $('#' + id).value.trim().length < 2 ? m : ''; mark(id, eid, msg); return msg; };
+  const chkMail = (id, eid) => { const v = $('#' + id).value.trim(); const msg = !v ? 'Enter an email address' : !okMail(v) ? 'Enter an email address in the format name@example.com' : ''; mark(id, eid, msg); return msg; };
+  $('#bk-name').addEventListener('input', (e) => e.target.hasAttribute('aria-invalid') && chkName('bk-name', 'e-name', 'Enter the name for the booking'));
+  $('#bk-email').addEventListener('input', (e) => e.target.hasAttribute('aria-invalid') && chkMail('bk-email', 'e-email'));
+  $('#bk').addEventListener('submit', (e) => {
+    e.preventDefault(); const L = [];
+    if (!B.date) { mark('g-date', 'e-date', 'Choose a date'); L.push(['g-date', 'Choose a date']); }
+    if (!B.time) { const m = B.date ? 'Choose an open time' : 'Choose a date, then a time'; mark('g-time', 'e-time', m); L.push(['g-time', m]); }
+    let m = chkName('bk-name', 'e-name', 'Enter the name for the booking'); if (m) L.push(['bk-name', m]);
+    m = chkMail('bk-email', 'e-email'); if (m) L.push(['bk-email', m]);
+    summarise($('#bk-sum'), L); if (L.length) return;
+    const dl = $('#done-dl'); dl.innerHTML = '';
+    [['Date', long(parse(B.date))], ['Time', B.time], ['Party', `${B.party} ${B.party === 1 ? 'person' : 'people'}`], ['Name', $('#bk-name').value.trim()]].forEach(([k, v]) => { const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = k; dd.textContent = v; dl.append(dt, dd); });
+    $('#done-p').textContent = `Confirmation sent to ${$('#bk-email').value.trim()}. We hold tables for 15 minutes.`;
+    $('#bk').hidden = true; $('#bk-done').hidden = false; $('#done-h').focus();
+  });
+  $('#again').addEventListener('click', () => { $('#bk').reset(); Object.assign(B, { party: 2, date: null, time: null }); sl.innerHTML = ''; $('#time-hint').textContent = 'Pick a date to see open sittings.'; $('#bk-sum').hidden = true; $('#bk-done').hidden = true; $('#bk').hidden = false; $('input[name=party]:checked').focus(); });
+
+  /* sail loft */
+  const pdd = $('#pd-date'); pdd.min = iso(today);
+  $('#pd').addEventListener('submit', (e) => {
+    e.preventDefault(); const L = [], add = (id, eid, m) => { mark(id, eid, m); if (m) L.push([id, m]); };
+    add('pd-name', 'e-pd-name', $('#pd-name').value.trim().length < 2 ? 'Enter your name' : '');
+    const em = chkMail('pd-email', 'e-pd-email'); if (em) L.push(['pd-email', em]);
+    let dm = ''; if (!pdd.value) dm = 'Choose a date'; else { const d = parse(pdd.value); if (d < today) dm = 'Choose a date from today onwards'; else if (d.getDay() === 1) dm = 'We are closed on Mondays; choose another day'; }
+    add('pd-date', 'e-pd-date', dm);
+    const g = $('#pd-guests').value, n = +g;
+    add('pd-guests', 'e-pd-guests', !g ? 'Enter the number of guests' : (!Number.isInteger(n) || n < 10 || n > 22) ? 'The Sail Loft takes 10 to 22 guests' : '');
+    summarise($('#pd-sum'), L); const ok = $('#pd-ok');
+    if (L.length) { ok.hidden = true; return; }
+    ok.textContent = `Enquiry sent. We will reply to ${$('#pd-email').value.trim()} about ${n} guests on ${long(parse(pdd.value))} within two working days.`;
+    ok.hidden = false; e.target.reset();
+  });
+
+  /* vouchers */
+  $('#vf').addEventListener('submit', (e) => {
+    e.preventDefault(); const amt = e.target.amt.value, to = $('#v-to').value.trim();
+    const ok = $('#v-ok'); ok.textContent = `£${amt} voucher${to ? ' for ' + to : ''} added. This demo takes no payment.`; ok.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

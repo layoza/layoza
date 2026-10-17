@@ -1,0 +1,244 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-fold/layoza/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.63,
+      "contrast_failures": 0,
+      "lcp_ms": 2324,
+      "cls": 0.0001,
+      "inp_proxy_ms": 24,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-fold\\layoza\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.63,
+      "contrast_failures": 0,
+      "lcp_ms": 2356,
+      "cls": 0.0002,
+      "inp_proxy_ms": 24,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-fold\\layoza\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.63,
+      "contrast_failures": 0,
+      "lcp_ms": 1988,
+      "cls": 0,
+      "inp_proxy_ms": 24,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-fold\\layoza\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-fold\\layoza\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 5.63,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 137,
+  "contrast_indeterminate_elements": 30,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 32.7,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 2356,
+  "cls": 0.0002,
+  "inp_ms": 24,
+  "inp_event_entries": 19,
+  "h1_to_body_ratio": 2.52,
+  "max_line_length_ch": 52,
+  "font_families": [
+    "archivo",
+    "ibm plex mono"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Fold Architects, Glasgow",
+    "lang": "en-GB",
+    "page_background": "#F1F2EE",
+    "text_colors": [
+      {
+        "value": "#4C5187",
+        "count": 1993
+      },
+      {
+        "value": "#262B66",
+        "count": 1295
+      },
+      {
+        "value": "#F1F2EE",
+        "count": 297
+      },
+      {
+        "value": "#C9CCE0",
+        "count": 195
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#F1F2EE",
+        "count": 1991.2739267578122
+      },
+      {
+        "value": "#262B66",
+        "count": 1313.104611328125
+      },
+      {
+        "value": "#DDE0EC",
+        "count": 1296
+      },
+      {
+        "value": "#B8322A",
+        "count": 0.054
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Archivo",
+        "count": 3499
+      },
+      {
+        "value": "IBM Plex Mono",
+        "count": 281
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "50.4px",
+        "weight": "500",
+        "line_height": "52.416px",
+        "letter_spacing": "-1.26px",
+        "family": "Archivo"
+      },
+      "h2": {
+        "size": "44px",
+        "weight": "500",
+        "line_height": "46.2px",
+        "letter_spacing": "-1.32px",
+        "family": "Archivo"
+      },
+      "h3": {
+        "size": "22px",
+        "weight": "500",
+        "line_height": "26.4px",
+        "letter_spacing": "-0.33px",
+        "family": "Archivo"
+      },
+      "p": {
+        "size": "20px",
+        "weight": "400",
+        "line_height": "30px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      },
+      "small": {
+        "size": "15px",
+        "weight": "400",
+        "line_height": "23.25px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      }
+    },
+    "radii": [
+      {
+        "value": "50%",
+        "count": 4
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "545.496px",
+        "count": 6
+      },
+      {
+        "value": "566.124px",
+        "count": 2
+      },
+      {
+        "value": "389.64px",
+        "count": 1
+      },
+      {
+        "value": "500.802px",
+        "count": 1
+      },
+      {
+        "value": "448.086px",
+        "count": 1
+      },
+      {
+        "value": "480px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--film": "#F1F2EE",
+      "--film-2": "#E7E9E4",
+      "--ink": "#262B66",
+      "--ink-2": "#4C5187",
+      "--tint": "#DDE0EC",
+      "--rev": "#B8322A",
+      "--rev-light": "#FF9C8F",
+      "--sans": "\"Archivo\", \"Sans Fallback\", system-ui, sans-serif",
+      "--mono": "\"IBM Plex Mono\", \"Mono Fallback\", ui-monospace, monospace",
+      "--header-h": "4.5rem",
+      "--gutter": "clamp(1rem, 4vw, 3.5rem)",
+      "--max": "82rem"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 0
+  },
+  "craft_critique": {},
+  "craft_critique_by_viewport": {
+    "desktop": {},
+    "tablet": {},
+    "mobile": {}
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

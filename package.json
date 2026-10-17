@@ -1,0 +1,74 @@
+{
+  "name": "layoza",
+  "version": "0.1.0",
+  "description": "Design engineering for AI agents: MCP server + agent skills that give Claude Code, Cursor, Codex, OpenCode, Antigravity and Windsurf a UI/UX design expert, site design DNA, motion mechanics and live Chromium visual QA (accessibility, Core Web Vitals).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/layoza/layoza.git"
+  },
+  "homepage": "https://github.com/layoza/layoza#readme",
+  "bugs": {
+    "url": "https://github.com/layoza/layoza/issues"
+  },
+  "type": "module",
+  "bin": {
+    "layoza": "./bin/layoza.mjs",
+    "layoza-mcp": "./bin/layoza-mcp.mjs"
+  },
+  "files": [
+    "bin/",
+    "vendor/",
+    "crates/*/Cargo.toml",
+    "crates/layoza-cli/src/",
+    "crates/layoza-core/src/",
+    "crates/layoza-mcp/src/",
+    "Cargo.toml",
+    "Cargo.lock",
+    "scripts/browser-qa.mjs",
+    "skills/",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "cargo build --release",
+    "test": "cargo test --release",
+    "qa": "node scripts/browser-qa.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "claude-code",
+    "agent-skills",
+    "cursor",
+    "codex",
+    "windsurf",
+    "opencode",
+    "antigravity",
+    "claude-skills",
+    "frontend-design",
+    "anti-slop",
+    "ai-agent",
+    "ui-design",
+    "ux",
+    "web-design",
+    "design-system",
+    "design-tokens",
+    "layout",
+    "animation",
+    "accessibility",
+    "wcag",
+    "core-web-vitals",
+    "visual-qa",
+    "screenshot",
+    "chromium",
+    "playwright",
+    "frontend",
+    "layoza"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

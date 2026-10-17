@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T21:10:00Z",
+  "title": "Design System: Fold Architects",
+  "extensions": {
+    "colorMeta": {
+      "act": { "role": "primary", "displayName": "Cutting-mat green" },
+      "ground": { "role": "neutral", "displayName": "Mountboard" },
+      "board-1": { "role": "neutral", "displayName": "Greyboard" },
+      "balsa-2": { "role": "tertiary", "displayName": "Balsa" },
+      "ink": { "role": "neutral", "displayName": "Ink" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero statement only; Archivo wdth 118." },
+      "heading": { "displayName": "Section heading", "purpose": "Opens each section on a 1px ink rule; wdth 116." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "state-colour", "value": "120ms ease-out on color, background-color, border-color; none under prefers-reduced-motion", "purpose": "Hover and focus colour change, the only motion allowed." }
+    ],
+    "breakpoints": [ { "name": "tablet", "value": "64rem" }, { "name": "phone", "value": "47.99rem" } ]
+  },
+  "components": [
+    { "name": "Primary Button", "kind": "button", "refersTo": "button-primary", "description": "The one solid action.",
+      "html": "<button class=\"ds-btn\">Send enquiry</button>",
+      "css": ".ds-btn{background:#1F5A4A;color:#fff;border:1px solid #1F5A4A;padding:.85rem 1.5rem;min-height:48px;font:500 1rem Archivo,sans-serif;border-radius:0;cursor:pointer;transition:background-color .12s ease-out}.ds-btn:hover{background:#143E33}.ds-btn:focus-visible{outline:2px solid #1F5A4A;outline-offset:3px}" },
+    { "name": "Filter Chip", "kind": "chip", "refersTo": "chip", "description": "Project type filter with count.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"true\">All<span>6</span></button><button class=\"ds-chip\" aria-pressed=\"false\">Civic<span>2</span></button>",
+      "css": ".ds-chip{background:transparent;border:1px solid #CFCBC3;color:#1D1C1A;padding:.5rem .95rem;min-height:44px;font:400 .9375rem Archivo,sans-serif;border-radius:0;margin-right:.5rem;cursor:pointer}.ds-chip span{opacity:.75;margin-left:.3rem}.ds-chip:hover{border-color:#1F5A4A;color:#1F5A4A}.ds-chip[aria-pressed=true]{background:#1F5A4A;border-color:#1F5A4A;color:#fff}.ds-chip:focus-visible{outline:2px solid #1F5A4A;outline-offset:3px}" },
+    { "name": "Text Field", "kind": "input", "refersTo": "input", "description": "Labelled field with inline error.",
+      "html": "<label class=\"ds-l\">Email<input class=\"ds-in\" aria-invalid=\"true\"></label><p class=\"ds-err\">This email address looks incomplete.</p>",
+      "css": ".ds-l{display:flex;flex-direction:column;gap:.4rem;font:500 .9375rem Archivo,sans-serif;color:#1D1C1A}.ds-in{background:#fff;border:1px solid #8C877E;border-radius:0;padding:.75rem .85rem;min-height:48px;font:400 1rem Archivo,sans-serif}.ds-in:hover{border-color:#1D1C1A}.ds-in:focus-visible{outline:2px solid #1F5A4A;outline-offset:0}.ds-in[aria-invalid=true]{border-color:#9B2C1F}.ds-err{color:#9B2C1F;font:400 .875rem Archivo,sans-serif;margin:.4rem 0 0}" },
+    { "name": "Nav Link", "kind": "nav", "description": "Header text link.",
+      "html": "<a class=\"ds-nav\" href=\"#\">Work</a>",
+      "css": ".ds-nav{color:#1D1C1A;text-decoration:none;font:400 1rem Archivo,sans-serif}.ds-nav:hover{color:#1F5A4A;text-decoration:underline;text-underline-offset:.22em}" },
+    { "name": "Caption Strip", "kind": "custom", "description": "Sits under every study model.",
+      "html": "<div class=\"ds-strip\"><h3>Burnside Hall</h3><p>Maryhill, Glasgow &nbsp; 2024 &nbsp; Civic</p></div>",
+      "css": ".ds-strip{border-top:1px solid #1D1C1A;padding-top:.75rem;font-family:Archivo,sans-serif}.ds-strip h3{margin:0;font-weight:500;font-size:1.25rem;font-variation-settings:'wdth' 112}.ds-strip p{margin:.25rem 0 0;font-size:.875rem;color:#56524B}" }
+  ],
+  "narrative": {
+    "northStar": "The studio model table",
+    "overview": "Card and greyboard study models on mountboard, one green for action, quiet by client instruction.",
+    "keyCharacteristics": ["Axonometric card models as the only imagery", "Archivo width axis carries the hierarchy", "Hairlines, square corners, no shadow, no motion"],
+    "rules": [
+      { "name": "One green for action", "body": "Only actionable things take #1F5A4A.", "section": "colors" },
+      { "name": "Card is existing, balsa is new", "body": "The drawing material shows what was there and what was added.", "section": "colors" },
+      { "name": "Cut solid, fold dashed", "body": "Every drawing uses solid lines for cuts and dashed lines for folds.", "section": "elevation" }
+    ],
+    "dos": ["Draw new imagery in the model grammar", "Keep green for action"],
+    "donts": ["No animation, gradients, shadows or radii", "No kickers above headings", "No photos in place of drawings"]
+  }
+}

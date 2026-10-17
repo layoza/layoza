@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth &amp; Rye — wood-fired restaurant &amp; morning bakery, Northern Quarter</title>
+<meta name="description" content="One wood-fired oven in Manchester's Northern Quarter: bread from 6am, dinner by fire Wednesday to Sunday. Book a table, see tonight's menu and the morning bake.">
+<meta name="theme-color" content="#1B3A8C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cobalt:#1B3A8C;
+  --cobalt-deep:#142C6B;
+  --white:#F3F5F2;
+  --worn:#C9D3EE;
+  --red:#C8281E;
+  --red-press:#A51F17;
+  --steel:#121418;
+  --steel-2:#1D2026;
+  --glo:#E9FF4D;
+  --brass:#B8964A;
+  --u:8px;
+  --r-plate:22px;
+  --gutter:clamp(16px,4vw,56px);
+  --display:"Archivo",system-ui,sans-serif;
+  --marker:"Permanent Marker","Archivo",cursive;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:88px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--cobalt);color:var(--white);font-family:var(--display);font-size:1.0625rem;line-height:1.55;font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--glo);color:var(--steel)}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--glo);outline-offset:3px;border-radius:6px}
+.plate-white :focus-visible,.on-white :focus-visible{outline-color:var(--red)}
+html{scrollbar-color:var(--worn) var(--cobalt-deep)}
+::-webkit-scrollbar{width:12px;background:var(--cobalt-deep)}
+::-webkit-scrollbar-thumb{background:var(--worn);border-radius:12px;border:3px solid var(--cobalt-deep)}
+.skip{position:absolute;left:16px;top:-80px;z-index:100;background:var(--glo);color:var(--steel);padding:12px 16px;border-radius:10px;font-weight:700}
+.skip:focus{top:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:min(1360px,100% - 2*var(--gutter));margin-inline:auto}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- Enamel plate system ---------- */
+.plate{position:relative;border-radius:var(--r-plate);padding:clamp(24px,4vw,64px);isolation:isolate}
+.plate::before{content:"";position:absolute;inset:10px;border-radius:calc(var(--r-plate) - 8px);border:3px solid currentColor;opacity:1;pointer-events:none;z-index:-1}
+.plate-cobalt{background:var(--cobalt);color:var(--white);box-shadow:0 2px 0 var(--cobalt-deep),0 18px 40px -18px rgba(5,12,34,.7)}
+.plate-cobalt::before{border-color:var(--white)}
+.plate-white{background:var(--white);color:var(--cobalt);box-shadow:0 2px 0 #d7dbd5,0 22px 48px -22px rgba(5,12,34,.75)}
+.plate-white::before{border-color:var(--cobalt)}
+.plate-steel{background:var(--steel);color:var(--white);box-shadow:0 22px 48px -22px rgba(0,0,0,.8)}
+.plate-steel::before{border-color:var(--worn)}
+.screw{position:absolute;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e4cf94 0 25%,var(--brass) 45%,#6d5524 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.25)}
+.screw::after{content:"";position:absolute;left:3px;right:3px;top:6px;height:2px;background:#5a461c;transform:rotate(var(--rot,35deg))}
+.screw.tl{top:22px;left:22px}.screw.tr{top:22px;right:22px;--rot:-20deg}.screw.bl{bottom:22px;left:22px;--rot:80deg}.screw.br{bottom:22px;right:22px;--rot:10deg}
+.chip{position:absolute;width:46px;height:34px;color:var(--steel);pointer-events:none}
+.chip svg{width:100%;height:100%}
+
+.display{font-family:var(--display);font-weight:900;font-variation-settings:"wdth" 118;text-transform:uppercase;letter-spacing:-.01em;line-height:.92;margin:0;text-wrap:balance}
+h2.display{font-size:clamp(2.5rem,6vw,5.5rem)}
+h3{font-weight:800;font-variation-settings:"wdth" 108;margin:0}
+p{margin:0}
+.lede{font-size:clamp(1.125rem,1.4vw,1.3rem);line-height:1.5;max-width:58ch}
+
+/* ---------- Buttons ---------- */
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;border:0;font-weight:800;font-variation-settings:"wdth" 112;text-transform:uppercase;letter-spacing:.04em;font-size:.95rem;text-decoration:none;cursor:pointer;transition:transform .2s var(--ease),background-color .2s,box-shadow .2s var(--ease)}
+.btn-book{background:var(--red);color:#fff;box-shadow:0 2px 0 var(--red-press),0 10px 22px -10px rgba(8,12,24,.55)}
+.btn-book:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--red-press),0 16px 28px -12px rgba(8,12,24,.55)}
+.btn-book:active{transform:translateY(1px);box-shadow:0 1px 0 var(--red-press)}
+.btn-book[disabled]{opacity:.6;cursor:progress;transform:none}
+.btn-line{background:transparent;color:inherit;box-shadow:inset 0 0 0 3px currentColor}
+.btn-line:hover{background:var(--white);color:var(--cobalt);box-shadow:inset 0 0 0 3px var(--white)}
+.plate-white .btn-line:hover,.on-white .btn-line:hover{background:var(--cobalt);color:var(--white);box-shadow:inset 0 0 0 3px var(--cobalt)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* ---------- Header ---------- */
+.site-head{position:sticky;top:0;z-index:50;padding:10px var(--gutter) 0}
+.head-plate{display:flex;align-items:center;gap:clamp(8px,2vw,24px);background:var(--white);color:var(--cobalt);border-radius:16px;padding:10px 10px 10px 22px;box-shadow:0 2px 0 #d7dbd5,0 14px 30px -18px rgba(5,12,34,.8);max-width:1360px;margin-inline:auto;position:relative}
+.wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;font-variation-settings:"wdth" 125;text-transform:uppercase;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap}
+.wordmark svg{width:30px;height:30px}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav a{display:block;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:700;font-variation-settings:"wdth" 104;font-size:.98rem}
+.nav a:hover{background:var(--cobalt);color:var(--white)}
+.head-plate .btn-book{min-height:46px;padding:0 20px}
+.head-book-m{display:none}
+.menu-btn,.wordmark svg{flex:none}
+.menu-btn{display:none;margin-left:auto;width:48px;height:48px;border-radius:12px;border:0;background:var(--cobalt);color:var(--white);cursor:pointer;align-items:center;justify-content:center}
+.menu-btn svg{width:24px;height:24px}
+.drawer{position:fixed;inset:0;z-index:60;background:var(--cobalt);padding:16px var(--gutter) 32px;display:flex;flex-direction:column;transform:translateY(-100%);visibility:hidden;transition:transform .45s var(--ease),visibility 0s .45s}
+.drawer.open{transform:none;visibility:visible;transition:transform .45s var(--ease)}
+.drawer-top{display:flex;align-items:center;justify-content:space-between;background:var(--white);color:var(--cobalt);border-radius:16px;padding:10px 10px 10px 22px}
+.drawer nav{flex:1;display:flex;align-items:center}
+.drawer ul{list-style:none;margin:0;padding:0;width:100%}
+.drawer li+li{border-top:3px solid var(--worn)}
+.drawer nav a{display:flex;justify-content:space-between;align-items:center;padding:18px 4px;text-decoration:none;font-weight:900;font-variation-settings:"wdth" 120;text-transform:uppercase;font-size:clamp(1.9rem,8vw,3rem);line-height:1}
+.drawer nav a svg{width:28px;height:28px}
+.drawer .btn-book{width:100%;min-height:60px;font-size:1.05rem}
+.drawer .hours-mini{margin-top:16px;color:var(--worn);font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.drawer,.drawer.open{transition:none}}
+
+/* ---------- Hero ---------- */
+.hero{padding:16px var(--gutter) 0}
+.hero-plate{max-width:1360px;margin-inline:auto;display:grid;grid-template-rows:auto auto;padding:0;overflow:visible}
+.hero-main{position:relative;padding:clamp(40px,6vw,88px) clamp(28px,5vw,80px) clamp(36px,4vw,56px);display:grid;align-content:start;gap:clamp(32px,4vw,56px)}
+.hero h1{font-size:clamp(2.75rem,6.4vw,6rem);max-width:13.5ch}
+.hero h1 span{display:block}
+.hero-sub{display:flex;flex-wrap:wrap;align-items:flex-end;gap:24px 40px;justify-content:space-between}
+.hero-sub .lede{color:var(--worn);max-width:46ch}
+.hero-sub .lede strong{color:var(--white);font-weight:700}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.quick{margin:0 13px 13px;background:var(--white);color:var(--cobalt);border-radius:6px 6px calc(var(--r-plate) - 10px) calc(var(--r-plate) - 10px);padding:20px clamp(28px,5vw,80px) 26px;display:grid;grid-template-columns:auto 1fr;gap:12px 32px;align-items:end;position:relative}
+.quick-title{font-weight:900;font-variation-settings:"wdth" 118;text-transform:uppercase;font-size:1.05rem;line-height:1.1;align-self:center}
+.quick-title small{display:block;font-weight:600;font-variation-settings:"wdth" 100;text-transform:none;font-size:.9rem;margin-top:4px}
+.quick form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:12px;align-items:end}
+.field-s label{display:block;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.select{appearance:none;-webkit-appearance:none;width:100%;min-height:52px;border-radius:12px;border:3px solid var(--cobalt);background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1.5 1.5 7 7l5.5-5.5' fill='none' stroke='%231B3A8C' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;padding:0 40px 0 14px;color:var(--cobalt);font-weight:700;cursor:pointer}
+.select:hover{background-color:#e7ebf4}
+
+/* hanging ticket */
+.hang{position:absolute;transform-origin:50% 0;will-change:transform}
+.hang .string{position:absolute;left:50%;top:0;width:2px;background:var(--steel);transform:translateX(-50%)}
+.ticket{background:var(--glo);color:var(--steel);border-radius:10px;padding:18px 18px 16px;box-shadow:0 2px 0 #b9cc2e,0 16px 28px -14px rgba(0,0,0,.6);position:relative}
+.ticket::before{content:"";position:absolute;top:10px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--cobalt);box-shadow:inset 0 0 0 2px var(--steel)}
+.ticket.on-white::before{background:var(--white)}
+.ticket .marker{font-family:var(--marker);line-height:1;letter-spacing:.01em}
+.now-hang{top:-6px;right:clamp(28px,7vw,120px)}
+.now-hang .string{height:54px}
+.now-hang .ticket{margin-top:50px;width:236px;transform:rotate(3deg)}
+.now-ticket .k{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-top:10px}
+.now-ticket .marker{font-size:1.9rem;margin:14px 0 8px}
+.now-ticket .meta{font-size:.9rem;font-weight:600;line-height:1.35}
+.now-ticket .meta b{font-weight:800}
+
+/* ---------- Sections ---------- */
+section{padding:clamp(72px,9vw,128px) 0 0}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 40px;margin-bottom:clamp(28px,4vw,48px)}
+.sec-head .lede{max-width:46ch}
+
+/* Menu */
+.menu-plate{padding:clamp(32px,5vw,72px)}
+.filter{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-label{font-weight:800;text-transform:uppercase;font-size:.8rem;letter-spacing:.08em;margin-right:6px}
+.chip-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 8px;border-radius:999px;border:3px solid var(--cobalt);background:transparent;color:var(--cobalt);font-weight:800;cursor:pointer;transition:background-color .2s,color .2s}
+.chip-btn .dot{display:inline-grid;place-items:center;min-width:30px;height:30px;border-radius:50%;background:var(--cobalt);color:var(--white);font-size:.72rem;font-weight:900;font-variation-settings:"wdth" 112}
+.chip-btn[data-tag="all"]{padding-left:16px}
+.chip-btn:hover{background:#e3e8f3}
+.chip-btn[aria-pressed="true"]{background:var(--cobalt);color:var(--white)}
+.chip-btn[aria-pressed="true"] .dot{background:var(--glo);color:var(--steel)}
+.menu-count{font-weight:600;font-size:.95rem;margin-left:auto}
+.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,56px);margin-top:clamp(28px,4vw,44px)}
+.course h3{font-size:1.5rem;text-transform:uppercase;font-variation-settings:"wdth" 122;font-weight:900;padding-bottom:14px;border-bottom:4px solid var(--cobalt);margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline}
+.course h3 small{font-size:.85rem;font-weight:700;text-transform:none;font-variation-settings:"wdth" 100}
+.dishes{list-style:none;margin:0;padding:0}
+.dish{padding:18px 0;border-bottom:2px solid #c9d0e2;display:grid;grid-template-columns:1fr auto;gap:4px 16px}
+.dish[hidden]{display:none}
+.dish-name{font-weight:800;font-size:1.12rem;line-height:1.25;font-variation-settings:"wdth" 104}
+.dish-price{font-weight:900;font-size:1.12rem;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 110}
+.dish-desc{grid-column:1/-1;color:#2c4373;font-size:.98rem;line-height:1.45}
+.tags{grid-column:1/-1;display:flex;gap:6px;margin-top:6px}
+.tag{text-decoration:none;display:inline-grid;place-items:center;min-width:32px;height:24px;padding:0 7px;border-radius:999px;background:var(--cobalt);color:var(--white);font-size:.7rem;font-weight:900;letter-spacing:.04em}
+.course-empty{padding:18px 0;color:#2c4373;font-size:.98rem}
+.menu-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:.95rem;color:#2c4373}
+.menu-foot dl{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0}
+.menu-foot dt{display:inline;font-weight:900;color:var(--cobalt)}
+.menu-foot dd{display:inline;margin:0 0 0 4px}
+
+/* Bakery */
+.bakery-plate{background:var(--cobalt);padding:clamp(32px,5vw,72px);color:var(--white)}
+.bakery-plate::before{border-color:var(--white)}
+.rail{position:relative;margin-top:clamp(20px,3vw,32px);padding-top:10px}
+.rail::before{content:"";position:absolute;left:-8px;right:-8px;top:0;height:6px;border-radius:6px;background:var(--brass);box-shadow:0 2px 0 #6d5524}
+.tickets{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(12px,1.6vw,22px);align-items:start}
+.tickets li{position:relative;padding-top:var(--drop,28px)}
+.tickets .hang{position:relative;inset:auto}
+.tickets .string{top:calc(-1 * var(--drop,28px));height:calc(var(--drop,28px) + 12px)}
+.bake{transform:rotate(var(--tilt,0deg));padding:30px 16px 18px;min-height:228px;display:flex;flex-direction:column}
+.bake h3{font-size:1.05rem;line-height:1.15;font-variation-settings:"wdth" 104}
+.bake .note{font-size:.86rem;line-height:1.35;margin-top:6px;font-weight:500}
+.bake .marker{font-size:2.3rem;margin-top:auto;padding-top:14px}
+.bake .gone{display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border-top:2px solid var(--steel);padding-top:8px;margin-top:8px}
+.bake .gone svg{width:15px;height:15px;flex:none}
+.bake .stamp{position:absolute;left:-6px;right:-6px;top:46%;transform:rotate(-8deg);background:var(--steel);color:var(--glo);text-align:center;font-weight:900;font-variation-settings:"wdth" 118;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em;padding:6px 4px;display:none}
+.bake.is-gone .stamp{display:block}
+.bakery-facts{display:flex;flex-wrap:wrap;gap:12px 40px;margin-top:clamp(28px,4vw,44px);color:var(--worn);font-size:1rem}
+.bakery-facts b{color:var(--white)}
+
+/* Oven */
+.oven-plate>*,.book-plate>*,.private-plate>*,.faq-plate>*{min-width:0}
+.oven-plate{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center;padding:clamp(32px,5vw,72px)}
+.oven-mouth{position:relative;aspect-ratio:5/4;width:100%}
+.oven-mouth svg.arch{position:absolute;inset:0;width:100%;height:100%}
+.oven-mouth canvas{position:absolute;left:13%;right:13%;bottom:9.5%;top:27%;width:74%;height:63.5%;border-radius:999px 999px 0 0 / 100% 100% 0 0}
+.clock{font-weight:900;font-variation-settings:"wdth" 125;font-size:clamp(3.5rem,8vw,6rem);line-height:.9;font-variant-numeric:tabular-nums;color:var(--white)}
+.phase-name{font-size:clamp(1.6rem,2.6vw,2.2rem);text-transform:uppercase;font-weight:900;font-variation-settings:"wdth" 118;margin-top:14px}
+.phase-text{margin-top:12px;color:var(--worn);max-width:46ch;min-height:5.5em}
+.temp{display:flex;gap:10px;align-items:center;margin-top:16px;font-weight:700}
+.temp-bar{flex:1;max-width:220px;height:10px;border-radius:10px;background:var(--steel-2);box-shadow:inset 0 0 0 2px var(--worn);overflow:hidden}
+.temp-bar i{display:block;height:100%;background:var(--white);width:50%;transition:width .5s var(--ease)}
+.day{grid-column:1/-1}
+.day-strip{position:relative;padding:8px 0 0}
+.day input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:56px;background:transparent;cursor:pointer;margin:0}
+.day input[type=range]::-webkit-slider-runnable-track{height:14px;border-radius:14px;background:var(--steel-2);box-shadow:inset 0 0 0 2px var(--worn)}
+.day input[type=range]::-moz-range-track{height:14px;border-radius:14px;background:var(--steel-2);box-shadow:inset 0 0 0 2px var(--worn)}
+.day input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;margin-top:-10px;border-radius:50%;background:var(--white);border:4px solid var(--steel);box-shadow:0 0 0 2px var(--white)}
+.day input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:var(--white);border:4px solid var(--steel)}
+.day input[type=range]:focus-visible{outline:3px solid var(--white);outline-offset:4px}
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;list-style:none;margin:10px 0 0;padding:0}
+.phases button{width:100%;min-height:52px;background:transparent;border:2px solid var(--worn);border-radius:12px;color:var(--white);cursor:pointer;padding:6px 8px;text-align:left;line-height:1.15}
+.phases button b{display:block;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 112;font-weight:900}
+.phases button span{font-size:.82rem;color:var(--worn)}
+.phases button:hover{background:var(--steel-2)}
+.phases button[aria-pressed="true"]{background:var(--white);border-color:var(--white);color:var(--steel)}
+.phases button[aria-pressed="true"] span{color:var(--steel)}
+
+/* Booking */
+.book-plate{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,80px);padding:clamp(32px,5vw,72px)}
+.book-aside .lede{margin-top:20px;color:#2c4373}
+.book-facts{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:12px}
+.book-facts li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
+.book-facts svg{width:22px;height:22px;flex:none;margin-top:1px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field>label,.field legend{font-weight:800;font-size:.95rem}
+.field .hint{font-size:.86rem;color:#2c4373;font-weight:500}
+.input{width:100%;min-height:54px;border-radius:12px;border:3px solid var(--cobalt);background:#fff;padding:12px 14px;color:var(--steel);font-weight:600;transition:border-color .15s,box-shadow .15s}
+textarea.input{min-height:110px;resize:vertical;line-height:1.45}
+.input::placeholder{color:#55607a;font-weight:500}
+.input:hover{box-shadow:0 0 0 4px #dfe5f2}
+.input[aria-invalid="true"],.select[aria-invalid="true"]{border-color:var(--steel);box-shadow:0 0 0 4px var(--glo)}
+.err{display:none;align-items:center;gap:8px;font-size:.9rem;font-weight:700;color:var(--steel);background:var(--glo);padding:6px 10px;border-radius:8px;width:fit-content}
+.err.show{display:inline-flex}
+.err svg{width:16px;height:16px;flex:none}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.party{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+.party input{position:absolute;opacity:0;width:1px;height:1px}
+.party label{display:grid;place-items:center;min-height:52px;border-radius:12px;border:3px solid var(--cobalt);font-weight:900;font-size:1.15rem;cursor:pointer;font-variant-numeric:tabular-nums;transition:background-color .15s,color .15s}
+.party label:hover{background:#e3e8f3}
+.party input:checked+label{background:var(--cobalt);color:var(--white)}
+.party input:focus-visible+label{outline:3px solid var(--red);outline-offset:3px}
+.form-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-top:4px}
+.form-actions p{font-size:.9rem;color:#2c4373}
+.success{display:none}
+.success.show{display:block}
+.success .ticket{max-width:420px;padding:34px 26px 24px;transform:rotate(-1.5deg)}
+.success .marker{font-size:2.4rem;margin:10px 0 8px}
+.success dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0 0 18px;font-weight:600}
+.success dt{font-weight:900;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em;align-self:center}
+.success dd{margin:0}
+.success .btn-line{color:var(--steel)}
+.success .btn-line:hover{background:var(--steel);color:var(--glo);box-shadow:inset 0 0 0 3px var(--steel)}
+
+/* Private dining */
+.private-plate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center;padding:clamp(32px,5vw,72px)}
+.private-plate .lede{color:var(--worn);margin-top:20px}
+.incl{list-style:none;padding:0;margin:28px 0 32px;display:grid;gap:14px}
+.incl li{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.incl svg{width:26px;height:26px;color:var(--white)}
+.incl b{display:block;font-weight:800}
+.incl span{color:var(--worn);font-size:.98rem}
+.private-price{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+.private-price p{font-weight:700}
+.private-price .btn{white-space:normal;text-align:center;padding-block:12px;line-height:1.2}
+.table-plan{width:100%;height:auto}
+
+/* Reviews */
+.reviews{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2vw,28px);align-items:start}
+.review{padding:clamp(28px,3vw,40px);margin:0}
+.review:nth-child(1){grid-column:1/span 5}
+.review:nth-child(2){grid-column:6/span 4;margin-top:clamp(0px,5vw,72px)}
+.review:nth-child(3){grid-column:10/span 3;margin-top:clamp(0px,2vw,28px)}
+.review blockquote{margin:0;font-weight:700;font-size:clamp(1.1rem,1.5vw,1.35rem);line-height:1.4;font-variation-settings:"wdth" 100}
+.review:nth-child(1) blockquote{font-size:clamp(1.3rem,2vw,1.75rem);font-weight:800}
+.review figcaption{margin-top:18px;font-size:.92rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.review figcaption::before{content:"";width:22px;height:3px;background:currentColor}
+
+/* FAQ */
+.faq-plate{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(28px,5vw,72px);padding:clamp(32px,5vw,72px)}
+.faq-plate .lede{margin-top:20px;color:#2c4373}
+.acc{border-top:4px solid var(--cobalt)}
+.acc-item{border-bottom:2px solid #c9d0e2}
+.acc-item h3{font-size:inherit}
+.acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;background:none;border:0;padding:22px 4px;text-align:left;cursor:pointer;color:var(--cobalt);font-weight:800;font-size:1.15rem;font-variation-settings:"wdth" 104;line-height:1.3}
+.acc-btn:hover{color:var(--cobalt-deep);text-decoration:underline;text-underline-offset:.25em}
+.acc-ico{flex:none;width:36px;height:36px;border-radius:50%;background:var(--cobalt);color:var(--white);display:grid;place-items:center;transition:transform .35s var(--ease),background-color .2s}
+.acc-ico svg{width:16px;height:16px}
+.acc-btn[aria-expanded="true"] .acc-ico{transform:rotate(45deg);background:var(--steel)}
+.acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+.acc-panel>div{overflow:hidden}
+.acc-panel p{padding:0 4px 24px;color:#2c4373;max-width:62ch}
+.acc-item.open .acc-panel{grid-template-rows:1fr}
+@media (prefers-reduced-motion:reduce){.acc-panel,.acc-ico{transition:none}}
+
+/* Footer */
+.foot{padding:clamp(72px,9vw,128px) 0 24px}
+.foot-plate{padding:clamp(32px,5vw,72px)}
+.foot-word{font-weight:900;font-variation-settings:"wdth" 125;text-transform:uppercase;font-size:clamp(1.6rem,7.2vw,6.8rem);line-height:.86;letter-spacing:-.02em;margin:0 0 clamp(32px,4vw,56px);white-space:nowrap}
+.foot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 40px;border-top:4px solid var(--white);padding-top:28px}
+.foot-grid h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;font-weight:900;margin-bottom:12px}
+.foot-grid p,.foot-grid li,.foot-grid address{color:var(--worn);font-style:normal;line-height:1.6}
+.foot-grid a{color:var(--white)}
+.foot-grid ul{list-style:none;margin:0;padding:0}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:0;color:var(--worn)}
+.hours dt{color:var(--white);font-weight:700}
+.hours dd{margin:0}
+.social{display:flex;gap:10px}
+.social a{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 3px var(--white);transition:background-color .2s,color .2s}
+.social a:hover{background:var(--white);color:var(--cobalt)}
+.social svg{width:22px;height:22px}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:28px;color:var(--worn);font-size:.88rem}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1100px){
+  .tickets{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tickets li{--drop:28px!important}
+  .tickets .rowbreak{grid-column:1/-1}
+  .courses{grid-template-columns:1fr 1fr}
+  .courses .course:last-child{grid-column:1/-1}
+}
+@media (max-width:1240px){
+  .hero-plate{min-height:auto}
+  .hero-main{padding-top:0;gap:36px;align-content:start}
+  .now-hang{position:relative;top:0;right:auto;order:-1;justify-self:start;margin-left:8px}
+  .now-hang .string{height:30px}
+  .now-hang .ticket{margin-top:26px;width:min(260px,100%);transform:rotate(-2deg)}
+}
+@media (max-width:980px){
+  .quick form{grid-template-columns:1fr 1fr}
+  .quick form .btn-book{grid-column:1/-1}
+  .quick .field-s:nth-child(2){grid-column:1/-1;grid-row:1}
+  .nav,.head-plate>.btn-book{display:none}
+  .menu-btn{display:inline-flex;margin-left:0}
+  .head-plate>.head-book-m{display:inline-flex;margin-left:auto;min-height:48px;padding:0 18px}
+  .quick{grid-template-columns:1fr}
+  .oven-plate,.book-plate,.private-plate,.faq-plate{grid-template-columns:1fr}
+  .reviews{grid-template-columns:1fr 1fr}
+  .review:nth-child(n){grid-column:auto;margin-top:0}
+  .review:nth-child(1){grid-column:1/-1}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .phases{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:720px){
+  body{font-size:1rem}
+  .head-plate{padding:8px 8px 8px 14px}
+  .wordmark{font-size:.95rem;gap:8px;font-variation-settings:"wdth" 112}
+  .wordmark svg{width:24px;height:24px}
+  .head-plate>.head-book-m{padding:0 14px;font-size:.85rem}
+  .hero h1{font-size:clamp(2.6rem,12vw,3.4rem)}
+  .hero-plate{min-height:auto}
+  .hero-main{padding:0 24px 28px;gap:28px}
+  .quick{padding:20px 20px 24px;margin:0 9px 9px}
+  .hero-ctas{width:100%}
+  .hero-ctas .btn{flex:1}
+  .courses{grid-template-columns:1fr}
+  .courses .course:last-child{grid-column:auto}
+  .menu-count{margin-left:0;width:100%}
+  .tickets{grid-template-columns:1fr 1fr}
+  .bake{min-height:210px}
+  .form-grid{grid-template-columns:1fr}
+  .form-actions .btn{width:100%}
+  .party{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .reviews{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .phases{grid-template-columns:repeat(2,1fr)}
+  .oven-read{grid-template-columns:1fr!important}
+  .plate::before{inset:7px}
+  .screw{width:11px;height:11px}
+  .screw.tl{top:15px;left:15px}.screw.tr{top:15px;right:15px}.screw.bl{bottom:15px;left:15px}.screw.br{bottom:15px;right:15px}
+  .screw::after{top:4.5px;left:2px;right:2px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7v6M12 16.5v.5" stroke="#E9FF4D" stroke-width="2.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2.5c1 3.6 5.5 5.7 5.5 11a5.5 5.5 0 0 1-11 0c0-2.6 1.3-4.1 2.4-5.2.3 1.6 1 2.7 2.1 3.2-.4-3.6.1-6.4 1-9z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-loaf" viewBox="0 0 24 24"><path d="M3.5 15.5c0-4.4 3.8-8 8.5-8s8.5 3.6 8.5 8v2.5h-17z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M9 11.5l1.5 2M12.5 10.5 14 12.5M16 11.5l1 1.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 19.5c.6-3.3 3-5 6-5s5.4 1.7 6 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M15.5 5.3a3 3 0 0 1 0 5.6M18 14.8c1.6.7 2.7 2.3 3 4.7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-glass" viewBox="0 0 24 24"><path d="M7 3h10l-1 7a4 4 0 0 1-8 0zM12 14v6M8.5 21h7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chef" viewBox="0 0 24 24"><path d="M7 14.5V20h10v-5.5M7 14.5A4 4 0 1 1 8.5 7a4 4 0 0 1 7 0A4 4 0 1 1 17 14.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24"><path d="M14 21v-7.5h2.6l.4-3H14V8.7c0-.9.3-1.5 1.6-1.5h1.5V4.5a20 20 0 0 0-2.3-.1c-2.3 0-3.8 1.4-3.8 3.9v2.2H8.5v3H11V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tt" viewBox="0 0 24 24"><path d="M14 3.5v11.2a3.8 3.8 0 1 1-3.3-3.8M14 3.5c.4 2.6 2.2 4.3 5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="chip-a" viewBox="0 0 46 34"><path d="M0 0h46c-4 3-9 4-12 8-3 5-8 4-11 9-3 4-7 6-10 11-3 4-8 4-13 6z" fill="currentColor"/></symbol>
+    <symbol id="logo" viewBox="0 0 32 32"><path d="M3 27V17C3 9.8 8.8 4 16 4s13 5.8 13 13v10z" fill="currentColor"/><path d="M9 27v-7.5a7 7 0 0 1 14 0V27z" fill="#F3F5F2"/><path d="M16 15.5c1.4 2 3 3 3 5.4a3 3 0 0 1-6 0c0-1.2.6-2 1.2-2.6.2.9.6 1.4 1.2 1.6-.2-1.6 0-3 .6-4.4z" fill="#C8281E"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-head">
+  <div class="head-plate">
+    <a class="wordmark" href="#top" aria-label="Hearth and Rye, back to top"><svg aria-hidden="true"><use href="#logo"/></svg>Hearth &amp; Rye</a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#bakery">Bakery</a></li>
+        <li><a href="#book">Book</a></li>
+        <li><a href="#private">Private dining</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-book" href="#book" data-book-link>Book a table</a>
+    <a class="btn btn-book head-book-m" href="#book" data-book-link>Book</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="drawer-top">
+    <a class="wordmark" href="#top"><svg aria-hidden="true"><use href="#logo"/></svg>Hearth &amp; Rye</a>
+    <button class="menu-btn" type="button" data-close style="display:inline-flex" aria-label="Close menu"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="#menu">Menu <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#bakery">Bakery <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#book">Book <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#private">Private dining <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#visit">Visit <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+    </ul>
+  </nav>
+  <a class="btn btn-book" href="#book">Book a table</a>
+  <p class="hours-mini">Dinner Wed–Sun from 17:30 · Bakery counter Tue–Sun from 07:30</p>
+</div>
+
+<main id="main">
+<!-- Hero -->
+<div class="hero" id="top">
+  <div class="plate plate-cobalt hero-plate">
+    <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span>
+    <div class="hero-main">
+      <h1 class="display"><span>One oven.</span> <span>Bread at six.</span> <span>Fire till late.</span></h1>
+      <div class="hero-sub">
+        <p class="lede"><strong>Hearth &amp; Rye</strong> is a 40-cover wood-fired restaurant and morning bakery in Manchester's Northern Quarter. The loaves you buy at breakfast come out of the same oven that cooks your dinner, and the kitchen is open to the room.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-book" href="#book" data-book-link>Book a table <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-line" href="#menu">Tonight's menu</a>
+        </div>
+      </div>
+      <div class="hang now-hang" data-swing aria-live="polite">
+        <span class="string" aria-hidden="true"></span>
+        <div class="ticket now-ticket">
+          <p class="marker" data-now-what>Sourdough</p>
+          <p class="meta"><b>In the oven at <span data-now-time class="tnum">--:--</span>.</b> <span data-now-meta>Counter open from 07:30 until it's gone.</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="quick">
+      <p class="quick-title" id="quick-title">Find a table<small>Dinner Wednesday to Sunday</small></p>
+      <form id="quick" aria-labelledby="quick-title" novalidate>
+        <div class="field-s"><label for="q-party">Guests</label><select class="select" id="q-party" name="party"></select></div>
+        <div class="field-s"><label for="q-date">Date</label><select class="select" id="q-date" name="date"></select></div>
+        <div class="field-s"><label for="q-time">Time</label><select class="select" id="q-time" name="time"></select></div>
+        <button class="btn btn-book" type="submit">Book a table <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Menu -->
+<section id="menu" aria-labelledby="menu-h">
+  <div class="wrap">
+    <div class="plate plate-white menu-plate">
+      <span class="chip" style="top:0;right:0;transform:scaleX(-1)" aria-hidden="true"><svg><use href="#chip-a"/></svg></span>
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span><span class="screw bl" aria-hidden="true"></span><span class="screw br" aria-hidden="true"></span>
+      <div class="sec-head">
+        <h2 class="display" id="menu-h">Tonight's menu</h2>
+        <p class="lede" style="color:#2c4373">Everything here meets the fire. The menu moves with what the oven and the market give us, so tonight's board is the one that counts.</p>
+      </div>
+      <div class="filter" role="group" aria-label="Filter dishes by dietary need">
+                <button class="chip-btn" type="button" data-tag="all" aria-pressed="true">All dishes</button>
+        <button class="chip-btn" type="button" data-tag="V" aria-pressed="false"><span class="dot" aria-hidden="true">V</span>Vegetarian</button>
+        <button class="chip-btn" type="button" data-tag="VG" aria-pressed="false"><span class="dot" aria-hidden="true">VG</span>Vegan</button>
+        <button class="chip-btn" type="button" data-tag="GF" aria-pressed="false"><span class="dot" aria-hidden="true">GF</span>Gluten-free</button>
+        <p class="menu-count" aria-live="polite" data-count>Showing all 11 dishes</p>
+      </div>
+      <div class="courses" data-courses></div>
+      <div class="menu-foot">
+        <dl>
+          <div><dt>V</dt><dd>vegetarian</dd></div>
+          <div><dt>VG</dt><dd>vegan</dd></div>
+          <div><dt>GF</dt><dd>gluten-free</dd></div>
+        </dl>
+        <p>Flour is in the air here from 6am. Tell us about allergies when you book and we'll talk you through it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bakery -->
+<section id="bakery" aria-labelledby="bakery-h">
+  <div class="wrap">
+    <div class="plate bakery-plate">
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span>
+      <div class="sec-head">
+        <h2 class="display" id="bakery-h">The morning bake</h2>
+        <p class="lede" style="color:var(--worn)">Out of the oven from 6am, onto the counter at half seven, Tuesday to Sunday. When a tray is gone, it's gone. These are the times things usually sell out.</p>
+      </div>
+      <div class="rail">
+        <ul class="tickets" data-tickets></ul>
+      </div>
+      <div class="bakery-facts">
+        <p><b>Counter</b> Tue–Sun, 07:30 until sold out (13:00 at the latest)</p>
+        <p><b>Saturdays</b> sell out about an hour earlier</p>
+        <p><b>Whole orders</b> of four or more loaves: ring the day before</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Oven -->
+<section id="oven" aria-labelledby="oven-h">
+  <div class="wrap">
+    <div class="plate plate-steel oven-plate">
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span>
+      <div>
+        <h2 class="display" id="oven-h" style="margin-bottom:20px">One fire,<br>all day</h2>
+        <p class="lede" style="color:var(--worn)">There is one oven at Hearth &amp; Rye, a brick dome at the back of the room. It is lit before dawn and doesn't go out until after the last table leaves. Drag through the day to see what it does.</p>
+      </div>
+      <div class="oven-mouth">
+        <svg class="arch" viewBox="0 0 500 400" aria-hidden="true">
+          <path d="M20 392V230C20 104 123 20 250 20s230 84 230 210v162z" fill="#1D2026"/>
+          <path d="M20 392V230C20 104 123 20 250 20s230 84 230 210v162" fill="none" stroke="#C9D3EE" stroke-width="4"/>
+          <g fill="none" stroke="#2B3038" stroke-width="3">
+            <path d="M44 230C44 118 136 44 250 44s206 74 206 186"/>
+            <path d="M66 230C66 130 148 66 250 66s184 64 184 164"/>
+          </g>
+          <g stroke="#2B3038" stroke-width="3">
+            <path d="M90 120l-22-14M140 72l-14-22M200 48l-6-24M300 48l6-24M360 72l14-22M410 120l22-14"/>
+          </g>
+          <path d="M64 392V236c0-105 83-128 186-128s186 23 186 128v156z" fill="#0B0C0F"/>
+          <rect x="20" y="372" width="460" height="20" fill="#C9D3EE"/>
+        </svg>
+        <canvas data-fire aria-hidden="true"></canvas>
+      </div>
+      <div class="oven-read" style="grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:12px 40px;align-items:end" data-oven-read>
+        <div>
+          <p class="clock" data-clock>06:00</p>
+        </div>
+        <div aria-live="polite">
+          <p class="phase-name" data-phase-name>Bread</p>
+          <p class="phase-text" data-phase-text></p>
+          <div class="temp"><span class="tnum" data-temp>about 290°C</span><span class="temp-bar" aria-hidden="true"><i data-temp-bar></i></span></div>
+        </div>
+      </div>
+      <div class="day">
+        <label class="sr" for="day">Time of day in the oven</label>
+        <div class="day-strip"><input type="range" id="day" min="270" max="1410" step="5" value="360"></div>
+        <ul class="phases" data-phases></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking -->
+<section id="book" aria-labelledby="book-h">
+  <div class="wrap">
+    <div class="plate plate-white book-plate">
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span><span class="screw bl" aria-hidden="true"></span><span class="screw br" aria-hidden="true"></span>
+      <div class="book-aside">
+        <h2 class="display" id="book-h">Book a table</h2>
+        <p class="lede">Forty seats, eight of them at the counter facing the fire. Tables from 17:30, Wednesday to Sunday.</p>
+        <ul class="book-facts">
+          <li><svg aria-hidden="true"><use href="#i-people"/></svg>Up to 8 guests online. For 9 or 10, take the chef's table.</li>
+          <li><svg aria-hidden="true"><use href="#i-cal"/></svg>Bookings open 30 days ahead, Wednesday to Sunday.</li>
+          <li><svg aria-hidden="true"><use href="#i-clock"/></svg>Seatings every half hour, 17:30 to 21:30.</li>
+        </ul>
+      </div>
+      <div>
+        <form id="booking" class="form-grid" novalidate>
+          <div class="field">
+            <label for="b-name">Name</label>
+            <input class="input" id="b-name" name="name" autocomplete="name" required aria-describedby="e-name">
+            <span class="err" id="e-name" role="alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></span>
+          </div>
+          <div class="field">
+            <label for="b-email">Email</label>
+            <input class="input" id="b-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email h-email">
+            <span class="hint" id="h-email">We send your confirmation here.</span>
+            <span class="err" id="e-email" role="alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></span>
+          </div>
+          <fieldset class="field full" aria-describedby="e-party">
+            <legend>Party size</legend>
+            <div class="party" data-party></div>
+            <span class="err" id="e-party" role="alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></span>
+          </fieldset>
+          <div class="field">
+            <label for="b-date">Date</label>
+            <select class="select" id="b-date" name="date" required aria-describedby="e-date h-date"></select>
+            <span class="hint" id="h-date">Wednesday to Sunday, next 30 days</span>
+            <span class="err" id="e-date" role="alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></span>
+          </div>
+          <div class="field">
+            <label for="b-time">Time</label>
+            <select class="select" id="b-time" name="time" required aria-describedby="e-time"></select>
+            <span class="err" id="e-time" role="alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></span>
+          </div>
+          <div class="field full">
+            <label for="b-notes">Dietary notes <span class="hint">(optional)</span></label>
+            <textarea class="input" id="b-notes" name="notes" maxlength="400" placeholder="Allergies, intolerances, or anything the kitchen should know" aria-describedby="h-notes"></textarea>
+            <span class="hint" id="h-notes"><span data-notes-count>0</span>/400</span>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-book" type="submit">Request this table <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            <p>No deposit for parties up to 8.</p>
+          </div>
+        </form>
+        <div class="success" data-success tabindex="-1">
+          <div class="ticket on-white">
+            <p class="marker" data-s-head>See you soon</p>
+            <p style="font-weight:700;margin-bottom:14px">Your table request is in. We'll confirm by email.</p>
+            <dl data-s-list></dl>
+            <button class="btn btn-line" type="button" data-again>Make another booking</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Private dining -->
+<section id="private" aria-labelledby="private-h">
+  <div class="wrap">
+    <div class="plate plate-cobalt private-plate" style="background:var(--cobalt-deep)">
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span><span class="screw bl" aria-hidden="true"></span><span class="screw br" aria-hidden="true"></span>
+      <div>
+        <h2 class="display" id="private-h">The chef's table</h2>
+        <p class="lede">One long table at the mouth of the oven, for up to 10. You eat what comes off the fire, as it comes off, with the cooks a step away.</p>
+        <ul class="incl">
+          <li><svg aria-hidden="true"><use href="#i-flame"/></svg><p><b>Eight courses from the fire</b><span>A set menu built around the day's market, adapted for every dietary need at the table.</span></p></li>
+          <li><svg aria-hidden="true"><use href="#i-chef"/></svg><p><b>The cooks serve you</b><span>Each course is brought over and explained by whoever cooked it.</span></p></li>
+          <li><svg aria-hidden="true"><use href="#i-loaf"/></svg><p><b>A loaf to take home</b><span>Everyone leaves with bread from the next morning's first bake.</span></p></li>
+          <li><svg aria-hidden="true"><use href="#i-glass"/></svg><p><b>Drinks to match, if you like</b><span>Wine, beer or alcohol-free pairings, priced separately.</span></p></li>
+        </ul>
+        <div class="private-price">
+          <a class="btn btn-line" href="mailto:privatedining@hearthandrye.example?subject=Chef%27s%20table%20enquiry">Enquire about the chef's table <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p>£85 a guest · Wed–Sun, one sitting at 19:00</p>
+        </div>
+      </div>
+      <svg class="table-plan" viewBox="0 0 520 440" role="img" aria-labelledby="plan-t">
+        <title id="plan-t">Plan of the chef's table: ten seats along one table facing the oven</title>
+        <path d="M150 112V80c0-55 45-80 110-80s110 25 110 80v32z" fill="#F3F5F2"/>
+        <path d="M195 112V88c0-30 28-44 65-44s65 14 65 44v24z" fill="#121418"/>
+        <path d="M244 112c0-14 6-22 16-34 10 12 16 20 16 34z" fill="#F3F5F2"/>
+        <rect x="40" y="112" width="440" height="14" rx="3" fill="#C9D3EE"/>
+        <text x="260" y="152" fill="#C9D3EE" font-family="Archivo, sans-serif" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="2">THE PASS</text>
+        <rect x="70" y="230" width="380" height="70" rx="10" fill="none" stroke="#F3F5F2" stroke-width="4"/>
+        <g fill="#F3F5F2">
+          <circle cx="110" cy="200" r="16"/><circle cx="185" cy="200" r="16"/><circle cx="260" cy="200" r="16"/><circle cx="335" cy="200" r="16"/><circle cx="410" cy="200" r="16"/>
+          <circle cx="110" cy="330" r="16"/><circle cx="185" cy="330" r="16"/><circle cx="260" cy="330" r="16"/><circle cx="335" cy="330" r="16"/><circle cx="410" cy="330" r="16"/>
+        </g>
+        <g fill="#142C6B" font-family="Archivo, sans-serif" font-size="14" font-weight="900" text-anchor="middle">
+          <text x="110" y="205">1</text><text x="185" y="205">2</text><text x="260" y="205">3</text><text x="335" y="205">4</text><text x="410" y="205">5</text>
+          <text x="110" y="335">6</text><text x="185" y="335">7</text><text x="260" y="335">8</text><text x="335" y="335">9</text><text x="410" y="335">10</text>
+        </g>
+        <text x="260" y="400" fill="#F3F5F2" font-family="Archivo, sans-serif" font-size="22" font-weight="900" text-anchor="middle" letter-spacing="1">10 SEATS · 1 FIRE</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section aria-labelledby="rev-h">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display" id="rev-h">From the room</h2></div>
+    <div class="reviews">
+      <figure class="plate plate-white review">
+        <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span>
+        <blockquote><p>We sat at the counter and watched our chicken come out of the same oven that made that morning's sourdough. Then we took a loaf home.</p></blockquote>
+        <figcaption>Priya, dinner for two</figcaption>
+      </figure>
+      <figure class="plate plate-white review">
+        <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span>
+        <blockquote><p>A cardamom bun still too hot to hold, at quarter to eight on a Tuesday. My commute has a new detour.</p></blockquote>
+        <figcaption>Tom, bakery regular</figcaption>
+      </figure>
+      <figure class="plate plate-white review">
+        <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span>
+        <blockquote><p>Mum's 60th at the chef's table. Ten of us, one fire, and nobody looked at their phone.</p></blockquote>
+        <figcaption>Gemma, chef's table</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="plate plate-white faq-plate">
+      <span class="chip" style="bottom:0;left:0;transform:scaleY(-1)" aria-hidden="true"><svg><use href="#chip-a"/></svg></span>
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span><span class="screw bl" aria-hidden="true"></span><span class="screw br" aria-hidden="true"></span>
+      <div>
+        <h2 class="display" id="faq-h">Good to know</h2>
+        <p class="lede">Anything else, ring us on <a href="tel:+441614960731">0161 496 0731</a>.</p>
+      </div>
+      <div class="acc" data-acc>
+        <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="faq1" id="faq1-b">Do you take walk-ins?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="faq1" role="region" aria-labelledby="faq1-b"><div><p>Yes. We hold the eight counter seats facing the oven for walk-ins every night, first come, first served. Tables in the room are best booked.</p></div></div></div>
+        <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="faq2" id="faq2-b">Can you cater for allergies and coeliac guests?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="faq2" role="region" aria-labelledby="faq2-b"><div><p>Dishes marked GF are made without gluten, but we bake bread all morning in the same room and the same oven, so we can't promise a trace-free kitchen. Put any allergy in your dietary notes and we'll call you before your visit.</p></div></div></div>
+        <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="faq3" id="faq3-b">Can I reserve bread from the bakery?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-b"><div><p>The counter is first come, first served. For four or more loaves, ring the day before and we'll put them aside under your name until 11:00.</p></div></div></div>
+        <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="faq4" id="faq4-b">Is the restaurant step-free?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-b"><div><p>Yes: the entrance, the dining room and an accessible toilet are all on the ground floor. Let us know in your booking and we'll keep a table with easy access free for you.</p></div></div></div>
+        <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="faq5" id="faq5-b">What if I need to cancel?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="faq5" role="region" aria-labelledby="faq5-b"><div><p>Use the link in your confirmation email or ring us, ideally 24 hours ahead. With forty seats, every empty chair is noticed, and someone on the walk-in list will be glad of it.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot" id="visit" aria-labelledby="visit-h">
+  <div class="wrap">
+    <div class="plate plate-cobalt foot-plate" style="background:var(--cobalt-deep)">
+      <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span><span class="screw bl" aria-hidden="true"></span><span class="screw br" aria-hidden="true"></span>
+      <p class="foot-word" aria-hidden="true">Hearth &amp; Rye</p>
+      <h2 class="sr" id="visit-h">Visit Hearth &amp; Rye</h2>
+      <div class="foot-grid">
+        <div>
+          <h3>Find us</h3>
+          <address>Hearth &amp; Rye<br>3 Hearth Yard<br>Northern Quarter<br>Manchester M4</address>
+        </div>
+        <div>
+          <h3>Opening hours</h3>
+          <dl class="hours tnum">
+            <dt>Dinner</dt><dd>Wed–Sun, 17:30–22:30</dd>
+            <dt>Bakery</dt><dd>Tue–Sun, 07:30 until sold out</dd>
+            <dt>Monday</dt><dd>Closed, the oven rests</dd>
+          </dl>
+        </div>
+        <div>
+          <h3>Call or write</h3>
+          <ul>
+            <li><a href="tel:+441614960731">0161 496 0731</a></li>
+            <li><a href="mailto:hello@hearthandrye.example">hello@hearthandrye.example</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Follow the bake</h3>
+          <div class="social">
+            <a href="#" aria-label="Hearth and Rye on Instagram"><svg aria-hidden="true"><use href="#i-insta"/></svg></a>
+            <a href="#" aria-label="Hearth and Rye on Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
+            <a href="#" aria-label="Hearth and Rye on TikTok"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="legal"><p>© Hearth &amp; Rye</p><p><a href="#top">Back to the top</a></p></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const pad = n => String(n).padStart(2, '0');
+  const hm = m => pad(Math.floor(m / 60) % 24) + ':' + pad(m % 60);
+
+  /* ---------- London time ---------- */
+  function londonNow() {
+    const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+    const get = t => parts.find(p => p.type === t).value;
+    const days = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    return { dow: days[get('weekday')], mins: parseInt(get('hour'), 10) * 60 + parseInt(get('minute'), 10) };
+  }
+
+  /* ---------- Oven phases ---------- */
+  const PHASES = [
+    { from: 270, name: 'Lighting', short: 'Light', heat: 0.95, temp: 480, pos: 0.5,
+      text: "The night baker rakes back yesterday's embers and feeds in oak and birch until the inside of the dome burns white." },
+    { from: 360, name: 'Bread', short: 'Bread', heat: 0.42, temp: 290, pos: 0.18,
+      text: 'The fire is pushed to one side and the floor swept. Sourdough and rye go in on the long peel, forty loaves at a time, in the fiercest heat of the day.' },
+    { from: 540, name: 'Buns & pastries', short: 'Buns', heat: 0.28, temp: 220, pos: 0.16,
+      text: 'As the heat falls, the oven softens. Cardamom buns, Eccles cakes and focaccia follow the bread out to the counter.' },
+    { from: 720, name: 'Slow pots', short: 'Pots', heat: 0.16, temp: 160, pos: 0.14,
+      text: "In the afternoon lull, pots of beans, stock and whole celeriac go into the gentle heat and are left alone for hours. They'll be on tonight's menu." },
+    { from: 1050, name: 'Dinner by fire', short: 'Dinner', heat: 0.88, temp: 380, pos: 0.3,
+      text: 'The fire is rebuilt at the front. Chicken, hake and beef rib cook over live flame, in full view of every table and all eight counter seats.' },
+    { from: 1350, name: 'Embers', short: 'Embers', heat: 0.08, temp: 120, pos: 0.5,
+      text: "Last orders. The iron door goes on, the embers bank down, and the heat that's left dries tomorrow's oats and rye overnight." }
+  ];
+  const phaseAt = m => { let p = PHASES[0]; for (const ph of PHASES) if (m >= ph.from) p = ph; if (m < 270) p = PHASES[5]; return p; };
+
+  /* ---------- Now ticket ---------- */
+  function nowTicket() {
+    const { dow, mins } = londonNow();
+    $('[data-now-time]').textContent = hm(mins);
+    const what = $('[data-now-what]'), meta = $('[data-now-meta]');
+    const ph = phaseAt(mins);
+    const bakeryDay = dow !== 1, dinnerDay = dow >= 3 || dow === 0;
+    let w = ph.name, m = '';
+    if (dow === 1 && mins >= 270) { w = 'Resting'; m = 'Mondays the oven rests. Bakery back Tuesday from 07:30.'; }
+    else if (ph.name === 'Lighting') { w = 'Fire, climbing'; m = bakeryDay ? 'First loaves in at six. Counter opens 07:30.' : 'Counter opens 07:30.'; }
+    else if (ph.name === 'Bread') { w = 'Sourdough & rye'; m = 'Counter open from 07:30 until it’s gone.'; }
+    else if (ph.name === 'Buns & pastries') { w = 'Buns & Eccles cakes'; m = mins < 780 ? 'Counter open now, until sold out.' : 'Counter closed. Back tomorrow 07:30.'; }
+    else if (ph.name === 'Slow pots') { w = 'Beans & stock'; m = dinnerDay ? 'Slow-cooking for tonight. Tables from 17:30.' : 'No dinner tonight. Wednesday to Sunday from 17:30.'; }
+    else if (ph.name === 'Dinner by fire') { w = dinnerDay ? 'Dinner, on the fire' : 'Banked low tonight'; m = dinnerDay ? 'Counter seats held for walk-ins. Tables bookable.' : 'Dinner runs Wednesday to Sunday.'; }
+    else { w = 'Embers'; m = "Drying tomorrow's oats. Bread from 06:00."; }
+    what.textContent = w; meta.textContent = m;
+    return { dow, mins };
+  }
+
+  /* ---------- Menu ---------- */
+  const MENU = [
+    { course: 'Small plates', items: [
+      ['Rye crumpet', 'Cultured butter, smoked honey, still warm from the oven floor', 5.5, ['V']],
+      ['Charred hispi leaves', 'Anchovy dressing, burnt lemon, crisp shallot', 8, ['GF']],
+      ['Ember-roast beetroot', 'Horseradish, toasted buckwheat, dill oil', 7.5, ['VG', 'GF']],
+      ['Cheese & onion pie', 'Crumbly Lancashire, oven-top pickles', 9, ['V']] ] },
+    { course: 'Large plates', items: [
+      ['Half chicken from the fire', 'Bread sauce, dripping toast, charred leeks', 24, []],
+      ['Hake on the bone', 'Cockles, brown butter, sea herbs', 27, ['GF']],
+      ['Whole-roast celeriac', 'Hazelnut, black garlic, rye crisp, left in the slow heat all afternoon', 19, ['VG']],
+      ['Beef rib for two', 'Bone-marrow gravy, ember potatoes, horseradish', 68, ['GF']] ] },
+    { course: 'Desserts', items: [
+      ['Burnt honey custard tart', 'Rye pastry, crème fraîche', 8, ['V']],
+      ['Treacle & rye sponge', 'Malt ice cream', 8.5, ['V']],
+      ['Baked rhubarb', 'Gluten-free oat crumb, coconut cream', 7.5, ['VG', 'GF']] ] }
+  ];
+  const TAGNAME = { V: 'vegetarian', VG: 'vegan', GF: 'gluten-free' };
+  const gbp = n => '£' + (Number.isInteger(n) ? n : n.toFixed(2));
+  const coursesEl = $('[data-courses]');
+  coursesEl.innerHTML = MENU.map(c => `
+    <div class="course">
+      <h3>${c.course} <small>${c.items.length} dishes</small></h3>
+      <ul class="dishes">${c.items.map(([n, d, p, t]) => `
+        <li class="dish" data-tags="${t.join(' ')}">
+          <span class="dish-name">${n}</span><span class="dish-price">${gbp(p)}</span>
+          <span class="dish-desc">${d}</span>
+          ${t.length ? `<span class="tags">${t.map(x => `<abbr class="tag" title="${TAGNAME[x]}">${x}</abbr>`).join('')}</span>` : ''}
+        </li>`).join('')}
+      </ul>
+      <p class="course-empty" hidden>Nothing marked for this tonight. Ask us: the kitchen can often adapt a dish.</p>
+    </div>`).join('');
+  const total = $$('.dish').length;
+  $$('.chip-btn').forEach(b => b.addEventListener('click', () => {
+    const tag = b.dataset.tag;
+    $$('.chip-btn').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    let shown = 0;
+    $$('.course').forEach(c => {
+      let n = 0;
+      $$('.dish', c).forEach(d => {
+        const tags = d.dataset.tags.split(' ');
+        const ok = tag === 'all' || tags.includes(tag) || (tag === 'V' && tags.includes('VG'));
+        d.hidden = !ok; if (ok) n++;
+      });
+      $('.course-empty', c).hidden = n > 0;
+      $('h3 small', c).textContent = n + (n === 1 ? ' dish' : ' dishes');
+      shown += n;
+    });
+    $('[data-count]').textContent = tag === 'all' ? `Showing all ${total} dishes` : `Showing ${shown} of ${total} dishes: ${TAGNAME[tag]}${tag === 'V' ? ' (includes vegan)' : ''}`;
+  }));
+
+  /* ---------- Bakery tickets ---------- */
+  const BAKE = [
+    ['Country sourdough', 'Long-fermented, dark crust', 5.2, 690, 'Gone by 11:30', -2, 24],
+    ['Dark rye & caraway', 'Dense, seeded, keeps a week', 5.8, 720, 'Gone by 12:00', 1.5, 48],
+    ['Cardamom morning bun', 'Orange zest, sticky top', 3.6, 570, 'Gone by 09:30', -1, 18],
+    ['Eccles cake', 'Currants, with a slice of Lancashire', 3.8, 630, 'Gone by 10:30', 2.5, 40],
+    ['Rosemary focaccia', 'Wood-fired slab, sea salt', 4.2, 750, 'Gone by 12:30', -1.5, 26],
+    ['Seeded spelt tin', 'Sunflower, linseed, pumpkin', 5.0, 660, 'Gone by 11:00', 1, 44]
+  ];
+  $('[data-tickets]').innerHTML = BAKE.map(([n, d, p, , g, tilt, drop]) => `
+    <li style="--drop:${drop}px">
+      <div class="hang" data-swing>
+        <span class="string" aria-hidden="true"></span>
+        <div class="ticket bake" style="--tilt:${tilt}deg">
+          <h3>${n}</h3>
+          <p class="note">${d}</p>
+          <p class="marker">£${p.toFixed(2)}</p>
+          <p class="gone"><svg aria-hidden="true"><use href="#i-clock"/></svg>${g}</p>
+          <p class="stamp">Usually sold out by now</p>
+        </div>
+      </div>
+    </li>`).join('');
+  function markGone() {
+    const { dow, mins } = londonNow();
+    const open = dow !== 1;
+    $$('.bake').forEach((el, i) => el.classList.toggle('is-gone', open && mins >= BAKE[i][3] && mins < 1080));
+  }
+
+  /* ---------- Swinging tickets (spring) ---------- */
+  const swings = $$('[data-swing]').map(el => ({ el, a: 0, v: 0, k: 0.03 + Math.random() * 0.02 }));
+  let lastY = scrollY, raf = 0, idle = 0;
+  function swingLoop() {
+    const dy = scrollY - lastY; lastY = scrollY;
+    let moving = false;
+    swings.forEach(s => {
+      s.v += -s.k * s.a - dy * 0.012; s.v *= 0.9; s.a += s.v;
+      s.a = Math.max(-9, Math.min(9, s.a));
+      if (Math.abs(s.a) > 0.02 || Math.abs(s.v) > 0.02) moving = true;
+      s.el.style.transform = `rotate(${s.a.toFixed(2)}deg)`;
+    });
+    if (moving || dy) { idle = 0; raf = requestAnimationFrame(swingLoop); } else { raf = 0; }
+  }
+  function kick() { if (!reduce.matches && !raf) raf = requestAnimationFrame(swingLoop); }
+  addEventListener('scroll', kick, { passive: true });
+  swings.forEach(s => s.el.addEventListener('pointerenter', () => { if (!reduce.matches) { s.v += 1.4; kick(); } }));
+
+  /* ---------- Booking data ---------- */
+  const TIMES = []; for (let m = 1050; m <= 1290; m += 30) TIMES.push(hm(m));
+  const DATES = [];
+  const fmtLong = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const fmtShort = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  (() => {
+    const t = new Date(); t.setHours(12, 0, 0, 0);
+    for (let i = 0; i <= 30; i++) {
+      const d = new Date(t); d.setDate(t.getDate() + i);
+      const w = d.getDay();
+      if (w === 0 || w >= 3) DATES.push({ iso: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`, d, today: i === 0, tomorrow: i === 1 });
+    }
+  })();
+  const label = (x, short) => short ? (x.today ? 'Tonight' : x.tomorrow ? 'Tomorrow' : fmtShort.format(x.d)) : (x.today ? 'Tonight, ' : x.tomorrow ? 'Tomorrow, ' : '') + fmtLong.format(x.d);
+  function fillDates(sel, short, placeholder) {
+    sel.innerHTML = (placeholder ? '<option value="">Choose a date</option>' : '') + DATES.map(x => `<option value="${x.iso}">${label(x, short)}</option>`).join('');
+  }
+  function fillTimes(sel, iso, placeholder) {
+    const keep = sel.value;
+    const x = DATES.find(d => d.iso === iso);
+    const cut = x && x.today ? londonNow().mins + 60 : -1;
+    sel.innerHTML = (placeholder ? '<option value="">Choose a time</option>' : '') + TIMES.map(t => {
+      const [h, m] = t.split(':').map(Number); const off = h * 60 + m < cut;
+      return `<option value="${t}"${off ? ' disabled' : ''}>${t}${off ? ' (passed)' : ''}</option>`;
+    }).join('');
+    if (keep && [...sel.options].some(o => o.value === keep && !o.disabled)) sel.value = keep;
+  }
+  // quick book
+  const qp = $('#q-party'), qd = $('#q-date'), qt = $('#q-time');
+  qp.innerHTML = Array.from({ length: 8 }, (_, i) => `<option value="${i + 1}"${i === 1 ? ' selected' : ''}>${i + 1} ${i ? 'guests' : 'guest'}</option>`).join('');
+  fillDates(qd, true, false);
+  // skip today if every slot has passed
+  const firstOpen = () => { for (const x of DATES) { if (!x.today || londonNow().mins + 60 <= 1290) return x.iso; } return DATES[0]?.iso; };
+  qd.value = firstOpen();
+  fillTimes(qt, qd.value, false);
+  const firstEnabled = [...qt.options].find(o => !o.disabled && o.value === '19:00') || [...qt.options].find(o => !o.disabled);
+  if (firstEnabled) qt.value = firstEnabled.value;
+  qd.addEventListener('change', () => fillTimes(qt, qd.value, false));
+
+  // full form
+  const form = $('#booking'), bd = $('#b-date'), bt = $('#b-time');
+  $('[data-party]').innerHTML = Array.from({ length: 8 }, (_, i) => `<input type="radio" name="party" id="p${i + 1}" value="${i + 1}"><label for="p${i + 1}"><span class="sr">${i + 1} ${i ? 'guests' : 'guest'}</span><span aria-hidden="true">${i + 1}</span></label>`).join('');
+  fillDates(bd, false, true);
+  fillTimes(bt, '', true);
+  bd.addEventListener('change', () => { fillTimes(bt, bd.value, true); if (bd.value) validate('date'); });
+
+  $('#quick').addEventListener('submit', e => {
+    e.preventDefault();
+    const r = $('#p' + qp.value); if (r) r.checked = true;
+    bd.value = qd.value; fillTimes(bt, bd.value, true); bt.value = qt.value;
+    $('#book').scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(() => $('#b-name').focus({ preventScroll: true }), reduce.matches ? 0 : 500);
+  });
+
+  const notes = $('#b-notes');
+  notes.addEventListener('input', () => { $('[data-notes-count]').textContent = notes.value.length; });
+
+  const RULES = {
+    name: () => { const v = $('#b-name').value.trim(); return !v ? 'Add the name for the booking.' : v.length < 2 ? 'That name looks too short.' : ''; },
+    email: () => { const v = $('#b-email').value.trim(); return !v ? 'Add an email so we can confirm.' : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? 'Check the email: it should look like name@example.com.' : ''; },
+    party: () => form.querySelector('input[name=party]:checked') ? '' : 'Choose how many people, 1 to 8.',
+    date: () => { const x = DATES.find(d => d.iso === bd.value); return !bd.value ? 'Pick a date. We serve dinner Wednesday to Sunday.' : !x ? 'We only take bookings Wednesday to Sunday in the next 30 days.' : ''; },
+    time: () => { const o = bt.selectedOptions[0]; return !bt.value ? 'Pick a time between 17:30 and 21:30.' : o && o.disabled ? 'That time has passed tonight. Choose a later one.' : ''; }
+  };
+  const FIELD = { name: '#b-name', email: '#b-email', date: '#b-date', time: '#b-time' };
+  const touched = new Set();
+  function validate(k) {
+    const msg = RULES[k]();
+    const err = $('#e-' + k);
+    err.querySelector('span').textContent = msg;
+    err.classList.toggle('show', !!msg);
+    if (FIELD[k]) $(FIELD[k]).setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return !msg;
+  }
+  Object.entries(FIELD).forEach(([k, s]) => {
+    const el = $(s);
+    el.addEventListener('blur', () => { touched.add(k); validate(k); });
+    el.addEventListener('input', () => { if (touched.has(k)) validate(k); });
+    el.addEventListener('change', () => { touched.add(k); validate(k); });
+  });
+  $('[data-party]').addEventListener('change', () => validate('party'));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const keys = ['name', 'email', 'party', 'date', 'time'];
+    const bad = keys.filter(k => !validate(k));
+    keys.forEach(k => touched.add(k));
+    if (bad.length) {
+      const k = bad[0];
+      (k === 'party' ? form.querySelector('input[name=party]') : $(FIELD[k])).focus();
+      return;
+    }
+    const btn = form.querySelector('button[type=submit]');
+    btn.disabled = true; btn.firstChild.textContent = 'Holding your table… ';
+    setTimeout(() => {
+      const x = DATES.find(d => d.iso === bd.value);
+      const party = form.querySelector('input[name=party]:checked').value;
+      const first = $('#b-name').value.trim().split(/\s+/)[0];
+      $('[data-s-head]').textContent = `See you soon, ${first}`;
+      const rows = [['Guests', party], ['Date', fmtLong.format(x.d)], ['Time', bt.value], ['Email', $('#b-email').value.trim()]];
+      if (notes.value.trim()) rows.push(['Notes', notes.value.trim()]);
+      const dl = $('[data-s-list]'); dl.innerHTML = '';
+      rows.forEach(([a, b]) => { const dt = document.createElement('dt'); dt.textContent = a; const dd = document.createElement('dd'); dd.textContent = b; dl.append(dt, dd); });
+      form.hidden = true;
+      const s = $('[data-success]'); s.classList.add('show'); s.focus();
+      btn.disabled = false; btn.firstChild.textContent = 'Request this table ';
+    }, 700);
+  });
+  $('[data-again]').addEventListener('click', () => {
+    form.reset(); touched.clear(); $('[data-notes-count]').textContent = '0';
+    $$('.err', form).forEach(e => e.classList.remove('show'));
+    $$('[aria-invalid]', form).forEach(e => e.setAttribute('aria-invalid', 'false'));
+    fillTimes(bt, '', true);
+    $('[data-success]').classList.remove('show'); form.hidden = false; $('#b-name').focus();
+  });
+
+  /* ---------- FAQ accordion ---------- */
+  $$('.acc-btn').forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    b.setAttribute('aria-expanded', String(open));
+    b.closest('.acc-item').classList.toggle('open', open);
+  }));
+
+  /* ---------- Mobile drawer ---------- */
+  const drawer = $('#drawer'), opener = $('.head-plate .menu-btn');
+  let lastFocus = null;
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    opener.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    $('main').inert = open; $('footer').inert = open; $('.site-head').inert = open;
+    if (open) { lastFocus = document.activeElement; setTimeout(() => $('[data-close]').focus(), 50); }
+    else if (lastFocus) lastFocus.focus();
+  }
+  opener.addEventListener('click', () => setDrawer(true));
+  $('[data-close]').addEventListener('click', () => setDrawer(false));
+  $$('a', drawer).forEach(a => a.addEventListener('click', () => { lastFocus = null; setDrawer(false); }));
+  addEventListener('keydown', e => {
+    if (!drawer.classList.contains('open')) return;
+    if (e.key === 'Escape') setDrawer(false);
+    if (e.key === 'Tab') {
+      const f = $$('a,button', drawer); const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  matchMedia('(min-width: 981px)').addEventListener('change', e => { if (e.matches && drawer.classList.contains('open')) setDrawer(false); });
+
+  /* ---------- Oven: scrubber + fire ---------- */
+  const range = $('#day'), canvas = $('[data-fire]'), ctx = canvas.getContext('2d');
+  const phasesEl = $('[data-phases]');
+  phasesEl.innerHTML = PHASES.map((p, i) => `<li><button type="button" data-ph="${i}" aria-pressed="false"><b>${hm(p.from)}</b><span>${p.name}</span></button></li>`).join('');
+  let target = { heat: .4, pos: .2 }, cur = { heat: .4, pos: .2 };
+  function setDay(m, fromUser) {
+    const ph = phaseAt(m);
+    $('[data-clock]').textContent = hm(m);
+    if ($('[data-phase-name]').textContent !== ph.name) {
+      $('[data-phase-name]').textContent = ph.name;
+      $('[data-phase-text]').textContent = ph.text;
+    }
+    $('[data-temp]').textContent = `about ${ph.temp}°C`;
+    $('[data-temp-bar]').style.width = (ph.temp / 500 * 100) + '%';
+    range.setAttribute('aria-valuetext', `${hm(m)}, ${ph.name}, about ${ph.temp} degrees`);
+    $$('button', phasesEl).forEach((b, i) => b.setAttribute('aria-pressed', String(PHASES[i] === ph)));
+    target = { heat: ph.heat, pos: ph.pos };
+    if (reduce.matches || !fireVisible) drawFire(0, true);
+  }
+  range.addEventListener('input', () => setDay(+range.value, true));
+  phasesEl.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const p = PHASES[+b.dataset.ph]; range.value = p.from; setDay(p.from, true); });
+
+  let W = 0, H = 0, dpr = 1;
+  function size() { const r = canvas.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); drawFire(performance.now(), reduce.matches); }
+  const sparks = Array.from({ length: 40 }, () => ({ x: Math.random(), y: Math.random(), s: .3 + Math.random() * .7, p: Math.random() * 6.28 }));
+  function drawFire(t, still) {
+    if (!W) return;
+    if (still) cur = { ...target };
+    else { cur.heat += (target.heat - cur.heat) * .05; cur.pos += (target.pos - cur.pos) * .05; }
+    ctx.clearRect(0, 0, W, H);
+    const base = H * 0.97, cx = W * cur.pos + W * 0.08, spread = W * (0.18 + cur.heat * 0.3);
+    // ember bed
+    ctx.fillStyle = '#2B3038';
+    ctx.beginPath(); ctx.ellipse(cx, base, spread * 0.9, H * 0.05, 0, 0, Math.PI * 2); ctx.fill();
+    const n = 5;
+    ctx.lineJoin = 'round'; ctx.lineWidth = 3; ctx.strokeStyle = '#121418';
+    for (let layer = 0; layer < 2; layer++) {
+      ctx.fillStyle = layer ? '#C9D3EE' : '#F3F5F2';
+      const hMax = H * (0.12 + cur.heat * 0.72) * (layer ? 0.5 : 1);
+      for (let i = 0; i < n; i++) {
+        const u = (i + .5) / n, x = cx + (u - .5) * spread * (layer ? .8 : 1.3);
+        const env = .45 + .55 * Math.sin(u * Math.PI);
+        const fl = still ? .85 : .78 + .22 * Math.sin(t * .005 + i * 1.9 + layer * 2) * Math.sin(t * .0021 + i);
+        const h = hMax * env * fl, w = spread / n * (layer ? .55 : .8);
+        const sway = still ? 0 : Math.sin(t * .003 + i * 1.3) * w * .3;
+        ctx.beginPath();
+        ctx.moveTo(x - w, base);
+        ctx.bezierCurveTo(x - w * 1.1, base - h * .5, x - w * .1 + sway, base - h * .62, x + sway * 1.4, base - h);
+        ctx.bezierCurveTo(x + w * .45 + sway, base - h * .6, x + w * 1.1, base - h * .45, x + w, base);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+    }
+    if (!still && cur.heat > .3) {
+      ctx.fillStyle = '#F3F5F2';
+      sparks.forEach(s => {
+        const life = ((t * .00025 * s.s + s.y) % 1);
+        const x = cx + Math.sin(s.p + t * .002) * spread * .4 * s.x;
+        const y = base - life * H * cur.heat;
+        ctx.globalAlpha = (1 - life) * cur.heat; ctx.fillRect(x, y, 2.5, 2.5);
+      });
+      ctx.globalAlpha = 1;
+    }
+  }
+  let fireVisible = false, fireRaf = 0;
+  function fireLoop(t) { drawFire(t, false); fireRaf = fireVisible && !reduce.matches ? requestAnimationFrame(fireLoop) : 0; }
+  new IntersectionObserver(([e]) => { fireVisible = e.isIntersecting; if (fireVisible && !reduce.matches && !fireRaf) fireRaf = requestAnimationFrame(fireLoop); }).observe(canvas);
+  new ResizeObserver(size).observe(canvas);
+  reduce.addEventListener('change', () => { if (reduce.matches) { cancelAnimationFrame(fireRaf); fireRaf = 0; drawFire(0, true); swings.forEach(s => { s.a = s.v = 0; s.el.style.transform = ''; }); } else if (fireVisible) fireRaf = requestAnimationFrame(fireLoop); });
+
+  /* ---------- Fit footer wordmark ---------- */
+  const fw = $('.foot-word');
+  function fitWord() { fw.style.fontSize = ''; const avail = fw.parentElement.clientWidth - parseFloat(getComputedStyle(fw.parentElement).paddingLeft) * 2; const k = avail / fw.scrollWidth; if (k < 1 || k > 1.02) fw.style.fontSize = (parseFloat(getComputedStyle(fw).fontSize) * Math.min(k, 1.6) * 0.99) + 'px'; }
+  document.fonts.ready.then(fitWord); addEventListener('resize', fitWord);
+
+  /* ---------- Init with London time ---------- */
+  const { mins } = nowTicket();
+  const startM = Math.min(1410, Math.max(270, Math.round(mins / 5) * 5));
+  range.value = startM; setDay(startM);
+  markGone();
+  setInterval(() => { nowTicket(); markGone(); }, 60000);
+  $$('[data-book-link]').forEach(a => a.addEventListener('click', () => setTimeout(() => $('#b-name').focus({ preventScroll: true }), reduce.matches ? 0 : 600)));
+})();
+</script>
+</body>
+</html>

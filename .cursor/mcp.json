@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "layoza": {
+      "command": "node",
+      "args": [
+        "bin/layoza-mcp.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0.0",
+  "project_name": "wordpress-block-theme",
+  "preservation_mode": true,
+  "framework": "wordpress-gutenberg",
+  "routes": [
+    "templates/index.html"
+  ],
+  "colors": [
+    {
+      "name": "canvas",
+      "value": "#F8F7F4",
+      "role": "WordPress theme.json palette token (Canvas Background)",
+      "tier": "observed_fact",
+      "source": "theme.json"
+    },
+    {
+      "name": "ink",
+      "value": "#141619",
+      "role": "WordPress theme.json palette token (Primary Ink)",
+      "tier": "observed_fact",
+      "source": "theme.json"
+    },
+    {
+      "name": "accent",
+      "value": "#1849A9",
+      "role": "WordPress theme.json palette token (Brand Accent)",
+      "tier": "observed_fact",
+      "source": "theme.json"
+    },
+    {
+      "name": "surface",
+      "value": "#FFFFFF",
+      "role": "WordPress theme.json palette token (Card Surface)",
+      "tier": "observed_fact",
+      "source": "theme.json"
+    }
+  ],
+  "typography": [
+    {
+      "role": "display",
+      "font_family": "\"Instrument Serif\", Georgia, serif",
+      "font_size": "1rem",
+      "font_weight": "400",
+      "line_height": "1.5",
+      "letter_spacing": "0em",
+      "tier": "observed_fact"
+    },
+    {
+      "role": "body",
+      "font_family": "\"Plus Jakarta Sans\", system-ui, sans-serif",
+      "font_size": "1rem",
+      "font_weight": "400",
+      "line_height": "1.5",
+      "letter_spacing": "0em",
+      "tier": "observed_fact"
+    }
+  ],
+  "spacing_scale": {
+    "lg": "32px",
+    "md": "16px",
+    "section": "96px",
+    "sm": "8px",
+    "xl": "64px",
+    "xs": "4px"
+  },
+  "radii_scale": {
+    "lg": "20px",
+    "md": "12px",
+    "sm": "6px"
+  },
+  "shadows": {
+    "md": "0 10px 30px -10px rgba(15, 23, 42, 0.10)",
+    "sm": "0 1px 2px rgba(15, 23, 42, 0.06)"
+  },
+  "breakpoints": {
+    "desktop": "1280px",
+    "mobile": "375px",
+    "tablet": "768px"
+  },
+  "content_max_widths": [
+    "1280px"
+  ],
+  "grid_systems": [
+    "CSS Grid",
+    "Flexbox"
+  ],
+  "dark_mode_strategy": "light-default",
+  "accessibility_patterns": [
+    "focus-visible-ring",
+    "prefers-reduced-motion"
+  ],
+  "motion": {
+    "libraries_detected": [],
+    "keyframes_detected": [],
+    "transition_durations": [
+      "180ms",
+      "320ms",
+      "600ms"
+    ],
+    "easing_curves": [
+      "cubic-bezier(0.22, 1, 0.36, 1)"
+    ],
+    "scroll_behavior": "native",
+    "honors_reduced_motion": true,
+    "recommended_motion_intensity": 3,
+    "tier": "observed_fact"
+  },
+  "dials": {
+    "design_variance": 4,
+    "motion_intensity": 3,
+    "visual_density": 5
+  },
+  "discrepancies": [],
+  "confidence": {
+    "overall_score": 0.85,
+    "source_inspected": true,
+    "browser_inspected": false,
+    "screenshot_only": false,
+    "unknowns": [
+      "Live browser DOM snapshot not attached during static scan: run `layoza audit` or `scripts/browser-qa.mjs` to merge computed styles across desktop, tablet, and mobile viewports."
+    ]
+  },
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "category": "framework",
+      "tier": "observed_fact",
+      "statement": "Project uses the `wordpress-gutenberg` stack.",
+      "evidence_source": "project-scanner",
+      "confidence": 0.85
+    },
+    {
+      "id": "DEC-002",
+      "category": "preservation",
+      "tier": "inferred_rule",
+      "statement": "Existing websites default to Preservation Mode: new sections or pages must reuse existing typography, color tokens, spacing scale, and motion intensity.",
+      "evidence_source": "layoza-mode-b-policy",
+      "confidence": 1.0
+    }
+  ],
+  "baseline_fingerprint": "e548e5f5f499bdaa"
+}

@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saltmarsh — fish from the day boats, Wrayham Staithe</title>
+<meta name="description" content="Saltmarsh is a forty-cover seasonal fish restaurant in an old boathouse at Wrayham Staithe on the north Norfolk coast. Fictional restaurant.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Big+Shoulders+Stencil+Display:wght@700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Big+Shoulders+Stencil+Display:wght@700;800&display=swap" rel="stylesheet"></noscript>
+<style>
+@font-face{font-family:"Stencil Fallback";src:local("Arial Narrow"),local("Arial");size-adjust:78%;ascent-override:110%}
+@font-face{font-family:"Archivo Fallback";src:local("Arial");size-adjust:104%}
+:root{
+  --ink:#16213B; --ink-2:#2B3755; --ice:#EEF3F4; --paper:#FBFCFC;
+  --crate:#2A64C5; --crate-d:#1B4593; --pink:#F7CDD2; --yellow:#F2DD7E;
+  --buoy:#C8361A; --buoy-d:#A82B13; --muted:#3E4A63; --rule:#16213b33;
+  --display:"Big Shoulders Stencil Display","Stencil Fallback",Impact,sans-serif;
+  --body:"Archivo","Archivo Fallback",Arial,sans-serif;
+  --focus:var(--buoy);
+  --nav-h:68px;
+  --ease:cubic-bezier(.23,1,.32,1);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ice);color:var(--ink);font-family:var(--body);font-size:1.125rem;line-height:1.55;font-variation-settings:"wdth" 100;caret-color:var(--buoy)}
+::selection{background:var(--yellow);color:var(--ink)}
+img,svg{max-width:100%;display:block}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--yellow);color:var(--ink);padding:10px 16px;z-index:100;font-weight:700}
+.skip:focus{top:12px}
+.wrap{width:min(1280px,100% - 32px);margin-inline:auto}
+@media (min-width:768px){.wrap{width:min(1280px,100% - 80px)}}
+h1,h2,h3{margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(3rem,6.4vw,5.5rem);line-height:.92;letter-spacing:-.01em;text-transform:uppercase}
+h3{font-size:1.5rem;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 1em}
+.lede{font-size:clamp(1.125rem,1.6vw,1.375rem);max-width:58ch}
+.label{font-variation-settings:"wdth" 75;text-transform:uppercase;letter-spacing:.08em;font-size:.8125rem;font-weight:700}
+.tab-num{font-variant-numeric:tabular-nums}
+.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:48px;padding:.7em 1.4em;border:2px solid var(--buoy);background:var(--buoy);color:#fff;font:700 1rem/1 var(--body);font-variation-settings:"wdth" 85;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;border-radius:3px;cursor:pointer;transition:background-color .16s var(--ease),transform .12s var(--ease),border-color .16s}
+.btn:active{transform:scale(.97)}
+@media (hover:hover){.btn:hover{background:var(--buoy-d);border-color:var(--buoy-d)}}
+.btn--ghost{background:transparent;color:inherit;border-color:currentColor}
+@media (hover:hover){.btn--ghost:hover{background:#ffffff1a;border-color:currentColor}}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;border-bottom:1px solid #ffffff1f}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:var(--nav-h)}
+.brand{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:.02em;text-decoration:none;line-height:1}
+.nav .wrap ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.nav .wrap ul a{text-decoration:none;font-weight:600;font-size:1rem;padding:10px 0;display:inline-block;border-bottom:2px solid transparent;transition:border-color .16s}
+@media (hover:hover){.nav .wrap ul a:hover{border-color:var(--yellow)}}
+.nav{--focus:var(--yellow)}
+.nav .btn{min-height:44px;padding:.6em 1.1em}
+.burger{display:none;background:none;border:2px solid #ffffff55;color:#fff;width:48px;height:48px;border-radius:3px;cursor:pointer;align-items:center;justify-content:center}
+.drawer{display:none}
+@media (max-width:959px){
+  .nav .wrap ul,.nav .nav-book{display:none}
+  .burger{display:inline-flex}
+  .drawer{position:fixed;inset:var(--nav-h) 0 auto 0;background:var(--ink);color:#fff;padding:12px 16px 28px;border-bottom:4px solid var(--crate);z-index:49;--focus:var(--yellow)}
+  .drawer[data-open="true"]{display:block}
+  .drawer ul{list-style:none;margin:0;padding:0}
+  .drawer li a{display:block;padding:14px 0;font-family:var(--display);font-weight:800;font-size:2rem;text-transform:uppercase;text-decoration:none;border-bottom:1px solid #ffffff22}
+  .drawer .btn{margin-top:20px;width:100%}
+}
+
+/* hero */
+.hero{background:var(--ink);color:#fff;overflow:hidden;--focus:var(--yellow);position:relative}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(4.6rem,22.4vw,20.25rem);line-height:1;letter-spacing:-.015em;padding-top:clamp(8px,1.5vw,20px);margin:0 0 .06em -.04em;color:#F4F7FA;white-space:nowrap}
+.hero-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:start;padding-bottom:56px}
+.hero-copy{padding-bottom:24px}
+.hero-copy .lede{color:#DCE3EE;max-width:34ch;font-size:clamp(1.125rem,1.5vw,1.3125rem)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 28px}
+.today{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;font-size:1rem;color:#DCE3EE;border-top:1px solid #ffffff2e;padding-top:18px;max-width:420px}
+.today dt{font-variation-settings:"wdth" 75;text-transform:uppercase;letter-spacing:.08em;font-size:.8125rem;font-weight:700;color:#fff;padding-top:3px}
+.today dd{margin:0}
+.hero-art{position:relative;margin-right:-24px;margin-top:-24px}
+.hero-art svg{-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%);mask-image:linear-gradient(90deg,transparent,#000 7%)}
+.hero-art svg{width:100%;height:auto}
+.docket{position:absolute;left:-2%;top:44%;width:min(250px,40%);background:var(--pink);color:var(--ink);padding:20px 18px 18px;transform:rotate(-4deg);box-shadow:0 14px 26px -12px #000c;font-size:.875rem;line-height:1.35;
+  --perf:radial-gradient(circle at 6px 0,transparent 4px,var(--pink) 4.5px);
+  background-image:var(--perf);background-size:12px 8px;background-repeat:repeat-x;background-position:0 0}
+.docket .label{font-size:.75rem;display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:8px}
+.docket table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.docket td{padding:3px 0;border-bottom:1px dashed #16213b55}
+.docket td:last-child{text-align:right}
+.docket .sig{margin:10px 0 0;font-style:italic}
+.stamp{position:absolute;right:-14px;bottom:18px;border:3px solid var(--buoy);color:var(--buoy);font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1;padding:4px 8px;transform:rotate(-14deg);letter-spacing:.04em;background:#f7cdd2cc}
+@media (prefers-reduced-motion:no-preference){
+  .docket{animation:settle .9s var(--ease) .25s both}
+  .docket .stamp{animation:thump .35s cubic-bezier(.3,1.4,.5,1) 1.15s both}
+}
+@keyframes settle{from{transform:translate(-30px,-40px) rotate(-11deg);opacity:.001}to{transform:rotate(-4deg);opacity:1}}
+@keyframes thump{from{transform:rotate(-14deg) scale(1.6);opacity:0}to{transform:rotate(-14deg) scale(1);opacity:1}}
+@media (max-width:959px){
+  .hero-grid{grid-template-columns:1fr;gap:8px;padding-bottom:40px}
+  .hero-art{margin-right:0}
+  .docket{position:relative;left:auto;top:auto;width:auto;max-width:340px;margin:-28px 0 0 8px}
+  .hero-art{margin-top:8px}
+  .hero-art svg{-webkit-mask-image:none;mask-image:none}
+}
+
+/* sections */
+section{scroll-margin-top:var(--nav-h)}
+.sec{padding-block:clamp(88px,11vw,168px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:end;margin-bottom:56px}
+.sec-head p{margin:0;color:var(--muted)}
+@media (max-width:767px){.sec-head{grid-template-columns:1fr;gap:16px;margin-bottom:36px}}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px)}
+.chef p{max-width:52ch}
+.chef blockquote{margin:32px 0 0;font-family:var(--display);font-weight:700;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1.05;text-transform:uppercase;max-width:20ch}
+.chef cite{display:block;font:600 1rem/1.4 var(--body);text-transform:none;font-style:normal;margin-top:12px;color:var(--muted)}
+.board{border-top:3px solid var(--ink)}
+.board h3{font-variation-settings:"wdth" 75;text-transform:uppercase;letter-spacing:.08em;font-size:.8125rem;padding:12px 0;border-bottom:1px solid var(--ink)}
+.boat{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule)}
+.boat svg{width:150px;height:auto}
+.boat strong{display:block;font-size:1.25rem}
+.boat span{color:var(--muted);font-size:1rem}
+.boat .reg{font-family:var(--display);font-weight:800;font-size:1.75rem;line-height:1;color:var(--ink);text-align:right}
+@media (max-width:767px){.about-grid{grid-template-columns:1fr}.boat{grid-template-columns:96px minmax(0,1fr);gap:14px}.boat svg{width:96px}.boat .reg{grid-column:2;text-align:left;font-size:1.25rem}}
+
+/* menu */
+.menu-sec{background:var(--pink)}
+.menu-sec .sec-head p{color:#4A2E3A}
+.sheet{background:var(--paper);box-shadow:0 18px 40px -24px #16213b99;padding:clamp(20px,4vw,56px);position:relative;
+  background-image:radial-gradient(circle at 7px 0,var(--pink) 4.5px,transparent 5px);background-size:14px 9px;background-repeat:repeat-x}
+.menu-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:end;border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+[role=tablist]{display:flex;gap:6px;flex-wrap:wrap}
+[role=tab]{font-family:var(--display);font-weight:800;font-size:clamp(1.75rem,3vw,2.5rem);line-height:1;text-transform:uppercase;background:none;border:0;color:var(--muted);padding:8px 14px 10px;cursor:pointer;border-radius:3px;position:relative;transition:color .15s}
+[role=tab][aria-selected=true]{color:var(--paper);background:var(--ink)}
+@media (hover:hover){[role=tab][aria-selected=false]:hover{color:var(--ink)}}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters .label{margin-right:4px}
+.chip{min-height:44px;min-width:56px;padding:6px 14px;border:2px solid var(--ink);background:transparent;color:var(--ink);font:800 1rem/1 var(--body);font-variation-settings:"wdth" 80;letter-spacing:.06em;border-radius:3px;cursor:pointer;transition:background-color .15s,color .15s}
+.chip[aria-pressed=true]{background:var(--crate);border-color:var(--crate);color:#fff}
+.chip.clear{border-color:transparent;text-decoration:underline;font-weight:600;min-width:0}
+.filter-status{font-size:1rem;color:var(--muted);margin:12px 0 0;min-height:1.5em}
+[role=tabpanel]{padding-top:8px}
+[role=tabpanel]:focus-visible{outline-offset:6px}
+.dishes{list-style:none;margin:0;padding:0;columns:2;column-gap:56px}
+.dish{break-inside:avoid;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:16px 0;border-bottom:1px dashed #16213b4d}
+.dish[hidden]{display:none}
+.dish h3{font-size:1.125rem;font-weight:700;letter-spacing:0}
+.dish p{grid-column:1;margin:0;color:var(--muted);font-size:1rem}
+.dish .price{grid-row:1;grid-column:2;font-weight:700;font-variant-numeric:tabular-nums}
+.tags{grid-column:1/-1;display:flex;gap:6px;margin-top:4px}
+.tag{font-size:.75rem;font-weight:800;letter-spacing:.06em;border:1.5px solid var(--crate);color:var(--crate-d);padding:1px 6px;border-radius:2px}
+.from{grid-column:1/-1;font-size:.875rem;color:#5b3f4b}
+.empty{padding:28px 0;font-size:1.125rem}
+.empty[hidden]{display:none}
+.key{margin-top:28px;font-size:.9375rem;color:var(--muted)}
+@media (max-width:767px){.dishes{columns:1}[role=tab]{padding:8px 10px}}
+
+/* booking */
+.book-sec{background:var(--yellow)}
+.slip{background:var(--paper);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);box-shadow:0 18px 40px -24px #16213b99}
+.slip form,.slip .confirm{padding:clamp(20px,4vw,48px)}
+.slip aside{background:var(--ink);color:#fff;padding:clamp(24px,4vw,48px);--focus:var(--yellow)}
+.slip aside h3{font-family:var(--display);font-weight:800;font-size:2.25rem;text-transform:uppercase;line-height:1;margin-bottom:16px}
+.slip aside dl{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:0 0 24px;font-size:1rem}
+.slip aside dt{color:#B9C4D8}
+.slip aside dd{margin:0;font-weight:600}
+fieldset{border:0;margin:0 0 28px;padding:0;min-width:0}
+legend,.flabel{display:block;font-weight:700;font-size:1rem;margin-bottom:10px;padding:0}
+legend .hint,.flabel .hint{font-weight:400;color:var(--muted)}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dayhead{font-size:.75rem;font-weight:700;text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt input:disabled{cursor:not-allowed}
+.opt span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;border:1.5px solid #6B7385;border-radius:3px;font-variant-numeric:tabular-nums;line-height:1.1;transition:background-color .12s,border-color .12s;background:#fff}
+.opt span small{font-size:.75rem;color:var(--muted)}
+.opt span b{font-size:1.125rem}
+.opt input:checked+span{background:var(--ink);color:#fff;border-color:var(--ink)}
+.opt input:checked+span small{color:#cdd6e6}
+.opt input:focus-visible+span{outline:3px solid var(--buoy);outline-offset:2px}
+.opt input:disabled+span{background:repeating-linear-gradient(-45deg,#eef0f2 0 6px,#e2e5ea 6px 8px);color:#5d6678;border-style:dashed}
+.opt input:disabled+span small{color:#5d6678}
+@media (hover:hover){.opt input:not(:disabled):not(:checked):hover+span{border-color:var(--ink)}}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+.slot-group+.slot-group{margin-top:14px}
+.slot-group p{margin:0 0 6px;font-size:.875rem;font-weight:700;color:var(--muted)}
+.slots-empty{color:var(--muted);font-size:1rem;margin:0}
+.party{display:flex;align-items:center;gap:0;border:1.5px solid #6B7385;border-radius:3px;width:max-content;background:#fff}
+.party button{width:52px;height:52px;border:0;background:none;font:700 1.5rem/1 var(--body);color:var(--ink);cursor:pointer}
+.party button:disabled{color:#9aa2b1;cursor:not-allowed}
+.party output{min-width:92px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:767px){.row2{grid-template-columns:1fr}}
+.field{margin-bottom:22px}
+.field label{display:block;font-weight:700;font-size:1rem;margin-bottom:8px}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],textarea,select{width:100%;font:400 max(16px,1rem)/1.4 var(--body);color:var(--ink);background:#fff;border:1.5px solid #6B7385;border-radius:3px;padding:12px 14px;min-height:50px;transition:border-color .12s}
+textarea{min-height:110px;resize:vertical}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--buoy);outline-offset:1px;border-color:var(--ink)}
+[aria-invalid=true]{border-color:var(--buoy)!important;border-width:2px!important}
+.err{color:#A12A12;font-weight:600;font-size:.9375rem;margin:6px 0 0}
+.err:empty{display:none}
+.errsum{border:2px solid var(--buoy);padding:14px 18px;margin-bottom:24px;background:#fff4f1}
+.errsum[hidden]{display:none}
+.errsum h3{font-size:1.0625rem;margin-bottom:6px}
+.errsum ul{margin:0;padding-left:20px}
+.errsum a{color:#A12A12;font-weight:600}
+.confirm{position:relative}
+.confirm[hidden]{display:none}
+.confirm h3{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,5vw,4rem);line-height:.95;text-transform:uppercase;margin-bottom:16px}
+.confirm h3:focus{outline:none}
+.confirm dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;border-top:3px solid var(--ink);padding-top:14px;margin:0 0 24px;font-variant-numeric:tabular-nums}
+.confirm dt{color:var(--muted)}
+.confirm dd{margin:0;font-weight:700}
+.booked{position:absolute;right:28px;top:24px;border:4px solid var(--buoy);color:var(--buoy);font-family:var(--display);font-weight:800;font-size:2.25rem;padding:4px 12px;transform:rotate(-10deg);line-height:1}
+@media (prefers-reduced-motion:no-preference){.confirm:not([hidden]) .booked{animation:thump2 .4s cubic-bezier(.3,1.4,.5,1) .15s both}}
+@keyframes thump2{from{transform:rotate(-10deg) scale(1.7);opacity:0}to{transform:rotate(-10deg) scale(1);opacity:1}}
+@media (max-width:959px){.slip{grid-template-columns:1fr}.booked{position:static;display:inline-block;margin-bottom:12px}}
+
+/* press */
+.press{background:var(--ink);color:#fff;--focus:var(--yellow)}
+.press blockquote{margin:0}
+.press .big p{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,6vw,5.25rem);line-height:.95;text-transform:uppercase;max-width:18ch;margin-bottom:24px}
+.press cite{font-style:normal;font-weight:600;color:#C9D3E4}
+.press .small{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:72px;border-top:1px solid #ffffff33;padding-top:32px}
+.press .small p{font-size:1.25rem;max-width:40ch;margin-bottom:12px}
+@media (max-width:767px){.press .small{grid-template-columns:1fr}}
+
+/* private */
+.pd-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(32px,6vw,96px);align-items:start}
+.plan{background:#fff;border:1.5px solid var(--ink);padding:16px}
+.plan figcaption{font-size:.9375rem;color:var(--muted);margin-top:10px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:3px solid var(--ink);margin:28px 0 0}
+.facts div{padding:14px 12px 0 0}
+.facts dt{font-size:.875rem;color:var(--muted)}
+.facts dd{margin:0;font-weight:700;font-size:1.25rem}
+.pd-form{background:#fff;padding:clamp(20px,3vw,36px);border-top:6px solid var(--crate)}
+.pd-form h3{margin-bottom:18px}
+@media (max-width:959px){.pd-grid{grid-template-columns:1fr}}
+
+/* vouchers */
+.vouch-sec{background:var(--crate);color:#fff;--focus:var(--yellow)}
+.vouch-sec .sec-head p{color:#E3EBF8}
+.v-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);align-items:center}
+.tagcard{position:relative;color:var(--ink)}
+.tagcard svg{width:100%;height:auto}
+.tag-text{position:absolute;left:27%;right:8%;top:27%;bottom:12%;display:flex;flex-direction:column;justify-content:space-between}
+.tag-text .amt{font-family:var(--display);font-weight:800;font-size:clamp(3.5rem,8vw,6.5rem);line-height:.9}
+.tag-text .to{font-size:1.0625rem;font-weight:600;overflow-wrap:anywhere}
+.vform .amounts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.vform .opt span{background:transparent;border-color:#ffffff88;color:#fff;min-height:64px}
+.vform .opt input:checked+span{background:#fff;color:var(--ink);border-color:#fff}
+.vform .opt input:checked+span small{color:var(--muted)}
+.vform .opt span small{color:#E3EBF8}
+.vform .opt input:focus-visible+span{outline-color:var(--yellow)}
+.vform label,.vform legend{color:#fff}
+.vform input:focus-visible{outline-color:var(--yellow)}
+.vform .err{color:#fff;background:#A12A12;padding:4px 8px;display:inline-block}
+.vform .err:empty{display:none}
+.vconfirm{background:#fff;color:var(--ink);padding:20px 24px;margin-top:16px;border-radius:3px}
+.vconfirm[hidden]{display:none}
+@media (max-width:959px){.v-grid{grid-template-columns:1fr}.vform .amounts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* find */
+.find-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);align-items:start}
+.hours{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;border-top:3px solid var(--ink)}
+.hours th,.hours td{text-align:left;padding:12px 0;border-bottom:1px solid var(--rule);font-size:1rem;vertical-align:top}
+.hours th{font-weight:700;width:34%}
+.hours tr.closed td{color:var(--buoy-d);font-weight:700}
+.address{margin-top:28px;font-style:normal;overflow-wrap:anywhere}
+.map{background:#fff;border:1.5px solid var(--ink);padding:10px}
+.map figcaption{font-size:.9375rem;color:var(--muted);padding:8px 4px 2px}
+@media (max-width:959px){.find-grid{grid-template-columns:1fr}}
+
+/* footer */
+footer{background:var(--ink);color:#DCE3EE;padding:72px 0 36px;--focus:var(--yellow)}
+footer .name{font-family:var(--display);font-weight:800;font-size:clamp(4rem,17vw,15rem);line-height:.82;color:#F4F7FA;letter-spacing:-.01em;margin:0 0 40px -.04em}
+.f-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;border-top:1px solid #ffffff2e;padding-top:28px;font-size:1rem}
+.f-grid h3{font-size:1rem;color:#fff;margin-bottom:8px}
+.f-grid ul{list-style:none;margin:0;padding:0}
+.f-grid li{padding:4px 0}
+.f-grid a{display:inline-block;padding:4px 0;overflow-wrap:anywhere}
+.f-grid>div{min-width:0}
+.fineprint{margin-top:40px;font-size:.875rem;color:#B3BFD3}
+@media (max-width:767px){.f-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Saltmarsh, back to top">SALTMARSH</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#about">The boats</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#private">Private dining</a></li>
+        <li><a href="#vouchers">Vouchers</a></li>
+        <li><a href="#find">Find us</a></li>
+      </ul>
+    </nav>
+    <a class="btn nav-book" href="#book">Book a table</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path class="i-open" d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path class="i-close" d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="display:none"/></svg>
+    </button>
+  </div>
+  <nav class="drawer" id="drawer" data-open="false" aria-label="Main, mobile">
+    <ul>
+      <li><a href="#about">The boats</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#private">Private dining</a></li>
+      <li><a href="#vouchers">Vouchers</a></li>
+      <li><a href="#find">Find us</a></li>
+    </ul>
+    <a class="btn" href="#book">Book a table</a>
+  </nav>
+</header>
+
+<main id="main">
+<section class="hero" id="top" aria-labelledby="h1">
+  <div class="wrap">
+    <h1 id="h1">SALTMARSH</h1>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="lede">Forty covers in the old boathouse at Wrayham Staithe, north Norfolk. The menu is written each morning from whatever the day boats land.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#book">Book a table</a>
+          <a class="btn btn--ghost" href="#menu">Read today's menu</a>
+        </div>
+        <dl class="today">
+          <dt>Lunch</dt><dd>Tue–Sun, from 12:00</dd>
+          <dt>Dinner</dt><dd>Tue–Sat, from 18:00</dd>
+          <dt>Closed</dt><dd>Mondays</dd>
+        </dl>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 104 720 496" role="img" aria-labelledby="art-t">
+          <title id="art-t">A blue fish crate stencilled Mary Ellen, of mackerel and a brown crab on ice, on the quay at dusk, with the tarred boathouse and the marsh creeks behind.</title>
+          <defs>
+            <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16213B" stop-opacity="0"/><stop offset=".7" stop-color="#3B4C78"/><stop offset="1" stop-color="#7E6683"/></linearGradient>
+            <linearGradient id="marsh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26403F"/><stop offset="1" stop-color="#132726"/></linearGradient>
+            <linearGradient id="crateF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D7BE0"/><stop offset=".55" stop-color="#2A64C5"/><stop offset="1" stop-color="#1B4593"/></linearGradient>
+            <linearGradient id="crateIn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#173C82"/><stop offset="1" stop-color="#245AB6"/></linearGradient>
+            <linearGradient id="belly" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3F7F9"/><stop offset="1" stop-color="#AEBDC8"/></linearGradient>
+            <radialGradient id="shell" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#C67C47"/><stop offset=".6" stop-color="#9A5329"/><stop offset="1" stop-color="#6E3618"/></radialGradient>
+            <linearGradient id="plank" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A3633"/><stop offset="1" stop-color="#25221F"/></linearGradient>
+            <radialGradient id="lamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F7CF6B" stop-opacity=".55"/><stop offset="1" stop-color="#F7CF6B" stop-opacity="0"/></radialGradient>
+            <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .1  0 0 0 0 .12  0 0 0 0 .2  0 0 0 .07 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+            <symbol id="mackerel" viewBox="-4 -32 214 64" overflow="visible">
+              <clipPath id="mk"><path d="M0,0 C24,-22 90,-27 150,-17 C168,-14 178,-11 186,-8 L206,-26 C203,-14 201,-6 201,0 C201,6 203,14 206,26 L186,8 C178,11 168,14 150,17 C90,27 24,22 0,0Z"/></clipPath>
+              <g clip-path="url(#mk)">
+                <rect x="-4" y="-32" width="214" height="64" fill="url(#belly)"/>
+                <path d="M-4,-2 C30,-24 95,-30 150,-19 L190,-10 L210,-30 L210,-1 C150,-6 70,-6 -4,-2Z" fill="#1E5B57"/>
+                <path d="M30,-17 c6,5 2,10 8,13 M46,-21 c-4,6 6,9 2,15 M62,-22 c5,5 -1,10 5,15 M78,-23 c-3,6 5,9 1,16 M94,-22 c5,5 -1,9 5,15 M110,-21 c-3,6 5,9 1,15 M126,-20 c5,5 -1,9 4,14 M141,-18 c-3,5 4,8 1,13 M156,-15 c4,4 -1,7 3,11 M170,-12 c-2,4 3,6 1,10" stroke="#0C2B2A" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+                <path d="M10,-1 C60,-7 120,-7 190,-3" stroke="#8FC2BC" stroke-width="1.3" fill="none" opacity=".8"/>
+                <path d="M196,-30 L196,30" stroke="#0C2B2A" stroke-width="20" opacity=".55"/>
+              </g>
+              <path d="M0,0 C24,-22 90,-27 150,-17 C168,-14 178,-11 186,-8 L206,-26 C203,-14 201,-6 201,0 C201,6 203,14 206,26 L186,8 C178,11 168,14 150,17 C90,27 24,22 0,0Z" fill="none" stroke="#0C2B2A" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M34,-14 C41,-6 41,6 34,14" stroke="#7C8E9A" stroke-width="1.4" fill="none"/>
+              <path d="M150,-17 l5,-7 l3,6 M160,-15 l5,-6 l3,5 M170,-12 l4,-5 l2,4 M150,17 l5,7 l3,-6 M160,15 l5,6 l3,-5" stroke="#0C2B2A" stroke-width="1.2" fill="#1E5B57"/>
+              <path d="M60,10 C70,22 84,22 90,18 C82,16 72,13 66,8Z" fill="#B9C6CF" stroke="#7C8E9A" stroke-width="1"/>
+              <circle cx="17" cy="-4" r="5.2" fill="#EADFB4" stroke="#0C2B2A" stroke-width="1"/><circle cx="17.6" cy="-4" r="2.6" fill="#0D0F12"/><circle cx="16.4" cy="-5.2" r=".9" fill="#fff"/>
+            </symbol>
+            <symbol id="crab" viewBox="-110 -105 220 180" overflow="visible">
+              <g stroke="#5E2E14" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M-44,4 L-80,-6 L-100,12"/><path d="M-46,14 L-86,12 L-104,32"/><path d="M-42,22 L-78,30 L-92,52"/><path d="M-34,30 L-62,46 L-70,66"/>
+                <path d="M44,4 L80,-6 L100,12"/><path d="M46,14 L86,12 L104,32"/><path d="M42,22 L78,30 L92,52"/><path d="M34,30 L62,46 L70,66"/>
+                <path d="M-28,-26 L-50,-46 L-44,-62"/><path d="M28,-26 L50,-46 L44,-62"/>
+              </g>
+              <g stroke="#C98554" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".7"><path d="M-80,-6 L-98,10"/><path d="M-86,12 L-102,30"/><path d="M80,-6 L98,10"/><path d="M86,12 L102,30"/></g>
+              <path d="M-54,-60 C-66,-84 -38,-100 -26,-82 C-30,-76 -34,-72 -38,-66 C-42,-62 -50,-58 -54,-60Z" fill="#8A4A26" stroke="#5E2E14" stroke-width="1.5"/>
+              <path d="M54,-60 C66,-84 38,-100 26,-82 C30,-76 34,-72 38,-66 C42,-62 50,-58 54,-60Z" fill="#8A4A26" stroke="#5E2E14" stroke-width="1.5"/>
+              <path d="M-27,-81 C-23,-90 -29,-98 -37,-95 L-33,-85Z M-38,-66 C-30,-70 -26,-76 -27,-80 L-34,-74Z" fill="#1B1414"/>
+              <path d="M27,-81 C23,-90 29,-98 37,-95 L33,-85Z M38,-66 C30,-70 26,-76 27,-80 L34,-74Z" fill="#1B1414"/>
+              <path d="M-62,2 C-64,-30 -32,-44 0,-44 C32,-44 64,-30 62,2 C58,30 28,42 0,42 C-28,42 -58,30 -62,2Z" fill="url(#shell)" stroke="#5E2E14" stroke-width="1.8"/>
+              <path d="M-58,-14 q3,-7 9,-6 q2,-8 10,-6 q2,-8 10,-6 q3,-7 10,-5 q4,-6 10,-3 q6,-3 10,3 q7,-2 10,5 q8,-2 10,6 q8,-2 10,6 q6,-1 9,6" fill="none" stroke="#5E2E14" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M-30,6 C-18,16 18,16 30,6 M-18,-8 C-8,-2 8,-2 18,-8" stroke="#6E3618" stroke-width="1.4" fill="none" opacity=".7"/>
+              <ellipse cx="-14" cy="-20" rx="18" ry="7" fill="#E7A979" opacity=".28"/>
+              <circle cx="-7" cy="-42" r="2.4" fill="#1B1414"/><circle cx="7" cy="-42" r="2.4" fill="#1B1414"/>
+            </symbol>
+            <symbol id="weed" viewBox="0 0 80 60" overflow="visible">
+              <path d="M2,56 C14,40 22,30 40,24 C54,20 64,10 76,4" stroke="#4E5E24" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M22,36 c-6,-8 -2,-16 6,-14 c4,6 0,12 -6,14Z M40,25 c-2,-10 6,-14 12,-9 c0,6 -6,10 -12,9Z M58,15 c0,-9 8,-11 12,-6 c-2,6 -7,8 -12,6Z M30,30 c6,4 12,2 12,-4" fill="#6B7A32" stroke="#3E4A1B" stroke-width="1"/>
+              <circle cx="27" cy="27" r="3.2" fill="#8C9A45"/><circle cx="50" cy="17" r="3" fill="#8C9A45"/>
+            </symbol>
+          </defs>
+
+          <!-- back plane: dusk afterglow, marsh, boathouse -->
+          <rect x="0" y="120" width="720" height="190" fill="url(#glow)"/>
+          <circle cx="600" cy="150" r="14" fill="#E9E3C9" opacity=".85"/>
+          <circle cx="606" cy="146" r="13" fill="#2A3961"/>
+          <path d="M0,298 L720,298 L720,400 L0,400Z" fill="url(#marsh)"/>
+          <path d="M0,300 L720,300" stroke="#8E7E97" stroke-width="1.5" opacity=".6"/>
+          <g fill="none" stroke-linecap="round">
+            <path d="M-10,352 C80,340 120,330 190,334 C260,338 300,318 380,322 C430,325 470,312 540,310" stroke="#6F86A8" stroke-width="5" opacity=".75"/>
+            <path d="M80,388 C120,370 170,368 220,356 C250,349 280,350 300,338" stroke="#6F86A8" stroke-width="3" opacity=".6"/>
+            <path d="M380,322 C400,340 430,342 470,346 M520,312 C560,330 600,326 660,334" stroke="#56709A" stroke-width="2.5" opacity=".6"/>
+            <path d="M150,338 l28,-3" stroke="#F2C35B" stroke-width="2.5" opacity=".7"/>
+          </g>
+          <g>
+            <path d="M84,246 L170,194 L256,246Z" fill="#5A2621"/>
+            <path d="M92,244 L170,198 L248,244" stroke="#7A3A30" stroke-width="2" fill="none"/>
+            <path d="M104,226 L236,226 M118,218 L222,218 M132,210 L208,210 M146,202 L194,202" stroke="#4A1F1A" stroke-width="1.5"/>
+            <rect x="96" y="244" width="148" height="58" fill="#14161A"/>
+            <path d="M96,252 H244 M96,260 H244 M96,268 H244 M96,276 H244 M96,284 H244 M96,292 H244" stroke="#2A2D33" stroke-width="1.5"/>
+            <path d="M144,302 V256 H196 V302" fill="#9EA6B4"/>
+            <path d="M170,256 V302 M144,279 H196" stroke="#6F7787" stroke-width="2"/>
+            <rect x="160" y="214" width="20" height="16" fill="#F2C35B"/>
+            <circle cx="170" cy="222" r="40" fill="url(#lamp)"/>
+            <path d="M226,202 V178 H234 V206" fill="#14161A"/>
+            <path d="M230,176 C224,160 240,152 232,136 C228,128 236,120 232,112" stroke="#8D97AE" stroke-width="2" fill="none" opacity=".35"/>
+            <path d="M144,302 L132,330 M196,302 L210,330 M150,312 H202 M146,322 H206" stroke="#4C5568" stroke-width="2"/>
+          </g>
+          <path d="M318,300 V240 M318,248 L340,296" stroke="#9EA6B4" stroke-width="1.5" opacity=".7"/>
+          <path d="M302,300 C306,292 330,292 336,300Z" fill="#1F2A44"/>
+
+          <!-- front plane: quay boards -->
+          <rect x="0" y="420" width="720" height="180" fill="url(#plank)"/>
+          <path d="M0,446 H720 M0,476 H720 M0,510 H720 M0,548 H720 M0,590 H720" stroke="#14120F" stroke-width="3"/>
+          <path d="M120,420 V446 M410,446 V476 M60,476 V510 M520,476 V510 M260,510 V548 M640,548 V590 M180,548 V590" stroke="#14120F" stroke-width="2"/>
+          <rect x="0" y="420" width="720" height="180" filter="url(#grain)" opacity=".9"/>
+          <path d="M30,580 C120,570 180,584 260,576" stroke="#C9B48C" stroke-width="3" fill="none" opacity=".55"/>
+          <path d="M20,575 c10,-6 22,-6 30,0 c8,6 20,6 28,0" stroke="#C9B48C" stroke-width="3" fill="none" opacity=".55"/>
+
+          <!-- crate -->
+          <ellipse cx="470" cy="556" rx="250" ry="18" fill="#000" opacity=".45"/>
+          <path d="M290,300 L650,300 L690,360 L250,360Z" fill="url(#crateIn)"/>
+          <path d="M290,300 L650,300 L650,316 L290,316Z" fill="#12306A"/>
+          <!-- ice -->
+          <path d="M250,360 L690,360 L690,386 L250,386Z" fill="#B7CEDB"/>
+          <path d="M268,352 L282,326 L300,330 L318,318 L352,324 L380,316 L420,322 L460,314 L500,322 L540,316 L580,324 L620,318 L652,326 L672,352Z" fill="#D7E7EF"/>
+          <path d="M282,326 L300,330 L292,346Z M352,324 L380,316 L372,336Z M460,314 L500,322 L480,336Z M580,324 L620,318 L604,340Z M318,318 L330,334 L300,340Z M540,316 L560,334 L520,332Z" fill="#B7CEDB"/>
+          <path d="M300,330 L318,318 M420,322 L460,314 M620,318 L652,326" stroke="#fff" stroke-width="2" opacity=".8"/>
+          <!-- catch -->
+          <use href="#weed" x="590" y="296" width="90" height="66" transform="rotate(8 630 330)"/>
+          <use href="#mackerel" x="286" y="288" width="240" height="72" transform="rotate(-7 400 324)"/>
+          <use href="#mackerel" x="352" y="308" width="226" height="68" transform="rotate(5 466 342) scale(1 1)"/>
+          <g transform="translate(886 0) scale(-1 1)"><use href="#mackerel" x="296" y="318" width="214" height="64" transform="rotate(-4 404 350)"/></g>
+          <use href="#crab" x="470" y="236" width="180" height="148" transform="rotate(-12 560 310)"/>
+          <!-- front face -->
+          <g transform="translate(0 24)">
+          <path d="M250,360 L690,360 L690,512 Q690,524 678,524 L262,524 Q250,524 250,512Z" fill="url(#crateF)"/>
+          <path d="M250,360 L690,360 L690,378 L250,378Z" fill="#4C89E8"/>
+          <path d="M250,378 L690,378" stroke="#173C82" stroke-width="2"/>
+          <path d="M294,384 V520 M338,384 V520 M382,384 V520 M558,384 V520 M602,384 V520 M646,384 V520" stroke="#2457B0" stroke-width="5"/>
+          <path d="M296,384 V520 M340,384 V520 M384,384 V520 M560,384 V520 M604,384 V520 M648,384 V520" stroke="#5A93EC" stroke-width="1.2" opacity=".6"/>
+          <rect x="272" y="390" width="62" height="18" rx="9" fill="#0E2457"/>
+          <rect x="606" y="390" width="62" height="18" rx="9" fill="#0E2457"/>
+          <text x="470" y="478" text-anchor="middle" font-family="Big Shoulders Stencil Display, Impact, sans-serif" font-weight="800" font-size="70" fill="#EAF1FA" letter-spacing="2">MARY ELLEN</text>
+          <text x="470" y="506" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="21" fill="#CFE0F7" letter-spacing="3">WS 12 · WRAYHAM STAITHE</text>
+          <path d="M250,512 Q250,524 262,524 L678,524 Q690,524 690,512" stroke="#0E2457" stroke-width="3" fill="none"/>
+          <rect x="250" y="360" width="440" height="164" filter="url(#grain)" opacity=".6"/>
+          </g>
+        </svg>
+        <div class="docket" aria-label="Today's landing docket (illustrative)">
+          <div class="label"><span>Landing docket</span><span class="tab-num">No. 0417</span></div>
+          <table>
+            <caption class="visually-hidden">Fish landed this morning by the Mary Ellen (illustrative)</caption>
+            <tbody>
+              <tr><td>Mary Ellen, WS 12</td><td>06:40</td></tr>
+              <tr><td>Mackerel, handline</td><td>14 kg</td></tr>
+              <tr><td>Brown crab</td><td>22</td></tr>
+              <tr><td>Lobster</td><td>6</td></tr>
+              <tr><td>Bass</td><td>3</td></tr>
+            </tbody>
+          </table>
+          <p class="sig">Rcvd. N. Ashby, kitchen</p>
+          <span class="stamp" aria-hidden="true">LANDED</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="about" aria-labelledby="about-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="about-h">Four boats and one kitchen</h2>
+      <p class="lede">Nell Ashby buys straight off the hard at Wrayham Staithe. No market, no lorry, no menu until the boats are in.</p>
+    </div>
+    <div class="about-grid">
+      <div class="chef">
+        <p>Nell grew up two creeks along, picking samphire for pocket money and gutting mackerel on her uncle's boat. She cooked in Bristol and London for twelve years before coming home in 2019 to take on the derelict lifeboat shed that is now Saltmarsh.</p>
+        <p>The kitchen works to the tide table. On a good morning the crab comes in still snapping at half six and is on the lunch menu by noon. When the wind is up and the boats stay on the hard, the menu gets shorter, and we say so.</p>
+        <p>Everything that isn't fish comes from within twenty miles: potatoes from the Brook farm, butter from Crane Dairy, bread from our own oven.</p>
+        <blockquote>
+          <p>“If the boats don't go out, neither does the crab.”</p>
+          <cite>Nell Ashby, chef and owner</cite>
+        </blockquote>
+      </div>
+      <div class="board">
+        <h3>Who we buy from</h3>
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <symbol id="hull" viewBox="0 0 200 92">
+            <path d="M58,52 V8 M58,14 L96,40" stroke="#16213B" stroke-width="2.2" fill="none"/>
+            <circle cx="96" cy="40" r="4" fill="none" stroke="#16213B" stroke-width="2"/>
+            <path d="M120,52 V24 Q120,20 124,20 H150 Q154,20 154,24 V52Z" fill="#F4F7FA" stroke="#16213B" stroke-width="2"/>
+            <rect x="126" y="26" width="10" height="9" fill="#9DB4D6" stroke="#16213B" stroke-width="1.2"/><rect x="140" y="26" width="10" height="9" fill="#9DB4D6" stroke="#16213B" stroke-width="1.2"/>
+            <path d="M6,48 C40,56 150,56 194,42 C188,62 172,78 142,84 L52,84 C26,80 12,66 6,48Z" fill="currentColor" stroke="#16213B" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M10,58 C50,65 150,65 190,52 M18,68 C56,74 150,74 184,62 M30,77 C64,81 146,81 172,73" stroke="#16213B" stroke-width="1.3" fill="none" opacity=".55"/>
+            <path d="M6,48 C40,56 150,56 194,42" stroke="#F4F7FA" stroke-width="3" fill="none"/>
+            <path d="M22,48 L18,36 L30,36 L26,48 M18,36 L22,26" stroke="#16213B" stroke-width="1.6" fill="#C8361A"/>
+            <path d="M40,86 C80,90 130,90 170,86" stroke="#16213B" stroke-width="1.2" opacity=".4" fill="none"/>
+          </symbol>
+        </svg>
+        <div class="boat"><svg viewBox="0 0 200 92" aria-hidden="true" style="color:#2A64C5"><use href="#hull"/></svg><div><strong>Mary Ellen</strong><span>Rob Tilney. Brown crab, lobster, whelks from the pots off the bar.</span></div><div class="reg">WS 12</div></div>
+        <div class="boat"><svg viewBox="0 0 200 92" aria-hidden="true" style="color:#2F7D5B"><use href="#hull"/></svg><div><strong>Kittiwake</strong><span>Dan Pegg. Mackerel and bass on the handline, May to October.</span></div><div class="reg">KL 7</div></div>
+        <div class="boat"><svg viewBox="0 0 200 92" aria-hidden="true" style="color:#C8361A"><use href="#hull"/></svg><div><strong>Two Sisters</strong><span>Jo and Ruth Bream. Mussels and cockles raked on the low tides.</span></div><div class="reg">WS 31</div></div>
+        <div class="boat"><svg viewBox="0 0 200 92" aria-hidden="true" style="color:#E9E4D6"><use href="#hull"/></svg><div><strong>Grace</strong><span>Sam Larwood. Sole, plaice and the odd turbot from the trawl.</span></div><div class="reg">LN 54</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec menu-sec" id="menu" aria-labelledby="menu-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="menu-h">Today's menu</h2>
+      <p class="lede">Written at nine, changed by noon if the boats bring something better. Sample menu; prices include VAT.</p>
+    </div>
+    <div class="sheet">
+      <div class="menu-bar">
+        <div role="tablist" aria-label="Menu">
+          <button role="tab" id="t-lunch" aria-controls="p-lunch" aria-selected="true">Lunch</button>
+          <button role="tab" id="t-dinner" aria-controls="p-dinner" aria-selected="false" tabindex="-1">Dinner</button>
+          <button role="tab" id="t-drinks" aria-controls="p-drinks" aria-selected="false" tabindex="-1">Drinks</button>
+        </div>
+        <div class="filters" role="group" aria-labelledby="filt-l">
+          <span class="label" id="filt-l">Show only</span>
+          <button type="button" class="chip" data-diet="V" aria-pressed="false" aria-label="Vegetarian (V)">V</button>
+          <button type="button" class="chip" data-diet="VG" aria-pressed="false" aria-label="Vegan (VG)">VG</button>
+          <button type="button" class="chip" data-diet="GF" aria-pressed="false" aria-label="Gluten free (GF)">GF</button>
+          <button type="button" class="chip clear" id="clear-f" hidden>Clear</button>
+        </div>
+      </div>
+      <p class="filter-status" id="filter-status" aria-live="polite"></p>
+
+      <div role="tabpanel" id="p-lunch" aria-labelledby="t-lunch">
+        <ul class="dishes">
+          <li class="dish" data-tags=""><h3>Mary Ellen crab on toast</h3><span class="price">£13</span><p>Brown butter, pickled cucumber, sourdough</p></li>
+          <li class="dish" data-tags="GF"><h3>Cured mackerel</h3><span class="price">£11</span><p>Beetroot, horseradish cream, dill</p><div class="tags"><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V GF"><h3>Samphire and new potatoes</h3><span class="price">£10</span><p>Soft egg, sea-herb salsa verde</p><div class="tags"><span class="tag">V</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="GF"><h3>Fish of the morning</h3><span class="price">£24</span><p>Two Sisters mussels, cider, leeks</p><div class="tags"><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags=""><h3>Battered hake and chips</h3><span class="price">£19</span><p>Minted peas, tartare sauce</p></li>
+          <li class="dish" data-tags="V VG GF"><h3>Charred hispi cabbage</h3><span class="price">£15</span><p>Miso, crisp shallots, smoked almonds</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="GF"><h3>Whole plaice</h3><span class="price">£26</span><p>Brown shrimp butter, capers, lemon</p><div class="tags"><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V"><h3>Burnt honey tart</h3><span class="price">£8</span><p>Crème fraîche</p><div class="tags"><span class="tag">V</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Rhubarb sorbet</h3><span class="price">£7</span><p>Stem ginger, oat crumb (ask for it without)</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+        </ul>
+        <p class="empty" hidden>Nothing on lunch matches those filters today. <button type="button" class="chip clear" data-clear>Clear filters</button></p>
+      </div>
+      <div role="tabpanel" id="p-dinner" aria-labelledby="t-dinner" hidden>
+        <ul class="dishes">
+          <li class="dish" data-tags="GF"><h3>Oysters, half a dozen</h3><span class="price">£18</span><p>Shallot vinegar, or grilled with seaweed butter</p><div class="tags"><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags=""><h3>Smoked eel</h3><span class="price">£14</span><p>Potato pancake, apple, horseradish</p></li>
+          <li class="dish" data-tags="V GF"><h3>Beetroot cured in sea buckthorn</h3><span class="price">£12</span><p>Goat's curd, linseed crisp</p><div class="tags"><span class="tag">V</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags=""><h3>Brown crab custard</h3><span class="price">£13</span><p>Toast soldiers, chive</p></li>
+          <li class="dish" data-tags="GF"><h3>Turbot on the bone, for two</h3><span class="price">£84</span><p>Mussels, sea vegetables, beurre blanc</p><div class="tags"><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="GF"><h3>Cod in bacon broth</h3><span class="price">£30</span><p>White beans, cavolo nero</p><div class="tags"><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V"><h3>Pumpkin and barley</h3><span class="price">£22</span><p>Chestnut, sage, brown butter</p><div class="tags"><span class="tag">V</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Celeriac baked in salt</h3><span class="price">£21</span><p>Roast mushrooms, walnut, parsley</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V"><h3>Treacle tart</h3><span class="price">£9</span><p>Clotted cream</p><div class="tags"><span class="tag">V</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Dark chocolate, sea salt</h3><span class="price">£9</span><p>Olive oil, rye-free crumb</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+        </ul>
+        <p class="empty" hidden>Nothing on dinner matches those filters today. <button type="button" class="chip clear" data-clear>Clear filters</button></p>
+      </div>
+      <div role="tabpanel" id="p-drinks" aria-labelledby="t-drinks" hidden>
+        <ul class="dishes">
+          <li class="dish" data-tags="V VG GF"><h3>Wrayham sparkling, Norfolk</h3><span class="price">£11</span><p>Glass. Bottle £58</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Picpoul de Pinet</h3><span class="price">£8</span><p>Glass. Bottle £32. Our house white with shellfish</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V GF"><h3>Muscadet sur lie</h3><span class="price">£36</span><p>Bottle. Fined with egg white</p><div class="tags"><span class="tag">V</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V VG"><h3>Staithe Pale Ale</h3><span class="price">£6.50</span><p>Pint, from the Cley Road brewery</p><div class="tags"><span class="tag">VG</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Sea buckthorn gin and tonic</h3><span class="price">£10</span><p>Marsh gin, buckthorn syrup, tonic</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Apple and elderflower</h3><span class="price">£4</span><p>Pressed in Aylmerton. No alcohol</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V VG GF"><h3>Lapsang and orange spritz</h3><span class="price">£6</span><p>No alcohol</p><div class="tags"><span class="tag">VG</span><span class="tag">GF</span></div></li>
+          <li class="dish" data-tags="V GF"><h3>Coffee or tea</h3><span class="price">£3</span><p>Oat milk on request</p><div class="tags"><span class="tag">V</span><span class="tag">GF</span></div></li>
+        </ul>
+        <p class="empty" hidden>Nothing on drinks matches those filters. <button type="button" class="chip clear" data-clear>Clear filters</button></p>
+      </div>
+      <p class="key">V vegetarian. VG vegan (also shown under V). GF gluten free. Tell us about allergies when you book; the kitchen handles flour, nuts and shellfish.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec book-sec" id="book" aria-labelledby="book-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="book-h">Book a table</h2>
+      <p class="lede">Tables for one to eight, up to four weeks ahead. Nine or more? Ask about the Net Loft below.</p>
+    </div>
+    <div class="slip">
+      <div>
+        <form id="book-form" novalidate>
+          <div class="errsum" id="book-errs" role="alert" tabindex="-1" hidden>
+            <h3>Check these before we can hold your table</h3>
+            <ul></ul>
+          </div>
+          <fieldset id="f-date" aria-describedby="date-err">
+            <legend>Date <span class="hint">(closed Mondays)</span></legend>
+            <div class="days" id="days"><noscript>Booking needs JavaScript. Call 01328 000 417 to book.</noscript></div>
+            <p class="err" id="date-err"></p>
+          </fieldset>
+          <fieldset id="f-party">
+            <legend id="party-l">Guests</legend>
+            <div class="party">
+              <button type="button" id="p-minus" aria-label="One fewer guest">−</button>
+              <output id="party-out" aria-live="polite" aria-labelledby="party-l party-out">2 guests</output>
+              <button type="button" id="p-plus" aria-label="One more guest">+</button>
+            </div>
+          </fieldset>
+          <fieldset id="f-time" aria-describedby="time-err">
+            <legend>Time <span class="hint">(full slots can't be chosen)</span></legend>
+            <div id="slots"><p class="slots-empty">Choose a date to see open times.</p></div>
+            <p class="err" id="time-err"></p>
+          </fieldset>
+          <div class="row2">
+            <div class="field">
+              <label for="b-name">Name</label>
+              <input type="text" id="b-name" name="name" autocomplete="name" aria-describedby="name-err" required>
+              <p class="err" id="name-err"></p>
+            </div>
+            <div class="field">
+              <label for="b-email">Email</label>
+              <input type="email" id="b-email" name="email" autocomplete="email" inputmode="email" aria-describedby="email-err" required>
+              <p class="err" id="email-err"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="b-notes">Allergies or occasion <span class="hint" style="font-weight:400;color:var(--muted)">(optional)</span></label>
+            <textarea id="b-notes" name="notes" rows="3"></textarea>
+          </div>
+          <button class="btn" type="submit">Book the table</button>
+        </form>
+        <div class="confirm" id="book-confirm" hidden>
+          <span class="booked" aria-hidden="true">BOOKED</span>
+          <h3 tabindex="-1" id="confirm-h">Table booked</h3>
+          <p id="confirm-p"></p>
+          <dl id="confirm-dl"></dl>
+          <button class="btn btn--ghost" type="button" id="book-again">Make another booking</button>
+        </div>
+      </div>
+      <aside aria-label="Booking notes">
+        <h3>Before you come</h3>
+        <dl>
+          <dt>Tables</dt><dd>Held for 15 minutes</dd>
+          <dt>Children</dt><dd>Welcome at lunch; half portions</dd>
+          <dt>Dogs</dt><dd>On the terrace, with a bowl</dd>
+          <dt>Access</dt><dd>Step-free from the quay; accessible WC</dd>
+        </dl>
+        <p style="font-size:1rem;color:#C9D3E4;margin:0">To change or cancel, reply to your confirmation email or call 01328 000 417.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec press" aria-labelledby="press-h">
+  <div class="wrap">
+    <h2 id="press-h" class="visually-hidden">What the papers said</h2>
+    <blockquote class="big">
+      <p>“The crab tastes like the morning it was caught.”</p>
+      <cite>Imogen Hale, The Eastern Table</cite>
+    </blockquote>
+    <div class="small">
+      <blockquote><p>“A plaice with brown shrimp butter that I am still thinking about a fortnight later. Book the window table.”</p><cite>Martin Okoro, Fen and Coast Review</cite></blockquote>
+      <blockquote><p>“No foams, no fuss, no fish from anywhere you can't see from the door.”</p><cite>Priya Lamb, The Saltwater Guide</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="private" aria-labelledby="pd-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="pd-h">The Net Loft</h2>
+      <p class="lede">Upstairs, where the nets were mended: one long table, a wood stove and three windows onto the marsh.</p>
+    </div>
+    <div class="pd-grid">
+      <div>
+        <figure class="plan" style="margin:0">
+          <svg viewBox="0 0 520 300" role="img" aria-labelledby="plan-t">
+            <title id="plan-t">Plan of the Net Loft: one long table seating twenty-four, windows along the marsh side, a wood stove at the gable end, stairs by the door.</title>
+            <defs>
+              <symbol id="chair" viewBox="0 0 20 18"><path d="M2,4 Q2,2 4,2 H16 Q18,2 18,4 V14 Q18,16 16,16 H4 Q2,16 2,14Z" fill="#fff" stroke="#16213B" stroke-width="1.6"/><path d="M3,4 H17" stroke="#16213B" stroke-width="3"/></symbol>
+              <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0 V8" stroke="#16213B" stroke-width="1.2"/></pattern>
+            </defs>
+            <path d="M20,20 H500 V280 H20Z" fill="#F3F7F8"/>
+            <path d="M20,20 H500 V280 H300 M240,280 H20 V20" fill="none" stroke="#16213B" stroke-width="10"/>
+            <path d="M20,20 H500 V280 H300 M240,280 H20 V20" fill="none" stroke="url(#hatch)" stroke-width="8"/>
+            <g stroke="#2A64C5" stroke-width="4"><path d="M90,20 H170 M210,20 H290 M330,20 H410"/></g>
+            <g stroke="#F3F7F8" stroke-width="2"><path d="M90,20 H170 M210,20 H290 M330,20 H410"/></g>
+            <text x="250" y="44" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-size="16" font-weight="700" fill="#2A64C5" letter-spacing="2">WINDOWS ONTO THE MARSH</text>
+            <rect x="70" y="122" width="380" height="52" rx="6" fill="#E9DCC6" stroke="#16213B" stroke-width="2"/>
+            <path d="M80,148 H440" stroke="#16213B" stroke-width="1" stroke-dasharray="3 5" opacity=".5"/>
+            <g id="row-top"><use href="#chair" x="80" y="100" width="22" height="20"/><use href="#chair" x="111" y="100" width="22" height="20"/><use href="#chair" x="142" y="100" width="22" height="20"/><use href="#chair" x="173" y="100" width="22" height="20"/><use href="#chair" x="204" y="100" width="22" height="20"/><use href="#chair" x="235" y="100" width="22" height="20"/><use href="#chair" x="266" y="100" width="22" height="20"/><use href="#chair" x="297" y="100" width="22" height="20"/><use href="#chair" x="328" y="100" width="22" height="20"/><use href="#chair" x="359" y="100" width="22" height="20"/><use href="#chair" x="390" y="100" width="22" height="20"/></g>
+            <g transform="translate(0 296) scale(1 -1)"><use href="#chair" x="80" y="100" width="22" height="20"/><use href="#chair" x="111" y="100" width="22" height="20"/><use href="#chair" x="142" y="100" width="22" height="20"/><use href="#chair" x="173" y="100" width="22" height="20"/><use href="#chair" x="204" y="100" width="22" height="20"/><use href="#chair" x="235" y="100" width="22" height="20"/><use href="#chair" x="266" y="100" width="22" height="20"/><use href="#chair" x="297" y="100" width="22" height="20"/><use href="#chair" x="328" y="100" width="22" height="20"/><use href="#chair" x="359" y="100" width="22" height="20"/><use href="#chair" x="390" y="100" width="22" height="20"/></g>
+            <use href="#chair" x="44" y="138" width="22" height="20" transform="rotate(-90 55 148)"/>
+            <use href="#chair" x="454" y="138" width="22" height="20" transform="rotate(90 465 148)"/>
+            <rect x="462" y="210" width="28" height="44" rx="3" fill="#16213B"/><circle cx="476" cy="232" r="7" fill="#F2C35B"/>
+            <text x="452" y="270" text-anchor="end" font-family="Archivo, Arial, sans-serif" font-size="16" font-weight="700" fill="#16213B">STOVE</text>
+            <g stroke="#16213B" stroke-width="1.5" fill="none"><path d="M40,224 H110 V270 H40Z M40,234 H110 M40,244 H110 M40,254 H110 M40,262 H110"/></g>
+            <text x="75" y="218" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-size="16" font-weight="700" fill="#16213B">STAIRS</text>
+            <path d="M240,280 A60,60 0 0 1 300,220" fill="none" stroke="#16213B" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <path d="M300,280 V220" stroke="#16213B" stroke-width="3"/>
+            <text x="270" y="216" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-size="16" font-weight="700" fill="#16213B">DOOR</text>
+            <g transform="translate(160 230)"><path d="M0,0 H80" stroke="#16213B" stroke-width="2"/><path d="M0,-5 V5 M40,-4 V4 M80,-5 V5" stroke="#16213B" stroke-width="2"/><text x="40" y="20" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-size="16" fill="#16213B">2 m</text></g>
+          </svg>
+          <figcaption>The Net Loft, first floor. Drawn to scale, roughly.</figcaption>
+        </figure>
+        <dl class="facts">
+          <div><dt>Seats</dt><dd>10 to 24</dd></div>
+          <div><dt>Set menu</dt><dd>from £65 pp</dd></div>
+          <div><dt>Room hire</dt><dd>None</dd></div>
+        </dl>
+      </div>
+      <form class="pd-form" id="pd-form" novalidate>
+        <h3>Ask about the Net Loft</h3>
+        <div class="errsum" id="pd-errs" role="alert" tabindex="-1" hidden><h3>Check these before we can reply</h3><ul></ul></div>
+        <div class="row2">
+          <div class="field"><label for="pd-name">Name</label><input type="text" id="pd-name" autocomplete="name" aria-describedby="pd-name-err" required><p class="err" id="pd-name-err"></p></div>
+          <div class="field"><label for="pd-email">Email</label><input type="email" id="pd-email" autocomplete="email" inputmode="email" aria-describedby="pd-email-err" required><p class="err" id="pd-email-err"></p></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="pd-date">Preferred date</label><input type="date" id="pd-date" aria-describedby="pd-date-err" required><p class="err" id="pd-date-err"></p></div>
+          <div class="field"><label for="pd-guests">Guests (10 to 24)</label><input type="number" id="pd-guests" min="10" max="24" inputmode="numeric" aria-describedby="pd-guests-err" required><p class="err" id="pd-guests-err"></p></div>
+        </div>
+        <div class="field"><label for="pd-msg">The occasion <span style="font-weight:400;color:var(--muted)">(optional)</span></label><textarea id="pd-msg" rows="3"></textarea></div>
+        <button class="btn" type="submit">Send the enquiry</button>
+        <div class="vconfirm" id="pd-ok" role="status" hidden style="border:2px solid var(--ink)"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="sec vouch-sec" id="vouchers" aria-labelledby="v-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="v-h">Gift vouchers</h2>
+      <p class="lede">Tied with string like a crate tag, posted or emailed, good for a year at lunch or dinner.</p>
+    </div>
+    <div class="v-grid">
+      <div class="tagcard" aria-hidden="true">
+        <svg viewBox="0 0 500 300">
+          <path d="M60,8 C40,30 30,70 52,96 C70,118 40,150 18,140" stroke="#E9DCC6" stroke-width="3" fill="none"/>
+          <path d="M70,40 L120,20 H480 Q492,20 492,32 V268 Q492,280 480,280 H120 L70,260 Q60,256 60,246 V54 Q60,44 70,40Z" fill="#FBFCFC"/>
+          <path d="M70,40 L120,20 H480 Q492,20 492,32 V268 Q492,280 480,280 H120 L70,260 Q60,256 60,246 V54 Q60,44 70,40Z" fill="none" stroke="#16213B" stroke-width="2"/>
+          <circle cx="92" cy="150" r="13" fill="#2A64C5" stroke="#16213B" stroke-width="2"/><circle cx="92" cy="150" r="20" fill="none" stroke="#C8361A" stroke-width="4"/>
+          <path d="M92,150 C70,140 46,128 18,140" stroke="#E9DCC6" stroke-width="3" fill="none"/>
+          <path d="M130,64 H470" stroke="#16213B" stroke-width="1" stroke-dasharray="2 4"/>
+          <text x="130" y="54" font-family="Archivo, Arial, sans-serif" font-size="14" font-weight="800" letter-spacing="3" fill="#16213B">SALTMARSH · GIFT</text>
+          <text x="470" y="54" text-anchor="end" font-family="Archivo, Arial, sans-serif" font-size="14" font-weight="700" fill="#16213B">VALID 12 MONTHS</text>
+        </svg>
+        <div class="tag-text"><span class="amt" id="v-amt">£75</span><span class="to" id="v-to">For someone who likes crab</span></div>
+      </div>
+      <form class="vform" id="v-form" novalidate>
+        <fieldset>
+          <legend>Amount</legend>
+          <div class="amounts">
+            <label class="opt"><input type="radio" name="amt" value="50"><span><b>£50</b><small>Lunch for two</small></span></label>
+            <label class="opt"><input type="radio" name="amt" value="75" checked><span><b>£75</b><small>Most given</small></span></label>
+            <label class="opt"><input type="radio" name="amt" value="100"><span><b>£100</b><small>Dinner for two</small></span></label>
+            <label class="opt"><input type="radio" name="amt" value="160"><span><b>£160</b><small>Turbot night</small></span></label>
+          </div>
+        </fieldset>
+        <div class="row2">
+          <div class="field"><label for="v-name">Who it's for</label><input type="text" id="v-name" autocomplete="off" aria-describedby="v-name-err" maxlength="40"><p class="err" id="v-name-err"></p></div>
+          <div class="field"><label for="v-email">Your email</label><input type="email" id="v-email" autocomplete="email" inputmode="email" aria-describedby="v-email-err"><p class="err" id="v-email-err"></p></div>
+        </div>
+        <button class="btn" type="submit" style="background:#fff;color:var(--ink);border-color:#fff">Order the voucher</button>
+        <div class="vconfirm" id="v-ok" role="status" hidden></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="find" aria-labelledby="find-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="find-h">Hours and finding us</h2>
+      <p class="lede">At the end of Staithe Lane, where the road stops and the marsh starts. Park by the sea wall and walk the last two hundred metres.</p>
+    </div>
+    <div class="find-grid">
+      <div>
+        <table class="hours">
+          <caption class="visually-hidden">Opening hours</caption>
+          <tbody>
+            <tr class="closed"><th scope="row">Monday</th><td>Closed</td></tr>
+            <tr><th scope="row">Tue to Thu</th><td>12:00–14:30<br>18:00–21:00</td></tr>
+            <tr><th scope="row">Fri and Sat</th><td>12:00–15:00<br>18:00–21:30</td></tr>
+            <tr><th scope="row">Sunday</th><td>12:00–16:00, lunch only</td></tr>
+          </tbody>
+        </table>
+        <address class="address">Saltmarsh<br>The Old Boathouse, Staithe Lane<br>Wrayham Staithe, Norfolk NR00 0SM<br><a href="tel:01328000417">01328 000 417</a><br><a href="mailto:tables@saltmarsh.example">tables@saltmarsh.example</a></address>
+      </div>
+      <figure class="map" style="margin:0">
+        <svg viewBox="0 0 640 440" role="img" aria-labelledby="map-t">
+          <title id="map-t">Map: Saltmarsh sits on the quay at the north end of Staithe Lane. The coast road runs along the south; the car park is by the sea wall; the coast bus stops at the lane end.</title>
+          <defs>
+            <pattern id="marshp" width="14" height="10" patternUnits="userSpaceOnUse"><path d="M2,8 l3,-4 l3,4 M8,8 l2,-3 l2,3" stroke="#5D7A5F" stroke-width="1" fill="none"/></pattern>
+          </defs>
+          <rect width="640" height="440" fill="#E3ECE2"/>
+          <path d="M0,0 H640 V120 C560,132 500,112 430,126 C360,140 300,118 230,130 C160,142 90,120 0,134Z" fill="#C7DCEA"/>
+          <g font-family="Archivo, Arial, sans-serif" font-size="19" fill="#4F6E8A"><text x="70" y="40">3</text><text x="170" y="62">2</text><text x="300" y="34">4</text><text x="420" y="70">2</text><text x="540" y="46">5</text><text x="600" y="92">1</text></g>
+          <path d="M0,134 C90,120 160,142 230,130 C300,118 360,140 430,126 C500,112 560,132 640,120 V260 H0Z" fill="url(#marshp)"/>
+          <path d="M0,134 C90,120 160,142 230,130 C300,118 360,140 430,126 C500,112 560,132 640,120" fill="none" stroke="#4F6E8A" stroke-width="1.5"/>
+          <g fill="none" stroke="#9CC0D8" stroke-linecap="round"><path d="M300,128 C306,160 286,186 304,214 C316,232 330,240 336,262" stroke-width="10"/><path d="M120,130 C140,170 110,190 140,224" stroke-width="5"/><path d="M500,120 C490,160 520,180 506,216" stroke-width="5"/><path d="M304,214 C270,206 240,220 210,214" stroke-width="4"/></g>
+          <path d="M0,262 C120,256 220,268 340,262 C460,256 540,266 640,260" stroke="#7E6A4A" stroke-width="8" fill="none"/>
+          <path d="M0,262 C120,256 220,268 340,262 C460,256 540,266 640,260" stroke="#C8B78F" stroke-width="2" fill="none" stroke-dasharray="6 6"/>
+          <text x="630" y="250" text-anchor="end" font-family="Archivo, Arial, sans-serif" font-size="18" font-weight="700" fill="#5A4A2E">SEA WALL PATH</text>
+          <path d="M0,370 C140,360 300,384 440,372 C540,364 600,370 640,366" stroke="#16213B" stroke-width="16" fill="none"/>
+          <path d="M0,370 C140,360 300,384 440,372 C540,364 600,370 640,366" stroke="#F2DD7E" stroke-width="10" fill="none"/>
+          <text x="628" y="352" text-anchor="end" font-family="Archivo, Arial, sans-serif" font-size="19" font-weight="800" fill="#16213B" letter-spacing="1">COAST ROAD</text>
+          <path d="M360,376 C356,330 350,300 344,262 L340,236" stroke="#16213B" stroke-width="10" fill="none"/>
+          <path d="M360,376 C356,330 350,300 344,262 L340,236" stroke="#fff" stroke-width="6" fill="none"/>
+          <text x="370" y="318" font-family="Archivo, Arial, sans-serif" font-size="18" font-weight="700" fill="#16213B" transform="rotate(-82 370 318)">STAITHE LANE</text>
+          <rect x="270" y="282" width="56" height="40" rx="3" fill="#fff" stroke="#16213B" stroke-width="2"/>
+          <text x="298" y="309" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-size="18" font-weight="800" fill="#2A64C5">P</text>
+          <circle cx="384" cy="386" r="9" fill="#2A64C5" stroke="#16213B" stroke-width="2"/><text x="398" y="420" font-family="Archivo, Arial, sans-serif" font-size="18" font-weight="700" fill="#16213B">COAST BUS STOP</text>
+          <path d="M320,236 H350 L346,214 H324Z" fill="#8C7B5E" stroke="#16213B" stroke-width="1.5"/>
+          <g transform="translate(316 196)"><path d="M0,22 L14,8 L28,22Z" fill="#7A3A30" stroke="#16213B" stroke-width="1.5"/><rect x="2" y="22" width="24" height="18" fill="#14161A"/><rect x="10" y="28" width="8" height="12" fill="#9EA6B4"/></g>
+          <circle cx="330" cy="216" r="34" fill="none" stroke="#C8361A" stroke-width="3"/>
+          <g font-family="Big Shoulders Stencil Display, Impact, sans-serif" font-weight="800"><text x="288" y="180" text-anchor="end" font-size="30" fill="#16213B">SALTMARSH</text></g>
+          <path d="M290,176 L300,190" stroke="#16213B" stroke-width="1.5"/>
+          <text x="24" y="244" font-family="Archivo, Arial, sans-serif" font-size="18" font-style="italic" fill="#3D5A40">Wrayham Marsh</text>
+          <text x="372" y="174" font-family="Archivo, Arial, sans-serif" font-size="18" font-style="italic" fill="#3D5A40">Mussel Creek</text>
+          <g transform="translate(588 172)"><circle r="24" fill="#fff" stroke="#16213B" stroke-width="1.5"/><path d="M0,-18 L6,4 L0,0 L-6,4Z" fill="#16213B"/><text y="-28" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-size="18" font-weight="800" fill="#16213B">N</text></g>
+          <g transform="translate(36 418)"><path d="M0,0 H100" stroke="#16213B" stroke-width="3"/><path d="M0,-5 V5 M50,-4 V4 M100,-5 V5" stroke="#16213B" stroke-width="2"/><text x="108" y="4" font-family="Archivo, Arial, sans-serif" font-size="18" fill="#16213B">200 m</text></g>
+        </svg>
+        <figcaption>Not to exact scale. Soundings in metres at low water, for the boats.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="name" aria-hidden="true">SALTMARSH</p>
+    <div class="f-grid">
+      <div><h3>Find us</h3><p style="margin:0">The Old Boathouse<br>Staithe Lane, Wrayham Staithe<br>Norfolk</p></div>
+      <div><h3>Open</h3><p style="margin:0">Lunch Tue–Sun<br>Dinner Tue–Sat<br>Closed Mondays</p></div>
+      <div><h3>On this page</h3><ul><li><a href="#menu">Menu</a></li><li><a href="#book">Book a table</a></li><li><a href="#private">Net Loft</a></li><li><a href="#vouchers">Vouchers</a></li></ul></div>
+      <div><h3>Contact</h3><ul><li><a href="tel:01328000417">01328 000 417</a></li><li><a href="mailto:tables@saltmarsh.example">tables@saltmarsh.example</a></li></ul></div>
+    </div>
+    <p class="fineprint">Saltmarsh, its people, boats and press are fictional. Built as a design study.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  /* mobile drawer */
+  const burger = $('.burger'), drawer = $('#drawer');
+  const setDrawer = (open) => {
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    drawer.dataset.open = String(open);
+    $('.i-open', burger).style.display = open ? 'none' : '';
+    $('.i-close', burger).style.display = open ? '' : 'none';
+    if (open) $('a', drawer).focus();
+  };
+  burger.addEventListener('click', () => setDrawer(burger.getAttribute('aria-expanded') !== 'true'));
+  drawer.addEventListener('click', (e) => { if (e.target.closest('a')) setDrawer(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawer.dataset.open === 'true') { setDrawer(false); burger.focus(); } });
+  matchMedia('(min-width:960px)').addEventListener('change', (m) => { if (m.matches) setDrawer(false); });
+
+  /* menu tabs (ARIA tabs, automatic activation) */
+  const tabs = $$('[role=tab]');
+  const select = (tab, focus) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    applyFilter();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => {
+      let n = null;
+      if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === 'Home') n = tabs[0];
+      if (e.key === 'End') n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); select(n, true); }
+    });
+  });
+
+  /* dietary filter */
+  const chips = $$('.chip[data-diet]');
+  const status = $('#filter-status');
+  const clearBtn = $('#clear-f');
+  const names = { V: 'vegetarian', VG: 'vegan', GF: 'gluten free' };
+  function applyFilter(announce) {
+    const on = chips.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.diet);
+    const panel = $$('[role=tabpanel]').find((p) => !p.hidden);
+    $$('[role=tabpanel]').forEach((p) => {
+      let shown = 0;
+      $$('.dish', p).forEach((d) => {
+        const tags = d.dataset.tags.split(/\s+/);
+        const ok = on.every((f) => tags.includes(f));
+        d.hidden = !ok; if (ok) shown++;
+      });
+      $('.empty', p).hidden = shown > 0;
+      p.dataset.shown = shown; p.dataset.total = $$('.dish', p).length;
+    });
+    clearBtn.hidden = on.length === 0;
+    if (announce !== false) {
+      const tabName = $('#' + panel.getAttribute('aria-labelledby')).textContent;
+      status.textContent = on.length
+        ? `Showing ${panel.dataset.shown} of ${panel.dataset.total} ${tabName.toLowerCase()} items: ${on.map((f) => names[f]).join(' and ')}.`
+        : '';
+    }
+  }
+  chips.forEach((c) => c.addEventListener('click', () => {
+    c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'));
+    applyFilter();
+  }));
+  const clearAll = () => { chips.forEach((c) => c.setAttribute('aria-pressed', 'false')); applyFilter(); status.textContent = 'Filters cleared. Showing everything.'; };
+  clearBtn.addEventListener('click', () => { clearAll(); chips[0].focus(); });
+  $$('[data-clear]').forEach((b) => b.addEventListener('click', () => { clearAll(); chips[0].focus(); }));
+  applyFilter(false);
+
+  /* booking */
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const fmtLong = (d) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const daysWrap = $('#days');
+  const slotsWrap = $('#slots');
+  let party = 2;
+
+  // Opening pattern: Tue–Thu L 12–14:00 last, D 18–20:30; Fri–Sat L 12–14:30, D 18–21:00; Sun L 12–15:00; Mon closed.
+  function slotTimes(dow) {
+    const L = (end) => { const a = []; for (let m = 12*60; m <= end; m += 30) a.push(m); return a; };
+    if (dow === 1) return null;
+    if (dow === 0) return { Lunch: L(15*60), Dinner: [] };
+    if (dow === 5 || dow === 6) return { Lunch: L(14*60+30), Dinner: range(18*60, 21*60) };
+    return { Lunch: L(14*60), Dinner: range(18*60, 20*60+30) };
+  }
+  function range(a, b) { const r = []; for (let m = a; m <= b; m += 30) r.push(m); return r; }
+  // deterministic seats left per slot (illustrative)
+  function seatsLeft(dateIso, m) {
+    let h = 2166136261; const s = dateIso + m;
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    const v = (h >>> 0) % 11; return v < 3 ? 0 : v - 2; // 0..8
+  }
+  const hhmm = (m) => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+
+  // header row then 28 days starting on this week's Tuesday? Start from today, padded to weekday column (Mon first).
+  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach((d) => { const h = document.createElement('span'); h.className = 'dayhead'; h.setAttribute('aria-hidden','true'); h.textContent = d; daysWrap.appendChild(h); });
+  const lead = (today.getDay() + 6) % 7;
+  for (let i = 0; i < lead; i++) { const s = document.createElement('span'); s.setAttribute('aria-hidden','true'); daysWrap.appendChild(s); }
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const closed = d.getDay() === 1;
+    const lab = document.createElement('label'); lab.className = 'opt';
+    const inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'date'; inp.value = iso(d);
+    inp.disabled = closed;
+    inp.setAttribute('aria-label', `${fmtLong(d)}${closed ? ', closed' : ''}${i === 0 ? ', today' : ''}`);
+    const sp = document.createElement('span');
+    sp.innerHTML = `<b>${d.getDate()}</b><small>${closed ? 'Closed' : (i === 0 || d.getDate() === 1 ? MONTHS[d.getMonth()] : DAYS[d.getDay()])}</small>`;
+    lab.append(inp, sp); daysWrap.appendChild(lab);
+  }
+
+  function renderSlots() {
+    const sel = $('input[name=date]:checked');
+    const prev = ($('input[name=time]:checked') || {}).value;
+    slotsWrap.innerHTML = '';
+    if (!sel) { slotsWrap.innerHTML = '<p class="slots-empty">Choose a date to see open times.</p>'; return; }
+    const d = new Date(sel.value + 'T00:00');
+    const times = slotTimes(d.getDay());
+    const now = new Date();
+    let open = 0, lostPrev = false;
+    Object.entries(times).forEach(([service, list]) => {
+      if (!list.length) return;
+      const g = document.createElement('div'); g.className = 'slot-group';
+      g.innerHTML = `<p>${service}</p>`;
+      const grid = document.createElement('div'); grid.className = 'slots';
+      list.forEach((m) => {
+        const left = seatsLeft(sel.value, m);
+        const past = sel.value === iso(today) && (m - 60) < now.getHours()*60 + now.getMinutes();
+        const ok = !past && left >= party;
+        const lab = document.createElement('label'); lab.className = 'opt';
+        const inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'time'; inp.value = hhmm(m); inp.disabled = !ok;
+        const why = past ? 'gone' : left === 0 ? 'Full' : left < party ? `${left} seats` : `${service}`;
+        inp.setAttribute('aria-label', `${hhmm(m)}${ok ? '' : past ? ', no longer available' : left === 0 ? ', full' : `, only ${left} seats left`}`);
+        if (ok && prev === hhmm(m)) inp.checked = true;
+        if (!ok && prev === hhmm(m)) lostPrev = true;
+        if (ok) open++;
+        const sp = document.createElement('span'); sp.innerHTML = `<b>${hhmm(m)}</b><small>${ok ? (left <= 3 ? `${left} left` : 'Open') : why}</small>`;
+        lab.append(inp, sp); grid.appendChild(lab);
+      });
+      g.appendChild(grid); slotsWrap.appendChild(g);
+    });
+    if (!open) slotsWrap.insertAdjacentHTML('beforeend', `<p class="slots-empty" style="margin-top:10px">No open times for ${party} on this day. Try another date or fewer guests.</p>`);
+    if (lostPrev) $('#time-err').textContent = `Your time is no longer open for ${party} guests. Choose another.`;
+  }
+  daysWrap.addEventListener('change', () => { $('#date-err').textContent = ''; $('#f-date').removeAttribute('aria-invalid'); renderSlots(); });
+  slotsWrap.addEventListener('change', () => { $('#time-err').textContent = ''; });
+
+  const out = $('#party-out'), minus = $('#p-minus'), plus = $('#p-plus');
+  const setParty = (n) => {
+    party = Math.min(8, Math.max(1, n));
+    out.textContent = `${party} ${party === 1 ? 'guest' : 'guests'}`;
+    minus.disabled = party === 1; plus.disabled = party === 8;
+    plus.setAttribute('aria-label', party === 8 ? 'One more guest (8 is the most; ask about the Net Loft)' : 'One more guest');
+    renderSlots();
+  };
+  minus.addEventListener('click', () => setParty(party - 1));
+  plus.addEventListener('click', () => setParty(party + 1));
+  setParty(2);
+
+  const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  function showErrors(sumEl, errs) {
+    const ul = $('ul', sumEl); ul.innerHTML = '';
+    errs.forEach(({ id, msg, target }) => {
+      const li = document.createElement('li'); const a = document.createElement('a');
+      a.href = '#' + target; a.textContent = msg;
+      a.addEventListener('click', (e) => { e.preventDefault(); const t = document.getElementById(target); (t.matches('fieldset') ? (t.querySelector('input:not(:disabled)') || t) : t).focus(); });
+      li.appendChild(a); ul.appendChild(li);
+    });
+    sumEl.hidden = errs.length === 0;
+    if (errs.length) sumEl.focus();
+  }
+  const setErr = (inputId, errId, msg) => {
+    $('#' + errId).textContent = msg;
+    const el = document.getElementById(inputId);
+    if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+  };
+
+  const form = $('#book-form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const errs = [];
+    const date = $('input[name=date]:checked');
+    const time = $('input[name=time]:checked');
+    const name = $('#b-name').value.trim();
+    const email = $('#b-email').value.trim();
+    setErr('f-date', 'date-err', date ? '' : 'Choose a date. We are closed on Mondays.');
+    if (!date) errs.push({ msg: 'Choose a date', target: 'f-date' });
+    setErr('f-time', 'time-err', time ? '' : date ? 'Choose one of the open times.' : 'Choose a date first, then a time.');
+    if (!time) errs.push({ msg: 'Choose a time', target: 'f-time' });
+    setErr('b-name', 'name-err', name.length >= 2 ? '' : 'Enter the name to book under.');
+    if (name.length < 2) errs.push({ msg: 'Enter your name', target: 'b-name' });
+    setErr('b-email', 'email-err', emailOk(email) ? '' : (email ? 'That email looks incomplete, for example name@example.com.' : 'Enter an email for the confirmation.'));
+    if (!emailOk(email)) errs.push({ msg: 'Enter a valid email', target: 'b-email' });
+    showErrors($('#book-errs'), errs);
+    if (errs.length) return;
+    const d = new Date(date.value + 'T00:00');
+    const ref = 'SM-' + (Math.abs([...date.value + time.value + name].reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7)) % 90000 + 10000);
+    $('#confirm-p').textContent = `Thank you, ${name.split(' ')[0]}. A confirmation is on its way to ${email}.`;
+    $('#confirm-dl').innerHTML = '';
+    [['Date', fmtLong(d)], ['Time', time.value], ['Guests', String(party)], ['Name', name], ['Reference', ref]].forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v;
+      $('#confirm-dl').append(dt, dd);
+    });
+    form.hidden = true; $('#book-confirm').hidden = false; $('#confirm-h').focus();
+  });
+  $('#book-again').addEventListener('click', () => {
+    form.reset(); setParty(2); renderSlots();
+    $('#book-confirm').hidden = true; form.hidden = false; $('#book-errs').hidden = true;
+    $('input[name=date]:not(:disabled)').focus();
+  });
+  ['b-name', 'b-email'].forEach((id) => $('#' + id).addEventListener('input', (e) => { if (e.target.getAttribute('aria-invalid')) { e.target.removeAttribute('aria-invalid'); $('#' + (id === 'b-name' ? 'name-err' : 'email-err')).textContent = ''; } }));
+
+  /* private dining */
+  const pdDate = $('#pd-date'); pdDate.min = iso(new Date(today.getTime() + 7*864e5));
+  $('#pd-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const errs = [];
+    const n = $('#pd-name').value.trim(), em = $('#pd-email').value.trim(), dt = pdDate.value, g = Number($('#pd-guests').value);
+    setErr('pd-name', 'pd-name-err', n.length >= 2 ? '' : 'Enter your name.'); if (n.length < 2) errs.push({ msg: 'Enter your name', target: 'pd-name' });
+    setErr('pd-email', 'pd-email-err', emailOk(em) ? '' : 'Enter an email we can reply to.'); if (!emailOk(em)) errs.push({ msg: 'Enter a valid email', target: 'pd-email' });
+    const dOk = dt && dt >= pdDate.min && new Date(dt + 'T00:00').getDay() !== 1;
+    setErr('pd-date', 'pd-date-err', dOk ? '' : !dt ? 'Choose a date.' : new Date(dt + 'T00:00').getDay() === 1 ? 'We are closed on Mondays. Choose another day.' : 'The Loft needs a week\'s notice. Choose a later date.');
+    if (!dOk) errs.push({ msg: 'Choose a valid date', target: 'pd-date' });
+    const gOk = Number.isInteger(g) && g >= 10 && g <= 24;
+    setErr('pd-guests', 'pd-guests-err', gOk ? '' : 'The Loft seats 10 to 24. For fewer, book a table above.');
+    if (!gOk) errs.push({ msg: 'Enter 10 to 24 guests', target: 'pd-guests' });
+    showErrors($('#pd-errs'), errs);
+    const ok = $('#pd-ok');
+    if (errs.length) { ok.hidden = true; return; }
+    ok.hidden = false;
+    ok.textContent = `Enquiry sent. Nell's team will email ${em} within two working days about ${g} guests on ${new Date(dt + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`;
+    e.target.reset();
+  });
+
+  /* vouchers */
+  const vAmt = $('#v-amt'), vTo = $('#v-to'), vName = $('#v-name');
+  $('#v-form').addEventListener('change', (e) => { if (e.target.name === 'amt') vAmt.textContent = '£' + e.target.value; });
+  vName.addEventListener('input', () => { vTo.textContent = vName.value.trim() ? `For ${vName.value.trim()}` : 'For someone who likes crab'; });
+  $('#v-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const n = vName.value.trim(), em = $('#v-email').value.trim();
+    setErr('v-name', 'v-name-err', n ? '' : 'Who is the voucher for?');
+    setErr('v-email', 'v-email-err', emailOk(em) ? '' : 'Enter your email so we can send the payment link.');
+    const ok = $('#v-ok');
+    if (!n || !emailOk(em)) { ok.hidden = true; (n ? $('#v-email') : vName).focus(); return; }
+    ok.hidden = false;
+    ok.textContent = `Voucher for ${n} (${vAmt.textContent}) reserved. We've sent a payment link to ${em}; the voucher posts the day you pay. Demo only, no payment taken.`;
+  });
+})();
+</script>
+</body>
+</html>

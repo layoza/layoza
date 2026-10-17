@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T16:17:26.200Z",
+  "title": "Design System: Volta One",
+  "extensions": {
+    "colorMeta": {
+      "kraft": {
+        "role": "neutral",
+        "displayName": "Kraft Board",
+        "canonical": "oklch(72.1% 0.080 69)",
+        "tonalRamp": [
+          "#1E0100",
+          "#3D1B00",
+          "#5D3903",
+          "#7F582A",
+          "#A27A4B",
+          "#C69C6D",
+          "#ECC090",
+          "#FFE6B4"
+        ]
+      },
+      "kraft-shade": {
+        "role": "neutral",
+        "displayName": "Kraft Shade",
+        "canonical": "oklch(67.4% 0.081 67)",
+        "tonalRamp": [
+          "#1F0100",
+          "#3E1A00",
+          "#5E3803",
+          "#80582A",
+          "#A3794B",
+          "#C79C6D",
+          "#EDC090",
+          "#FFE5B5"
+        ]
+      },
+      "kraft-deep": {
+        "role": "neutral",
+        "displayName": "Kraft Deep",
+        "canonical": "oklch(58.9% 0.081 65)",
+        "tonalRamp": [
+          "#1F0000",
+          "#3E1A00",
+          "#5F3805",
+          "#80572B",
+          "#A4784C",
+          "#C89B6E",
+          "#EEBF91",
+          "#FFE4B6"
+        ]
+      },
+      "liner": {
+        "role": "neutral",
+        "displayName": "Inner Liner",
+        "canonical": "oklch(82.9% 0.061 78)",
+        "tonalRamp": [
+          "#180600",
+          "#352000",
+          "#543E19",
+          "#745D38",
+          "#967E58",
+          "#BAA17A",
+          "#DFC59D",
+          "#FFEAC1"
+        ]
+      },
+      "label-stock": {
+        "role": "neutral",
+        "displayName": "Label Stock",
+        "canonical": "oklch(93.6% 0.022 83)",
+        "tonalRamp": [
+          "#100A03",
+          "#2A2419",
+          "#484135",
+          "#676053",
+          "#898174",
+          "#ACA496",
+          "#D0C8BA",
+          "#F6EEDF"
+        ]
+      },
+      "flexo-ink": {
+        "role": "primary",
+        "displayName": "Flexo Ink",
+        "canonical": "oklch(30.6% 0.121 269)",
+        "tonalRamp": [
+          "#030034",
+          "#101A5E",
+          "#293B81",
+          "#455CA6",
+          "#657ECB",
+          "#86A1F1",
+          "#A9C6FF",
+          "#D3ECFF"
+        ]
+      },
+      "xray-blue": {
+        "role": "product",
+        "displayName": "X-ray Blue",
+        "canonical": "oklch(45.8% 0.199 268)",
+        "tonalRamp": [
+          "#050045",
+          "#0B0A72",
+          "#1C2EA2",
+          "#3350D0",
+          "#5075F8",
+          "#749CFF",
+          "#9CC3FF",
+          "#C6EBFF"
+        ]
+      },
+      "error-red": {
+        "role": "error",
+        "displayName": "Error Red",
+        "canonical": "oklch(42.5% 0.149 30)",
+        "tonalRamp": [
+          "#2C0000",
+          "#560000",
+          "#7F0A01",
+          "#A53627",
+          "#CC5A49",
+          "#F47E6A",
+          "#FFA692",
+          "#FFD2C0"
+        ]
+      },
+      "graphite": {
+        "role": "product",
+        "displayName": "Graphite",
+        "canonical": "oklch(35.9% 0.008 255)",
+        "tonalRamp": [
+          "#090B0F",
+          "#222529",
+          "#3F4246",
+          "#5E6166",
+          "#7F8387",
+          "#A2A5AA",
+          "#C6C9CE",
+          "#EBEFF4"
+        ]
+      },
+      "moss": {
+        "role": "product",
+        "displayName": "Moss",
+        "canonical": "oklch(50.5% 0.061 124)",
+        "tonalRamp": [
+          "#060F00",
+          "#1F2A04",
+          "#3B4822",
+          "#596741",
+          "#7A8961",
+          "#9CAC82",
+          "#C0D1A5",
+          "#E5F6CA"
+        ]
+      },
+      "clay": {
+        "role": "product",
+        "displayName": "Clay",
+        "canonical": "oklch(57.5% 0.114 42)",
+        "tonalRamp": [
+          "#270000",
+          "#4E0100",
+          "#712700",
+          "#954827",
+          "#BB6A48",
+          "#E18C6A",
+          "#FFB08D",
+          "#FFDABB"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Product name on the hero shipping label only; stencil uppercase."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings; story flaps step down to clamp(2.75rem, 4.4vw, 4.25rem)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Colour names, slip headers, spec key rows, FAQ questions, rider names, price."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text and form input; 36-44ch in panels, 60-68ch in long answers."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "All buttons; uppercase Archivo at width 88."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels, legends, handling-mark captions, spec-row headers, part callouts, sender line. Never above a heading."
+      }
+    },
+    "print": {
+      "fontFamily": "Big Shoulders Stencil Display",
+      "fontWeight": 900,
+      "fontSize": "clamp(9rem, 27vw, 26rem)",
+      "lineHeight": 0.78,
+      "color": "rgba(24,38,107,.13)",
+      "purpose": "Screened VOLTA and 16 KG marks printed behind the bike on the stage; decorative, aria-hidden."
+    },
+    "shadows": [
+      {
+        "name": "label-lift",
+        "value": "0 1px 0 rgba(60,36,12,.18), 0 18px 34px -16px rgba(60,36,12,.45)",
+        "purpose": "Hero shipping label sitting on the board."
+      },
+      {
+        "name": "slip-lift",
+        "value": "0 2px 0 rgba(60,36,12,.18), 0 26px 44px -22px rgba(60,36,12,.6)",
+        "purpose": "Test-ride shipping slip, the largest sheet."
+      },
+      {
+        "name": "flap-lift",
+        "value": "0 18px 34px -18px rgba(60,36,12,.55)",
+        "purpose": "Story flaps over the 3D stage."
+      },
+      {
+        "name": "note-lift",
+        "value": "0 14px 26px -16px rgba(60,36,12,.5)",
+        "purpose": "Rider-note slips."
+      },
+      {
+        "name": "ink-press",
+        "value": "0 2px 0 rgba(24,38,107,.25), 0 6px 14px -6px rgba(24,38,107,.45)",
+        "purpose": "Solid-ink buttons at rest."
+      },
+      {
+        "name": "ink-press-hover",
+        "value": "0 3px 0 rgba(24,38,107,.25), 0 12px 22px -8px rgba(24,38,107,.5)",
+        "purpose": "Solid-ink buttons on hover, with a 1px lift."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Default easing for lifts, underline draws, menu flap and tick reveals."
+      },
+      {
+        "name": "dolly",
+        "value": "exponential approach per frame (1 - 0.0015^dt)",
+        "purpose": "Single-axis camera dolly between scroll chapters; snaps to the nearest chapter under reduced motion."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transitions 0.01ms; dolly, turns and colour changes snap",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "860px"
+      },
+      {
+        "name": "compact-wide",
+        "value": "600px"
+      },
+      {
+        "name": "desktop-narrow",
+        "value": "1100px"
+      }
+    ],
+    "textures": [
+      {
+        "name": "grain",
+        "value": "SVG feTurbulence fractalNoise, baseFrequency .9, 2 octaves, warm brown at 22% alpha, 180px tile",
+        "purpose": "Paper grain on kraft and liner surfaces."
+      },
+      {
+        "name": "flute",
+        "value": "16x24 SVG tile: two liner lines with a sine flute between, stroked kraft-deep",
+        "purpose": "Corrugated seam between sections and the top edge of the 3D stage."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "Primary action printed in solid flexo ink.",
+      "html": "<button class=\"ds-btn-ink\">Order yours</button>",
+      "css": ".ds-btn-ink{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;font:700 1rem/1 Archivo,system-ui,sans-serif;font-variation-settings:\"wdth\" 88;letter-spacing:.06em;text-transform:uppercase;background:var(--ink, #18266B);color:var(--label, #F1E9DA);border:2px solid var(--ink, #18266B);border-radius:2px;cursor:pointer;box-shadow:0 2px 0 rgba(24,38,107,.25),0 6px 14px -6px rgba(24,38,107,.45);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s cubic-bezier(.16,1,.3,1)}.ds-btn-ink:hover{transform:translateY(-1px);box-shadow:0 3px 0 rgba(24,38,107,.25),0 12px 22px -8px rgba(24,38,107,.5)}.ds-btn-ink:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(24,38,107,.25)}.ds-btn-ink:focus-visible{outline:3px solid var(--ink, #18266B);outline-offset:3px;box-shadow:0 0 0 3px var(--label, #F1E9DA)}"
+    },
+    {
+      "name": "Line Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Secondary action ruled in ink on the board.",
+      "html": "<button class=\"ds-btn-line\">Book a test ride</button>",
+      "css": ".ds-btn-line{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;font:700 1rem/1 Archivo,system-ui,sans-serif;font-variation-settings:\"wdth\" 88;letter-spacing:.06em;text-transform:uppercase;background:transparent;color:var(--ink, #18266B);border:2px solid var(--ink, #18266B);border-radius:2px;cursor:pointer;transition:background-color .2s}.ds-btn-line:hover{background:rgba(24,38,107,.14)}.ds-btn-line:focus-visible{outline:3px solid var(--ink, #18266B);outline-offset:3px}"
+    },
+    {
+      "name": "Shipping Label",
+      "kind": "card",
+      "refersTo": "shipping-label",
+      "description": "Hero panel: label stock on kraft carrying name, promise, price and CTAs.",
+      "html": "<div class=\"ds-label\"><h1 class=\"ds-label-h\">Volta One</h1><p class=\"ds-label-p\">The electric city bike light enough to carry up the stairs.</p><div class=\"ds-label-price\"><span>£2,190</span><small>Graphite, Moss or Clay</small></div><div class=\"ds-label-foot\">From Volta Cycles, Bristol</div></div>",
+      "css": ".ds-label{background:var(--label, #F1E9DA);color:var(--ink, #18266B);border:2px solid var(--ink, #18266B);border-radius:3px;padding:32px;max-width:420px;box-shadow:0 1px 0 rgba(60,36,12,.18),0 18px 34px -16px rgba(60,36,12,.45);font-family:Archivo,system-ui,sans-serif}.ds-label-h{margin:0;font:900 4rem/.86 \"Big Shoulders Stencil Display\",Archivo,sans-serif;text-transform:uppercase}.ds-label-p{margin:16px 0 0;font-size:1.3125rem;line-height:1.35;font-weight:500;max-width:24ch}.ds-label-price{display:flex;justify-content:space-between;align-items:baseline;border-top:1.5px dashed var(--ink, #18266B);margin-top:24px;padding-top:16px}.ds-label-price span{font:900 2.75rem/1 \"Big Shoulders Stencil Display\",Archivo,sans-serif}.ds-label-price small{font-size:.875rem}.ds-label-foot{border-top:2px solid var(--ink, #18266B);margin-top:24px;padding-top:8px;font:700 .75rem/1 Archivo,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}"
+    },
+    {
+      "name": "Story Flap",
+      "kind": "card",
+      "refersTo": "story-flap",
+      "description": "Kraft panel with an ink top edge and a part callout chip.",
+      "html": "<div class=\"ds-flap\"><h2>A belt, not a chain.</h2><p>Set text sits here at a readable measure.</p><span class=\"ds-part\"><i></i>Belt drive, no oil</span></div>",
+      "css": ".ds-flap{background:var(--kraft, #C69C6D);color:var(--ink, #18266B);border-top:3px solid var(--ink, #18266B);padding:32px;max-width:440px;box-shadow:0 18px 34px -18px rgba(60,36,12,.55);font-family:Archivo,system-ui,sans-serif}.ds-flap h2{margin:0;font:800 3.5rem/.92 \"Big Shoulders Stencil Display\",Archivo,sans-serif;text-transform:uppercase}.ds-flap p{margin:16px 0 0;max-width:38ch;line-height:1.55}.ds-part{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font:700 .8125rem/1 Archivo,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;border:2px solid var(--ink, #18266B);padding:8px 10px;border-radius:2px}.ds-part i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink, #18266B);display:block}"
+    },
+    {
+      "name": "Tick-box Colour Picker",
+      "kind": "chip",
+      "refersTo": "tick-box",
+      "description": "Three ruled cells; the chosen colour prints solid, the others stay dashed outlines.",
+      "html": "<div class=\"ds-ticks\"><label class=\"ds-tick\"><input type=\"radio\" name=\"c\" checked><span class=\"ds-box\"><svg viewBox=\"0 0 24 24\"><path d=\"M3.5 12.5l5.5 5.5L21 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.2\"/></svg></span><span class=\"ds-sw\" style=\"--sw:#3A3D41\"></span><span class=\"ds-nm\">Graphite</span></label><label class=\"ds-tick\"><input type=\"radio\" name=\"c\"><span class=\"ds-box\"><svg viewBox=\"0 0 24 24\"><path d=\"M3.5 12.5l5.5 5.5L21 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.2\"/></svg></span><span class=\"ds-sw\" style=\"--sw:#5D6B44\"></span><span class=\"ds-nm\">Moss</span></label><label class=\"ds-tick\"><input type=\"radio\" name=\"c\"><span class=\"ds-box\"><svg viewBox=\"0 0 24 24\"><path d=\"M3.5 12.5l5.5 5.5L21 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.2\"/></svg></span><span class=\"ds-sw\" style=\"--sw:#B0603F\"></span><span class=\"ds-nm\">Clay</span></label></div>",
+      "css": ".ds-ticks{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--ink, #18266B);border-radius:2px;background:var(--label, #F1E9DA);color:var(--ink, #18266B);max-width:440px}.ds-tick{position:relative;display:flex;flex-direction:column;gap:8px;padding:16px 16px 14px;cursor:pointer}.ds-tick+.ds-tick{border-left:2px solid var(--ink, #18266B)}.ds-tick input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}.ds-box{width:24px;height:24px;border:2px solid var(--ink, #18266B);border-radius:1px;display:grid;place-items:center}.ds-box svg{width:22px;height:22px;opacity:0;transform:scale(.4) rotate(-12deg);transition:opacity .2s,transform .35s cubic-bezier(.16,1,.3,1)}.ds-sw{height:28px;border-radius:2px;border:2px dashed var(--sw);opacity:.85;transition:background-color .3s}.ds-nm{font:800 1.375rem/1 \"Big Shoulders Stencil Display\",Archivo,sans-serif;text-transform:uppercase}.ds-tick input:checked~.ds-box svg{opacity:1;transform:none}.ds-tick input:checked~.ds-sw{background:var(--sw);border:2px solid var(--ink, #18266B);opacity:1}.ds-tick input:focus-visible~.ds-box{outline:3px solid var(--ink, #18266B);outline-offset:3px}.ds-tick:hover .ds-sw{opacity:1}"
+    },
+    {
+      "name": "Slip Field",
+      "kind": "input",
+      "refersTo": "form-field",
+      "description": "A ruled cell of the test-ride shipping slip with a dashed underline input.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-n\">Your name</label><input id=\"ds-n\" placeholder=\"First and last name\"></div>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;padding:16px 24px 14px;border:2px solid var(--ink, #18266B);background:var(--label, #F1E9DA);color:var(--ink, #18266B);max-width:360px;font-family:Archivo,system-ui,sans-serif}.ds-field label{font:700 .75rem/1.2 Archivo,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}.ds-field input{font:500 1.125rem/1.3 Archivo,system-ui,sans-serif;color:var(--ink, #18266B);background:transparent;border:0;border-bottom:2px dashed rgba(24,38,107,.55);border-radius:0;padding:6px 0 8px;min-height:44px}.ds-field input::placeholder{color:rgba(24,38,107,.72)}.ds-field input:focus{outline:none;border-bottom:2px solid var(--ink, #18266B)}.ds-field:focus-within{background:#fbf6ec}"
+    },
+    {
+      "name": "Top Flap Navigation",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Sticky kraft header with a dotted fold line and draw-in underlines.",
+      "html": "<header class=\"ds-hdr\"><span class=\"ds-logo\">VOLTA</span><nav><a href=\"#\">Ride</a><a href=\"#\">Specs</a><a href=\"#\">Colours</a><a href=\"#\">Test ride</a></nav></header>",
+      "css": ".ds-hdr{display:flex;align-items:center;gap:32px;height:64px;padding:0 32px;background:var(--kraft, #C69C6D);color:var(--ink, #18266B);border-bottom:2px dotted var(--ink, #18266B);font-family:Archivo,system-ui,sans-serif}.ds-logo{font:900 1.875rem/1 \"Big Shoulders Stencil Display\",Archivo,sans-serif;letter-spacing:.04em}.ds-hdr nav{margin-left:auto;display:flex;gap:32px}.ds-hdr a{color:inherit;font-weight:600;font-variation-settings:\"wdth\" 92;text-decoration:none;letter-spacing:.02em;padding:8px 0;background:linear-gradient(currentColor,currentColor) left bottom/0 2px no-repeat;transition:background-size .3s cubic-bezier(.16,1,.3,1)}.ds-hdr a:hover{background-size:100% 2px}.ds-hdr a:focus-visible{outline:3px solid var(--ink, #18266B);outline-offset:3px}"
+    },
+    {
+      "name": "Corrugated Seam",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "The sliced carton edge used between sections.",
+      "html": "<div class=\"ds-seam\"></div>",
+      "css": ".ds-seam{height:24px;background-color:#B88D5F;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='24' viewBox='0 0 16 24'%3E%3Cpath d='M0 3h16M0 21h16' stroke='%239E7347' stroke-width='2'/%3E%3Cpath d='M0 20 C4 20 4 4 8 4 S12 20 16 20' fill='none' stroke='%239E7347' stroke-width='1.6'/%3E%3C/svg%3E\");background-repeat:repeat-x}"
+    },
+    {
+      "name": "Received Stamp",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Form success state: rotated stencil stamp in an ink box.",
+      "html": "<span class=\"ds-stamp\">Received</span>",
+      "css": ".ds-stamp{display:inline-block;border:3px solid var(--ink, #18266B);color:var(--ink, #18266B);font:900 2rem/1 \"Big Shoulders Stencil Display\",Archivo,sans-serif;text-transform:uppercase;padding:8px 14px;transform:rotate(-3deg);letter-spacing:.04em}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Opened Carton",
+    "overview": "Every surface is part of the corrugated box the bike ships in. The ground is kraft board with a fine paper grain, the inside is a lighter liner, and everything printed on it comes from one deep flexo blue ink: solid where the ink lays down hard, as line work where it is ruled, and screened back to a faint tint where a large mark sits behind the product. The page reads as packaging that has been opened, not as a studio stage: die-lines, fold lines, registration marks and handling symbols are the decoration, and each one is a real carton convention.\n\nThe bike is the only thing in colour. Its frame finishes (Graphite, Moss, Clay) and the brighter x-ray blue used to reveal its battery and belt live on the product and the product's own swatches, never on the box. Density is generous and print-like: large stencil display type, wide flute-pitch spacing, and set text kept to readable measures. Motion is one eased camera dolly along a single axis plus part reveals; under reduced motion everything snaps, and without WebGL a printed side elevation of the bike takes its place.",
+    "keyCharacteristics": [
+      "Kraft board ground with paper grain; liner for the 3D stage; label stock for anything you read closely or fill in.",
+      "One ink: flexo blue at full strength, as rules, or screened to 13-14% opacity. No second brand hue.",
+      "Stencil display for everything printed large; Archivo (variable width) for set text.",
+      "Carton conventions as ornament: dashed cut lines, dotted fold lines, registration crosses, this-way-up arrows, a 16 KG weight mark, a sine-flute corrugated seam.",
+      "Bike colours appear only on the product."
+    ],
+    "rules": [
+      {
+        "name": "The One Ink Rule",
+        "body": "The box is printed in flexo blue only. Tints are screens of that ink by opacity; a second printed hue on the carton is off-world.",
+        "section": "colors"
+      },
+      {
+        "name": "The Product Holds the Colour Rule",
+        "body": "Graphite, Moss, Clay and the x-ray blue belong to the bike and its swatches. They never colour a button, rule, background or heading.",
+        "section": "colors"
+      },
+      {
+        "name": "The Printed vs Set Rule",
+        "body": "Anything that would be printed on the carton (brand, headings, numbers that matter, names) is stencil uppercase; anything you read as a document (sentences, form input, answers) is Archivo sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Label Is Functional Rule",
+        "body": "Small tracked-caps type names a field, a column, a part or a sender. It never sits above a heading as an introducer.",
+        "section": "typography"
+      },
+      {
+        "name": "The Warm Shadow Rule",
+        "body": "Shadows are tinted kraft brown (rgba(60,36,12)) or ink blue on ink buttons, never neutral grey or black, and always diffuse below the sheet.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Die-Line Rule",
+        "body": "Dashed means cut, dotted means fold, solid means print. Choose the line style by what the line is on a real carton.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do print every carton element in flexo ink (#18266B) only, at full strength, as line work, or screened by opacity.",
+      "Do keep every gap on the 8px flute pitch (8, 16, 24, 32, 48, 64, 96, 128).",
+      "Do separate major sections with the 24px corrugated sine-flute seam.",
+      "Do pick line style by carton meaning: dashed for cut, dotted for fold, solid for print.",
+      "Do set printed matter in Big Shoulders Stencil uppercase and documents in Archivo sentence case.",
+      "Do honour reduced motion by snapping the dolly, turns and colour changes, and keep the SVG side elevation as the no-WebGL state."
+    ],
+    "donts": [
+      "Don't use Graphite, Moss, Clay or the x-ray blue anywhere but the bike and its swatches.",
+      "Don't add a second printed hue, a gradient fill or a glow to the carton.",
+      "Don't turn the carton into a dark studio stage with glowing edges.",
+      "Don't use neutral grey or black shadows; shadows are warm kraft brown or ink blue.",
+      "Don't place tracked-caps labels above headings as introducers; small caps label fields, parts, columns and senders only.",
+      "Don't round corners beyond 4px except for true circles (rings, discs, registration marks)."
+    ]
+  }
+}

@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidefest 2027 — 14–16 August, Newquay, Cornwall</title>
+<meta name="description" content="Tidefest: three days of electronic and alternative music on a beach near Newquay, Cornwall. 14–16 August 2027. Two stages, camping and a sunrise set every morning.">
+<meta name="theme-color" content="#0B2E3F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --atlantic:#0B2E3F;
+  --atlantic-2:#103A4F;
+  --surf:#3FD0C9;
+  --sunrise:#FFB23E;
+  --flare:#FF4F79;
+  --foam:#EAF7F4;
+  --granite:#4E5F67;
+  --ink:#0B2E3F;
+  --line:rgba(11,46,63,.18);
+  --line-dark:rgba(234,247,244,.2);
+  --gutter:clamp(16px,4vw,56px);
+  --max:1320px;
+  --font:"Anybody",system-ui,sans-serif;
+  /* type scale (minor third-ish, fluid) */
+  --t-sm:.875rem;
+  --t-base:1.0625rem;
+  --t-md:clamp(1.25rem,1.1rem + .6vw,1.5rem);
+  --t-lg:clamp(1.6rem,1.2rem + 1.6vw,2.4rem);
+  --t-xl:clamp(2.4rem,1.4rem + 4.2vw,5.2rem);
+  --ease-swell:cubic-bezier(.45,.05,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font);font-size:var(--t-base);line-height:1.5;color:var(--foam);background:var(--atlantic);font-variation-settings:"wdth" 100;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sunrise);outline-offset:3px;border-radius:2px}
+.light :focus-visible{outline-color:var(--flare)}
+.skip{position:absolute;left:var(--gutter);top:-60px;z-index:100;background:var(--sunrise);color:var(--atlantic);padding:.6rem 1rem;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+h1,h2,h3{margin:0;line-height:1.02;font-weight:800}
+h2{font-size:var(--t-xl);font-variation-settings:"wdth" 130;letter-spacing:-.01em}
+h3{font-size:var(--t-md);font-variation-settings:"wdth" 110}
+p{margin:0}
+.lede{font-size:var(--t-md);max-width:34ch;line-height:1.4}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:.75rem 1.4rem;border:0;border-radius:999px;background:var(--sunrise);color:var(--atlantic);font-weight:800;font-variation-settings:"wdth" 115;text-decoration:none;cursor:pointer;transition:transform .25s var(--ease-swell),background-color .2s}
+.btn:hover{background:#FFC468}
+.btn:active{transform:scale(.97)}
+.btn--ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.btn--ghost:hover{background:rgba(234,247,244,.1)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* ---------- header ---------- */
+.site-header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background-color .3s,box-shadow .3s}
+.site-header.is-scrolled{background:rgba(11,46,63,.96);box-shadow:0 1px 0 var(--line-dark)}
+.bar{display:flex;align-items:center;gap:1.5rem;height:72px}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;font-weight:900;font-size:1.35rem;font-variation-settings:"wdth" 140;letter-spacing:-.01em}
+.logo svg{width:34px;height:34px}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:.25rem;list-style:none;margin:0;padding:0}
+.nav a{display:block;padding:.6rem .9rem;text-decoration:none;font-weight:600;border-radius:999px;transition:background-color .2s}
+.nav a:hover{background:rgba(234,247,244,.1)}
+.menu-btn{display:none;margin-left:auto;width:48px;height:48px;border:0;background:transparent;border-radius:50%;cursor:pointer;padding:0}
+.menu-btn svg{width:28px;height:28px;margin:auto}
+.mobile-nav{display:none}
+@media (max-width:860px){
+  .nav,.bar>.btn{display:none}
+  .menu-btn{display:grid;place-items:center}
+  .mobile-nav{position:fixed;inset:72px 0 0 0;background:var(--atlantic);padding:1.5rem var(--gutter) 2rem;display:flex;flex-direction:column;gap:2rem;overflow:auto;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .25s,transform .35s var(--ease-swell),visibility 0s .35s}
+  .mobile-nav.is-open{opacity:1;transform:none;visibility:visible;transition:opacity .25s,transform .35s var(--ease-swell)}
+  .mobile-nav ul{list-style:none;margin:0;padding:0}
+  .mobile-nav li+li{border-top:1px solid var(--line-dark)}
+  .mobile-nav a:not(.btn){display:block;padding:1rem 0;font-size:2.2rem;font-weight:800;font-variation-settings:"wdth" 135;text-decoration:none}
+  .mobile-nav .btn{align-self:flex-start}
+  body.nav-open{overflow:hidden}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:96px 0 0;overflow:hidden;background:
+  radial-gradient(120% 70% at 70% 100%,#165A6E 0%,rgba(22,90,110,0) 60%),var(--atlantic)}
+.wordmark{position:relative;z-index:2;margin:0;padding:0 var(--gutter);font-weight:900;line-height:.8;font-size:clamp(4.2rem,16.2vw,15rem);letter-spacing:-.02em;white-space:nowrap;display:flex;justify-content:space-between;color:var(--foam);contain:layout style}
+.wordmark .ch{display:inline-block;font-variation-settings:"wdth" var(--w,100),"wght" var(--g,800);will-change:font-variation-settings}
+.wordmark .br{display:none}
+.wordmark .br~.ch{color:var(--sunrise)}
+@media (max-width:860px){.wordmark{flex-wrap:wrap;font-size:24vw;line-height:.86}.wordmark .br{display:block;flex-basis:100%;height:0}}
+.hero-meta{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:1.5rem 3rem;align-items:end;padding-top:clamp(1.5rem,3vw,2.5rem);padding-bottom:clamp(7rem,16vw,12rem)}
+.when{font-size:var(--t-lg);font-weight:800;font-variation-settings:"wdth" 120;line-height:1.1}
+.when span{display:block;font-weight:500;font-size:var(--t-md);font-variation-settings:"wdth" 100;color:var(--surf);margin-top:.4rem}
+.hero-ctas{display:flex;gap:.75rem;flex-wrap:wrap}
+.hero-waves{position:absolute;left:0;right:0;bottom:0;height:clamp(110px,18vw,220px);z-index:1;pointer-events:none}
+.hero-waves svg{position:absolute;bottom:-1px;left:0;width:200%;height:100%;max-width:none;animation:drift 18s linear infinite;will-change:transform}
+.hero-waves svg:nth-child(2){animation-duration:12s;animation-direction:reverse}
+.hero-waves svg:nth-child(3){animation-duration:24s}
+.hero-waves .w1{fill:#134A5E}
+.hero-waves .w2{fill:#1A6378}
+.hero-waves .w3{fill:var(--foam)}
+@keyframes drift{to{transform:translateX(-50%)}}
+.hint{font-size:var(--t-sm);color:rgba(234,247,244,.75);grid-column:1/-1}
+@media (max-width:860px){
+  .hero-meta{grid-template-columns:1fr}
+}
+
+/* ---------- sunrise scroll sequence ---------- */
+.sunrise{position:relative;height:320vh;background:var(--atlantic)}
+.sunrise-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;align-items:start;padding-top:max(96px,14vh);background:var(--sky,#103A4F);transition:background-color .1s linear}
+.sunrise-art{position:absolute;inset:0}
+.sunrise-art svg{width:100%;height:100%}
+.sun{transform-box:fill-box;transform-origin:center}
+.sea{fill:var(--atlantic)}
+.sunrise-lines{position:relative;z-index:2;list-style:none;margin:0;padding:0 var(--gutter);width:100%;max-width:var(--max);display:grid;gap:.2em;font-size:clamp(1.9rem,4.6vw,4.8rem);font-weight:900;line-height:1;margin:0 auto;letter-spacing:-.01em;color:var(--foam)}
+.sunrise-lines li{font-variation-settings:"wdth" var(--lw,125),"wght" 850;opacity:var(--lo,1);transform:translateY(var(--ly,0));text-wrap:balance}
+.sunrise-lines li:nth-child(2){padding-left:8vw}
+.sunrise-lines li:nth-child(3){padding-left:16vw}
+.sunrise-lines li:nth-child(4){padding-left:4vw;color:var(--sunrise)}
+@media (max-width:640px){.sunrise-lines li:nth-child(n){padding-left:0}}
+
+/* ---------- light sections ---------- */
+.light{background:var(--foam);color:var(--ink)}
+.section{padding:clamp(4.5rem,10vw,8.5rem) 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2rem,5vw,3.5rem)}
+.section-head p{max-width:38ch;color:var(--granite);font-size:var(--t-md);line-height:1.4}
+.dark .section-head p{color:rgba(234,247,244,.8)}
+
+/* ---------- line-up ---------- */
+.days{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.day-btn{min-height:56px;padding:.5rem 1.3rem;border:2px solid var(--ink);background:transparent;border-radius:999px;cursor:pointer;font-weight:800;font-size:1.1rem;font-variation-settings:"wdth" 100;transition:background-color .2s,color .2s,font-variation-settings .45s var(--ease-swell)}
+.day-btn small{font-weight:500;font-size:.85rem;margin-left:.35rem}
+.day-btn:hover{background:rgba(11,46,63,.08)}
+.day-btn[aria-pressed="true"]{background:var(--ink);color:var(--foam);font-variation-settings:"wdth" 140}
+.sets{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.set{display:grid;grid-template-columns:6.5rem 1fr minmax(9rem,auto);gap:1rem 2rem;align-items:center;padding:1.15rem 0;border-bottom:1px solid var(--line)}
+.set[hidden]{display:none}
+.set time{font-weight:700;font-variant-numeric:tabular-nums;color:var(--granite)}
+.set .artist{font-size:clamp(1.6rem,1rem + 2.6vw,3.2rem);font-weight:850;line-height:1;font-variation-settings:"wdth" 120;transition:font-variation-settings .5s var(--ease-swell)}
+.set:hover .artist{font-variation-settings:"wdth" 145}
+.set .stage{display:flex;align-items:center;gap:.5rem;justify-self:end;font-weight:600;color:var(--granite)}
+.stage svg{width:26px;height:26px;flex:none}
+.set--sunrise{background:linear-gradient(90deg,rgba(255,178,62,.35),rgba(255,178,62,0) 70%);padding-left:1rem;margin-left:-1rem;padding-right:1rem;margin-right:-1rem}
+.set--sunrise .tag{display:block;font-size:var(--t-sm);font-weight:600;font-variation-settings:"wdth" 100;color:#7A4A00;margin-top:.35rem}
+.set--head .artist{font-size:clamp(2rem,1rem + 4vw,4.6rem)}
+.set.enter{animation:rise .6s var(--ease-swell) both;animation-delay:calc(var(--i,0) * 60ms)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+@media (max-width:640px){
+  .set{grid-template-columns:1fr auto;gap:.35rem 1rem}
+  .set time{grid-column:1/-1}
+  .set .stage{font-size:var(--t-sm)}
+}
+
+/* ---------- countdown ---------- */
+.countdown{background:var(--flare);color:var(--atlantic);padding:clamp(3.5rem,8vw,6rem) 0;overflow:hidden}
+.cd-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem 3rem;align-items:end}
+.cd-grid h2{font-size:var(--t-lg);font-variation-settings:"wdth" 120;max-width:16ch}
+.cd-grid p{margin-top:.75rem;font-weight:600;max-width:36ch}
+.clock{display:flex;gap:clamp(.75rem,2.5vw,2rem);margin:0}
+.unit{display:flex;flex-direction:column-reverse;align-items:flex-start}
+.unit dt{font-weight:600;font-size:var(--t-sm)}
+.unit dd{margin:0;font-size:clamp(3rem,1.5rem + 6vw,7.5rem);font-weight:900;line-height:.9;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 75;display:flex;overflow:hidden;height:.92em}
+.digit{display:inline-block;width:.58em;text-align:center}
+.digit.roll{animation:roll .45s var(--ease-swell)}
+@keyframes roll{from{transform:translateY(-70%);opacity:0}}
+@media (max-width:860px){.cd-grid{grid-template-columns:1fr}}
+
+/* ---------- tickets ---------- */
+.dark{background:var(--atlantic);color:var(--foam)}
+.tickets-list{list-style:none;margin:0;padding:0;border-top:2px solid var(--foam)}
+.ticket{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.6fr) auto auto;gap:1rem 2.5rem;align-items:center;padding:1.75rem 0;border-bottom:1px solid var(--line-dark)}
+.ticket h3{font-size:var(--t-lg);font-variation-settings:"wdth" 125}
+.ticket p{color:rgba(234,247,244,.82);max-width:42ch}
+.price{font-size:var(--t-lg);font-weight:800;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 90;color:var(--sunrise);text-align:right;min-width:4.5ch}
+.stepper{display:flex;align-items:center;border:2px solid rgba(234,247,244,.5);border-radius:999px}
+.stepper button{width:48px;height:48px;border:0;background:transparent;border-radius:50%;cursor:pointer;font-size:1.5rem;font-weight:700;line-height:1;display:grid;place-items:center}
+.stepper button:hover:not([disabled]){background:rgba(234,247,244,.12)}
+.stepper button[disabled]{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:2.2ch;text-align:center;font-weight:800;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.ticket.has-qty .price{color:var(--surf)}
+.summary{position:sticky;bottom:0;z-index:5;margin-top:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem 2rem;flex-wrap:wrap;padding:1.1rem 1.5rem;background:var(--foam);color:var(--atlantic);border-radius:20px 20px 0 0}
+.summary .total{font-size:var(--t-lg);font-weight:900;font-variation-settings:"wdth" 110;font-variant-numeric:tabular-nums}
+.summary .count{font-weight:600;color:var(--granite)}
+.summary-note{flex-basis:100%;font-size:var(--t-sm);font-weight:600;color:var(--granite);min-height:1.2em}
+@media (max-width:860px){
+  .ticket{grid-template-columns:1fr auto;}
+  .ticket p{grid-column:1/-1;grid-row:2}
+  .ticket .price{grid-column:2;grid-row:1}
+  .ticket .stepper{grid-column:1;grid-row:3;justify-self:start}
+}
+
+/* ---------- camping / getting there ---------- */
+.info-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2.5rem 2rem}
+.info{border-top:2px solid var(--ink);padding-top:1.25rem}
+.info svg{width:56px;height:56px;margin-bottom:1rem}
+.info h3{margin-bottom:.6rem}
+.info p{color:var(--granite);max-width:34ch}
+@media (max-width:1024px){.info-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.info-grid{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+.faq-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:2rem 4rem;align-items:start}
+.faq{border-top:2px solid var(--ink)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item h3{font-size:inherit}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;text-align:left;padding:1.25rem 0;border:0;background:none;cursor:pointer;font-size:var(--t-md);font-weight:700;font-variation-settings:"wdth" 105;transition:font-variation-settings .4s var(--ease-swell)}
+.faq-q[aria-expanded="true"]{font-variation-settings:"wdth" 125}
+.faq-q .ic{flex:none;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--foam);display:grid;place-items:center;transition:transform .4s var(--ease-swell),background-color .2s}
+.faq-q[aria-expanded="true"] .ic{transform:rotate(45deg);background:var(--flare);color:var(--atlantic)}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease-swell)}
+.faq-a>div{overflow:hidden}
+.faq-a p{padding:0 0 1.5rem;max-width:60ch;color:var(--granite)}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+@media (max-width:860px){.faq-layout{grid-template-columns:1fr}}
+
+/* ---------- newsletter ---------- */
+.news{background:var(--sunrise);color:var(--atlantic);padding:clamp(4rem,9vw,7rem) 0;position:relative;overflow:hidden}
+.news-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:2rem 4rem;align-items:end}
+.news h2{font-size:var(--t-xl)}
+.news-form label{display:block;font-weight:700;margin-bottom:.5rem}
+.field{display:flex;gap:.5rem;flex-wrap:wrap}
+.field input{flex:1 1 14rem;min-height:56px;padding:.75rem 1.1rem;border:2px solid var(--atlantic);border-radius:999px;background:#FFF8EC;font-size:1.05rem;color:var(--atlantic)}
+.field input::placeholder{color:#6B6150}
+.field input[aria-invalid="true"]{border-color:#A3123A;box-shadow:0 0 0 2px #A3123A}
+.news .btn{background:var(--atlantic);color:var(--foam);min-height:56px}
+.news .btn:hover{background:#174559}
+.news :focus-visible{outline-color:var(--atlantic)}
+.msg{margin-top:.75rem;font-weight:700;min-height:1.5em}
+.msg.err{color:#8A0F31}
+.success{display:flex;align-items:center;gap:1rem;font-size:var(--t-md);font-weight:800}
+.success svg{width:48px;height:48px;flex:none}
+@media (max-width:860px){.news-grid{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+.footer{padding:4rem 0 2.5rem}
+.footer-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:2.5rem}
+.footer .logo{font-size:2rem}
+.footer h2{font-size:var(--t-md);font-variation-settings:"wdth" 110;margin-bottom:.8rem}
+.footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.footer a{text-decoration-color:rgba(234,247,244,.4);text-underline-offset:3px}
+.footer a:hover{text-decoration-color:var(--sunrise)}
+.footer .fine{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line-dark);font-size:var(--t-sm);color:rgba(234,247,244,.72)}
+.socials{display:flex;flex-wrap:wrap;gap:.5rem}
+.socials a{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(234,247,244,.4);transition:box-shadow .2s}
+.socials a:hover{box-shadow:inset 0 0 0 2px var(--sunrise)}
+.socials svg{width:22px;height:22px}
+@media (max-width:760px){.footer-grid{grid-template-columns:1fr}}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .hero-waves svg{animation:none!important}
+  .sunrise{height:auto}
+  .sunrise-pin{position:relative;height:auto;min-height:80svh;padding:7rem 0 clamp(12rem,32vh,18rem)}
+}
+.no-motion .sunrise{height:auto}
+.no-motion .sunrise-pin{position:relative;height:auto;min-height:80svh;padding:7rem 0 clamp(12rem,32vh,18rem)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header" id="top">
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Tidefest, back to top">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="18" r="11" fill="#FFB23E"/><path d="M2 26c4.5 0 4.5-4 9-4s4.5 4 9 4 4.5-4 9-4 4.5 4 9 4v12H2z" fill="#3FD0C9"/></svg>
+      Tidefest
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="#line-up">Line-up</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+        <li><a href="#camping">Camping</a></li>
+        <li><a href="#info">Info</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#tickets">Buy tickets</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+      <svg viewBox="0 0 28 28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path class="m-open" d="M4 9c3.3 0 3.3-2 6.7-2s3.3 2 6.6 2 3.4-2 6.7-2M4 15c3.3 0 3.3-2 6.7-2s3.3 2 6.6 2 3.4-2 6.7-2M4 21c3.3 0 3.3-2 6.7-2s3.3 2 6.6 2 3.4-2 6.7-2"/><path class="m-close" d="M7 7l14 14M21 7L7 21" hidden/></svg>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+    <ul>
+      <li><a href="#line-up">Line-up</a></li>
+      <li><a href="#tickets">Tickets</a></li>
+      <li><a href="#camping">Camping</a></li>
+      <li><a href="#info">Info</a></li>
+    </ul>
+    <a class="btn" href="#tickets">Buy tickets</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 class="wordmark" id="hero-title" aria-label="Tidefest"><span aria-hidden="true" class="ch">T</span><span aria-hidden="true" class="ch">I</span><span aria-hidden="true" class="ch">D</span><span aria-hidden="true" class="ch">E</span><span class="br" aria-hidden="true"></span><span aria-hidden="true" class="ch">F</span><span aria-hidden="true" class="ch">E</span><span aria-hidden="true" class="ch">S</span><span aria-hidden="true" class="ch">T</span></h1>
+    <div class="wrap hero-meta">
+      <p class="when">14–16 August 2027<span>On the beach near Newquay, Cornwall. Electronic and alternative music, two stages, 8,000 people.</span></p>
+      <div class="hero-ctas">
+        <a class="btn" href="#tickets">Buy tickets</a>
+        <a class="btn btn--ghost" href="#line-up">See the line-up</a>
+      </div>
+    </div>
+    <div class="hero-waves" aria-hidden="true">
+      <svg viewBox="0 0 2880 220" preserveAspectRatio="none"><path class="w1" d="M0 90 C240 40 480 140 720 90 S1200 40 1440 90 S1920 140 2160 90 S2640 40 2880 90 V220 H0Z"/></svg>
+      <svg viewBox="0 0 2880 220" preserveAspectRatio="none"><path class="w2" d="M0 140 C180 100 540 180 720 140 S1260 100 1440 140 S1980 180 2160 140 S2700 100 2880 140 V220 H0Z"/></svg>
+      <svg viewBox="0 0 2880 220" preserveAspectRatio="none"><path class="w3" d="M0 190 C240 170 480 210 720 190 S1200 170 1440 190 S1920 210 2160 190 S2640 170 2880 190 V220 H0Z"/></svg>
+    </div>
+  </section>
+
+  <section class="sunrise" aria-label="About the festival">
+    <div class="sunrise-pin">
+      <div class="sunrise-art" aria-hidden="true">
+        <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMax slice">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFB23E" stop-opacity=".55"/><stop offset="1" stop-color="#FFB23E" stop-opacity="0"/></radialGradient>
+          </defs>
+          <g class="sun" id="sun">
+            <circle cx="700" cy="420" r="230" fill="url(#glow)"/>
+            <circle cx="700" cy="420" r="92" fill="#FFB23E"/>
+          </g>
+          <path class="sea" d="M0 470 C120 455 240 485 360 470 S600 455 720 470 S880 485 1000 470 V600 H0Z"/>
+          <g id="glints" fill="#FFB23E" opacity="0">
+            <rect x="640" y="490" width="120" height="4" rx="2"/><rect x="660" y="510" width="80" height="4" rx="2"/><rect x="675" y="530" width="50" height="4" rx="2"/><rect x="688" y="550" width="24" height="3" rx="1.5"/>
+          </g>
+        </svg>
+      </div>
+      <ul class="sunrise-lines" id="sunrise-lines">
+        <li>Three days on the sand.</li>
+        <li>Shoreline by the water. The Cave in the cliffs.</li>
+        <li>8,000 people, one beach.</li>
+        <li>A sunrise set every morning.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="light section" id="line-up" aria-labelledby="lineup-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="lineup-title">Line-up</h2>
+        <p>Eighteen acts over three days. Pick a day to see who plays when, and on which stage.</p>
+      </div>
+      <div class="days" role="group" aria-label="Choose a day">
+        <button class="day-btn" type="button" data-day="1" aria-pressed="true">Saturday<small>14 Aug</small></button>
+        <button class="day-btn" type="button" data-day="2" aria-pressed="false">Sunday<small>15 Aug</small></button>
+        <button class="day-btn" type="button" data-day="3" aria-pressed="false">Monday<small>16 Aug</small></button>
+      </div>
+      <p class="sr-only" aria-live="polite" id="day-status"></p>
+      <ol class="sets" id="sets">
+        <!-- Day 1 -->
+        <li class="set set--sunrise" data-day="1"><time>05:40</time><span class="artist">Nessa Trevail<span class="tag">Sunrise set</span></span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="1"><time>15:30</time><span class="artist">Pellow &amp; Wren</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set" data-day="1"><time>17:15</time><span class="artist">Blue Hour Machines</span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="1"><time>19:00</time><span class="artist">Mara Vey</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set" data-day="1"><time>21:00</time><span class="artist">Undertow Union</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set set--head" data-day="1"><time>22:30</time><span class="artist">Halcyon Tidewell</span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <!-- Day 2 -->
+        <li class="set set--sunrise" data-day="2"><time>05:40</time><span class="artist">Jory Penhale<span class="tag">Sunrise set</span></span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="2"><time>15:30</time><span class="artist">Gravel Hymns</span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="2"><time>17:15</time><span class="artist">Ottilie Kask</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set" data-day="2"><time>19:00</time><span class="artist">The Brine Collective</span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="2"><time>21:00</time><span class="artist">Sub Lumen</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set set--head" data-day="2"><time>22:30</time><span class="artist">Corrin Saltmarsh</span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <!-- Day 3 -->
+        <li class="set set--sunrise" data-day="3"><time>05:45</time><span class="artist">Morvoren Hale<span class="tag">Sunrise set</span></span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="3"><time>15:30</time><span class="artist">Kittiwake Arcade</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set" data-day="3"><time>17:15</time><span class="artist">Seren &amp; the Spray</span><span class="stage" data-stage="shore">Shoreline</span></li>
+        <li class="set" data-day="3"><time>19:00</time><span class="artist">Tamsin Rook</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set" data-day="3"><time>21:00</time><span class="artist">Neon Limpet</span><span class="stage" data-stage="cave">The Cave</span></li>
+        <li class="set set--head" data-day="3"><time>22:30</time><span class="artist">Lantern Static</span><span class="stage" data-stage="shore">Shoreline</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="countdown" aria-labelledby="cd-title">
+    <div class="wrap cd-grid">
+      <div>
+        <h2 id="cd-title">Gates open in</h2>
+        <p id="cd-when">Saturday 14 August 2027 at 12:00 UK time.</p>
+      </div>
+      <dl class="clock" id="clock" aria-describedby="cd-when">
+        <div class="unit"><dt>days</dt><dd data-unit="d">000</dd></div>
+        <div class="unit"><dt>hours</dt><dd data-unit="h">00</dd></div>
+        <div class="unit"><dt>minutes</dt><dd data-unit="m">00</dd></div>
+        <div class="unit"><dt>seconds</dt><dd data-unit="s">00</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="dark section" id="tickets" aria-labelledby="tickets-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="tickets-title">Tickets</h2>
+        <p>Prices include booking fees. Up to 8 of each ticket per order.</p>
+      </div>
+      <ul class="tickets-list">
+        <li class="ticket" data-price="79" data-name="Day">
+          <h3 id="t-day">Day</h3>
+          <p>Entry for one day of your choice, 12:00 until the last set. Pick your day at the gate.</p>
+          <span class="price">£79</span>
+          <div class="stepper" role="group" aria-labelledby="t-day">
+            <button type="button" data-step="-1" aria-label="Remove one Day ticket" disabled>&minus;</button>
+            <output aria-live="polite" aria-label="Day tickets">0</output>
+            <button type="button" data-step="1" aria-label="Add one Day ticket">+</button>
+          </div>
+        </li>
+        <li class="ticket" data-price="185" data-name="Weekend">
+          <h3 id="t-wk">Weekend</h3>
+          <p>All three days and all three sunrise sets. No camping, so you come and go each day.</p>
+          <span class="price">£185</span>
+          <div class="stepper" role="group" aria-labelledby="t-wk">
+            <button type="button" data-step="-1" aria-label="Remove one Weekend ticket" disabled>&minus;</button>
+            <output aria-live="polite" aria-label="Weekend tickets">0</output>
+            <button type="button" data-step="1" aria-label="Add one Weekend ticket">+</button>
+          </div>
+        </li>
+        <li class="ticket" data-price="235" data-name="Weekend + camping">
+          <h3 id="t-camp">Weekend + camping</h3>
+          <p>All three days plus a pitch on the headland field from Friday 13 August to Tuesday 17 August.</p>
+          <span class="price">£235</span>
+          <div class="stepper" role="group" aria-labelledby="t-camp">
+            <button type="button" data-step="-1" aria-label="Remove one Weekend plus camping ticket" disabled>&minus;</button>
+            <output aria-live="polite" aria-label="Weekend plus camping tickets">0</output>
+            <button type="button" data-step="1" aria-label="Add one Weekend plus camping ticket">+</button>
+          </div>
+        </li>
+      </ul>
+      <div class="summary">
+        <div>
+          <span class="count" id="count">No tickets selected</span>
+          <div class="total" aria-live="polite" aria-atomic="true"><span class="sr-only">Total: </span><span id="total">£0</span></div>
+        </div>
+        <button class="btn" type="button" id="checkout" disabled>Continue to payment</button>
+        <p class="summary-note" id="checkout-note" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="light section" id="camping" aria-labelledby="camp-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="camp-title">Camping and getting there</h2>
+        <p>The site is a short walk from the sand. Here's what to know before you pack.</p>
+      </div>
+      <div class="info-grid">
+        <article class="info">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M6 46 28 10l22 36z" fill="#3FD0C9"/><path d="M28 10v36M22 46l6-12 6 12" fill="none" stroke="#0B2E3F" stroke-width="2.5" stroke-linejoin="round"/><path d="M2 48h52" stroke="#0B2E3F" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h3>Camp on the headland</h3>
+          <p>Pitches open Friday 13 August at 14:00 and close Tuesday at 12:00. Bring your own tent; showers and toilets are on the field.</p>
+        </article>
+        <article class="info">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="8" y="12" width="40" height="28" rx="6" fill="#FFB23E"/><path d="M8 26h40" stroke="#0B2E3F" stroke-width="2.5"/><circle cx="17" cy="44" r="4" fill="#0B2E3F"/><circle cx="39" cy="44" r="4" fill="#0B2E3F"/><path d="M14 18h12M30 18h12" stroke="#0B2E3F" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h3>Shuttle from Newquay</h3>
+          <p>Festival shuttles run from Newquay town centre every 20 minutes during opening hours. Your ticket covers the ride.</p>
+        </article>
+        <article class="info">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M10 34l5-12h26l5 12v8H10z" fill="#FF4F79"/><circle cx="18" cy="42" r="4.5" fill="#0B2E3F"/><circle cx="38" cy="42" r="4.5" fill="#0B2E3F"/><path d="M17 24h22" stroke="#0B2E3F" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h3>Driving and parking</h3>
+          <p>Parking is pre-booked only and limited, so share a car if you can. Postcode and directions arrive with your tickets.</p>
+        </article>
+        <article class="info">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M4 36c4 0 4-4 8-4s4 4 8 4 4-4 8-4 4 4 8 4 4-4 8-4 4 4 8 4" fill="none" stroke="#3FD0C9" stroke-width="3" stroke-linecap="round"/><path d="M28 6c-8 8-8 16 0 20 8-4 8-12 0-20z" fill="#0B2E3F"/><path d="M28 14v14" stroke="#EAF7F4" stroke-width="2"/></svg>
+          <h3>Leave no trace</h3>
+          <p>Take everything home, tents included. Refill water for free at the taps around the site and on the beach.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="light section" id="info" aria-labelledby="faq-title" style="padding-top:0">
+    <div class="wrap faq-layout">
+      <div class="section-head" style="margin-bottom:0">
+        <h2 id="faq-title">Good to know</h2>
+      </div>
+      <div class="faq" id="faq">
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa1" id="fq1">How old do I need to be?<span class="ic" aria-hidden="true">+</span></button></h3>
+          <div class="faq-a" id="fa1" role="region" aria-labelledby="fq1"><div><p>Tidefest is 18+. Bring photo ID that shows your date of birth; you'll need it at the gate and at the bars.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa2" id="fq2">What time is the sunrise set?<span class="ic" aria-hidden="true">+</span></button></h3>
+          <div class="faq-a" id="fa2" role="region" aria-labelledby="fq2"><div><p>It starts around 05:40 on Shoreline each morning and runs for about 90 minutes. Weekend tickets include all three.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa3" id="fq3">Is the site accessible?<span class="ic" aria-hidden="true">+</span></button></h3>
+          <div class="faq-a" id="fa3" role="region" aria-labelledby="fq3"><div><p>There's a raised viewing platform at each stage, accessible toilets, and track matting from the entrance to Shoreline. Email us before you book and we'll plan your visit with you.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa4" id="fq4">What happens if the weather turns?<span class="ic" aria-hidden="true">+</span></button></h3>
+          <div class="faq-a" id="fa4" role="region" aria-labelledby="fq4"><div><p>Sets go ahead in rain. In high winds we may pause Shoreline and move acts into The Cave. Changes appear here and in our emails.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa5" id="fq5">Can I get a refund?<span class="ic" aria-hidden="true">+</span></button></h3>
+          <div class="faq-a" id="fa5" role="region" aria-labelledby="fq5"><div><p>Tickets can't be refunded, but you can transfer yours to someone else for free up to 7 days before the festival.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news" aria-labelledby="news-title">
+    <div class="wrap news-grid">
+      <div>
+        <h2 id="news-title">Hear it first</h2>
+        <p class="lede" style="margin-top:1rem">One email when set times drop, one when the camping map is out. Nothing else.</p>
+      </div>
+      <div id="news-slot">
+        <form class="news-form" id="news-form" novalidate>
+          <label for="email">Email address</label>
+          <div class="field">
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="email-msg" required>
+            <button class="btn" type="submit">Join the list</button>
+          </div>
+          <p class="msg" id="email-msg" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="dark footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="#top">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="18" r="11" fill="#FFB23E"/><path d="M2 26c4.5 0 4.5-4 9-4s4.5 4 9 4 4.5-4 9-4 4.5 4 9 4v12H2z" fill="#3FD0C9"/></svg>
+          Tidefest
+        </a>
+        <p style="margin-top:1rem;max-width:32ch;color:rgba(234,247,244,.82)">14–16 August 2027. A beach near Newquay, Cornwall.</p>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:hello@tidefest.example">hello@tidefest.example</a></li>
+          <li><a href="mailto:access@tidefest.example">access@tidefest.example</a></li>
+          <li><a href="#info">Questions and answers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <div class="socials">
+          <a href="#" aria-label="Tidefest on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="Tidefest on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3h3c.3 2.2 1.7 3.6 4 3.9v3.1c-1.5 0-2.9-.4-4-1.2V15a6 6 0 1 1-6-6v3.1A2.9 2.9 0 1 0 14 15z"/></svg></a>
+          <a href="#" aria-label="Tidefest on YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 8.2c-.2-1.6-1-2.6-2.6-2.8C17 5 12 5 12 5s-5 0-7.4.4C3 5.6 2.2 6.6 2 8.2 1.8 9.6 1.8 12 1.8 12s0 2.4.2 3.8c.2 1.6 1 2.6 2.6 2.8C7 19 12 19 12 19s5 0 7.4-.4c1.6-.2 2.4-1.2 2.6-2.8.2-1.4.2-3.8.2-3.8s0-2.4-.2-3.8zM10 15.2V8.8l5.4 3.2z"/></svg></a>
+          <a href="#" aria-label="Tidefest on Bluesky"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.3 4.4C8.6 6.1 11 9.6 12 11.5c1-1.9 3.4-5.4 5.7-7.1 1.6-1.2 4.3-2.2 4.3.9 0 .6-.4 5.1-.6 5.8-.7 2.5-3.2 3.1-5.5 2.7 4 .7 5 2.9 2.8 5.2-4.2 4.3-6-1.1-6.5-2.5L12 16l-.2.5c-.5 1.4-2.3 6.8-6.5 2.5-2.2-2.3-1.2-4.5 2.8-5.2-2.3.4-4.8-.2-5.5-2.7C2.4 10.4 2 5.9 2 5.3c0-3.1 2.7-2.1 4.3-.9z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <p class="fine">Tidefest is a fictional festival. Artists, prices and services on this page are placeholders.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let reduce = mq.matches;
+  const root = document.documentElement;
+  const setMotionClass = () => root.classList.toggle('no-motion', reduce);
+  setMotionClass();
+
+  /* ---------- header + mobile nav ---------- */
+  const header = document.querySelector('.site-header');
+  const menuBtn = document.querySelector('.menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const iconOpen = menuBtn.querySelector('.m-open');
+  const iconClose = menuBtn.querySelector('.m-close');
+  const setMenu = (open, returnFocus) => {
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    mobileNav.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-open', open);
+    iconOpen.hidden = open; iconClose.hidden = !open;
+    header.classList.toggle('is-scrolled', open || window.scrollY > 40);
+    if (open) mobileNav.querySelector('a').focus();
+    else if (returnFocus) menuBtn.focus();
+  };
+  menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  mobileNav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') setMenu(false, true);
+  });
+  window.matchMedia('(min-width: 861px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+
+  /* ---------- hero swell: kinetic wordmark ---------- */
+  const hero = document.querySelector('.hero');
+  const chars = [...document.querySelectorAll('.wordmark .ch')];
+  const n = chars.length;
+  let pointerX = -1, pointerPower = 0, targetPower = 0, heroVisible = true, rafId = 0, t0 = performance.now();
+  const shape = (t) => chars.map((_, i) => {
+    const phase = i / (n - 1);
+    const swell = Math.sin(phase * Math.PI * 2 - t * 1.1) * .5 + .5;              // travelling wave 0..1
+    const near = pointerX < 0 ? 0 : Math.max(0, 1 - Math.abs(phase - pointerX) * 3.2); // local push
+    const k = Math.min(1, swell * (1 - pointerPower * .55) + near * pointerPower);
+    return { w: 62 + k * 70, g: 600 + k * 300 };
+  });
+  const apply = (vals) => vals.forEach((v, i) => {
+    chars[i].style.setProperty('--w', v.w.toFixed(1));
+    chars[i].style.setProperty('--g', v.g.toFixed(0));
+  });
+  const frame = (now) => {
+    pointerPower += (targetPower - pointerPower) * .08;
+    apply(shape((now - t0) / 1000));
+    rafId = heroVisible && !reduce && !document.hidden ? requestAnimationFrame(frame) : 0;
+  };
+  const start = () => { if (!rafId && heroVisible && !reduce && !document.hidden) rafId = requestAnimationFrame(frame); };
+  const stop = () => { cancelAnimationFrame(rafId); rafId = 0; };
+  const staticSwell = () => apply(shape(1.3));
+  hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect();
+    pointerX = (e.clientX - r.left) / r.width; targetPower = 1;
+  }, { passive: true });
+  hero.addEventListener('pointerleave', () => { targetPower = 0; });
+  new IntersectionObserver(([en]) => { heroVisible = en.isIntersecting; heroVisible ? start() : stop(); }).observe(hero);
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+
+  /* ---------- sunrise scroll sequence ---------- */
+  const sunSec = document.querySelector('.sunrise');
+  const pin = sunSec.querySelector('.sunrise-pin');
+  const sun = document.getElementById('sun');
+  const glints = document.getElementById('glints');
+  const lines = [...document.querySelectorAll('#sunrise-lines li')];
+  const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
+  const skyStops = [[16,58,79],[64,74,110],[255,110,120],[255,178,62]]; // pre-dawn blue > violet > flare > sunrise
+  const skyAt = (p) => {
+    const s = p * (skyStops.length - 1), i = Math.min(skyStops.length - 2, Math.floor(s));
+    return mix(skyStops[i], skyStops[i + 1], s - i);
+  };
+  let sunTick = false;
+  const renderSun = () => {
+    sunTick = false;
+    if (reduce) return;
+    const r = sunSec.getBoundingClientRect();
+    const span = r.height - window.innerHeight;
+    const p = Math.min(1, Math.max(0, -r.top / span));
+    const [R, G, B] = skyAt(Math.min(1, p * 1.1));
+    pin.style.setProperty('--sky', `rgb(${R},${G},${B})`);
+    sun.style.transform = `translateY(${(1 - p) * 260}px)`;
+    glints.setAttribute('opacity', Math.max(0, (p - .55) / .45).toFixed(2));
+    lines.forEach((li, i) => {
+      const local = Math.min(1, Math.max(0, (p - i * .2) / .18));
+      li.style.setProperty('--lo', (.12 + local * .88).toFixed(2));
+      li.style.setProperty('--ly', `${((1 - local) * 30).toFixed(1)}px`);
+      li.style.setProperty('--lw', (70 + local * 55).toFixed(1));
+    });
+    // dark text once the sky is bright enough for contrast
+    pin.style.color = '';
+    lines.forEach(li => li.style.color = p > .62 ? '#0B2E3F' : '');
+  };
+  const onScroll = () => {
+    header.classList.toggle('is-scrolled', window.scrollY > 40 || document.body.classList.contains('nav-open'));
+    if (!sunTick) { sunTick = true; requestAnimationFrame(renderSun); }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  const staticSun = () => {
+    pin.style.setProperty('--sky', '#FFB23E');
+    sun.style.transform = 'none';
+    glints.setAttribute('opacity', '1');
+    lines.forEach(li => { li.style.removeProperty('--lo'); li.style.removeProperty('--ly'); li.style.setProperty('--lw', '125'); li.style.color = '#0B2E3F'; });
+  };
+
+  const applyMotionPref = () => {
+    setMotionClass();
+    if (reduce) { stop(); staticSwell(); staticSun(); }
+    else { start(); renderSun(); }
+  };
+  mq.addEventListener('change', e => { reduce = e.matches; applyMotionPref(); });
+  applyMotionPref();
+  onScroll();
+
+  /* ---------- line-up day filter ---------- */
+  const dayBtns = [...document.querySelectorAll('.day-btn')];
+  const sets = [...document.querySelectorAll('.set')];
+  const dayStatus = document.getElementById('day-status');
+  const stageIcons = {
+    shore: '<svg viewBox="0 0 26 26" aria-hidden="true"><path d="M2 15c2.7 0 2.7-2.5 5.5-2.5S10.2 15 13 15s2.7-2.5 5.5-2.5S21.3 15 24 15M2 21c2.7 0 2.7-2.5 5.5-2.5S10.2 21 13 21s2.7-2.5 5.5-2.5S21.3 21 24 21" fill="none" stroke="#0E8F8A" stroke-width="2.4" stroke-linecap="round"/></svg>',
+    cave: '<svg viewBox="0 0 26 26" aria-hidden="true"><path d="M2 23V12C2 6 7 3 13 3s11 3 11 9v11h-6v-6a5 5 0 0 0-10 0v6z" fill="#0B2E3F"/></svg>'
+  };
+  document.querySelectorAll('.stage').forEach(s => s.insertAdjacentHTML('afterbegin', stageIcons[s.dataset.stage]));
+  const showDay = (day, announce) => {
+    dayBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.day === day)));
+    let i = 0;
+    sets.forEach(s => {
+      const on = s.dataset.day === day;
+      s.hidden = !on;
+      s.classList.remove('enter');
+      if (on && !reduce && announce) { void s.offsetWidth; s.style.setProperty('--i', i++); s.classList.add('enter'); }
+    });
+    if (announce) {
+      const b = dayBtns.find(b => b.dataset.day === day);
+      dayStatus.textContent = `Showing ${b.textContent.replace(/(\d)/, ' $1')} line-up, 6 sets.`;
+    }
+  };
+  dayBtns.forEach(b => b.addEventListener('click', () => showDay(b.dataset.day, true)));
+  showDay('1', false);
+
+  /* ---------- countdown ---------- */
+  const target = Date.UTC(2027, 7, 14, 11, 0, 0); // 12:00 BST (UTC+1)
+  const cells = {};
+  document.querySelectorAll('#clock dd').forEach(dd => cells[dd.dataset.unit] = dd);
+  const prev = {};
+  const paint = (unit, str) => {
+    const dd = cells[unit];
+    if (prev[unit] === str) return;
+    const old = prev[unit] || '';
+    dd.textContent = '';
+    [...str].forEach((c, i) => {
+      const s = document.createElement('span');
+      s.className = 'digit'; s.textContent = c;
+      if (old && old.length === str.length && old[i] !== c && !reduce) s.classList.add('roll');
+      dd.appendChild(s);
+    });
+    prev[unit] = str;
+  };
+  const tick = () => {
+    let ms = Math.max(0, target - Date.now());
+    const d = Math.floor(ms / 864e5); ms -= d * 864e5;
+    const h = Math.floor(ms / 36e5); ms -= h * 36e5;
+    const m = Math.floor(ms / 6e4); ms -= m * 6e4;
+    const s = Math.floor(ms / 1e3);
+    paint('d', String(d).padStart(d > 99 ? 3 : 2, '0'));
+    paint('h', String(h).padStart(2, '0'));
+    paint('m', String(m).padStart(2, '0'));
+    paint('s', String(s).padStart(2, '0'));
+    if (target - Date.now() <= 0) document.getElementById('cd-title').textContent = 'Gates are open';
+  };
+  tick();
+  setInterval(tick, 1000);
+
+  /* ---------- tickets ---------- */
+  const MAX = 8;
+  const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+  const tickets = [...document.querySelectorAll('.ticket')];
+  const totalEl = document.getElementById('total');
+  const countEl = document.getElementById('count');
+  const checkout = document.getElementById('checkout');
+  const note = document.getElementById('checkout-note');
+  let shownTotal = 0, totalRaf = 0;
+  const animateTotal = (to) => {
+    cancelAnimationFrame(totalRaf);
+    if (reduce) { shownTotal = to; totalEl.textContent = fmt.format(to); return; }
+    const from = shownTotal, t1 = performance.now();
+    const step = (now) => {
+      const k = Math.min(1, (now - t1) / 400), e = 1 - Math.pow(1 - k, 3);
+      shownTotal = Math.round(from + (to - from) * e);
+      totalEl.textContent = fmt.format(shownTotal);
+      if (k < 1) totalRaf = requestAnimationFrame(step);
+    };
+    totalRaf = requestAnimationFrame(step);
+  };
+  const update = () => {
+    let total = 0, count = 0;
+    tickets.forEach(t => {
+      const q = +t.dataset.qty || 0;
+      total += q * +t.dataset.price; count += q;
+      t.querySelector('output').textContent = q;
+      t.querySelector('[data-step="-1"]').disabled = q <= 0;
+      t.querySelector('[data-step="1"]').disabled = q >= MAX;
+      t.classList.toggle('has-qty', q > 0);
+    });
+    countEl.textContent = count ? `${count} ticket${count > 1 ? 's' : ''} selected` : 'No tickets selected';
+    animateTotal(total);
+    checkout.disabled = count === 0;
+    note.textContent = '';
+  };
+  tickets.forEach(t => t.addEventListener('click', e => {
+    const b = e.target.closest('[data-step]');
+    if (!b || b.disabled) return;
+    t.dataset.qty = Math.min(MAX, Math.max(0, (+t.dataset.qty || 0) + +b.dataset.step));
+    update();
+    if (b.disabled) t.querySelector(`[data-step="${-b.dataset.step}"]`).focus();
+  }));
+  checkout.addEventListener('click', () => {
+    note.textContent = `Your order comes to ${totalEl.textContent}. Payment isn't connected on this preview page, so nothing has been charged.`;
+  });
+  update();
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => {
+    const open = q.getAttribute('aria-expanded') !== 'true';
+    q.setAttribute('aria-expanded', String(open));
+    q.closest('.faq-item').classList.toggle('open', open);
+  }));
+
+  /* ---------- newsletter ---------- */
+  const form = document.getElementById('news-form');
+  const email = document.getElementById('email');
+  const msg = document.getElementById('email-msg');
+  const valid = v => /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(v);
+  const showError = (text) => { msg.textContent = text; msg.className = 'msg err'; email.setAttribute('aria-invalid', 'true'); };
+  email.addEventListener('input', () => { if (email.getAttribute('aria-invalid') === 'true' && valid(email.value.trim())) { email.removeAttribute('aria-invalid'); msg.textContent = ''; } });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = email.value.trim();
+    if (!v) { showError('Enter your email address to join the list.'); email.focus(); return; }
+    if (!valid(v)) { showError('That email is missing something. Check it looks like name@example.com.'); email.focus(); return; }
+    const slot = document.getElementById('news-slot');
+    slot.innerHTML = '<p class="success" role="status" tabindex="-1"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#0B2E3F"/><path d="M14 25l7 7 13-15" fill="none" stroke="#FFB23E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span></p>';
+    slot.querySelector('span').textContent = `You've joined the list. We'll email ${v} when set times are out.`;
+    slot.querySelector('.success').focus();
+  });
+})();
+</script>
+</body>
+</html>
