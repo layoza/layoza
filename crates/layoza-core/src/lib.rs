@@ -423,15 +423,32 @@ mod tests {
         let with = verifier::audit_project(&dir, None, None, None, None).unwrap();
 
         assert!(without.passed_release_gate, "{:#?}", without.findings);
+        assert_eq!(without.verification_status, "passed");
         assert_eq!(with.passed_release_gate, without.passed_release_gate);
         assert_eq!(with.objective_error_count, without.objective_error_count);
         assert_eq!(with.objective_warning_count, without.objective_warning_count);
         assert_eq!(with.accessibility.automated_violations, without.accessibility.automated_violations);
         assert_eq!(with.subjective_critique_notes, without.subjective_critique_notes + 3);
         // Critique never shows up as a before/after regression either
-        let cmp = verifier::verify_before_after(&without, &with, 0.0, vec![]);
+        let cmp = verifier::verify_before_after(&without, &with, None, vec![]);
         assert!(cmp.unintended_regressions.is_empty(), "{:?}", cmp.unintended_regressions);
+        assert!(cmp.viewports_compared.is_empty());
+        assert!(cmp.pixel_diff_ratio.is_none());
         assert!(cmp.accepted);
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn test_gate_is_unverified_without_core_web_vitals() {
+        let dir = std::env::temp_dir().join("layoza_gate_unverified");
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        fs::write(dir.join("index.html"), "<!doctype html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width\"></head><body><main><h1>Hi</h1></main></body></html>").unwrap();
+        let r = verifier::audit_project(&dir, None, None, None, None).unwrap();
+        assert_eq!(r.objective_error_count, 0, "{:#?}", r.findings);
+        assert_eq!(r.verification_status, "unverified");
+        assert!(!r.passed_release_gate);
+        assert!(r.findings.iter().any(|f| f.rule_id == "CWV-NOT-MEASURED"));
         let _ = fs::remove_dir_all(&dir);
     }
 
@@ -444,12 +461,16 @@ mod tests {
         let before = verifier::audit_project(&dir, None, Some(1000.0), Some(50.0), Some(0.01)).unwrap();
         fs::write(dir.join("index.html"), "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width\"></head><body><img src=\"a.png\"></body></html>").unwrap();
         let after = verifier::audit_project(&dir, None, Some(1000.0), Some(50.0), Some(0.3)).unwrap();
-        let cmp = verifier::verify_before_after(&before, &after, 0.0, vec![]);
+        let cmp = verifier::verify_before_after(&before, &after, None, vec![]);
         assert!(!cmp.accepted);
         assert!(cmp.unintended_regressions.iter().any(|m| m.contains("A11Y-HTML-LANG")));
         assert!(cmp.unintended_regressions.iter().any(|m| m.starts_with("CLS")));
-        let same = verifier::verify_before_after(&before, &before, 0.0, vec![]);
+        let same = verifier::verify_before_after(&before, &before, None, vec![]);
         assert!(same.unintended_regressions.is_empty());
+        // Measured CWV within target and no errors: the gate is passed, not merely unverified
+        assert_eq!(before.verification_status, "passed", "{:#?}", before.findings);
+        assert!(same.accepted);
+        assert_eq!(after.verification_status, "failed");
         let _ = fs::remove_dir_all(&dir);
     }
 

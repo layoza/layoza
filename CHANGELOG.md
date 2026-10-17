@@ -4,6 +4,27 @@ All notable changes to Layoza are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- `layoza init` no longer replaces an existing `.mcp.json`, `.cursor/mcp.json` or
+  `opencode.json` with `{}` when the file is not valid JSON. It now leaves the file
+  unchanged and tells you to fix it or add the entry by hand.
+- `layoza qa` now finds Playwright installed in your project. The QA script runs from a
+  temp folder, where a bare import could not see the project's `node_modules`, so QA fell
+  back to Python or failed while `layoza doctor` reported Playwright as found.
+
+### Changed
+- The release gate no longer passes when Core Web Vitals were not measured. Reports
+  carry `verification_status` (`passed`, `failed` or `unverified`), and `audit`, `verify`
+  and `qa` exit with 2 when the result is unverified.
+- `compare_before_after` states that it compares audit findings and Core Web Vitals only.
+  It no longer lists screenshot viewports it never diffed, and `pixel_diff_ratio` is
+  `null` unless you supply your own number.
+- `layoza benchmark` is described as what it is: an internal regression check of
+  Layoza's own rules. Removed the invented quality, accessibility and performance scores
+  from `docs/BENCHMARKS.md` and the hard-coded `preserves_existing_dna: true` flag.
+
 ## [0.1.1] - 2026-10-17
 
 First npm release.

@@ -11,7 +11,6 @@ use std::collections::BTreeMap;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AdapterOutput {
     pub framework: String,
-    pub preserves_existing_stack: bool,
     pub files: BTreeMap<String, String>,
     pub notes: Vec<String>,
 }
@@ -623,7 +622,6 @@ h1 {{ font-family: {display_font}; font-size: clamp(2.25rem, 4.5vw, 4rem); line-
 
     AdapterOutput {
         framework: fw,
-        preserves_existing_stack: true,
         files,
         notes,
     }

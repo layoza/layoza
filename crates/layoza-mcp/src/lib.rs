@@ -424,7 +424,7 @@ pub fn tool_definitions() -> Value {
                 "properties": {
                     "path": { "type": "string", "description": PATH_DESC },
                     "baseline_id": { "type": "string" },
-                    "pixel_diff_ratio": { "type": "number", "description": "Optional caller-measured pixel diff ratio (reported as supplied, not measured here)." },
+                    "pixel_diff_ratio": { "type": "number", "description": "Optional pixel diff ratio you measured yourself. Echoed back as supplied; Layoza does not diff screenshots." },
                     "intended_changes": { "type": "array", "items": { "type": "string" } }
                 },
                 "required": ["baseline_id"]
@@ -820,10 +820,7 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
             })?;
             let before: AuditReport = serde_json::from_str(&raw).map_err(|e| format!("Saved baseline audit is unreadable: {}", e))?;
             let after = audit_project(&target_path, None, None, None, None)?;
-            let diff_ratio = args
-                .get("pixel_diff_ratio")
-                .and_then(|v| v.as_f64())
-                .unwrap_or(0.0);
+            let diff_ratio = args.get("pixel_diff_ratio").and_then(|v| v.as_f64());
             let intended: Vec<String> = args
                 .get("intended_changes")
                 .and_then(|v| v.as_array())
@@ -838,7 +835,8 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                 "comparison": comp,
                 "before_errors": before.objective_error_count,
                 "after_errors": after.objective_error_count,
-                "after_release_gate": after.passed_release_gate
+                "after_release_gate": after.passed_release_gate,
+                "after_verification_status": after.verification_status
             }))
         }
         "audit_accessibility" => {
@@ -1033,7 +1031,8 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                 Ok(json!({
                     "baseline": snap,
                     "saved_audit": saved.to_string_lossy(),
-                    "audit_release_gate": audit.passed_release_gate
+                    "audit_release_gate": audit.passed_release_gate,
+                    "audit_verification_status": audit.verification_status
                 }))
             } else {
                 let rb = rollback_baseline(approved_root, baseline_id)?;

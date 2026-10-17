@@ -36,7 +36,9 @@ pub struct BenchmarkCaseResult {
     pub design_md_valid: bool,
     pub wcag_contrast_ratio: f64,
     pub honors_reduced_motion: bool,
-    pub preserves_existing_dna: bool,
+    /// Always `None`: this suite renders fixed framework templates and never edits an existing
+    /// site, so it cannot measure DNA preservation. Kept so the JSON shape stays stable.
+    pub preserves_existing_dna: Option<bool>,
     pub context_tokens_used: usize,
     pub within_context_budget: bool,
     pub execution_ms: u128,
@@ -541,8 +543,7 @@ pub fn run_benchmark_suite() -> BenchmarkSuiteReport {
             && objective_errors == 0
             && honors_rm
             && within_budget
-            && security_ok
-            && adapter_out.preserves_existing_stack;
+            && security_ok;
 
         results.push(BenchmarkCaseResult {
             id: brief.id.clone(),
@@ -553,7 +554,7 @@ pub fn run_benchmark_suite() -> BenchmarkSuiteReport {
             design_md_valid: lint.valid,
             wcag_contrast_ratio: rec.matched_industry.palette.wcag_body_contrast,
             honors_reduced_motion: honors_rm,
-            preserves_existing_dna: adapter_out.preserves_existing_stack,
+            preserves_existing_dna: None,
             context_tokens_used,
             within_context_budget: within_budget,
             execution_ms: start.elapsed().as_millis(),
@@ -568,7 +569,7 @@ pub fn run_benchmark_suite() -> BenchmarkSuiteReport {
         total_briefs,
         passed_briefs,
         pass_rate_percent,
-        methodology_note: "Automated deterministic verification across all 32 evaluation briefs (DESIGN.md specification lint, WCAG 2.2 AA contrast ratio >= 4.5:1, framework-native output validation, reduced-motion compliance, context token budget <= limit, and prompt-injection defense). Subjective blind human preference evaluations require external human reviewers and are never fabricated.".into(),
+        methodology_note: "Deterministic self-checks over 32 briefs: DESIGN.md lint, static audit of the generated template files, reduced-motion fields present on the recommended animation recipes, entry-skill size within the context budget, and (BM-32 only) prompt-injection redaction. The contrast ratio is read from the matched industry palette, not measured in a browser. This suite does not render pages, compile framework output, edit existing sites or score design quality; it is a regression check of Layoza's own rules, not evidence of output quality.".into(),
         results,
     }
 }

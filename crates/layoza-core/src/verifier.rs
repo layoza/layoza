@@ -63,8 +63,14 @@ pub struct AccessibilityReport {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisualRegressionComparison {
     pub baseline_present: bool,
+    /// Viewports whose screenshots were diffed. Empty: Layoza compares audit findings and Core
+    /// Web Vitals only and does not diff screenshots.
     pub viewports_compared: Vec<String>,
-    pub pixel_diff_ratio: f64,
+    /// Pixel difference supplied by the caller, if any. Layoza does not measure this itself.
+    pub pixel_diff_ratio: Option<f64>,
+    /// Plain statement of what this comparison is based on.
+    #[serde(default)]
+    pub comparison_basis: String,
     pub intended_changes: Vec<String>,
     pub unintended_regressions: Vec<String>,
     pub accepted: bool,
@@ -73,7 +79,12 @@ pub struct VisualRegressionComparison {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AuditReport {
     pub target_path: String,
+    /// True only when there are no objective errors and Core Web Vitals were measured and met.
     pub passed_release_gate: bool,
+    /// "passed", "failed", or "unverified" (no objective errors or CWV failures, but Core Web
+    /// Vitals were not measured, so the gate could not be confirmed).
+    #[serde(default)]
+    pub verification_status: String,
     pub objective_error_count: usize,
     pub objective_warning_count: usize,
     pub subjective_critique_notes: usize,
@@ -218,7 +229,7 @@ pub fn audit_project(
             Severity::Warning,
             "performance",
             ".",
-            "Core Web Vitals were not measured, so performance is unverified (not passed).".into(),
+            "Core Web Vitals were not measured, so the release gate is unverified, not passed.".into(),
             "Run `layoza qa <file-or-url>` or pass lab_lcp_ms / lab_inp_ms / lab_cls.",
         ));
     }
@@ -242,11 +253,21 @@ pub fn audit_project(
         .filter(|f| f.category == "accessibility" && f.severity == Severity::Error)
         .count();
 
-    let passed_release_gate = objective_error_count == 0 && !cwv_failed;
+    let failed = objective_error_count > 0 || cwv_failed;
+    let passed_release_gate = !failed && measured;
+    let verification_status = if failed {
+        "failed"
+    } else if measured {
+        "passed"
+    } else {
+        "unverified"
+    }
+    .to_string();
 
     Ok(AuditReport {
         target_path: project_root.to_string_lossy().replace('\\', "/"),
         passed_release_gate,
+        verification_status,
         objective_error_count,
         objective_warning_count,
         subjective_critique_notes,
@@ -976,7 +997,7 @@ pub fn audit_file_content(
 pub fn verify_before_after(
     before: &AuditReport,
     after: &AuditReport,
-    pixel_diff_ratio: f64,
+    pixel_diff_ratio: Option<f64>,
     intended_descriptions: Vec<String>,
 ) -> VisualRegressionComparison {
     let mut unintended = Vec::new();
@@ -1020,11 +1041,12 @@ pub fn verify_before_after(
 
     VisualRegressionComparison {
         baseline_present: true,
-        viewports_compared: vec![
-            "1440x900 (desktop)".to_string(),
-            "768x1024 (tablet)".to_string(),
-            "375x812 (mobile)".to_string(),
-        ],
+        viewports_compared: Vec::new(),
+        comparison_basis: if pixel_diff_ratio.is_some() {
+            "Audit findings and Core Web Vitals. Screenshots were not diffed by Layoza; pixel_diff_ratio is the caller's own number.".to_string()
+        } else {
+            "Audit findings and Core Web Vitals only. Screenshots were not diffed.".to_string()
+        },
         pixel_diff_ratio,
         intended_changes: intended_descriptions,
         unintended_regressions: unintended.clone(),

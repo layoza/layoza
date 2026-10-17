@@ -198,19 +198,13 @@ pub fn install_layoza(
             "opencode" => {
                 // Merge into an existing opencode.json instead of overwriting the user's config
                 let opencode_path = base_root.join("opencode.json");
-                let mut cfg = fs::read_to_string(&opencode_path)
-                    .ok()
-                    .and_then(|raw| serde_json::from_str::<serde_json::Value>(&raw).ok())
-                    .filter(|v| v.is_object())
+                let mut cfg = read_json_object(&opencode_path)?
                     .unwrap_or_else(|| serde_json::json!({ "$schema": "https://opencode.ai/config.json" }));
-                let root = cfg.as_object_mut().unwrap();
-                let mcp = root.entry("mcp").or_insert_with(|| serde_json::json!({}));
-                if let Some(m) = mcp.as_object_mut() {
-                    m.insert(
-                        "layoza".into(),
-                        serde_json::json!({ "type": "local", "command": mcp_launch_argv(), "enabled": true }),
-                    );
-                }
+                let mcp = object_entry(&mut cfg, "mcp", &opencode_path)?;
+                mcp.insert(
+                    "layoza".into(),
+                    serde_json::json!({ "type": "local", "command": mcp_launch_argv(), "enabled": true }),
+                );
                 write_json_file(&opencode_path, &cfg, &mut written_files)?;
             }
             _ => {}
@@ -317,26 +311,107 @@ fn merge_mcp_server_entry(
     top_key: &str,
     written: &mut Vec<String>,
 ) -> Result<(), String> {
-    let mut root_obj = if path.exists() {
-        let raw = fs::read_to_string(path).unwrap_or_else(|_| "{}".to_string());
-        serde_json::from_str::<serde_json::Value>(&raw).unwrap_or_else(|_| serde_json::json!({}))
-    } else {
-        serde_json::json!({})
-    };
-
-    if !root_obj.is_object() {
-        root_obj = serde_json::json!({});
-    }
-    let map = root_obj.as_object_mut().unwrap();
-    let servers = map
-        .entry(top_key.to_string())
-        .or_insert_with(|| serde_json::json!({}));
-    if let Some(s_obj) = servers.as_object_mut() {
-        let (cmd, args) = mcp_launch_command();
-        s_obj.insert("layoza".to_string(), serde_json::json!({ "command": cmd, "args": args }));
-    }
-
+    let mut root_obj = read_json_object(path)?.unwrap_or_else(|| serde_json::json!({}));
+    let servers = object_entry(&mut root_obj, top_key, path)?;
+    let (cmd, args) = mcp_launch_command();
+    servers.insert("layoza".to_string(), serde_json::json!({ "command": cmd, "args": args }));
     write_json_file(path, &root_obj, written)
+}
+
+/// Reads an existing JSON config. Returns `Ok(None)` when the file does not exist and an error
+/// when it exists but is not a JSON object, so the user's config is never replaced by `{}`.
+fn read_json_object(path: &Path) -> Result<Option<serde_json::Value>, String> {
+    if !path.exists() {
+        return Ok(None);
+    }
+    let raw = fs::read_to_string(path).map_err(|e| format!("Could not read `{}`: {}", path.display(), e))?;
+    if raw.trim().is_empty() {
+        return Ok(None);
+    }
+    match serde_json::from_str::<serde_json::Value>(&raw) {
+        Ok(v) if v.is_object() => Ok(Some(v)),
+        Ok(_) => Err(format!(
+            "`{}` is not a JSON object, so Layoza left it unchanged. Fix the file or add the `layoza` MCP server entry by hand.",
+            path.display()
+        )),
+        Err(e) => Err(format!(
+            "`{}` is not valid JSON ({}), so Layoza left it unchanged. Fix the file (comments and trailing commas are not allowed) or add the `layoza` MCP server entry by hand.",
+            path.display(),
+            e
+        )),
+    }
+}
+
+/// Returns `root[key]` as a mutable object, creating it when missing. Errors when the key holds
+/// something other than an object instead of silently skipping the install.
+fn object_entry<'a>(
+    root: &'a mut serde_json::Value,
+    key: &str,
+    path: &Path,
+) -> Result<&'a mut serde_json::Map<String, serde_json::Value>, String> {
+    root.as_object_mut()
+        .expect("read_json_object only returns objects")
+        .entry(key.to_string())
+        .or_insert_with(|| serde_json::json!({}))
+        .as_object_mut()
+        .ok_or_else(|| {
+            format!(
+                "`{}` in `{}` is not a JSON object, so Layoza left the file unchanged. Add the `layoza` entry by hand.",
+                key,
+                path.display()
+            )
+        })
+}
+
+#[cfg(test)]
+mod config_merge_tests {
+    use super::*;
+
+    fn tmp(name: &str, body: Option<&str>) -> std::path::PathBuf {
+        let dir = std::env::temp_dir().join(format!("layoza-merge-{}-{}", name, std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let p = dir.join("mcp.json");
+        if let Some(b) = body {
+            fs::write(&p, b).unwrap();
+        }
+        p
+    }
+
+    #[test]
+    fn keeps_other_servers() {
+        let p = tmp("keep", Some(r#"{"mcpServers":{"other":{"command":"x"}},"extra":1}"#));
+        merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&fs::read_to_string(&p).unwrap()).unwrap();
+        assert!(v["mcpServers"]["other"].is_object());
+        assert!(v["mcpServers"]["layoza"].is_object());
+        assert_eq!(v["extra"], 1);
+    }
+
+    #[test]
+    fn creates_missing_file() {
+        let p = tmp("new", None);
+        merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap();
+        assert!(fs::read_to_string(&p).unwrap().contains("layoza"));
+    }
+
+    #[test]
+    fn refuses_to_overwrite_invalid_json() {
+        let body = "{ \"mcpServers\": { \"other\": {} }, // comment
+ }";
+        let p = tmp("bad", Some(body));
+        let err = merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap_err();
+        assert!(err.contains("left it unchanged"), "{}", err);
+        assert_eq!(fs::read_to_string(&p).unwrap(), body);
+    }
+
+    #[test]
+    fn refuses_non_object_servers_key() {
+        let body = r#"{"mcpServers":[1,2]}"#;
+        let p = tmp("arr", Some(body));
+        assert!(merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).is_err());
+        assert_eq!(fs::read_to_string(&p).unwrap(), body);
+    }
 }
 
 /// Copies every Layoza skill folder from the bundle into `dest`, replacing older copies.

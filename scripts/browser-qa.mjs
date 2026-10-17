@@ -52,6 +52,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { createRequire } from "node:module";
 
 const VIEWPORTS = [
   { label: "desktop", width: 1440, height: 900 },
@@ -5763,11 +5764,20 @@ async function main() {
   // Never leave a stale report behind if this run fails
   fs.rmSync(outPath, { force: true });
 
+  // Layoza runs this script from a temp folder, where a bare import cannot see the project's
+  // node_modules. Resolve playwright from the working directory (the project) first.
   let pw = null;
   try {
-    pw = await import("playwright");
+    const projectRequire = createRequire(path.join(process.cwd(), "noop.js"));
+    const mod = await import(pathToFileURL(projectRequire.resolve("playwright")).href);
+    // A CommonJS entry imported by file URL may expose its exports only on `default`
+    pw = mod.chromium ? mod : mod.default;
   } catch {
-    pw = null;
+    try {
+      pw = await import("playwright");
+    } catch {
+      pw = null;
+    }
   }
   let tokens = null;
   if (args.designTokens) {

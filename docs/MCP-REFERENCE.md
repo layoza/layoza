@@ -28,7 +28,7 @@ layoza mcp --read-only
 | `layoza_create_baseline` | **Yes** | Creates a non-destructive baseline backup in `.layoza/baselines/<id>`. |
 | `layoza_rollback_baseline` | **Yes** | Restores files from a stored `.layoza/baselines/<id>` snapshot. |
 | `layoza_doctor` | No | Runs full multi-agent installation and environment diagnostics. |
-| `layoza_run_benchmarks` | No | Runs the 32-brief Layoza benchmark suite and returns structured metrics. |
+| `layoza_run_benchmarks` | No | Runs the 32-brief internal self-check suite (regression test of Layoza's own rules, not a quality score). |
 
 ---
 

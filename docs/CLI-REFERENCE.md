@@ -55,10 +55,13 @@ layoza generate --component hero --framework <react|nextjs|astro|wordpress-guten
 ```
 
 ### 7. `layoza audit` & `layoza verify`
-Evaluates a live browser DOM snapshot (`.layoza/qa-*.json` produced by `scripts/browser-qa.mjs`), separating objective pass/fail checks from subjective design critique and generating bounded auto-repair plans.
+Audits a file or folder with static rules and, when present, the browser report written by `layoza qa` (`qa/browser-qa-report.json`). Objective checks decide the release gate; subjective design critique is reported but never blocks it. `verify --repair` first applies bounded HTML fixes to a single file.
 ```bash
-layoza verify --snapshot .layoza/qa-minimal-corporate.json [--before .layoza/before.json] [--auto-repair] [--json]
+layoza qa index.html
+layoza audit [path] [--json]
+layoza verify [path] [--repair] [--json]
 ```
+The release gate has three outcomes. **passed** (exit 0): no objective errors, and Core Web Vitals were measured and met. **failed** (exit 1): objective errors, or a Core Web Vital missed its target. **unverified** (exit 2): no objective errors, but Core Web Vitals were not measured, so run `layoza qa` first.
 
 ### 8. `layoza baseline`
 Creates or rolls back non-destructive design baseline snapshots in `.layoza/baselines/`.
@@ -69,7 +72,7 @@ layoza baseline rollback --path <dir> --id <baseline-id> [--json]
 ```
 
 ### 9. `layoza benchmark`
-Runs the 32 reproducible design & engineering benchmark evaluation briefs.
+Runs the 32-brief internal self-check suite: a regression test of Layoza's own rules, not a design-quality score. See [BENCHMARKS.md](BENCHMARKS.md).
 ```bash
 layoza benchmark [--json]
 ```

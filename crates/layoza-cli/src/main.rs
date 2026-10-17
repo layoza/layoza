@@ -260,7 +260,7 @@ fn main() {
                         println!("{}", serde_json::to_string_pretty(&report).unwrap());
                     } else {
                         println!("=== Layoza Design & Quality Audit: {} ===", report.target_path);
-                        println!("Release Gate Passed    : {}", report.passed_release_gate);
+                        println!("Release Gate           : {}", gate_label(&report));
                         println!("Objective Errors       : {}", report.objective_error_count);
                         println!("Objective Warnings     : {}", report.objective_warning_count);
                         println!("Subjective Critique    : {} (non-blocking)", report.subjective_critique_notes);
@@ -283,9 +283,7 @@ fn main() {
                             println!("  [{:?}][{}] {}: {}", f.severity, f.rule_id, f.file_or_selector, f.message);
                         }
                     }
-                    if !report.passed_release_gate {
-                        process::exit(1);
-                    }
+                    exit_for_gate(&report);
                 }
                 Err(e) => exit_err(&e, json_flag),
             }
@@ -307,6 +305,7 @@ fn main() {
                     if json_flag {
                         let out = serde_json::json!({
                             "verified": report.passed_release_gate,
+                            "verification_status": report.verification_status,
                             "repairs": repairs,
                             "audit": report
                         });
@@ -318,14 +317,12 @@ fn main() {
                                 println!("Auto-Repair ({}): {}", r.file_path, r.diff_summary);
                             }
                         }
-                        println!("Passed Release Gate: {}", report.passed_release_gate);
+                        println!("Release Gate: {}", gate_label(&report));
                         for f in &report.findings {
                             println!("  [{:?}][{}] {}: {}", f.severity, f.rule_id, f.file_or_selector, f.message);
                         }
                     }
-                    if !report.passed_release_gate {
-                        process::exit(1);
-                    }
+                    exit_for_gate(&report);
                 }
                 Err(e) => exit_err(&e, json_flag),
             }
@@ -404,16 +401,14 @@ fn main() {
                             fmt(cwv.inp_or_tbt_ms, 0, "ms"),
                             fmt(cwv.cls, 3, "")
                         );
-                        println!("Passed Release Gate    : {}", report.passed_release_gate);
+                        println!("Release Gate           : {}", gate_label(&report));
                         println!("Objective Errors       : {}", report.objective_error_count);
                         println!("Objective Warnings     : {}", report.objective_warning_count);
                         for f in &report.findings {
                             println!("  [{:?}][{}] {}: {}", f.severity, f.rule_id, f.file_or_selector, f.message);
                         }
                     }
-                    if !report.passed_release_gate {
-                        process::exit(1);
-                    }
+                    exit_for_gate(&report);
                 }
                 Err(e) => exit_err(&e, json_flag),
             }
@@ -997,5 +992,23 @@ mod tests {
         ] {
             assert!(subcommand_usage(cmd).is_some(), "{}", cmd);
         }
+    }
+}
+
+/// Human-readable release gate status.
+fn gate_label(report: &layoza_core::verifier::AuditReport) -> String {
+    match report.verification_status.as_str() {
+        "passed" => "PASSED".to_string(),
+        "unverified" => "UNVERIFIED (no objective errors, but Core Web Vitals were not measured; run `layoza qa` first)".to_string(),
+        _ => "FAILED".to_string(),
+    }
+}
+
+/// Exit code for the release gate: 0 passed, 1 failed, 2 unverified.
+fn exit_for_gate(report: &layoza_core::verifier::AuditReport) {
+    match report.verification_status.as_str() {
+        "passed" => {}
+        "unverified" => process::exit(2),
+        _ => process::exit(1),
     }
 }
