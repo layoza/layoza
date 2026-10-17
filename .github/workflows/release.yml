@@ -88,6 +88,10 @@ jobs:
           cd "$(mktemp -d)"
           PATH="$(dirname "$(command -v node)"):/usr/bin:/bin" npm exec --yes --package="$tgz" -- layoza --version
           rm "$tgz"
+      - name: Check npm keeps the bin entries
+        run: |
+          npm publish --dry-run --access public 2>&1 | tee publish-check.log
+          ! grep -q "was invalid and removed" publish-check.log
       - name: Publish to npm
         run: npm publish --access public --provenance
         env:

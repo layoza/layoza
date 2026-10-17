@@ -4,6 +4,13 @@ All notable changes to Layoza are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-10-17
+
+First npm release.
+
+- Fixed the npm `bin` entries so `npx layoza` and `layoza-mcp` work after install
+  (npm stripped the `./`-prefixed paths when publishing 0.1.0, which never reached npm).
+
 ## [0.1.0] - 2026-10-17
 
 First public release.
@@ -28,4 +35,5 @@ First public release.
 - **Blind benchmarks** across four kinds of site with screenshots, in `examples/` and
   `docs/CROSS-TYPE-BENCHMARK-2026-10.md`.
 
+[0.1.1]: https://github.com/layoza/layoza/releases/tag/v0.1.1
 [0.1.0]: https://github.com/layoza/layoza/releases/tag/v0.1.0
