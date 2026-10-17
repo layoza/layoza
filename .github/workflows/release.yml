@@ -76,7 +76,7 @@ jobs:
         # Re-runs after a failed npm publish reuse the existing release.
         run: |
           gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1             || gh release create "$GITHUB_REF_NAME" release/* --title "$GITHUB_REF_NAME" --notes-file CHANGELOG.md --verify-tag
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           # npm 11.5+ (Node 24) is needed for trusted publishing
           node-version: 24
