@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidefest 2027: 14–16 August, Newquay, Cornwall</title>
+<meta name="description" content="Tidefest is a three-day electronic and alternative music festival on a beach near Newquay, Cornwall. 14–16 August 2027. Two stages, camping and a sunrise set every morning.">
+<meta name="theme-color" content="#0a1322">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0a1322;
+  --deep:#10203a;
+  --swell:#173057;
+  --sand:#f4ebdd;
+  --mist:#a9b8cf;
+  --coral:#ff6b3d;
+  --coral-ink:#1a0a03;
+  --foam:#6ff2cf;
+  --sun:#ffc34a;
+  --line:rgba(244,235,221,.16);
+  --radius:18px;
+  --gutter:clamp(16px,4vw,56px);
+  --max:1320px;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--night);color:var(--sand);font-family:var(--display);font-size:clamp(16px,1.05vw,18px);line-height:1.55;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--foam);outline-offset:3px;border-radius:6px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:fixed;left:16px;top:-80px;z-index:200;background:var(--sand);color:var(--night);padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none;transition:top .2s}
+.skip:focus{top:16px}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+
+/* ---------- buttons ---------- */
+.btn{--bg:var(--coral);--fg:var(--coral-ink);position:relative;display:inline-flex;align-items:center;gap:.6em;min-height:48px;padding:.8em 1.4em;border:0;border-radius:999px;background:var(--bg);color:var(--fg);font-weight:700;font-size:1rem;letter-spacing:.01em;text-decoration:none;cursor:pointer;overflow:hidden;isolation:isolate;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--sun);transform:translateY(102%);border-radius:inherit;transition:transform .45s var(--ease)}
+.btn:hover::before{transform:translateY(0)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(255,107,61,.7)}
+.btn .arrow{transition:transform .35s var(--ease)}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn.ghost{--bg:transparent;--fg:var(--sand);box-shadow:inset 0 0 0 2px var(--sand)}
+.btn.ghost::before{background:var(--sand)}
+.btn.ghost:hover{color:var(--night)}
+
+/* ---------- header ---------- */
+.site-header{position:fixed;inset:0 0 auto;z-index:100;transition:background .4s,backdrop-filter .4s,transform .4s var(--ease)}
+.site-header.scrolled{background:rgba(10,19,34,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.site-header.hide{transform:translateY(-100%)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:76px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:1.35rem;letter-spacing:-.02em;font-variation-settings:"wdth" 80}
+.logo svg{width:38px;height:38px}
+.logo .wave{stroke-dasharray:60;stroke-dashoffset:0;animation:logoWave 3.6s ease-in-out infinite}
+@keyframes logoWave{50%{stroke-dashoffset:30}}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,36px)}
+.nav ul{display:flex;gap:clamp(18px,2.4vw,36px);list-style:none;margin:0;padding:0}
+.nav a.link{position:relative;text-decoration:none;font-weight:600;padding:8px 0}
+.nav a.link::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--foam);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease)}
+.nav a.link:hover::after,.nav a.link[aria-current="true"]::after{transform:scaleX(1);transform-origin:left}
+.burger{display:none;width:48px;height:48px;border:0;border-radius:50%;background:rgba(244,235,221,.08);cursor:pointer;place-items:center}
+.burger span{display:block;width:20px;height:2px;background:var(--sand);margin:5px auto;transition:transform .35s var(--ease),opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(12px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-12px) rotate(-45deg)}
+.drawer{position:fixed;inset:0;z-index:90;background:var(--coral);color:var(--coral-ink);padding:110px var(--gutter) 40px;display:flex;flex-direction:column;justify-content:space-between;clip-path:circle(0% at calc(100% - 40px) 38px);visibility:hidden;transition:clip-path .6s var(--ease),visibility 0s .6s}
+.drawer.open{clip-path:circle(150% at calc(100% - 40px) 38px);visibility:visible;transition:clip-path .6s var(--ease),visibility 0s}
+.drawer ul{list-style:none;margin:0;padding:0}
+.drawer li{overflow:hidden}
+.drawer a.big{display:block;text-decoration:none;font-weight:800;font-size:clamp(3rem,15vw,5.5rem);line-height:1;letter-spacing:-.04em;font-variation-settings:"wdth" 75;padding:6px 0;transform:translateY(110%);transition:transform .6s var(--ease)}
+.drawer.open a.big{transform:none}
+.drawer.open li:nth-child(2) a.big{transition-delay:.06s}
+.drawer.open li:nth-child(3) a.big{transition-delay:.12s}
+.drawer.open li:nth-child(4) a.big{transition-delay:.18s}
+.drawer .btn{--bg:var(--night);--fg:var(--sand);align-self:flex-start}
+.drawer :focus-visible{outline-color:var(--night)}
+.site-header.menu-open .burger{background:rgba(10,19,34,.12)}
+.site-header.menu-open .burger span{background:var(--night)}
+.site-header.menu-open .logo{color:var(--night)}
+.site-header.menu-open{background:transparent;backdrop-filter:none;box-shadow:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:120px 0 clamp(32px,6vh,72px);overflow:hidden;background:radial-gradient(120% 80% at 70% 0%,#1f3d6b 0%,var(--night) 60%)}
+#waves{position:absolute;inset:0;width:100%;height:100%}
+.hero-sun{position:absolute;right:12%;top:18%;width:clamp(120px,18vw,260px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 45%,#ffe39a,var(--sun) 45%,var(--coral) 100%);box-shadow:0 0 120px 30px rgba(255,107,61,.35);transform:translateY(calc(var(--hp,0) * 140px));opacity:calc(1 - var(--hp,0)*1.2)}
+.hero-inner{position:relative;z-index:2;width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;background:rgba(10,19,34,.6);box-shadow:inset 0 0 0 1px var(--line);backdrop-filter:blur(6px)}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--foam);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.8);opacity:.3}}
+.kinetic{margin:.18em 0 .1em;font-weight:800;font-size:clamp(4.2rem,17.5vw,17rem);line-height:.82;letter-spacing:-.045em;display:flex;flex-wrap:wrap;transform:translateY(calc(var(--hp,0) * -60px))}
+.kinetic .word{display:flex;white-space:nowrap}
+.kinetic .ch{display:inline-block;font-variation-settings:"wght" var(--w,800),"wdth" var(--wd,100),"opsz" 96;transition:font-variation-settings .5s var(--ease),color .4s;will-change:font-variation-settings}
+.kinetic .word:last-child .ch{color:var(--coral)}
+.js .kinetic .ch{opacity:0;transform:translateY(60%) rotate(6deg)}
+.js .kinetic.in .ch{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .9s var(--ease),font-variation-settings .5s var(--ease);transition-delay:calc(var(--i)*45ms)}
+.hero-meta{display:grid;grid-template-columns:repeat(3,auto) 1fr;align-items:end;gap:clamp(18px,3vw,48px);margin-top:clamp(16px,3vh,32px)}
+.hero-meta dt{color:var(--mist)}
+.hero-meta dd{margin:4px 0 0;font-weight:700;font-size:clamp(1.05rem,1.7vw,1.5rem);line-height:1.2}
+.hero-meta .cta{justify-self:end;display:flex;flex-direction:column;align-items:stretch;gap:12px}
+.hero-meta .cta .btn{justify-content:center}
+.scroll-cue{position:absolute;left:50%;bottom:14px;z-index:2;width:2px;height:44px;background:linear-gradient(var(--sand),transparent);transform:translateX(-50%);animation:cue 2.2s var(--ease) infinite;opacity:.6}
+@keyframes cue{0%{transform:translateX(-50%) scaleY(0);transform-origin:top}50%{transform:translateX(-50%) scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:translateX(-50%) scaleY(0);transform-origin:bottom}}
+
+/* ---------- marquee ---------- */
+.marquee{position:relative;background:var(--coral);color:var(--coral-ink);overflow:hidden;transform:rotate(-2deg) scale(1.04);margin:-14px 0 0;z-index:3;padding:14px 0}
+.marquee-track{display:flex;width:max-content;gap:40px;font-weight:800;font-size:clamp(1.4rem,3vw,2.4rem);font-variation-settings:"wdth" 75;letter-spacing:-.01em;text-transform:uppercase;transform:translateX(var(--mx,0px))}
+.marquee-track span{display:flex;align-items:center;gap:40px;white-space:nowrap}
+.marquee-track span::after{content:"";width:.55em;height:.55em;border-radius:50%;background:var(--coral-ink)}
+
+/* ---------- sections ---------- */
+section{position:relative}
+.section{padding:clamp(80px,12vw,160px) 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(32px,5vw,64px)}
+.sec-title{margin:0;font-weight:800;font-size:clamp(2.8rem,8vw,7.5rem);line-height:.88;letter-spacing:-.04em;font-variation-settings:"wdth" var(--tw,100),"opsz" 96}
+.sec-title em{font-style:normal;color:var(--foam)}
+.sec-lede{max-width:40ch;color:var(--mist);margin:0}
+.reveal{opacity:1}
+.js .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+
+/* ---------- sunrise sequence ---------- */
+.sunrise{height:260vh;background:var(--night)}
+.sunrise-stick{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center}
+.sky{position:absolute;inset:0;background:linear-gradient(to bottom,
+  color-mix(in oklab,#0a1322,#ff9a5a calc(var(--sp,0)*60%)) 0%,
+  color-mix(in oklab,#10203a,#ffc34a calc(var(--sp,0)*70%)) 58%,
+  color-mix(in oklab,#173057,#ffe2a8 calc(var(--sp,0)*80%)) 64%)}
+.sea{position:absolute;left:0;right:0;bottom:0;height:36%;background:linear-gradient(to bottom,color-mix(in oklab,#112a4a,#ff8a4a calc(var(--sp,0)*28%)),#071020);z-index:2}
+.sea::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 10px,rgba(255,226,168,calc(var(--sp,0)*.22)) 10px 12px);mask-image:linear-gradient(to right,transparent 30%,#000 50%,transparent 70%);-webkit-mask-image:linear-gradient(to right,transparent 30%,#000 50%,transparent 70%)}
+.big-sun{position:absolute;left:50%;bottom:36%;z-index:1;width:clamp(180px,30vw,420px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff1c4,var(--sun) 50%,var(--coral));box-shadow:0 0 calc(80px + var(--sp,0)*160px) calc(var(--sp,0)*60px) rgba(255,170,80,.55);transform:translate(-50%,calc(70% - var(--sp,0)*85%))}
+.sunrise-copy{position:relative;z-index:3;text-align:center;padding:0 var(--gutter);color:var(--sand)}
+.sunrise-copy .clock{color:var(--sl,var(--sand));font-family:var(--mono);font-weight:600;font-size:clamp(1rem,2vw,1.4rem);letter-spacing:.2em}
+.sunrise-lines{margin:.3em 0 0;font-weight:800;font-size:clamp(2.4rem,7.5vw,7rem);line-height:.92;letter-spacing:-.04em}
+.sunrise-lines{color:var(--sl,var(--sand));transition:color .6s}
+.sunrise-lines span{display:block;opacity:calc(var(--o,0));transform:translateY(calc((1 - var(--o,0))*40px));font-variation-settings:"wdth" calc(75 + var(--o,0)*25)}
+.sunrise-copy p{max-width:46ch;margin:1.2em auto 0;padding:.8em 1.1em;border-radius:14px;background:rgba(10,19,34,.62);backdrop-filter:blur(6px);color:var(--sand);text-shadow:0 1px 12px rgba(7,16,32,.9);opacity:var(--o4,0);font-size:clamp(1rem,1.3vw,1.15rem)}
+
+/* ---------- line-up ---------- */
+.lineup{background:var(--deep)}
+.filter{display:inline-flex;gap:6px;padding:6px;border-radius:999px;background:var(--night);box-shadow:inset 0 0 0 1px var(--line);position:relative}
+.filter button{position:relative;z-index:1;min-width:76px;min-height:44px;border:0;border-radius:999px;background:transparent;font-weight:700;cursor:pointer;transition:color .3s}
+.filter button[aria-selected="true"]{color:var(--coral-ink)}
+.filter .pill{position:absolute;z-index:0;top:6px;bottom:6px;left:0;border-radius:999px;background:var(--foam);transition:transform .5s var(--ease),width .5s var(--ease)}
+.day-note{margin:18px 0 0;color:var(--mist)}
+.acts{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.act{display:grid;grid-template-columns:90px 1fr auto auto;align-items:center;gap:clamp(12px,3vw,40px);padding:clamp(16px,2.2vw,26px) 0;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.act::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(111,242,207,.12),transparent 70%);transform:translateX(-101%);transition:transform .6s var(--ease)}
+.act:hover::before{transform:none}
+.act .time{color:var(--mist)}
+.act .name{position:relative;font-weight:800;font-size:clamp(1.6rem,4.4vw,3.6rem);line-height:1;letter-spacing:-.035em;font-variation-settings:"wdth" 100;transition:font-variation-settings .5s var(--ease),transform .5s var(--ease)}
+.act:hover .name{font-variation-settings:"wdth" 75;transform:translateX(10px)}
+.act .genre{color:var(--mist)}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.tag.shore{background:rgba(111,242,207,.14);color:var(--foam)}
+.tag.cave{background:rgba(255,107,61,.16);color:#ff9471}
+.tag.sun{background:rgba(255,195,74,.16);color:var(--sun)}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.acts.swap .act{animation:actIn .6s var(--ease) both;animation-delay:calc(var(--i)*55ms)}
+@keyframes actIn{from{opacity:0;transform:translateY(24px)}}
+
+/* ---------- countdown ---------- */
+.countdown{background:var(--coral);color:var(--coral-ink);overflow:hidden}
+.countdown .sec-title em{color:var(--night)}
+.countdown .sec-lede{color:#3a1607}
+.clock-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,2vw,24px)}
+.unit{border-top:3px solid var(--coral-ink);padding-top:12px}
+.digits{display:flex;overflow:hidden;font-weight:800;font-size:clamp(3.2rem,12vw,11rem);line-height:.9;letter-spacing:-.05em;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 75}
+.digit{display:inline-block}
+.digit.tick{animation:tick .5s var(--ease)}
+@keyframes tick{from{transform:translateY(-60%);opacity:0}}
+.unit .lbl{margin-top:8px;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.countdown .when{margin-top:clamp(24px,4vw,40px);font-family:var(--mono);font-size:.85rem;letter-spacing:.06em}
+
+/* ---------- tickets ---------- */
+.tickets{background:var(--night)}
+.tix{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
+.tix-card{position:relative;display:flex;flex-direction:column;gap:18px;padding:clamp(22px,2.6vw,34px);border-radius:var(--radius);background:var(--deep);box-shadow:inset 0 0 0 1px var(--line);transform-style:preserve-3d;transition:box-shadow .4s,transform .4s var(--ease)}
+.tix-card:hover{box-shadow:inset 0 0 0 2px var(--foam)}
+.tix-card.feature{background:linear-gradient(160deg,var(--swell),var(--deep))}
+.tix-card .flag{align-self:flex-start;margin-bottom:-4px}
+.tix-card h3{margin:0;font-weight:800;font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1;letter-spacing:-.03em}
+.tix-card ul{margin:0;padding:0;list-style:none;color:var(--mist);display:grid;gap:6px}
+.tix-card li::before{content:"→ ";color:var(--foam)}
+.price{font-weight:800;font-size:clamp(2.6rem,4.4vw,3.8rem);line-height:1;letter-spacing:-.04em}
+.price small{font-size:.35em;font-weight:600;color:var(--mist);letter-spacing:0}
+.stepper{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px;border-radius:999px;background:var(--night);box-shadow:inset 0 0 0 1px var(--line)}
+.stepper button{width:44px;height:44px;border:0;border-radius:50%;background:rgba(244,235,221,.1);font-size:1.4rem;font-weight:700;cursor:pointer;transition:background .25s,transform .2s}
+.stepper button:hover:not(:disabled){background:var(--foam);color:var(--night)}
+.stepper button:active:not(:disabled){transform:scale(.9)}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:3ch;text-align:center;font-family:var(--mono);font-size:1.2rem;font-weight:600}
+.stepper output.bump{animation:bump .35s var(--ease)}
+@keyframes bump{50%{transform:scale(1.4);color:var(--foam)}}
+.basket{position:sticky;bottom:16px;z-index:20;margin-top:clamp(20px,3vw,32px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 14px 14px 26px;border-radius:999px;background:rgba(244,235,221,.96);color:var(--night);box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
+.basket .sum{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.basket .total{font-weight:800;font-size:clamp(1.5rem,2.6vw,2.2rem);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.basket .count{font-family:var(--mono);font-size:.8rem;color:#33415a}
+.basket .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.basket .btn:disabled::before{display:none}
+.basket-msg{flex-basis:100%;margin:0;padding:0 0 4px;font-size:.9rem;color:#33415a}
+.basket-msg:empty{display:none}
+.fine{margin-top:16px;color:var(--mist);font-size:.88rem}
+
+/* ---------- camping ---------- */
+.camping{background:var(--deep);overflow:hidden}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,24px)}
+.info{position:relative;padding:clamp(22px,2.4vw,32px);border-radius:var(--radius);background:var(--night);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.info svg{width:56px;height:56px;margin-bottom:22px}
+.info h3{margin:0 0 8px;font-size:1.35rem;font-weight:800;letter-spacing:-.02em}
+.info p{margin:0;color:var(--mist)}
+.info .n{position:absolute;top:18px;right:20px;color:var(--mist)}
+.info .draw{stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset 1.6s var(--ease)}
+.info.in .draw,.no-motion .info .draw{stroke-dashoffset:0}
+.horizon-svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:120px;opacity:.5;pointer-events:none}
+
+/* ---------- faq ---------- */
+.faq{background:var(--night)}
+.faq-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:clamp(24px,5vw,80px);align-items:start}
+.faq-list{border-top:1px solid var(--line)}
+.q{border-bottom:1px solid var(--line)}
+.q h3{margin:0}
+.q button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;border:0;background:none;text-align:left;font-weight:700;font-size:clamp(1.1rem,1.6vw,1.35rem);cursor:pointer}
+.q .ico{position:relative;flex:none;width:36px;height:36px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line);transition:background .3s,transform .5s var(--ease)}
+.q .ico::before,.q .ico::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;background:var(--sand);transform:translate(-50%,-50%)}
+.q .ico::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .4s var(--ease)}
+.q button[aria-expanded="true"] .ico{background:var(--foam);transform:rotate(180deg)}
+.q button[aria-expanded="true"] .ico::before,.q button[aria-expanded="true"] .ico::after{background:var(--night)}
+.q button[aria-expanded="true"] .ico::after{transform:translate(-50%,-50%) rotate(0)}
+.q button:hover .ico{box-shadow:inset 0 0 0 2px var(--foam)}
+.answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.answer>div{overflow:hidden}
+.answer p{margin:0;padding:0 0 24px;color:var(--mist);max-width:62ch}
+.q.open .answer{grid-template-rows:1fr}
+.answer[hidden]{display:grid;visibility:hidden}
+.q.open .answer{visibility:visible}
+
+/* ---------- newsletter ---------- */
+.news{background:var(--foam);color:var(--night);overflow:hidden}
+.news .sec-title em{color:var(--coral-ink);-webkit-text-stroke:0}
+.news-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,5vw,80px);align-items:end}
+.news p.lede{color:#123a33;max-width:42ch;margin:20px 0 0}
+.field{display:flex;gap:10px;padding:8px;border-radius:999px;background:var(--night);box-shadow:0 20px 50px -24px rgba(10,19,34,.8)}
+.field input{flex:1;min-width:0;min-height:48px;padding:0 18px;border:0;border-radius:999px;background:transparent;color:var(--sand);font-size:1.05rem}
+.field input::placeholder{color:#8a9ab3}
+.field input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.news label{display:block;font-weight:700;margin-bottom:10px}
+.news .hint{margin:10px 4px 0;font-size:.92rem;min-height:1.5em;color:#123a33}
+.news .hint.err{color:#7a1600;font-weight:700}
+.news .ok{display:none;align-items:center;gap:14px;padding:18px 22px;border-radius:var(--radius);background:var(--night);color:var(--sand);font-weight:700}
+.news .ok svg{flex:none;width:36px;height:36px}
+.news .ok .chk{stroke-dasharray:40;stroke-dashoffset:40;transition:stroke-dashoffset .8s var(--ease) .2s}
+.news.done .ok{display:flex}
+.news.done .ok .chk{stroke-dashoffset:0}
+.news.done form{display:none}
+.news :focus-visible{outline-color:var(--night)}
+.news .btn{--bg:var(--coral);--fg:var(--coral-ink)}
+
+/* ---------- footer ---------- */
+footer{background:#060c17;padding:clamp(60px,8vw,100px) 0 32px;overflow:hidden}
+.foot-word{font-weight:800;font-size:clamp(4rem,22vw,22rem);line-height:.78;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.5px rgba(244,235,221,.28);white-space:nowrap;margin:0 0 clamp(32px,5vw,60px);transform:translateX(var(--fx,0px))}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.foot-grid h2{margin:0 0 12px;font-size:.78rem;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mist);font-weight:600}
+.foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.foot-grid a{text-decoration:none;font-weight:600}
+.foot-grid a:hover{color:var(--foam);text-decoration:underline;text-underline-offset:4px}
+.social{display:flex;gap:10px}
+.social a{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--line);transition:background .3s,transform .3s var(--ease)}
+.social a:hover{background:var(--foam);color:var(--night);transform:translateY(-3px);text-decoration:none}
+.social svg{width:20px;height:20px}
+.legal{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--mist);font-size:.85rem}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .act{grid-template-columns:70px 1fr auto}
+  .act .genre{display:none}
+}
+@media (max-width:900px){
+  .nav ul,.nav .btn{display:none}
+  .burger{display:grid}
+  .tix{grid-template-columns:1fr}
+  .faq-grid,.news-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .hero-meta{grid-template-columns:repeat(3,auto)}
+  .hero-meta .cta{grid-column:1/-1;justify-self:start;flex-direction:row;flex-wrap:wrap}
+}
+@media (max-width:560px){
+  .bar{height:64px}
+  .hero{padding-top:96px}
+  .hero-sun{right:-8%;top:14%}
+  .kinetic{font-size:23vw}
+  .hero-meta{grid-template-columns:1fr 1fr}
+  .hero-meta .place{grid-column:1/-1}
+  .act{grid-template-columns:1fr auto;row-gap:6px}
+  .act .time{grid-column:1/-1}
+  .clock-grid{grid-template-columns:repeat(2,1fr);row-gap:24px}
+  .info-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .basket{border-radius:22px;padding:14px 16px}
+  .basket .btn{width:100%;justify-content:center}
+  .field{flex-direction:column;border-radius:22px}
+  .field .btn{justify-content:center}
+  .filter{display:flex;width:100%}
+  .filter button{flex:1;min-width:0}
+  .sunrise{height:220vh}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
+  .js .kinetic .ch,.js .reveal{opacity:1;transform:none}
+  .sunrise{height:auto}
+  .sunrise-stick{position:relative;height:auto;min-height:80vh;padding:120px 0}
+  .marquee-track{flex-wrap:wrap;width:auto;justify-content:center;transform:none!important}
+  .marquee-track span:nth-child(n+7){display:none}
+}
+.no-motion .sunrise{--sp:1;--o:1;--o4:1;--sl:#0a1322}
+.no-motion .sunrise-lines span{--o:1}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header" id="top">
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Tidefest home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#ff6b3d"/><circle cx="20" cy="17" r="7" fill="#ffc34a"/><path class="wave" d="M4 25c4-3 8-3 12 0s8 3 12 0 6-2 8-1" fill="none" stroke="#0a1322" stroke-width="3" stroke-linecap="round"/><path d="M6 31c4-2 7-2 11 0s8 2 12 0" fill="none" stroke="#0a1322" stroke-width="2.4" stroke-linecap="round" opacity=".6"/></svg>
+      Tidefest
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a class="link" href="#lineup">Line-up</a></li>
+        <li><a class="link" href="#tickets">Tickets</a></li>
+        <li><a class="link" href="#camping">Camping</a></li>
+        <li><a class="link" href="#info">Info</a></li>
+      </ul>
+      <a class="btn" href="#tickets">Buy tickets <span class="arrow" aria-hidden="true">→</span></a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </nav>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" aria-label="Mobile menu" role="dialog" aria-modal="true">
+  <ul>
+    <li><a class="big" href="#lineup">Line-up</a></li>
+    <li><a class="big" href="#tickets">Tickets</a></li>
+    <li><a class="big" href="#camping">Camping</a></li>
+    <li><a class="big" href="#info">Info</a></li>
+  </ul>
+  <div>
+    <p class="mono" style="margin:0 0 16px">14–16 Aug 2027 · Newquay, Cornwall</p>
+    <a class="btn" href="#tickets">Buy tickets <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</div>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-sun" aria-hidden="true"></div>
+    <canvas id="waves" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <span class="eyebrow mono"><span class="dot" aria-hidden="true"></span>Electronic &amp; alternative · 3 days · 8,000 capacity</span>
+      <h1 class="kinetic" id="hero-title" aria-label="Tidefest">
+        <span class="word" aria-hidden="true">Tide</span><span class="word" aria-hidden="true">fest</span>
+      </h1>
+      <dl class="hero-meta">
+        <div><dt class="mono">Dates</dt><dd>14–16 Aug 2027</dd></div>
+        <div class="place"><dt class="mono">Place</dt><dd>A beach near Newquay, Cornwall</dd></div>
+        <div><dt class="mono">Stages</dt><dd>Shoreline + The Cave</dd></div>
+        <div class="cta">
+          <a class="btn" href="#tickets">Get tickets <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#lineup">See the line-up</a>
+        </div>
+      </dl>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee">
+      <span>Shoreline</span><span>The Cave</span><span>Sunrise sets</span><span>Camping on the cliffs</span><span>14–16 Aug</span><span>Newquay</span>
+      <span>Shoreline</span><span>The Cave</span><span>Sunrise sets</span><span>Camping on the cliffs</span><span>14–16 Aug</span><span>Newquay</span>
+    </div>
+  </div>
+
+  <!-- SUNRISE SEQUENCE -->
+  <section class="sunrise" id="sunrise" aria-labelledby="sunrise-title">
+    <div class="sunrise-stick">
+      <div class="sky" aria-hidden="true"></div>
+      <div class="big-sun" aria-hidden="true"></div>
+      <div class="sea" aria-hidden="true"></div>
+      <div class="sunrise-copy">
+        <div class="clock mono" id="sunclock" aria-hidden="true">04:58</div>
+        <h2 class="sunrise-lines" id="sunrise-title">
+          <span style="--o:var(--o1)">Dance till</span>
+          <span style="--o:var(--o2)">the sun</span>
+          <span style="--o:var(--o3)">comes up.</span>
+        </h2>
+        <p>Every morning of Tidefest, one artist plays a sunrise set on the Shoreline stage, facing the water. Bring a blanket. Coffee's on from 5am.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINE-UP -->
+  <section class="section lineup" id="lineup" aria-labelledby="lineup-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="mono reveal" style="color:var(--foam);margin:0 0 14px">18 artists · 2 stages · 3 sunrises</p>
+          <h2 class="sec-title reveal" id="lineup-title" data-flex>The <em>line-up</em></h2>
+        </div>
+        <div class="reveal">
+          <div class="filter" role="tablist" aria-label="Filter line-up by day">
+            <span class="pill" aria-hidden="true"></span>
+            <button role="tab" type="button" id="tab-fri" aria-selected="true" aria-controls="acts" data-day="fri">Fri</button>
+            <button role="tab" type="button" id="tab-sat" aria-selected="false" aria-controls="acts" data-day="sat" tabindex="-1">Sat</button>
+            <button role="tab" type="button" id="tab-sun" aria-selected="false" aria-controls="acts" data-day="sun" tabindex="-1">Sun</button>
+          </div>
+          <p class="day-note mono" id="daynote" aria-live="polite">Friday 14 August</p>
+        </div>
+      </div>
+      <ul class="acts" id="acts" role="tabpanel" aria-labelledby="tab-fri" tabindex="0"></ul>
+      <p class="fine">All artists listed are fictional placeholders for this concept page. Set times may change.</p>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="section countdown" aria-labelledby="count-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title reveal" id="count-title" data-flex>Gates <em>open in</em></h2>
+        <p class="sec-lede reveal">Friday 14 August 2027, 12:00 UK time. Pitch your tent, find the sea, wait for the first kick drum.</p>
+      </div>
+      <div class="clock-grid" id="clock" role="timer" aria-label="Time until Tidefest opens">
+        <div class="unit"><div class="digits" data-u="d"></div><div class="lbl">Days</div></div>
+        <div class="unit"><div class="digits" data-u="h"></div><div class="lbl">Hours</div></div>
+        <div class="unit"><div class="digits" data-u="m"></div><div class="lbl">Minutes</div></div>
+        <div class="unit"><div class="digits" data-u="s"></div><div class="lbl">Seconds</div></div>
+      </div>
+      <p class="sr-only" id="clock-sr" aria-live="polite"></p>
+      <p class="when">Opening: 14.08.2027 · 12:00 Europe/London</p>
+    </div>
+  </section>
+
+  <!-- TICKETS -->
+  <section class="section tickets" id="tickets" aria-labelledby="tix-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title reveal" id="tix-title" data-flex>Pick your <em>tide</em></h2>
+        <p class="sec-lede reveal">Choose a ticket type and quantity. Up to 6 of each per order. Prices include booking fee.</p>
+      </div>
+      <div class="tix" id="tix">
+        <article class="tix-card reveal" data-price="79" data-name="Day ticket">
+          <span class="flag tag sun">Single day</span>
+          <h3>Day</h3>
+          <div class="price">£79 <small>per person</small></div>
+          <ul><li>One day, Fri, Sat or Sun</li><li>Both stages, 12:00 till late</li><li>No camping</li></ul>
+          <div class="stepper" role="group" aria-label="Day ticket quantity">
+            <button type="button" data-step="-1" aria-label="Remove one Day ticket">−</button>
+            <output aria-live="polite">0</output>
+            <button type="button" data-step="1" aria-label="Add one Day ticket">+</button>
+          </div>
+        </article>
+        <article class="tix-card reveal" data-price="179" data-name="Weekend ticket">
+          <span class="flag tag shore">All three days</span>
+          <h3>Weekend</h3>
+          <div class="price">£179 <small>per person</small></div>
+          <ul><li>Friday to Sunday</li><li>All three sunrise sets</li><li>No camping</li></ul>
+          <div class="stepper" role="group" aria-label="Weekend ticket quantity">
+            <button type="button" data-step="-1" aria-label="Remove one Weekend ticket">−</button>
+            <output aria-live="polite">0</output>
+            <button type="button" data-step="1" aria-label="Add one Weekend ticket">+</button>
+          </div>
+        </article>
+        <article class="tix-card feature reveal" data-price="229" data-name="Weekend + camping ticket">
+          <span class="flag tag cave">Full stay</span>
+          <h3>Weekend + camping</h3>
+          <div class="price">£229 <small>per person</small></div>
+          <ul><li>Friday to Sunday</li><li>Camping Thu 18:00 to Mon 12:00</li><li>Showers and lockers on site</li></ul>
+          <div class="stepper" role="group" aria-label="Weekend plus camping ticket quantity">
+            <button type="button" data-step="-1" aria-label="Remove one Weekend plus camping ticket">−</button>
+            <output aria-live="polite">0</output>
+            <button type="button" data-step="1" aria-label="Add one Weekend plus camping ticket">+</button>
+          </div>
+        </article>
+      </div>
+      <div class="basket" aria-label="Order summary">
+        <div class="sum">
+          <span class="mono" style="color:#33415a">Total</span>
+          <span class="total" id="total" aria-live="polite">£0</span>
+          <span class="count" id="count">No tickets selected</span>
+        </div>
+        <button class="btn" type="button" id="checkout" disabled>Continue to checkout <span class="arrow" aria-hidden="true">→</span></button>
+        <p class="basket-msg" id="basket-msg" role="status"></p>
+      </div>
+      <p class="fine">Tidefest is an 18+ event. Photo ID required at the gate.</p>
+    </div>
+  </section>
+
+  <!-- CAMPING & GETTING THERE -->
+  <section class="section camping" id="camping" aria-labelledby="camp-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title reveal" id="camp-title" data-flex>Camping &amp; <em>getting there</em></h2>
+        <p class="sec-lede reveal">Sleep within earshot of the sea. Here's what you need to know before you pack.</p>
+      </div>
+      <div class="info-grid">
+        <article class="info reveal">
+          <span class="n mono">01</span>
+          <svg viewBox="0 0 56 56" fill="none" stroke="#6ff2cf" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="M6 46 28 10l22 36H6Z"/><path class="draw" d="M28 10v36M22 46l6-12 6 12"/></svg>
+          <h3>Clifftop camping</h3>
+          <p>Campsite opens Thursday 18:00 and closes Monday 12:00. Bring your own tent, or pre-pitched bell tents can be added at checkout.</p>
+        </article>
+        <article class="info reveal">
+          <span class="n mono">02</span>
+          <svg viewBox="0 0 56 56" fill="none" stroke="#ffc34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect class="draw" x="8" y="12" width="40" height="28" rx="6"/><path class="draw" d="M8 28h40M16 46l4-6M40 46l-4-6"/><circle class="draw" cx="17" cy="34" r="2"/><circle class="draw" cx="39" cy="34" r="2"/></svg>
+          <h3>By train &amp; shuttle</h3>
+          <p>Travel to Newquay station, then hop on the festival shuttle bus to the site. Shuttles run every 20 minutes on arrival and departure days.</p>
+        </article>
+        <article class="info reveal">
+          <span class="n mono">03</span>
+          <svg viewBox="0 0 56 56" fill="none" stroke="#ff6b3d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="M8 34h40v8H8zM12 34l6-12h20l6 12"/><circle class="draw" cx="16" cy="44" r="4"/><circle class="draw" cx="40" cy="44" r="4"/></svg>
+          <h3>Driving &amp; parking</h3>
+          <p>Parking is limited and must be booked in advance. Car-share if you can: four or more people per car get a reduced parking rate.</p>
+        </article>
+        <article class="info reveal">
+          <span class="n mono">04</span>
+          <svg viewBox="0 0 56 56" fill="none" stroke="#f4ebdd" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="M28 6c-8 10-14 18-14 26a14 14 0 0 0 28 0c0-8-6-16-14-26Z"/><path class="draw" d="M22 34a6 6 0 0 0 6 6"/></svg>
+          <h3>Leave no trace</h3>
+          <p>Free water refill points across the site and campsite. Take everything home with you, including your tent. The beach was here first.</p>
+        </article>
+      </div>
+    </div>
+    <svg class="horizon-svg" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70c120-30 240-30 360 0s240 30 360 0 240-30 360 0 240 30 360 0V120H0Z" fill="#0a1322"/></svg>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq" id="info" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 class="sec-title reveal" id="faq-title" data-flex>Good <em>to know</em></h2>
+        <p class="sec-lede reveal" style="margin-top:20px">Can't find your answer? Email <a href="mailto:hello@tidefest.example">hello@tidefest.example</a>.</p>
+      </div>
+      <div class="faq-list" id="faq">
+        <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a1" id="q1">Is there an age limit?<span class="ico" aria-hidden="true"></span></button></h3>
+          <div class="answer" id="a1" role="region" aria-labelledby="q1" hidden><div><p>Yes. Tidefest is strictly 18+. Bring a valid photo ID (passport, driving licence or PASS card) every time you enter the arena.</p></div></div></div>
+        <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a2" id="q2">What time does the sunrise set start?<span class="ico" aria-hidden="true"></span></button></h3>
+          <div class="answer" id="a2" role="region" aria-labelledby="q2" hidden><div><p>Sunrise sets begin at 05:30 on the Shoreline stage on Saturday, Sunday and Monday mornings. The Shoreline gate reopens at 05:00 for these sets.</p></div></div></div>
+        <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a3" id="q3">Is the site accessible?<span class="ico" aria-hidden="true"></span></button></h3>
+          <div class="answer" id="a3" role="region" aria-labelledby="q3" hidden><div><p>We have an accessible campsite area, viewing platforms at both stages, accessible toilets and a free companion ticket scheme. Contact us before booking and we'll help plan your visit.</p></div></div></div>
+        <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a4" id="q4">Can I bring my own food and drink?<span class="ico" aria-hidden="true"></span></button></h3>
+          <div class="answer" id="a4" role="region" aria-labelledby="q4" hidden><div><p>Food, yes, in the campsite and arena. Drinks for personal use are allowed in the campsite only, and no glass anywhere on site.</p></div></div></div>
+        <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a5" id="q5">What happens if the weather turns?<span class="ico" aria-hidden="true"></span></button></h3>
+          <div class="answer" id="a5" role="region" aria-labelledby="q5" hidden><div><p>It's Cornwall, so pack for sun and rain. The Cave stage is covered. If conditions become unsafe we'll post updates in the app and on our social channels.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="section news" id="news" aria-labelledby="news-title">
+    <div class="wrap news-grid">
+      <div>
+        <h2 class="sec-title reveal" id="news-title" data-flex>Catch the <em>next wave</em></h2>
+        <p class="lede reveal">Line-up drops, set times and ticket releases. One email a month, at most. Unsubscribe any time.</p>
+      </div>
+      <div class="reveal">
+        <form id="signup" novalidate>
+          <label for="email">Your email address</label>
+          <div class="field">
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="email-hint" required>
+            <button class="btn" type="submit">Sign up <span class="arrow" aria-hidden="true">→</span></button>
+          </div>
+          <p class="hint" id="email-hint" aria-live="polite">We'll never share your email.</p>
+        </form>
+        <div class="ok" role="status" tabindex="-1" id="ok">
+          <svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#6ff2cf"/><path class="chk" d="M10 18.5l5.5 5.5L26 13" fill="none" stroke="#0a1322" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="ok-text">You're on the list. See you on the sand.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-word" aria-hidden="true" id="footword">TIDEFEST TIDEFEST</div>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top" aria-label="Tidefest, back to top">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#ff6b3d"/><circle cx="20" cy="17" r="7" fill="#ffc34a"/><path d="M4 25c4-3 8-3 12 0s8 3 12 0 6-2 8-1" fill="none" stroke="#0a1322" stroke-width="3" stroke-linecap="round"/></svg>
+          Tidefest
+        </a>
+        <p style="color:var(--mist);max-width:34ch">14–16 August 2027. A beach near Newquay, Cornwall. Electronic and alternative music by the sea.</p>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:hello@tidefest.example">hello@tidefest.example</a></li>
+          <li><a href="mailto:access@tidefest.example">access@tidefest.example</a></li>
+          <li><a href="mailto:press@tidefest.example">press@tidefest.example</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Festival</h2>
+        <ul>
+          <li><a href="#lineup">Line-up</a></li>
+          <li><a href="#tickets">Tickets</a></li>
+          <li><a href="#camping">Camping</a></li>
+          <li><a href="#camping">Getting there</a></li><li><a href="#info">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <div class="social">
+          <a href="#" aria-label="Tidefest on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Tidefest on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 3 2.5 5 5.5 5"/></svg></a>
+          <a href="#" aria-label="Tidefest on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9v6l5-3-5-3Z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Tidefest on Spotify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7 9.5c3.5-1 7-.7 10 1M7.5 13c3-.8 5.7-.5 8 .8M8 16.3c2.3-.5 4.4-.3 6 .6"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="legal"><span>© 2027 Tidefest (fictional event, concept page)</span><span>18+ event · Photo ID required</span></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const doc = document.documentElement;
+  doc.classList.add('js');
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  let reduce = mq.matches;
+  const setMotionClass = () => doc.classList.toggle('no-motion', reduce);
+  setMotionClass();
+  mq.addEventListener?.('change', e => { reduce = e.matches; setMotionClass(); onScroll(); drawWaves(performance.now()); });
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  /* ---------- kinetic hero letters ---------- */
+  const kin = $('.kinetic');
+  let ci = 0;
+  $$('.word', kin).forEach(w => {
+    const t = w.textContent; w.textContent = '';
+    [...t].forEach(c => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; s.style.setProperty('--i', ci++); w.appendChild(s); });
+  });
+  const chars = $$('.ch', kin);
+  requestAnimationFrame(() => requestAnimationFrame(() => kin.classList.add('in')));
+  // pointer-reactive weight/width: letters near the pointer get thin & condensed, like a wave passing
+  const hero = $('.hero');
+  let px = -1, raf0 = 0;
+  hero.addEventListener('pointermove', e => { px = e.clientX; if (!raf0) raf0 = requestAnimationFrame(applyKin); });
+  hero.addEventListener('pointerleave', () => { px = -1; if (!raf0) raf0 = requestAnimationFrame(applyKin); });
+  function applyKin() {
+    raf0 = 0;
+    chars.forEach(c => {
+      if (reduce || px < 0) { c.style.removeProperty('--w'); c.style.removeProperty('--wd'); return; }
+      const r = c.getBoundingClientRect();
+      const d = Math.abs(px - (r.left + r.width / 2));
+      const k = Math.max(0, 1 - d / 320);
+      c.style.setProperty('--w', Math.round(800 - k * 480));
+      c.style.setProperty('--wd', Math.round(100 - k * 25));
+    });
+  }
+
+  /* ---------- canvas waves ---------- */
+  const cv = $('#waves'), ctx = cv.getContext('2d');
+  let W = 0, H = 0, dpr = 1, heroVisible = true, mxn = .5, myn = .5, wraf = 0;
+  function sizeCanvas() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  const layers = [
+    { y: .58, a: 22, f: 1.4, s: .35, c: 'rgba(111,242,207,.10)' },
+    { y: .66, a: 28, f: 1.1, s: .5, c: 'rgba(23,48,87,.85)' },
+    { y: .74, a: 24, f: 1.7, s: .7, c: 'rgba(16,32,58,.92)' },
+    { y: .83, a: 18, f: 2.2, s: .9, c: 'rgba(10,19,34,.97)' }
+  ];
+  function drawWaves(t) {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    const time = reduce ? 0 : t / 1000;
+    layers.forEach((L, i) => {
+      const amp = L.a * (1 + (reduce ? 0 : (1 - myn) * .8));
+      ctx.beginPath();
+      ctx.moveTo(0, H);
+      for (let x = 0; x <= W + 10; x += 10) {
+        const nx = x / W;
+        const push = reduce ? 0 : Math.exp(-Math.pow((nx - mxn) * 4, 2)) * 26;
+        const y = H * L.y + Math.sin(nx * Math.PI * 2 * L.f + time * L.s * 2 + i) * amp + Math.sin(nx * 9 + time * L.s * 3) * amp * .25 - push;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(W, H); ctx.closePath();
+      ctx.fillStyle = L.c; ctx.fill();
+      if (i === 0) { ctx.strokeStyle = 'rgba(111,242,207,.35)'; ctx.lineWidth = 1.5; ctx.stroke(); }
+    });
+  }
+  function loopWaves(t) { drawWaves(t); wraf = (!reduce && heroVisible && !document.hidden) ? requestAnimationFrame(loopWaves) : 0; }
+  function startWaves() { if (!wraf) wraf = requestAnimationFrame(loopWaves); }
+  hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); mxn = (e.clientX - r.left) / r.width; myn = (e.clientY - r.top) / r.height; });
+  new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; if (heroVisible) startWaves(); }).observe(hero);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) startWaves(); });
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { sizeCanvas(); drawWaves(performance.now()); movePill(); }, 120); });
+  sizeCanvas(); drawWaves(0); startWaves();
+
+  /* ---------- header + scroll-driven values ---------- */
+  const header = $('.site-header');
+  const sunrise = $('#sunrise'), sunclock = $('#sunclock'), marquee = $('#marquee'), footword = $('#footword');
+  const flexTitles = $$('[data-flex]');
+  let lastY = scrollY, sraf = 0, vel = 0;
+  function onScroll() {
+    sraf = 0;
+    const y = scrollY, vh = innerHeight;
+    vel = y - lastY;
+    header.classList.toggle('scrolled', y > 40);
+    if (!header.classList.contains('menu-open')) header.classList.toggle('hide', !reduce && vel > 4 && y > vh);
+    if (vel < -2 || y < vh) header.classList.remove('hide');
+    lastY = y;
+    if (reduce) {
+      doc.style.removeProperty('--hp');
+      sunrise.style.cssText = '--sp:1;--o1:1;--o2:1;--o3:1;--o4:1;--sl:#0a1322';
+      sunclock.textContent = '05:30';
+      return;
+    }
+    // hero parallax
+    hero.style.setProperty('--hp', clamp(y / vh, 0, 1).toFixed(3));
+    // sunrise sticky sequence
+    const r = sunrise.getBoundingClientRect();
+    const p = clamp(-r.top / (r.height - vh), 0, 1);
+    const seg = (a, b) => clamp((p - a) / (b - a), 0, 1).toFixed(3);
+    sunrise.style.cssText = `--sp:${p.toFixed(3)};--o1:${seg(.05, .3)};--o2:${seg(.25, .5)};--o3:${seg(.45, .7)};--o4:${seg(.65, .85)};--sl:${p > .5 ? '#0a1322' : '#f4ebdd'}`;
+    const mins = Math.round(4 * 60 + 58 + p * 32);
+    sunclock.textContent = String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0');
+    // marquee tied to scroll position
+    marquee.style.setProperty('--mx', (-(y * .35) % (marquee.scrollWidth / 2)).toFixed(1) + 'px');
+    // footer word drift
+    const fr = footword.getBoundingClientRect();
+    footword.style.setProperty('--fx', ((fr.top - vh) * .4).toFixed(1) + 'px');
+    // section titles stretch (width axis) with scroll velocity
+    const squeeze = clamp(100 - Math.abs(vel) * 1.2, 75, 100);
+    flexTitles.forEach(t => t.style.setProperty('--tw', squeeze.toFixed(0)));
+    clearTimeout(onScroll.t);
+    onScroll.t = setTimeout(() => flexTitles.forEach(t => t.style.setProperty('--tw', 100)), 120);
+  }
+  flexTitles.forEach(t => t.style.transition = 'font-variation-settings .35s cubic-bezier(.2,.8,.2,1), opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1)');
+  addEventListener('scroll', () => { if (!sraf) sraf = requestAnimationFrame(onScroll); }, { passive: true });
+  onScroll();
+
+  /* ---------- reveal on view ---------- */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  $$('.reveal, .info').forEach(el => io.observe(el));
+  // safety: never leave content hidden
+  setTimeout(() => $$('.reveal').forEach(el => { const r = el.getBoundingClientRect(); if (r.top < innerHeight) el.classList.add('in'); }), 1500);
+
+  /* ---------- mobile nav ---------- */
+  const burger = $('.burger'), drawer = $('#drawer');
+  function setMenu(open) {
+    burger.setAttribute('aria-expanded', open);
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    drawer.classList.toggle('open', open);
+    header.classList.toggle('menu-open', open);
+    header.classList.remove('hide');
+    document.body.style.overflow = open ? 'hidden' : '';
+    $('#main').inert = open; $('footer').inert = open;
+    if (open) setTimeout(() => $('a', drawer).focus(), 50); else burger.focus({ preventScroll: true });
+  }
+  burger.addEventListener('click', () => setMenu(burger.getAttribute('aria-expanded') !== 'true'));
+  $$('a', drawer).forEach(a => a.addEventListener('click', () => setMenu(false)));
+  addEventListener('keydown', e => {
+    if (!drawer.classList.contains('open')) return;
+    if (e.key === 'Escape') setMenu(false);
+    if (e.key === 'Tab') {
+      const f = [burger, ...$$('a', drawer)], i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  matchMedia('(min-width: 901px)').addEventListener?.('change', e => { if (e.matches && drawer.classList.contains('open')) setMenu(false); });
+
+  /* ---------- line-up ---------- */
+  const lineup = {
+    fri: [
+      ['12:30', 'Pilchard Youth', 'The Cave', 'Post-punk'],
+      ['14:15', 'Low Lantern', 'Shoreline', 'Ambient pop'],
+      ['16:00', 'Hollow Gull', 'The Cave', 'Breakbeat'],
+      ['18:30', 'Marrow & Tide', 'Shoreline', 'Indie electronica'],
+      ['21:00', 'Velvet Undertow', 'The Cave', 'Dark techno'],
+      ['22:45', 'Saltglass Choir', 'Shoreline', 'Live electronic']
+    ],
+    sat: [
+      ['05:30', 'Moonsalt', 'Sunrise · Shoreline', 'Downtempo'],
+      ['13:00', 'Copper Shoals', 'Shoreline', 'Shoegaze'],
+      ['15:30', 'Kestrel Static', 'The Cave', 'Noise rock'],
+      ['18:00', 'The Spindrift Club', 'Shoreline', 'Nu-disco'],
+      ['20:30', 'Granite Bloom', 'The Cave', 'Acid house'],
+      ['22:30', 'Halcyon Rigging', 'Shoreline', 'Progressive house']
+    ],
+    sun: [
+      ['05:30', 'Ochre Signal', 'Sunrise · Shoreline', 'Balearic'],
+      ['13:30', 'Gannet Dive', 'The Cave', 'Garage'],
+      ['15:45', 'Sister Fathom', 'Shoreline', 'Art pop'],
+      ['18:15', 'Brine Theory', 'The Cave', 'Drum & bass'],
+      ['20:30', 'Tin Lantern Disco', 'Shoreline', 'Synth-pop'],
+      ['22:30', 'Driftwire', 'Shoreline', 'Electronic live set']
+    ]
+  };
+  const dayNames = { fri: 'Friday 14 August', sat: 'Saturday 15 August', sun: 'Sunday 16 August' };
+  const acts = $('#acts'), tabs = $$('.filter [role=tab]'), pill = $('.filter .pill');
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  function renderDay(day) {
+    acts.innerHTML = lineup[day].map((a, i) => {
+      const cls = a[2].startsWith('Sunrise') ? 'sun' : a[2] === 'The Cave' ? 'cave' : 'shore';
+      return `<li class="act" style="--i:${i}"><span class="time mono">${a[0]}</span><span class="name">${esc(a[1])}</span><span class="genre mono">${esc(a[3])}</span><span class="tag ${cls}">${esc(a[2])}</span></li>`;
+    }).join('');
+    acts.classList.remove('swap'); void acts.offsetWidth; acts.classList.add('swap');
+    $('#daynote').textContent = dayNames[day] + ' · 6 artists';
+  }
+  function movePill() {
+    const t = tabs.find(b => b.getAttribute('aria-selected') === 'true');
+    pill.style.width = t.offsetWidth + 'px';
+    pill.style.transform = `translateX(${t.offsetLeft}px)`;
+  }
+  function select(btn, focus) {
+    tabs.forEach(b => { const on = b === btn; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; });
+    acts.setAttribute('aria-labelledby', btn.id);
+    renderDay(btn.dataset.day); movePill();
+    if (focus) btn.focus();
+  }
+  tabs.forEach((b, i) => {
+    b.addEventListener('click', () => select(b));
+    b.addEventListener('keydown', e => {
+      let n = null;
+      if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === 'Home') n = tabs[0];
+      if (e.key === 'End') n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); select(n, true); }
+    });
+  });
+  renderDay('fri');
+  document.fonts?.ready.then(movePill); movePill();
+
+  /* ---------- countdown ---------- */
+  // 14 Aug 2027 12:00 BST (UTC+1) = 11:00 UTC
+  const target = Date.UTC(2027, 7, 14, 11, 0, 0);
+  const units = Object.fromEntries($$('#clock [data-u]').map(el => [el.dataset.u, el]));
+  const prev = {};
+  function setDigits(u, str) {
+    const el = units[u];
+    if (prev[u] === str) return;
+    const old = prev[u] || '';
+    el.innerHTML = [...str].map((c, i) => `<span class="digit${!reduce && old && old[i - (str.length - old.length)] !== c ? ' tick' : ''}">${c}</span>`).join('');
+    prev[u] = str;
+  }
+  let lastSr = '';
+  function tickClock() {
+    let diff = Math.max(0, target - Date.now());
+    const d = Math.floor(diff / 864e5); diff -= d * 864e5;
+    const h = Math.floor(diff / 36e5); diff -= h * 36e5;
+    const m = Math.floor(diff / 6e4); diff -= m * 6e4;
+    const s = Math.floor(diff / 1e3);
+    setDigits('d', String(d)); setDigits('h', String(h).padStart(2, '0'));
+    setDigits('m', String(m).padStart(2, '0')); setDigits('s', String(s).padStart(2, '0'));
+    const sr = target <= Date.now() ? 'Tidefest is open.' : `${d} days, ${h} hours and ${m} minutes until gates open.`;
+    if (sr !== lastSr && s === 0 || !lastSr) { $('#clock-sr').textContent = sr; lastSr = sr; }
+  }
+  tickClock(); setInterval(tickClock, 1000);
+
+  /* ---------- tickets ---------- */
+  const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+  const cards = $$('.tix-card'), MAX = 6;
+  const qty = cards.map(() => 0);
+  function updateTotal() {
+    let total = 0, n = 0;
+    cards.forEach((c, i) => {
+      total += qty[i] * +c.dataset.price; n += qty[i];
+      const [minus, plus] = $$('button', c);
+      minus.disabled = qty[i] === 0; plus.disabled = qty[i] === MAX;
+    });
+    $('#total').textContent = fmt.format(total);
+    $('#count').textContent = n ? `${n} ticket${n > 1 ? 's' : ''}` : 'No tickets selected';
+    $('#checkout').disabled = n === 0;
+    $('#basket-msg').textContent = '';
+  }
+  cards.forEach((c, i) => {
+    const out = $('output', c);
+    $$('button', c).forEach(b => b.addEventListener('click', () => {
+      qty[i] = clamp(qty[i] + +b.dataset.step, 0, MAX);
+      out.textContent = qty[i];
+      out.classList.remove('bump'); void out.offsetWidth; out.classList.add('bump');
+      updateTotal();
+    }));
+    // subtle tilt toward pointer
+    c.addEventListener('pointermove', e => {
+      if (reduce || e.pointerType !== 'mouse') return;
+      const r = c.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-4px)`;
+    });
+    c.addEventListener('pointerleave', () => c.style.transform = '');
+  });
+  $('#checkout').addEventListener('click', () => {
+    const parts = cards.map((c, i) => qty[i] ? `${qty[i]} × ${c.dataset.name}` : '').filter(Boolean);
+    $('#basket-msg').textContent = `Order held: ${parts.join(', ')}. Checkout opens when tickets go on sale (concept page, no payment taken).`;
+  });
+  updateTotal();
+
+  /* ---------- FAQ accordion ---------- */
+  $$('#faq .q').forEach(q => {
+    const btn = $('button', q), panel = $('.answer', q);
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', open);
+      if (open) { panel.hidden = false; requestAnimationFrame(() => q.classList.add('open')); }
+      else { q.classList.remove('open'); setTimeout(() => { if (!q.classList.contains('open')) panel.hidden = true; }, reduce ? 0 : 500); }
+    });
+  });
+
+  /* ---------- newsletter ---------- */
+  const form = $('#signup'), email = $('#email'), hint = $('#email-hint');
+  const valid = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  function showErr(msg) { hint.textContent = msg; hint.classList.add('err'); email.setAttribute('aria-invalid', 'true'); }
+  email.addEventListener('input', () => { if (email.getAttribute('aria-invalid') === 'true' && valid(email.value.trim())) { email.removeAttribute('aria-invalid'); hint.classList.remove('err'); hint.textContent = 'Looks good.'; } });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = email.value.trim();
+    if (!v) { showErr('Please enter your email address.'); email.focus(); return; }
+    if (!valid(v)) { showErr('That doesn’t look like a valid email. Try something like name@example.com.'); email.focus(); return; }
+    $('#ok-text').textContent = `You're on the list. We'll write to ${v} when the next wave lands.`;
+    $('#news').classList.add('done');
+    $('#ok').focus();
+  });
+})();
+</script>
+</body>
+</html>

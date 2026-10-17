@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loom &amp; Leaf — Handwoven linen from Lancashire</title>
+<meta name="description" content="Loom & Leaf is a two-person studio in Lancashire weaving and hemming linen tea towels, aprons, table runners and cushion covers. Free UK delivery over £60.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&display=swap" rel="stylesheet"></noscript>
+<style>
+@font-face{font-family:"Bricolage Fallback";src:local("Arial");size-adjust:103%;ascent-override:92%;descent-override:26%;line-gap-override:0%}
+:root{
+  --sky:#E3E9E6;      /* Pennine sky: the page ground */
+  --sheet:#F5F6F1;    /* line-dried linen: surfaces */
+  --ink:#1C2420;      /* peat ink */
+  --ink-2:#46514B;    /* secondary ink */
+  --rule:#B9C3BC;
+  --moor:#26332C;     /* moorland field */
+  --moor-ink:#E9EEE8;
+  --moor-ink-2:#B8C6BC;
+  --oat:#DCD3C1;      /* undyed linen field */
+  --madder:#A3342A;   /* the one accent: madder red, marks the action */
+  --madder-dk:#86271F;
+  --peg:#C59C6B;
+  --font:"Bricolage Grotesque","Bricolage Fallback",system-ui,sans-serif;
+  --r-s:6px; --r-m:12px; --r-l:20px;
+  --pad:clamp(16px,4vw,56px);
+  --max:1320px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55;font-optical-sizing:auto;caret-color:var(--madder)}
+::selection{background:var(--madder);color:#fff}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.2em}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.025em;line-height:1.02;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--madder);outline-offset:3px;border-radius:4px}
+.moor :focus-visible,.foot :focus-visible{outline-color:#F2B8A8}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:48px;padding:0 1.35em;border-radius:999px;border:1.5px solid var(--ink);background:transparent;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.btn-main{background:var(--madder);border-color:var(--madder);color:#fff}
+.btn-main:hover{background:var(--madder-dk);border-color:var(--madder-dk)}
+.btn-ghost:hover{background:var(--ink);color:var(--sheet)}
+.btn-sm{min-height:40px;padding:0 1em;font-size:15px}
+.link{text-decoration:none;font-weight:600;background:linear-gradient(currentColor 0 0) 0 100%/100% 1.5px no-repeat;padding-bottom:2px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:30;background:var(--sky);border-bottom:1px solid var(--rule)}
+.top-in{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:20px;min-height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:22px;letter-spacing:-.03em}
+.brand svg{width:34px;height:34px}
+.nav{display:flex;gap:22px;font-size:15px;justify-self:center}
+.nav a{text-decoration:none;font-weight:550;padding:6px 0}
+.search{position:relative;width:min(300px,100%)}
+.search input{width:100%;min-height:44px;border:1.5px solid #7C877F;background:var(--sheet);border-radius:999px;padding:0 16px 0 40px;font-size:16px}
+.search input:focus-visible{outline-offset:1px;border-color:var(--ink)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;pointer-events:none;color:var(--ink-2)}
+.cart-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 8px 0 16px;border-radius:999px;border:1.5px solid var(--ink);background:var(--ink);color:var(--sheet);font-weight:600;font-size:15px}
+.cart-btn svg{width:20px;height:20px}
+.cart-count{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;border-radius:999px;background:var(--sheet);color:var(--ink);font-size:14px;font-weight:700}
+.menu-btn{display:none}
+@media (max-width:899px){
+  html{scroll-padding-top:150px}
+  .top-in{grid-template-columns:1fr auto auto;gap:8px;min-height:60px}
+  .brand{font-size:20px}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:var(--sheet);border-bottom:1px solid var(--rule);padding:8px var(--pad) 16px}
+  .nav.open{display:flex}
+  .nav a{padding:12px 0;font-size:18px;border-bottom:1px solid #DDE2DE}
+  .menu-btn{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:999px;border:1.5px solid var(--ink);background:transparent}
+  .menu-btn svg{width:20px;height:20px}
+  .search{grid-column:1/-1;width:100%;margin-bottom:10px;order:5}
+  .search input{min-height:42px}
+  .cart-label{display:none}
+  .cart-btn{padding:0 6px 0 12px}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden}
+.hero-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:center;padding-top:clamp(28px,5vw,64px)}
+.hero h1{font-size:clamp(1.85rem,5.2vw,4.9rem);line-height:.98;letter-spacing:-.035em}
+.hero-copy p{font-size:clamp(17px,1.35vw,20px);max-width:36em;margin-top:22px;color:var(--ink-2)}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-top:28px}
+.promise{display:flex;flex-wrap:wrap;gap:6px 22px;margin:28px 0 0;padding:0;list-style:none;font-size:15px;color:var(--ink-2)}
+.promise li{display:flex;align-items:center;gap:8px}
+.promise svg{width:18px;height:18px;color:var(--ink)}
+.tester{justify-self:end;width:min(100%,430px)}
+.tester figcaption{font-size:14px;color:var(--ink-2);margin-top:10px;max-width:30em}
+
+/* the washing line */
+.line-zone{position:relative;margin-top:clamp(18px,3vw,36px);padding-bottom:28px}
+.moorscape{position:absolute;inset:auto 0 0 0;height:78%;width:100%;pointer-events:none}
+.rope{position:absolute;left:0;right:0;top:14px;height:30px;width:100%;pointer-events:none;z-index:1}
+.line{position:relative;z-index:2;display:flex;justify-content:center;gap:clamp(10px,2vw,30px);padding:0 var(--pad);margin:0;list-style:none}
+.hang{flex:0 0 auto;width:clamp(150px,14.5vw,224px);display:flex;flex-direction:column;align-items:center}
+.hang .cloth{display:block;width:100%;border:0;padding:0;background:none;transform-origin:50% 22px;border-radius:var(--r-s)}
+.hang .cloth svg{width:100%;height:auto}
+.tag{position:relative;margin-top:2px;background:var(--sheet);border:1px solid #CCD3CE;border-radius:var(--r-s);padding:10px 12px 12px;width:92%;box-shadow:0 8px 18px -12px rgba(28,36,32,.45)}
+.tag::before{content:"";position:absolute;top:-9px;left:50%;width:1.5px;height:9px;background:#8B8478}
+.tag b{display:block;font-size:14px;font-weight:600;line-height:1.25}
+.tag-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+.tag .price{font-weight:700;font-size:16px}
+.tag .btn-sm{min-height:36px;padding:0 .9em;font-size:14px}
+@media (max-width:899px){
+  .hero-top{grid-template-columns:1fr;gap:0}
+  .tester{display:none}
+  .line-zone{margin-top:22px;padding-bottom:18px}
+  .line{justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;gap:12px;scrollbar-width:thin}
+  .hang{width:150px;scroll-snap-align:start}
+  .hang:last-child{margin-right:var(--pad)}
+  .moorscape{height:70%}
+  .promise{display:none}
+  .hero-copy p{margin-top:12px;font-size:16px}
+  .hero-cta{margin-top:18px}
+}
+.line-hint{display:none}
+@media (max-width:899px){.line-hint{display:block;font-size:13px;color:var(--ink-2);padding:0 var(--pad);margin-top:6px}}
+.tester-mobile{display:none}
+@media (max-width:899px){.tester-mobile{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin:8px var(--pad) 0;padding:14px;background:var(--sheet);border-radius:var(--r-m)}
+.tester-mobile p{font-size:15px;color:var(--ink-2)}}
+
+/* ---------- shop ---------- */
+section{scroll-margin-top:80px}
+.sec{padding:clamp(72px,10vw,150px) 0}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 40px;margin-bottom:28px}
+.sec-head h2,.h2{font-size:clamp(2rem,4.2vw,3.6rem)}
+.sec-head p{max-width:34em;color:var(--ink-2)}
+.tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;padding:14px 0;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--rule);margin-bottom:28px}
+.cats{display:flex;flex-wrap:wrap;gap:8px;border:0;margin:0;padding:0;min-width:0}
+.cats legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.cats label{position:relative}
+.cats input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.cats span{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;border:1.5px solid var(--rule);background:var(--sheet);font-weight:550;font-size:15px}
+.cats span small{font-size:12px;color:var(--ink-2);font-weight:500}
+.cats input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.cats input:checked+span small{color:#C9D2CC}
+.cats input:focus-visible+span{outline:3px solid var(--madder);outline-offset:3px}
+.sort{display:flex;align-items:center;gap:10px;font-size:15px}
+.sort select{min-height:40px;border-radius:999px;border:1.5px solid #7C877F;background:var(--sheet);padding:0 36px 0 14px;font-size:16px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231C2420' stroke-width='1.8'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.result{font-size:15px;color:var(--ink-2);width:100%;margin:-12px 0 18px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px 24px;margin:0;padding:0;list-style:none}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:820px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{display:flex;flex-direction:column;background:var(--sheet);border-radius:var(--r-l);padding:10px 16px 18px;position:relative}
+.card .art{display:block;width:100%;border:0;background:none;padding:0;border-radius:var(--r-m)}
+.card .art svg{width:100%;height:auto;aspect-ratio:200/230}
+.card h3{font-size:18px;font-weight:620;letter-spacing:-.015em;line-height:1.2;margin-top:4px}
+.card .meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:6px}
+.card .price{font-size:19px;font-weight:700}
+.card .cat{font-size:13px;color:var(--ink-2)}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 14px;padding:0;border:0}
+.sw{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(28,36,32,.35);padding:0;position:relative}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--sheet),0 0 0 4px var(--ink)}
+.sw-name{font-size:13px;color:var(--ink-2);margin:-6px 0 12px}
+.card-actions{display:flex;gap:8px;margin-top:auto}
+.card-actions .btn{flex:1;padding:0 .8em}
+.empty{grid-column:1/-1;padding:40px;border:1.5px dashed var(--rule);border-radius:var(--r-l);text-align:center}
+.empty p{margin-bottom:16px}
+.new{position:absolute;top:14px;right:14px;font-size:12px;font-weight:700;background:var(--ink);color:var(--sheet);padding:3px 9px;border-radius:999px}
+@media (max-width:600px){
+  .grid{grid-template-columns:1fr;gap:14px}
+  .card{display:grid;grid-template-columns:118px 1fr;gap:4px 14px;padding:12px 14px 14px 10px}
+  .card .art{grid-row:1/span 4;align-self:start}
+  .card h3{font-size:17px;margin-top:2px;padding-right:44px}
+  .swatches{margin:8px 0 4px}
+  .sw-name{margin:0 0 10px}
+  .card-actions{grid-column:2}
+  .card-actions .btn{min-height:40px;font-size:15px}
+  .new{top:12px;right:12px}
+  .tools{gap:12px}
+  .cats{flex-wrap:nowrap;overflow-x:auto;width:100%;padding:3px 3px 4px}
+  .cats span{white-space:nowrap}
+}
+
+/* ---------- story / craft (moor field) ---------- */
+.moor{background:var(--moor);color:var(--moor-ink)}
+.moor p{color:var(--moor-ink-2)}
+.story{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);align-items:start}
+.story-lede{font-size:clamp(19px,1.6vw,23px);line-height:1.5;margin-top:24px;color:var(--moor-ink)!important}
+.story-lede+p{margin-top:16px;max-width:36em}
+.makers{display:flex;gap:16px;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid #3F4E45}
+.makers svg{width:120px;flex:0 0 auto}
+.makers p{font-size:15px}
+.draft{background:#F0F2EC;border-radius:var(--r-l);padding:clamp(16px,2.4vw,28px);color:var(--ink)}
+.draft svg{width:100%;height:auto}
+.draft figcaption{font-size:14px;color:var(--ink-2);margin-top:12px}
+.steps{list-style:none;margin:clamp(48px,6vw,80px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;position:relative}
+.steps::before{content:"";position:absolute;left:0;right:0;top:46px;border-top:1.5px dashed #6F8577}
+.step{position:relative}
+.step svg{width:92px;height:92px;background:var(--moor);padding:0 6px}
+.step h3{font-size:21px;margin:18px 0 8px;letter-spacing:-.015em}
+.step p{font-size:15.5px}
+.step .n{font-size:13px;font-weight:600;color:#E7B7A5}
+@media (max-width:900px){.story{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr;gap:36px 20px}.steps::before{display:none}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}.step{display:grid;grid-template-columns:72px 1fr;gap:0 16px}.step svg{width:72px;height:72px;grid-row:1/span 3;padding:0}.step h3{margin:0 0 6px}}
+
+/* ---------- reviews ---------- */
+.reviews{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start}
+.quote-big{margin:0;font-size:clamp(1.5rem,2.7vw,2.4rem);line-height:1.2;letter-spacing:-.02em;font-weight:500}
+.quote-big footer,.note footer{font-size:15px;line-height:1.45;color:var(--ink-2);margin-top:18px;letter-spacing:0}
+.notes{display:grid;gap:16px}
+.note{margin:0;background:var(--sheet);border-radius:var(--r-m);padding:20px 22px;position:relative}
+.note p{font-size:16.5px}
+.note::before{content:"";position:absolute;top:-10px;left:24px;width:10px;height:26px;border-radius:3px;background:var(--peg);border:1px solid #8B6A45}
+.stars{display:flex;gap:3px;margin-bottom:12px;color:var(--madder)}
+.stars svg{width:18px;height:18px}
+.illus{font-size:14px;color:var(--ink-2);margin-top:28px;padding-top:14px;border-top:1px solid var(--rule)}
+@media (max-width:860px){.reviews{grid-template-columns:1fr}}
+
+/* ---------- delivery ---------- */
+.deliver{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start}
+.dtable{width:100%;border-collapse:collapse;font-size:16px;background:var(--sheet);border-radius:var(--r-l);overflow:hidden}
+.dtable caption{text-align:left;font-weight:650;font-size:20px;padding:0 0 12px}
+.dtable th,.dtable td{text-align:left;padding:16px 20px;border-bottom:1px solid #D9DFDA;vertical-align:top}
+.dtable thead th{font-size:13px;font-weight:600;color:var(--ink-2);background:#E9EDE9}
+.dtable tbody tr:last-child td,.dtable tbody tr:last-child th{border-bottom:0}
+.dtable tbody th{font-weight:600}
+.dtable small{display:block;color:var(--ink-2);font-size:14px;font-weight:400;margin-top:2px}
+.returns{background:var(--oat);border-radius:var(--r-l);padding:clamp(20px,2.6vw,32px)}
+.returns h3{font-size:24px;margin-bottom:14px}
+.returns ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.returns li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:16px}
+.returns li svg{width:20px;height:20px;margin-top:3px}
+@media (max-width:860px){.deliver{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .dtable,.dtable tbody,.dtable tr,.dtable th,.dtable td{display:block}
+  .dtable{background:none}
+  .dtable thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .dtable tbody tr{background:var(--sheet);border-radius:var(--r-m);padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:4px 12px}
+  .dtable th,.dtable td{padding:0;border:0}
+  .dtable tbody th{grid-column:1/-1}
+  .dtable td[data-l]::before{content:attr(data-l) ": ";color:var(--ink-2);font-size:14px}
+  .dtable td.cost{font-weight:700;text-align:right}
+  .dtable td.cost::before{content:none}
+}
+
+/* ---------- newsletter ---------- */
+.letter{background:var(--oat);padding:clamp(40px,5vw,64px) 0}
+.letter-in{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:24px 56px;align-items:center}
+.letter h2{font-size:clamp(1.8rem,3vw,2.6rem)}
+.letter p{margin-top:10px;color:#3E4740;max-width:32em}
+.nl{display:grid;grid-template-columns:1fr auto;gap:10px}
+.nl label{grid-column:1/-1;font-weight:600;font-size:15px}
+.nl input{min-height:50px;border-radius:999px;border:1.5px solid #6B6558;background:var(--sheet);padding:0 20px;min-width:0;font-size:16px}
+.nl input[aria-invalid="true"]{border-color:var(--madder);border-width:2px}
+.nl .msg{grid-column:1/-1;font-size:15px;min-height:1.5em;font-weight:550}
+.nl .msg.err{color:#8E2A21}
+.nl .msg.ok{color:#22452F}
+@media (max-width:900px){.letter-in{grid-template-columns:1fr}.nl{grid-template-columns:1fr}.nl .btn{width:100%}}
+
+/* ---------- footer ---------- */
+.foot{background:var(--moor);color:var(--moor-ink);padding:clamp(56px,7vw,96px) 0 32px}
+.foot-art{width:100%;height:auto;max-height:120px;margin-bottom:36px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,5fr) repeat(3,minmax(0,2fr));gap:32px}
+.foot .big{font-size:clamp(2.4rem,5vw,4.4rem);font-weight:700;letter-spacing:-.04em;line-height:1}
+.foot p,.foot li{color:var(--moor-ink-2);font-size:15.5px}
+.foot h3{font-size:15px;font-weight:650;margin-bottom:12px;letter-spacing:0;color:var(--moor-ink)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.foot a{text-decoration:none;display:inline-block;padding:4px 0}
+.foot a:hover{text-decoration:underline}
+.foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:48px;padding-top:20px;border-top:1px solid #3F4E45;font-size:14px;color:var(--moor-ink-2)}
+@media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:1/-1}}
+
+/* ---------- dialogs ---------- */
+dialog{border:0;padding:0;color:var(--ink);background:var(--sheet)}
+dialog::backdrop{background:rgba(22,30,26,.55)}
+.qv{width:min(920px,calc(100% - 32px));max-height:calc(100dvh - 32px);border-radius:var(--r-l);overflow:auto}
+.qv-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.qv-art{background:var(--sky);padding:24px 28px;display:flex;align-items:center}
+.qv-art svg{width:100%;height:auto}
+.qv-body{padding:32px 32px 28px;display:flex;flex-direction:column;gap:16px}
+.qv-body h2{font-size:clamp(1.6rem,2.6vw,2.2rem);padding-right:48px}
+.qv-price{font-size:24px;font-weight:700}
+.qv-desc{color:var(--ink-2);font-size:16px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:14.5px;margin:0}
+.facts dt{color:var(--ink-2)}
+.facts dd{margin:0;font-weight:550}
+.colours{border:0;margin:0;padding:0}
+.colours legend{font-weight:600;font-size:15px;margin-bottom:8px;padding:0}
+.colours .opts{display:flex;flex-wrap:wrap;gap:8px}
+.colours label{position:relative}
+.colours input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.colours span{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 8px;border-radius:999px;border:1.5px solid var(--rule);font-size:15px;background:#fff}
+.colours span i{width:24px;height:24px;border-radius:50%;border:1px solid rgba(28,36,32,.35)}
+.colours input:checked+span{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.colours input:focus-visible+span{outline:3px solid var(--madder);outline-offset:2px}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--rule);border-radius:999px;background:#fff}
+.qty button{width:40px;height:40px;border:0;background:none;border-radius:999px;font-size:20px;line-height:1;display:grid;place-items:center}
+.qty button:disabled{color:#9AA39D;cursor:not-allowed}
+.qty output,.qty span{min-width:30px;text-align:center;font-weight:650}
+.qv-buy{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:auto}
+.qv-buy .btn-main{flex:1;min-width:200px}
+.x{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:999px;border:1.5px solid var(--rule);background:var(--sheet);display:grid;place-items:center;z-index:2}
+.x svg{width:18px;height:18px}
+@media (max-width:720px){
+  .qv{width:100%;max-width:100%;max-height:100dvh;height:100dvh;border-radius:0;margin:0}
+  .qv-in{grid-template-columns:1fr}
+  .qv-art{padding:12px 64px;justify-content:center}
+  .qv-art svg{max-width:220px;margin:0 auto}
+  .qv-body{padding:20px 18px 24px}
+}
+
+/* cart drawer */
+.drawer{margin:0 0 0 auto;height:100dvh;max-height:100dvh;width:min(440px,100%);max-width:100%;display:none;flex-direction:column}
+.drawer[open]{display:flex}
+.dr-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--rule)}
+.dr-head h2{font-size:26px}
+.dr-head .x{position:static}
+.free{padding:16px 20px 18px;background:var(--sky)}
+.free p{font-size:15px;font-weight:550}
+.free svg{width:100%;height:46px;margin-top:6px;overflow:visible}
+.items{flex:1;overflow:auto;list-style:none;margin:0;padding:6px 20px}
+.item{display:grid;grid-template-columns:72px 1fr auto;gap:4px 14px;padding:16px 0;border-bottom:1px solid #DDE2DE;align-items:start}
+.item svg{width:72px;height:auto;grid-row:1/span 3;background:var(--sky);border-radius:var(--r-s)}
+.item h3{font-size:16px;font-weight:620;letter-spacing:-.01em;line-height:1.25}
+.item .opt{font-size:14px;color:var(--ink-2)}
+.item .lt{font-weight:700;text-align:right}
+.item .ctl{display:flex;align-items:center;gap:10px;grid-column:2/-1;margin-top:6px}
+.item .qty button{width:36px;height:36px}
+.rm{border:0;background:none;padding:8px 4px;font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:.2em;color:var(--ink-2)}
+.dr-empty{padding:28px 20px;text-align:center}
+.dr-empty svg{width:180px;margin:0 auto 14px}
+.dr-empty p{margin-bottom:16px;color:var(--ink-2)}
+.dr-foot{border-top:1.5px solid var(--ink);padding:16px 20px 20px;display:grid;gap:6px}
+.dr-foot .row{display:flex;justify-content:space-between;font-size:16px}
+.dr-foot .tot{font-size:20px;font-weight:700;margin-top:4px}
+.dr-foot .btn{margin-top:10px;width:100%}
+.dr-foot small{font-size:13px;color:var(--ink-2);text-align:center}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;background:var(--ink);color:var(--sheet);padding:12px 18px;border-radius:999px;font-size:15px;font-weight:550;max-width:calc(100% - 32px);display:none}
+.toast.show{display:block}
+
+/* ---------- motion floor (micro-css-polish) + subject motion ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .hero-copy>*{animation:rise .7s cubic-bezier(.22,1,.36,1) both}
+  .hero-copy>:nth-child(2){animation-delay:.08s}
+  .hero-copy>:nth-child(3){animation-delay:.16s}
+  .hero-copy>:nth-child(4){animation-delay:.24s}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}}
+  /* cloth stirring in a Pennine breeze */
+  .hang .cloth{animation:sway 5.5s ease-in-out infinite alternate}
+  .hang:nth-child(2) .cloth{animation-duration:6.4s;animation-delay:-2s}
+  .hang:nth-child(3) .cloth{animation-duration:5s;animation-delay:-1s}
+  .hang:nth-child(4) .cloth{animation-duration:6.8s;animation-delay:-3s}
+  .hang:nth-child(5) .cloth{animation-duration:5.8s;animation-delay:-.5s}
+  @keyframes sway{from{transform:rotate(-1.2deg)}to{transform:rotate(1.4deg)}}
+  @media (hover:hover){
+    .card{transition:transform .25s ease,box-shadow .25s ease}
+    .card:hover{transform:translateY(-3px);box-shadow:0 14px 28px -18px rgba(28,36,32,.45)}
+    .card .art svg{transition:transform .5s cubic-bezier(.22,1,.36,1);transform-origin:50% 8%}
+    .card:hover .art svg{transform:rotate(-1.2deg)}
+    .link{transition:background-size .3s ease}
+    .link{background-size:0 1.5px}
+    .link:hover,.link:focus-visible{background-size:100% 1.5px}
+  }
+  .btn{transition:background-color .2s ease,color .2s ease,transform .12s ease}
+  .btn:active,.sw:active,.qty button:active{transform:scale(.96)}
+  .sw{transition:box-shadow .15s ease}
+  .cart-count.bump{animation:bump .4s cubic-bezier(.22,1,.36,1)}
+  @keyframes bump{40%{transform:scale(1.3)}}
+  .drawer[open]{animation:slide .28s cubic-bezier(.22,1,.36,1)}
+  @keyframes slide{from{transform:translateX(40px);opacity:.4}}
+  .qv[open]{animation:pop .22s cubic-bezier(.22,1,.36,1)}
+  @keyframes pop{from{transform:scale(.96);opacity:0}}
+  .free .peg-mark{transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .free .fill{transition:stroke-dashoffset .35s cubic-bezier(.22,1,.36,1)}
+  @supports (animation-timeline:view()){
+    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+  }
+}
+</style>
+</head>
+<body>
+<a class="vh" href="#shop" id="skip" onfocus="this.classList.remove('vh')" onblur="this.classList.add('vh')">Skip to the shop</a>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top" aria-label="Loom &amp; Leaf, back to top">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="#26332C"/><path d="M7 11H27" stroke="#E9EEE8" stroke-width="1.4"/><path d="M11 11v14h7V11" fill="#DCD3C1"/><path d="M11 15h7M11 19h7M11 23h7" stroke="#A3342A" stroke-width="1.2"/><path d="M21 11v9.5h6V11" fill="#F5F6F1"/><rect x="12.5" y="8.5" width="2.2" height="5" rx=".8" fill="#C59C6B"/><rect x="22.6" y="8.5" width="2.2" height="5" rx=".8" fill="#C59C6B"/></svg>
+      Loom &amp; Leaf
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#shop">Shop</a><a href="#craft">How it's made</a><a href="#reviews">Reviews</a><a href="#delivery">Delivery &amp; returns</a>
+    </nav>
+    <div class="search" role="search">
+      <label class="vh" for="q">Search linen</label>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" placeholder="Search tea towels, aprons…" autocomplete="off" aria-controls="grid">
+    </div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button class="cart-btn" id="cartBtn" type="button" aria-haspopup="dialog" aria-controls="cart">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7h12l-1.2 10H5.2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 7V5.5a3 3 0 016 0V7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span class="cart-label">Basket</span>
+      <span class="cart-count num" id="cartCount" aria-hidden="true">0</span>
+      <span class="vh" id="cartSr">Basket, 0 items</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap hero-top">
+    <div class="hero-copy">
+      <h1 id="hero-h">Woven in Lancashire,<br>dried on the line.</h1>
+      <p>Tea towels, aprons, runners and cushion covers from a two-person weaving shed on the edge of the Pennines. Heavy, washed linen that gets softer every time it goes through the wash.</p>
+      <div class="hero-cta">
+        <a class="btn btn-main" href="#shop">Shop the line</a>
+        <a class="link" href="#craft">See how it's made</a>
+      </div>
+      <ul class="promise">
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6h10v8H2zM12 9h3.5l2.5 3v2h-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="5.5" cy="15" r="1.6" fill="var(--sky)" stroke="currentColor" stroke-width="1.4"/><circle cx="14.5" cy="15" r="1.6" fill="var(--sky)" stroke="currentColor" stroke-width="1.4"/></svg>Free UK delivery over £60</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 5.5V10l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Posted within 2 working days</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8a6 6 0 1 1 1 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>30-day returns</li>
+      </ul>
+    </div>
+    <figure class="tester" aria-labelledby="tester-cap" style="margin:0">
+      <svg viewBox="0 0 430 330" role="img" aria-label="A brass linen tester magnifying the cloth: plain weave threads crossing over and under, with a one-centimetre scale">
+        <defs>
+          <linearGradient id="thrH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE4D2"/><stop offset=".5" stop-color="#D6C9AF"/><stop offset="1" stop-color="#A8987A"/></linearGradient>
+          <linearGradient id="thrV" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#E7DDC9"/><stop offset=".5" stop-color="#CFC1A5"/><stop offset="1" stop-color="#9E8E70"/></linearGradient>
+          <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D9B979"/><stop offset=".55" stop-color="#A88442"/><stop offset="1" stop-color="#7A5E2C"/></linearGradient>
+          <clipPath id="lens"><rect x="96" y="40" width="238" height="238" rx="10"/></clipPath>
+        </defs>
+        <!-- cloth under the tester -->
+        <path d="M18 120 Q120 96 230 112 T420 104 L424 318 Q300 326 210 318 T10 322Z" fill="#D8CEBA"/>
+        <path d="M18 120 Q120 96 230 112 T420 104" fill="none" stroke="#B9AD94" stroke-width="2"/>
+        <g opacity=".22" stroke="#7E7258" stroke-width=".7">
+          <path d="M20 140H422M20 152H422M20 164H422M20 176H422M20 188H422M20 200H422M20 212H422M20 224H422M20 236H422M20 248H422M20 260H422M20 272H422M20 284H422M20 296H422M20 308H422"/>
+        </g>
+        <!-- folding legs -->
+        <path d="M96 278 L66 318 H364 L334 278Z" fill="url(#brass)" opacity=".9"/>
+        <path d="M82 300 H348" stroke="#5E4820" stroke-width="1"/>
+        <!-- magnified weave -->
+        <g clip-path="url(#lens)">
+          <rect x="96" y="40" width="238" height="238" fill="#8F8166"/>
+          <g id="weave"></g>
+        </g>
+        <!-- frame -->
+        <rect x="90" y="34" width="250" height="250" rx="14" fill="none" stroke="url(#brass)" stroke-width="12"/>
+        <rect x="96" y="40" width="238" height="238" rx="10" fill="none" stroke="#5E4820" stroke-width="1.2"/>
+        <path d="M110 52 Q160 46 196 60" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <!-- scale: one centimetre -->
+        <g font-family="Bricolage Grotesque, sans-serif" font-size="13" fill="#1C2420">
+          <path d="M96 22 H334" stroke="#1C2420" stroke-width="1.4"/>
+          <path d="M96 16 V28 M334 16 V28" stroke="#1C2420" stroke-width="1.4"/>
+          <rect x="183" y="12" width="64" height="20" fill="var(--sky)"/>
+          <text x="215" y="26.5" text-anchor="middle" font-weight="600">1 cm</text>
+        </g>
+      </svg>
+      <figcaption id="tester-cap">Under the linen tester: 16 warp and 15 weft threads to the centimetre, 210&nbsp;g/m². Dense enough to dry a roasting tin, soft enough for glassware.</figcaption>
+    </figure>
+  </div>
+
+  <div class="line-zone">
+    <svg class="moorscape" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 120 Q160 70 330 96 T660 82 T980 98 T1240 64 T1440 90 V300 H0Z" fill="#C3CCC2"/>
+      <!-- distant mill chimney and terrace -->
+      <g fill="#A9B4AA"><rect x="1120" y="40" width="10" height="60"/><path d="M1040 98 L1056 86 L1072 98Z M1072 98 L1088 86 L1104 98Z M1104 98 L1120 86 L1136 98Z"/><rect x="1040" y="96" width="96" height="12"/></g>
+      <path d="M0 170 Q220 118 460 150 T900 140 T1440 128 V300 H0Z" fill="#A4B19F"/>
+      <path d="M0 150 Q200 160 380 176 M560 150 Q760 170 980 210 M1100 140 Q1260 160 1440 150" fill="none" stroke="#7F8C79" stroke-width="2.5" stroke-dasharray="5 3"/>
+      <path d="M0 236 Q300 196 720 222 T1440 210 V300 H0Z" fill="#87957F"/>
+      <path d="M0 252 Q360 236 720 250 T1440 240" fill="none" stroke="#66735F" stroke-width="3" stroke-dasharray="7 4"/>
+    </svg>
+    <svg class="rope" viewBox="0 0 1440 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 Q720 30 1440 4" fill="none" stroke="#5F594F" stroke-width="2"/></svg>
+    <ul class="line" id="line" aria-label="Pegged out this week"></ul>
+    <p class="line-hint" aria-hidden="true">Swipe along the line for more</p>
+  </div>
+</section>
+
+<section class="sec" id="shop" aria-labelledby="shop-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="shop-h">The whole line</h2>
+      <p>Twelve pieces, cut from cloth we weave ourselves and hemmed by hand. Every colour is a yarn dye we keep in stock, so what you choose is what we post.</p>
+    </div>
+    <div class="tools">
+      <fieldset class="cats" id="cats">
+        <legend>Category</legend>
+        <label><input type="radio" name="cat" value="all" checked><span>All <small class="num" data-c="all"></small></span></label>
+        <label><input type="radio" name="cat" value="kitchen"><span>Kitchen <small class="num" data-c="kitchen"></small></span></label>
+        <label><input type="radio" name="cat" value="table"><span>Table <small class="num" data-c="table"></small></span></label>
+        <label><input type="radio" name="cat" value="living"><span>Living <small class="num" data-c="living"></small></span></label>
+      </fieldset>
+      <div class="sort">
+        <label for="sort">Sort</label>
+        <select id="sort">
+          <option value="featured">Featured</option>
+          <option value="low">Price, low to high</option>
+          <option value="high">Price, high to low</option>
+          <option value="new">Newest first</option>
+        </select>
+      </div>
+    </div>
+    <p class="result num" id="result" role="status" aria-live="polite"></p>
+    <ul class="grid" id="grid"></ul>
+  </div>
+</section>
+
+<section class="sec moor" id="craft" aria-labelledby="craft-h">
+  <div class="wrap">
+    <div class="story">
+      <div >
+        <h2 class="h2" id="craft-h">One loom, two pairs of hands, a lot of weather.</h2>
+        <p class="story-lede">Loom &amp; Leaf is Ruth and Tom, weaving in a converted cotton shed in Barnoldswick, where the canal meets the moor.</p>
+        <p>We warp our dobby loom with linen yarn spun from flax, weave about 40 metres a week, and cut and hem every piece at the bench by the window. Then it goes through the wash and out on the line behind the shed, so it shrinks with us and not with you.</p>
+        <div class="makers">
+          <svg viewBox="0 0 120 80" aria-hidden="true"><path d="M4 70 Q60 60 116 70" stroke="#6F8577" stroke-width="1.5" fill="none"/><g fill="#B8C6BC"><circle cx="38" cy="22" r="10"/><path d="M22 70 Q24 40 38 38 Q52 40 54 70Z"/><circle cx="82" cy="20" r="10"/><path d="M66 70 Q68 38 82 36 Q96 38 98 70Z"/></g><path d="M28 50 H48 M72 48 H92" stroke="#26332C" stroke-width="2"/><rect x="58" y="52" width="6" height="18" fill="#C59C6B"/></svg>
+          <p>Ruth weaves and dyes; Tom cuts, hems and packs. Studio people and details here are fictional, written for this demo shop.</p>
+        </div>
+      </div>
+      <figure class="draft" style="margin:0" aria-labelledby="draft-cap">
+        <svg viewBox="0 0 560 330" role="img" aria-label="Weaving draft for the herringbone runner: threading grid, tie-up and the cloth it produces">
+          <g id="draftArt"></g>
+        </svg>
+        <figcaption id="draft-cap">The draft for our herringbone runner, as Ruth pins it to the loom: threading along the top, tie-up in the corner, and the cloth it weaves below.</figcaption>
+      </figure>
+    </div>
+    <ol class="steps">
+      <li class="step">
+        <svg viewBox="0 0 92 92" aria-hidden="true"><path d="M30 78 L38 18 H54 L62 78Z" fill="#DCD3C1"/><path d="M33 64 H59 M35 52 H57 M36 40 H56 M37 28 H55" stroke="#A89A7E" stroke-width="2"/><ellipse cx="46" cy="78" rx="18" ry="5" fill="#8B6A45"/><path d="M54 30 Q74 34 80 60" fill="none" stroke="#DCD3C1" stroke-width="1.5"/></svg>
+        <span class="n">Step 1</span><h3>Flax yarn</h3>
+        <p>Undyed linen yarn arrives on cones; colours are yarn-dyed in small lots of 4&nbsp;kg so stripes stay crisp after washing.</p>
+      </li>
+      <li class="step">
+        <svg viewBox="0 0 92 92" aria-hidden="true"><g stroke="#B8C6BC" stroke-width="1"><path d="M14 14H78V78H14Z" fill="none"/></g><g fill="#DCD3C1"><rect x="14" y="14" width="8" height="8"/><rect x="30" y="22" width="8" height="8"/><rect x="46" y="30" width="8" height="8"/><rect x="62" y="38" width="8" height="8"/><rect x="54" y="46" width="8" height="8"/><rect x="38" y="54" width="8" height="8"/><rect x="22" y="62" width="8" height="8"/><rect x="14" y="70" width="8" height="8"/><rect x="70" y="14" width="8" height="8"/></g><path d="M22 14V78M30 14V78M38 14V78M46 14V78M54 14V78M62 14V78M70 14V78M14 22H78M14 30H78M14 38H78M14 46H78M14 54H78M14 62H78M14 70H78" stroke="#4E6156" stroke-width=".8"/></svg>
+        <span class="n">Step 2</span><h3>Woven to a draft</h3>
+        <p>Each cloth has a draft. At 16 threads to the centimetre a tea towel is roughly 11,000 passes of the shuttle.</p>
+      </li>
+      <li class="step">
+        <svg viewBox="0 0 92 92" aria-hidden="true"><rect x="10" y="40" width="72" height="34" rx="2" fill="#DCD3C1"/><path d="M14 46 H78" stroke="#A3342A" stroke-width="2" stroke-dasharray="5 4"/><path d="M20 20 L70 58" stroke="#E9EEE8" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="22" cy="21.5" rx="3" ry="1.4" transform="rotate(37 22 21.5)" fill="none" stroke="#26332C" stroke-width="1"/><path d="M22 20 Q8 30 18 46" stroke="#A3342A" stroke-width="1.3" fill="none"/></svg>
+        <span class="n">Step 3</span><h3>Hemmed by hand</h3>
+        <p>Mitred corners, a double-turned hem and a hanging loop. Tom takes 12 to 20 minutes over each tea towel.</p>
+      </li>
+      <li class="step">
+        <svg viewBox="0 0 92 92" aria-hidden="true"><path d="M6 22 Q46 32 86 22" stroke="#B8C6BC" stroke-width="1.5" fill="none"/><path d="M16 26 H42 V70 Q30 74 16 70Z" fill="#DCD3C1"/><path d="M22 26 V70 M26 26 V70" stroke="#A3342A" stroke-width="1.6"/><path d="M50 27 H78 V60 Q64 64 50 60Z" fill="#6E86A3"/><rect x="19" y="18" width="4" height="12" rx="1.5" fill="#C59C6B"/><rect x="35" y="19" width="4" height="12" rx="1.5" fill="#C59C6B"/><rect x="53" y="19" width="4" height="12" rx="1.5" fill="#C59C6B"/><rect x="71" y="18" width="4" height="12" rx="1.5" fill="#C59C6B"/><path d="M4 86 Q30 78 50 84 T88 80" stroke="#6F8577" stroke-width="2" fill="none"/></svg>
+        <span class="n">Step 4</span><h3>Washed and line-dried</h3>
+        <p>Washed once at 40°C and dried on the line behind the shed, so the cloth arrives soft and already shrunk.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="reviews" aria-labelledby="rev-h">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="rev-h">Notes from kitchens</h2></div>
+    <div class="reviews">
+      <blockquote class="quote-big">
+        <div class="stars" role="img" aria-label="5 out of 5"></div>
+        “The Pendle stripe towel was stiff as card for one wash, then it turned into the best thing in the drawer. It dries a whole roasting tin without going soggy.”
+        <footer>Sample review · a home cook in Preston · Pendle stripe tea towel</footer>
+      </blockquote>
+      <div class="notes">
+        <blockquote class="note">
+          <div class="stars" role="img" aria-label="5 out of 5"></div>
+          <p>“The cross-back apron doesn't pull on my neck through a long bake. The pocket fits a phone and a probe thermometer.”</p>
+          <footer>Sample review · weekend baker, Leeds</footer>
+        </blockquote>
+        <blockquote class="note">
+          <div class="stars" role="img" aria-label="4 out of 5"></div>
+          <p>“Herringbone runner is beautiful on an oak table. Creases easily, which is linen, so I've stopped ironing it.”</p>
+          <footer>Sample review · furnishing a first flat, Kendal</footer>
+        </blockquote>
+      </div>
+    </div>
+    <p class="illus">These reviews are illustrative, written for this demo shop. They are not from real customers.</p>
+  </div>
+</section>
+
+<section class="sec" id="delivery" aria-labelledby="del-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="del-h">When it arrives, and if it doesn't suit</h2></div>
+    <div class="deliver">
+      <table class="dtable">
+        <caption class="vh">UK delivery options</caption>
+        <thead><tr><th scope="col">Service</th><th scope="col">Arrives</th><th scope="col">Cost</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Tracked 48<small>Posted within 2 working days</small></th><td data-l="Arrives">2–3 working days</td><td class="cost num">£4.95<small>Free over £60</small></td></tr>
+          <tr><th scope="row">Next day<small>Order by 1pm, Monday to Thursday</small></th><td data-l="Arrives">Next working day</td><td class="cost num">£7.95</td></tr>
+          <tr><th scope="row">Collect from the shed<small>Saturdays, 10am to 1pm</small></th><td data-l="Arrives">Ready in 1 working day</td><td class="cost num">Free</td></tr>
+        </tbody>
+      </table>
+      <div class="returns">
+        <h3>Returns, plainly</h3>
+        <ul>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#1C2420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>30 days to send anything back, unwashed and with its paper tag.</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#1C2420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>We email a prepaid UK returns label; no forms to print.</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#1C2420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Refunds go back to your card within 5 working days of it reaching us.</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#1C2420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A loose hem in the first year? Send it back and Tom will re-sew it.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="letter" aria-labelledby="nl-h">
+  <div class="wrap letter-in">
+    <div>
+      <h2 id="nl-h">Letters from the shed</h2>
+      <p>One email a month: what's on the loom, new colours before they reach the shop, and when Saturday collection is closed.</p>
+    </div>
+    <form class="nl" id="nl" novalidate>
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.co.uk" aria-describedby="nlMsg">
+      <button class="btn btn-main" type="submit">Send me the letter</button>
+      <p class="msg" id="nlMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <svg class="foot-art" viewBox="0 0 1200 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path d="M10 18 Q600 44 1190 18" stroke="#6F8577" stroke-width="1.5" fill="none"/>
+      <g id="footLine"></g>
+      <path d="M0 116 Q300 92 600 108 T1200 100" stroke="#3F4E45" stroke-width="2" fill="none"/>
+    </svg>
+    <div class="foot-grid">
+      <div>
+        <p class="big">Loom &amp; Leaf</p>
+        <p style="margin-top:12px;max-width:26em">Handwoven linen for kitchens and tables, made in Barnoldswick, Lancashire. A fictional studio for this demo shop.</p>
+      </div>
+      <div>
+        <h3>Shop</h3>
+        <ul><li><a href="#shop" data-cat="kitchen">Kitchen</a></li><li><a href="#shop" data-cat="table">Table</a></li><li><a href="#shop" data-cat="living">Living</a></li></ul>
+      </div>
+      <div>
+        <h3>Help</h3>
+        <ul><li><a href="#delivery">Delivery &amp; returns</a></li><li><a href="#craft">Caring for linen</a></li><li><a href="mailto:hello@loomandleaf.example">hello@loomandleaf.example</a></li></ul>
+      </div>
+      <div>
+        <h3>The shed</h3>
+        <ul><li>Unit 4, Mill Lane</li><li>Barnoldswick, Lancashire</li><li>Collection: Sat 10am–1pm</li></ul>
+      </div>
+    </div>
+    <div class="foot-base"><span>© 2026 Loom &amp; Leaf (fictional)</span><span>Prices in GBP, including VAT</span></div>
+  </div>
+</footer>
+
+<!-- quick view -->
+<dialog class="qv" id="qv" aria-labelledby="qvTitle">
+  <button class="x" type="button" data-close aria-label="Close quick view"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <div class="qv-in">
+    <div class="qv-art" id="qvArt"></div>
+    <div class="qv-body">
+      <h2 id="qvTitle"></h2>
+      <p class="qv-price num" id="qvPrice"></p>
+      <p class="qv-desc" id="qvDesc"></p>
+      <dl class="facts" id="qvFacts"></dl>
+      <fieldset class="colours"><legend id="qvColLegend">Colour</legend><div class="opts" id="qvColours"></div></fieldset>
+      <div class="qv-buy">
+        <div class="qty" role="group" aria-label="Quantity">
+          <button type="button" id="qvMinus" aria-label="One fewer">−</button>
+          <output id="qvQty" class="num" aria-live="polite">1</output>
+          <button type="button" id="qvPlus" aria-label="One more">+</button>
+        </div>
+        <button class="btn btn-main" type="button" id="qvAdd">Add to basket</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- cart drawer -->
+<dialog class="drawer" id="cart" aria-labelledby="cartTitle">
+  <div class="dr-head"><h2 id="cartTitle">Your basket</h2>
+    <button class="x" type="button" data-close aria-label="Close basket"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+  <div class="free" id="free"></div>
+  <ul class="items" id="items"></ul>
+  <div class="dr-foot" id="drFoot"></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const gbp = n => "£" + n.toFixed(2);
+const FREE = 60, POST = 4.95;
+
+const COLOURS = {
+  oat:{name:"Oatmeal",hex:"#CDBFA6",light:true}, chalk:{name:"Chalk",hex:"#EEEAE0",light:true},
+  flax:{name:"Flax blue",hex:"#6E86A3"}, moss:{name:"Moss",hex:"#737B57"},
+  madder:{name:"Madder",hex:"#9C3D30"}, peat:{name:"Peat",hex:"#4A413A"}, indigo:{name:"Indigo",hex:"#34405E"}
+};
+const P = [
+  {id:"pendle",name:"Pendle stripe tea towel",cat:"kitchen",price:16,added:"2026-09-28",type:"towel",pat:"stripe",ink:"madder",cols:["oat","chalk","flax"],desc:"Our everyday towel: heavy plain weave with a woven stripe down each side, a hanging loop and hand-mitred corners.",size:"50 × 70 cm",gsm:"210 g/m²"},
+  {id:"ribble",name:"Ribble check tea towel",cat:"kitchen",price:17,added:"2026-10-09",type:"towel",pat:"check",ink:"indigo",cols:["chalk","oat","moss"],desc:"A broad window-pane check, woven not printed, so it never fades into a smudge.",size:"50 × 70 cm",gsm:"210 g/m²"},
+  {id:"pair",name:"Plain weave tea towels, pair",cat:"kitchen",price:28,added:"2026-06-14",type:"towel2",pat:"plain",ink:"indigo",cols:["oat","flax","peat"],desc:"Two plain towels in one colour, our most absorbent cloth with nothing woven in to slow it down.",size:"2 × 50 × 70 cm",gsm:"210 g/m²"},
+  {id:"crossback",name:"Cross-back apron",cat:"kitchen",price:52,added:"2026-08-02",type:"apron",pat:"plain",ink:"chalk",cols:["moss","peat","oat","madder"],desc:"Straps cross at the back, so the weight sits on your shoulders, not your neck. One deep front pocket.",size:"One size, 90 cm long",gsm:"280 g/m²"},
+  {id:"waist",name:"Ticking half apron",cat:"kitchen",price:34,added:"2026-04-20",type:"half",pat:"ticking",ink:"indigo",cols:["chalk","oat"],desc:"A bistro-length waist apron in narrow ticking stripe, with long ties that wrap and knot at the front.",size:"70 × 55 cm",gsm:"280 g/m²"},
+  {id:"runner",name:"Herringbone table runner",cat:"table",price:44,added:"2026-10-02",type:"runner",pat:"herring",ink:"peat",cols:["oat","flax","moss"],desc:"Woven to the draft pinned on our loom. Twisted fringe ends; long enough for a six-seat table.",size:"40 × 180 cm",gsm:"240 g/m²"},
+  {id:"napkins",name:"Hemstitch napkins, set of four",cat:"table",price:36,added:"2026-07-11",type:"napkins",pat:"hem",ink:"chalk",cols:["chalk","oat","flax","madder"],desc:"Four generous napkins finished with a drawn-thread hemstitch, one pulled thread at a time.",size:"4 × 45 × 45 cm",gsm:"180 g/m²"},
+  {id:"cloth",name:"Wide stripe tablecloth",cat:"table",price:96,added:"2026-05-30",type:"cloth",pat:"wide",ink:"madder",cols:["chalk","oat"],desc:"Three broad bands woven across the width, for the long table at Christmas or every Sunday.",size:"150 × 250 cm",gsm:"220 g/m²"},
+  {id:"waffle",name:"Waffle cushion cover",cat:"living",price:38,added:"2026-09-15",type:"cushion",pat:"waffle",ink:"chalk",cols:["oat","moss","peat"],desc:"Deep honeycomb weave that holds shadow. Envelope back, no zips to snag.",size:"45 × 45 cm",gsm:"300 g/m²"},
+  {id:"tick-cushion",name:"Ticking stripe cushion cover",cat:"living",price:36,added:"2026-03-08",type:"cushion",pat:"ticking",ink:"madder",cols:["chalk","oat","flax"],desc:"The ticking from our half apron, scaled up for the sofa. Hidden button closure.",size:"50 × 50 cm",gsm:"280 g/m²"},
+  {id:"bolster",name:"Bolster cover",cat:"living",price:32,added:"2026-02-12",type:"bolster",pat:"plain",ink:"chalk",cols:["oat","indigo","moss"],desc:"A drawstring bolster cover in plain weave, gathered at both ends. Fits a 20 × 50 cm pad.",size:"20 × 50 cm",gsm:"240 g/m²"},
+  {id:"throw",name:"Fringed linen throw",cat:"living",price:89,added:"2026-10-12",type:"throw",pat:"check",ink:"chalk",cols:["moss","oat","indigo"],desc:"Our heaviest cloth, in a large overcheck with knotted fringe at both ends. For the end of the bed or the cold side of the sofa.",size:"130 × 180 cm",gsm:"320 g/m²"}
+];
+const byId = Object.fromEntries(P.map(p => [p.id, p]));
+const NEWEST = [...P].sort((a,b)=>b.added.localeCompare(a.added)).slice(0,2).map(p=>p.id);
+
+/* ---------- colour helpers ---------- */
+function mix(hex, to, t){
+  const a = hex.match(/\w\w/g).map(h=>parseInt(h,16)), b = to.match(/\w\w/g).map(h=>parseInt(h,16));
+  return "#" + a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,"0")).join("");
+}
+
+/* ---------- cloth art (authored SVG per product, per colour) ---------- */
+let uid = 0;
+const SHAPES = {
+  towel:{d:"M44 20H156V198Q128 204 100 199Q72 195 44 200Z",pegs:[60,140],box:[44,20,112,180]},
+  towel2:{d:"M24 20H96V170Q60 175 24 171ZM104 20H176V176Q140 180 104 176Z",pegs:[36,84,116,164],box:[24,20,152,160]},
+  apron:{d:"M80 20H120L123 70Q150 74 160 94L156 214Q100 221 44 214L40 94Q50 74 77 70Z",pegs:[86,114],box:[40,20,120,200]},
+  half:{d:"M26 20H174V32H152L156 186Q100 193 44 186L48 32H26Z",pegs:[38,162],box:[26,20,148,170]},
+  runner:{d:"M72 20H128V208H72Z",pegs:[80,120],box:[72,20,56,188],fringe:208},
+  napkins:{d:"M66 20L124 78L66 136L8 78ZM134 20L192 78L134 136L76 78Z",pegs:[66,134],box:[8,20,184,116]},
+  cloth:{d:"M14 20H186V182Q100 192 14 182Z",pegs:[28,100,172],box:[14,20,172,166]},
+  cushion:{d:"M36 24Q100 16 164 24Q172 100 164 176Q100 184 36 176Q28 100 36 24Z",pegs:[50,150],box:[30,20,140,162]},
+  bolster:{d:"M26 26Q100 18 174 26V112Q100 120 26 112Z",pegs:[44,156],box:[26,20,148,96]},
+  throw:{d:"M22 20H178V198H22Z",pegs:[40,100,160],box:[22,20,156,178],fringe:198}
+};
+function patternFor(p, base, ink, id){
+  const s = SHAPES[p.type], [x,y,w,h] = s.box;
+  switch(p.pat){
+    case "stripe": { let r=""; [[x+8,7],[x+19,2.5],[x+w-15,7],[x+w-21.5,2.5]].forEach(([sx,sw])=>r+=`<rect x="${sx}" y="0" width="${sw}" height="230" fill="${ink}"/>`);
+      if(p.type==="towel2"){ r=""; [[30,5],[40,2],[110,5],[120,2]].forEach(([sx,sw])=>r+=`<rect x="${sx}" y="0" width="${sw}" height="230" fill="${ink}"/>`); } return r; }
+    case "check": return `<pattern id="c${id}" width="26" height="26" patternUnits="userSpaceOnUse" x="${x}" y="${y}"><rect x="0" y="9" width="26" height="6" fill="${ink}" opacity=".55"/><rect x="9" y="0" width="6" height="26" fill="${ink}" opacity=".55"/><rect x="0" y="22" width="26" height="1.4" fill="${ink}" opacity=".5"/><rect x="22" y="0" width="1.4" height="26" fill="${ink}" opacity=".5"/></pattern><rect width="200" height="230" fill="url(#c${id})"/>`;
+    case "herring": return `<pattern id="h${id}" width="12" height="10" patternUnits="userSpaceOnUse"><path d="M0 10L6 0M6 0L12 10" stroke="${ink}" stroke-opacity=".38" stroke-width="2.2" fill="none"/></pattern><rect width="200" height="230" fill="url(#h${id})"/><rect x="${x}" y="0" width="${w}" height="230" fill="none" stroke="${ink}" stroke-opacity=".5" stroke-width="5" stroke-dasharray="0" /><rect x="${x+6}" y="0" width="2" height="230" fill="${ink}" opacity=".5"/><rect x="${x+w-8}" y="0" width="2" height="230" fill="${ink}" opacity=".5"/>`;
+    case "waffle": return `<pattern id="w${id}" width="11" height="11" patternUnits="userSpaceOnUse"><rect x="1.6" y="1.6" width="7.8" height="7.8" rx="1.4" fill="#000" fill-opacity=".14"/><rect x="2.6" y="2.6" width="5.8" height="3" fill="#fff" fill-opacity=".14"/></pattern><rect width="200" height="230" fill="url(#w${id})"/>`;
+    case "ticking": return `<pattern id="k${id}" width="14" height="10" patternUnits="userSpaceOnUse" x="${x}"><rect x="2" width="1.6" height="10" fill="${ink}" opacity=".8"/><rect x="6" width="3.5" height="10" fill="${ink}" opacity=".8"/><rect x="11.5" width="1.6" height="10" fill="${ink}" opacity=".8"/></pattern><rect width="200" height="230" fill="url(#k${id})"/>`;
+    case "wide": return [60,104,148].map(yy=>`<rect x="0" y="${yy}" width="200" height="14" fill="${ink}"/><rect x="0" y="${yy+18}" width="200" height="3" fill="${ink}"/>`).join("");
+    case "hem": return `<path d="M66 32L112 78L66 124L20 78Z M134 32L180 78L134 124L88 78Z" fill="none" stroke="${ink}" stroke-opacity=".7" stroke-width="1.4" stroke-dasharray="2 2"/>`;
+    default: return "";
+  }
+}
+function cloth(p, ck, opts = {}){
+  const id = ++uid, s = SHAPES[p.type], c = COLOURS[ck];
+  const base = c.hex;
+  const inkKey = (p.ink === ck) ? (c.light ? "indigo" : "chalk") : p.ink;
+  let ink = COLOURS[inkKey].hex;
+  if (!c.light && COLOURS[inkKey].light === undefined && inkKey !== "chalk") ink = COLOURS.chalk.hex;
+  const edge = mix(base, "#1c2420", .35);
+  let extra = "";
+  if (p.type === "apron") extra += `<path d="M40 96Q28 140 36 182M160 96Q172 140 164 182" stroke="${edge}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M70 132H130V170Q100 174 70 170Z" fill="${mix(base,"#000000",.08)}" stroke="${edge}" stroke-width="1"/><path d="M73 136H127" stroke="${mix(base,"#ffffff",.4)}" stroke-dasharray="2 2"/>`;
+  if (p.type === "half") extra += `<path d="M26 26Q14 60 20 110M174 26Q186 60 180 110" stroke="${edge}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M64 94H136V136Q100 140 64 136Z" fill="${mix(base,"#000000",.06)}" stroke="${edge}" stroke-width="1"/>`;
+  if (s.fringe) { let f=""; for(let fx=s.box[0]+3; fx<s.box[0]+s.box[2]; fx+=5) f+=`M${fx} ${s.fringe}l${(fx%2)?1:-1} 14`; extra += `<path d="${f}" stroke="${edge}" stroke-width="1.6" stroke-linecap="round"/>`; }
+  if (p.type === "bolster") extra += `<path d="M34 28V110M40 27V111M160 27V111M166 28V110" stroke="${edge}" stroke-opacity=".6" stroke-width="1.2"/><path d="M26 112q-6 10 -2 18M174 112q6 10 2 18" stroke="${edge}" stroke-width="1.8" fill="none"/>`;
+  if (p.type === "towel" || p.type === "towel2") extra += `<path d="M${s.box[0]+4} 28H${s.box[0]+s.box[2]-4}" stroke="${mix(base,"#000000",.18)}" stroke-width="1" stroke-dasharray="3 2"/>`;
+  const pegs = s.pegs.map(px => `<g transform="translate(${px} 8)"><rect x="-4.5" y="0" width="9" height="26" rx="2.4" fill="#C59C6B" stroke="#8B6A45" stroke-width="1"/><path d="M0 2V24" stroke="#8B6A45" stroke-width=".9"/><circle cx="0" cy="13" r="2.4" fill="#A9A49B" stroke="#6E6A62" stroke-width=".8"/></g>`).join("");
+  const rope = opts.rope ? `<path d="M0 17Q100 25 200 17" stroke="#5F594F" stroke-width="1.6" fill="none"/>` : "";
+  const label = opts.label ? ` role="img" aria-label="${opts.label}"` : ` aria-hidden="true" focusable="false"`;
+  return `<svg viewBox="0 0 200 230"${label}><defs>
+    <clipPath id="s${id}"><path d="${s.d}"/></clipPath>
+    <pattern id="t${id}" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 .5H3M.5 0V3" stroke="#000" stroke-opacity=".07" stroke-width=".6"/></pattern>
+    <linearGradient id="f${id}" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".12"/><stop offset=".25" stop-color="#fff" stop-opacity=".10"/><stop offset=".5" stop-color="#000" stop-opacity=".05"/><stop offset=".78" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+    <linearGradient id="v${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".10"/><stop offset=".12" stop-color="#000" stop-opacity="0"/></linearGradient>
+  </defs>${rope}
+  <g clip-path="url(#s${id})"><rect width="200" height="230" fill="${base}"/>${patternFor(p, base, ink, id)}<rect width="200" height="230" fill="url(#t${id})"/><rect width="200" height="230" fill="url(#f${id})"/><rect width="200" height="230" fill="url(#v${id})"/></g>
+  <path d="${s.d}" fill="none" stroke="${edge}" stroke-width="1.2"/>${extra}${pegs}</svg>`;
+}
+
+/* ---------- linen tester weave + herringbone draft (static art built once) ---------- */
+(function weave(){
+  const g = $("#weave"); if (!g) return; const c = 238/15;
+  g.innerHTML = `<pattern id="wp" x="96" y="40" width="${2*c}" height="${2*c}" patternUnits="userSpaceOnUse">
+    <rect x="1" y="${c*.12}" width="${c-2}" height="${c*.76}" rx="${c*.36}" fill="url(#thrH)"/>
+    <rect x="${c+c*.12}" y="1" width="${c*.76}" height="${c-2}" rx="${c*.36}" fill="url(#thrV)"/>
+    <rect x="${c*.12}" y="${c+1}" width="${c*.76}" height="${c-2}" rx="${c*.36}" fill="url(#thrV)"/>
+    <rect x="${c+1}" y="${c+c*.12}" width="${c-2}" height="${c*.76}" rx="${c*.36}" fill="url(#thrH)"/></pattern>
+    <rect x="96" y="40" width="238" height="238" fill="url(#wp)"/>`;
+})();
+(function draft(){
+  const g = $("#draftArt"); if (!g) return;
+  const cols = 24, cs = 14, ox = 30, oy = 30, shafts = 4;
+  const thread = Array.from({length:cols},(_,i)=>{ const k=i%12; return k<6 ? k%4 : (6-(k-6)+3)%4; });
+  let o = `<text x="${ox}" y="22" font-size="17" font-weight="600" fill="#46514B" font-family="Bricolage Grotesque, sans-serif">Threading</text>`;
+  for (let s=0;s<shafts;s++) for (let c=0;c<cols;c++){
+    const x = ox+c*cs, y = oy+s*cs; o += `<rect x="${x}" y="${y}" width="${cs}" height="${cs}" fill="${thread[c]===s?"#26332C":"#F0F2EC"}" stroke="#9AA79E" stroke-width=".6"/>`;
+  }
+  const tx = ox+cols*cs+18, tie=[[1,1,0,0],[0,1,1,0],[0,0,1,1],[1,0,0,1]];
+  o += `<text x="${tx}" y="22" font-size="17" font-weight="600" fill="#46514B" font-family="Bricolage Grotesque, sans-serif">Tie-up</text>`;
+  for (let s=0;s<4;s++) for (let t=0;t<4;t++) o += `<rect x="${tx+t*cs}" y="${oy+s*cs}" width="${cs}" height="${cs}" fill="${tie[s][t]?"#A3342A":"#F0F2EC"}" stroke="#9AA79E" stroke-width=".6"/>`;
+  const cy0 = oy+shafts*cs+30, rows = 13;
+  o += `<text x="${ox}" y="${cy0-8}" font-size="17" font-weight="600" fill="#46514B" font-family="Bricolage Grotesque, sans-serif">Cloth</text>`;
+  for (let r=0;r<rows;r++){ const tr = r%4; for (let c=0;c<cols;c++){
+    const up = tie[thread[c]][tr]; o += `<rect x="${ox+c*cs}" y="${cy0+r*cs}" width="${cs}" height="${cs}" fill="${up?"#34405E":"#DCD3C1"}" stroke="#F0F2EC" stroke-width=".7"/>`;
+  }}
+  const px = tx, py = cy0, pw = 4*cs+120;
+  o += `<text x="${px}" y="${py-8}" font-size="17" font-weight="600" fill="#46514B" font-family="Bricolage Grotesque, sans-serif">Woven</text>`;
+  o += `<rect x="${px}" y="${py}" width="${pw}" height="${rows*cs}" rx="6" fill="#CDBFA6"/>`;
+  for (let r=0;r<rows*2;r++) for (let c=0;c<10;c++){ const x=px+6+c*17, y=py+4+r*7; o += `<path d="M${x} ${y+6}l${(c%2)?4:-4} -6" stroke="#6F6450" stroke-width="2" stroke-linecap="round" transform="translate(${(c%2)?0:8} 0)"/>`; }
+  g.innerHTML = o;
+})();
+(function footLine(){
+  const g = $("#footLine"); if (!g) return; const picks = ["pendle","crossback","runner","napkins","waffle","ribble","throw"]; let o="";
+  picks.forEach((id,i)=>{ const p=byId[id]; const x = 90+i*160; o += `<g transform="translate(${x-30} 8) scale(.42)">${cloth(p,p.cols[0]).replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"")}</g>`; });
+  g.innerHTML = o;
+})();
+$$(".stars").forEach(el => { const n = el.getAttribute("aria-label").startsWith("4") ? 4 : 5;
+  el.innerHTML = Array.from({length:5},(_,i)=>`<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.7 4.9 17.5 6 11.8 1.7 7.8l5.8-.7z" fill="${i<n?"currentColor":"none"}" stroke="currentColor" stroke-width="1.2"/></svg>`).join(""); });
+
+/* ---------- state ---------- */
+const state = { q:"", cat:"all", sort:"featured", pick:{} };
+P.forEach(p => state.pick[p.id] = p.cols[0]);
+let cart = [];
+try { const saved = JSON.parse(localStorage.getItem("ll-cart")||"[]"); if (Array.isArray(saved)) cart = saved.filter(l => byId[l.id] && COLOURS[l.col] && l.qty>0); } catch(e) {}
+const save = () => { try { localStorage.setItem("ll-cart", JSON.stringify(cart)); } catch(e) {} };
+
+/* ---------- washing line in hero ---------- */
+const LINE = ["pendle","crossback","runner","waffle","ribble"];
+$("#line").innerHTML = LINE.map(id => { const p = byId[id]; return `<li class="hang">
+  <button class="cloth" type="button" data-qv="${id}" aria-label="Quick view: ${p.name}">${cloth(p, p.cols[0])}</button>
+  <div class="tag"><b>${p.name}</b><div class="tag-row"><span class="price num">${gbp(p.price)}</span><button class="btn btn-main btn-sm" type="button" data-add="${id}" aria-label="Add ${p.name} to basket">Add</button></div></div></li>`; }).join("");
+
+/* ---------- grid ---------- */
+const grid = $("#grid");
+function counts(){ const q = state.q.trim().toLowerCase();
+  ["all","kitchen","table","living"].forEach(c => { const n = P.filter(p => (c==="all"||p.cat===c) && (!q || p.name.toLowerCase().includes(q))).length; const el = $(`[data-c="${c}"]`); if (el) el.textContent = n; }); }
+function render(){
+  const q = state.q.trim().toLowerCase();
+  let list = P.filter(p => (state.cat==="all" || p.cat===state.cat) && (!q || p.name.toLowerCase().includes(q)));
+  if (state.sort==="low") list.sort((a,b)=>a.price-b.price);
+  else if (state.sort==="high") list.sort((a,b)=>b.price-a.price);
+  else if (state.sort==="new") list.sort((a,b)=>b.added.localeCompare(a.added));
+  const catName = {all:"all categories",kitchen:"Kitchen",table:"Table",living:"Living"}[state.cat];
+  $("#result").textContent = list.length ? `Showing ${list.length} of ${P.length} pieces · ${catName}${q?` · matching “${state.q.trim()}”`:""}` : "";
+  counts();
+  if (!list.length){
+    grid.innerHTML = `<li class="empty"><p>Nothing on the line matches “${esc(state.q.trim())}”${state.cat!=="all"?` in ${catName}`:""}.</p><button class="btn btn-ghost" type="button" id="clear">Clear search and filters</button></li>`;
+    $("#clear").addEventListener("click", () => { state.q=""; $("#q").value=""; state.cat="all"; $('#cats input[value="all"]').checked=true; render(); $("#q").focus(); });
+    return;
+  }
+  grid.innerHTML = list.map(p => { const ck = state.pick[p.id]; return `<li class="card" data-id="${p.id}">
+    ${NEWEST.includes(p.id)?'<span class="new">New</span>':""}
+    <button class="art" type="button" data-qv="${p.id}" aria-label="Quick view: ${p.name}">${cloth(p, ck, {rope:true})}</button>
+    <h3>${p.name}</h3>
+    <div class="meta"><span class="price num">${gbp(p.price)}</span><span class="cat">${p.cat[0].toUpperCase()+p.cat.slice(1)}</span></div>
+    <div class="swatches" role="group" aria-label="Colour for ${p.name}">${p.cols.map(k=>`<button class="sw" type="button" data-sw="${p.id}" data-col="${k}" style="background:${COLOURS[k].hex}" aria-pressed="${k===ck}" aria-label="${COLOURS[k].name}"></button>`).join("")}</div>
+    <p class="sw-name">${COLOURS[ck].name} · ${p.cols.length} colours</p>
+    <div class="card-actions"><button class="btn btn-ghost btn-sm" type="button" data-qv="${p.id}">Quick view</button><button class="btn btn-main btn-sm" type="button" data-add="${p.id}" aria-label="Add ${p.name}, ${COLOURS[ck].name}, to basket">Add</button></div>
+  </li>`; }).join("");
+}
+function esc(s){ return s.replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch])); }
+
+$("#q").addEventListener("input", e => { state.q = e.target.value; render(); });
+$("#q").addEventListener("keydown", e => { if (e.key==="Enter") { e.preventDefault(); $("#shop").scrollIntoView(); } });
+$("#cats").addEventListener("change", e => { state.cat = e.target.value; render(); });
+$("#sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+$$("[data-cat]").forEach(a => a.addEventListener("click", () => { state.cat = a.dataset.cat; const r = $(`#cats input[value="${a.dataset.cat}"]`); if (r) r.checked = true; render(); }));
+
+document.addEventListener("click", e => {
+  const sw = e.target.closest("[data-sw]");
+  if (sw){ const id = sw.dataset.sw; state.pick[id] = sw.dataset.col; const card = sw.closest(".card");
+    card.querySelector(".art").innerHTML = cloth(byId[id], sw.dataset.col, {rope:true});
+    $$(".sw", card).forEach(b => b.setAttribute("aria-pressed", String(b===sw)));
+    card.querySelector(".sw-name").textContent = `${COLOURS[sw.dataset.col].name} · ${byId[id].cols.length} colours`;
+    card.querySelector("[data-add]").setAttribute("aria-label", `Add ${byId[id].name}, ${COLOURS[sw.dataset.col].name}, to basket`);
+    return; }
+  const qv = e.target.closest("[data-qv]"); if (qv){ openQV(qv.dataset.qv, qv); return; }
+  const add = e.target.closest("[data-add]"); if (add){ const id = add.dataset.add; addToCart(id, state.pick[id], 1); toast(`Added ${byId[id].name} (${COLOURS[state.pick[id]].name}) to your basket`); return; }
+});
+
+/* ---------- dialog helpers: trap focus, Escape, restore focus ---------- */
+let lastTrigger = null;
+function focusables(root){ return $$('button:not([disabled]),[href],input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])', root).filter(el => el.offsetParent !== null || el === document.activeElement); }
+function trap(dlg){
+  dlg.addEventListener("keydown", e => {
+    if (e.key !== "Tab") return; const f = focusables(dlg); if (!f.length) return;
+    const first = f[0], last = f[f.length-1];
+    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); if (e.target.closest("[data-close]")) dlg.close(); });
+  dlg.addEventListener("close", () => { document.body.style.overflow=""; if (dlg._return && document.contains(dlg._return)) dlg._return.focus(); else if (dlg._returnId) { const t = document.querySelector(dlg._returnId); if (t) t.focus(); } });
+}
+function open(dlg, trigger){ dlg._return = trigger || document.activeElement; dlg._returnId = null; document.body.style.overflow="hidden"; dlg.showModal(); }
+const qvDlg = $("#qv"), cartDlg = $("#cart");
+trap(qvDlg); trap(cartDlg);
+
+/* ---------- quick view ---------- */
+let qvState = null;
+function openQV(id, trigger){
+  const p = byId[id]; qvState = { id, col: state.pick[id], qty: 1 };
+  $("#qvTitle").textContent = p.name;
+  $("#qvDesc").textContent = p.desc;
+  $("#qvFacts").innerHTML = `<dt>Size</dt><dd>${p.size}</dd><dt>Cloth</dt><dd>100% linen, ${p.gsm}</dd><dt>Care</dt><dd>Wash at 40°C, line dry, iron damp</dd><dt>Posted</dt><dd>Within 2 working days</dd>`;
+  $("#qvColours").innerHTML = p.cols.map(k => `<label><input type="radio" name="qvcol" value="${k}" ${k===qvState.col?"checked":""}><span><i style="background:${COLOURS[k].hex}"></i>${COLOURS[k].name}</span></label>`).join("");
+  $("#qvColLegend").textContent = `Colour · ${p.cols.length} to choose from`;
+  qvPaint();
+  open(qvDlg, trigger);
+  const checked = $('#qvColours input:checked'); (checked || $("#qvAdd")).focus();
+  // the trigger may be re-rendered later; remember a stable selector too
+  qvDlg._returnId = trigger && trigger.closest(".card") ? `.card[data-id="${id}"] .card-actions [data-qv]` : null;
+}
+function qvPaint(){
+  const p = byId[qvState.id];
+  $("#qvArt").innerHTML = cloth(p, qvState.col, {rope:true, label:`${p.name} in ${COLOURS[qvState.col].name}, pegged on the line`});
+  $("#qvQty").textContent = qvState.qty;
+  $("#qvMinus").disabled = qvState.qty <= 1;
+  $("#qvPlus").disabled = qvState.qty >= 10;
+  $("#qvPrice").textContent = gbp(p.price) + (qvState.qty>1 ? ` each · ${gbp(p.price*qvState.qty)} for ${qvState.qty}` : "");
+  $("#qvAdd").textContent = `Add ${qvState.qty} to basket · ${gbp(p.price*qvState.qty)}`;
+}
+$("#qvColours").addEventListener("change", e => { qvState.col = e.target.value; qvPaint(); });
+$("#qvMinus").addEventListener("click", () => { qvState.qty = Math.max(1, qvState.qty-1); qvPaint(); if ($("#qvMinus").disabled) $("#qvPlus").focus(); });
+$("#qvPlus").addEventListener("click", () => { qvState.qty = Math.min(10, qvState.qty+1); qvPaint(); if ($("#qvPlus").disabled) $("#qvMinus").focus(); });
+$("#qvAdd").addEventListener("click", () => {
+  addToCart(qvState.id, qvState.col, qvState.qty);
+  const back = qvDlg._return; qvDlg.close();
+  open(cartDlg, back); $("#cartTitle").setAttribute("tabindex","-1"); $("#cartTitle").focus();
+});
+
+/* ---------- cart ---------- */
+function addToCart(id, col, qty){
+  const line = cart.find(l => l.id===id && l.col===col);
+  if (line) line.qty = Math.min(20, line.qty + qty); else cart.push({id, col, qty});
+  save(); paintCart(true);
+}
+function paintCart(bump){
+  const n = cart.reduce((s,l)=>s+l.qty,0), sub = cart.reduce((s,l)=>s+l.qty*byId[l.id].price,0);
+  const cc = $("#cartCount"); cc.textContent = n; $("#cartSr").textContent = `Basket, ${n} ${n===1?"item":"items"}`;
+  if (bump){ cc.classList.remove("bump"); void cc.offsetWidth; cc.classList.add("bump"); }
+  const left = Math.max(0, FREE - sub), pct = Math.min(1, sub/FREE);
+  const W = 360, x = 12 + pct*(W-24);
+  $("#free").innerHTML = `<p>${sub===0 ? "Free UK delivery on orders over £60." : left>0 ? `<span class="num">${gbp(left)}</span> away from free delivery` : "Free delivery: you're over £60."}</p>
+    <svg viewBox="0 0 360 46" role="img" aria-label="Progress to free delivery: ${Math.round(pct*100)} percent">
+      <rect x="2" y="6" width="6" height="34" rx="1" fill="#8B8478"/><rect x="352" y="6" width="6" height="34" rx="1" fill="#8B8478"/>
+      <path d="M8 12Q180 22 352 12" fill="none" stroke="#B9C3BC" stroke-width="2"/>
+      <path class="fill" d="M8 12Q180 22 352 12" fill="none" stroke="#A3342A" stroke-width="3" pathLength="100" stroke-dasharray="100" stroke-dashoffset="${100-pct*100}"/>
+      <g class="peg-mark" style="transform:translateX(${x}px)"><rect x="-4" y="6" width="8" height="20" rx="2" fill="#C59C6B" stroke="#8B6A45"/><path d="M-9 26h18v12q-9 3-18 0z" fill="${pct>=1?"#A3342A":"#DCD3C1"}" stroke="#8B8478"/></g>
+      <text x="8" y="44" font-size="10" fill="#46514B" font-family="Bricolage Grotesque, sans-serif">£0</text><text x="352" y="44" font-size="10" fill="#46514B" text-anchor="end" font-family="Bricolage Grotesque, sans-serif">£60</text>
+    </svg>`;
+  const items = $("#items");
+  if (!cart.length){
+    items.innerHTML = `<li class="dr-empty"><svg viewBox="0 0 180 70" aria-hidden="true"><path d="M4 16Q90 30 176 16" stroke="#8B8478" stroke-width="1.6" fill="none"/><g fill="#C59C6B" stroke="#8B6A45"><rect x="40" y="12" width="7" height="18" rx="2"/><rect x="86" y="15" width="7" height="18" rx="2"/><rect x="132" y="12" width="7" height="18" rx="2"/></g></svg><p>Nothing pegged out yet. Start with a tea towel; most people come back for a second.</p><button class="btn btn-main" type="button" id="goShop">Browse the line</button></li>`;
+    $("#goShop").addEventListener("click", () => { cartDlg._return = $("#q"); cartDlg.close(); $("#shop").scrollIntoView(); });
+    $("#drFoot").innerHTML = "";
+    return;
+  }
+  items.innerHTML = cart.map((l,i) => { const p = byId[l.id]; return `<li class="item">
+    ${cloth(p, l.col)}
+    <h3>${p.name}</h3><span class="lt num">${gbp(p.price*l.qty)}</span>
+    <span class="opt">${COLOURS[l.col].name} · <span class="num">${gbp(p.price)}</span> each</span>
+    <div class="ctl"><div class="qty" role="group" aria-label="Quantity of ${p.name}, ${COLOURS[l.col].name}">
+      <button type="button" data-dec="${i}" aria-label="One fewer ${p.name}">−</button><span class="num" aria-live="polite">${l.qty}</span><button type="button" data-inc="${i}" aria-label="One more ${p.name}" ${l.qty>=20?"disabled":""}>+</button></div>
+      <button class="rm" type="button" data-rm="${i}">Remove<span class="vh"> ${p.name}, ${COLOURS[l.col].name}</span></button></div></li>`; }).join("");
+  const post = sub >= FREE ? 0 : POST;
+  $("#drFoot").innerHTML = `<div class="row"><span>Subtotal (${n} ${n===1?"item":"items"})</span><span class="num">${gbp(sub)}</span></div>
+    <div class="row"><span>Tracked delivery</span><span class="num">${post ? gbp(post) : "Free"}</span></div>
+    <div class="row tot"><span>Total</span><span class="num">${gbp(sub+post)}</span></div>
+    <button class="btn btn-main" type="button" id="checkout">Checkout · ${gbp(sub+post)}</button>
+    <small>Demo shop: checkout is not connected.</small>`;
+  $("#checkout").addEventListener("click", () => toast("This demo shop doesn't take payments. Your basket is saved."));
+}
+$("#items").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return; let focusSel = null;
+  if (b.dataset.inc){ const l = cart[+b.dataset.inc]; l.qty = Math.min(20,l.qty+1); focusSel = `[data-inc="${b.dataset.inc}"]`; }
+  else if (b.dataset.dec){ const i=+b.dataset.dec, l = cart[i]; l.qty--; if (l.qty<1){ cart.splice(i,1); focusSel = "#cartTitle"; } else focusSel = `[data-dec="${i}"]`; }
+  else if (b.dataset.rm){ cart.splice(+b.dataset.rm,1); focusSel = "#cartTitle"; }
+  else return;
+  save(); paintCart(true);
+  const f = $(focusSel) || $("#cartTitle"); if (f.id==="cartTitle") f.setAttribute("tabindex","-1"); f.focus();
+});
+$("#cartBtn").addEventListener("click", e => { open(cartDlg, e.currentTarget); const f = focusables(cartDlg); (f[1] || f[0]).focus(); });
+
+/* ---------- menu ---------- */
+const nav = $("#nav"), mb = $("#menuBtn");
+mb.addEventListener("click", () => { const o = nav.classList.toggle("open"); mb.setAttribute("aria-expanded", String(o)); });
+nav.addEventListener("click", e => { if (e.target.closest("a")) { nav.classList.remove("open"); mb.setAttribute("aria-expanded","false"); } });
+document.addEventListener("keydown", e => { if (e.key==="Escape" && nav.classList.contains("open")) { nav.classList.remove("open"); mb.setAttribute("aria-expanded","false"); mb.focus(); } });
+
+/* ---------- toast ---------- */
+let tt; function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(()=>t.classList.remove("show"), 3200); }
+
+/* ---------- newsletter ---------- */
+$("#nl").addEventListener("submit", e => {
+  e.preventDefault(); const inp = $("#email"), msg = $("#nlMsg"), v = inp.value.trim();
+  msg.className = "msg";
+  if (!v){ inp.setAttribute("aria-invalid","true"); msg.classList.add("err"); msg.textContent = "Enter your email address so we know where to send the letter."; inp.focus(); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){ inp.setAttribute("aria-invalid","true"); msg.classList.add("err"); msg.textContent = "That address is missing something: it needs an @ and a domain, like name@example.co.uk."; inp.focus(); return; }
+  inp.removeAttribute("aria-invalid"); msg.classList.add("ok"); msg.textContent = `Thank you. The next letter goes to ${v} on the first Friday of November.`; inp.value = "";
+});
+$("#email").addEventListener("input", e => { if (e.target.getAttribute("aria-invalid")) { e.target.removeAttribute("aria-invalid"); $("#nlMsg").textContent=""; } });
+
+render(); paintCart(false);
+})();
+</script>
+</body>
+</html>

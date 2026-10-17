@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0.0",
+  "project_name": "layoza-mcp",
+  "preservation_mode": true,
+  "framework": "html-css-js",
+  "routes": [
+    "index.html"
+  ],
+  "colors": [
+    {
+      "name": "bg-ivory",
+      "value": "#FAF7F2",
+      "role": "CSS custom property `--bg-ivory`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "bg-porcelain",
+      "value": "#F2ECE1",
+      "role": "CSS custom property `--bg-porcelain`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "bg-alabaster",
+      "value": "#EAE2D3",
+      "role": "CSS custom property `--bg-alabaster`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "bg-cobalt-stage",
+      "value": "#081229",
+      "role": "CSS custom property `--bg-cobalt-stage`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "ink-midnight",
+      "value": "#0B1021",
+      "role": "CSS custom property `--ink-midnight`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "ink-body",
+      "value": "#252D42",
+      "role": "CSS custom property `--ink-body`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "ink-muted",
+      "value": "#525B73",
+      "role": "CSS custom property `--ink-muted`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "accent-cobalt",
+      "value": "#0047FF",
+      "role": "CSS custom property `--accent-cobalt`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "accent-cobalt-deep",
+      "value": "#0033BF",
+      "role": "CSS custom property `--accent-cobalt-deep`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "accent-vermilion",
+      "value": "#E63B20",
+      "role": "CSS custom property `--accent-vermilion`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "border-hairline",
+      "value": "rgba(11, 16, 33, 0.13)",
+      "role": "CSS custom property `--border-hairline`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    },
+    {
+      "name": "border-strong",
+      "value": "rgba(11, 16, 33, 0.28)",
+      "role": "CSS custom property `--border-strong`",
+      "tier": "observed_fact",
+      "source": "index.html"
+    }
+  ],
+  "typography": [
+    {
+      "role": "font-display",
+      "font_family": "Playfair Display', Georgia, serif",
+      "font_size": "1rem",
+      "font_weight": "400",
+      "line_height": "1.5",
+      "letter_spacing": "0em",
+      "tier": "observed_fact"
+    },
+    {
+      "role": "font-sans",
+      "font_family": "Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif",
+      "font_size": "1rem",
+      "font_weight": "400",
+      "line_height": "1.5",
+      "letter_spacing": "0em",
+      "tier": "observed_fact"
+    },
+    {
+      "role": "font-mono",
+      "font_family": "JetBrains Mono', monospace",
+      "font_size": "1rem",
+      "font_weight": "400",
+      "line_height": "1.5",
+      "letter_spacing": "0em",
+      "tier": "observed_fact"
+    }
+  ],
+  "spacing_scale": {
+    "lg": "32px",
+    "md": "16px",
+    "section": "96px",
+    "sm": "8px",
+    "xl": "64px",
+    "xs": "4px"
+  },
+  "radii_scale": {
+    "lg": "20px",
+    "md": "12px",
+    "sm": "6px"
+  },
+  "shadows": {
+    "md": "0 10px 30px -10px rgba(15, 23, 42, 0.10)",
+    "sm": "0 1px 2px rgba(15, 23, 42, 0.06)"
+  },
+  "breakpoints": {
+    "desktop": "1280px",
+    "mobile": "375px",
+    "tablet": "768px"
+  },
+  "content_max_widths": [
+    "100%",
+    "1080px) {",
+    "1120px",
+    "1380px",
+    "17.5ch",
+    "54ch",
+    "58ch",
+    "64ch",
+    "65ch",
+    "760px",
+    "767px) {"
+  ],
+  "grid_systems": [
+    "CSS Grid",
+    "Flexbox"
+  ],
+  "dark_mode_strategy": "light-default",
+  "accessibility_patterns": [
+    "focus-visible-ring",
+    "prefers-reduced-motion",
+    "semantic-aria-attributes"
+  ],
+  "motion": {
+    "libraries_detected": [],
+    "keyframes_detected": [],
+    "transition_durations": [
+      "180ms",
+      "320ms",
+      "600ms"
+    ],
+    "easing_curves": [
+      "cubic-bezier(0.22, 1, 0.36, 1)"
+    ],
+    "scroll_behavior": "native",
+    "honors_reduced_motion": true,
+    "recommended_motion_intensity": 3,
+    "tier": "observed_fact"
+  },
+  "dials": {
+    "design_variance": 4,
+    "motion_intensity": 3,
+    "visual_density": 5
+  },
+  "discrepancies": [],
+  "confidence": {
+    "overall_score": 0.85,
+    "source_inspected": true,
+    "browser_inspected": false,
+    "screenshot_only": false,
+    "unknowns": [
+      "Live browser DOM snapshot not attached during static scan: run `layoza audit` or `scripts/browser-qa.mjs` to merge computed styles across desktop, tablet, and mobile viewports."
+    ]
+  },
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "category": "framework",
+      "tier": "observed_fact",
+      "statement": "Project uses the `html-css-js` stack.",
+      "evidence_source": "project-scanner",
+      "confidence": 0.85
+    },
+    {
+      "id": "DEC-002",
+      "category": "preservation",
+      "tier": "inferred_rule",
+      "statement": "Existing websites default to Preservation Mode: new sections or pages must reuse existing typography, color tokens, spacing scale, and motion intensity.",
+      "evidence_source": "layoza-mode-b-policy",
+      "confidence": 1.0
+    }
+  ],
+  "baseline_fingerprint": "99dba2150abf5008"
+}

@@ -1,0 +1,15 @@
+[package]
+name = "layoza-mcp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Model Context Protocol (MCP) stdio server for Layoza with schema validation, permission gates, and untrusted input boundaries"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+layoza-core.workspace = true

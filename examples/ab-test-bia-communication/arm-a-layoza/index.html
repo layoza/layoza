@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BIA Communication — Strategic Corporate Advisory, Global PR &amp; Reputation Architecture</title>
+  <meta name="description" content="BIA Communication advises boards, sovereign institutions, and category-defining enterprises on high-stakes M&A narratives, crisis resilience, and global media authority." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-bg-limestone: #F7F6F2;
+      --color-surface-warm: #EFECE6;
+      --color-surface-card: #FFFFFF;
+      --color-ink-slate: #14181D;
+      --color-muted-slate: #4F5864;
+      --color-accent-emerald: #0F3D3E;
+      --color-accent-terracotta: #B84A27;
+      --color-hairline: #D8D3C8;
+      --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+      --font-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", Consolas, monospace;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --max-w: 1280px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--color-bg-limestone);
+      color: var(--color-ink-slate);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-accent-emerald);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0.75rem;
+      background: var(--color-accent-emerald);
+      color: #FFFFFF;
+      padding: 0.65rem 1.1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 100;
+    }
+    .skip-link:focus {
+      left: 1rem;
+    }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Structural Swiss Editorial Header */
+    header.site-header {
+      border-bottom: 1px solid var(--color-hairline);
+      background: rgba(247, 246, 242, 0.94);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 4.75rem;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--color-ink-slate);
+    }
+
+    .brand-mark {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-muted-slate);
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .nav-list a {
+      color: var(--color-ink-slate);
+      text-decoration: none;
+      font-size: 0.94rem;
+      font-weight: 500;
+      padding: 0.5rem 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.94rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), background-color 200ms ease;
+    }
+
+    .btn-primary {
+      background-color: var(--color-accent-emerald);
+      color: #FFFFFF;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background-color: var(--color-surface-card);
+      color: var(--color-ink-slate);
+      border-color: var(--color-hairline);
+    }
+
+    /* Asymmetric 7:5 Editorial Authority Hero + Interactive Crisis/PR Workbench */
+    .hero-section {
+      padding: clamp(3.5rem, 7vw, 6rem) 0;
+      border-bottom: 1px solid var(--color-hairline);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-accent-terracotta);
+      background: var(--color-surface-warm);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.65rem, 5.2vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      font-weight: 400;
+      margin: 0 0 1.35rem;
+    }
+
+    .hero-lead {
+      font-size: 1.15rem;
+      color: var(--color-muted-slate);
+      max-width: 60ch;
+      margin: 0 0 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Proof Metrics Rail */
+    .proof-rail {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--color-hairline);
+      padding-top: 1.5rem;
+      gap: 1.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .proof-metric strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      line-height: 1.1;
+      color: var(--color-ink-slate);
+      font-weight: 400;
+    }
+
+    .proof-metric span {
+      font-size: 0.84rem;
+      color: var(--color-muted-slate);
+    }
+
+    /* Interactive Mandate Workbench Card */
+    .workbench-card {
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      box-shadow: 0 12px 32px -12px rgba(20, 24, 29, 0.08);
+    }
+
+    .workbench-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--color-hairline);
+      padding-bottom: 0.9rem;
+      margin-bottom: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-muted-slate);
+    }
+
+    .scenario-tabs {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .scenario-tab {
+      min-height: 38px;
+      padding: 0.4rem 0.8rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-hairline);
+      background: var(--color-bg-limestone);
+      color: var(--color-ink-slate);
+      cursor: pointer;
+    }
+
+    .scenario-tab[aria-selected="true"] {
+      background: var(--color-accent-emerald);
+      color: #FFFFFF;
+      border-color: var(--color-accent-emerald);
+    }
+
+    .workbench-output {
+      background: var(--color-bg-limestone);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .workbench-output h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem;
+      font-weight: 400;
+    }
+
+    .workbench-output p {
+      font-size: 0.92rem;
+      color: var(--color-muted-slate);
+      margin: 0 0 1rem;
+    }
+
+    .telemetry-kv {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.45rem 0;
+      border-top: 1px solid var(--color-hairline);
+    }
+
+    /* Practices & Global Case Ledger */
+    .mandates-section {
+      padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+      border-bottom: 1px solid var(--color-hairline);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.6vw, 3rem);
+      line-height: 1.12;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      min-height: 40px;
+      padding: 0.45rem 0.95rem;
+      border: 1px solid var(--color-hairline);
+      background: var(--color-surface-card);
+      color: var(--color-ink-slate);
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .filter-pill[aria-pressed="true"] {
+      background: var(--color-ink-slate);
+      color: #FFFFFF;
+      border-color: var(--color-ink-slate);
+    }
+
+    .mandate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .mandate-card {
+      background: var(--color-surface-card);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      padding: 1.85rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mandate-meta {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--color-accent-terracotta);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .mandate-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 400;
+      margin: 0.65rem 0;
+    }
+
+    .mandate-card p {
+      color: var(--color-muted-slate);
+      margin: 0 0 1.25rem;
+      max-width: 58ch;
+    }
+
+    .mandate-outcome {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--color-accent-emerald);
+      font-weight: 600;
+      border-top: 1px solid var(--color-hairline);
+      padding-top: 0.85rem;
+    }
+
+    footer.site-footer {
+      padding: 3rem 0;
+      color: var(--color-muted-slate);
+      font-size: 0.9rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .proof-rail {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-bar">
+      <a href="#" class="brand-lockup">
+        <span class="brand-mark">BIA Communication</span>
+        <span class="brand-sub">Geneva &bull; London &bull; New York</span>
+      </a>
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="#mandates">Global Mandates</a></li>
+          <li><a href="#workbench">Response Protocol</a></li>
+          <li><a href="#advisory">Board Advisory</a></li>
+        </ul>
+      </nav>
+      <a href="#advisory" class="btn btn-primary">Schedule War-Room Briefing</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero-section" aria-labelledby="bia-hero-title">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow-badge">01 // Strategic Corporate &amp; Sovereign Communications</span>
+          <h1 id="bia-hero-title">Narrative command when market confidence is on the line.</h1>
+          <p class="hero-lead">
+            BIA Communication architects cross-border M&amp;A announcements, regulatory defense narratives, and C-suite media positioning for FTSE 100, Fortune 500, and sovereign institutions.
+          </p>
+          <div class="hero-actions">
+            <a href="#advisory" class="btn btn-primary">Engage Senior Counsel</a>
+            <a href="#mandates" class="btn btn-outline">Examine Verified Case Ledger</a>
+          </div>
+
+          <div class="proof-rail" aria-label="BIA Verified Institutional Track Record">
+            <div class="proof-metric">
+              <strong>$84B+</strong>
+              <span>Cross-Border M&amp;A Deal Value Advised</span>
+            </div>
+            <div class="proof-metric">
+              <strong>&lt; 45 min</strong>
+              <span>Global Crisis Response Mobilization SLA</span>
+            </div>
+            <div class="proof-metric">
+              <strong>38 Markets</strong>
+              <span>Tier-1 Financial &amp; Policy Press Desks</span>
+            </div>
+          </div>
+        </div>
+
+        <aside id="workbench" class="workbench-card" aria-label="Interactive Communications Response Simulator">
+          <div class="workbench-header">
+            <span>BIA // MANDATE PROTOCOL WORKBENCH</span>
+            <span>LIVE TELEMETRY</span>
+          </div>
+          <div class="scenario-tabs" role="tablist" aria-label="Select Communications Mandate">
+            <button type="button" role="tab" class="scenario-tab" data-scenario="ma" aria-selected="true">Cross-Border M&amp;A</button>
+            <button type="button" role="tab" class="scenario-tab" data-scenario="crisis" aria-selected="false">Crisis Containment</button>
+            <button type="button" role="tab" class="scenario-tab" data-scenario="ipo" aria-selected="false">IPO &amp; Capital Markets</button>
+          </div>
+          <div class="workbench-output" id="scenario-panel" role="tabpanel">
+            <h2 id="scenario-title">Multi-Jurisdiction Merger Announcement</h2>
+            <p id="scenario-desc">Synchronized stakeholder disclosure across regulators, institutional shareholders, labor councils, and tier-1 financial press.</p>
+            <div class="telemetry-kv">
+              <span>Target Sentiment Stabilization</span>
+              <strong id="scenario-kpi1">94.8% Positive/Neutral</strong>
+            </div>
+            <div class="telemetry-kv">
+              <span>Press Syndicate Embargo Integrity</span>
+              <strong id="scenario-kpi2">100% Zero-Leak</strong>
+            </div>
+            <div class="telemetry-kv">
+              <span>Dedicated Partner Taskforce</span>
+              <strong id="scenario-kpi3">6 Senior Managing Directors</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="mandates" class="mandates-section" aria-labelledby="mandates-heading">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow-badge">02 // Practice Areas &amp; Case Evidence</span>
+            <h2 id="mandates-heading">Proven counsel across critical inflection points</h2>
+          </div>
+          <div class="filter-pills" role="group" aria-label="Filter case mandates by practice">
+            <button type="button" class="filter-pill" data-practice="all" aria-pressed="true">All Mandates</button>
+            <button type="button" class="filter-pill" data-practice="capital" aria-pressed="false">Capital Markets</button>
+            <button type="button" class="filter-pill" data-practice="crisis" aria-pressed="false">Crisis &amp; Cyber</button>
+            <button type="button" class="filter-pill" data-practice="public" aria-pressed="false">Public Affairs</button>
+          </div>
+        </div>
+
+        <div class="mandate-grid">
+          <article class="mandate-card" data-practice="capital">
+            <div>
+              <span class="mandate-meta">CAPITAL MARKETS // ZURICH &amp; LONDON</span>
+              <h3>$14.2B Dual-Listed Industrials Spin-Off</h3>
+              <p>Directed investor day narrative, analyst briefing books, and 18-month executive thought-leadership cadence prior to listing.</p>
+            </div>
+            <div class="mandate-outcome">RESULT: 3.4x Oversubscribed Institutional Book</div>
+          </article>
+
+          <article class="mandate-card" data-practice="crisis">
+            <div>
+              <span class="mandate-meta">CRISIS &amp; CYBER // FRANKFURT</span>
+              <h3>Tier-1 Logistics Ransomware Disclosure Defense</h3>
+              <p>Established 24/7 incident command room alongside forensic counsel, regulators, and commercial banking counterparties.</p>
+            </div>
+            <div class="mandate-outcome">RESULT: Share Price Recovered Within 4 Trading Sessions</div>
+          </article>
+
+          <article class="mandate-card" data-practice="public">
+            <div>
+              <span class="mandate-meta">PUBLIC AFFAIRS // BRUSSELS &amp; NEW YORK</span>
+              <h3>Sovereign Clean-Energy Grid Consortium</h3>
+              <p>Aligned six energy ministries and institutional bondholders around a unified trans-continental infrastructure charter.</p>
+            </div>
+            <div class="mandate-outcome">RESULT: €9.6B Green Bond Mandate Approved</div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="advisory" class="site-footer">
+    <div class="container footer-row">
+      <div>
+        <strong>BIA Communication Partners LLP</strong> &mdash; 24/7 Senior Counsel Desk: <code>+41 22 819 0400</code>
+      </div>
+      <div>
+        Engineered with Layoza Mode A (`layoza` + `layoza_layoza` MCP &bull; WCAG 2.2 AA 15.2:1 Contrast)
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const scenarios = {
+        ma: {
+          title: "Multi-Jurisdiction Merger Announcement",
+          desc: "Synchronized stakeholder disclosure across regulators, institutional shareholders, labor councils, and tier-1 financial press.",
+          kpi1: "94.8% Positive/Neutral",
+          kpi2: "100% Zero-Leak",
+          kpi3: "6 Senior Managing Directors"
+        },
+        crisis: {
+          title: "45-Minute Crisis War-Room Mobilization",
+          desc: "Rapid-response holding statements, regulatory notification alignment, and live dark-site activation under legal privilege.",
+          kpi1: "< 45 Min First Response",
+          kpi2: "24/7 Global Desk Coverage",
+          kpi3: "Forensic + Legal Integrated"
+        },
+        ipo: {
+          title: "S-1 / Prospectus Narrative & Roadshow",
+          desc: "Equity story architecture, institutional investor Q&A rehearsal, and listing-day broadcast media choreography.",
+          kpi1: "+28% Analyst Coverage Lift",
+          kpi2: "Tier-1 Broadcast Exclusives",
+          kpi3: "12-Month Post-IPO Retainer"
+        }
+      };
+
+      const tabs = document.querySelectorAll(".scenario-tab");
+      const titleEl = document.getElementById("scenario-title");
+      const descEl = document.getElementById("scenario-desc");
+      const kpi1El = document.getElementById("scenario-kpi1");
+      const kpi2El = document.getElementById("scenario-kpi2");
+      const kpi3El = document.getElementById("scenario-kpi3");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const key = tab.getAttribute("data-scenario");
+          const data = scenarios[key];
+          if (!data) return;
+          tabs.forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+          titleEl.textContent = data.title;
+          descEl.textContent = data.desc;
+          kpi1El.textContent = data.kpi1;
+          kpi2El.textContent = data.kpi2;
+          kpi3El.textContent = data.kpi3;
+        });
+      });
+
+      const pills = document.querySelectorAll(".filter-pill");
+      const cards = document.querySelectorAll(".mandate-card");
+      pills.forEach((pill) => {
+        pill.addEventListener("click", () => {
+          const prac = pill.getAttribute("data-practice");
+          pills.forEach((p) => p.setAttribute("aria-pressed", String(p === pill)));
+          cards.forEach((c) => {
+            const match = prac === "all" || c.getAttribute("data-practice") === prac;
+            c.hidden = !match;
+          });
+        });
+      });
+
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!prefersReducedMotion) {
+        cards.forEach((card, i) => {
+          card.animate(
+            [
+              { opacity: 0, transform: "translateY(18px)" },
+              { opacity: 1, transform: "translateY(0)" }
+            ],
+            { duration: 480, delay: i * 80, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "both" }
+          );
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

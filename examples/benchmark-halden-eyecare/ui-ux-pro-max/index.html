@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halden Eyecare | Independent optician on the Shore, Leith</title>
+<meta name="description" content="Independent optician on the Shore in Leith, Edinburgh. Free NHS eye tests, extended eye health checks, contact lens fittings, frames from small European makers and an on-site workshop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --color-primary:#0E7490;
+  --color-primary-hover:#155E75;
+  --color-on-primary:#FFFFFF;
+  --color-accent:#A16207;
+  --color-accent-soft:#FEF3C7;
+  --color-background:#F0FDFA;
+  --color-surface:#FFFFFF;
+  --color-foreground:#134E4A;
+  --color-ink:#0B2F2C;
+  --color-muted:#E6F4F1;
+  --color-muted-foreground:#475569;
+  --color-border:#CCFBF1;
+  --color-border-strong:#7FB8B2;
+  --color-destructive:#B91C1C;
+  --color-success:#166534;
+  --color-ring:#0E7490;
+  --font-display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;
+  --radius-sm:6px;--radius:12px;--radius-lg:20px;
+  --shadow:0 1px 2px rgba(11,47,44,.06),0 8px 24px -12px rgba(11,47,44,.18);
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --header-h:72px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 16px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--color-background);color:var(--color-foreground);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:var(--color-primary);text-underline-offset:3px}
+a:hover{color:var(--color-primary-hover)}
+h1,h2,h3{font-family:var(--font-display);color:var(--color-ink);line-height:1.15;margin:0;font-weight:600;text-wrap:balance}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--color-ring);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:16px;top:-60px;background:var(--color-ink);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);z-index:100;transition:top .2s}
+.skip:focus{top:12px;color:#fff}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)}
+.section{padding:var(--space-9) 0}
+.section-head{max-width:640px;margin-bottom:var(--space-7)}
+.section-head h2{font-size:clamp(30px,4vw,44px);margin-top:var(--space-3)}
+.section-head p{margin-top:var(--space-4);color:var(--color-muted-foreground);font-size:18px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:999px;border:1.5px solid transparent;font-weight:600;font-size:16px;text-decoration:none;cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),transform .15s var(--ease)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--color-primary);color:var(--color-on-primary)}
+.btn-primary:hover{background:var(--color-primary-hover);color:#fff}
+.btn-secondary{background:transparent;color:var(--color-ink);border-color:var(--color-ink)}
+.btn-secondary:hover{background:var(--color-ink);color:#fff}
+.btn-quiet{background:var(--color-surface);color:var(--color-ink);border-color:var(--color-border-strong);min-height:44px;padding:10px 18px;font-size:15px}
+.btn-quiet:hover{border-color:var(--color-ink)}
+.btn-quiet[aria-pressed="true"]{background:var(--color-ink);color:#fff;border-color:var(--color-ink)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:50;background:rgba(240,253,250,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--color-border)}
+.header-inner{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--color-ink)}
+.wordmark svg{width:44px;height:22px;color:var(--color-primary)}
+.wordmark span{font-family:var(--font-display);font-size:24px;font-weight:600;letter-spacing:.01em}
+.wordmark small{display:block;font-family:var(--font-body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-muted-foreground);font-weight:600;margin-top:-2px}
+.nav{display:flex;align-items:center;gap:4px}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;color:var(--color-ink);text-decoration:none;font-weight:500;font-size:15px;border-radius:999px;transition:background-color .2s}
+.nav a:hover{background:var(--color-muted);color:var(--color-ink)}
+.header-actions{display:flex;align-items:center;gap:8px}
+.bag-btn{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--color-ink);background:transparent;color:var(--color-ink);font-weight:600;cursor:pointer;transition:background-color .2s}
+.bag-btn:hover{background:var(--color-muted)}
+.bag-btn svg{width:20px;height:20px}
+.bag-count{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--color-primary);color:#fff;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bag-count.bump{animation:bump .35s var(--ease)}
+@keyframes bump{50%{transform:scale(1.25)}}
+.menu-btn{display:none;width:44px;height:44px;border-radius:999px;border:1.5px solid var(--color-ink);background:transparent;cursor:pointer;place-items:center;color:var(--color-ink)}
+.menu-btn svg{width:22px;height:22px}
+.mobile-nav{display:none}
+
+/* Hero */
+.hero{padding:var(--space-8) 0 var(--space-9);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-8);align-items:center}
+.hero h1{font-size:clamp(40px,5.6vw,72px);letter-spacing:-.015em;margin-top:var(--space-4)}
+.hero h1 em{font-style:italic;color:var(--color-primary)}
+.hero-lede{margin-top:var(--space-5);font-size:19px;max-width:520px;color:var(--color-foreground)}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:var(--space-6)}
+.hero-facts{display:flex;flex-wrap:wrap;gap:8px 24px;margin:var(--space-6) 0 0;padding:0;list-style:none;color:var(--color-muted-foreground);font-size:15px}
+.hero-facts li{display:flex;align-items:center;gap:8px}
+.hero-facts svg{width:18px;height:18px;color:var(--color-primary)}
+
+/* Signature: focus chart */
+.chart-card{position:relative;aspect-ratio:4/5;border-radius:var(--radius-lg);background:var(--color-surface);box-shadow:var(--shadow);border:1px solid var(--color-border);overflow:hidden;--lx:32%;--ly:46%;--rx:68%;--ry:46%;--r:90px}
+.chart{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2%;font-family:var(--font-display);font-weight:700;color:var(--color-ink);user-select:none;letter-spacing:.18em;padding-left:.18em}
+.chart span{line-height:1;display:block}
+.chart .l1{font-size:clamp(56px,9vw,120px)}
+.chart .l2{font-size:clamp(38px,5.6vw,74px)}
+.chart .l3{font-size:clamp(28px,3.9vw,50px)}
+.chart .l4{font-size:clamp(20px,2.8vw,34px)}
+.chart .l5{font-size:clamp(15px,1.9vw,22px)}
+.chart .l6{font-size:clamp(11px,1.3vw,15px)}
+.chart-blur{filter:blur(5px);opacity:.55}
+.chart-sharp{-webkit-mask-image:radial-gradient(circle at var(--lx) var(--ly),#000 var(--r),transparent calc(var(--r) + 1px)),radial-gradient(circle at var(--rx) var(--ry),#000 var(--r),transparent calc(var(--r) + 1px));mask-image:radial-gradient(circle at var(--lx) var(--ly),#000 var(--r),transparent calc(var(--r) + 1px)),radial-gradient(circle at var(--rx) var(--ry),#000 var(--r),transparent calc(var(--r) + 1px));background:linear-gradient(160deg,#FFFFFF 40%,#EAF7F8);filter:blur(var(--focus,0px));transition:filter 1.2s var(--ease)}
+.specs{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.chart-caption{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted-foreground);font-weight:600}
+.chart-card.is-focusing{--focus:6px}
+
+/* Cards and grids */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-5)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-5)}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:0 1px 0 rgba(11,47,44,.03)}
+.card h3{font-size:22px}
+.card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px}
+.card li{display:flex;gap:10px;align-items:flex-start}
+.card li svg{width:18px;height:18px;flex:none;margin-top:3px;color:var(--color-primary)}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:var(--space-3);margin-top:auto;border-top:1px dashed var(--color-border-strong)}
+.price{font-family:var(--font-display);font-size:26px;font-weight:600;color:var(--color-ink)}
+.price.free{color:var(--color-primary)}
+.duration{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--color-muted-foreground);font-weight:500;white-space:nowrap}
+.duration svg{width:16px;height:16px}
+.tag{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--color-muted);color:var(--color-foreground)}
+.tag.nhs{background:#DBEAFE;color:#1E3A8A}
+.tests-note{margin-top:var(--space-5);color:var(--color-muted-foreground);font-size:15px}
+
+/* Booking */
+.booking{background:var(--color-ink);color:#E6F4F1}
+.booking .eyebrow{color:#FCD34D}
+.booking h2{color:#fff}
+.booking .section-head p{color:#B7D7D3}
+.booking-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:var(--space-8);align-items:start}
+.booking-aside{display:grid;gap:var(--space-5)}
+.optom{display:flex;gap:16px;align-items:center}
+.optom-avatar{width:56px;height:56px;border-radius:50%;flex:none;display:grid;place-items:center;background:#134E4A;color:#CCFBF1;font-family:var(--font-display);font-size:20px;border:1px solid #2F6B66}
+.optom strong{display:block;color:#fff;font-weight:600}
+.optom span{font-size:14px;color:#B7D7D3}
+.form-card{background:var(--color-surface);color:var(--color-foreground);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label,.field legend{font-weight:600;font-size:15px;color:var(--color-ink)}
+.field .hint{font-size:13px;color:var(--color-muted-foreground)}
+.field input,.field select{min-height:48px;padding:10px 14px;border:1.5px solid var(--color-border-strong);border-radius:var(--radius-sm);background:#fff;font-size:16px;width:100%;transition:border-color .2s}
+.field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23134E4A' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.field input:hover,.field select:hover{border-color:var(--color-foreground)}
+.field input:focus-visible,.field select:focus-visible{outline:3px solid var(--color-ring);outline-offset:1px;border-color:var(--color-ring)}
+.field [aria-invalid="true"]{border-color:var(--color-destructive);background:#FEF2F2}
+.error{display:none;align-items:center;gap:6px;font-size:14px;color:var(--color-destructive);font-weight:500}
+.error svg{width:16px;height:16px;flex:none}
+.field.has-error .error{display:flex}
+fieldset.field{border:0;padding:0;margin:0;min-width:0}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.slot input{position:absolute;opacity:0;width:1px;height:1px}
+.slot label{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:8px;border:1.5px solid var(--color-border-strong);border-radius:var(--radius-sm);cursor:pointer;font-weight:600;font-size:15px;text-align:center;transition:border-color .2s,background-color .2s}
+.slot label small{font-weight:400;font-size:12px;color:var(--color-muted-foreground)}
+.slot input:checked+label{border-color:var(--color-primary);background:#E0F2F7;box-shadow:inset 0 0 0 1px var(--color-primary)}
+.slot input:focus-visible+label{outline:3px solid var(--color-ring);outline-offset:2px}
+.slot label:hover{border-color:var(--color-foreground)}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:var(--space-6)}
+.form-foot p{font-size:14px;color:var(--color-muted-foreground);max-width:320px}
+.error-summary{display:none;border:2px solid var(--color-destructive);background:#FEF2F2;border-radius:var(--radius-sm);padding:var(--space-4);margin-bottom:var(--space-5)}
+.error-summary.show{display:block}
+.error-summary h3{font-family:var(--font-body);font-size:16px;color:var(--color-destructive)}
+.error-summary ul{margin:8px 0 0;padding-left:20px}
+.error-summary a{color:var(--color-destructive);font-weight:500}
+.success{display:none;text-align:center;padding:var(--space-6) var(--space-4)}
+.success.show{display:block}
+.success svg{width:64px;height:64px;margin:0 auto var(--space-4);color:var(--color-success)}
+.success h3{font-size:28px}
+.success p{margin-top:var(--space-3);color:var(--color-muted-foreground)}
+.success .btn{margin-top:var(--space-5)}
+
+/* Frames */
+.frames-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-5)}
+.frame{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .25s var(--ease),transform .25s var(--ease)}
+.frame:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.frame-art{aspect-ratio:16/10;display:grid;place-items:center;background:linear-gradient(180deg,#F7FBFA,#E6F4F1);border-bottom:1px solid var(--color-border)}
+.frame-art svg{width:72%;height:auto}
+.frame-body{padding:var(--space-5);display:flex;flex-direction:column;gap:6px;flex:1}
+.frame-body h3{font-size:22px}
+.frame-maker{font-size:14px;color:var(--color-muted-foreground)}
+.frame-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:var(--space-4)}
+.frame-row .price{font-size:24px}
+
+/* Lenses */
+.lens-card{position:relative}
+.lens-card.featured{border:2px solid var(--color-primary)}
+.lens-card .badge{position:absolute;top:-12px;left:var(--space-5);background:var(--color-primary);color:#fff;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.lens-card .price{font-size:32px;color:var(--color-ink)}
+.lens-card .price small{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--color-muted-foreground)}
+.lens-card p{color:var(--color-muted-foreground);font-size:15px}
+.lens-card .btn{margin-top:var(--space-3);width:100%}
+
+/* Workshop */
+.workshop{background:var(--color-surface);border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border)}
+.workshop-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:var(--space-8);align-items:start}
+.bench{margin:0;padding:0;list-style:none;border-top:1px solid var(--color-ink)}
+.bench li{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:start;padding:var(--space-5) 0;border-bottom:1px solid var(--color-border-strong)}
+.bench .ico{width:48px;height:48px;border-radius:50%;background:var(--color-accent-soft);display:grid;place-items:center;color:var(--color-accent)}
+.bench .ico svg{width:24px;height:24px}
+.bench h3{font-size:21px}
+.bench p{font-size:15px;color:var(--color-muted-foreground);margin-top:4px}
+.turn{text-align:right;white-space:nowrap}
+.turn strong{display:block;font-family:var(--font-display);font-size:22px;color:var(--color-ink);font-weight:600}
+.turn span{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-muted-foreground);font-weight:600}
+.workshop-art{border-radius:var(--radius-lg);background:var(--color-ink);padding:var(--space-6);color:#CCFBF1;position:relative;overflow:hidden}
+.workshop-art svg{width:100%;height:auto}
+.workshop-art p{margin-top:var(--space-4);font-size:15px;color:#B7D7D3}
+.workshop-art .quote{font-family:var(--font-display);font-style:italic;font-size:22px;color:#fff;line-height:1.35}
+
+/* Testimonials */
+.quote-card blockquote{margin:0;font-family:var(--font-display);font-size:20px;line-height:1.45;color:var(--color-ink)}
+.quote-card figcaption{margin-top:auto;padding-top:var(--space-4);font-size:14px;color:var(--color-muted-foreground)}
+.quote-card figcaption strong{display:block;color:var(--color-ink);font-size:15px}
+.quote-mark{width:32px;height:32px;color:var(--color-accent)}
+
+/* FAQ */
+.faq-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:var(--space-8)}
+.faq{border-top:1px solid var(--color-ink)}
+.faq-item{border-bottom:1px solid var(--color-border-strong)}
+.faq-item h3{font-family:var(--font-body);font-size:18px;font-weight:600}
+.faq-trigger{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:64px;padding:var(--space-4) 0;background:none;border:0;text-align:left;cursor:pointer;color:var(--color-ink);font-weight:600;font-size:18px}
+.faq-trigger:hover{color:var(--color-primary)}
+.faq-trigger svg{width:22px;height:22px;flex:none;transition:transform .25s var(--ease)}
+.faq-trigger[aria-expanded="true"] svg{transform:rotate(45deg)}
+.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+.faq-panel>div{overflow:hidden}
+.faq-panel p{padding:0 40px var(--space-5) 0;color:var(--color-foreground)}
+.faq-item.open .faq-panel{grid-template-rows:1fr}
+
+/* Footer */
+.site-footer{background:var(--color-ink);color:#B7D7D3;padding:var(--space-8) 0 var(--space-6);font-size:15px}
+.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:var(--space-6)}
+.site-footer h2{font-family:var(--font-body);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#FCD34D;font-weight:600;margin-bottom:var(--space-4)}
+.site-footer a{color:#E6F4F1}
+.site-footer a:hover{color:#fff}
+.site-footer address{font-style:normal}
+.site-footer .wordmark{color:#fff;margin-bottom:var(--space-4)}
+.site-footer .wordmark svg{color:#5EEAD4}
+.site-footer .wordmark small{color:#B7D7D3}
+.hours{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px}
+.hours dt{color:#E6F4F1}
+.hours dd{margin:0}
+.socials{display:flex;gap:8px;margin:0;padding:0;list-style:none}
+.socials a{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid #2F6B66;transition:background-color .2s}
+.socials a:hover{background:#134E4A}
+.socials svg{width:20px;height:20px}
+.footer-base{margin-top:var(--space-7);padding-top:var(--space-5);border-top:1px solid #2F6B66;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,calc(100% + 40px));visibility:hidden;background:var(--color-ink);color:#fff;padding:12px 20px;border-radius:999px;box-shadow:var(--shadow);font-weight:500;z-index:60;transition:transform .3s var(--ease),visibility 0s .3s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0);visibility:visible;transition:transform .3s var(--ease)}
+
+/* Reveal */
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(12px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+
+/* Responsive */
+@media (max-width:1100px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .nav a{padding:0 10px}
+}
+@media (max-width:960px){
+  .nav{display:none}
+  .menu-btn{display:grid}
+  .mobile-nav{display:block;position:fixed;inset:var(--header-h) 0 0 0;background:var(--color-background);z-index:49;padding:var(--space-5) 24px;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility 0s .2s;overflow-y:auto}
+  .mobile-nav.open{opacity:1;transform:none;visibility:visible;transition:opacity .2s,transform .2s}
+  .mobile-nav ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--color-border-strong)}
+  .mobile-nav ul a{display:flex;align-items:center;justify-content:space-between;min-height:64px;font-family:var(--font-display);font-size:28px;color:var(--color-ink);text-decoration:none;border-bottom:1px solid var(--color-border-strong)}
+  .mobile-nav .btn{margin-top:var(--space-6);width:100%;font-family:var(--font-body);font-size:16px}
+  .hero-grid,.booking-grid,.workshop-grid,.faq-wrap{grid-template-columns:1fr;gap:var(--space-7)}
+  .chart-card{max-width:520px;width:100%;margin:0 auto;aspect-ratio:1/1}
+  .frames-grid,.grid-3{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  :root{--header-h:64px}
+  .container{padding:0 16px}
+  .section{padding:var(--space-8) 0}
+  .hero{padding:var(--space-6) 0 var(--space-8)}
+  .hero-lede{font-size:17px}
+  .hero-ctas .btn{flex:1 1 100%}
+  .grid-4,.grid-3,.frames-grid,.form-grid,.footer-grid{grid-template-columns:1fr}
+  .form-card{padding:var(--space-5)}
+  .bag-label{display:none}
+  .bag-btn{padding:0 12px}
+  .wordmark small{display:none}
+  .wordmark span{font-size:22px}
+  .bench li{grid-template-columns:40px 1fr;gap:12px}
+  .bench .ico{width:40px;height:40px}
+  .turn{grid-column:2;text-align:left;display:flex;gap:8px;align-items:baseline}
+  .turn strong{display:inline;font-size:19px}
+  .faq-panel p{padding-right:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .js .reveal{opacity:1;transform:none}
+  .chart-card.is-focusing{--focus:0px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-spec" viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="9"/><circle cx="36" cy="13" r="9"/><path d="M21 12c1.5-2 4.5-2 6 0M3 11 1 7M45 11l2-4"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href="#top" aria-label="Halden Eyecare, home">
+      <svg aria-hidden="true"><use href="#i-spec"/></svg>
+      <div><span>Halden</span><small>Eyecare · Leith</small></div>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#eye-tests">Eye tests</a>
+      <a href="#frames">Frames</a>
+      <a href="#lenses">Lenses</a>
+      <a href="#about">About</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <div class="header-actions">
+      <button class="bag-btn" type="button" id="bagBtn" aria-describedby="bagStatus">
+        <svg aria-hidden="true"><use href="#i-bag"/></svg>
+        <span class="bag-label">Bag</span>
+        <span class="bag-count" id="bagCount" aria-hidden="true">0</span>
+        <span class="sr-only" id="bagSr">0 items in your bag</span>
+      </button>
+      <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path class="m-open" d="M4 7h16M4 12h16M4 17h16"/><path class="m-close" d="M6 6l12 12M18 6 6 18" style="display:none"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+  <ul>
+    <li><a href="#eye-tests">Eye tests</a></li>
+    <li><a href="#frames">Frames</a></li>
+    <li><a href="#lenses">Lenses</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#visit">Visit</a></li>
+  </ul>
+  <a class="btn btn-primary" href="#book">Book an eye test</a>
+</nav>
+<p class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="bagStatus"></p>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Independent optician · The Shore, Leith</p>
+        <h1 id="hero-title">See the Shore <em>clearly</em> again.</h1>
+        <p class="hero-lede">Unhurried eye tests with two optometrists, frames from small European makers, and a workshop on site that fits and repairs them. NHS eye tests are free in Scotland.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#book">Book an eye test</a>
+          <a class="btn btn-secondary" href="#frames">Browse frames</a>
+        </div>
+        <ul class="hero-facts">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Free NHS eye tests</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Fitting &amp; repairs on site</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Two optometrists</li>
+        </ul>
+      </div>
+      <div class="chart-card is-focusing" id="chartCard" role="img" aria-label="Illustration: a letter chart spelling Halden, blurred except where seen through a pair of round spectacles.">
+        <div class="chart chart-blur" aria-hidden="true"><span class="l1">H</span><span class="l2">A L</span><span class="l3">D E N</span><span class="l4">E Y E S</span><span class="l5">L E I T H</span><span class="l6">T H E S H O R E</span></div>
+        <div class="chart chart-sharp" aria-hidden="true"><span class="l1">H</span><span class="l2">A L</span><span class="l3">D E N</span><span class="l4">E Y E S</span><span class="l5">L E I T H</span><span class="l6">T H E S H O R E</span></div>
+        <svg class="specs" id="specs" viewBox="0 0 100 125" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="#0B2F2C" stroke-linecap="round" vector-effect="non-scaling-stroke">
+            <ellipse id="lensL" cx="32" cy="57.5" rx="15" ry="18.75" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+            <ellipse id="lensR" cx="68" cy="57.5" rx="15" ry="18.75" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+            <path id="bridge" d="M45 53 Q50 47 55 53" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+            <path id="armL" d="M15 53 L4 49" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+            <path id="armR" d="M85 53 L96 49" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+          </g>
+        </svg>
+        <div class="chart-caption" aria-hidden="true"><span>6/6</span><span>Halden · Leith</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="eye-tests" aria-labelledby="tests-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Eye tests</p>
+        <h2 id="tests-title">Four ways to have your eyes looked after</h2>
+        <p>Every appointment is with one of our optometrists, in a quiet room, without a sales pitch at the end.</p>
+      </div>
+      <div class="grid-4">
+        <article class="card reveal">
+          <span class="tag nhs">NHS</span>
+          <h3>NHS eye examination</h3>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Vision and prescription check</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Eye health and pressure check</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Written prescription to keep</li>
+          </ul>
+          <div class="meta"><span class="price free">Free (NHS)</span><span class="duration"><svg aria-hidden="true"><use href="#i-clock"/></svg>30 min</span></div>
+        </article>
+        <article class="card reveal">
+          <span class="tag nhs">NHS</span>
+          <h3>Children's eye test</h3>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Paced for younger patients</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Focusing and eye-movement checks</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Advice for parents on what we found</li>
+          </ul>
+          <div class="meta"><span class="price free">Free (NHS)</span><span class="duration"><svg aria-hidden="true"><use href="#i-clock"/></svg>30 min</span></div>
+        </article>
+        <article class="card reveal">
+          <span class="tag">Private</span>
+          <h3>Extended eye health check</h3>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Everything in the NHS test</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Retinal imaging and scan</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Images talked through with you</li>
+          </ul>
+          <div class="meta"><span class="price">£65</span><span class="duration"><svg aria-hidden="true"><use href="#i-clock"/></svg>50 min</span></div>
+        </article>
+        <article class="card reveal">
+          <span class="tag">Private</span>
+          <h3>Contact lens fitting</h3>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Lens fit and comfort assessment</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Trial lenses to take home</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Insertion and care lesson</li>
+          </ul>
+          <div class="meta"><span class="price">£45</span><span class="duration"><svg aria-hidden="true"><use href="#i-clock"/></svg>40 min</span></div>
+        </article>
+      </div>
+      <p class="tests-note reveal">NHS eye examinations are free for everyone in Scotland. Private tests and contact lens fittings are paid on the day.</p>
+    </div>
+  </section>
+
+  <section class="section booking" id="book" aria-labelledby="book-title">
+    <div class="container booking-grid">
+      <div class="booking-aside">
+        <div class="section-head reveal" style="margin-bottom:0">
+          <p class="eyebrow">Book an appointment</p>
+          <h2 id="book-title">Pick a day, we'll confirm the exact time</h2>
+          <p>Tell us what you need and when suits. We'll reply by email to confirm.</p>
+        </div>
+        <div class="optom reveal"><span class="optom-avatar" aria-hidden="true">IF</span><div><strong>Dr. Isla Fraser</strong><span>Optometrist</span></div></div>
+        <div class="optom reveal"><span class="optom-avatar" aria-hidden="true">TN</span><div><strong>Dr. Tomasz Nowak</strong><span>Optometrist</span></div></div>
+      </div>
+
+      <div class="form-card reveal">
+        <form id="bookingForm" novalidate>
+          <div class="error-summary" id="errorSummary" tabindex="-1" role="alert" aria-labelledby="errorSummaryTitle">
+            <h3 id="errorSummaryTitle">Please check the following</h3>
+            <ul id="errorList"></ul>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="f-name">Full name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+              <p class="error" id="e-name"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="h-email e-email">
+              <span class="hint" id="h-email">We'll send your confirmation here.</span>
+              <p class="error" id="e-email"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+            </div>
+            <div class="field">
+              <label for="f-type">Appointment type</label>
+              <select id="f-type" name="type" required aria-describedby="e-type">
+                <option value="">Choose an appointment</option>
+                <option>NHS eye examination (Free, 30 min)</option>
+                <option>Children's eye test (Free, 30 min)</option>
+                <option>Extended eye health check (£65, 50 min)</option>
+                <option>Contact lens fitting (£45, 40 min)</option>
+              </select>
+              <p class="error" id="e-type"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+            </div>
+            <div class="field">
+              <label for="f-optom">Optometrist</label>
+              <select id="f-optom" name="optom" required aria-describedby="e-optom">
+                <option value="No preference">No preference</option>
+                <option>Dr. Isla Fraser</option>
+                <option>Dr. Tomasz Nowak</option>
+              </select>
+              <p class="error" id="e-optom"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+            </div>
+            <div class="field full">
+              <label for="f-day">Preferred day</label>
+              <select id="f-day" name="day" required aria-describedby="h-day e-day">
+                <option value="">Choose a day</option>
+              </select>
+              <span class="hint" id="h-day">Any of the next 14 days. Sundays we're closed.</span>
+              <p class="error" id="e-day"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+            </div>
+            <fieldset class="field full" id="slotField" aria-describedby="e-slot">
+              <legend>Time of day</legend>
+              <div class="slots">
+                <div class="slot"><input type="radio" name="slot" id="s-m" value="Morning"><label for="s-m">Morning<small>9am – 12pm</small></label></div>
+                <div class="slot"><input type="radio" name="slot" id="s-a" value="Afternoon"><label for="s-a">Afternoon<small>12pm – 4pm</small></label></div>
+                <div class="slot"><input type="radio" name="slot" id="s-e" value="Evening"><label for="s-e">Evening<small>4pm – 7pm, Mon–Fri</small></label></div>
+              </div>
+              <p class="error" id="e-slot"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+            </fieldset>
+          </div>
+          <div class="form-foot">
+            <p>We only use your details to arrange this appointment.</p>
+            <button class="btn btn-primary" type="submit" id="submitBtn">Request appointment</button>
+          </div>
+        </form>
+        <div class="success" id="success" tabindex="-1" role="status" aria-live="polite">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="28"/><path d="m20 33 8 8 16-17"/></svg>
+          <h3>Request received</h3>
+          <p id="successMsg"></p>
+          <button class="btn btn-quiet" type="button" id="againBtn">Book another appointment</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="frames" aria-labelledby="frames-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Frames</p>
+        <h2 id="frames-title">A small wall of frames, chosen one maker at a time</h2>
+        <p>Made by small workshops around Europe. Try them on in the shop, or add to your bag and we'll have them ready.</p>
+      </div>
+      <div class="frames-grid" id="framesGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="lenses" aria-labelledby="lenses-title" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Lenses</p>
+        <h2 id="lenses-title">Three lens packages, no add-on maze</h2>
+        <p>Every package is glazed in our own workshop and checked by an optometrist before you collect.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card lens-card reveal">
+          <h3>Everyday</h3>
+          <p class="price">£65 <small>per pair</small></p>
+          <p>Single-vision lenses for distance or reading.</p>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Thin 1.5 index lenses</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Scratch-resistant coating</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Anti-reflection coating</li>
+          </ul>
+          <button class="btn btn-quiet" type="button" data-lens="Everyday" aria-pressed="false">Choose Everyday</button>
+        </article>
+        <article class="card lens-card featured reveal">
+          <span class="badge">Most chosen</span>
+          <h3>Screen &amp; Shore</h3>
+          <p class="price">£120 <small>per pair</small></p>
+          <p>Single-vision, thinner, with blue-light filtering for long screen days.</p>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Thinner 1.6 index lenses</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Blue-light filter and anti-reflection</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Water and smudge repellent</li>
+          </ul>
+          <button class="btn btn-quiet" type="button" data-lens="Screen &amp; Shore" aria-pressed="false">Choose Screen &amp; Shore</button>
+        </article>
+        <article class="card lens-card reveal">
+          <h3>Varifocal</h3>
+          <p class="price">£260 <small>per pair</small></p>
+          <p>Near, middle and far vision in one lens, measured to your frame.</p>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Individually measured varifocals</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Premium anti-reflection coating</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Free adaptation check after 4 weeks</li>
+          </ul>
+          <button class="btn btn-quiet" type="button" data-lens="Varifocal" aria-pressed="false">Choose Varifocal</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section workshop" id="about" aria-labelledby="workshop-title">
+    <div class="container workshop-grid">
+      <div>
+        <div class="section-head reveal">
+          <p class="eyebrow">The workshop</p>
+          <h2 id="workshop-title">Fitted and fixed behind the counter</h2>
+          <p>Halden is an independent optician with a small workshop at the back of the shop. Frames are fitted, adjusted, repaired and re-glazed here, not sent away.</p>
+        </div>
+        <div class="workshop-art reveal" aria-hidden="true">
+          <svg viewBox="0 0 320 120" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 100h300" stroke="#2F6B66"/>
+            <circle cx="90" cy="60" r="30"/><circle cx="170" cy="60" r="30"/><path d="M120 55q10-10 20 0"/><path d="M60 55 30 45M200 55l30-10"/>
+            <path d="M250 98V40l20-14 20 14v58" stroke="#FCD34D"/><path d="M262 60h16M262 72h16" stroke="#FCD34D"/>
+            <path d="M236 30l-8-8M226 40h-10M236 50l-8 8" stroke="#FCD34D"/>
+          </svg>
+          <p class="quote">Bring them in bent, loose or scratched. Most things we can sort while you wait.</p>
+        </div>
+      </div>
+      <ol class="bench reveal">
+        <li>
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 14 10M14 10l3-6 3 3-6 3"/><circle cx="6" cy="18" r="1"/></svg></span>
+          <div><h3>Adjustments</h3><p>Re-shaping arms and nose pads so frames sit level and stop slipping. Free, whoever made them.</p></div>
+          <div class="turn"><strong>10 min</strong><span>While you wait</span></div>
+        </li>
+        <li>
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4 2.5-2.5Z"/></svg></span>
+          <div><h3>Repairs</h3><p>New screws, hinges and nose pads, and soldering of metal frames where the joint allows it.</p></div>
+          <div class="turn"><strong>Same day</strong><span>Most repairs</span></div>
+        </li>
+        <li>
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="13" r="5"/><circle cx="16" cy="13" r="5"/><path d="M12 4v3M9 5l1 2M15 5l-1 2"/></svg></span>
+          <div><h3>Re-glazing</h3><p>New lenses cut and fitted into the frames you already love, with your current prescription.</p></div>
+          <div class="turn"><strong>5–7 days</strong><span>Turnaround</span></div>
+        </li>
+        <li>
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></span>
+          <div><h3>New frame fitting</h3><p>Every new pair is fitted to your face at collection, with a free re-check whenever you need one.</p></div>
+          <div class="turn"><strong>20 min</strong><span>At collection</span></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="reviews-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">From our patients</p>
+        <h2 id="reviews-title">What people say after a visit</h2>
+      </div>
+      <div class="grid-3">
+        <figure class="card quote-card reveal" style="margin:0">
+          <svg class="quote-mark" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M6 24c0-6 2-11 8-14l1 2c-3 2-4 4-4 6h3v6H6Zm12 0c0-6 2-11 8-14l1 2c-3 2-4 4-4 6h3v6h-8Z"/></svg>
+          <blockquote><p>Dr. Fraser took her time and explained every image of my eyes. I came out understanding more than I have in twenty years of tests.</p></blockquote>
+          <figcaption><strong>Morag</strong>Extended eye health check</figcaption>
+        </figure>
+        <figure class="card quote-card reveal" style="margin:0">
+          <svg class="quote-mark" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M6 24c0-6 2-11 8-14l1 2c-3 2-4 4-4 6h3v6H6Zm12 0c0-6 2-11 8-14l1 2c-3 2-4 4-4 6h3v6h-8Z"/></svg>
+          <blockquote><p>Snapped a hinge on a Friday morning. They had it fixed before I'd finished a coffee along the Shore.</p></blockquote>
+          <figcaption><strong>Callum</strong>Workshop repair</figcaption>
+        </figure>
+        <figure class="card quote-card reveal" style="margin:0">
+          <svg class="quote-mark" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M6 24c0-6 2-11 8-14l1 2c-3 2-4 4-4 6h3v6H6Zm12 0c0-6 2-11 8-14l1 2c-3 2-4 4-4 6h3v6h-8Z"/></svg>
+          <blockquote><p>My son was nervous about his first test. Dr. Nowak made it feel like a game, and he now loves his new frames.</p></blockquote>
+          <figcaption><strong>Agnieszka</strong>Children's eye test</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-title" style="padding-top:0">
+    <div class="container faq-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title">Questions we hear at the counter</h2>
+        <p>Something else? Call us on <a href="tel:+441314960418">0131 496 0418</a>.</p>
+      </div>
+      <div class="faq reveal" id="faq">
+        <div class="faq-item">
+          <h3><button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-1" id="faq-b1">Is my eye test really free?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-panel" id="faq-1" role="region" aria-labelledby="faq-b1" hidden><div><p>Yes. NHS eye examinations are free for everyone in Scotland. You only pay if you choose the extended eye health check, a contact lens fitting, or buy glasses or lenses.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-2" id="faq-b2">Can I see a specific optometrist?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-panel" id="faq-2" role="region" aria-labelledby="faq-b2" hidden><div><p>Of course. Choose Dr. Isla Fraser or Dr. Tomasz Nowak in the booking form, or pick "No preference" for the earliest slot.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-3" id="faq-b3">Will you repair frames I didn't buy from you?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-panel" id="faq-3" role="region" aria-labelledby="faq-b3" hidden><div><p>Yes. Our workshop adjusts and repairs frames from anywhere. Adjustments are free; for repairs we'll tell you the price before we start.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-4" id="faq-b4">How long do new glasses take?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-panel" id="faq-4" role="region" aria-labelledby="faq-b4" hidden><div><p>Most single-vision glasses are ready in 5–7 days, as we glaze them in our own workshop. Varifocals can take a little longer; we'll give you a date when you order.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-5" id="faq-b5">Can I put my own prescription into new frames?<svg aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+          <div class="faq-panel" id="faq-5" role="region" aria-labelledby="faq-b5" hidden><div><p>Yes. Bring your written prescription, ideally less than two years old, and we'll glaze any of our frames, or re-glaze your own.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="visit">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="wordmark" href="#top" aria-label="Halden Eyecare, back to top">
+          <svg aria-hidden="true"><use href="#i-spec"/></svg>
+          <div><span>Halden</span><small>Eyecare · Leith</small></div>
+        </a>
+        <p>Independent optician, workshop and frame room on the Shore.</p>
+      </div>
+      <div>
+        <h2>Visit</h2>
+        <address>14 The Shore<br>Leith, Edinburgh<br>EH6 6QW</address>
+        <p style="margin-top:12px"><a href="tel:+441314960418">0131 496 0418</a></p>
+      </div>
+      <div>
+        <h2>Opening hours</h2>
+        <dl class="hours">
+          <dt>Mon – Fri</dt><dd>9am – 7pm</dd>
+          <dt>Saturday</dt><dd>9am – 5pm</dd>
+          <dt>Sunday</dt><dd>Closed</dd>
+        </dl>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <ul class="socials">
+          <li><a href="#" aria-label="Halden Eyecare on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a></li>
+          <li><a href="#" aria-label="Halden Eyecare on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h2.5l.5-4h-3V7.5a.5.5 0 0 1 .5-.5H15V3Z"/></svg></a></li>
+          <li><a href="#" aria-label="Email Halden Eyecare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>© <span id="year">2026</span> Halden Eyecare</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" aria-hidden="true"></div>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var $ = function(s, c){ return (c||document).querySelector(s); };
+  var $$ = function(s, c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
+
+  /* ---------- Frames data + render ---------- */
+  var frames = [
+    {id:'f1', name:'Inchkeith', maker:'Atelier Morvan', material:'Handmade acetate, tortoiseshell', price:185, shape:'round'},
+    {id:'f2', name:'Ostrava', maker:'Dílna Vrba', material:'Titanium, brushed gold', price:240, shape:'panto'},
+    {id:'f3', name:'Bremen', maker:'Werkstatt Hollen', material:'Acetate, black ink', price:165, shape:'square'},
+    {id:'f4', name:'Liguria', maker:'Occhialeria Sanna', material:'Acetate, honey crystal', price:210, shape:'cateye'},
+    {id:'f5', name:'Haarlem', maker:'Studio Dekker', material:'Stainless steel, gunmetal', price:150, shape:'octa'},
+    {id:'f6', name:'Fjord', maker:'Nordlys Optik', material:'Recycled acetate, sea green', price:195, shape:'aviator'}
+  ];
+  var palette = {round:'#7C3F1D', panto:'#A16207', square:'#111827', cateye:'#B45309', octa:'#475569', aviator:'#0F766E'};
+  function lensPath(shape, cx){
+    switch(shape){
+      case 'round': return '<circle cx="'+cx+'" cy="40" r="24"/>';
+      case 'panto': return '<path d="M'+(cx-24)+' 30 Q'+cx+' 14 '+(cx+24)+' 30 Q'+(cx+26)+' 64 '+cx+' 64 Q'+(cx-26)+' 64 '+(cx-24)+' 30Z"/>';
+      case 'square': return '<rect x="'+(cx-27)+'" y="18" width="54" height="42" rx="8"/>';
+      case 'cateye': return '<path d="M'+(cx-28)+' 26 Q'+cx+' 14 '+(cx+30)+' 18 Q'+(cx+24)+' 60 '+cx+' 60 Q'+(cx-26)+' 58 '+(cx-28)+' 26Z"/>';
+      case 'octa': return '<path d="M'+(cx-12)+' 16 L'+(cx+12)+' 16 L'+(cx+26)+' 30 L'+(cx+26)+' 50 L'+(cx+12)+' 64 L'+(cx-12)+' 64 L'+(cx-26)+' 50 L'+(cx-26)+' 30Z"/>';
+      default: return '<path d="M'+(cx-26)+' 22 Q'+cx+' 16 '+(cx+26)+' 22 Q'+(cx+26)+' 52 '+(cx+6)+' 64 Q'+(cx-26)+' 64 '+(cx-26)+' 22Z"/>';
+    }
+  }
+  function frameSvg(f){
+    var c = palette[f.shape], sw = (f.shape==='panto'||f.shape==='octa'||f.shape==='aviator') ? 2.5 : 6;
+    var bridge = f.shape==='aviator' ? '<path d="M86 24 Q100 18 114 24M84 30 Q100 22 116 30"/>' : '<path d="M86 34 Q100 24 114 34"/>';
+    return '<svg viewBox="0 0 200 80" aria-hidden="true"><g fill="rgba(255,255,255,.55)" stroke="'+c+'" stroke-width="'+sw+'" stroke-linejoin="round" stroke-linecap="round">'+
+      lensPath(f.shape,58)+lensPath(f.shape,142)+'</g><g fill="none" stroke="'+c+'" stroke-width="'+Math.min(sw,4)+'" stroke-linecap="round">'+bridge+
+      '<path d="M30 28 L8 22M170 28 L192 22"/></g></svg>';
+  }
+  var grid = $('#framesGrid');
+  grid.innerHTML = frames.map(function(f){
+    return '<article class="frame reveal"><div class="frame-art">'+frameSvg(f)+'</div><div class="frame-body">'+
+      '<h3>'+f.name+'</h3><p class="frame-maker">'+f.maker+' · '+f.material+'</p>'+
+      '<div class="frame-row"><span class="price">£'+f.price+'</span>'+
+      '<button class="btn btn-primary" type="button" data-add="'+f.id+'" aria-label="Add '+f.name+' frame to bag, £'+f.price+'"><svg aria-hidden="true"><use href="#i-bag"/></svg>Add to bag</button></div></div></article>';
+  }).join('');
+
+  /* ---------- Bag ---------- */
+  var bag = {frames:[], lens:null};
+  var countEl = $('#bagCount'), srEl = $('#bagSr'), status = $('#bagStatus'), toast = $('#toast'), toastT;
+  function count(){ return bag.frames.length + (bag.lens ? 1 : 0); }
+  function updateBag(msg){
+    var n = count();
+    countEl.textContent = n;
+    var label = n + (n === 1 ? ' item' : ' items') + ' in your bag';
+    srEl.textContent = label;
+    if (!reduce.matches){ countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump'); }
+    if (msg){
+      status.textContent = msg + '. ' + label + '.';
+      toast.textContent = msg + ' · ' + label;
+      toast.classList.add('show');
+      clearTimeout(toastT);
+      toastT = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+    }
+  }
+  grid.addEventListener('click', function(e){
+    var b = e.target.closest('[data-add]'); if(!b) return;
+    var f = frames.filter(function(x){ return x.id === b.getAttribute('data-add'); })[0];
+    bag.frames.push(f.id);
+    updateBag(f.name + ' added');
+  });
+  $$('[data-lens]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var name = btn.getAttribute('data-lens');
+      var same = bag.lens === name;
+      $$('[data-lens]').forEach(function(o){ o.setAttribute('aria-pressed','false'); o.textContent = 'Choose ' + o.getAttribute('data-lens'); });
+      if (same){ bag.lens = null; updateBag(name + ' lenses removed'); return; }
+      bag.lens = name;
+      btn.setAttribute('aria-pressed','true');
+      btn.textContent = 'Chosen: ' + name;
+      updateBag(name + ' lenses chosen');
+    });
+  });
+  $('#bagBtn').addEventListener('click', function(){
+    var n = count();
+    var parts = bag.frames.map(function(id){ return frames.filter(function(x){return x.id===id;})[0].name; });
+    if (bag.lens) parts.push(bag.lens + ' lenses');
+    updateBag(n ? 'In your bag: ' + parts.join(', ') : 'Your bag is empty');
+  });
+
+  /* ---------- Mobile nav ---------- */
+  var menuBtn = $('#menuBtn'), mnav = $('#mobileNav');
+  function setMenu(open){
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    mnav.classList.toggle('open', open);
+    $('.m-open', menuBtn).style.display = open ? 'none' : '';
+    $('.m-close', menuBtn).style.display = open ? '' : 'none';
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open){ var first = $('a', mnav); if(first) first.focus(); }
+  }
+  menuBtn.addEventListener('click', function(){ setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'); });
+  mnav.addEventListener('click', function(e){ if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true'){ setMenu(false); menuBtn.focus(); }
+  });
+  window.matchMedia('(min-width: 961px)').addEventListener('change', function(m){ if (m.matches) setMenu(false); });
+
+  /* ---------- Days ---------- */
+  var daySel = $('#f-day');
+  var fmt = new Intl.DateTimeFormat('en-GB', {weekday:'long', day:'numeric', month:'long'});
+  var today = new Date(); today.setHours(12,0,0,0);
+  for (var i = 1; i <= 14; i++){
+    var d = new Date(today); d.setDate(today.getDate() + i);
+    var o = document.createElement('option');
+    o.value = d.toISOString().slice(0,10);
+    o.textContent = fmt.format(d) + (d.getDay() === 0 ? ' (closed)' : '');
+    if (d.getDay() === 0) o.disabled = true;
+    daySel.appendChild(o);
+  }
+
+  /* ---------- Form validation ---------- */
+  var form = $('#bookingForm'), summary = $('#errorSummary'), list = $('#errorList');
+  var rules = {
+    name: function(){ var v = $('#f-name').value.trim(); return v.length < 2 ? 'Enter your full name.' : ''; },
+    email: function(){ var v = $('#f-email').value.trim(); if(!v) return 'Enter your email address.'; return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '' : 'Enter an email address like name@example.com.'; },
+    type: function(){ return $('#f-type').value ? '' : 'Choose an appointment type.'; },
+    optom: function(){ return $('#f-optom').value ? '' : 'Choose an optometrist or no preference.'; },
+    day: function(){ return daySel.value ? '' : 'Choose a preferred day.'; },
+    slot: function(){ return form.querySelector('input[name="slot"]:checked') ? '' : 'Choose morning, afternoon or evening.'; }
+  };
+  var targets = {name:'#f-name', email:'#f-email', type:'#f-type', optom:'#f-optom', day:'#f-day', slot:'#s-m'};
+  var touched = {};
+  function check(key){
+    var msg = rules[key]();
+    var input = $(targets[key]);
+    var field = input.closest('.field');
+    var err = $('#e-' + key + ' span');
+    err.textContent = msg;
+    field.classList.toggle('has-error', !!msg);
+    if (key === 'slot'){ $$('input[name="slot"]').forEach(function(r){ r.setAttribute('aria-invalid', msg ? 'true' : 'false'); }); }
+    else input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return msg;
+  }
+  ['name','email'].forEach(function(k){
+    var el = $(targets[k]);
+    el.addEventListener('blur', function(){ if (el.value.trim()) { touched[k] = true; check(k); } });
+    el.addEventListener('input', function(){ if (touched[k]) check(k); });
+  });
+  ['type','optom','day'].forEach(function(k){ $(targets[k]).addEventListener('change', function(){ touched[k] = true; check(k); }); });
+  $$('input[name="slot"]').forEach(function(r){ r.addEventListener('change', function(){ check('slot'); }); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var errors = [];
+    Object.keys(rules).forEach(function(k){ touched[k] = true; var m = check(k); if (m) errors.push([k, m]); });
+    if (errors.length){
+      list.innerHTML = errors.map(function(x){ return '<li><a href="'+targets[x[0]]+'" data-k="'+x[0]+'">'+x[1]+'</a></li>'; }).join('');
+      summary.classList.add('show');
+      summary.focus();
+      return;
+    }
+    summary.classList.remove('show');
+    var btn = $('#submitBtn');
+    btn.disabled = true; btn.textContent = 'Sending…';
+    setTimeout(function(){
+      var name = $('#f-name').value.trim().split(' ')[0];
+      var type = $('#f-type').value.replace(/\s*\(.*\)$/, '');
+      var optom = $('#f-optom').value;
+      var day = daySel.options[daySel.selectedIndex].textContent;
+      var slot = form.querySelector('input[name="slot"]:checked').value.toLowerCase();
+      $('#successMsg').textContent = 'Thanks, ' + name + '. We\'ve noted ' + (/^[AEIOU]/i.test(type) ? 'an ' : 'a ') + type + ' on ' + day + ' (' + slot + ')' +
+        (optom === 'No preference' ? '' : ' with ' + optom) + '. We\'ll email ' + $('#f-email').value.trim() + ' to confirm the exact time.';
+      form.hidden = true;
+      var s = $('#success'); s.classList.add('show'); s.focus();
+      btn.disabled = false; btn.textContent = 'Request appointment';
+    }, 600);
+  });
+  list.addEventListener('click', function(e){
+    var a = e.target.closest('a'); if (!a) return;
+    e.preventDefault(); $(targets[a.getAttribute('data-k')]).focus();
+  });
+  $('#againBtn').addEventListener('click', function(){
+    form.reset(); touched = {};
+    Object.keys(rules).forEach(function(k){ var f = $(targets[k]).closest('.field'); f.classList.remove('has-error'); });
+    $$('[aria-invalid]', form).forEach(function(x){ x.removeAttribute('aria-invalid'); });
+    $('#success').classList.remove('show'); form.hidden = false; $('#f-name').focus();
+  });
+
+  /* ---------- FAQ accordion ---------- */
+  $$('.faq-trigger').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      var panel = document.getElementById(btn.getAttribute('aria-controls'));
+      var item = btn.closest('.faq-item');
+      btn.setAttribute('aria-expanded', String(!open));
+      if (!open){ panel.hidden = false; requestAnimationFrame(function(){ item.classList.add('open'); }); }
+      else {
+        item.classList.remove('open');
+        var done = function(){ if (btn.getAttribute('aria-expanded') === 'false') panel.hidden = true; };
+        if (reduce.matches) done(); else setTimeout(done, 320);
+      }
+    });
+  });
+
+  /* ---------- Reveal ---------- */
+  var reveals = $$('.reveal');
+  if (reduce.matches || !('IntersectionObserver' in window)){ reveals.forEach(function(r){ r.classList.add('in'); }); }
+  else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    reveals.forEach(function(r){ io.observe(r); });
+    setTimeout(function(){ reveals.forEach(function(r){ r.classList.add('in'); }); }, 4000);
+  }
+
+  /* ---------- Signature: lenses bring the chart into focus ---------- */
+  var card = $('#chartCard');
+  var lensL = $('#lensL'), lensR = $('#lensR'), bridge = $('#bridge'), armL = $('#armL'), armR = $('#armR');
+  var base = {x:50, y:46}, cur = {x:50, y:46}, target = {x:50, y:46}, raf = null;
+  function place(x, y){
+    var lx = x - 18, rx = x + 18;
+    card.style.setProperty('--lx', lx + '%'); card.style.setProperty('--rx', rx + '%');
+    card.style.setProperty('--ly', y + '%'); card.style.setProperty('--ry', y + '%');
+    var sy = y * 1.25; /* viewBox height 125 */
+    lensL.setAttribute('cx', lx); lensL.setAttribute('cy', sy);
+    lensR.setAttribute('cx', rx); lensR.setAttribute('cy', sy);
+    bridge.setAttribute('d', 'M'+(lx+14.2)+' '+(sy-4)+' Q'+x+' '+(sy-9)+' '+(rx-14.2)+' '+(sy-4));
+    armL.setAttribute('d', 'M'+(lx-15)+' '+(sy-3)+' L'+(lx-27)+' '+(sy-8));
+    armR.setAttribute('d', 'M'+(rx+15)+' '+(sy-3)+' L'+(rx+27)+' '+(sy-8));
+  }
+  function syncMaskRadius(){
+    var w = card.clientWidth, h = card.clientHeight;
+    card.style.setProperty('--r', (0.15 * w).toFixed(1) + 'px');
+    var ry = 15 * w / h * 1.25;
+    [lensL, lensR].forEach(function(l){ l.setAttribute('rx', 15); l.setAttribute('ry', ry); });
+  }
+  syncMaskRadius(); place(base.x, base.y);
+  window.addEventListener('resize', syncMaskRadius);
+  function tick(){
+    cur.x += (target.x - cur.x) * 0.12; cur.y += (target.y - cur.y) * 0.12;
+    place(cur.x, cur.y);
+    if (Math.abs(target.x - cur.x) > 0.05 || Math.abs(target.y - cur.y) > 0.05) raf = requestAnimationFrame(tick); else raf = null;
+  }
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  function onMove(e){
+    if (reduce.matches || !fine.matches) return;
+    var r = card.getBoundingClientRect();
+    var px = (e.clientX - r.left) / r.width * 100, py = (e.clientY - r.top) / r.height * 100;
+    target.x = Math.max(36, Math.min(64, px)); target.y = Math.max(24, Math.min(80, py));
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function onLeave(){ target.x = base.x; target.y = base.y; if (!raf && !reduce.matches) raf = requestAnimationFrame(tick); }
+  card.addEventListener('pointermove', onMove);
+  card.addEventListener('pointerleave', onLeave);
+  /* Lenses "come into focus" once */
+  requestAnimationFrame(function(){ setTimeout(function(){ card.classList.remove('is-focusing'); }, reduce.matches ? 0 : 250); });
+  window.addEventListener('pagehide', function(){ if (raf) cancelAnimationFrame(raf); clearTimeout(toastT); });
+
+  $('#year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+from playwright.sync_api import sync_playwright
+U="examples/benchmark-fold/layoza-v3/index.html"
+with sync_playwright() as p:
+    b=p.chromium.launch(); pg=b.new_page(viewport={'width':1440,'height':900}); pg.goto(U)
+    errs=[]; pg.on('pageerror', lambda e: errs.append(str(e)))
+    pg.click('button[data-filter=civic]')
+    print('visible civic', pg.locator('.project:not([hidden])').count(), pg.inner_text('#work-count'))
+    pg.click('button[data-filter=all]'); print('all', pg.locator('.project:not([hidden])').count())
+    pg.click('#enquiry button[type=submit]')
+    print('errors', [t for t in pg.locator('.err').all_inner_texts() if t])
+    print('focused', pg.evaluate('document.activeElement.id'))
+    pg.fill('#f-name','Ann Smith'); pg.fill('#f-email','ann@'); pg.locator('#f-email').blur()
+    print('email err', pg.inner_text('#e-email'))
+    pg.fill('#f-email','ann@example.com'); pg.select_option('#f-type','Timber extension'); pg.select_option('#f-budget','Not sure yet')
+    pg.fill('#f-msg','A sandstone villa in Shawlands needs a kitchen.')
+    pg.locator('#contact').scroll_into_view_if_needed()
+    pg.click('#enquiry button[type=submit]')
+    print('done visible', pg.is_visible('#done'), pg.inner_text('#done-text'))
+    pg.screenshot(path='success.png')
+    print('pageerrors', errs); b.close()

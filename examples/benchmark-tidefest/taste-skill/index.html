@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidefest — 14–16 August 2027, near Newquay</title>
+<meta name="description" content="Tidefest: three days of electronic and alternative music on a beach near Newquay, Cornwall, 14–16 August 2027. Two stages, camping and a sunrise set every morning.">
+<meta name="theme-color" content="#1a2039">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1a2039;
+  --surface: #212846;
+  --surface-2: #2b335a;
+  --ink: #f9a3c0;
+  --muted: #c995ab;
+  --accent: #f9a3c0;
+  --accent-ink: #1a2039;
+  --deep: #11162a;
+
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --text: "Work Sans", system-ui, sans-serif;
+
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
+
+  --margin: clamp(16px, 2vw, 32px);
+  --bar: 64px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --t-press: 140ms;
+  --t-hover: 180ms;
+  --t-ui: 240ms;
+  --t-reveal: 800ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar) + 12px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--step-body);
+  line-height: 1.5;
+  overflow-x: clip;
+}
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button, input, select { font: inherit; color: inherit; }
+::selection { background: var(--ink); color: var(--bg); }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: var(--margin); top: -100px; z-index: 100; background: var(--ink); color: var(--bg); padding: 12px 18px; font-weight: 600; text-decoration: none; }
+.skip:focus { top: 8px; }
+h1, h2, h3 { text-wrap: balance; font-weight: 400; }
+p { text-wrap: pretty; }
+.display { font-family: var(--display); text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.86; font-weight: 400; }
+.num { font-variant-numeric: tabular-nums; }
+.nw { white-space: nowrap; }
+
+/* Buttons: square, one fill */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  min-height: 48px; padding: 0 22px;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 600; text-decoration: none; border: 0; border-radius: 0; cursor: pointer;
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease, color var(--t-hover) ease;
+}
+.btn:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .btn:hover { background: #fcd3e1; } }
+.link { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.22em; text-decoration-thickness: 0.08em; transition: text-decoration-color var(--t-hover) ease; }
+@media (hover: hover) and (pointer: fine) { .link:hover { text-decoration-color: currentColor; } }
+
+/* ---------- Header ---------- */
+.bar {
+  position: sticky; top: 0; z-index: 50;
+  height: var(--bar);
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 0 var(--margin);
+  background: var(--bg);
+}
+.logo { font-family: var(--display); text-transform: uppercase; font-size: 22px; line-height: 1; text-decoration: none; letter-spacing: 0; display: inline-flex; align-items: center; gap: 10px; }
+.logo svg { width: 30px; height: 18px; }
+.nav { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 36px); }
+.nav ul { display: flex; gap: clamp(16px, 2.4vw, 36px); }
+.nav a:not(.btn) { font-size: 16px; font-weight: 600; text-decoration: none; padding: 10px 0; display: inline-block; position: relative; }
+.nav a:not(.btn)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 3px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--t-ui) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .nav a:not(.btn):hover::after { transform: scaleX(1); } }
+.nav a:not(.btn):focus-visible::after { transform: scaleX(1); }
+.menu-btn { display: none; min-height: 44px; padding: 0 16px; background: var(--surface); border: 0; font-weight: 600; cursor: pointer; transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease; }
+.menu-btn:active { transform: scale(0.97); }
+.menu-btn .bars { display: inline-block; width: 18px; height: 12px; position: relative; margin-right: 10px; vertical-align: -1px; }
+.menu-btn .bars::before, .menu-btn .bars::after { content: ""; position: absolute; left: 0; right: 0; height: 3px; background: currentColor; transition: transform var(--t-ui) var(--ease-out); }
+.menu-btn .bars::before { top: 0; } .menu-btn .bars::after { bottom: 0; }
+.menu-btn[aria-expanded="true"] .bars::before { transform: translateY(4.5px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .bars::after { transform: translateY(-4.5px) rotate(-45deg); }
+.drawer { display: none; }
+
+@media (max-width: 820px) {
+  .nav ul { display: none; }
+  .menu-btn { display: inline-flex; align-items: center; }
+  .nav .btn { min-height: 44px; padding: 0 16px; }
+  .drawer {
+    display: block; position: fixed; z-index: 49; left: 0; right: 0; top: var(--bar);
+    background: var(--surface); padding: 12px var(--margin) 28px;
+    transform-origin: top right;
+    transition: opacity var(--t-ui) var(--ease-out), transform var(--t-ui) var(--ease-out), visibility 0s linear 0s;
+  }
+  .drawer[data-open="false"] { opacity: 0; transform: translateY(-8px) scale(0.98); visibility: hidden; pointer-events: none; transition: opacity 170ms var(--ease-out), transform 170ms var(--ease-out), visibility 0s linear 170ms; }
+  .drawer a { display: block; font-family: var(--display); text-transform: uppercase; font-size: 44px; line-height: 1.15; text-decoration: none; padding: 4px 0; }
+  .drawer a:active { transform: translateX(4px); }
+}
+
+/* ---------- Tide wrapper: sticky sea + right column ---------- */
+.tide { display: grid; grid-template-columns: 47% 53%; position: relative; }
+.frame-col { position: relative; }
+.frame {
+  position: sticky; top: calc(var(--bar) + 20px);
+  margin: 20px 0 20px 20px;
+  height: calc(100svh - var(--bar) - 40px);
+  background: var(--deep);
+  overflow: hidden;
+}
+.frame canvas { width: 100%; height: 100%; }
+.frame figcaption { position: absolute; left: 16px; bottom: 14px; font-size: var(--step-small); color: var(--ink); background: var(--deep); padding: 4px 8px; }
+.col { padding: 0 var(--margin) 0 clamp(24px, 4vw, 64px); min-width: 0; }
+
+.hero {
+  min-height: calc(100svh - var(--bar));
+  display: grid; grid-template-rows: 1fr auto auto;
+  padding-top: 20px;
+}
+.hero__copy { align-self: center; max-width: 40rem; padding-top: 4vh; }
+.when { font-family: var(--display); text-transform: uppercase; font-size: clamp(2.5rem, 1.2rem + 4.2vw, 4.75rem); line-height: 0.95; letter-spacing: -0.005em; }
+.when span { display: block; white-space: nowrap; }
+.lead { font-size: var(--step-lead); line-height: 1.35; max-width: 26ch; margin-top: 28px; }
+.hero__act { display: flex; flex-wrap: wrap; gap: 20px 28px; align-items: center; margin-top: 32px; }
+.hero__act .btn { min-height: 56px; padding: 0 28px; font-size: var(--step-body); }
+.hero__act .link { font-weight: 600; }
+.mark {
+  position: relative; z-index: 3;
+  margin: 0 0 24px -10vw;
+  font-family: var(--display); text-transform: uppercase; font-weight: 400;
+  font-size: var(--mark-size, 16.2vw);
+  line-height: 0.8; letter-spacing: -0.01em; white-space: nowrap;
+  transform-origin: 80% 100%;
+  padding-top: 0.06em;
+}
+.mark .ch { display: inline-block; overflow: hidden; vertical-align: bottom; padding-top: 0.04em; }
+.mark .ch > span { display: inline-block; }
+
+/* ---------- Line-up ---------- */
+.lineup { padding-top: clamp(120px, 16vh, 200px); max-width: 640px; container-type: inline-size; }
+.lineup h2 { font-family: var(--display); text-transform: uppercase; font-size: 31cqw; line-height: 0.8; letter-spacing: -0.01em; white-space: nowrap; }
+.days { display: flex; gap: 6px; margin-top: 24px; }
+.days button {
+  flex: 1; min-height: 64px; border: 0; border-radius: 0; cursor: pointer;
+  background: var(--surface); color: var(--ink);
+  font-family: var(--display); text-transform: uppercase; font-size: 28px; line-height: 1;
+  transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+}
+.days button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.days button:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .days button[aria-pressed="false"]:hover { background: var(--surface-2); } }
+.day { margin-top: 20px; }
+.day h3 { font-size: var(--step-lead); font-weight: 600; margin-bottom: 12px; }
+.js .day[hidden] { display: none; }
+.acts { display: grid; gap: 6px; }
+.act { background: var(--surface); }
+.act summary {
+  list-style: none; cursor: pointer; min-height: 56px;
+  display: grid; grid-template-columns: 58px 1fr auto 20px; gap: 14px; align-items: center;
+  padding: 10px 18px;
+  transition: background-color var(--t-hover) ease;
+}
+.act summary::-webkit-details-marker { display: none; }
+@media (hover: hover) and (pointer: fine) { .act summary:hover { background: var(--surface-2); } }
+.act .t { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--muted); }
+.act .n { font-family: var(--display); text-transform: uppercase; font-size: var(--step-lead); line-height: 1.05; }
+.act .s { font-size: var(--step-small); font-weight: 600; color: var(--muted); text-align: right; }
+.act .s.sun { color: var(--ink); }
+.plus { width: 16px; height: 16px; position: relative; justify-self: end; }
+.plus::before, .plus::after { content: ""; position: absolute; background: currentColor; transition: transform var(--t-ui) var(--ease-out); }
+.plus::before { left: 0; right: 0; top: 6.5px; height: 3px; }
+.plus::after { top: 0; bottom: 0; left: 6.5px; width: 3px; }
+.act[open] .plus::after { transform: rotate(90deg) scaleY(0); }
+.act .panel { padding: 0 18px 20px calc(18px + 58px + 14px); font-size: var(--step-body); }
+.act .panel p + p { color: var(--muted); margin-top: 6px; }
+@media (prefers-reduced-motion: no-preference) {
+  .act[open] .panel { animation: drop 360ms var(--ease-out); }
+  .js .day.is-switching .act { animation: rise-in 560ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }
+}
+@keyframes drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Countdown: quiet figure lines ---------- */
+.count { padding: clamp(140px, 20vh, 220px) 0 clamp(140px, 20vh, 220px); max-width: 640px; }
+.count h2 { font-size: var(--step-lead); font-weight: 600; margin: 0 0 40px 184px; }
+.figs { display: grid; gap: 28px; }
+.figs > div { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: baseline; }
+.figs dt { order: 0; text-align: right; white-space: nowrap; font-size: var(--step-lead); font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.figs dd { font-size: var(--step-body); max-width: 40ch; }
+.figs dt span { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) { .figs .tick { animation: tick 420ms var(--ease-out); } }
+@keyframes tick { from { opacity: 0.35; transform: translateY(-0.18em); } to { opacity: 1; transform: none; } }
+
+/* ---------- Marquee ---------- */
+.marquee { overflow: hidden; background: var(--surface); padding: 22px 0 18px; }
+.marquee__track { display: flex; width: max-content; will-change: transform; }
+.marquee__track p { font-family: var(--display); text-transform: uppercase; font-size: clamp(3rem, 2rem + 4vw, 6.5rem); line-height: 1; white-space: nowrap; padding-right: 0.4em; }
+.marquee__track b { font-weight: 400; color: var(--muted); }
+
+/* ---------- Tickets ---------- */
+.tickets { background: var(--accent); color: var(--accent-ink); padding: clamp(120px, 16vh, 200px) var(--margin); }
+.tickets :focus-visible { outline-color: var(--bg); }
+.ticket {
+  --notch: 28px;
+  position: relative;
+  width: min(1180px, 100%); margin: 0 auto;
+  display: grid; grid-template-columns: 7fr 3fr;
+  background: var(--bg); color: var(--ink);
+}
+.ticket :focus-visible { outline-color: var(--ink); }
+.ticket__main { padding: 40px 40px 0; display: grid; gap: 32px; grid-column: 1; grid-row: 1; }
+.ticket > .terms { grid-column: 1; grid-row: 2; padding: 28px 40px 40px; }
+.ticket__main h2 { font-family: var(--display); text-transform: uppercase; font-size: var(--step-head); line-height: 0.9; }
+.types { display: grid; gap: 6px; }
+.type {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 8px 24px; align-items: center;
+  background: var(--surface); padding: 18px 20px;
+  transition: background-color var(--t-hover) ease;
+}
+.type.has { background: var(--surface-2); }
+.type h3 { font-family: var(--display); text-transform: uppercase; font-size: var(--step-lead); line-height: 1; }
+.type p { font-size: 16px; color: var(--muted); grid-column: 1; }
+.type .daypick { margin: 2px 0 4px; }
+.type .price { color: var(--ink); grid-row: 1 / span 2; grid-column: 2; font-family: var(--display); font-size: var(--step-lead); line-height: 1; font-variant-numeric: tabular-nums; }
+.type .daypick { grid-column: 1; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; }
+.type select { background: var(--bg); color: var(--ink); border: 2px solid var(--surface-2); padding: 6px 8px; min-height: 40px; }
+.stepper { grid-row: 1 / span 2; grid-column: 3; display: flex; align-items: center; }
+.stepper button {
+  width: 44px; height: 44px; border: 0; background: var(--ink); color: var(--bg); cursor: pointer;
+  font-size: 24px; font-weight: 600; line-height: 1;
+  transition: transform var(--t-press) var(--ease-out), opacity var(--t-hover) ease;
+}
+.stepper button:active { transform: scale(0.92); }
+.stepper button:disabled { opacity: 0.35; cursor: not-allowed; }
+.stepper output { width: 48px; text-align: center; font-weight: 600; font-size: var(--step-lead); font-variant-numeric: tabular-nums; }
+.terms { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; font-size: var(--step-body); }
+.terms li { color: var(--ink); }
+.ticket__stub { grid-column: 2; grid-row: 1 / span 2; position: relative; padding: 40px 28px 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; text-align: center; }
+.stub__total { font-family: var(--display); font-size: clamp(3.5rem, 2rem + 4.4vw, 6.5rem); line-height: 0.9; font-variant-numeric: tabular-nums; }
+.stub__label { font-weight: 600; font-size: 16px; }
+.stub__list { font-size: 16px; color: var(--muted); min-height: 3em; }
+.stub__buy { width: 100%; min-height: 56px; font-size: var(--step-body); }
+.stub__msg { font-size: 16px; min-height: 1.5em; }
+.perf { position: absolute; top: 18px; bottom: 18px; left: 0; width: 6px; height: calc(100% - 36px); transform: translateX(-50%); }
+.perf rect { fill: url(#dots); }
+.notch { position: absolute; left: 0; width: var(--notch); height: var(--notch); border-radius: 50%; background: var(--accent); transform: translateX(-50%); }
+.notch.top { top: calc(var(--notch) / -2); } .notch.bot { bottom: calc(var(--notch) / -2); }
+
+/* ---------- Verb panels ---------- */
+.verbs { position: relative; }
+.panel-v { position: relative; height: 100svh; min-height: 560px; max-height: 1100px; overflow: clip; }
+.panel-v canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.verb-wrap { position: absolute; inset: 0; pointer-events: none; display: grid; place-items: center; overflow: hidden; padding-top: 0.1em; }
+.verb {
+  text-align: center; white-space: nowrap; will-change: transform;
+  padding-top: 0.08em; font-family: var(--display); text-transform: uppercase;
+  font-size: clamp(96px, 17vw, 300px); line-height: 0.82; letter-spacing: -0.01em; color: var(--ink);
+  margin: 0;
+}
+.panel-v.on-pink .verb { color: var(--bg); }
+.panel-v .say {
+  position: absolute; left: var(--margin); bottom: var(--margin); z-index: 2;
+  max-width: 34rem; background: var(--bg); color: var(--ink); padding: 20px 24px; font-size: var(--step-body);
+}
+.panel-v .say strong { display: block; font-size: var(--step-lead); line-height: 1.2; margin-bottom: 6px; }
+
+/* ---------- FAQ ---------- */
+.faq { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 24px; padding: clamp(140px, 20vh, 220px) var(--margin); }
+.faq h2 { grid-column: 1 / span 4; align-self: start; position: sticky; top: calc(var(--bar) + 32px); font-family: var(--display); text-transform: uppercase; font-size: var(--step-head); line-height: 0.9; }
+.faq__list { grid-column: 5 / span 8; display: grid; gap: 8px; }
+.q { background: var(--surface); transition: background-color var(--t-ui) ease, color var(--t-ui) ease; }
+.q summary { list-style: none; cursor: pointer; min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 24px; font-size: var(--step-lead); font-weight: 600; }
+.q summary::-webkit-details-marker { display: none; }
+@media (hover: hover) and (pointer: fine) { .q:not([open]) summary:hover { background: var(--surface-2); } }
+.q[open] { background: var(--accent); color: var(--accent-ink); }
+.q[open] :focus-visible { outline-color: var(--bg); }
+.q .plus { flex: none; }
+.q .a { padding: 0 24px 24px; max-width: calc(52ch + 48px); font-size: var(--step-body); }
+@media (prefers-reduced-motion: no-preference) { .q[open] .a { animation: drop 360ms var(--ease-out); } }
+
+/* ---------- Newsletter ---------- */
+.news { background: var(--surface); padding: clamp(120px, 18vh, 200px) var(--margin); display: grid; grid-template-columns: repeat(12, 1fr); gap: 32px 24px; align-items: end; }
+.news h2 { grid-column: 1 / span 7; font-family: var(--display); text-transform: uppercase; font-size: clamp(3.5rem, 1rem + 8vw, 9.5rem); line-height: 0.86; }
+.news__form { grid-column: 8 / span 5; }
+.news__form p { margin-bottom: 20px; }
+.news__form label { display: block; font-weight: 600; margin-bottom: 8px; }
+.field { display: flex; gap: 0; }
+.field input {
+  flex: 1; min-width: 0; min-height: 56px; padding: 0 16px;
+  background: var(--bg); color: var(--ink); border: 2px solid var(--surface-2); border-right: 0; border-radius: 0;
+}
+.field input::placeholder { color: var(--muted); opacity: 1; }
+.field input[aria-invalid="true"] { border-color: var(--ink); }
+.field .btn { min-height: 56px; }
+.news__msg { margin-top: 12px; min-height: 1.5em; font-size: 16px; font-weight: 600; }
+.news__done { font-size: var(--step-lead); line-height: 1.3; }
+@media (prefers-reduced-motion: no-preference) { .news__done { animation: rise-in 600ms var(--ease-out); } .shake { animation: shake 300ms var(--ease-out); } }
+@keyframes shake { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+/* ---------- Footer (curtain) ---------- */
+main { position: relative; z-index: 2; background: var(--bg); }
+.foot {
+  position: relative; overflow: clip;
+  min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto;
+  background: var(--ink); color: var(--bg);
+  padding: 40px var(--margin) 20px;
+}
+.foot :focus-visible { outline-color: var(--bg); }
+.foot__cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px 24px; font-size: 16px; }
+.foot__cols h2 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.foot__cols li, .foot__cols p { line-height: 1.7; }
+.foot__mark { font-family: var(--display); text-transform: uppercase; font-size: var(--foot-size, 30.5vw); line-height: 0.78; letter-spacing: -0.01em; white-space: nowrap; transform-origin: 50% 100%; margin: 0 0 20px; }
+.foot__legal { font-size: 13px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+/* ---------- Reveal ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out); transition-delay: calc(var(--i, 0) * 80ms); }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+  .js .mark .ch > span { transform: translateY(105%); animation: line-up 1000ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 70ms + 200ms); }
+  .js [data-rise] { opacity: 0; transform: translateY(18px); animation: rise var(--t-reveal) var(--ease-out) forwards; animation-delay: calc(var(--i, 0) * 90ms + 120ms); }
+  .js .ticket[data-reveal] { transform: translateY(40px) rotate(-1.5deg); }
+  .js .ticket[data-reveal].is-in { transform: none; }
+}
+@keyframes line-up { to { transform: none; } }
+@keyframes rise { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 0; transition: opacity 400ms ease; }
+  .js [data-reveal].is-in { opacity: 1; }
+}
+
+/* ---------- Tablet + phone ---------- */
+@media (max-width: 820px) {
+  .tide { display: block; }
+  .frame { position: relative; top: 0; margin: 12px; height: calc(58svh - 12px); }
+  .frame figcaption { display: none; }
+  .col { padding: 0 var(--margin); }
+  .hero { min-height: 0; display: flex; flex-direction: column; padding-top: 0; }
+  .hero .mark { order: -1; }
+  .mark { margin: -3.4vw 0 0; font-size: var(--mark-size, 26vw); transform-origin: 50% 100%; }
+  .hero__copy { padding-top: 24px; max-width: none; align-self: stretch; }
+  .lead { font-size: 18px; max-width: 34ch; margin-top: 18px; }
+  .when { font-size: clamp(2.5rem, 1rem + 6vw, 4rem); }
+  .hero__act { margin-top: 24px; }
+  .lineup { max-width: none; padding-top: 168px; }
+  .count { max-width: none; padding: 120px 0; }
+  .count h2 { margin-left: 132px; font-size: 22px; }
+  .figs dt { font-size: 19px; }
+  .figs > div { grid-template-columns: 116px 1fr; gap: 16px; }
+  .figs dt { font-size: 20px; }
+  .figs dd { font-size: 16px; }
+  .ticket { grid-template-columns: 1fr; }
+  .ticket__main { padding: 28px 20px; grid-row: 1; }
+  .ticket__stub { grid-column: 1; grid-row: 2; }
+  .ticket > .terms { grid-row: 3; padding: 0 20px 28px; }
+  .ticket__stub { padding: 36px 20px 24px; }
+  .perf { top: 0; bottom: auto; left: 18px; right: 18px; width: calc(100% - 36px); height: 6px; transform: translateY(-50%); }
+  .perf rect { fill: url(#dotsx); }
+  .notch { transform: translateY(-50%); }
+  .notch.top { top: 0; left: calc(var(--notch) / -2); }
+  .notch.bot { top: 0; bottom: auto; left: auto; right: calc(var(--notch) / -2); }
+  .faq { display: block; }
+  .faq h2 { position: static; font-size: 9vw; margin-bottom: 28px; }
+  .faq__list { gap: 6px; }
+  .q summary { font-size: 18px; min-height: 64px; padding: 16px 20px; }
+  .q .a { font-size: 16px; padding: 0 20px 20px; }
+  .news { display: block; }
+  .news h2 { font-size: 16vw; margin-bottom: 36px; }
+  .foot__cols { grid-template-columns: 1fr 1fr; gap: 32px 20px; font-size: 15px; }
+  .panel-v .say { right: var(--margin); font-size: 16px; padding: 16px 18px; }
+}
+@media (max-width: 520px) {
+  .nav { gap: 8px; }
+  .logo svg { display: none; }
+  .act summary { grid-template-columns: 48px 1fr 16px; gap: 12px; padding: 10px 14px; }
+  .act .s { grid-column: 2; grid-row: 2; text-align: left; font-size: 14px; }
+  .act .plus { grid-column: 3; grid-row: 1 / span 2; }
+  .act .n { font-size: 24px; }
+  .act .panel { padding: 0 14px 18px 14px; }
+  .days button { font-size: 26px; }
+  .type { grid-template-columns: 1fr auto; padding: 16px; }
+  .type .price { grid-row: 1; grid-column: 2; font-size: 30px; }
+  .type p { grid-column: 1 / -1; }
+  .type .daypick { grid-column: 1 / -1; }
+  .stepper { grid-row: auto; grid-column: 1 / -1; justify-content: flex-start; }
+  .terms { grid-template-columns: 1fr; }
+  .stub__total { font-size: 16vw; }
+  .field { flex-direction: column; gap: 8px; }
+  .field input { border-right: 2px solid var(--surface-2); }
+  .foot__legal { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <a class="logo" href="#top" aria-label="Tidefest, back to top">
+    <svg viewBox="0 0 30 18" aria-hidden="true"><path fill="currentColor" d="M0 10c4 0 4-4 7.5-4S11 10 15 10s4-4 7.5-4S26 10 30 10v8H0z"/><circle cx="15" cy="4" r="4" fill="currentColor"/></svg>
+    Tidefest
+  </a>
+  <nav class="nav" aria-label="Main">
+    <ul>
+      <li><a href="#lineup">Line-up</a></li>
+      <li><a href="#tickets">Tickets</a></li>
+      <li><a href="#camping">Camping</a></li>
+      <li><a href="#info">Info</a></li>
+    </ul>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer"><span class="bars" aria-hidden="true"></span>Menu</button>
+    <a class="btn" href="#tickets">Buy tickets</a>
+  </nav>
+</header>
+<div class="drawer" id="drawer" data-open="false">
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="#lineup">Line-up</a></li>
+      <li><a href="#tickets">Tickets</a></li>
+      <li><a href="#camping">Camping</a></li>
+      <li><a href="#info">Info</a></li>
+    </ul>
+  </nav>
+</div>
+
+<main id="main">
+  <div class="tide" id="top">
+    <div class="frame-col">
+      <figure class="frame" aria-label="Drawn picture: the beach at dawn, with the cliff, The Cave, the Shoreline stage and tents on the headland. The tide rises as you scroll.">
+        <canvas id="sea" aria-hidden="true"></canvas>
+        <figcaption>The beach at dawn, drawn. Tide <span id="tideword">low</span>.</figcaption>
+      </figure>
+    </div>
+
+    <div class="col">
+      <section class="hero" aria-labelledby="festname">
+        <div class="hero__copy">
+          <p class="when"><span data-rise style="--i:2">14–16 August 2027</span><span data-rise style="--i:3">Newquay, Cornwall</span></p>
+          <p class="lead" data-rise style="--i:4">Three days of electronic and alternative music on the beach, with two stages, camping and a sunrise set every morning.</p>
+          <div class="hero__act" data-rise style="--i:5">
+            <a class="btn" href="#tickets">Buy tickets</a>
+            <a class="link" href="#lineup">See the line-up</a>
+          </div>
+        </div>
+        <h1 class="mark" id="festname" aria-label="Tidefest"><span aria-hidden="true">Tidefest</span></h1>
+      </section>
+
+      <section class="lineup" id="lineup" aria-labelledby="lineup-h">
+        <h2 id="lineup-h" data-reveal>Line-up</h2>
+        <div class="days" role="group" aria-label="Choose a day" data-reveal style="--i:1">
+          <button type="button" aria-pressed="true" data-day="fri">Fri 14</button>
+          <button type="button" aria-pressed="false" data-day="sat">Sat 15</button>
+          <button type="button" aria-pressed="false" data-day="sun">Sun 16</button>
+        </div>
+
+        <div class="day" id="day-fri" data-day="fri" aria-live="polite">
+          <h3 data-reveal style="--i:2">Friday 14 August</h3>
+          <ul class="acts">
+            <li style="--i:0"><details class="act" open><summary><span class="t">17:30</span><span class="n">Saltwire</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Guitar-loop post-rock that builds the way a swell does, opening the weekend on the sand.</p><p>Shoreline stage, 17:30 to 18:30.</p></div></details></li>
+            <li style="--i:1"><details class="act"><summary><span class="t">19:00</span><span class="n">Kelp Choir</span><span class="s">The Cave</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Eight voices and one modular synth, with no backing track.</p><p>The Cave, 19:00 to 20:00.</p></div></details></li>
+            <li style="--i:2"><details class="act"><summary><span class="t">20:15</span><span class="n">Low Pilot</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Dub-heavy live electronics from a three-piece who play everything by hand.</p><p>Shoreline stage, 20:15 to 21:30.</p></div></details></li>
+            <li style="--i:3"><details class="act"><summary><span class="t">21:45</span><span class="n">Mirela Vos</span><span class="s">The Cave</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>A two-hour hard techno set under the cliff.</p><p>The Cave, 21:45 to 23:45.</p></div></details></li>
+            <li style="--i:4"><details class="act"><summary><span class="t">22:30</span><span class="n">Harbour Static</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Noise-pop band closing the Shoreline stage on the first night.</p><p>Shoreline stage, 22:30 to 00:00.</p></div></details></li>
+            <li style="--i:5"><details class="act"><summary><span class="t">05:20</span><span class="n">Amber Lantern</span><span class="s sun">Sunrise, Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Slow ambient for the first sunrise, on Saturday morning as the light comes up over the water.</p><p>Shoreline stage, Saturday 05:20 to 06:40.</p></div></details></li>
+          </ul>
+        </div>
+
+        <div class="day" id="day-sat" data-day="sat" aria-live="polite">
+          <h3>Saturday 15 August</h3>
+          <ul class="acts">
+            <li style="--i:0"><details class="act" open><summary><span class="t">16:00</span><span class="n">Copper Gulls</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Surf-rock instrumentals, loud and bright, for the hottest part of the afternoon.</p><p>Shoreline stage, 16:00 to 17:00.</p></div></details></li>
+            <li style="--i:1"><details class="act"><summary><span class="t">18:30</span><span class="n">Juno Pell</span><span class="s">The Cave</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>A singer and producer who builds songs from recordings of rockpools and wind.</p><p>The Cave, 18:30 to 19:30.</p></div></details></li>
+            <li style="--i:2"><details class="act"><summary><span class="t">19:45</span><span class="n">Otter Frequency</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Breakbeat duo with a four-piece brass section.</p><p>Shoreline stage, 19:45 to 21:00.</p></div></details></li>
+            <li style="--i:3"><details class="act"><summary><span class="t">21:30</span><span class="n">Vessa Quill</span><span class="s">The Cave</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Dark disco played entirely from vinyl.</p><p>The Cave, 21:30 to 23:30.</p></div></details></li>
+            <li style="--i:4"><details class="act"><summary><span class="t">22:15</span><span class="n">Nine Fathom</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Saturday’s closing act: an electronic five-piece with two live drummers.</p><p>Shoreline stage, 22:15 to 23:45.</p></div></details></li>
+            <li style="--i:5"><details class="act"><summary><span class="t">05:20</span><span class="n">The Pale Hours</span><span class="s sun">Sunrise, Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Piano and tape loops for Sunday’s sunrise.</p><p>Shoreline stage, Sunday 05:20 to 06:40.</p></div></details></li>
+          </ul>
+        </div>
+
+        <div class="day" id="day-sun" data-day="sun" aria-live="polite">
+          <h3>Sunday 16 August</h3>
+          <ul class="acts">
+            <li style="--i:0"><details class="act" open><summary><span class="t">15:00</span><span class="n">Pellow</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Bedroom folk turned up loud enough for a beach.</p><p>Shoreline stage, 15:00 to 16:00.</p></div></details></li>
+            <li style="--i:1"><details class="act"><summary><span class="t">17:30</span><span class="n">Mara Okafor-Lind</span><span class="s">The Cave</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Deep house with live percussion.</p><p>The Cave, 17:30 to 19:00.</p></div></details></li>
+            <li style="--i:2"><details class="act"><summary><span class="t">19:00</span><span class="n">Shelf Sea</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>A shoegaze trio, very loud and very gentle at once.</p><p>Shoreline stage, 19:00 to 20:15.</p></div></details></li>
+            <li style="--i:3"><details class="act"><summary><span class="t">20:45</span><span class="n">Rook &amp; Rip</span><span class="s">The Cave</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>Two DJs, one booth, back-to-back drum and bass.</p><p>The Cave, 20:45 to 23:00.</p></div></details></li>
+            <li style="--i:4"><details class="act"><summary><span class="t">22:00</span><span class="n">Night Ferry Orchestra</span><span class="s">Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>The last night closes with a twelve-piece electronic orchestra.</p><p>Shoreline stage, 22:00 to 23:30.</p></div></details></li>
+            <li style="--i:5"><details class="act"><summary><span class="t">05:20</span><span class="n">Lantern &amp; Kittiwake</span><span class="s sun">Sunrise, Shoreline</span><span class="plus" aria-hidden="true"></span></summary><div class="panel"><p>The final sunrise, on Monday morning, before the campsite packs up.</p><p>Shoreline stage, Monday 05:20 to 06:40.</p></div></details></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="count" id="countdown" aria-labelledby="count-h">
+        <h2 id="count-h" data-reveal>Until the gates open</h2>
+        <dl class="figs">
+          <div data-reveal style="--i:1"><dt><span class="num" id="cd-days">–</span></dt><dd><span id="cd-days-word">days</span> until noon on Friday 14 August 2027, London time, when the gates open.</dd></div>
+          <div data-reveal style="--i:2"><dt class="num"><span id="cd-h">–</span>h <span id="cd-m">–</span>m <span id="cd-s">–</span>s</dt><dd>hours, minutes and seconds left on top of that.</dd></div>
+          <div data-reveal style="--i:3"><dt class="num" id="cd-tides">–</dt><dd>high tides will cover the beach before then, give or take one. The sea comes in about every 12 hours 25 minutes.</dd></div>
+          <div data-reveal style="--i:4"><dt class="num">8,000</dt><dd>people on the sand at once. That is the whole capacity; there is no second release.</dd></div>
+          <div data-reveal style="--i:5"><dt class="num">3</dt><dd>sunrise sets, one each morning on the Shoreline stage at 05:20.</dd></div>
+        </dl>
+        <p class="vh" id="cd-live" aria-live="polite"></p>
+      </section>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="marquee">
+      <p>Saltwire <b>/</b> Kelp Choir <b>/</b> Low Pilot <b>/</b> Mirela Vos <b>/</b> Harbour Static <b>/</b> Amber Lantern <b>/</b> Copper Gulls <b>/</b> Juno Pell <b>/</b> Otter Frequency <b>/</b> Vessa Quill <b>/</b> Nine Fathom <b>/</b> The Pale Hours <b>/</b> Pellow <b>/</b> Mara Okafor-Lind <b>/</b> Shelf Sea <b>/</b> Rook &amp; Rip <b>/</b> Night Ferry Orchestra <b>/</b> Lantern &amp; Kittiwake <b>/</b></p>
+      <p>Saltwire <b>/</b> Kelp Choir <b>/</b> Low Pilot <b>/</b> Mirela Vos <b>/</b> Harbour Static <b>/</b> Amber Lantern <b>/</b> Copper Gulls <b>/</b> Juno Pell <b>/</b> Otter Frequency <b>/</b> Vessa Quill <b>/</b> Nine Fathom <b>/</b> The Pale Hours <b>/</b> Pellow <b>/</b> Mara Okafor-Lind <b>/</b> Shelf Sea <b>/</b> Rook &amp; Rip <b>/</b> Night Ferry Orchestra <b>/</b> Lantern &amp; Kittiwake <b>/</b></p>
+    </div>
+  </div>
+
+  <section class="tickets" id="tickets" aria-labelledby="tickets-h">
+    <form class="ticket" id="order" data-reveal novalidate>
+      
+
+      <div class="ticket__main">
+        <h2 id="tickets-h">Tickets, <span class="nw">14–16 August</span></h2>
+        <ul class="types">
+          <li class="type" data-type="day" data-price="79">
+            <h3>Day</h3>
+            <p class="price"><span class="vh">Price </span>£79</p>
+            <div class="stepper" role="group" aria-label="Day tickets">
+              <button type="button" data-step="-1" aria-label="One fewer Day ticket">−</button>
+              <output aria-live="polite" aria-label="Day tickets selected">0</output>
+              <button type="button" data-step="1" aria-label="One more Day ticket">+</button>
+            </div>
+            <label class="daypick">Which day
+              <select name="day">
+                <option value="Friday 14 August">Fri 14</option>
+                <option value="Saturday 15 August">Sat 15</option>
+                <option value="Sunday 16 August">Sun 16</option>
+              </select>
+            </label>
+            <p>One day in the arena, both stages, plus the next morning’s sunrise set.</p>
+          </li>
+          <li class="type" data-type="weekend" data-price="189">
+            <h3>Weekend</h3>
+            <p class="price"><span class="vh">Price </span>£189</p>
+            <div class="stepper" role="group" aria-label="Weekend tickets">
+              <button type="button" data-step="-1" aria-label="One fewer Weekend ticket">−</button>
+              <output aria-live="polite" aria-label="Weekend tickets selected">0</output>
+              <button type="button" data-step="1" aria-label="One more Weekend ticket">+</button>
+            </div>
+            <p>All three days and all three sunrises. Sleep somewhere else.</p>
+          </li>
+          <li class="type" data-type="camping" data-price="229">
+            <h3>Weekend + camping</h3>
+            <p class="price"><span class="vh">Price </span>£229</p>
+            <div class="stepper" role="group" aria-label="Weekend plus camping tickets">
+              <button type="button" data-step="-1" aria-label="One fewer Weekend plus camping ticket">−</button>
+              <output aria-live="polite" aria-label="Weekend plus camping tickets selected">0</output>
+              <button type="button" data-step="1" aria-label="One more Weekend plus camping ticket">+</button>
+            </div>
+            <p>The weekend, plus a pitch on the headland from Thursday 16:00 to Monday noon.</p>
+          </li>
+        </ul>
+
+      </div>
+
+      <ul class="terms">
+          <li>Gates open at 12:00 on Friday.</li>
+          <li>Up to 8 of each ticket per order.</li>
+          <li>Under-18s with a ticket-holding adult.</li>
+          <li>Prices include booking fees.</li>
+        </ul>
+
+      <div class="ticket__stub">
+        <span class="notch top" aria-hidden="true"></span><span class="notch bot" aria-hidden="true"></span>
+      <svg class="perf" aria-hidden="true" preserveAspectRatio="none"><defs><pattern id="dots" width="6" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="7" r="3" fill="#f9a3c0"/></pattern><pattern id="dotsx" width="14" height="6" patternUnits="userSpaceOnUse"><circle cx="7" cy="3" r="3" fill="#f9a3c0"/></pattern></defs><rect class="perf-y" width="100%" height="100%"/></svg>
+        <div>
+          <p class="stub__total" aria-live="polite"><span class="vh">Total </span><span id="total">£0</span></p>
+          <p class="stub__label">total, fees included</p>
+          <p class="stub__list" id="summary">No tickets yet.</p>
+        </div>
+        <div>
+          <button class="btn stub__buy" type="submit">Buy tickets</button>
+          <p class="stub__msg" id="order-msg" role="status"></p>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <section class="verbs" id="camping" aria-labelledby="camping-h">
+    <h2 class="vh" id="camping-h">Camping and getting there</h2>
+    <article class="panel-v" data-scene="arrive">
+      <canvas aria-hidden="true"></canvas>
+      <div class="verb-wrap"><p class="verb" aria-hidden="true">Arrive</p></div>
+      <div class="say" data-reveal><strong>By train and shuttle</strong>Take the train to Newquay. Our shuttle buses leave the station every 20 minutes from 10:00 on Friday and reach the gate in about 15 minutes.</div>
+    </article>
+    <article class="panel-v" data-scene="park">
+      <canvas aria-hidden="true"></canvas>
+      <div class="verb-wrap"><p class="verb" aria-hidden="true">Park</p></div>
+      <div class="say" data-reveal><strong>By car</strong>Parking is booked ahead only, £15 for the weekend. Cars carrying three or more people park nearest the gate; taxis drop off at the north entrance.</div>
+    </article>
+    <article class="panel-v" data-scene="pitch">
+      <canvas aria-hidden="true"></canvas>
+      <div class="verb-wrap"><p class="verb" aria-hidden="true">Pitch</p></div>
+      <div class="say" data-reveal><strong>Camping on the headland</strong>Open Thursday 16:00 to Monday 12:00. Bring your own tent; water, showers and toilets are on site, with a quiet field for early sleepers.</div>
+    </article>
+    <article class="panel-v on-pink" data-scene="rise">
+      <canvas aria-hidden="true"></canvas>
+      <div class="verb-wrap"><p class="verb" aria-hidden="true">Rise</p></div>
+      <div class="say" data-reveal><strong>The sunrise set</strong>At 05:20 every morning the Shoreline stage plays the sun up. It is a ten-minute walk down from the tents. Bring a layer: the sand is cold.</div>
+    </article>
+  </section>
+
+  <section class="faq" id="info" aria-labelledby="faq-h">
+    <h2 id="faq-h" data-reveal>Good to know</h2>
+    <div class="faq__list">
+      <details class="q" name="faq" open data-reveal style="--i:0"><summary>Who can come?<span class="plus" aria-hidden="true"></span></summary><p class="a">Anyone 12 or over. Under-18s need to come with an adult who holds a ticket, and the campsite is for over-16s only.</p></details>
+      <details class="q" name="faq" data-reveal style="--i:1"><summary>What if the weather turns?<span class="plus" aria-hidden="true"></span></summary><p class="a">The Cave is under cover and the Shoreline stage plays through rain. Sets only stop for high wind, and any change goes on this page and out by email.</p></details>
+      <details class="q" name="faq" data-reveal style="--i:2"><summary>Can I swim?<span class="plus" aria-hidden="true"></span></summary><p class="a">Only between the flags while lifeguards are on duty, 10:00 to 18:00. The sea is closed after dark and during the sunrise sets, whatever the tide is doing.</p></details>
+      <details class="q" name="faq" data-reveal style="--i:3"><summary>Can I bring food and drink?<span class="plus" aria-hidden="true"></span></summary><p class="a">Bring your own food, and sealed soft drinks. No glass anywhere on site, and no alcohol into the arena; there are bars at both stages.</p></details>
+      <details class="q" name="faq" data-reveal style="--i:4"><summary>Is the site accessible?<span class="plus" aria-hidden="true"></span></summary><p class="a">Both stages have a raised viewing platform, there is an accessible camping area by the north gate, and a companion goes free. Write to access@tidefest.example to arrange it.</p></details>
+    </div>
+  </section>
+
+  <section class="news" id="newsletter" aria-labelledby="news-h">
+    <h2 id="news-h" data-reveal>Catch the next tide</h2>
+    <div class="news__form" data-reveal style="--i:1">
+      <p>One email when line-up news or a ticket release lands. Nothing else, and you can leave any time.</p>
+      <form id="news" novalidate>
+        <label for="email">Email address</label>
+        <div class="field">
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required aria-describedby="news-msg">
+          <button class="btn" type="submit">Sign up</button>
+        </div>
+        <p class="news__msg" id="news-msg" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot__cols">
+    <div><h2>Write to us</h2><ul><li><a class="link" href="mailto:hello@tidefest.example">hello@tidefest.example</a></li><li><a class="link" href="mailto:tickets@tidefest.example">tickets@tidefest.example</a></li><li><a class="link" href="tel:+441632960418">01632 960418</a></li></ul></div>
+    <div><h2>Where</h2><p>A beach near Newquay,<br>Cornwall</p><p>14–16 August 2027</p></div>
+    <div><h2>On the page</h2><ul><li><a class="link" href="#lineup">Line-up</a></li><li><a class="link" href="#tickets">Tickets</a></li><li><a class="link" href="#camping">Camping</a></li><li><a class="link" href="#info">Info</a></li></ul></div>
+    <div><h2>Follow</h2><ul><li><a class="link" href="#" data-social>Instagram</a></li><li><a class="link" href="#" data-social>TikTok</a></li><li><a class="link" href="#" data-social>YouTube</a></li><li><a class="link" href="#" data-social>Bluesky</a></li></ul></div>
+  </div>
+  <div></div>
+  <div>
+    <p class="foot__mark" id="footmark" aria-hidden="true">Tidefest</p>
+    <div class="foot__legal"><p>© 2027 Tidefest. A fictional festival; all pictures on this page are drawn in code.</p><p><a class="link" href="#top">Back to the top</a></p></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  /* ---- wordmark letters (hero) ---- */
+  const mark = $('#festname');
+  const word = 'Tidefest';
+  mark.querySelector('span').innerHTML = word.split('').map((c, i) => `<span class="ch"><span style="--i:${i}">${c}</span></span>`).join('');
+
+  /* fit a single-line word to a target width */
+  function fit(el, target, prop) {
+    el.style.setProperty(prop, '100px');
+    const w = el.scrollWidth || el.getBoundingClientRect().width;
+    if (!w) return;
+    el.style.setProperty(prop, (100 * target / w).toFixed(2) + 'px');
+  }
+  const footmark = $('#footmark');
+  function fitAll() {
+    const vw = document.documentElement.clientWidth;
+    const narrow = vw <= 820;
+    const m = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--margin')) || 24;
+    // hero: from 10vw left of the column to the right margin (desktop); full width on narrow
+    const col = mark.parentElement.getBoundingClientRect();
+    const target = narrow ? vw - 2 * m : (col.width - m) + vw * 0.10 - (parseFloat(getComputedStyle(mark.closest('.col')).paddingLeft) || 0);
+    mark.style.width = 'max-content';
+    fit(mark, target, '--mark-size');
+    mark.style.width = '';
+    footmark.style.width = 'max-content';
+    fit(footmark, vw - 2 * m, '--foot-size');
+    footmark.style.width = '';
+  }
+
+  /* ---- mobile navigation ---- */
+  const menuBtn = $('.menu-btn'), drawer = $('#drawer');
+  function setMenu(open) {
+    menuBtn.setAttribute('aria-expanded', String(open));
+    drawer.dataset.open = String(open);
+    if (open) drawer.querySelector('a').focus();
+  }
+  menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  drawer.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') { setMenu(false); menuBtn.focus(); } });
+  window.matchMedia('(min-width: 821px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+
+  /* ---- day filter ---- */
+  const dayBtns = $$('.days button');
+  const days = $$('.day');
+  function showDay(d, animate) {
+    dayBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.day === d)));
+    days.forEach(el => {
+      const on = el.dataset.day === d;
+      el.hidden = !on;
+      if (on && animate) { el.classList.remove('is-switching'); void el.offsetWidth; el.classList.add('is-switching'); }
+    });
+  }
+  dayBtns.forEach(b => b.addEventListener('click', () => showDay(b.dataset.day, true)));
+  // acts in the day lists get their index for the stagger
+  days.forEach(d => $$('.acts > li', d).forEach((li, i) => li.querySelector('.act').style.setProperty('--i', i)));
+  showDay('fri', false);
+
+  /* ---- countdown ---- */
+  const OPEN = Date.UTC(2027, 7, 14, 11, 0, 0); // 12:00 BST, Europe/London
+  const TIDE = (12 * 3600 + 25 * 60 + 14) * 1000;
+  const cd = { d: $('#cd-days'), dw: $('#cd-days-word'), h: $('#cd-h'), m: $('#cd-m'), s: $('#cd-s'), t: $('#cd-tides') };
+  function setNum(el, v) {
+    if (el.textContent === v) return;
+    el.textContent = v;
+    el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick');
+  }
+  function tick() {
+    let ms = OPEN - Date.now();
+    if (ms <= 0) {
+      cd.d.textContent = '0'; cd.dw.textContent = 'days. The gates are open.';
+      cd.h.textContent = cd.m.textContent = cd.s.textContent = '0'; cd.t.textContent = '0';
+      return;
+    }
+    const d = Math.floor(ms / 864e5); ms -= d * 864e5;
+    const h = Math.floor(ms / 36e5); ms -= h * 36e5;
+    const m = Math.floor(ms / 6e4); ms -= m * 6e4;
+    const s = Math.floor(ms / 1e3);
+    setNum(cd.d, d.toLocaleString('en-GB'));
+    cd.dw.textContent = d === 1 ? 'day' : 'days';
+    setNum(cd.h, String(h)); setNum(cd.m, String(m)); setNum(cd.s, String(s));
+    setNum(cd.t, Math.floor((OPEN - Date.now()) / TIDE).toLocaleString('en-GB'));
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---- tickets ---- */
+  const order = $('#order');
+  const types = $$('.type', order);
+  const totalEl = $('#total'), summary = $('#summary'), orderMsg = $('#order-msg');
+  const qty = { day: 0, weekend: 0, camping: 0 };
+  const MAX = 8;
+  let shown = 0, raf = 0;
+  const gbp = n => '£' + n.toLocaleString('en-GB');
+  function animateTotal(to) {
+    cancelAnimationFrame(raf);
+    if (reduce.matches) { shown = to; totalEl.textContent = gbp(to); return; }
+    const from = shown, t0 = performance.now(), dur = 420;
+    const step = now => {
+      const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      shown = Math.round(from + (to - from) * e);
+      totalEl.textContent = gbp(shown);
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+  }
+  function renderOrder() {
+    let total = 0; const lines = [];
+    types.forEach(li => {
+      const k = li.dataset.type, q = qty[k], price = +li.dataset.price;
+      total += q * price;
+      li.querySelector('output').textContent = q;
+      const [minus, plus] = $$('.stepper button', li);
+      minus.disabled = q === 0; plus.disabled = q === MAX;
+      li.classList.toggle('has', q > 0);
+      if (q) lines.push(`${q} × ${li.querySelector('h3').textContent}${k === 'day' ? ' (' + $('select', li).value + ')' : ''}`);
+    });
+    summary.textContent = lines.length ? lines.join(', ') : 'No tickets yet.';
+    animateTotal(total);
+    orderMsg.textContent = '';
+    return { total, lines };
+  }
+  types.forEach(li => li.addEventListener('click', e => {
+    const b = e.target.closest('button[data-step]'); if (!b) return;
+    const k = li.dataset.type;
+    qty[k] = Math.max(0, Math.min(MAX, qty[k] + +b.dataset.step));
+    renderOrder();
+  }));
+  $('select', order).addEventListener('change', renderOrder);
+  order.addEventListener('submit', e => {
+    e.preventDefault();
+    const { total, lines } = renderOrder();
+    if (!total) { orderMsg.textContent = 'Add at least one ticket first.'; return; }
+    orderMsg.textContent = 'Opening your email to send the order…';
+    const body = `Hello Tidefest,\n\nI would like to order:\n${lines.join('\n')}\n\nTotal: ${gbp(total)}\n\nThanks.`;
+    location.href = `mailto:tickets@tidefest.example?subject=${encodeURIComponent('Tidefest 2027 ticket order')}&body=${encodeURIComponent(body)}`;
+  });
+  renderOrder();
+
+  /* ---- newsletter ---- */
+  const news = $('#news'), email = $('#email'), newsMsg = $('#news-msg');
+  const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  news.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = email.value.trim();
+    if (!okEmail(v)) {
+      email.setAttribute('aria-invalid', 'true');
+      newsMsg.textContent = v ? 'That email address looks incomplete. Check it and try again.' : 'Enter your email address to sign up.';
+      news.classList.remove('shake'); void news.offsetWidth; news.classList.add('shake');
+      email.focus();
+      return;
+    }
+    email.removeAttribute('aria-invalid');
+    const done = document.createElement('p');
+    done.className = 'news__done'; done.setAttribute('role', 'status'); done.tabIndex = -1;
+    done.textContent = `You’re on the list. We’ll write to ${v} when the next tide comes in.`;
+    news.replaceWith(done); done.focus();
+  });
+  email.addEventListener('input', () => { if (email.getAttribute('aria-invalid') && okEmail(email.value.trim())) { email.removeAttribute('aria-invalid'); newsMsg.textContent = ''; } });
+  $$('[data-social]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+
+  /* ---- reveal on enter ---- */
+  const revealEls = $$('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      for (const en of entries) if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    revealEls.forEach(el => io.observe(el));
+  } else revealEls.forEach(el => el.classList.add('is-in'));
+
+  /* ================= Canvas: the drawn coast ================= */
+  const C = {
+    deep: '#11162a', bg: '#1a2039', s1: '#212846', s2: '#2b335a', s3: '#39416f', s4: '#4d4d7f',
+    pink: '#f9a3c0', pinkD: '#e27ba1', pinkL: '#fcd3e1', sand: '#3b3150', sandL: '#4a3c5d', rock: '#0d1122', rockL: '#232a4a'
+  };
+  function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+  const STARS = (() => { const r = rng(7); return Array.from({ length: 70 }, () => [r(), r() * 0.45, r() * 1.6 + 0.6, r() * 6.28]); })();
+
+  function wave(x, t, amp, f, sp, ph) {
+    return Math.sin(x * f + t * sp + ph) * amp + Math.sin(x * f * 2.3 - t * sp * 0.7 + ph * 2) * amp * 0.35;
+  }
+  function seaLayer(ctx, W, y, bottom, color, t, amp, f, sp, ph, bump) {
+    ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(0, bottom);
+    for (let x = 0; x <= W + 8; x += 8) {
+      let a = amp;
+      if (bump && bump.k > 0.01) { const d = (x - bump.x) / (W * 0.12); a *= 1 + 2.6 * bump.k * Math.exp(-d * d); }
+      ctx.lineTo(x, y + wave(x, t, a, f, sp, ph));
+    }
+    ctx.lineTo(W, bottom); ctx.closePath(); ctx.fill();
+  }
+  function crest(ctx, W, y, t, amp, f, sp, ph, color, wdt, x0 = 0, tilt = 0) {
+    ctx.strokeStyle = color; ctx.lineWidth = wdt; ctx.beginPath();
+    for (let x = x0; x <= W + 8; x += 8) { const yy = y + wave(x, t, amp, f, sp, ph) + (x - x0) * tilt; x > x0 ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy); }
+    ctx.stroke();
+  }
+  function stars(ctx, W, H, t, top) {
+    for (const [sx, sy, r, ph] of STARS) {
+      if (sy * H > top) continue;
+      ctx.globalAlpha = 0.45 + 0.4 * Math.sin(t * 1.3 + ph);
+      ctx.fillStyle = C.pinkL; ctx.fillRect(sx * W, sy * H, r, r);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function skyBands(ctx, W, H, hz, cols) {
+    // flat stepped bands toward the horizon (no gradients)
+    const n = cols.length; let y = 0;
+    for (let i = 0; i < n; i++) {
+      const h = i === 0 ? hz * 0.52 : (hz * 0.48) / (n - 1);
+      ctx.fillStyle = cols[i]; ctx.fillRect(0, y, W, h + 1); y += h;
+    }
+  }
+  function headland(ctx, W, H, hz, side, scale, lit, shade) {
+    // cliff mass with lit top face and shaded face
+    const s = scale, L = side === 'left';
+    const X = x => (L ? x : W - x);
+    ctx.fillStyle = shade; ctx.beginPath();
+    ctx.moveTo(X(0), H); ctx.lineTo(X(0), hz - H * 0.22 * s); ctx.lineTo(X(W * 0.18 * s), hz - H * 0.24 * s);
+    ctx.lineTo(X(W * 0.30 * s), hz - H * 0.16 * s); ctx.lineTo(X(W * 0.36 * s), hz - H * 0.05 * s); ctx.lineTo(X(W * 0.42 * s), H); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = lit; ctx.beginPath();
+    ctx.moveTo(X(0), hz - H * 0.22 * s); ctx.lineTo(X(W * 0.18 * s), hz - H * 0.24 * s); ctx.lineTo(X(W * 0.30 * s), hz - H * 0.16 * s);
+    ctx.lineTo(X(W * 0.26 * s), hz - H * 0.15 * s); ctx.lineTo(X(W * 0.15 * s), hz - H * 0.205 * s); ctx.lineTo(X(0), hz - H * 0.195 * s); ctx.closePath(); ctx.fill();
+    return { topY: hz - H * 0.22 * s, x0: X(0), x1: X(W * 0.30 * s) };
+  }
+  function tent(ctx, x, y, w, lit, glow) {
+    const h = w * 0.72;
+    ctx.fillStyle = C.s3; ctx.beginPath(); ctx.moveTo(x - w / 2, y); ctx.lineTo(x, y - h); ctx.lineTo(x + w / 2, y); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.s2; ctx.beginPath(); ctx.moveTo(x, y - h); ctx.lineTo(x + w / 2, y); ctx.lineTo(x + w * 0.1, y); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = glow ? C.pink : C.deep; ctx.beginPath(); ctx.moveTo(x - w * 0.1, y); ctx.lineTo(x, y - h * 0.45); ctx.lineTo(x + w * 0.1, y); ctx.closePath(); ctx.fill();
+  }
+  function stage(ctx, x, y, w, t, beat) {
+    const h = w * 0.55;
+    ctx.fillStyle = C.deep; ctx.fillRect(x, y - h, w, h);                          // body
+    ctx.fillStyle = C.s1; ctx.beginPath(); ctx.moveTo(x - w * 0.08, y - h); ctx.lineTo(x + w / 2, y - h - w * 0.22); ctx.lineTo(x + w * 1.08, y - h); ctx.closePath(); ctx.fill(); // roof
+    ctx.fillStyle = C.rock; ctx.fillRect(x - w * 0.06, y - h, w * 0.06, h); ctx.fillRect(x + w, y - h, w * 0.06, h); // speaker towers
+    for (let i = 0; i < 6; i++) { // light row
+      const on = 0.35 + 0.65 * Math.max(0, Math.sin(beat * Math.PI * 2 + i * 1.1));
+      ctx.globalAlpha = on; ctx.fillStyle = i % 2 ? C.pink : C.pinkL;
+      ctx.fillRect(x + w * 0.08 + i * w * 0.15, y - h + w * 0.04, w * 0.07, w * 0.04);
+    }
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = C.s2; ctx.fillRect(x + w * 0.2, y - h * 0.42, w * 0.6, h * 0.06); // deck
+    ctx.fillStyle = C.pink; ctx.fillRect(x + w * 0.46, y - h * 0.62, w * 0.08, h * 0.2); // performer
+  }
+  function crowd(ctx, x0, x1, y, t, beat, r) {
+    ctx.fillStyle = C.deep;
+    const R = rng(r);
+    for (let x = x0; x < x1; x += 9) {
+      const j = Math.max(0, Math.sin(beat * Math.PI * 2 + x * 0.05)) * 3;
+      const hh = 10 + R() * 6;
+      ctx.beginPath(); ctx.arc(x, y - hh - j, 4, 0, 6.29); ctx.fill();
+      ctx.fillRect(x - 4, y - hh - j, 8, hh + j);
+    }
+  }
+  function glitter(ctx, cx, top, bottom, t, W) {
+    ctx.fillStyle = C.pink;
+    const R = rng(3);
+    for (let i = 0; i < 26; i++) {
+      const y = top + (bottom - top) * (i / 26) + 2;
+      const spread = 10 + (y - top) * 0.35;
+      const w = (6 + R() * 26) * (0.55 + 0.45 * Math.sin(t * 2 + i));
+      const x = cx + (R() - 0.5) * spread * 2;
+      ctx.globalAlpha = 0.5 + 0.5 * Math.sin(t * 1.7 + i * 2.1);
+      ctx.fillRect(x - w / 2, y, w, 2);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // Scene painters. level: 0 low tide .. 1 high tide. bump: pointer swell.
+  const SCENES = {
+    dawn(ctx, W, H, t, o) {
+      const hz = H * 0.44;
+      // dawn sky in flat steps: lighter navy at the top, pink at the horizon
+      skyBands(ctx, W, H, hz, [C.s1, C.s2, C.s3, C.s4, '#8a6290', C.pinkD, C.pink]);
+      stars(ctx, W, H, t, hz * 0.42);
+      const sx = W * 0.64, sr = Math.min(W, H) * 0.16;
+      ctx.fillStyle = C.pinkL; ctx.beginPath(); ctx.arc(sx, hz + sr * 0.2 - o.level * sr * 0.35, sr, 0, 6.29); ctx.fill();
+      // sea stack, lit and shaded faces
+      ctx.fillStyle = C.rock; ctx.beginPath(); ctx.moveTo(W * 0.84, hz + 8); ctx.lineTo(W * 0.858, hz - H * 0.1); ctx.lineTo(W * 0.895, hz - H * 0.125); ctx.lineTo(W * 0.925, hz - H * 0.07); ctx.lineTo(W * 0.94, hz + 8); ctx.fill();
+      ctx.fillStyle = C.rockL; ctx.beginPath(); ctx.moveTo(W * 0.858, hz - H * 0.1); ctx.lineTo(W * 0.895, hz - H * 0.125); ctx.lineTo(W * 0.885, hz - H * 0.08); ctx.lineTo(W * 0.865, hz - H * 0.065); ctx.fill();
+      // open sea
+      ctx.fillStyle = C.s2; ctx.fillRect(0, hz, W, H - hz);
+      seaLayer(ctx, W, hz + H * 0.06, H, '#323a66', t, 2, 0.03, 0.7, 0.5, null);
+      seaLayer(ctx, W, hz + H * 0.13, H, C.s1, t, 3.5, 0.024, 0.9, 1, o.bump);
+      crest(ctx, W, hz + H * 0.13, t, 3.5, 0.024, 0.9, 1, C.s3, 2);
+      glitter(ctx, sx, hz + 4, hz + H * 0.2, t, W);
+      // headland with tents on top and The Cave at its foot
+      ctx.fillStyle = C.rock; ctx.beginPath();
+      ctx.moveTo(0, H); ctx.lineTo(0, hz - H * 0.13); ctx.lineTo(W * 0.2, hz - H * 0.15); ctx.lineTo(W * 0.34, hz - H * 0.08); ctx.lineTo(W * 0.4, hz + H * 0.06); ctx.lineTo(W * 0.46, hz + H * 0.3); ctx.lineTo(W * 0.5, H); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = C.rockL; ctx.beginPath();
+      ctx.moveTo(0, hz - H * 0.13); ctx.lineTo(W * 0.2, hz - H * 0.15); ctx.lineTo(W * 0.34, hz - H * 0.08); ctx.lineTo(W * 0.3, hz - H * 0.075); ctx.lineTo(W * 0.18, hz - H * 0.125); ctx.lineTo(0, hz - H * 0.11); ctx.closePath(); ctx.fill();
+      for (let i = 0; i < 7; i++) tent(ctx, W * (0.03 + i * 0.038), hz - H * 0.128 - (i < 5 ? i * H * 0.0035 : (8 - i) * H * 0.004), W * 0.03, 1, i % 3 === 1);
+      // the cave mouth with its stage lights pulsing at 124 bpm
+      const cx = W * 0.22, cb = H * 0.8;
+      ctx.fillStyle = '#05070f'; ctx.beginPath(); ctx.moveTo(cx - W * 0.09, cb); ctx.quadraticCurveTo(cx - W * 0.085, cb - H * 0.27, cx, cb - H * 0.28); ctx.quadraticCurveTo(cx + W * 0.085, cb - H * 0.27, cx + W * 0.09, cb); ctx.fill();
+      const pulse = 0.35 + 0.65 * Math.max(0, Math.sin(o.beat * Math.PI * 2));
+      ctx.globalAlpha = pulse; ctx.fillStyle = C.pink;
+      for (let i = 0; i < 5; i++) ctx.fillRect(cx - W * 0.05 + i * W * 0.022, cb - H * 0.2 + (i % 2) * 6, W * 0.012, H * 0.01);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = C.s1; ctx.fillRect(cx - W * 0.045, cb - H * 0.07, W * 0.09, H * 0.07);
+      ctx.fillStyle = C.pink; ctx.fillRect(cx - W * 0.006, cb - H * 0.1, W * 0.012, H * 0.03);
+      // the beach: the tide line climbs from low to high as the page scrolls
+      const shore = H * (0.74 - o.level * 0.1);
+      ctx.fillStyle = C.sand; ctx.beginPath(); ctx.moveTo(W * 0.3, H); ctx.lineTo(W * 0.3, shore);
+      for (let x = W * 0.3; x <= W + 8; x += 8) ctx.lineTo(x, shore + wave(x, t, 5, 0.022, 1.6, 3) + (x - W * 0.3) * 0.02);
+      ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = C.sandL; ctx.beginPath(); ctx.moveTo(W * 0.3, shore);
+      for (let x = W * 0.3; x <= W + 8; x += 8) ctx.lineTo(x, shore + wave(x, t, 5, 0.022, 1.6, 3) + (x - W * 0.3) * 0.02);
+      for (let x = W + 8; x >= W * 0.3; x -= 8) ctx.lineTo(x, shore + 14 + wave(x, t, 5, 0.022, 1.6, 3) + (x - W * 0.3) * 0.02);
+      ctx.closePath(); ctx.fill();
+      crest(ctx, W, shore - 2, t, 5, 0.022, 1.6, 3, C.pinkL, 2.5, W * 0.3, 0.02);
+      // Shoreline stage and crowd on the sand
+      stage(ctx, W * 0.6, H * 0.95, W * 0.24, t, o.beat);
+      crowd(ctx, W * 0.48, W * 0.98, H * 1.0, t, o.beat, 11);
+    },
+    arrive(ctx, W, H, t, o) {
+      const hz = H * 0.5;
+      skyBands(ctx, W, H, hz, [C.bg, C.s1, C.s2, C.s3, '#6a5486', C.pinkD]);
+      stars(ctx, W, H, t, hz * 0.4);
+      const sr = Math.min(W, H) * 0.16; ctx.fillStyle = C.pink; ctx.beginPath(); ctx.arc(W * 0.18, hz, sr, 0, 6.29); ctx.fill();
+      seaLayer(ctx, W, hz, H, C.s2, t, 1.5, 0.03, 0.5, 0, null);
+      glitter(ctx, W * 0.18, hz + 4, hz + H * 0.2, t, W);
+      // viaduct
+      const vy = hz - H * 0.04, ah = H * 0.2, span = Math.max(90, W * 0.08);
+      ctx.fillStyle = C.rock; ctx.fillRect(0, vy - H * 0.035, W, H * 0.035);
+      for (let x = -span / 2; x < W + span; x += span) {
+        ctx.fillStyle = C.rock; ctx.fillRect(x - span * 0.12, vy, span * 0.24, ah + H);
+      }
+      ctx.fillStyle = C.rockL; ctx.fillRect(0, vy - H * 0.035, W, H * 0.008);
+      // train
+      const cars = 5, cw = Math.max(110, W * 0.11), ch = H * 0.06, gap = 6;
+      const total = cars * (cw + gap);
+      const tx = ((t * 60) % (W + total + 200)) - total - 100;
+      for (let i = 0; i < cars; i++) {
+        const x = tx + i * (cw + gap);
+        ctx.fillStyle = C.s3; ctx.fillRect(x, vy - H * 0.035 - ch, cw, ch);
+        ctx.fillStyle = C.s4; ctx.fillRect(x, vy - H * 0.035 - ch, cw, ch * 0.18);
+        for (let w = 0; w < 5; w++) { ctx.fillStyle = (i + w) % 3 ? C.pink : C.pinkL; ctx.fillRect(x + 10 + w * (cw - 20) / 5, vy - H * 0.035 - ch * 0.72, (cw - 20) / 5 - 8, ch * 0.32); }
+      }
+      seaLayer(ctx, W, H * 0.86, H, C.bg, t, 5, 0.02, 1.2, 1, o.bump);
+      crest(ctx, W, H * 0.86, t, 5, 0.02, 1.2, 1, C.s3, 2);
+    },
+    park(ctx, W, H, t, o) {
+      const hz = H * 0.3;
+      ctx.fillStyle = C.deep; ctx.fillRect(0, 0, W, H);
+      stars(ctx, W, H, t, hz);
+      // moon
+      ctx.fillStyle = C.pinkL; ctx.beginPath(); ctx.arc(W * 0.82, H * 0.16, Math.min(W, H) * 0.05, 0, 6.29); ctx.fill();
+      ctx.fillStyle = C.deep; ctx.beginPath(); ctx.arc(W * 0.835, H * 0.15, Math.min(W, H) * 0.045, 0, 6.29); ctx.fill();
+      seaLayer(ctx, W, hz, H, C.s1, t, 1, 0.03, 0.5, 0, null);
+      // fields: stepped hills
+      const hills = [[hz + H * 0.04, C.s2], [hz + H * 0.16, C.s3], [hz + H * 0.32, C.s2], [hz + H * 0.48, C.s1]];
+      hills.forEach(([y, c], i) => { ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(0, H); ctx.lineTo(0, y + 20); for (let x = 0; x <= W; x += 20) ctx.lineTo(x, y + Math.sin(x * 0.004 + i) * 26); ctx.lineTo(W, H); ctx.fill(); });
+      // road zigzag
+      const pts = [[W * 1.05, hz + H * 0.1], [W * 0.15, hz + H * 0.22], [W * 0.85, hz + H * 0.38], [W * 0.1, hz + H * 0.55], [W * 0.6, H * 1.05]];
+      ctx.strokeStyle = C.deep; ctx.lineWidth = Math.max(14, W * 0.014); ctx.lineJoin = 'round'; ctx.beginPath();
+      pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke();
+      // car park rows
+      for (let r = 0; r < 3; r++) for (let c = 0; c < 9; c++) {
+        const x = W * 0.42 + c * W * 0.045, y = hz + H * 0.27 + r * H * 0.04;
+        ctx.fillStyle = (c + r) % 4 ? C.s1 : C.bg; ctx.fillRect(x, y, W * 0.032, H * 0.022);
+      }
+      // headlights travelling along road
+      const segs = []; let L = 0;
+      for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push([pts[i - 1], pts[i], d]); L += d; }
+      for (let k = 0; k < 7; k++) {
+        let p = ((t * 70 + k * L / 7) % L);
+        for (const [a, b, d] of segs) { if (p <= d) { const f = p / d; const x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f; ctx.fillStyle = k % 2 ? C.pinkL : C.pink; ctx.fillRect(x - 5, y - 3, 10, 6); break; } p -= d; }
+      }
+    },
+    pitch(ctx, W, H, t, o) {
+      const hz = H * 0.34;
+      ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+      stars(ctx, W, H, t, hz);
+      seaLayer(ctx, W, hz, H, C.s1, t, 1.2, 0.03, 0.5, 0, null);
+      crest(ctx, W, hz + H * 0.03, t, 2, 0.02, 0.7, 2, C.s2, 2);
+      // headland top
+      ctx.fillStyle = C.s2; ctx.beginPath(); ctx.moveTo(0, H); ctx.lineTo(0, hz + H * 0.1); for (let x = 0; x <= W; x += 20) ctx.lineTo(x, hz + H * 0.12 - Math.sin(x / W * 3.14) * H * 0.06); ctx.lineTo(W, H); ctx.fill();
+      ctx.fillStyle = C.s1; ctx.beginPath(); ctx.moveTo(0, H); ctx.lineTo(0, hz + H * 0.32); for (let x = 0; x <= W; x += 20) ctx.lineTo(x, hz + H * 0.3 + Math.sin(x * 0.006) * 10); ctx.lineTo(W, H); ctx.fill();
+      const R = rng(21);
+      for (let row = 0; row < 4; row++) {
+        const y = hz + H * (0.13 + row * 0.1);
+        const n = 7 + row * 2, size = W * (0.03 + row * 0.014);
+        for (let i = 0; i < n; i++) {
+          const x = (i + 0.5 + (row % 2) * 0.5) * (W / n) + (R() - 0.5) * 20;
+          tent(ctx, x, y + (R() - 0.5) * 10, size, 1, (Math.sin(t * 0.8 + i * 1.7 + row) > 0.55));
+        }
+      }
+      // flags on poles
+      for (let i = 0; i < 3; i++) {
+        const x = W * (0.25 + i * 0.25), y = hz + H * 0.08;
+        ctx.fillStyle = C.rock; ctx.fillRect(x, y - H * 0.08, 3, H * 0.08);
+        ctx.fillStyle = C.pink; ctx.beginPath(); ctx.moveTo(x + 3, y - H * 0.08); ctx.lineTo(x + 3 + 26, y - H * 0.07 + Math.sin(t * 3 + i) * 3); ctx.lineTo(x + 3, y - H * 0.055); ctx.fill();
+      }
+    },
+    rise(ctx, W, H, t, o) {
+      const hz = H * 0.58;
+      skyBands(ctx, W, H, hz, [C.pink, '#f7b3ca', C.pinkL, '#fde3ec']);
+      const sr = Math.min(W, H) * 0.2, sy = hz + sr * 0.35 - Math.sin(Math.min(1, o.vis) * 1.57) * sr * 0.4;
+      ctx.fillStyle = '#fff3f7'; ctx.beginPath(); ctx.arc(W * 0.74, sy, sr, 0, 6.29); ctx.fill();
+      seaLayer(ctx, W, hz, H, C.s2, t, 1.5, 0.03, 0.6, 0, null);
+      ctx.fillStyle = C.pinkL;
+      const R = rng(9);
+      for (let i = 0; i < 22; i++) { const y = hz + 6 + i * 6; const w = 20 + R() * 60; ctx.globalAlpha = 0.5 + 0.5 * Math.sin(t * 2 + i); ctx.fillRect(W * 0.74 - w / 2 + (R() - 0.5) * (i * 6), y, w, 2); }
+      ctx.globalAlpha = 1;
+      seaLayer(ctx, W, hz + H * 0.14, H, C.s1, t, 4, 0.02, 1, 1, o.bump);
+      ctx.fillStyle = C.sand; ctx.fillRect(0, H * 0.84, W, H * 0.16);
+      seaLayer(ctx, W, H * 0.82, H * 0.86, C.bg, t, 5, 0.025, 1.6, 2, o.bump);
+      crest(ctx, W, H * 0.82, t, 5, 0.025, 1.6, 2, C.pinkL, 2.5);
+      stage(ctx, W * 0.1, H * 0.96, W * 0.18, t, o.beat * 0.25);
+      crowd(ctx, W * 0.3, W * 0.98, H, t, o.beat * 0.25, 4);
+    }
+  };
+
+  const scenes = [];
+  function makeScene(canvas, kind, opts = {}) {
+    const ctx = canvas.getContext('2d');
+    const s = { canvas, ctx, kind, W: 0, H: 0, visible: false, level: opts.level ?? 0.2, bump: { x: 0, k: 0 }, vis: 0, el: opts.el || canvas };
+    function size() {
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      s.W = r.width; s.H = r.height;
+      canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    s.size = size; size();
+    s.draw = (t) => { if (!s.W || !s.H) return; ctx.clearRect(0, 0, s.W, s.H); SCENES[kind](ctx, s.W, s.H, t, { level: s.level, bump: s.bump, beat: (t * 124 / 60) % 1, vis: s.vis }); };
+    // pointer makes the swell react
+    const host = opts.host || canvas;
+    host.addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); s.bump.x = e.clientX - r.left; s.bump.k = Math.min(1, s.bump.k + 0.25); }, { passive: true });
+    scenes.push(s);
+    return s;
+  }
+  const hero = makeScene($('#sea'), 'dawn', { host: $('.tide') });
+  $$('.panel-v').forEach(p => { const sc = makeScene($('canvas', p), p.dataset.scene, { host: p, el: p }); sc.panel = p; sc.verb = $('.verb', p); });
+
+  if ('IntersectionObserver' in window) {
+    const vo = new IntersectionObserver(es => es.forEach(e => { const s = scenes.find(x => x.el === e.target || x.canvas === e.target); if (s) s.visible = e.isIntersecting; }), { rootMargin: '100px' });
+    scenes.forEach(s => vo.observe(s.el));
+  } else scenes.forEach(s => (s.visible = true));
+
+  /* ---- scroll-linked: tide level, wordmark scale, sunrise, marquee ---- */
+  const tideEl = $('.tide'), tideWord = $('#tideword');
+  const track = $('#marquee');
+  let lastY = window.scrollY, vel = 0, mx = 0;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  function onScroll() {
+    const y = window.scrollY, vh = window.innerHeight;
+    const r = tideEl.getBoundingClientRect();
+    const prog = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
+    hero.level = reduce.matches ? 0.5 : prog;
+    tideWord.textContent = prog < 0.33 ? 'low' : prog < 0.7 ? 'rising' : 'high';
+    if (!reduce.matches) {
+      const hp = clamp(y / vh, 0, 1);
+      mark.style.transform = `scale(${1 - hp * 0.07})`;
+      const fr = footmark.getBoundingClientRect();
+      const fp = clamp(1 - (fr.top - vh * 0.45) / (vh * 0.55), 0, 1);
+      footmark.style.transform = `scale(${0.94 + fp * 0.06})`;
+      scenes.forEach(s => { if (s.panel) { const pr = s.panel.getBoundingClientRect(); s.vis = clamp(1 - pr.top / vh, 0, 1.5); const p = clamp((vh - pr.top) / (vh + pr.height), 0, 1); s.verb.style.transform = `translate3d(${((0.5 - p) * 16).toFixed(2)}%,0,0) scale(${(0.9 + Math.sin(p * Math.PI) * 0.1).toFixed(3)})`; } });
+      vel += (y - lastY) * 0.08;
+    } else scenes.forEach(s => { s.vis = 1; });
+    lastY = y;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  let running = true;
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !reduce.matches) requestAnimationFrame(loop); });
+  let marqueeOn = false;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { marqueeOn = es[0].isIntersecting; }, { rootMargin: '50px' }).observe(track.parentElement);
+  let prev = performance.now();
+  function loop(now) {
+    if (!running || reduce.matches) return;
+    const dt = Math.min(0.05, (now - prev) / 1000); prev = now;
+    const t = now / 1000;
+    for (const s of scenes) { if (s.visible) { s.bump.k *= 0.96; s.draw(t); } }
+    if (marqueeOn) {
+      vel *= 0.92;
+      mx -= (60 + Math.abs(vel) * 30) * dt * (vel < -0.5 ? -1 : 1);
+      const half = track.scrollWidth / 2;
+      if (mx <= -half) mx += half; if (mx > 0) mx -= half;
+      track.style.transform = `translate3d(${mx.toFixed(1)}px,0,0)`;
+    }
+    requestAnimationFrame(loop);
+  }
+  function drawStill() { scenes.forEach(s => { s.vis = 1; s.draw(12); }); }
+
+  function layout() { fitAll(); scenes.forEach(s => s.size()); onScroll(); if (reduce.matches) drawStill(); }
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 120); });
+  reduce.addEventListener('change', () => { mark.style.transform = footmark.style.transform = track.style.transform = ''; $$('.verb').forEach(v => (v.style.transform = '')); layout(); if (!reduce.matches) { prev = performance.now(); requestAnimationFrame(loop); } });
+
+  const start = () => { layout(); if (!reduce.matches) requestAnimationFrame(loop); else drawStill(); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+  // fallback draw before fonts settle
+  scenes.forEach(s => s.draw(0));
+})();
+</script>
+</body>
+</html>

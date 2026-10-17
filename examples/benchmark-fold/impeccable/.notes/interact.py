@@ -1,0 +1,20 @@
+from playwright.sync_api import sync_playwright
+url="examples/benchmark-fold/impeccable/index.html"
+with sync_playwright() as p:
+    b=p.chromium.launch(); pg=b.new_page(viewport={"width":1440,"height":900}); pg.goto(url); pg.evaluate("document.fonts.ready.then(()=>1)")
+    pg.click("text=Civic"); print("civic visible:",pg.locator(".project:visible").count(), pg.inner_text("#work-status"))
+    pg.click("[data-filter=extensions]"); print("ext:",pg.locator(".project:visible").count(), pg.inner_text("#work-status"))
+    pg.click("[data-filter=all]"); print("all:",pg.locator(".project:visible").count())
+    pg.click(".btn"); print("errors after empty submit:",[pg.inner_text(f"#{i}") for i in ["e-name","e-email","e-type","e-budget","e-msg"]]); print("focused:",pg.evaluate("document.activeElement.id"))
+    pg.locator("#f-contact").count()
+    pg.screenshot(path="shots/form-errors.png",clip={"x":0,"y":pg.evaluate("document.getElementById('contact').getBoundingClientRect().top+scrollY"),"width":1440,"height":900}, full_page=True)
+    pg.fill("#f-name","Ailsa Morrison"); pg.fill("#f-email","ailsa@bad"); pg.locator("#f-email").blur(); print("email err:",pg.inner_text("#e-email"))
+    pg.fill("#f-email","ailsa@example.com"); pg.select_option("#f-type",index=1); pg.select_option("#f-budget",index=2); pg.fill("#f-msg","Ground floor flat in a tenement, want it warmer and a bigger kitchen.")
+    pg.click(".btn"); print("success visible:",pg.is_visible("#enquiry-done"), pg.inner_text("#done-text"), "focus:",pg.evaluate("document.activeElement.id"))
+    pg.screenshot(path="shots/form-success.png",clip={"x":0,"y":pg.evaluate("document.getElementById('contact').getBoundingClientRect().top+scrollY"),"width":1440,"height":700}, full_page=True)
+    m=b.new_page(viewport={"width":375,"height":812}); m.goto(url); m.evaluate("document.fonts.ready.then(()=>1)")
+    m.click(".menu-btn"); print("menu expanded:",m.get_attribute(".menu-btn","aria-expanded"), "focus:",m.evaluate("document.activeElement.textContent"))
+    m.screenshot(path="shots/mobile-menu.png")
+    m.keyboard.press("Escape"); print("after esc:",m.get_attribute(".menu-btn","aria-expanded"))
+    m.click(".menu-btn"); m.click("#site-nav >> text=Approach"); print("after link:",m.get_attribute(".menu-btn","aria-expanded"), m.evaluate("location.hash"))
+    b.close()

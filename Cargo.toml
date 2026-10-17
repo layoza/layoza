@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/layoza-core",
+    "crates/layoza-mcp",
+    "crates/layoza-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["Layoza Contributors"]
+repository = "https://github.com/layoza/layoza"
+description = "Design engineering for AI agents: UI/UX layout expert, site design DNA, motion mechanics and live Chromium visual QA"
+homepage = "https://github.com/layoza/layoza"
+readme = "README.md"
+keywords = ["mcp", "ai-agents", "ui-design", "accessibility", "design-system"]
+categories = ["command-line-utilities", "development-tools", "web-programming"]
+
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+layoza-core = { path = "crates/layoza-core" }
+layoza-mcp = { path = "crates/layoza-mcp" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true

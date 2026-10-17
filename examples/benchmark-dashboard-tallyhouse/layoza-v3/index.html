@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tallyhouse · Today's tally</title>
+<meta name="description" content="Tallyhouse operations dashboard for a four-shop bakery chain. Sample data.">
+<meta name="theme-color" content="#F6F1E8">
+<meta name="layoza-brand-allow" content="palette:cream, rule:hero-metric, rule:hero-art-scale, rule:display-scale">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F6F1E8; --surface:#FFFDF9; --surface-2:#EFE7DA; --line:#E0D4C1; --line-strong:#C9B89F;
+  --ink:#221A12; --ink-2:#4A3D2F; --muted:#66584A;
+  --crust:#9A3D10; --crust-hover:#7E300A; --crust-soft:#F5E1CF; --crust-bar:#C0662F;
+  --board:#2A2017; --board-2:#3A2D21; --board-ink:#F8EDE0; --board-muted:#D2C1AC;
+  --good:#2C6638; --good-soft:#E3EFE1; --bad:#A3241A; --bad-soft:#F8E0DC; --warn:#7A4E00; --warn-soft:#F7EAC8;
+  --focus:#1F5FBF;
+  --r:10px; --r-sm:6px;
+  --row-h:52px; --cell-py:12px;
+  --f-display:"Fraunces", Georgia, serif;
+  --f-ui:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-drawer:cubic-bezier(.32,.72,0,1);
+  --topbar-h:64px;
+}
+[data-density="compact"]{ --row-h:40px; --cell-py:6px; }
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-padding-top:calc(var(--topbar-h) + 16px); scroll-padding-bottom:24px; -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font:400 15px/1.5 var(--f-ui); font-variant-numeric:tabular-nums; }
+h1,h2,h3{ margin:0; font-family:var(--f-display); font-weight:600; letter-spacing:-.01em; line-height:1.15; }
+h2{ font-size:1.25rem; }
+p{ margin:0; }
+button,input,select{ font:inherit; color:inherit; }
+a{ color:var(--crust); }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; border-radius:4px; }
+.sr-only{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+.skip{ position:absolute; left:12px; top:-60px; background:var(--ink); color:#fff; padding:10px 14px; border-radius:var(--r-sm); z-index:100; text-decoration:none; }
+.skip:focus{ top:12px; }
+
+/* ---------- Buttons ---------- */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:36px; padding:0 14px; border-radius:var(--r-sm); border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); font-weight:500; font-size:14px; cursor:pointer; white-space:nowrap; text-decoration:none; }
+.btn:hover{ background:var(--surface-2); }
+.btn-primary{ background:var(--crust); border-color:var(--crust); color:#FFF8F1; }
+.btn-primary:hover{ background:var(--crust-hover); border-color:var(--crust-hover); }
+.btn-ghost{ border-color:transparent; background:transparent; }
+.btn-ghost:hover{ background:var(--surface-2); }
+.btn[aria-busy="true"]{ opacity:.75; cursor:progress; }
+.btn svg{ width:16px; height:16px; flex:none; }
+.icon-btn{ width:40px; padding:0; }
+.linkish{ background:none; border:0; padding:4px 2px; color:var(--crust); font-weight:500; cursor:pointer; text-decoration:underline; text-underline-offset:3px; min-height:24px; }
+.linkish:hover{ color:var(--crust-hover); }
+
+/* ---------- Top bar ---------- */
+.topbar{ position:sticky; top:0; z-index:30; background:var(--bg); border-bottom:1px solid var(--line); }
+.topbar-inner{ max-width:1440px; margin:0 auto; padding:10px 32px; display:flex; align-items:center; gap:20px; min-height:var(--topbar-h); }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); flex:none; }
+.brand-mark{ width:30px; height:30px; }
+.brand-name{ font-family:var(--f-display); font-weight:600; font-size:1.3rem; letter-spacing:-.015em; }
+.sample-pill{ font:600 12px/1 var(--f-ui); color:var(--warn); background:var(--warn-soft); border:1px solid #E4CF97; padding:5px 7px; border-radius:4px; flex:none; }
+.controls{ display:flex; align-items:center; gap:14px; flex:1; min-width:0; }
+.seg{ border:0; margin:0; padding:3px; display:inline-flex; gap:2px; background:var(--surface-2); border-radius:8px; min-width:0; }
+.seg legend{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+.seg label{ position:relative; }
+.seg input{ position:absolute; opacity:0; inset:0; margin:0; cursor:pointer; }
+.seg span{ display:flex; align-items:center; gap:6px; padding:0 12px; min-height:32px; border-radius:6px; font-size:14px; font-weight:500; color:var(--ink-2); white-space:nowrap; }
+.seg input:hover + span{ color:var(--ink); background:rgb(255 255 255 / .55); }
+.seg input:checked + span{ background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgb(34 26 18 / .14), 0 0 0 1px var(--line); }
+.seg input:focus-visible + span{ outline:3px solid var(--focus); outline-offset:1px; }
+.tick{ width:10px; height:14px; flex:none; }
+.top-meta{ display:flex; align-items:center; gap:8px; margin-left:auto; flex:none; }
+.fresh{ font-size:13px; color:var(--muted); white-space:nowrap; }
+.fresh time{ color:var(--ink-2); font-weight:500; }
+
+/* ---------- Layout ---------- */
+main{ max-width:1440px; margin:0 auto; padding:24px 32px 48px; }
+.page-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:18px; }
+.page-head h1{ font-size:2rem; }
+.page-head .sub{ color:var(--muted); margin-top:4px; }
+.panel{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); }
+.panel-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px 12px; flex-wrap:wrap; }
+.panel-head .hint{ color:var(--muted); font-size:13px; }
+.panel-body{ padding:0 20px 20px; }
+
+.grid{ display:grid; grid-template-columns:minmax(0,1fr) 400px; grid-template-areas:"chart orders" "stock orders" "rota rota"; gap:20px; align-items:start; }
+#sales{ grid-area:chart; } #stock{ grid-area:stock; } #orders{ grid-area:orders; } #rota{ grid-area:rota; }
+#orders{ position:sticky; top:calc(var(--topbar-h) + 16px); }
+
+/* ---------- KPIs ---------- */
+.kpis{ display:grid; grid-template-columns:1.7fr 1fr 1fr 1fr; gap:20px; margin-bottom:20px; }
+.kpi{ padding:18px 20px; display:flex; flex-direction:column; gap:6px; min-width:0; }
+.kpi-label{ font-size:13px; font-weight:600; color:var(--muted); letter-spacing:.01em; }
+.kpi-value{ font-family:var(--f-display); font-weight:600; font-size:2.1rem; line-height:1.05; letter-spacing:-.02em; font-variant-numeric:tabular-nums lining-nums; }
+.kpi-note{ font-size:13px; color:var(--muted); }
+.delta{ display:inline-flex; align-items:center; gap:4px; font-weight:600; font-size:14px; padding:2px 8px; border-radius:999px; width:fit-content; }
+.delta.up{ color:var(--good); background:var(--good-soft); }
+.delta.down{ color:var(--bad); background:var(--bad-soft); }
+.delta svg{ width:12px; height:12px; }
+.kpi-low.has-low{ border-color:#E6B9B1; background:linear-gradient(var(--surface),var(--surface)) padding-box; }
+.kpi-low.has-low .kpi-value{ color:var(--bad); }
+.kpi-low .btn{ margin-top:auto; align-self:flex-start; }
+
+.board{ background:var(--board); color:var(--board-ink); border-color:var(--board); position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:20px; padding:20px 22px; }
+.board::before{ content:""; position:absolute; inset:0; background:radial-gradient(120% 80% at 0% 0%, rgb(255 236 210 / .07), transparent 60%); pointer-events:none; }
+.board .kpi-label{ color:var(--board-muted); }
+.board .kpi-value{ font-size:3.25rem; color:#FFF6EA; }
+.board .kpi-value .p{ font-size:.55em; color:var(--board-muted); }
+.board .kpi-note{ color:var(--board-muted); }
+.board-main{ display:flex; flex-direction:column; gap:6px; min-width:0; position:relative; }
+.split{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px; position:relative; align-self:center; }
+.split button{ width:100%; display:grid; grid-template-columns:96px minmax(0,1fr) auto; align-items:center; gap:10px; background:none; border:0; color:var(--board-ink); padding:4px 6px; border-radius:6px; cursor:pointer; text-align:left; font-size:13px; }
+.split button:hover{ background:var(--board-2); }
+.split button:focus-visible{ outline-color:#9EC1FF; }
+.split .bar{ height:8px; border-radius:2px; background:#E9A56F; }
+.split .amt{ font-variant-numeric:tabular-nums; color:#FFF6EA; font-weight:500; }
+.split li.dim button{ color:var(--board-muted); }
+.split li.dim .bar{ background:#6E5947; }
+.split li.dim .amt{ color:var(--board-muted); }
+.split-cap{ font-size:12px; color:var(--board-muted); padding:0 6px 4px; }
+
+/* Loading skeleton */
+.is-loading .sk{ color:transparent!important; background:linear-gradient(90deg, var(--sk1) 0 40%, var(--sk2) 50%, var(--sk1) 60% 100%) 0 0/300% 100%; border-radius:6px; }
+.is-loading .sk *{ visibility:hidden; }
+.kpis, .chart-wrap{ --sk1:#EFE6D8; --sk2:#F8F2E9; }
+.board{ --sk1:#3A2D21; --sk2:#4A3A2C; }
+
+/* ---------- Chart ---------- */
+.chart-summary{ font-size:14px; color:var(--ink-2); margin-bottom:10px; }
+.chart-wrap{ position:relative; height:280px; border-radius:6px; }
+.chart-wrap:focus-visible{ outline-offset:4px; }
+.chart-wrap svg{ display:block; width:100%; height:100%; overflow:visible; }
+.chart-wrap .grid-line{ stroke:#E8DECF; stroke-width:1; }
+.chart-wrap .axis-label{ fill:#66584A; font:12px var(--f-ui); }
+.chart-wrap .bar-actual{ fill:var(--crust-bar); }
+.chart-wrap .bar-active{ fill:var(--crust); }
+.chart-wrap .ghost{ stroke:var(--ink); stroke-width:2; stroke-linecap:round; }
+.chart-wrap .now-line{ stroke:var(--ink-2); stroke-dasharray:3 3; }
+.chart-wrap .now-label{ fill:var(--ink-2); font:600 11px var(--f-ui); }
+.legend{ display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--muted); }
+.legend i{ display:inline-block; vertical-align:-1px; margin-right:6px; }
+.lg-bar{ width:12px; height:12px; background:var(--crust-bar); border-radius:2px; }
+.lg-svg{ vertical-align:-1px; margin-right:6px; border-radius:2px; }
+.lg-ghost{ width:14px; height:2px; background:var(--ink); vertical-align:3px!important; }
+.tip{ visibility:hidden; position:absolute; pointer-events:none; background:var(--ink); color:#FFF8F1; padding:8px 10px; border-radius:6px; font-size:13px; line-height:1.4; min-width:150px; transform:translate(-50%, calc(-100% - 10px)); white-space:nowrap; z-index:2; opacity:0; }
+.tip.show{ opacity:1; visibility:visible; }
+.tip b{ font-weight:600; }
+.tip .t-muted{ color:#D9CBB8; }
+details.data-table{ margin-top:12px; font-size:14px; }
+details.data-table summary{ cursor:pointer; color:var(--crust); font-weight:500; width:fit-content; padding:4px 0; }
+.mini-table{ width:100%; border-collapse:collapse; margin-top:8px; }
+.mini-table th,.mini-table td{ padding:6px 8px; border-bottom:1px solid var(--line); text-align:right; }
+.mini-table th:first-child,.mini-table td:first-child{ text-align:left; }
+.mini-wrap{ max-height:240px; overflow:auto; }
+
+/* ---------- Stock table ---------- */
+.toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; padding:0 20px 14px; }
+.field{ display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:500; color:var(--ink-2); }
+.input, .select{ min-height:40px; border:1px solid #8C7A63; border-radius:var(--r-sm); background:var(--surface); padding:0 10px; font-size:16px; }
+.input:focus-visible, .select:focus-visible{ outline-offset:0; }
+.search-field{ flex:1; min-width:200px; }
+.search-box{ position:relative; }
+.search-box svg{ position:absolute; left:10px; top:50%; translate:0 -50%; width:16px; height:16px; color:var(--muted); pointer-events:none; }
+.search-box .input{ width:100%; padding-left:34px; }
+.shop-note{ font-size:13px; color:var(--muted); padding:0 20px 10px; }
+.table-wrap{ border-top:1px solid var(--line); }
+table.stock{ width:100%; border-collapse:collapse; }
+table.stock caption{ text-align:left; }
+table.stock th, table.stock td{ padding:var(--cell-py) 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle; height:var(--row-h); }
+table.stock thead th{ font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; background:#FBF7F0; height:auto; padding-top:10px; padding-bottom:10px; }
+table.stock th:first-child, table.stock td:first-child{ padding-left:20px; }
+table.stock th:last-child, table.stock td:last-child{ padding-right:20px; text-align:right; }
+table.stock .num{ text-align:right; }
+.sort-btn{ background:none; border:0; padding:2px 0; font:inherit; color:inherit; text-transform:inherit; letter-spacing:inherit; cursor:pointer; display:inline-flex; align-items:center; gap:4px; min-height:24px; }
+.sort-btn:hover{ color:var(--ink); }
+.sort-btn svg{ width:10px; height:10px; opacity:.5; }
+th[aria-sort] .sort-btn{ color:var(--ink); }
+th[aria-sort] .sort-btn svg{ opacity:1; }
+.item-name{ font-weight:600; }
+.item-pack{ display:block; font-size:13px; color:var(--muted); }
+.level{ display:flex; align-items:center; gap:10px; justify-content:flex-end; }
+.level-txt{ min-width:70px; text-align:right; }
+.meter{ width:72px; height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden; flex:none; position:relative; }
+.meter b{ position:absolute; inset:0 auto 0 0; background:var(--bad); border-radius:4px; }
+.meter.mid b{ background:#B7791F; }
+.pct{ font-size:12px; color:var(--muted); display:block; text-align:right; }
+.shop-tag{ display:inline-flex; align-items:center; gap:6px; font-size:14px; }
+.empty{ text-align:center; padding:36px 20px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.empty svg{ width:84px; height:56px; }
+.empty h3{ font-size:1.1rem; }
+.empty p{ color:var(--muted); max-width:42ch; }
+tr.leaving{ opacity:.35; }
+tr.returning td{ background:var(--crust-soft); }
+
+/* ---------- Orders (delivery dockets) ---------- */
+.orders-sum{ font-size:14px; color:var(--muted); }
+.orders-sum strong{ color:var(--ink); }
+.dockets{ list-style:none; margin:0; padding:0 20px 20px; display:flex; flex-direction:column; gap:12px; }
+.docket{ position:relative; background:#FFFBF3; border:1px solid var(--line); border-radius:4px; padding:12px 14px 12px 16px; font-size:14px; }
+.docket::before{ content:""; position:absolute; left:-1px; top:10px; bottom:10px; width:6px; background:radial-gradient(circle at 0 50%, var(--surface) 3px, transparent 3.5px) 0 0/6px 10px repeat-y; }
+.docket-top{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+.docket-sup{ font-weight:600; font-size:13px; color:var(--crust-hover); }
+.docket-due{ font-weight:600; white-space:nowrap; font-size:14px; }
+.docket-item{ font-weight:600; font-size:15px; margin:4px 0 2px; }
+.docket-meta{ color:var(--muted); font-size:13px; display:flex; flex-wrap:wrap; gap:4px 12px; }
+.docket-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:8px; border-top:1px dashed var(--line-strong); gap:8px; }
+.status{ font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px; background:var(--surface-2); color:var(--ink-2); }
+.status.today{ background:var(--good-soft); color:var(--good); }
+.status.new{ background:var(--crust-soft); color:var(--crust-hover); }
+.docket.fresh-in{ border-color:var(--crust-bar); box-shadow:0 0 0 1px var(--crust-bar); }
+.received{ margin:0 20px 20px; padding-top:12px; border-top:1px solid var(--line); font-size:13px; color:var(--muted); }
+
+/* ---------- Rota ---------- */
+.now-strip{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:0 20px 14px; font-size:14px; }
+.now-strip .who{ display:inline-flex; align-items:center; gap:6px; background:var(--good-soft); color:var(--good); padding:3px 10px; border-radius:999px; font-weight:500; font-size:13px; }
+.now-strip .who.later{ background:var(--surface-2); color:var(--ink-2); }
+.rota-scroll{ overflow-x:auto; border-top:1px solid var(--line); position:relative; }
+table.rota{ width:100%; border-collapse:separate; border-spacing:0; min-width:880px; }
+table.rota th, table.rota td{ border-bottom:1px solid var(--line); padding:8px; text-align:left; vertical-align:middle; }
+table.rota thead th{ font-size:13px; font-weight:600; color:var(--ink-2); background:#FBF7F0; white-space:nowrap; }
+table.rota thead th small{ display:block; font-weight:400; color:var(--muted); font-size:12px; }
+table.rota th[scope="row"]{ position:sticky; left:0; background:var(--surface); z-index:1; min-width:180px; padding-left:20px; border-right:1px solid var(--line); }
+table.rota thead th:first-child{ position:sticky; left:0; z-index:2; padding-left:20px; border-right:1px solid var(--line); }
+.staff-name{ font-weight:600; display:block; font-size:14px; }
+.staff-role{ font-size:12px; color:var(--muted); }
+table.rota .today-col{ background:#FBF0E4; }
+table.rota thead th.today-col{ background:#F5E1CF; color:var(--crust-hover); }
+.today-flag{ display:inline-block; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#FFF8F1; background:var(--crust); padding:1px 6px; border-radius:3px; margin-left:4px; vertical-align:1px; }
+.shift{ display:block; white-space:nowrap; border-radius:5px; padding:4px 8px; font-size:13px; line-height:1.3; border:1px solid transparent; }
+.shift b{ display:block; font-weight:600; font-size:12px; }
+.shift.bake{ background:#F3D9C3; color:#5A2508; border-color:#E8C2A2; }
+.shift.open{ background:#E6EEDF; color:#25502E; border-color:#CCDDC4; }
+.shift.close{ background:#E5E3F0; color:#373260; border-color:#CFCBE4; }
+.shift.off{ color:var(--muted); font-size:13px; padding-left:8px; }
+.rota-key{ display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--muted); padding:12px 20px 18px; }
+.rota-key span{ display:inline-flex; gap:6px; align-items:center; }
+.rota-key i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+.scroll-cue{ display:none; }
+.panel-error{ margin:0 20px 20px; padding:20px; border:1px solid #E6B9B1; background:var(--bad-soft); border-radius:8px; display:flex; gap:14px; align-items:flex-start; }
+.panel-error svg{ width:24px; height:24px; color:var(--bad); flex:none; margin-top:2px; }
+.panel-error h3{ font-size:1.05rem; color:var(--bad); }
+.panel-error p{ color:var(--ink-2); margin:4px 0 12px; font-size:14px; }
+.rota-skel{ padding:0 20px 20px; display:grid; gap:10px; }
+.rota-skel div{ height:38px; border-radius:6px; background:var(--surface-2); }
+
+/* ---------- Drawer ---------- */
+dialog.drawer{ margin:0 0 0 auto; height:100dvh; max-height:100dvh; width:min(420px, 100vw); max-width:100vw; border:0; padding:0; background:var(--surface); color:var(--ink); box-shadow:-20px 0 40px -20px rgb(34 26 18 / .35); }
+dialog.drawer::backdrop{ background:rgb(34 26 18 / .38); }
+.drawer-inner{ display:flex; flex-direction:column; height:100%; }
+.drawer-head{ display:flex; justify-content:space-between; align-items:center; padding:18px 20px; border-bottom:1px solid var(--line); }
+.drawer-body{ padding:20px; overflow:auto; display:flex; flex-direction:column; gap:22px; flex:1; }
+.drawer-body .field{ font-size:14px; }
+.help{ font-size:13px; color:var(--muted); font-weight:400; }
+.switch-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.switch-row label{ font-weight:500; font-size:14px; }
+.switch{ appearance:none; width:44px; height:26px; border-radius:999px; background:#CDBFA9; position:relative; cursor:pointer; flex:none; margin:0; }
+.switch::after{ content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgb(0 0 0 / .25); }
+.switch:checked{ background:var(--crust); }
+.switch:checked::after{ left:21px; }
+.demo-box{ border:1px dashed var(--line-strong); border-radius:8px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+.demo-box h3{ font-family:var(--f-ui); font-size:14px; font-weight:600; }
+.demo-actions{ display:flex; flex-wrap:wrap; gap:8px; }
+.drawer-foot{ padding:14px 20px; border-top:1px solid var(--line); font-size:13px; color:var(--muted); }
+
+/* ---------- Toast & footer ---------- */
+.toast{ position:fixed; left:50%; bottom:24px; translate:-50% 0; background:var(--ink); color:#FFF8F1; padding:12px 14px 12px 16px; border-radius:8px; display:flex; gap:14px; align-items:center; font-size:14px; z-index:40; max-width:min(560px, calc(100vw - 32px)); box-shadow:0 12px 30px -12px rgb(0 0 0 / .45); }
+.toast[hidden]{ display:none; }
+.toast .linkish{ color:#FFC79A; }
+footer{ max-width:1440px; margin:0 auto; padding:0 32px 40px; color:var(--muted); font-size:13px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.tabbar{ display:none; }
+.head-cta{ min-height:42px; padding:0 18px; font-size:15px; }
+.link-sm{ font-size:14px; font-weight:600; margin-top:auto; text-underline-offset:3px; }
+.link-sm:hover{ color:var(--crust-hover); }
+
+/* ---------- Responsive ---------- */
+@media (max-width:1180px){
+  .topbar-inner{ flex-wrap:wrap; row-gap:8px; padding:10px 24px; }
+  .controls{ order:3; flex-basis:100%; flex-wrap:wrap; }
+  .grid{ grid-template-columns:minmax(0,1fr); grid-template-areas:"chart" "stock" "orders" "rota"; }
+  #orders{ position:static; }
+  .kpis{ grid-template-columns:1fr 1fr 1fr; }
+  .board{ grid-column:1 / -1; }
+  main{ padding:20px 24px 40px; }
+  html{ scroll-padding-top:16px; }
+  .topbar{ position:static; }
+}
+@media (max-width:767px){
+  :root{ --topbar-h:56px; }
+  body{ font-size:15px; padding-bottom:calc(68px + env(safe-area-inset-bottom)); }
+  html{ scroll-padding-bottom:84px; }
+  .topbar-inner{ padding:8px 16px; gap:10px; }
+  .brand-name{ font-size:1.15rem; }
+  .fresh{ display:none; }
+  .btn-txt{ display:none; }
+  #settingsBtn{ width:40px; padding:0; }
+  .sample-pill{ font-size:11px; padding:4px 6px; }
+  .controls{ flex-direction:column; align-items:stretch; gap:8px; }
+  .seg{ display:flex; flex-wrap:wrap; }
+  .seg label{ flex:1 0 auto; }
+  .seg span{ justify-content:center; padding:0 10px; min-height:36px; }
+  main{ padding:16px 16px 32px; }
+  .page-head h1{ font-size:1.6rem; }
+  .page-head{ flex-direction:column; align-items:stretch; gap:4px; }
+  .kpis{ grid-template-columns:1fr 1fr; gap:12px; }
+  .board{ grid-template-columns:1fr; gap:12px; padding:18px; }
+  .board .kpi-value{ font-size:2.75rem; }
+  .kpi-low{ grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; align-items:center; column-gap:12px; }
+  .kpi-low .kpi-label{ flex-basis:100%; }
+  .kpi-low .link-sm{ margin:0 0 0 auto; }
+  .head-cta{ width:100%; margin-top:8px; }
+  .kpi{ padding:14px 16px; }
+  .kpi-value{ font-size:1.7rem; }
+  .panel-head{ padding:14px 16px 10px; }
+  .panel-body{ padding:0 16px 16px; }
+  .toolbar{ padding:0 16px 12px; }
+  .toolbar .field{ flex:1 1 140px; }
+  .shop-note{ padding:0 16px 10px; }
+  .chart-wrap{ height:220px; }
+  /* Stock table becomes cards */
+  table.stock thead{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  table.stock, table.stock tbody{ display:block; }
+  table.stock tr{ display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"item item" "shop sup" "hand par" "act act"; gap:6px 12px; padding:14px 16px; border-bottom:1px solid var(--line); align-items:center; }
+  table.stock td.c-item{ grid-area:item; } table.stock td.c-shop{ grid-area:shop; } table.stock td.c-sup{ grid-area:sup; text-align:right!important; }
+  table.stock td.c-hand{ grid-area:hand; } table.stock td.c-par{ grid-area:par; } table.stock td.c-act{ grid-area:act; margin-top:4px; }
+  table.stock td.c-hand .pct{ display:inline; margin-left:6px; }
+  table.stock td{ display:block; border:0; padding:0!important; height:auto; text-align:left!important; }
+  table.stock td.c-shop, table.stock td.c-sup{ font-size:13px; color:var(--muted); }
+  table.stock td.c-par{ text-align:right!important; font-size:13px; color:var(--muted); }
+  table.stock td.c-par::before{ content:"Par "; }
+  table.stock td.c-sup::before{ content:"from "; }
+  table.stock td.c-hand .level-txt{ display:flex; align-items:baseline; }
+  table.stock td.c-hand .level{ justify-content:flex-start; }
+  table.stock td.c-hand .level-txt{ text-align:left; min-width:0; }
+  table.stock td.c-act .btn{ width:100%; min-height:44px; }
+  table.stock tr.empty-row{ display:block; }
+  .dockets{ padding:0 16px 16px; }
+  .received{ margin:0 16px 16px; }
+  .now-strip{ padding:0 16px 12px; }
+  table.rota th[scope="row"], table.rota thead th:first-child{ min-width:132px; padding-left:16px; }
+  table.rota{ min-width:900px; }
+  .scroll-cue{ display:flex; justify-content:flex-end; padding:8px 16px 0; font-size:12px; color:var(--muted); }
+  .rota-scroll::after{ content:""; position:sticky; float:right; right:0; top:0; }
+  .rota-key{ padding:10px 16px 16px; }
+  .panel-error{ margin:0 16px 16px; }
+  .rota-skel{ padding:0 16px 16px; }
+  footer{ padding:0 16px 24px; }
+  .tabbar{ display:grid; grid-template-columns:repeat(4,1fr); position:fixed; inset:auto 0 0 0; z-index:35; background:var(--surface); border-top:1px solid var(--line); padding:6px 8px calc(6px + env(safe-area-inset-bottom)); box-shadow:0 -6px 20px -14px rgb(34 26 18 / .4); }
+  .tabbar a{ display:flex; flex-direction:column; align-items:center; gap:2px; text-decoration:none; color:var(--ink-2); font-size:12px; font-weight:500; padding:6px 4px; border-radius:8px; min-height:48px; position:relative; }
+  .tabbar a:hover{ background:var(--surface-2); }
+  .tabbar svg{ width:22px; height:22px; }
+  .tabbar .badge{ position:absolute; top:2px; left:calc(50% + 6px); background:var(--bad); color:#fff; font-size:11px; font-weight:600; min-width:18px; height:18px; border-radius:9px; display:grid; place-items:center; padding:0 5px; }
+  .toast{ bottom:calc(80px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- Motion (micro-css-polish + tool motion), all opt-in ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .kpis > *{ animation:rise .6s var(--ease-out) both; }
+  .kpis > :nth-child(2){ animation-delay:.05s; } .kpis > :nth-child(3){ animation-delay:.1s; } .kpis > :nth-child(4){ animation-delay:.15s; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(10px); } }
+  .btn{ transition:background-color .15s ease, border-color .15s ease, color .15s ease, transform .12s ease; }
+  .btn:active{ transform:scale(.97); }
+  .seg span{ transition:background-color .15s ease, color .15s ease, box-shadow .15s ease; }
+  .linkish{ transition:color .15s ease; }
+  .split .bar{ transition:width .4s var(--ease-out); }
+  .meter b{ transition:width .4s var(--ease-out); }
+  .is-loading .sk{ animation:shimmer 1.1s linear infinite; }
+  @keyframes shimmer{ to{ background-position:-150% 0; } }
+  .chart-wrap .bar-actual, .chart-wrap .bar-active{ transition:fill .12s ease; }
+  .tip{ transition:opacity .12s ease; }
+  tr.leaving{ transition:opacity .28s ease; }
+  .docket.fresh-in{ animation:docket-in .45s var(--ease-out) both; }
+  @keyframes docket-in{ from{ opacity:0; transform:translateX(24px); } }
+  .toast:not([hidden]){ animation:toast-in .28s var(--ease-out) both; }
+  @keyframes toast-in{ from{ opacity:0; translate:-50% 12px; } }
+  .switch::after{ transition:left .2s var(--ease-out); }
+  .switch{ transition:background-color .2s ease; }
+  dialog.drawer[open]{ animation:drawer-in .28s var(--ease-drawer) both; }
+  dialog.drawer[open]::backdrop{ animation:fade .28s ease both; }
+  @keyframes drawer-in{ from{ transform:translateX(100%); } }
+  @keyframes fade{ from{ opacity:0; } }
+  @media (hover:hover){
+    .docket{ transition:border-color .15s ease; }
+    .docket:hover{ border-color:var(--line-strong); }
+  }
+}
+@media print{ .topbar, .tabbar, .toast{ display:none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to dashboard</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#main" aria-label="Tallyhouse, back to top">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="0" y="0" width="32" height="32" rx="7" fill="#2A2017"/><g stroke="#F8EDE0" stroke-width="2.4" stroke-linecap="round"><path d="M9 8v16M13.5 8v16M18 8v16M22.5 8v16"/></g><path d="M6 21.5 26 10" stroke="#E9A56F" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span class="brand-name">Tallyhouse</span>
+    </a>
+    <span class="sample-pill" title="All shops, staff, suppliers and figures are fictional">Sample data</span>
+    <div class="controls">
+      <fieldset class="seg" id="shopSeg">
+        <legend>Shop</legend>
+      </fieldset>
+      <fieldset class="seg" id="rangeSeg">
+        <legend>Date range</legend>
+        <label><input type="radio" name="range" value="today" checked><span>Today</span></label>
+        <label><input type="radio" name="range" value="7d"><span>7 days</span></label>
+        <label><input type="radio" name="range" value="30d"><span>30 days</span></label>
+      </fieldset>
+    </div>
+    <div class="top-meta">
+      <span class="fresh">Updated <time datetime="2026-10-16T10:42">10:42</time></span>
+      <button class="btn btn-ghost icon-btn" id="syncBtn" type="button" aria-label="Refresh data" title="Refresh data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-3.5M4 4v4h4M4 13a8 8 0 0 0 14.9 3.5M20 20v-4h-4"/></svg>
+      </button>
+      <button class="btn" id="settingsBtn" type="button" aria-haspopup="dialog" aria-controls="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        <span class="btn-txt">Settings</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <noscript><p class="panel" style="padding:16px;margin-bottom:16px">Tallyhouse needs JavaScript to load the sample figures.</p></noscript>
+  <header class="page-head">
+    <div>
+      <h1>Today's tally</h1>
+      <p class="sub" id="pageSub">Friday 16 October 2026, all shops, as of 10:42</p>
+    </div>
+    <a class="btn btn-primary head-cta" href="#stock" id="headCta">Reorder low stock</a>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Key figures" aria-live="polite" aria-busy="false">
+    <div class="panel kpi board">
+      <div class="board-main">
+        <p class="kpi-label" id="k1Label">Today's sales</p>
+        <p class="kpi-value sk" id="k1Value">£0.00</p>
+        <p class="kpi-note sk" id="k1Note">so far</p>
+      </div>
+      <div>
+        <p class="split-cap" id="splitCap">By shop: select one to focus</p>
+        <ul class="split" id="split"></ul>
+      </div>
+    </div>
+    <div class="panel kpi">
+      <p class="kpi-label" id="k2Label">Change vs same day last week</p>
+      <p class="kpi-value sk" id="k2Value">£0</p>
+      <p class="sk" id="k2Delta"></p>
+      <p class="kpi-note" id="k2Note"></p>
+    </div>
+    <div class="panel kpi">
+      <p class="kpi-label" id="k3Label">Items sold</p>
+      <p class="kpi-value sk" id="k3Value">0</p>
+      <p class="kpi-note" id="k3Note"></p>
+    </div>
+    <div class="panel kpi kpi-low" id="k4">
+      <p class="kpi-label">Low-stock items</p>
+      <p class="kpi-value" id="k4Value">0</p>
+      <p class="kpi-note" id="k4Note"></p>
+      <a class="link-sm" href="#stock" id="k4Btn">See the list</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="panel" id="sales" aria-labelledby="salesTitle">
+      <div class="panel-head">
+        <h2 id="salesTitle">Sales today, by hour</h2>
+        <div class="legend" aria-hidden="true">
+          <span><i class="lg-bar"></i>Sales</span>
+          <span id="lgPartial"><svg class="lg-svg" viewBox="0 0 12 12" width="12" height="12"><rect width="12" height="12" rx="2" fill="#F5E1CF"/><path d="M-2 6 6-2M0 12 12 0M6 14 14 6" stroke="#C0662F" stroke-width="2"/></svg>In progress</span>
+          <span id="lgGhost"><i class="lg-ghost"></i><span id="ghostLabel">Last Friday</span></span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <p class="chart-summary" id="chartSummary"></p>
+        <div class="chart-wrap sk" id="chart" tabindex="0" role="group" aria-roledescription="bar chart" aria-label="Sales chart. Use left and right arrow keys to read each bar." aria-describedby="chartSummary"></div>
+        <p class="sr-only" aria-live="polite" id="chartLive"></p>
+        <details class="data-table" id="chartDetails">
+          <summary>View chart as a table</summary>
+          <div class="mini-wrap" id="chartTable" hidden></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="panel" id="stock" aria-labelledby="stockTitle">
+      <div class="panel-head">
+        <h2 id="stockTitle">Low stock</h2>
+        <p class="hint" id="stockHint"></p>
+      </div>
+      <div class="toolbar" role="search">
+        <div class="field search-field">
+          <label for="q">Search items or suppliers</label>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input class="input" id="q" type="search" placeholder="e.g. butter, Fenwick" autocomplete="off">
+          </div>
+        </div>
+        <div class="field">
+          <label for="supplierFilter">Supplier</label>
+          <select class="select" id="supplierFilter"><option value="all">All suppliers</option></select>
+        </div>
+      </div>
+      <p class="shop-note" id="shopNote" hidden></p>
+      <div class="table-wrap">
+        <table class="stock" id="stockTable">
+          <caption class="sr-only" id="stockCaption">Items below par</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-key="item"><button class="sort-btn" type="button" data-sort="item">Item <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3-3 3 3M2 6l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col">Shop</th>
+              <th scope="col" class="num" data-key="level"><button class="sort-btn" type="button" data-sort="level">On hand <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 4l3-3 3 3M2 6l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="num">Par level</th>
+              <th scope="col">Supplier</th>
+              <th scope="col"><span class="sr-only">Action</span></th>
+            </tr>
+          </thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="orders" aria-labelledby="ordersTitle">
+      <div class="panel-head">
+        <h2 id="ordersTitle">Pending orders</h2>
+        <p class="orders-sum" id="ordersSum"></p>
+      </div>
+      <ul class="dockets" id="dockets" aria-live="polite"></ul>
+      <p class="received" id="received"></p>
+    </section>
+
+    <section class="panel" id="rota" aria-labelledby="rotaTitle">
+      <div class="panel-head">
+        <h2 id="rotaTitle">Staff rota, week of Mon 12 Oct</h2>
+        <p class="hint" id="rotaHint"></p>
+      </div>
+      <div id="rotaBody" aria-live="polite"></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <p>Tallyhouse: operations for four bakeries. All shops, staff, suppliers and figures are fictional sample data.</p>
+  <p>Shops open 07:00–18:00. Figures in GBP, incl. VAT.</p>
+</footer>
+
+<nav class="tabbar" aria-label="Jump to section">
+  <a href="#main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Sales</a>
+  <a href="#stock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Stock<span class="badge" id="tabBadge" aria-label="low-stock items"></span></a>
+  <a href="#orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Orders</a>
+  <a href="#rota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Rota</a>
+</nav>
+
+<div class="toast" id="toast" role="status" hidden><span id="toastMsg"></span><button class="linkish" type="button" id="toastUndo">Undo</button></div>
+
+<dialog class="drawer" id="settings" aria-labelledby="settingsTitle">
+  <div class="drawer-inner">
+    <div class="drawer-head">
+      <h2 id="settingsTitle">Settings</h2>
+      <button class="btn btn-ghost icon-btn" type="button" id="settingsClose" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <div class="field">
+        <label for="setThreshold">Low-stock threshold</label>
+        <select class="select" id="setThreshold">
+          <option value="0.5">Below 50% of par</option>
+          <option value="0.75">Below 75% of par</option>
+          <option value="1" selected>Below par (100%)</option>
+          <option value="1.25">Below 125% of par</option>
+        </select>
+        <span class="help">Items under this level appear in Low stock and the KPI count.</span>
+      </div>
+      <div class="field">
+        <label for="setShop">Default shop when Tallyhouse opens</label>
+        <select class="select" id="setShop"></select>
+      </div>
+      <div class="switch-row">
+        <label for="setCompact">Compact table rows</label>
+        <input type="checkbox" class="switch" id="setCompact" role="switch">
+      </div>
+      <div class="switch-row">
+        <label for="setGhost">Show last week on the sales chart</label>
+        <input type="checkbox" class="switch" id="setGhost" role="switch" checked>
+      </div>
+      <div class="demo-box">
+        <h3>Try the panel states</h3>
+        <p class="help">Sample-data tools for checking how Tallyhouse behaves on a bad connection.</p>
+        <div class="demo-actions">
+          <button class="btn" type="button" id="demoLoading">Show slow loading</button>
+          <button class="btn" type="button" id="demoError">Break the rota feed</button>
+        </div>
+      </div>
+    </div>
+    <p class="drawer-foot">Changes save automatically on this device.</p>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  "use strict";
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const $ = (s, r = document) => r.querySelector(s);
+  const GBP = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
+  const GBP0 = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 });
+  const NUM = new Intl.NumberFormat("en-GB");
+  const PCT = new Intl.NumberFormat("en-GB", { style: "percent", maximumFractionDigits: 1, minimumFractionDigits: 1, signDisplay: "always" });
+  const fmtDay = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+  const fmtShort = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+  const fmtWk = new Intl.DateTimeFormat("en-GB", { weekday: "long", timeZone: "UTC" });
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const plural = (n, u) => `${NUM.format(n)} ${n === 1 ? u[0] : u[1]}`;
+
+  /* ---------------- Sample data ---------------- */
+  const SHOPS = [
+    { id: "bridge", name: "Bridge Street", base: 1480, avg: 2.95 },
+    { id: "market", name: "Market Square", base: 1720, avg: 3.1 },
+    { id: "mill", name: "Old Mill Lane", base: 980, avg: 2.7 },
+    { id: "harbour", name: "Harbour Row", base: 1190, avg: 3.25 }
+  ];
+  const shopName = id => (SHOPS.find(s => s.id === id) || {}).name || "All shops";
+  const HOURS = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+  const PROFILE = [.07, .13, .12, .10, .09, .13, .11, .07, .08, .06, .04];
+  const DOW = [.85, .78, .86, .9, .95, 1.08, 1.32];
+  const TODAY = Date.UTC(2026, 9, 16), DAY = 864e5, NDAYS = 60, NOW_H = 3, NOW_FRAC = 42 / 60;
+  const dayDate = i => new Date(TODAY - (NDAYS - 1 - i) * DAY);
+
+  function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const rnd = mulberry32(20261016);
+  // sales[s][day][hour] in pence, items[s][day][hour]
+  const sales = [], items = [];
+  SHOPS.forEach((shop, s) => {
+    sales[s] = []; items[s] = [];
+    for (let d = 0; d < NDAYS; d++) {
+      const dt = dayDate(d), dow = dt.getUTCDay();
+      let f = DOW[dow] * (0.9 + rnd() * 0.2);
+      if (shop.id === "harbour" && (dow === 0 || dow === 6)) f *= 1.15;
+      if (d === NDAYS - 1) f *= 1.07;
+      sales[s][d] = []; items[s][d] = [];
+      HOURS.forEach((h, hi) => {
+        let p = Math.round(shop.base * f * PROFILE[hi] * (0.85 + rnd() * 0.3) * 100);
+        if (d === NDAYS - 1 && hi > NOW_H) p = 0;
+        if (d === NDAYS - 1 && hi === NOW_H) p = Math.round(p * NOW_FRAC);
+        sales[s][d][hi] = p;
+        items[s][d][hi] = Math.round(p / 100 / (shop.avg * (0.92 + rnd() * 0.16)));
+      });
+    }
+  });
+  const shopIdx = id => id === "all" ? [0, 1, 2, 3] : [SHOPS.findIndex(s => s.id === id)];
+  const sumH = (arr, idxs, d, upto = 99, frac = 1) => idxs.reduce((t, s) => t + arr[s][d].reduce((a, v, hi) => a + (hi < upto ? v : hi === upto ? Math.round(v * frac) : 0), 0), 0);
+  const daySales = (idxs, d, cut) => cut && d !== NDAYS - 1 ? sumH(sales, idxs, d, NOW_H, NOW_FRAC) : sumH(sales, idxs, d);
+  const dayItems = (idxs, d, cut) => cut && d !== NDAYS - 1 ? sumH(items, idxs, d, NOW_H, NOW_FRAC) : sumH(items, idxs, d);
+
+  const SUPPLIERS = {
+    fenwick: { name: "Fenwick Mill", due: Date.UTC(2026, 9, 20) },
+    hollow: { name: "Hollow Lane Dairy", due: Date.UTC(2026, 9, 17) },
+    corbel: { name: "Corbel Chocolate", due: Date.UTC(2026, 9, 21) },
+    brightwater: { name: "Brightwater Coffee", due: Date.UTC(2026, 9, 19) },
+    saltmarsh: { name: "Saltmarsh Eggs", due: Date.UTC(2026, 9, 19) },
+    kestrel: { name: "Kestrel Spice Co.", due: Date.UTC(2026, 9, 20) },
+    paper: { name: "Paper & Crate", due: Date.UTC(2026, 9, 21) }
+  };
+  const U = {
+    sack: ["sack", "sacks"], block: ["block", "blocks"], box: ["box", "boxes"], kg: ["kg", "kg"], tray: ["tray", "trays"],
+    litre: ["litre", "litres"], bag: ["bag", "bags"], tub: ["tub", "tubs"], pack: ["pack", "packs"]
+  };
+  let STOCK = [
+    { id: 1, item: "Strong white flour", pack: "16 kg sack", shop: "bridge", hand: 3, par: 8, unit: U.sack, sup: "fenwick", cost: 2140 },
+    { id: 2, item: "Unsalted butter", pack: "2.5 kg block", shop: "bridge", hand: 5, par: 12, unit: U.block, sup: "hollow", cost: 1780 },
+    { id: 3, item: "Free-range eggs", pack: "tray of 30", shop: "bridge", hand: 7, par: 8, unit: U.tray, sup: "saltmarsh", cost: 780 },
+    { id: 4, item: "Kraft loaf bags", pack: "pack of 250", shop: "bridge", hand: 5, par: 4, unit: U.pack, sup: "paper", cost: 1420 },
+    { id: 5, item: "Laminating butter sheets", pack: "box of 10 × 1 kg", shop: "market", hand: 2, par: 6, unit: U.box, sup: "hollow", cost: 6800 },
+    { id: 6, item: "Dark chocolate batons", pack: "box of 300", shop: "market", hand: 1, par: 5, unit: U.box, sup: "corbel", cost: 5450 },
+    { id: 7, item: "Espresso beans", pack: "1 kg bag", shop: "market", hand: 8, par: 10, unit: U.bag, sup: "brightwater", cost: 1890 },
+    { id: 8, item: "Whole milk", pack: "per litre", shop: "market", hand: 46, par: 40, unit: U.litre, sup: "hollow", cost: 98 },
+    { id: 9, item: "Dark rye flour", pack: "loose, per kg", shop: "mill", hand: 9, par: 25, unit: U.kg, sup: "fenwick", cost: 145 },
+    { id: 10, item: "Fresh yeast", pack: "1 kg block", shop: "mill", hand: 3, par: 4, unit: U.block, sup: "fenwick", cost: 320 },
+    { id: 11, item: "Sea salt flakes", pack: "1.5 kg tub", shop: "mill", hand: 3, par: 2, unit: U.tub, sup: "kestrel", cost: 1150 },
+    { id: 12, item: "Free-range eggs", pack: "tray of 30", shop: "harbour", hand: 4, par: 10, unit: U.tray, sup: "saltmarsh", cost: 780 },
+    { id: 13, item: "Oat milk", pack: "per litre", shop: "harbour", hand: 11, par: 24, unit: U.litre, sup: "brightwater", cost: 185 },
+    { id: 14, item: "Ground cinnamon", pack: "500 g tub", shop: "harbour", hand: 1, par: 3, unit: U.tub, sup: "kestrel", cost: 640 },
+    { id: 15, item: "Baguette bags", pack: "pack of 500", shop: "harbour", hand: 6, par: 4, unit: U.pack, sup: "paper", cost: 1680 }
+  ];
+  let ORDERS = [
+    { id: "o1", item: "Spelt flour", pack: "16 kg sack", shop: "mill", qty: 4, unit: U.sack, sup: "fenwick", due: Date.UTC(2026, 9, 16), cost: 2690, status: "Arriving today" },
+    { id: "o2", item: "Double cream", pack: "per litre", shop: "bridge", qty: 12, unit: U.litre, sup: "hollow", due: Date.UTC(2026, 9, 17), cost: 310, status: "Confirmed" },
+    { id: "o3", item: "Coffee cups, 12 oz", pack: "case of 1,000", shop: "harbour", qty: 2, unit: ["case", "cases"], sup: "paper", due: Date.UTC(2026, 9, 19), cost: 6450, status: "Confirmed" }
+  ];
+
+  const ROTA_DAYS = Array.from({ length: 7 }, (_, i) => new Date(Date.UTC(2026, 9, 12 + i)));
+  const TODAY_COL = 4;
+  const SHIFT = { B: ["bake", "Bake", "04:00–12:00", 4, 12], O: ["open", "Open", "07:00–15:00", 7, 15], C: ["close", "Close", "11:00–18:30", 11, 18.5] };
+  const STAFF = [
+    { name: "Priya Natarajan", role: "Head baker", shop: "bridge", w: "-BBBBB-" },
+    { name: "Tom Ashby", role: "Counter", shop: "bridge", w: "OO-OOO-" },
+    { name: "Ellie Mburu", role: "Counter", shop: "bridge", w: "CCC-C-O" },
+    { name: "Dan Kowalczyk", role: "Baker", shop: "market", w: "BB-BBB-" },
+    { name: "Sophie Lindqvist", role: "Shift lead", shop: "market", w: "OOO--OO" },
+    { name: "Jamal Reid", role: "Counter & coffee", shop: "market", w: "-CCCCC-" },
+    { name: "Hannah Ferris", role: "Baker & manager", shop: "mill", w: "BBB-BB-" },
+    { name: "Owen Pryce", role: "Counter", shop: "mill", w: "OO-OOO-" },
+    { name: "Maeve O'Connell", role: "Shift lead", shop: "harbour", w: "--OOOOO" },
+    { name: "Callum Bright", role: "Baker", shop: "harbour", w: "BBB--BB" },
+    { name: "Rosa Delgado", role: "Counter", shop: "harbour", w: "CC--CCC" }
+  ];
+
+  /* ---------------- State & settings ---------------- */
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("tallyhouse:" + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem("tallyhouse:" + k, JSON.stringify(v)); } catch {} }
+  };
+  const state = {
+    shop: store.get("defaultShop", "all"), range: "today", q: "", supplier: "all",
+    sort: { key: "level", dir: "asc" }, threshold: store.get("threshold", 1), compact: store.get("compact", false),
+    ghost: store.get("ghost", true), rota: "ok"
+  };
+  if (!["all", ...SHOPS.map(s => s.id)].includes(state.shop)) state.shop = "all";
+
+  /* ---------------- Shop switcher ---------------- */
+  const shopSeg = $("#shopSeg");
+  [{ id: "all", name: "All shops" }, ...SHOPS].forEach((s, i) => {
+    const l = document.createElement("label");
+    const ticks = s.id === "all" ? "" : `<svg class="tick" viewBox="0 0 10 14" aria-hidden="true">${Array.from({ length: 4 }, (_, k) => `<line x1="${1.5 + k * 2.3}" y1="2" x2="${1.5 + k * 2.3}" y2="12" stroke="${k === i - 1 ? "#9A3D10" : "#C9B89F"}" stroke-width="1.4" stroke-linecap="round"/>`).join("")}</svg>`;
+    l.innerHTML = `<input type="radio" name="shop" value="${s.id}"${s.id === state.shop ? " checked" : ""}><span>${ticks}${esc(s.name)}</span>`;
+    shopSeg.appendChild(l);
+  });
+  const setShopSel = $("#setShop");
+  [{ id: "all", name: "All shops" }, ...SHOPS].forEach(s => setShopSel.add(new Option(s.name, s.id, false, s.id === state.shop)));
+  const supSel = $("#supplierFilter");
+  Object.entries(SUPPLIERS).sort((a, b) => a[1].name.localeCompare(b[1].name)).forEach(([k, v]) => supSel.add(new Option(v.name, k)));
+
+  /* ---------------- Range helpers ---------------- */
+  function series() {
+    const idx = shopIdx(state.shop);
+    if (state.range === "today") {
+      const d = NDAYS - 1;
+      return HOURS.map((h, hi) => ({
+        label: String(h).padStart(2, "0"), long: `${String(h).padStart(2, "0")}:00–${String(h + 1).padStart(2, "0")}:00`,
+        v: hi > NOW_H ? null : idx.reduce((t, s) => t + sales[s][d][hi], 0),
+        g: idx.reduce((t, s) => t + sales[s][d - 7][hi], 0), partial: hi === NOW_H
+      }));
+    }
+    const n = state.range === "7d" ? 7 : 30;
+    return Array.from({ length: n }, (_, k) => {
+      const d = NDAYS - n + k, dt = dayDate(d);
+      return { label: n === 7 ? fmtDay.format(dt).replace(/ \w+$/, "") : fmtShort.format(dt), long: fmtDay.format(dt), v: daySales(idx, d, d === NDAYS - 1), g: daySales(idx, d - 7), partial: d === NDAYS - 1, dt };
+    });
+  }
+  function totals(idx) {
+    if (state.range === "today") {
+      return { s: daySales(idx, NDAYS - 1, true), p: daySales(idx, NDAYS - 8, true), i: dayItems(idx, NDAYS - 1, true) };
+    }
+    const n = state.range === "7d" ? 7 : 30;
+    let s = 0, p = 0, i = 0;
+    for (let k = 0; k < n; k++) {
+      const d = NDAYS - n + k, pd = d - n;
+      s += daySales(idx, d, d === NDAYS - 1); i += dayItems(idx, d, d === NDAYS - 1);
+      p += daySales(idx, pd, pd === NDAYS - 1 - n);
+    }
+    return { s, p, i };
+  }
+
+  /* ---------------- KPIs ---------------- */
+  const arrowUp = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const arrowDown = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2v8M2.5 6.5 6 10l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function money(p) { const s = GBP.format(p / 100); const [a, b] = s.split("."); return `${a}<span class="p">.${b}</span>`; }
+  function renderKpis() {
+    const idx = shopIdx(state.shop);
+    const t = totals(idx), diff = t.s - t.p, pct = t.p ? diff / t.p : 0;
+    const R = state.range;
+    $("#k1Label").textContent = R === "today" ? "Today's sales" : R === "7d" ? "Sales, last 7 days" : "Sales, last 30 days";
+    $("#k1Value").innerHTML = money(t.s);
+    const openShops = idx.length;
+    $("#k1Note").textContent = R === "today"
+      ? `so far, to 10:42, with ${openShops === 1 ? shopName(state.shop) + " open" : openShops + " shops open"}`
+      : `${fmtDay.format(dayDate(NDAYS - (R === "7d" ? 7 : 30)))} – today 10:42`;
+    $("#k2Label").textContent = R === "today" ? "Change vs same day last week" : R === "7d" ? "Change vs previous 7 days" : "Change vs previous 30 days";
+    $("#k2Value").textContent = (diff >= 0 ? "+" : "−") + GBP.format(Math.abs(diff) / 100);
+    $("#k2Delta").innerHTML = `<span class="delta ${diff >= 0 ? "up" : "down"}">${diff >= 0 ? arrowUp : arrowDown}${PCT.format(pct).replace("-", "−")}</span>`;
+    $("#k2Note").textContent = R === "today" ? `vs ${GBP.format(t.p / 100)} on Fri 9 Oct at 10:42` : `vs ${GBP.format(t.p / 100)} in the ${R === "7d" ? "7" : "30"} days before`;
+    $("#k3Label").textContent = R === "today" ? "Items sold today" : `Items sold, ${R === "7d" ? "7" : "30"} days`;
+    $("#k3Value").textContent = NUM.format(t.i);
+    $("#k3Note").textContent = `avg ${GBP.format(t.s / 100 / Math.max(t.i, 1))} per item`;
+    // split
+    const vals = SHOPS.map((s, i) => totals([i]).s), max = Math.max(...vals);
+    $("#split").innerHTML = SHOPS.map((s, i) => `<li class="${state.shop !== "all" && state.shop !== s.id ? "dim" : ""}"><button type="button" data-shop="${s.id}" aria-pressed="${state.shop === s.id}"><span>${esc(s.name)}</span><span class="bar" style="width:${Math.max(8, vals[i] / max * 100).toFixed(1)}%"></span><span class="amt">${GBP0.format(vals[i] / 100)}</span></button></li>`).join("");
+    $("#splitCap").textContent = state.shop === "all" ? "By shop: select one to focus" : "By shop: select again for all shops";
+    $("#pageSub").textContent = `Friday 16 October 2026, ${state.shop === "all" ? "all shops" : shopName(state.shop)}, as of 10:42`;
+  }
+  function renderLowKpi() {
+    const low = lowItems(true);
+    const n = low.length;
+    $("#k4Value").textContent = NUM.format(n);
+    const shops = new Set(low.map(r => r.shop)).size;
+    $("#k4Note").textContent = n === 0 ? "Everything is at or above par" : state.shop === "all" ? `below par across ${shops} ${shops === 1 ? "shop" : "shops"}` : `below par at ${shopName(state.shop)}`;
+    $("#k4").classList.toggle("has-low", n > 0);
+    $("#tabBadge").textContent = n || "";
+    $("#tabBadge").hidden = !n;
+    $("#headCta").textContent = n ? `Reorder low stock (${n})` : "Check stock levels";
+  }
+
+  /* ---------------- Chart ---------------- */
+  const chartEl = $("#chart");
+  let active = -1, cur = [];
+  function niceMax(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p; }
+  function axisMoney(p) { const v = p / 100; return v >= 1000 ? "£" + (v / 1000).toFixed(v % 1000 ? 1 : 0).replace(/\.0$/, "") + "k" : "£" + Math.round(v); }
+  function renderChart() {
+    cur = series();
+    const R = state.range;
+    $("#salesTitle").textContent = R === "today" ? "Sales today, by hour" : R === "7d" ? "Sales, last 7 days" : "Sales, last 30 days";
+    $("#ghostLabel").textContent = R === "today" ? "Last Friday" : "Same day last week";
+    $("#lgGhost").style.display = state.ghost ? "" : "none";
+    const W = Math.max(chartEl.clientWidth, 280), H = chartEl.clientHeight || 280;
+    const m = { t: 18, r: 8, b: 26, l: 48 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const vmax = Math.max(...cur.map(d => Math.max(d.v || 0, state.ghost ? d.g : 0)));
+    const top = niceMax(vmax * 1.05), ticks = 4;
+    const y = v => m.t + ih - v / top * ih;
+    const n = cur.length, slot = iw / n, bw = Math.max(3, Math.min(48, slot * (n > 12 ? 0.72 : 0.62)));
+    let svg = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#F5E1CF"/><rect width="2.4" height="5" fill="#C0662F"/></pattern></defs>`;
+    for (let k = 0; k <= ticks; k++) {
+      const v = top / ticks * k, yy = y(v);
+      svg += `<line class="grid-line" x1="${m.l}" x2="${W - m.r}" y1="${yy}" y2="${yy}"/><text class="axis-label" x="${m.l - 8}" y="${yy + 4}" text-anchor="end">${axisMoney(v)}</text>`;
+    }
+    const every = n > 12 ? (W < 500 ? 7 : 5) : (W < 420 && n > 8 ? 2 : 1);
+    cur.forEach((d, i) => {
+      const cx = m.l + slot * i + slot / 2;
+      if (d.v !== null) {
+        const h = Math.max(1, ih - (y(d.v) - m.t));
+        svg += `<rect class="${i === active ? "bar-active" : "bar-actual"}" ${d.partial ? 'fill="url(#hatch)" stroke="#C0662F" stroke-width="1"' : ""} x="${cx - bw / 2}" y="${y(d.v)}" width="${bw}" height="${h}" rx="2"/>`;
+      }
+      if (state.ghost) svg += `<line class="ghost" x1="${cx - bw / 2 - 2}" x2="${cx + bw / 2 + 2}" y1="${y(d.g)}" y2="${y(d.g)}"/>`;
+      if ((n - 1 - i) % every === 0) svg += `<text class="axis-label" x="${cx}" y="${H - 6}" text-anchor="middle">${esc(d.label)}</text>`;
+    });
+    if (R === "today") {
+      const nx = m.l + slot * (NOW_H + NOW_FRAC);
+      svg += `<line class="now-line" x1="${nx}" x2="${nx}" y1="${m.t - 6}" y2="${m.t + ih}"/><text class="now-label" x="${nx + 4}" y="${m.t - 6}">Now 10:42</text>`;
+    }
+    svg += `<rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent" id="hit"/></svg><div class="tip" id="tip"></div>`;
+    chartEl.innerHTML = svg;
+    chartEl._geo = { m, slot, y, W };
+    $("#lgPartial").style.display = "";
+    // summary
+    const vals = cur.filter(d => d.v !== null && !d.partial);
+    const best = vals.reduce((a, b) => (b.v > a.v ? b : a), vals[0]);
+    const tot = cur.reduce((t, d) => t + (d.v || 0), 0), gt = R === "today" ? cur.slice(0, NOW_H + 1).reduce((t, d, i) => t + (i === NOW_H ? Math.round(d.g * NOW_FRAC) : d.g), 0) : null;
+    $("#chartSummary").textContent = R === "today"
+      ? `Busiest hour so far: ${best.long} at ${GBP.format(best.v / 100)}. ${tot >= gt ? "Ahead of" : "Behind"} last Friday at this time by ${GBP.format(Math.abs(tot - gt) / 100)}.`
+      : `Best day: ${best.long} at ${GBP.format(best.v / 100)}. Today is still in progress (hatched).`;
+    // table
+    $("#chartTable").innerHTML = `<table class="mini-table"><caption class="sr-only">${esc($("#salesTitle").textContent)}, ${esc(shopName(state.shop))}</caption><thead><tr><th scope="col">${R === "today" ? "Hour" : "Day"}</th><th scope="col">Sales</th><th scope="col">${R === "today" ? "Last Friday" : "Same day last week"}</th></tr></thead><tbody>${cur.map(d => `<tr><th scope="row">${esc(d.long)}${d.partial ? " (so far)" : ""}</th><td>${d.v === null ? "–" : GBP.format(d.v / 100)}</td><td>${GBP.format(d.g / 100)}</td></tr>`).join("")}</tbody></table>`;
+    if (active >= 0) showTip(active, false);
+  }
+  function showTip(i, announce) {
+    const tip = $("#tip"), g = chartEl._geo; if (!tip || !g) return;
+    const d = cur[i]; if (!d) return;
+    active = i;
+    chartEl.querySelectorAll("rect.bar-actual, rect.bar-active").forEach(r => r.setAttribute("class", "bar-actual"));
+    const bars = [...chartEl.querySelectorAll("rect[class^=bar]")];
+    const barIndex = cur.slice(0, i + 1).filter(x => x.v !== null).length - 1;
+    if (d.v !== null && bars[barIndex] && !d.partial) bars[barIndex].setAttribute("class", "bar-active");
+    const cx = g.m.l + g.slot * i + g.slot / 2;
+    const vy = g.y(Math.max(d.v || 0, state.ghost ? d.g : 0));
+    const diff = d.v === null ? null : d.v - (d.partial && state.range === "today" ? Math.round(d.g * NOW_FRAC) : d.g);
+    tip.innerHTML = `<b>${esc(d.long)}${d.partial ? " · so far" : ""}</b><br>${d.v === null ? '<span class="t-muted">Not yet trading</span>' : GBP.format(d.v / 100)}<br><span class="t-muted">${state.range === "today" ? "Last Fri" : "Week before"}: ${GBP.format(d.g / 100)}</span>${diff !== null && !d.partial ? `<br><span class="t-muted">${diff >= 0 ? "+" : "−"}${GBP.format(Math.abs(diff) / 100)}</span>` : ""}`;
+    const x = Math.min(Math.max(cx, 84), g.W - 84);
+    tip.style.left = x + "px"; tip.style.top = Math.max(vy, 60) + "px";
+    tip.classList.add("show");
+    if (announce) $("#chartLive").textContent = tip.textContent;
+  }
+  function hideTip() { active = -1; const t = $("#tip"); if (t) t.classList.remove("show"); chartEl.querySelectorAll("rect.bar-active").forEach(r => r.setAttribute("class", "bar-actual")); }
+  chartEl.addEventListener("pointermove", e => {
+    const g = chartEl._geo; if (!g) return;
+    const r = chartEl.getBoundingClientRect(), x = e.clientX - r.left;
+    const i = Math.floor((x - g.m.l) / g.slot);
+    if (i >= 0 && i < cur.length) showTip(i, false); else hideTip();
+  });
+  chartEl.addEventListener("pointerleave", hideTip);
+  chartEl.addEventListener("blur", hideTip);
+  chartEl.addEventListener("keydown", e => {
+    let i = active;
+    if (e.key === "ArrowRight") i = Math.min(cur.length - 1, i + 1);
+    else if (e.key === "ArrowLeft") i = i < 0 ? cur.length - 1 : Math.max(0, i - 1);
+    else if (e.key === "Home") i = 0;
+    else if (e.key === "End") i = cur.length - 1;
+    else if (e.key === "Escape") { hideTip(); return; }
+    else return;
+    e.preventDefault(); showTip(i, true);
+  });
+  $("#chartDetails").addEventListener("toggle", e => { $("#chartTable").hidden = !e.target.open; });
+  if ("ResizeObserver" in window) { let w = 0; new ResizeObserver(() => { if (chartEl.clientWidth !== w) { w = chartEl.clientWidth; renderChart(); } }).observe(chartEl); }
+
+  /* ---------------- Stock ---------------- */
+  function lowItems(ignoreFilters) {
+    return STOCK.filter(r => r.hand < r.par * state.threshold && (state.shop === "all" || r.shop === state.shop) &&
+      (ignoreFilters || ((state.supplier === "all" || r.sup === state.supplier) &&
+        (!state.q || `${r.item} ${r.pack} ${SUPPLIERS[r.sup].name} ${shopName(r.shop)}`.toLowerCase().includes(state.q.toLowerCase())))));
+  }
+  const loafArt = '<svg viewBox="0 0 84 56" aria-hidden="true"><path d="M8 40c0-16 15-26 34-26s34 10 34 26v4H8z" fill="#E9B98C" stroke="#9A3D10" stroke-width="2"/><path d="M26 22c3 5 3 11 0 16M42 18c3 6 3 14 0 20M58 22c3 5 3 11 0 16" stroke="#9A3D10" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M4 48h76M12 48v6M72 48v6" stroke="#66584A" stroke-width="2" stroke-linecap="round"/></svg>';
+  function renderStock(focusAfter) {
+    const all = lowItems(true), rows = lowItems(false);
+    const { key, dir } = state.sort, f = dir === "asc" ? 1 : -1;
+    rows.sort((a, b) => key === "item" ? f * a.item.localeCompare(b.item) : f * (a.hand / a.par - b.hand / b.par));
+    document.querySelectorAll("#stockTable th[data-key]").forEach(th => {
+      if (th.dataset.key === key) th.setAttribute("aria-sort", dir === "asc" ? "ascending" : "descending"); else th.removeAttribute("aria-sort");
+    });
+    const thrTxt = state.threshold === 1 ? "below par" : `below ${Math.round(state.threshold * 100)}% of par`;
+    $("#stockHint").textContent = `${plural(all.length, ["item", "items"])} ${thrTxt}${rows.length !== all.length ? ` · ${rows.length} shown` : ""}`;
+    $("#stockCaption").textContent = `Items ${thrTxt}, ${shopName(state.shop)}. Sorted by ${key === "item" ? "item name" : "stock level"}.`;
+    const note = $("#shopNote");
+    note.hidden = state.shop === "all";
+    note.textContent = state.shop === "all" ? "" : `Showing ${shopName(state.shop)} only. Switch to All shops at the top to see every shop.`;
+    const body = $("#stockBody");
+    if (!rows.length) {
+      const filtered = state.q || state.supplier !== "all";
+      body.innerHTML = `<tr class="empty-row"><td colspan="6"><div class="empty">${loafArt}${filtered
+        ? `<h3>No low-stock items match${state.q ? ` “${esc(state.q)}”` : ""}${state.supplier !== "all" ? ` from ${esc(SUPPLIERS[state.supplier].name)}` : ""}</h3><p>${all.length ? `${plural(all.length, ["item is", "items are"]).replace(/ /, " ")} still low ${state.shop === "all" ? "across all shops" : "at " + esc(shopName(state.shop))}.` : ""} Try another word or clear the filters.</p><button class="btn" type="button" data-clear>Clear filters</button>`
+        : `<h3>All stocked above par</h3><p>Nothing ${state.shop === "all" ? "in any shop" : "at " + esc(shopName(state.shop))} is ${thrTxt}. New shortfalls show here after each till sync.</p>`}</div></td></tr>`;
+    } else {
+      body.innerHTML = rows.map(r => {
+        const pct = r.hand / r.par;
+        return `<tr data-id="${r.id}">
+          <td class="c-item"><span class="item-name">${esc(r.item)}</span><span class="item-pack">${esc(r.pack)}</span></td>
+          <td class="c-shop">${esc(shopName(r.shop))}</td>
+          <td class="c-hand num"><div class="level"><div class="meter ${pct >= .6 ? "mid" : ""}" role="img" aria-label="${Math.round(pct * 100)}% of par"><b style="width:${Math.min(100, pct * 100).toFixed(0)}%"></b></div><span class="level-txt">${plural(r.hand, r.unit)}<span class="pct">${Math.round(pct * 100)}% of par</span></span></div></td>
+          <td class="c-par num">${plural(r.par, r.unit)}</td>
+          <td class="c-sup">${esc(SUPPLIERS[r.sup].name)}</td>
+          <td class="c-act"><button class="btn btn-primary" type="button" data-reorder="${r.id}" aria-label="Reorder ${esc(r.item)} for ${esc(shopName(r.shop))}">Reorder ${plural(reorderQty(r), r.unit)}</button></td>
+        </tr>`;
+      }).join("");
+    }
+    renderLowKpi();
+    if (focusAfter) focusAfter();
+  }
+  const reorderQty = r => Math.max(1, Math.ceil(r.par * 1.5 - r.hand));
+  $("#q").addEventListener("input", e => { state.q = e.target.value.trim(); renderStock(); });
+  supSel.addEventListener("change", e => { state.supplier = e.target.value; renderStock(); });
+  document.querySelectorAll(".sort-btn").forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.sort;
+    state.sort = state.sort.key === k ? { key: k, dir: state.sort.dir === "asc" ? "desc" : "asc" } : { key: k, dir: "asc" };
+    renderStock(() => b.focus());
+  }));
+  $("#stockBody").addEventListener("click", e => {
+    const clr = e.target.closest("[data-clear]");
+    if (clr) { state.q = ""; state.supplier = "all"; $("#q").value = ""; supSel.value = "all"; renderStock(() => $("#q").focus()); return; }
+    const btn = e.target.closest("[data-reorder]");
+    if (btn) reorder(+btn.dataset.reorder, btn);
+  });
+
+  let lastAction = null;
+  function reorder(id, btn) {
+    const r = STOCK.find(x => x.id === id); if (!r || btn.getAttribute("aria-busy") === "true") return;
+    btn.setAttribute("aria-busy", "true"); btn.textContent = "Placing order…";
+    const tr = btn.closest("tr"), next = tr.nextElementSibling || tr.previousElementSibling;
+    const nextId = next && next.dataset.id;
+    setTimeout(() => {
+      tr.classList.add("leaving");
+      setTimeout(() => {
+        const qty = reorderQty(r);
+        const o = { id: "n" + id, item: r.item, pack: r.pack, shop: r.shop, qty, unit: r.unit, sup: r.sup, due: SUPPLIERS[r.sup].due, cost: r.cost, status: "Placed 10:42", fresh: true, stockRef: r };
+        STOCK = STOCK.filter(x => x.id !== id);
+        ORDERS.forEach(x => x.fresh = false);
+        ORDERS.push(o);
+        renderOrders();
+        renderStock(() => {
+          const nb = nextId && document.querySelector(`[data-reorder="${nextId}"]`);
+          (nb || $("#stockTitle").closest("section").querySelector("#q")).focus({ preventScroll: true });
+        });
+        lastAction = { type: "reorder", stock: r, orderId: o.id };
+        toast(`Ordered ${plural(qty, r.unit)} of ${r.item.toLowerCase()} from ${SUPPLIERS[r.sup].name}, due ${fmtDay.format(new Date(o.due))}.`);
+      }, reduced.matches ? 0 : 280);
+    }, reduced.matches ? 150 : 420);
+  }
+  function undoReorder(stockItem, orderId) {
+    ORDERS = ORDERS.filter(o => o.id !== orderId);
+    if (!STOCK.some(x => x.id === stockItem.id)) STOCK.push(stockItem);
+    renderOrders(); renderStock();
+    const row = document.querySelector(`tr[data-id="${stockItem.id}"]`);
+    if (row) { row.classList.add("returning"); setTimeout(() => row.classList.remove("returning"), 1600); }
+  }
+
+  /* ---------------- Orders ---------------- */
+  function renderOrders() {
+    const list = ORDERS.filter(o => state.shop === "all" || o.shop === state.shop).sort((a, b) => a.due - b.due || (a.fresh ? -1 : 1));
+    const value = list.reduce((t, o) => t + o.qty * o.cost, 0);
+    $("#ordersSum").innerHTML = list.length ? `<strong>${GBP.format(value / 100)}</strong> on order` : "Nothing on order";
+    const ul = $("#dockets");
+    if (!list.length) {
+      ul.innerHTML = `<li class="empty">${loafArt}<h3>No orders waiting</h3><p>Use Reorder in Low stock and the order lands here with its delivery date.</p></li>`;
+    } else {
+      ul.innerHTML = list.map(o => {
+        const isToday = o.due === TODAY;
+        return `<li class="docket${o.fresh ? " fresh-in" : ""}">
+          <div class="docket-top"><span class="docket-sup">${esc(SUPPLIERS[o.sup].name)}</span><span class="docket-due">${isToday ? "Today" : "Due " + fmtDay.format(new Date(o.due))}</span></div>
+          <p class="docket-item">${esc(o.item)} × ${plural(o.qty, o.unit)}</p>
+          <p class="docket-meta"><span>${esc(shopName(o.shop))}</span><span>${esc(o.pack)}</span><span>${GBP.format(o.qty * o.cost / 100)}</span></p>
+          <div class="docket-foot"><span class="status ${isToday ? "today" : o.fresh ? "new" : ""}">${esc(o.status)}</span>${o.stockRef ? `<button class="linkish" type="button" data-cancel="${o.id}" aria-label="Cancel order for ${esc(o.item)}, ${esc(shopName(o.shop))}">Cancel order</button>` : `<span class="docket-meta">Ref TH-${o.id.slice(1).padStart(4, "0")}</span>`}</div>
+        </li>`;
+      }).join("");
+    }
+    const recShops = state.shop === "all" ? 6 : { bridge: 2, market: 2, mill: 1, harbour: 1 }[state.shop];
+    $("#received").textContent = `${plural(recShops, ["delivery", "deliveries"])} received this week. Last in: Hollow Lane Dairy, Thu 15 Oct at 06:10.`;
+  }
+  $("#dockets").addEventListener("click", e => {
+    const b = e.target.closest("[data-cancel]"); if (!b) return;
+    const o = ORDERS.find(x => x.id === b.dataset.cancel); if (!o) return;
+    undoReorder(o.stockRef, o.id);
+    toast(`Cancelled ${o.item.toLowerCase()} order. It's back in Low stock.`, false);
+    $("#ordersTitle").setAttribute("tabindex", "-1"); $("#ordersTitle").focus();
+  });
+
+  /* ---------------- Rota ---------------- */
+  function renderRota() {
+    const box = $("#rotaBody");
+    const staff = STAFF.filter(p => state.shop === "all" || p.shop === state.shop);
+    $("#rotaHint").textContent = `${plural(staff.length, ["person", "people"])} ${state.shop === "all" ? "across all shops" : "at " + shopName(state.shop)}`;
+    if (state.rota === "loading") {
+      box.setAttribute("aria-busy", "true");
+      box.innerHTML = `<p class="sr-only">Loading the rota…</p><div class="rota-skel" aria-hidden="true">${"<div></div>".repeat(Math.min(staff.length, 5))}</div>`;
+      return;
+    }
+    box.setAttribute("aria-busy", "false");
+    if (state.rota === "error") {
+      box.innerHTML = `<div class="panel-error" role="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg><div><h3>The rota didn't load</h3><p>The rota sync timed out. Sales, stock and orders above are unaffected. Ref RS-504.</p><button class="btn btn-primary" type="button" id="rotaRetry">Try again</button></div></div>`;
+      return;
+    }
+    const onNow = [], later = [];
+    staff.forEach(p => { const c = p.w[TODAY_COL]; if (c === "-") return; const sh = SHIFT[c]; (10.7 >= sh[3] && 10.7 < sh[4] ? onNow : later).push({ p, sh }); });
+    const first = n => n.split(" ")[0];
+    box.innerHTML = `
+      <div class="now-strip"><strong>On now:</strong>${onNow.length ? onNow.map(x => `<span class="who">${esc(first(x.p.name))} · ${esc(shopName(x.p.shop).split(" ")[0])}</span>`).join("") : "<span>No one yet</span>"}${later.length ? `<strong style="margin-left:6px">Later:</strong>${later.map(x => `<span class="who later">${esc(first(x.p.name))} from ${x.sh[2].slice(0, 5)}</span>`).join("")}` : ""}</div>
+      <p class="scroll-cue" aria-hidden="true">Scroll for the full week →</p>
+      <div class="rota-scroll" tabindex="0" role="region" aria-label="Rota grid, scrolls sideways">
+        <table class="rota">
+          <caption class="sr-only">Shifts for ${esc(shopName(state.shop))}, Monday 12 to Sunday 18 October. Today is Friday.</caption>
+          <thead><tr><th scope="col">Staff</th>${ROTA_DAYS.map((d, i) => `<th scope="col" class="${i === TODAY_COL ? "today-col" : ""}"${i === TODAY_COL ? ' aria-current="date"' : ""}>${fmtDay.format(d).split(" ")[0]}${i === TODAY_COL ? '<span class="today-flag">Today</span>' : ""}<small>${fmtShort.format(d)}</small></th>`).join("")}</tr></thead>
+          <tbody>${staff.map(p => `<tr><th scope="row"><span class="staff-name">${esc(p.name)}</span><span class="staff-role">${esc(p.role)}${state.shop === "all" ? " · " + esc(shopName(p.shop)) : ""}</span></th>${[...p.w].map((c, i) => {
+            const cls = i === TODAY_COL ? ' class="today-col"' : "";
+            if (c === "-") return `<td${cls}><span class="shift off">Off</span></td>`;
+            const s = SHIFT[c]; return `<td${cls}><span class="shift ${s[0]}"><b>${s[1]}</b>${s[2]}</span></td>`;
+          }).join("")}</tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <div class="rota-key"><span><i style="background:#F3D9C3;border:1px solid #E8C2A2"></i>Bake 04:00–12:00</span><span><i style="background:#E6EEDF;border:1px solid #CCDDC4"></i>Open 07:00–15:00</span><span><i style="background:#E5E3F0;border:1px solid #CFCBE4"></i>Close 11:00–18:30</span></div>`;
+  }
+  $("#rotaBody").addEventListener("click", e => {
+    if (e.target.id !== "rotaRetry") return;
+    state.rota = "loading"; renderRota();
+    setTimeout(() => { state.rota = "ok"; renderRota(); toast("Rota reloaded.", false); const t = $("#rotaTitle"); t.setAttribute("tabindex", "-1"); t.focus({ preventScroll: true }); }, 900);
+  });
+
+  /* ---------------- Loading orchestration ---------------- */
+  let loadTimer;
+  function refresh(delay = 450) {
+    const k = $("#kpis"), s = $("#sales");
+    k.classList.add("is-loading"); s.classList.add("is-loading");
+    k.setAttribute("aria-busy", "true"); s.setAttribute("aria-busy", "true");
+    if (state.rota === "ok") { state.rota = "loading"; renderRota(); }
+    renderStock(); renderOrders();
+    clearTimeout(loadTimer);
+    loadTimer = setTimeout(() => {
+      renderKpis(); renderChart();
+      k.classList.remove("is-loading"); s.classList.remove("is-loading");
+      k.setAttribute("aria-busy", "false"); s.setAttribute("aria-busy", "false");
+      if (state.rota === "loading") { state.rota = "ok"; renderRota(); }
+    }, delay);
+  }
+  shopSeg.addEventListener("change", e => { state.shop = e.target.value; refresh(); });
+  $("#rangeSeg").addEventListener("change", e => { state.range = e.target.value; active = -1; refresh(); });
+  $("#split").addEventListener("click", e => {
+    const b = e.target.closest("[data-shop]"); if (!b) return;
+    state.shop = state.shop === b.dataset.shop ? "all" : b.dataset.shop;
+    shopSeg.querySelector(`input[value="${state.shop}"]`).checked = true;
+    refresh();
+    setTimeout(() => { const nb = document.querySelector(`#split [data-shop="${b.dataset.shop}"]`); if (nb) nb.focus(); }, 470);
+  });
+  $("#syncBtn").addEventListener("click", () => { refresh(700); toast("Synced with all four tills.", false); });
+
+  /* ---------------- Toast ---------------- */
+  let toastTimer;
+  function toast(msg, undo = true) {
+    const t = $("#toast"); $("#toastMsg").textContent = msg; $("#toastUndo").hidden = !undo; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, undo ? 8000 : 4000);
+  }
+  $("#toastUndo").addEventListener("click", () => {
+    if (lastAction && lastAction.type === "reorder") { undoReorder(lastAction.stock, lastAction.orderId); lastAction = null; }
+    $("#toast").hidden = true; $("#q").focus();
+  });
+
+  /* ---------------- Settings drawer ---------------- */
+  const dlg = $("#settings"), openBtn = $("#settingsBtn");
+  $("#setThreshold").value = String(state.threshold);
+  $("#setCompact").checked = state.compact; $("#setGhost").checked = state.ghost;
+  document.documentElement.dataset.density = state.compact ? "compact" : "default";
+  openBtn.addEventListener("click", () => { dlg.showModal(); $("#setThreshold").focus(); });
+  $("#settingsClose").addEventListener("click", () => dlg.close());
+  dlg.addEventListener("close", () => openBtn.focus());
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+  $("#setThreshold").addEventListener("change", e => { state.threshold = +e.target.value; store.set("threshold", state.threshold); renderStock(); });
+  $("#setShop").addEventListener("change", e => store.set("defaultShop", e.target.value));
+  $("#setCompact").addEventListener("change", e => { state.compact = e.target.checked; store.set("compact", state.compact); document.documentElement.dataset.density = state.compact ? "compact" : "default"; });
+  $("#setGhost").addEventListener("change", e => { state.ghost = e.target.checked; store.set("ghost", state.ghost); renderChart(); });
+  $("#demoLoading").addEventListener("click", () => { dlg.close(); refresh(2500); });
+  $("#demoError").addEventListener("click", () => { dlg.close(); state.rota = "error"; renderRota(); $("#rota").scrollIntoView({ behavior: reduced.matches ? "auto" : "smooth", block: "start" }); });
+
+  /* ---------------- First paint ---------------- */
+  renderKpis(); renderChart(); renderStock(); renderOrders(); renderRota();
+})();
+</script>
+</body>
+</html>

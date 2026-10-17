@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidefest 2027 · Beach music festival near Newquay, Cornwall</title>
+<meta name="description" content="Tidefest: three days of electronic and alternative music on a beach near Newquay, Cornwall, 14 to 16 August 2027. Two stages, camping and a sunrise set every morning.">
+<meta name="theme-color" content="#0F1E4A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/anybody/v13/VuJxdNvK2Ib2ppdWSKHdOQ.woff2" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&display=swap">
+<style>
+@font-face{font-family:"Anybody Narrow Fallback";src:local("Arial Bold"),local("Arial");font-weight:900;size-adjust:89%;ascent-override:96%;descent-override:22%;line-gap-override:0%}
+@font-face{font-family:"Anybody Fallback";src:local("Arial");size-adjust:104%;ascent-override:92%;descent-override:24%;line-gap-override:0%}
+:root{
+  --night:#0F1E4A;--deep:#182C66;--band:#070C2A;--coral:#FF6A4D;--sun:#FFC83D;--sea:#0F6E78;--foam:#FFF3E4;
+  --foam-2:#D9DCEB;--ink:#0F1E4A;
+  --font:"Anybody","Anybody Fallback",system-ui,sans-serif;
+  --pad:clamp(16px,4vw,56px);--max:1360px;--header-h:72px;
+  --ease-out:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.77,0,.175,1);
+  --s-display:clamp(3.25rem,9vw,8.5rem);--s-mid:clamp(2.1rem,5.4vw,4.75rem);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--header-h) + 1rem);-webkit-text-size-adjust:100%;scrollbar-color:var(--coral) var(--band)}
+body{margin:0;background:var(--night);color:var(--foam);font-family:var(--font);font-size:clamp(1rem,.95rem + .25vw,1.125rem);line-height:1.55;font-variation-settings:"wdth" 100;caret-color:var(--sun);overflow-x:clip}
+::selection{background:var(--sun);color:var(--ink)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1.5px}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:4px}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--sun);color:var(--ink);padding:10px 16px;border-radius:6px;font-weight:700;transition:top .2s var(--ease-out)}
+.skip:focus{top:12px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+h1,h2,h3{margin:0;font-weight:900;line-height:1;letter-spacing:-.025em;text-wrap:balance}
+h2{font-size:var(--s-display);font-variation-settings:"wdth" 120}
+p{margin:0}
+.tab{font-variant-numeric:tabular-nums}
+
+/* ---------- buttons: a sun that rises on its own horizon ---------- */
+.btn{--bg:var(--sun);--fg:var(--ink);display:inline-flex;align-items:center;gap:.6em;min-height:48px;padding:.7em 1.25em .7em 1em;border-radius:999px;border:2px solid var(--bg);background:var(--bg);color:var(--fg);font-weight:800;font-size:1rem;text-decoration:none;letter-spacing:.005em;cursor:pointer;white-space:nowrap;transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .14s var(--ease-out)}
+.btn:active{transform:scale(.97)}
+.btn .rise{width:22px;height:14px;flex:none;overflow:hidden}
+.btn .rise circle{transform:translateY(5px);transition:transform .32s var(--ease-out)}
+.btn--ghost{--bg:transparent;--fg:var(--foam);border-color:currentColor}
+.btn--ink{--bg:var(--ink);--fg:var(--foam)}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover .rise circle{transform:translateY(0)}
+  .btn:hover{--bg:#FFD86E}
+  .btn--ghost:hover{--bg:var(--foam);--fg:var(--ink);border-color:var(--foam)}
+  .btn--ink:hover{--bg:#1E3478}
+}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+
+/* ---------- header ---------- */
+.site-header{position:fixed;inset:0 0 auto;z-index:60;height:var(--header-h);transition:background-color .3s ease,box-shadow .3s ease}
+.site-header.is-solid{background:var(--night);box-shadow:0 1px 0 rgba(255,243,228,.12)}
+.site-header .wrap{height:100%;display:flex;align-items:center;gap:24px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;font-size:1.45rem;letter-spacing:-.02em;font-variation-settings:"wdth" 125;min-height:44px}
+.logo svg{width:38px;height:24px}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;text-decoration:none;font-weight:600;border-radius:999px;transition:background-color .18s ease,color .18s ease}
+@media (hover:hover) and (pointer:fine){.nav a:hover{background:rgba(255,243,228,.12)}}
+.site-header .btn{min-height:44px;padding-block:.5em}
+.menu-toggle{display:none;width:48px;height:48px;border-radius:999px;border:2px solid rgba(255,243,228,.5);background:transparent;cursor:pointer;align-items:center;justify-content:center;transition:border-color .18s ease,transform .14s var(--ease-out)}
+.menu-toggle:active{transform:scale(.95)}
+.menu-toggle svg{width:22px;height:22px}
+.menu-toggle .x{display:none}
+.menu-toggle[aria-expanded="true"] .x{display:block}
+.menu-toggle[aria-expanded="true"] .bars{display:none}
+.mobile-nav{position:fixed;inset:0;z-index:55;background:var(--night);padding:calc(var(--header-h) + 24px) var(--pad) 32px;display:flex;flex-direction:column;gap:28px;overflow:auto}
+.mobile-nav[hidden]{display:none}
+.mobile-nav ul{list-style:none;margin:0;padding:0;border-top:1px solid rgba(255,243,228,.2)}
+.mobile-nav li{border-bottom:1px solid rgba(255,243,228,.2)}
+.mobile-nav ul a{display:flex;justify-content:space-between;align-items:center;min-height:72px;font-size:2.4rem;font-weight:900;letter-spacing:-.02em;font-variation-settings:"wdth" 120;text-decoration:none}
+.mobile-nav .horizon{margin-top:auto;width:100%;height:auto;max-width:420px}
+@media (max-width:899px){
+  .nav{display:none}
+  .menu-toggle{display:inline-flex}
+  .site-header .btn{margin-left:auto}
+}
+@media (max-width:480px){.site-header .wrap{gap:10px}.logo{font-size:1.2rem;gap:8px}.logo svg{width:30px}.site-header .btn .rise{display:none}.site-header .btn{padding-inline:.9em;font-size:.95rem}.menu-toggle{width:44px;height:44px;flex:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:620px;display:flex;flex-direction:column;background:var(--band);overflow:hidden}
+.scene-wrap{position:relative;flex:1;min-height:0}
+.scene{position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(#0A1540,#1D2F6E 55%,#7A3C78 78%,#0F2E5A 79%)}
+.hero h1{position:absolute;left:0;right:0;top:calc(var(--header-h) + clamp(4px,2vh,28px));text-align:center;font-size:clamp(3.6rem,13.6vw,13rem);line-height:1;letter-spacing:-.03em;font-variation-settings:"wdth" 108;color:var(--foam);white-space:nowrap;pointer-events:none}
+.hero h1 .l{display:inline-block}
+.hero h1 .b{display:inline-block;will-change:transform}
+.clock{position:absolute;right:var(--pad);top:calc(var(--header-h) + clamp(150px,22vw,330px));display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;font-weight:700;font-size:.95rem;color:var(--foam)}
+.clock time{font-size:clamp(1.6rem,2.6vw,2.4rem);font-weight:800;line-height:1;font-variation-settings:"wdth" 80}
+.hero-band{position:relative;background:var(--band);padding:clamp(18px,2.4vh,30px) 0 clamp(20px,3vh,36px)}
+.hero-band .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(20px,3vw,48px);align-items:center}
+.when{font-weight:900;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.05;letter-spacing:-.02em;font-variation-settings:"wdth" 112}
+.when span{display:block;font-weight:600;font-size:1rem;letter-spacing:0;font-variation-settings:"wdth" 100;color:var(--foam-2);margin-top:6px}
+.lede{max-width:46ch;color:var(--foam-2)}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+@media (max-width:899px){
+  .hero-band{min-height:236px}
+  .hero-band .wrap{grid-template-columns:1fr;gap:14px}
+  .lede{font-size:1rem}
+  .clock{top:auto;bottom:18px;right:var(--pad)}
+}
+@media (max-width:560px){
+  .hero{min-height:600px}
+  .hero-band{min-height:226px}
+  .hero h1{font-size:clamp(3.4rem,21vw,7rem);font-variation-settings:"wdth" 82}
+  .clock{display:none}
+  .ctas{flex-direction:column}
+  .ctas .btn{justify-content:center}
+  .hero h1{font-family:"Anybody","Anybody Narrow Fallback",sans-serif}
+  .lede{display:none}
+}
+/* place the stage and the sun inside the crop the viewport actually shows */
+@media (max-width:1000px){#stage{transform:translate(460px,512px)}#sunG{transform:translateX(-160px)}}
+@media (max-width:640px){#stage{transform:translate(540px,512px)}#sunG{transform:translateX(-280px)}}
+
+/* ---------- section scaffolding ---------- */
+.section{padding-block:clamp(96px,13vw,200px)}
+.section-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(40px,6vw,88px)}
+.section-head p{color:var(--foam-2);max-width:42ch}
+.section-head.wide{grid-template-columns:1fr;max-width:none}
+.section-head.wide h2{max-width:14ch}
+.lineup .section-head{align-items:center}
+@media (max-width:899px){.section-head{grid-template-columns:1fr}}
+
+/* ---------- line-up ---------- */
+.lineup{background:var(--night)}
+.dayfilter{border:0;margin:0;padding:0;min-width:0}
+.dayfilter legend{font-weight:700;margin-bottom:6px;padding:0}
+.arc{position:relative;width:100%;max-width:480px}
+.arc svg{width:100%;height:auto;overflow:visible}
+.days{display:grid;grid-template-columns:repeat(3,1fr);max-width:480px;gap:8px}
+.days label{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:64px;border-radius:14px;border:2px solid rgba(255,243,228,.35);cursor:pointer;font-weight:800;font-size:1.15rem;line-height:1.1;transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+.days label small{font-size:.9rem;font-weight:600;opacity:.85}
+.days input{position:absolute;opacity:0;width:1px;height:1px}
+.days input:checked + label{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+.days input:focus-visible + label{outline:3px solid var(--sun);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.days input:not(:checked) + label:hover{border-color:var(--foam)}}
+.stage-key{display:flex;flex-wrap:wrap;gap:12px 36px;margin:0 0 40px;font-weight:600;color:var(--foam-2);font-size:1rem}
+.stage-key span{display:inline-flex;align-items:center;gap:8px}
+.stage-ico{width:26px;height:18px;flex:none}
+.day-block + .day-block{margin-top:72px}
+.day-block h3{font-size:1.25rem;font-weight:700;letter-spacing:0;font-variation-settings:"wdth" 100;color:var(--foam-2);padding-bottom:14px}
+.acts{list-style:none;margin:0;padding:0;border-top:2px solid var(--foam)}
+.act{display:grid;grid-template-columns:7.5rem minmax(0,1fr) 11rem;align-items:baseline;gap:8px 24px;padding:clamp(14px,1.8vw,22px) 0;border-bottom:1px solid rgba(255,243,228,.22)}
+.act time{font-weight:700;font-size:1.05rem;color:var(--foam-2)}
+.act .name{font-size:var(--s-mid);font-weight:900;line-height:1.02;letter-spacing:-.03em;font-variation-settings:"wdth" var(--w,100);overflow-wrap:anywhere;margin:0}
+.act .where{display:inline-flex;align-items:center;gap:8px;font-weight:700;justify-self:end}
+.act.is-sunrise .name{color:var(--sun)}
+.act .flag{display:block;font-size:.95rem;font-weight:700;color:var(--sun);letter-spacing:0;font-variation-settings:"wdth" 100;margin-top:6px}
+@media (max-width:767px){
+  .act{grid-template-columns:1fr auto;gap:2px 12px}
+  .act .name{grid-column:1/-1;grid-row:2}
+  .act .where{grid-row:1;grid-column:2}
+}
+
+/* ---------- countdown ---------- */
+.countdown{background:var(--coral);color:var(--ink);position:relative;overflow:hidden}
+.countdown h2{font-variation-settings:"wdth" 120}
+.countdown .section-head p{color:var(--ink)}
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,2vw,32px);margin:0;position:relative;z-index:1}
+.cd div{display:flex;flex-direction:column-reverse}
+.cd dt{font-weight:700;font-size:1.05rem;margin-top:10px}
+.cd dd{margin:0;font-weight:900;font-size:clamp(4.4rem,10.5vw,10rem);line-height:.9;letter-spacing:-.04em;font-variation-settings:"wdth" 70;overflow:hidden;height:.9em}
+.cd dd span{display:block}
+.cd-horizon{display:block;width:100%;height:auto;margin-top:-2px}
+.cd-note{margin-top:28px;font-weight:600}
+@media (max-width:560px){.cd{grid-template-columns:repeat(2,1fr);row-gap:28px}}
+
+/* ---------- tickets: wristbands ---------- */
+.tickets{background:var(--night)}
+.bands{list-style:none;margin:0;padding:0;display:grid;gap:clamp(16px,2vw,24px)}
+.band{--c:var(--coral);--t:var(--ink);position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px clamp(20px,3vw,48px);background:var(--c);color:var(--t);border-radius:28px 12px 12px 28px;padding:clamp(20px,2.4vw,30px) clamp(64px,7vw,104px) clamp(20px,2.4vw,30px) clamp(22px,3vw,40px);
+  background-image:repeating-linear-gradient(90deg,rgba(15,30,74,.07) 0 2px,transparent 2px 6px);box-shadow:inset 0 0 0 7px var(--c),inset 0 0 0 9px rgba(15,30,74,.28)}
+.band.weekend{--c:var(--sun)}
+.band.camp{--c:var(--sea);--t:var(--foam);background-image:repeating-linear-gradient(90deg,rgba(255,243,228,.07) 0 2px,transparent 2px 6px)}
+.band h3{font-size:clamp(1.7rem,3.2vw,2.8rem);font-variation-settings:"wdth" 115}
+.band p{margin-top:6px;max-width:48ch;font-size:1rem}
+.band .price{margin:0;font-weight:900;font-size:clamp(2rem,4vw,3.4rem);line-height:1;letter-spacing:-.03em;font-variation-settings:"wdth" 80}
+.band .price small{display:block;font-size:.95rem;font-weight:700;letter-spacing:0;font-variation-settings:"wdth" 100;margin-top:4px}
+.stepper{display:inline-flex;align-items:center;gap:4px;background:rgba(255,243,228,.92);color:var(--ink);border-radius:999px;padding:4px;border:2px solid var(--ink)}
+.camp .stepper{border-color:var(--foam)}
+.stepper button{width:44px;height:44px;border-radius:999px;border:0;background:var(--ink);color:var(--foam);cursor:pointer;display:grid;place-items:center;transition:background-color .15s ease,transform .12s var(--ease-out)}
+.stepper button:active{transform:scale(.92)}
+.stepper button[disabled]{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px rgba(15,30,74,.35);cursor:not-allowed}
+.stepper svg{width:16px;height:16px}
+.stepper output{min-width:2.2ch;text-align:center;font-weight:900;font-size:1.4rem;overflow:hidden;height:1.4em;line-height:1.4em}
+.stepper output span{display:block}
+.clasp{position:absolute;right:clamp(14px,2vw,30px);top:50%;width:clamp(34px,4vw,48px);height:auto;transform:translateY(-50%);transition:transform .22s var(--ease-out)}
+.band.bump .clasp{transform:translateY(-50%) rotate(-14deg)}
+.summary{margin-top:clamp(28px,4vw,48px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 32px;align-items:center;border-top:2px solid var(--foam);padding-top:clamp(20px,3vw,32px)}
+.summary .lines{color:var(--foam-2);min-height:1.55em}
+.total{font-weight:900;font-size:clamp(2.6rem,6vw,5.2rem);line-height:1;letter-spacing:-.03em;font-variation-settings:"wdth" 80}
+.total-label{font-weight:700}
+.sum-actions{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.checkout-note{font-size:1rem;color:var(--sun);max-width:36ch;text-align:right}
+@media (max-width:767px){
+  .band{grid-template-columns:1fr auto;padding-right:clamp(64px,16vw,90px)}
+  .band .copy{grid-column:1/-1}
+  .summary{grid-template-columns:1fr}
+  .sum-actions{align-items:stretch}
+  .sum-actions .btn{justify-content:center}
+  .checkout-note{text-align:left}
+}
+
+/* ---------- camping & getting there: map on a sun field ---------- */
+.camping{background:var(--sun);color:var(--ink)}
+.camping .section-head p{color:var(--ink)}
+.camp-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(32px,5vw,80px);align-items:start}
+.map{width:100%;height:auto;border-radius:20px;background:var(--sea)}
+.map text{font-family:var(--font);font-weight:700}
+.info{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.info li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:4px 18px;padding:22px 0;border-top:2px solid var(--ink)}
+.info li:last-child{border-bottom:2px solid var(--ink)}
+.pin{grid-row:span 2;width:44px;height:44px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--ink);color:var(--sun);display:grid;place-items:center;font-weight:900}
+.pin span{transform:rotate(45deg)}
+.info h3{font-size:clamp(1.5rem,2.4vw,2rem);font-variation-settings:"wdth" 112}
+.info p{max-width:52ch}
+@media (max-width:899px){.camp-grid{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--deep)}
+.faq-list{border-top:2px solid var(--foam);max-width:1000px}
+.q{border-bottom:1px solid rgba(255,243,228,.3)}
+.q h3{font-size:inherit;letter-spacing:0}
+.q button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:76px;padding:18px 0;background:none;border:0;text-align:left;cursor:pointer;font-weight:800;font-size:clamp(1.25rem,2.2vw,1.75rem);line-height:1.2;font-variation-settings:"wdth" 108}
+.q .sunico{width:36px;height:24px;flex:none;overflow:visible}
+.q .sunico circle{transition:transform .28s var(--ease-out);transform:translateY(8px)}
+.q button[aria-expanded="true"] .sunico circle{transform:translateY(0)}
+.q .panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease-out)}
+.q .panel > div{overflow:hidden}
+.q .panel p{padding:0 0 26px;max-width:62ch;color:var(--foam-2)}
+.q.open .panel{grid-template-rows:1fr}
+.no-js .q .panel{grid-template-rows:1fr}
+
+/* ---------- newsletter ---------- */
+.news{background:var(--coral);color:var(--ink)}
+.news-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,80px);align-items:end}
+.news h2{font-variation-settings:"wdth" 120}
+.news-copy p{margin-top:22px;max-width:44ch;font-size:1.125rem}
+.signup{display:grid;gap:10px}
+.signup label{font-weight:800}
+.field{display:flex;gap:10px;flex-wrap:wrap}
+.signup input{flex:1 1 220px;min-height:56px;border-radius:999px;border:2px solid var(--ink);background:var(--foam);color:var(--ink);padding:0 22px;font-size:max(16px,1.05rem);font-weight:600;transition:border-color .18s ease,box-shadow .18s ease}
+.signup input::placeholder{color:#555A72}
+.signup input[aria-invalid="true"]{box-shadow:0 0 0 3px var(--ink)}
+.signup .btn{min-height:56px}
+.err{min-height:1.5em;font-weight:700}
+.err:not(:empty)::before{content:"";display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--ink);margin-right:.5em;vertical-align:.08em}
+.shake{animation:shake .32s ease-out 1}
+@keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+.success{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--ink);color:var(--foam);border-radius:24px;padding:24px 28px}
+.success[hidden]{display:none}
+.success svg{width:72px;height:48px;overflow:hidden}
+.success strong{display:block;font-size:1.5rem;font-weight:900;font-variation-settings:"wdth" 112;line-height:1.1}
+@media (max-width:899px){.news-grid{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--band);color:var(--foam);padding-top:clamp(72px,10vw,140px);overflow:hidden}
+.foot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-bottom:clamp(40px,6vw,72px)}
+.foot-grid h2{font-size:1.05rem;letter-spacing:0;font-weight:800;font-variation-settings:"wdth" 100;margin-bottom:12px;color:var(--sun)}
+.foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.foot-grid a{display:inline-flex;min-height:44px;align-items:center}
+.foot-grid p{color:var(--foam-2)}
+.closing{position:relative}
+.closing svg{width:100%;height:auto}
+.closing .word{font-family:var(--font);font-weight:900;font-variation-settings:"wdth" 108;letter-spacing:-.03em}
+.fine{padding-top:18px;padding-bottom:28px;color:var(--foam-2);font-size:.95rem;display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between}
+@media (max-width:767px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid > div:first-child{grid-column:1/-1}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+  .btn,.btn .rise circle,.q .sunico circle,.clasp,.stepper button,.menu-toggle{transition-property:background-color,color,border-color,opacity!important}
+  .q .panel{transition:none}
+}
+</style>
+</head>
+<body class="no-js">
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-shore" viewBox="0 0 26 18"><path d="M1 11c3-3 5-3 8 0s5 3 8 0 5-3 8 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M1 16c3-3 5-3 8 0s5 3 8 0 5-3 8 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/><path d="M13 7a4 4 0 0 0-8 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-cave" viewBox="0 0 26 18"><path d="M1 17V11C1 5 6 1 13 1s12 4 12 10v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 17v-5a5 5 0 0 1 10 0v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-rise" viewBox="0 0 22 14"><circle cx="11" cy="11" r="6" fill="currentColor"/><path d="M0 13h22" stroke="currentColor" stroke-width="2"/></symbol>
+</svg>
+
+<header class="site-header" id="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Tidefest, back to top">
+      <svg viewBox="0 0 38 24" aria-hidden="true"><circle cx="19" cy="15" r="9" fill="#FFC83D"/><path d="M1 15h36" stroke="#FFF3E4" stroke-width="2.4"/><path d="M3 20.5c3-2 5-2 8 0s5 2 8 0 5-2 8 0 5 2 8 0" fill="none" stroke="#FF6A4D" stroke-width="2.4" stroke-linecap="round"/></svg>
+      Tidefest
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="#lineup">Line-up</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+        <li><a href="#camping">Camping</a></li>
+        <li><a href="#info">Info</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#tickets"><svg class="rise" viewBox="0 0 22 14" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="currentColor"/><path d="M0 13h22" stroke="currentColor" stroke-width="2"/></svg>Buy tickets</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+      <svg class="bars" viewBox="0 0 22 22" aria-hidden="true"><path d="M2 7c3-2 5-2 9 0s6 2 9 0M2 15c3-2 5-2 9 0s6 2 9 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <svg class="x" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Menu" hidden>
+  <ul>
+    <li><a href="#lineup">Line-up</a></li>
+    <li><a href="#tickets">Tickets</a></li>
+    <li><a href="#camping">Camping</a></li>
+    <li><a href="#info">Info</a></li>
+  </ul>
+  <a class="btn" href="#tickets"><svg class="rise" viewBox="0 0 22 14" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="currentColor"/><path d="M0 13h22" stroke="currentColor" stroke-width="2"/></svg>Buy tickets</a>
+  <svg class="horizon" viewBox="0 0 420 120" aria-hidden="true"><circle cx="210" cy="96" r="70" fill="#FFC83D"/><rect y="94" width="420" height="26" fill="#0F1E4A"/><path d="M0 96h420" stroke="#FFF3E4" stroke-width="3"/><path d="M40 110h120M220 110h70M330 110h50" stroke="#FF6A4D" stroke-width="3" stroke-linecap="round"/></svg>
+</nav>
+
+<main id="main">
+<section class="hero" id="hero" aria-labelledby="hero-title">
+  <div class="scene-wrap">
+    <svg class="scene" id="scene" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Night turning to sunrise over the Atlantic behind the Shoreline stage on the beach, with a crowd in front, hands raised.">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#08123A"/><stop offset=".45" stop-color="#13256A"/><stop offset=".8" stop-color="#3B2E78"/><stop offset="1" stop-color="#B9466E"/>
+        </linearGradient>
+        <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2B2F6E"/><stop offset="1" stop-color="#0A1A45"/>
+        </linearGradient>
+        <radialGradient id="sunFill" cx=".45" cy=".4" r=".7">
+          <stop offset="0" stop-color="#FFF1B8"/><stop offset=".55" stop-color="#FFC83D"/><stop offset="1" stop-color="#FF8A4D"/>
+        </radialGradient>
+        <radialGradient id="glow"><stop offset="0" stop-color="#FFB257" stop-opacity=".55"/><stop offset="1" stop-color="#FF6A4D" stop-opacity="0"/></radialGradient>
+        <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFE3A0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE3A0" stop-opacity="0"/></linearGradient>
+        <linearGradient id="screenG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2C70"/><stop offset="1" stop-color="#0A1238"/></linearGradient>
+        <clipPath id="aboveSea"><rect x="0" y="0" width="1600" height="561"/></clipPath>
+        <clipPath id="screenClip"><rect x="152" y="112" width="216" height="106"/></clipPath>
+      </defs>
+      <rect id="skyRect" width="1600" height="600" fill="url(#sky)"/>
+      <g id="stars" fill="#FFF3E4">{{STARS}}</g>
+      <g id="sunG">
+        <circle id="sunGlow" cx="1080" cy="560" r="330" fill="url(#glow)" opacity=".5"/>
+        <g clip-path="url(#aboveSea)"><circle id="sun" cx="1080" cy="640" r="118" fill="url(#sunFill)"/></g>
+      </g>
+      <rect y="560" width="1600" height="200" fill="url(#seaG)"/>
+      <g id="glitter" fill="#FFD27A" opacity=".35"></g>
+      <g id="waves" fill="none" stroke="#FFF3E4" stroke-linecap="round">
+        <path id="w1" d="M0 586 H1600" stroke-width="1.5" opacity=".28"/>
+        <path id="w2" d="M0 622 H1600" stroke-width="2" opacity=".3"/>
+        <path id="w3" d="M0 668 H1600" stroke-width="2.5" opacity=".34"/>
+        <path id="w4" d="M0 720 H1600" stroke-width="3" opacity=".4"/>
+      </g>
+      <path id="sand" d="M0 752 C200 740 380 760 600 748 S1000 742 1200 752 1460 746 1600 750 V1000 H0 Z" fill="#141B47"/>
+      <path id="foamline" d="M0 752 C200 740 380 760 600 748 S1000 742 1200 752 1460 746 1600 750" fill="none" stroke="#FFF3E4" stroke-width="3" opacity=".55"/>
+      <g id="stage" transform="translate(300 512)">
+        <g id="beams" style="mix-blend-mode:screen" opacity=".9">
+          <path data-x="90" d="M84 80 L-40 -620 L60 -620 Z" fill="url(#beam)"/>
+          <path data-x="170" d="M164 80 L110 -620 L190 -620 Z" fill="url(#beam)"/>
+          <path data-x="350" d="M344 80 L330 -620 L410 -620 Z" fill="url(#beam)"/>
+          <path data-x="430" d="M424 80 L480 -620 L580 -620 Z" fill="url(#beam)"/>
+        </g>
+        <!-- towers -->
+        <g fill="#0A1236">
+          <rect x="12" y="60" width="20" height="230"/><rect x="488" y="60" width="20" height="230"/>
+        </g>
+        <path d="M14 66 L30 92 L14 118 L30 144 L14 170 L30 196 L14 222 L30 248 L14 274 M490 66 L506 92 L490 118 L506 144 L490 170 L506 196 L490 222 L506 248 L490 274" fill="none" stroke="#2E3F82" stroke-width="2"/>
+        <!-- canopy -->
+        <path d="M-14 66 Q260 -26 534 66 L534 90 Q260 4 -14 90 Z" fill="#0A1236"/>
+        <path id="rim" d="M-14 66 Q260 -26 534 66" fill="none" stroke="#FF8A5C" stroke-width="3" opacity=".7"/>
+        <path d="M-10 84 Q260 0 530 84" fill="none" stroke="#2E3F82" stroke-width="1.5"/>
+        <!-- line arrays -->
+        <g fill="#0B1440" stroke="#2E3F82" stroke-width="1.5">
+          <path d="M50 74 h34 v15 h-34z M50 91 h34 v15 h-34z M51 108 h33 v15 h-33z M53 125 h32 v14 h-32z M56 141 h31 v14 h-31z M60 157 h30 v13 h-30z"/>
+          <path d="M436 74 h34 v15 h-34z M436 91 h34 v15 h-34z M436 108 h33 v15 h-33z M435 125 h32 v14 h-32z M433 141 h31 v14 h-31z M430 157 h30 v13 h-30z"/>
+        </g>
+        <!-- lamps -->
+        <g fill="#FFE3A0"><circle cx="90" cy="80" r="5"/><circle cx="170" cy="62" r="5"/><circle cx="350" cy="62" r="5"/><circle cx="430" cy="80" r="5"/></g>
+        <!-- LED wall with live EQ -->
+        <rect x="148" y="108" width="224" height="114" rx="3" fill="url(#screenG)" stroke="#2E3F82" stroke-width="2"/>
+        <g id="eq" clip-path="url(#screenClip)" fill="#FF6A4D"></g>
+        <!-- deck, booth, DJ -->
+        <rect x="-20" y="236" width="560" height="56" fill="#0A1236"/>
+        <path d="M-20 236 H540" stroke="#FF8A5C" stroke-width="2" opacity=".55"/>
+        <path id="dj" d="M252 188 a9 10 0 1 1 18 0 a9 10 0 1 1 -18 0 M248 236 V204 q13 -9 26 0 V236 Z M270 206 L288 168 L293 171 L276 210 Z" fill="#0A1236"/>
+        <rect x="214" y="206" width="94" height="30" fill="#111C4D" stroke="#2E3F82" stroke-width="1.5"/>
+        <!-- ground subs -->
+        <g fill="#0A1236" stroke="#2E3F82" stroke-width="1.5">
+          <rect x="-58" y="224" width="58" height="66"/><rect x="520" y="224" width="58" height="66"/>
+          <circle cx="-29" cy="257" r="20" fill="none"/><circle cx="549" cy="257" r="20" fill="none"/>
+        </g>
+      </g>
+      <path id="crowdBack" d="{{BACK}}" fill="#0C1440"/>
+      <path d="{{BACKARMS}}" fill="none" stroke="#0C1440" stroke-width="11" stroke-linecap="round"/>
+      <g id="crowdFront">
+        <path d="{{FRONT}}" fill="#070C2A"/>
+        <path d="{{FRONTARMS}}" fill="none" stroke="#070C2A" stroke-width="15" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <h1 id="hero-title" aria-label="Tidefest"><span class="l" aria-hidden="true"><span class="b">T</span></span><span class="l" aria-hidden="true"><span class="b">I</span></span><span class="l" aria-hidden="true"><span class="b">D</span></span><span class="l" aria-hidden="true"><span class="b">E</span></span><span class="l" aria-hidden="true"><span class="b">F</span></span><span class="l" aria-hidden="true"><span class="b">E</span></span><span class="l" aria-hidden="true"><span class="b">S</span></span><span class="l" aria-hidden="true"><span class="b">T</span></span></h1>
+    <p class="clock" aria-hidden="true"><span id="clockLabel">Sunrise set</span><time id="clock" class="tab">06:00</time></p>
+  </div>
+  <div class="hero-band">
+    <div class="wrap">
+      <p class="when">14–16 August 2027<span>A beach near Newquay, Cornwall</span></p>
+      <p class="lede">Three days of electronic and alternative music on the sand, two stages, camping on the headland, and a sunrise set every morning.</p>
+      <div class="ctas">
+        <a class="btn" href="#tickets"><svg class="rise" viewBox="0 0 22 14" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="currentColor"/><path d="M0 13h22" stroke="currentColor" stroke-width="2"/></svg>Buy tickets</a>
+        <a class="btn btn--ghost" href="#lineup">See the line-up</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section lineup" id="lineup" aria-labelledby="lineup-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="lineup-title">Line-up</h2>
+      <div>
+        <fieldset class="dayfilter" id="dayfilter">
+          <legend>Show the line-up for</legend>
+          <div class="arc" aria-hidden="true">
+            <svg viewBox="0 0 300 64"><path d="M10 56 Q150 -24 290 56" fill="none" stroke="rgba(255,243,228,.45)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/><path d="M0 58 H300" stroke="#FFF3E4" stroke-width="2"/><circle id="arcSun" cx="50" cy="36.4" r="11" fill="#FFC83D"/></svg>
+          </div>
+          <div class="days">
+            <input type="radio" name="day" id="d-sat" value="sat" checked><label for="d-sat">Sat 14<small>Aug</small></label>
+            <input type="radio" name="day" id="d-sun" value="sun"><label for="d-sun">Sun 15<small>Aug</small></label>
+            <input type="radio" name="day" id="d-mon" value="mon"><label for="d-mon">Mon 16<small>Aug</small></label>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <p class="stage-key"><span><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline: open-air, on the sand, facing the sea</span><span><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave: covered, low ceiling, heavy bass</span></p>
+    <div class="day-block" data-day="sat" id="day-sat">
+      <h3>Saturday 14 August · gates 12:00</h3>
+      <ol class="acts">
+        <li class="act"><time class="tab">14:00</time><p class="name">Copper Rockpool</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act"><time class="tab">15:30</time><p class="name">Static Gulls</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act"><time class="tab">17:15</time><p class="name">Mira Tremaine</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act"><time class="tab">19:00</time><p class="name">Ninefathom</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act"><time class="tab">21:30</time><p class="name">Kelp Engine</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act is-sunrise"><time class="tab">Sun 06:00</time><p class="name">Halyard Sun<span class="flag">Sunrise set</span></p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+      </ol>
+    </div>
+    <div class="day-block" data-day="sun" id="day-sun">
+      <h3>Sunday 15 August · gates 11:00</h3>
+      <ol class="acts">
+        <li class="act"><time class="tab">13:30</time><p class="name">Ossie Carrack</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act"><time class="tab">15:00</time><p class="name">Bright Spring Tide</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act"><time class="tab">17:00</time><p class="name">Granite Hum</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act"><time class="tab">19:15</time><p class="name">Jessa Penrose</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act"><time class="tab">22:00</time><p class="name">The Undertow Club</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act is-sunrise"><time class="tab">Mon 06:00</time><p class="name">Lowlight Collective<span class="flag">Sunrise set</span></p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+      </ol>
+    </div>
+    <div class="day-block" data-day="mon" id="day-mon">
+      <h3>Monday 16 August · gates 11:00</h3>
+      <ol class="acts">
+        <li class="act"><time class="tab">12:30</time><p class="name">Saltglass</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act"><time class="tab">14:15</time><p class="name">Riptide Ballet</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act"><time class="tab">16:00</time><p class="name">Tavi Kerensa</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act"><time class="tab">18:00</time><p class="name">Lune &amp; the Ebb</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-cave"/></svg>The Cave</span></li>
+        <li class="act"><time class="tab">20:30</time><p class="name">Spindrift Choir</p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+        <li class="act is-sunrise"><time class="tab">Tue 06:00</time><p class="name">Morrow Shift<span class="flag">Sunrise set · closing</span></p><span class="where"><svg class="stage-ico" aria-hidden="true"><use href="#i-shore"/></svg>Shoreline</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section countdown" id="countdown" aria-labelledby="cd-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="cd-title">Gates open in</h2>
+      <p>12:00 UK time, Saturday 14 August 2027. The first set starts two hours later on the Shoreline stage.</p>
+    </div>
+    <dl class="cd tab" id="cd" aria-describedby="cd-title">
+      <div><dt>days</dt><dd data-u="d"><span>000</span></dd></div>
+      <div><dt>hours</dt><dd data-u="h"><span>00</span></dd></div>
+      <div><dt>minutes</dt><dd data-u="m"><span>00</span></dd></div>
+      <div><dt>seconds</dt><dd data-u="s"><span>00</span></dd></div>
+    </dl>
+    <svg class="cd-horizon" viewBox="0 0 1200 120" aria-hidden="true" preserveAspectRatio="xMidYMax meet"><g id="cdSun"><circle cx="980" cy="118" r="92" fill="#FFC83D"/></g><rect x="0" y="116" width="1200" height="4" fill="#0F1E4A"/><path d="M0 116 H1200" stroke="#0F1E4A" stroke-width="4"/></svg>
+    <p class="cd-note" id="cd-done" hidden>Tidefest is open. Head for the sand.</p>
+  </div>
+</section>
+
+<section class="section tickets" id="tickets" aria-labelledby="tickets-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="tickets-title">Tickets</h2>
+      <p>Every ticket is a woven wristband, posted to you in July. Pick how many of each, and the total updates as you go.</p>
+    </div>
+    <ul class="bands" id="bands">
+      <li class="band day" data-price="79" data-name="Day">
+        <div class="copy"><h3>Day</h3><p>One day, both stages. Choose your day when you check out.</p></div>
+        <p class="price tab">£79<small>per person</small></p>
+        <div class="stepper" role="group" aria-label="Day tickets">
+          <button type="button" data-step="-1" aria-label="Remove one Day ticket" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          <output class="tab" aria-live="polite" aria-label="Day tickets selected"><span>0</span></output>
+          <button type="button" data-step="1" aria-label="Add one Day ticket"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+        </div>
+        <svg class="clasp" viewBox="0 0 48 64" aria-hidden="true"><rect x="8" y="4" width="32" height="56" rx="10" fill="#0F1E4A"/><rect x="16" y="14" width="16" height="36" rx="6" fill="none" stroke="#FFF3E4" stroke-width="3"/></svg>
+      </li>
+      <li class="band weekend" data-price="189" data-name="Weekend">
+        <div class="copy"><h3>Weekend</h3><p>All three days on both stages, and both sunrise sets on the sand.</p></div>
+        <p class="price tab">£189<small>per person</small></p>
+        <div class="stepper" role="group" aria-label="Weekend tickets">
+          <button type="button" data-step="-1" aria-label="Remove one Weekend ticket" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          <output class="tab" aria-live="polite" aria-label="Weekend tickets selected"><span>0</span></output>
+          <button type="button" data-step="1" aria-label="Add one Weekend ticket"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+        </div>
+        <svg class="clasp" viewBox="0 0 48 64" aria-hidden="true"><rect x="8" y="4" width="32" height="56" rx="10" fill="#0F1E4A"/><rect x="16" y="14" width="16" height="36" rx="6" fill="none" stroke="#FFF3E4" stroke-width="3"/></svg>
+      </li>
+      <li class="band camp" data-price="235" data-name="Weekend + camping">
+        <div class="copy"><h3>Weekend + camping</h3><p>The weekend, plus a pitch on the headland from Friday 16:00 until Tuesday after the closing sunrise set.</p></div>
+        <p class="price tab">£235<small>per person</small></p>
+        <div class="stepper" role="group" aria-label="Weekend plus camping tickets">
+          <button type="button" data-step="-1" aria-label="Remove one Weekend plus camping ticket" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          <output class="tab" aria-live="polite" aria-label="Weekend plus camping tickets selected"><span>0</span></output>
+          <button type="button" data-step="1" aria-label="Add one Weekend plus camping ticket"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+        </div>
+        <svg class="clasp" viewBox="0 0 48 64" aria-hidden="true"><rect x="8" y="4" width="32" height="56" rx="10" fill="#FFF3E4"/><rect x="16" y="14" width="16" height="36" rx="6" fill="none" stroke="#0F1E4A" stroke-width="3"/></svg>
+      </li>
+    </ul>
+    <div class="summary">
+      <div>
+        <p class="total-label">Total</p>
+        <p class="total tab" id="total" aria-live="polite">£0</p>
+        <p class="lines" id="lines">No tickets yet. Add one above.</p>
+      </div>
+      <div class="sum-actions">
+        <button class="btn" type="button" id="checkout" disabled><svg class="rise" viewBox="0 0 22 14" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="currentColor"/><path d="M0 13h22" stroke="currentColor" stroke-width="2"/></svg>Buy tickets</button>
+        <p class="checkout-note" id="checkout-note" role="status"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section camping" id="camping" aria-labelledby="camp-title">
+  <div class="wrap">
+    <div class="section-head wide">
+      <h2 id="camp-title">Camping &amp; travel</h2>
+      <p>The beach sits on the Atlantic coast a short ride from Newquay. Here is how the site fits together.</p>
+    </div>
+    <div class="camp-grid">
+      <svg class="map" viewBox="0 0 600 560" role="img" aria-label="Sketch map: the Atlantic to the west, the festival beach with both stages, the campsite on the headland above it, and Newquay station and the road in to the east.">
+        <path id="coast" d="M600 0 H262 C238 40 268 78 236 112 C206 146 160 140 150 182 C140 226 190 246 178 290 C166 334 108 340 112 388 C116 438 186 448 196 492 C204 528 186 546 190 560 H600 Z" fill="#FFE08A"/>
+        <path id="coastLine" d="M262 0 C238 40 268 78 236 112 C206 146 160 140 150 182 C140 226 190 246 178 290 C166 334 108 340 112 388 C116 438 186 448 196 492 C204 528 186 546 190 560" fill="none" stroke="#0F1E4A" stroke-width="4" stroke-linecap="round"/>
+        <path d="M150 182 C140 226 190 246 178 290 C172 312 150 326 132 344" fill="none" stroke="#FFF3E4" stroke-width="10" stroke-linecap="round" opacity=".55"/>
+        <g fill="none" stroke="#FFF3E4" stroke-width="2" stroke-linecap="round" opacity=".5"><path d="M40 120c14-8 24-8 38 0s24 8 38 0"/><path d="M30 300c14-8 24-8 38 0s24 8 38 0"/><path d="M50 470c14-8 24-8 38 0s24 8 38 0"/></g>
+        <text x="40" y="220" fill="#FFF3E4" font-size="26">Atlantic</text>
+        <path id="road" d="M600 250 C520 250 470 270 420 300 C370 330 300 330 230 300" fill="none" stroke="#0F1E4A" stroke-width="4" stroke-dasharray="14 10"/>
+        <path id="rail" d="M600 120 C540 130 500 140 470 150" fill="none" stroke="#0F1E4A" stroke-width="4"/>
+        <path d="M600 120 C540 130 500 140 470 150" fill="none" stroke="#FFE08A" stroke-width="2" stroke-dasharray="4 8"/>
+        <text x="476" y="236" fill="#0F1E4A" font-size="22">road in</text>
+        <text x="412" y="112" fill="#0F1E4A" font-size="24">Newquay</text>
+        <g class="mpin" transform="translate(470 150)"><circle r="20" fill="#0F1E4A"/><text y="8" text-anchor="middle" fill="#FFC83D" font-size="22">2</text></g>
+        <g class="mpin" transform="translate(268 220)"><circle r="20" fill="#0F1E4A"/><text y="8" text-anchor="middle" fill="#FFC83D" font-size="22">1</text></g>
+        <g class="mpin" transform="translate(400 300)"><circle r="20" fill="#0F1E4A"/><text y="8" text-anchor="middle" fill="#FFC83D" font-size="22">3</text></g>
+        <g class="mpin" transform="translate(196 300)"><circle r="20" fill="#FF6A4D"/><text y="8" text-anchor="middle" fill="#0F1E4A" font-size="22">4</text></g>
+        <text x="214" y="372" fill="#0F1E4A" font-size="22">festival beach</text>
+        <text x="296" y="198" fill="#0F1E4A" font-size="22">campsite</text>
+        <text x="580" y="536" text-anchor="end" fill="#0F1E4A" font-size="20">sketch, not to scale</text>
+      </svg>
+      <ol class="info">
+        <li><span class="pin" aria-hidden="true"><span>1</span></span><h3>Camp on the headland</h3><p>The campsite is a ten-minute walk above the beach. Pitches open Friday at 16:00, with a quiet field for anyone who wants to be up for the sunrise set.</p></li>
+        <li><span class="pin" aria-hidden="true"><span>2</span></span><h3>Train to Newquay</h3><p>Newquay station sits at the end of the branch line. A festival shuttle runs from the station forecourt every 20 minutes on arrival and departure days.</p></li>
+        <li><span class="pin" aria-hidden="true"><span>3</span></span><h3>Driving in</h3><p>Follow the A30 into Cornwall, then the yellow Tidefest signs. Car park passes are sold alongside tickets; please fill your car.</p></li>
+        <li><span class="pin" aria-hidden="true"><span>4</span></span><h3>Leave only footprints</h3><p>Take your tent home. Bins and recycling sit at every field gate, and the beach is swept clean after each sunrise set.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section faq" id="info" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="faq-title">Good to know</h2>
+      <p>Still wondering about something? Write to <a href="mailto:hello@tidefest.example">hello@tidefest.example</a>.</p>
+    </div>
+    <div class="faq-list" id="faq">
+      <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a1" id="q1">What time is the sunrise set?<svg class="sunico" viewBox="0 0 36 24" aria-hidden="true"><circle cx="18" cy="16" r="9" fill="#FFC83D"/><rect y="17" width="36" height="7" fill="#182C66"/><path d="M0 17h36" stroke="#FFF3E4" stroke-width="2.4"/></svg></button></h3><div class="panel" id="a1" role="region" aria-labelledby="q1"><div><p>At first light each morning, close to 06:00, on the Shoreline stage. Bring a warm layer: the sand is cold until the sun clears the sea.</p></div></div></div>
+      <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a2" id="q2">Is there an age limit?<svg class="sunico" viewBox="0 0 36 24" aria-hidden="true"><circle cx="18" cy="16" r="9" fill="#FFC83D"/><rect y="17" width="36" height="7" fill="#182C66"/><path d="M0 17h36" stroke="#FFF3E4" stroke-width="2.4"/></svg></button></h3><div class="panel" id="a2" role="region" aria-labelledby="q2"><div><p>Under-16s are welcome with a ticketed adult. The Cave is 18 and over after 21:00, and ID is checked at its door.</p></div></div></div>
+      <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a3" id="q3">What if the weather turns?<svg class="sunico" viewBox="0 0 36 24" aria-hidden="true"><circle cx="18" cy="16" r="9" fill="#FFC83D"/><rect y="17" width="36" height="7" fill="#182C66"/><path d="M0 17h36" stroke="#FFF3E4" stroke-width="2.4"/></svg></button></h3><div class="panel" id="a3" role="region" aria-labelledby="q3"><div><p>The Cave is fully covered and Shoreline plays on in rain. If wind makes the rig unsafe, Shoreline sets move into the Cave, and every change is posted here and at the info points.</p></div></div></div>
+      <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a4" id="q4">Can I leave and come back?<svg class="sunico" viewBox="0 0 36 24" aria-hidden="true"><circle cx="18" cy="16" r="9" fill="#FFC83D"/><rect y="17" width="36" height="7" fill="#182C66"/><path d="M0 17h36" stroke="#FFF3E4" stroke-width="2.4"/></svg></button></h3><div class="panel" id="a4" role="region" aria-labelledby="q4"><div><p>Yes. Your wristband gives re-entry all weekend. Weekend + camping wristbands also open the campsite gate.</p></div></div></div>
+      <div class="q"><h3><button type="button" aria-expanded="false" aria-controls="a5" id="q5">How accessible is the site?<svg class="sunico" viewBox="0 0 36 24" aria-hidden="true"><circle cx="18" cy="16" r="9" fill="#FFC83D"/><rect y="17" width="36" height="7" fill="#182C66"/><path d="M0 17h36" stroke="#FFF3E4" stroke-width="2.4"/></svg></button></h3><div class="panel" id="a5" role="region" aria-labelledby="q5"><div><p>Both stages have a raised viewing platform, there are accessible toilets in every field, and a matting track crosses the sand. Email us before you travel and we will plan your arrival with you.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section news" id="news" aria-labelledby="news-title">
+  <div class="wrap news-grid">
+    <div class="news-copy">
+      <h2 id="news-title">Hear it first</h2>
+      <p>New names, stage times and who plays each sunrise set, sent when they land. Twice a month at most.</p>
+    </div>
+    <div>
+      <form class="signup" id="signup" novalidate>
+        <label for="email">Email address</label>
+        <div class="field">
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-describedby="email-err" required>
+          <button class="btn btn--ink" type="submit">Join the list</button>
+        </div>
+        <p class="err" id="email-err" aria-live="polite"></p>
+      </form>
+      <div class="success" id="success" role="status" hidden tabindex="-1">
+        <svg viewBox="0 0 72 48" aria-hidden="true"><circle id="okSun" cx="36" cy="42" r="18" fill="#FFC83D"/><rect y="42" width="72" height="6" fill="#0F1E4A"/><path d="M0 42h72" stroke="#FFF3E4" stroke-width="2.4"/></svg>
+        <p><strong>You're on the list.</strong>Watch your inbox for the first names.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h2>Contact</h2>
+        <p><a href="mailto:hello@tidefest.example">hello@tidefest.example</a></p>
+        <p>Tidefest, near Newquay, Cornwall</p>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/" rel="noopener">TikTok</a></li>
+          <li><a href="https://soundcloud.com/" rel="noopener">SoundCloud</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>The festival</h2>
+        <ul>
+          <li><a href="#lineup">Line-up</a></li>
+          <li><a href="#tickets">Tickets</a></li>
+          <li><a href="#camping">Camping</a></li>
+          <li><a href="#info">Info</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="closing" aria-hidden="true">
+    <svg viewBox="0 0 1600 330" preserveAspectRatio="xMidYMax meet">
+      <defs><clipPath id="footSky"><rect width="1600" height="282"/></clipPath></defs>
+      <g clip-path="url(#footSky)"><circle id="footSun" cx="1430" cy="200" r="128" fill="#FF6A4D"/></g>
+      <text class="word" x="40" y="272" font-size="300" fill="#FFF3E4" textLength="1230" lengthAdjust="spacingAndGlyphs">TIDEFEST</text>
+      <path d="M0 282 H1600" stroke="#FFC83D" stroke-width="4"/>
+      <path id="footWave" d="M0 306c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0 80 14 120 0 80-14 120 0 80 14 120 0" fill="none" stroke="#0F6E78" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="wrap fine">
+    <p>14–16 August 2027 · see you at first light.</p>
+    <p>Tidefest is a fictional festival made for a design study. Artists, prices and services are illustrative.</p>
+  </div>
+</footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script defer>
+(function(){
+"use strict";
+document.body.classList.remove("no-js");
+var RM = window.matchMedia("(prefers-reduced-motion: reduce)");
+var reduced = RM.matches;
+var $ = function(s,c){return (c||document).querySelector(s)};
+var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+var lerp = function(a,b,t){return a+(b-a)*t};
+function hex(h){h=h.replace("#","");return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function mix(a,b,t){var x=hex(a),y=hex(b);return "rgb("+Math.round(lerp(x[0],y[0],t))+","+Math.round(lerp(x[1],y[1],t))+","+Math.round(lerp(x[2],y[2],t))+")"}
+
+/* ---------- header + mobile menu ---------- */
+var header = $(".site-header"), hero = $("#hero");
+function headerState(){ header.classList.toggle("is-solid", hero.getBoundingClientRect().top < -8 || !menu.hidden); }
+window.addEventListener("scroll", headerState, {passive:true});
+var toggle = $(".menu-toggle"), menu = $("#mobile-nav");
+headerState();
+function openMenu(){
+  menu.hidden = false; toggle.setAttribute("aria-expanded","true"); toggle.setAttribute("aria-label","Close menu");
+  document.documentElement.style.overflow = "hidden"; header.classList.add("is-solid");
+  if (!reduced && menu.animate) menu.animate([{clipPath:"circle(0% at 92% 0%)"},{clipPath:"circle(150% at 92% 0%)"}],{duration:420,easing:"cubic-bezier(.32,.72,0,1)"});
+  else if (menu.animate) menu.animate([{opacity:0},{opacity:1}],{duration:160});
+  var first = $("a", menu); first && first.focus();
+}
+function closeMenu(focusBack){
+  menu.hidden = true; toggle.setAttribute("aria-expanded","false"); toggle.setAttribute("aria-label","Open menu");
+  document.documentElement.style.overflow = ""; headerState();
+  if (focusBack) toggle.focus();
+}
+toggle.addEventListener("click", function(){ toggle.getAttribute("aria-expanded")==="true" ? closeMenu(true) : openMenu(); });
+$$("a", menu).forEach(function(a){a.addEventListener("click", function(){closeMenu(false)})});
+document.addEventListener("keydown", function(e){
+  if (menu.hidden) return;
+  if (e.key==="Escape"){ closeMenu(true); return; }
+  if (e.key==="Tab"){
+    var f = [toggle].concat($$("a", menu)); var i = f.indexOf(document.activeElement);
+    if (e.shiftKey && i<=0){ e.preventDefault(); f[f.length-1].focus(); }
+    else if (!e.shiftKey && i===f.length-1){ e.preventDefault(); f[0].focus(); }
+  }
+});
+window.matchMedia("(min-width: 900px)").addEventListener("change", function(m){ if (m.matches && !menu.hidden) closeMenu(false); });
+
+/* ---------- hero scene: night to sunrise ---------- */
+var NIGHT = ["#08123A","#13256A","#3B2E78","#B9466E"], DAWN = ["#1C3B8A","#3A5BAE","#E9706A","#FFC46A"];
+var stops = $$("#sky stop"), seaStops = $$("#seaG stop");
+var sun = $("#sun"), glow = $("#sunGlow"), stars = $("#stars"), beams = $("#beams"), glitter = $("#glitter"), sand = $("#sand"), rim = $("#rim");
+var clock = $("#clock");
+var narrow = function(){ return window.innerWidth < 641; };
+var dawn = { p: 0 };
+function renderDawn(p){
+  for (var i=0;i<stops.length;i++) stops[i].setAttribute("stop-color", mix(NIGHT[i], DAWN[i], p));
+  seaStops[0].setAttribute("stop-color", mix("#2B2F6E","#C4687A",p));
+  seaStops[1].setAttribute("stop-color", mix("#0A1A45","#1E3F7A",p));
+  var top = 562;
+  sun.setAttribute("cy", lerp(700, top, p).toFixed(1));
+  glow.setAttribute("cy", lerp(600, 560, p).toFixed(1));
+  glow.setAttribute("opacity", (0.35 + 0.65*p).toFixed(2));
+  stars.setAttribute("opacity", (1 - p*1.4 < 0 ? 0 : 1 - p*1.4).toFixed(2));
+  beams.setAttribute("opacity", (0.9 - 0.6*p).toFixed(2));
+  glitter.setAttribute("opacity", (0.2 + 0.7*p).toFixed(2));
+  sand.setAttribute("fill", mix("#141B47","#3A3266",p));
+  rim.setAttribute("opacity", (0.35 + 0.65*p).toFixed(2));
+  var mins = Math.round(lerp(4*60+40, 6*60, p));
+  clock.textContent = String(Math.floor(mins/60)).padStart(2,"0")+":"+String(mins%60).padStart(2,"0");
+}
+// glitter path under the sun and the LED wall equaliser: one path each
+var glitterPath = document.createElementNS("http://www.w3.org/2000/svg","path"); glitter.appendChild(glitterPath);
+var eqPath = document.createElementNS("http://www.w3.org/2000/svg","path"); $("#eq").appendChild(eqPath);
+var eqPath2 = document.createElementNS("http://www.w3.org/2000/svg","path"); eqPath2.setAttribute("fill","#FFC83D"); $("#eq").appendChild(eqPath2);
+var waves = [["#w1",586,4,.9],["#w2",622,6,1.1],["#w3",668,8,1.3],["#w4",720,11,1.6]].map(function(w){return {el:$(w[0]),y:w[1],a:w[2],k:w[3]}});
+var letters = $$(".hero h1 .b");
+var beamEls = $$("#beams path");
+var pointerX = .5, swell = 1, targetSwell = 1;
+
+function drawFrame(t){
+  var sx = narrow() ? 800 : (window.innerWidth < 1001 ? 920 : 1080);
+  // waves
+  for (var i=0;i<waves.length;i++){
+    var w = waves[i], d = "M0 "+w.y, A = w.a*swell;
+    for (var x=0;x<=1600;x+=80){ var y = w.y + Math.sin(x*0.006*w.k + t*0.0012*w.k + i) * A; d += " L"+x+" "+y.toFixed(1); }
+    w.el.setAttribute("d", d);
+  }
+  // glitter: shimmering dashes on the sun's path
+  var gd = "";
+  for (var r=0;r<16;r++){
+    var y = 568 + r*11, n = 2 + (r%3), th = r<6?2:3;
+    for (var k=0;k<n;k++){
+      var spread = 30 + r*14, off = Math.sin(t*0.002 + r*1.7 + k*2.3) * spread;
+      var wdt = Math.max(6, (90 - r*3) * (0.5 + 0.5*Math.sin(t*0.003 + r + k)));
+      gd += "M"+(sx+off-wdt/2).toFixed(1)+" "+y+"h"+wdt.toFixed(1)+"v"+th+"h"+(-wdt).toFixed(1)+"z";
+    }
+  }
+  glitterPath.setAttribute("d", gd);
+  // LED wall equaliser
+  var e1 = "", e2 = "";
+  for (var b=0;b<14;b++){
+    var v = 0.5 + 0.25*Math.sin(t*0.009 + b*0.7) + 0.25*Math.sin(t*0.017 + b*1.9);
+    var h = 10 + v*92, seg = "M"+(158+b*15)+" "+(218-h).toFixed(1)+"h10v"+h.toFixed(1)+"h-10z";
+    if (b%4===3) e2 += seg; else e1 += seg;
+  }
+  eqPath.setAttribute("d", e1); eqPath2.setAttribute("d", e2);
+  // wordmark rides the swell
+  for (var L=0;L<letters.length;L++){
+    letters[L].style.transform = "translateY(" + (Math.sin(t*0.0018 + L*0.62) * 0.035 * swell).toFixed(4) + "em)";
+  }
+  // beams follow the pointer
+  var base = (pointerX - .5) * 34;
+  for (var m=0;m<beamEls.length;m++){
+    var bx = +beamEls[m].dataset.x, sway = Math.sin(t*0.0007 + m*1.3) * 6;
+    beamEls[m].setAttribute("transform", "rotate(" + (base + sway).toFixed(2) + " " + bx + " 80)");
+  }
+}
+var running = false, visible = true, raf = 0;
+function loop(t){ swell += (targetSwell - swell) * 0.06; targetSwell += (1 - targetSwell) * 0.04; drawFrame(t); raf = requestAnimationFrame(loop); }
+function start(){ if (running || reduced || !visible || document.hidden) return; running = true; raf = requestAnimationFrame(loop); }
+function stop(){ running = false; cancelAnimationFrame(raf); }
+if ("IntersectionObserver" in window){
+  new IntersectionObserver(function(e){ visible = e[0].isIntersecting; visible ? start() : stop(); }).observe(hero);
+}
+document.addEventListener("visibilitychange", function(){ document.hidden ? stop() : start(); });
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches){
+  hero.addEventListener("pointermove", function(e){ pointerX = e.clientX / window.innerWidth; targetSwell = Math.min(2.4, targetSwell + 0.04); }, {passive:true});
+}
+var lastY = window.scrollY;
+window.addEventListener("scroll", function(){ var dy = Math.abs(window.scrollY - lastY); lastY = window.scrollY; targetSwell = Math.min(3, targetSwell + dy*0.004); }, {passive:true});
+
+/* ---------- day filter: the sun travels its arc ---------- */
+var arcSun = $("#arcSun"), arcT = {sat:0.142857, sun:0.5, mon:0.857143}, curT = arcT.sat, arcAnim = 0;
+function arcPos(t){ return {x:10+280*t, y:56-160*t*(1-t)}; }
+function moveArcSun(to){
+  cancelAnimationFrame(arcAnim);
+  if (reduced){ curT = to; var p = arcPos(to); arcSun.setAttribute("cx",p.x); arcSun.setAttribute("cy",p.y); return; }
+  var from = curT, t0 = performance.now(), dur = 420;
+  (function step(now){
+    var k = Math.min(1,(now-t0)/dur), e = 1 - Math.pow(1-k,3);
+    curT = from + (to-from)*e; var p = arcPos(curT);
+    arcSun.setAttribute("cx",p.x.toFixed(2)); arcSun.setAttribute("cy",p.y.toFixed(2));
+    if (k<1) arcAnim = requestAnimationFrame(step);
+  })(t0);
+}
+var blocks = $$(".day-block");
+function showDay(day, animate){
+  blocks.forEach(function(b){ b.hidden = b.dataset.day !== day; });
+  moveArcSun(arcT[day]);
+  if (animate && !reduced && window.gsap){
+    var names = $$(".name", $("#day-"+day));
+    gsap.fromTo(names, {"--w":58, y:14}, {"--w":100, y:0, duration:.55, ease:"expo.out", stagger:.045, overwrite:true, clearProps:"transform"});
+  }
+}
+$$(".days input").forEach(function(r){ r.addEventListener("change", function(){ if (r.checked) showDay(r.value, true); }); });
+showDay("sat", false);
+
+/* ---------- countdown ---------- */
+// 14 Aug 2027 12:00 Europe/London = 11:00 UTC (British Summer Time, UTC+1)
+var OPEN = Date.UTC(2027,7,14,11,0,0);
+var cdEls = {d:$('[data-u="d"]'),h:$('[data-u="h"]'),m:$('[data-u="m"]'),s:$('[data-u="s"]')}, cdPrev = {};
+function setUnit(u, val){
+  if (cdPrev[u] === val) return; cdPrev[u] = val;
+  var dd = cdEls[u], span = document.createElement("span"); span.textContent = val;
+  dd.replaceChildren(span);
+  if (!reduced && span.animate) span.animate([{transform:"translateY(-45%)",opacity:.2},{transform:"translateY(0)",opacity:1}],{duration:340,easing:"cubic-bezier(.23,1,.32,1)"});
+}
+function tick(){
+  var ms = Math.max(0, OPEN - Date.now()), s = Math.floor(ms/1000);
+  setUnit("d", String(Math.floor(s/86400)).padStart(3,"0"));
+  setUnit("h", String(Math.floor(s%86400/3600)).padStart(2,"0"));
+  setUnit("m", String(Math.floor(s%3600/60)).padStart(2,"0"));
+  setUnit("s", String(s%60).padStart(2,"0"));
+  if (ms === 0){ $("#cd-done").hidden = false; return; }
+  setTimeout(tick, 1000 - (Date.now() % 1000) + 5);
+}
+tick();
+
+/* ---------- tickets ---------- */
+var qty = {}, MAX = 8, shownTotal = 0, totalAnim = 0;
+var totalEl = $("#total"), linesEl = $("#lines"), checkout = $("#checkout"), note = $("#checkout-note");
+var gbp = function(n){ return "£" + n.toLocaleString("en-GB"); };
+function rollTotal(to){
+  cancelAnimationFrame(totalAnim);
+  if (reduced){ shownTotal = to; totalEl.textContent = gbp(to); return; }
+  var from = shownTotal, t0 = performance.now();
+  (function step(now){ var k = Math.min(1,(now-t0)/320), e = 1-Math.pow(1-k,3); shownTotal = Math.round(from+(to-from)*e); totalEl.textContent = gbp(shownTotal); if (k<1) totalAnim = requestAnimationFrame(step); })(t0);
+}
+function updateSummary(){
+  var total = 0, parts = [];
+  $$(".band").forEach(function(b){ var n = qty[b.dataset.name]||0; if (n){ total += n * +b.dataset.price; parts.push(n + " × " + b.dataset.name); } });
+  rollTotal(total);
+  linesEl.textContent = parts.length ? parts.join(", ") : "No tickets yet. Add one above.";
+  checkout.disabled = total === 0; note.textContent = "";
+}
+$$(".band").forEach(function(b){
+  var out = $("output", b), minus = $('[data-step="-1"]', b), plus = $('[data-step="1"]', b);
+  qty[b.dataset.name] = 0;
+  function set(n, dir){
+    qty[b.dataset.name] = n; minus.disabled = n === 0; plus.disabled = n === MAX;
+    var span = document.createElement("span"); span.textContent = n; out.replaceChildren(span);
+    if (!reduced && span.animate) span.animate([{transform:"translateY("+(dir>0?"60%":"-60%")+")",opacity:0},{transform:"translateY(0)",opacity:1}],{duration:220,easing:"cubic-bezier(.23,1,.32,1)"});
+    if (!reduced && dir>0){ b.classList.add("bump"); setTimeout(function(){ b.classList.remove("bump"); }, 200); }
+    updateSummary();
+  }
+  minus.addEventListener("click", function(){ var n = qty[b.dataset.name]; if (n>0) set(n-1,-1); if (minus.disabled) plus.focus(); });
+  plus.addEventListener("click", function(){ var n = qty[b.dataset.name]; if (n<MAX) set(n+1,1); if (plus.disabled) minus.focus(); });
+});
+checkout.addEventListener("click", function(){
+  note.textContent = "Your wristbands are held: " + linesEl.textContent + ", " + gbp(shownTotal) + ". Checkout is not live on this concept page.";
+});
+
+/* ---------- FAQ ---------- */
+$$(".q button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var open = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", String(!open));
+    btn.closest(".q").classList.toggle("open", !open);
+  });
+});
+
+/* ---------- newsletter ---------- */
+var form = $("#signup"), email = $("#email"), err = $("#email-err"), ok = $("#success");
+var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+email.addEventListener("input", function(){ if (email.getAttribute("aria-invalid")==="true" && EMAIL.test(email.value.trim())){ email.removeAttribute("aria-invalid"); err.textContent = ""; } });
+form.addEventListener("submit", function(e){
+  e.preventDefault();
+  var v = email.value.trim();
+  var msg = !v ? "Enter your email address so we can write to you." : (!EMAIL.test(v) ? "That address looks incomplete. Check it has an @ and a domain, like name@example.com." : "");
+  if (msg){
+    err.textContent = msg; email.setAttribute("aria-invalid","true"); email.focus();
+    if (!reduced){ email.classList.remove("shake"); void email.offsetWidth; email.classList.add("shake"); }
+    return;
+  }
+  form.hidden = true; ok.hidden = false; ok.focus();
+  if (!reduced && ok.animate){ $("#okSun").animate([{transform:"translateY(26px)"},{transform:"translateY(0)"}],{duration:900,easing:"cubic-bezier(.23,1,.32,1)",fill:"both"}); }
+});
+
+/* ---------- scroll choreography (GSAP) ---------- */
+function staticFrame(){ renderDawn(0.62); drawFrame(5200); }
+function boot(){
+  if (!window.gsap || !window.ScrollTrigger){ reduced ? staticFrame() : (renderDawn(0.35), start()); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add({ motion:"(prefers-reduced-motion: no-preference)", rm:"(prefers-reduced-motion: reduce)", wide:"(min-width: 900px)" }, function(ctx){
+    var c = ctx.conditions;
+    if (c.rm){ reduced = true; stop(); staticFrame(); return; }
+    reduced = false; renderDawn(0); start();
+    // load: letters surface from the sea, stagger like a wave
+    gsap.from(".hero h1 .l", { yPercent: 70, duration: 1.1, ease: "expo.out", stagger: { each: .06, from: "center" } });
+    gsap.from(".hero-band .wrap > *", { y: 18, duration: .8, ease: "power3.out", stagger: .08, delay: .25 });
+    // signature: scrolling lifts the sun out of the Atlantic
+    var st = { trigger: hero, start: "top top", scrub: .8 };
+    if (c.wide){ st.end = "+=110%"; st.pin = true; st.anticipatePin = 1; } else { st.end = "bottom top"; }
+    gsap.to(dawn, { p: 1, ease: "none", scrollTrigger: st, onUpdate: function(){ renderDawn(dawn.p); } });
+    gsap.to(".hero h1", { yPercent: c.wide ? -14 : -6, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: c.wide ? "+=110%" : "bottom top", scrub: .8 } });
+    // line-up: names stretch open on the width axis as they arrive
+    $$(".day-block .acts").forEach(function(list){
+      gsap.fromTo($$(".name", list), { "--w": 58 }, { "--w": 100, ease: "expo.out", duration: 1, stagger: .07, scrollTrigger: { trigger: list, start: "top 85%", once: true } });
+    });
+    // countdown: the sun climbs over its horizon
+    gsap.fromTo("#cdSun", { y: 70 }, { y: 0, ease: "none", scrollTrigger: { trigger: "#countdown", start: "top 80%", end: "bottom 60%", scrub: .8 } });
+    // tickets: wristbands are laid down one after another
+    gsap.from(".band", { x: 60, rotation: 1.2, duration: .9, ease: "power3.out", stagger: .12, scrollTrigger: { trigger: "#bands", start: "top 82%", once: true } });
+    // camping: the coastline is drawn, then the pins land
+    var cl = $("#coastLine"), len = cl.getTotalLength();
+    gsap.fromTo(cl, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, ease: "none", scrollTrigger: { trigger: ".map", start: "top 85%", end: "center 45%", scrub: .6 } });
+    gsap.from(".mpin circle", { scale: 0.6, transformOrigin: "50% 50%", duration: .5, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: ".map", start: "top 60%", once: true } });
+    // footer: the sun sets behind the name
+    gsap.fromTo("#footSun", { y: -60 }, { y: 70, ease: "none", scrollTrigger: { trigger: ".closing", start: "top bottom", end: "bottom bottom", scrub: .8 } });
+    return function(){ stop(); };
+  });
+  document.fonts && document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
+}
+if (document.readyState !== "loading") boot(); else document.addEventListener("DOMContentLoaded", boot);
+RM.addEventListener && RM.addEventListener("change", function(m){ reduced = m.matches; if (reduced){ stop(); staticFrame(); } else start(); });
+})();
+</script>
+</body>
+</html>

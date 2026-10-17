@@ -1,0 +1,18 @@
+Subject: 40-cover seafood restaurant in a boathouse, Norfolk coast. Audience: coast visitors, London/Norwich weekenders, locals, groups, gift buyers. Primary job: book a table.
+
+PASS 1 PLAN
+Colour: hull white #F6F7F4, tarred ink #18262E, antifouling red #8E3A2B, marsh green #46624A, sea lavender #7E6FA0, mud #6E6455.
+Type: Big Shoulders Display (hull lettering, display) + Source Serif 4 (body, 1.6 leading).
+Layout: hero = a drawn clinker hull filling the screen, the name painted on the planks with a registration "KL 40" (40 covers); waterline across the bottom. Below, left-aligned single column with a 2-col split for menu/booking.
+  [ nav                         Book ]
+  [ ====== planks ======              ]
+  [   SALTMARSH        KL 40          ]
+  [ ~~~~ waterline / red bottom ~~~~  ]
+Principles: one bold thing (the hull); everything else quiet; boats named by registration like a harbour register.
+
+REVIEW AGAINST BRIEF / DEFAULTS
+- "Boat register list with numbers" risks the numbered-marker tell. Kept: registrations are real identifiers for boats, not 01/02 decoration.
+- All-caps hull lettering on the hero only (it is the painted name, subject vernacular); no all-caps labels anywhere else. Changed from caps section headings to sentence case.
+- Hairline rules for menu rows would drift into the broadsheet default. Changed: menu rows separated by space and a plank-tone band per section.
+- Lavender accent instead of red for actions: red reserved for the waterline band, so the accent appears only on actions and selected states.
+- Motion: one load moment only (water rises to the waterline, then the registration is painted in). No per-section fade-ups.

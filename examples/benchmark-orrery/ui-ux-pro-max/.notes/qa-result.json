@@ -1,0 +1,62 @@
+{
+ "desktop": {
+  "errors": [],
+  "hscroll": false,
+  "basket": "2",
+  "errors_shown": 5,
+  "summary_focused": "error-summary",
+  "email_err": "Enter an email address like name@example.com.",
+  "date_opts": 14,
+  "total": "\u00a342",
+  "success": true,
+  "success_text": "NAME\nAda Lovelace\nSHOW\nDeep Field\nWHEN\nSaturday 17 October, 19:30\nTICKETS\n3 tickets \u00b7 \u00a342",
+  "faq": "true",
+  "fridays": [
+   "Friday 16 October",
+   "Friday 23 October",
+   "Friday 30 October"
+  ]
+ },
+ "tablet": {
+  "errors": [],
+  "hscroll": false,
+  "basket": "2",
+  "errors_shown": 5,
+  "summary_focused": "error-summary",
+  "email_err": "Enter an email address like name@example.com.",
+  "date_opts": 14,
+  "total": "\u00a342",
+  "success": true,
+  "success_text": "NAME\nAda Lovelace\nSHOW\nDeep Field\nWHEN\nSaturday 17 October, 19:30\nTICKETS\n3 tickets \u00b7 \u00a342",
+  "faq": "true",
+  "fridays": [
+   "Friday 16 October",
+   "Friday 23 October",
+   "Friday 30 October"
+  ],
+  "menu_visible": true,
+  "menu_closed": "false"
+ },
+ "mobile": {
+  "errors": [],
+  "hscroll": false,
+  "basket": "2",
+  "errors_shown": 5,
+  "summary_focused": "error-summary",
+  "email_err": "Enter an email address like name@example.com.",
+  "date_opts": 14,
+  "total": "\u00a342",
+  "success": true,
+  "success_text": "NAME\nAda Lovelace\nSHOW\nDeep Field\nWHEN\nSaturday 17 October, 19:30\nTICKETS\n3 tickets \u00b7 \u00a342",
+  "faq": "true",
+  "fridays": [
+   "Friday 16 October",
+   "Friday 23 October",
+   "Friday 30 October"
+  ],
+  "menu_visible": true,
+  "menu_closed": "false"
+ },
+ "reduced_motion_reveal_off": true,
+ "reduced_anim": "none"
+}

@@ -1,0 +1,299 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-store-loomandleaf/layoza-v3/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; inp_ms is a lab interaction proxy (worst Event Timing duration >= 16ms across scripted Tab/Shift+Tab presses and, when a mobile menu toggle exists, its click), not field INP. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 6.48,
+      "contrast_failures": 0,
+      "lcp_ms": 1656,
+      "cls": 0.0388,
+      "inp_proxy_ms": 32,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-store-loomandleaf\\layoza-v3\\qa\\screenshots\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 6.48,
+      "contrast_failures": 0,
+      "lcp_ms": 200,
+      "cls": 0.0003,
+      "inp_proxy_ms": 32,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-store-loomandleaf\\layoza-v3\\qa\\screenshots\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-store-loomandleaf\\layoza-v3\\qa\\screenshots\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 6.48,
+      "contrast_failures": 0,
+      "lcp_ms": 1620,
+      "cls": 0.0001,
+      "inp_proxy_ms": 32,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-store-loomandleaf\\layoza-v3\\qa\\screenshots\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-store-loomandleaf\\layoza-v3\\qa\\screenshots\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 6.48,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 179,
+  "contrast_indeterminate_elements": 9,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 28.3,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1656,
+  "cls": 0.0388,
+  "inp_ms": 32,
+  "inp_metric": "lab_interaction_proxy",
+  "inp_event_entries": 62,
+  "h1_to_body_ratio": 3.85,
+  "max_line_length_ch": 58,
+  "font_families": [
+    "bricolage grotesque"
+  ],
+  "font_family_count": 1,
+  "site_dna": {
+    "title": "Loom & Leaf — Handwoven linen from Lancashire",
+    "lang": "en-GB",
+    "page_background": "#E3E9E6",
+    "text_colors": [
+      {
+        "value": "#1C2420",
+        "count": 1791
+      },
+      {
+        "value": "#46514B",
+        "count": 1365
+      },
+      {
+        "value": "#B8C6BC",
+        "count": 1123
+      },
+      {
+        "value": "#E9EEE8",
+        "count": 235
+      },
+      {
+        "value": "#3E4740",
+        "count": 118
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 82
+      },
+      {
+        "value": "#E7B7A5",
+        "count": 24
+      },
+      {
+        "value": "#F5F6F1",
+        "count": 18
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#F5F6F1",
+        "count": 2207.0397656250007
+      },
+      {
+        "value": "#26332C",
+        "count": 2091.8185
+      },
+      {
+        "value": "#DCD3C1",
+        "count": 527.085
+      },
+      {
+        "value": "#F0F2EC",
+        "count": 303.5281354980469
+      },
+      {
+        "value": "#E3E9E6",
+        "count": 105.12
+      },
+      {
+        "value": "#A3342A",
+        "count": 84.6550625
+      },
+      {
+        "value": "#E9EDE9",
+        "count": 35.3745
+      },
+      {
+        "value": "#1C2420",
+        "count": 11.4275224609375
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Bricolage Grotesque",
+        "count": 4758
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "74.88px",
+        "weight": "650",
+        "line_height": "73.3824px",
+        "letter_spacing": "-2.6208px",
+        "family": "Bricolage Grotesque"
+      },
+      "h2": {
+        "size": "57.6px",
+        "weight": "650",
+        "line_height": "58.752px",
+        "letter_spacing": "-1.44px",
+        "family": "Bricolage Grotesque"
+      },
+      "h3": {
+        "size": "18px",
+        "weight": "620",
+        "line_height": "21.6px",
+        "letter_spacing": "-0.27px",
+        "family": "Bricolage Grotesque"
+      },
+      "p": {
+        "size": "19.44px",
+        "weight": "400",
+        "line_height": "30.132px",
+        "letter_spacing": "normal",
+        "family": "Bricolage Grotesque"
+      },
+      "small": {
+        "size": "12px",
+        "weight": "500",
+        "line_height": "18.6px",
+        "letter_spacing": "normal",
+        "family": "Bricolage Grotesque"
+      }
+    },
+    "radii": [
+      {
+        "value": "999px",
+        "count": 42
+      },
+      {
+        "value": "50%",
+        "count": 36
+      },
+      {
+        "value": "20px",
+        "count": 15
+      },
+      {
+        "value": "12px",
+        "count": 14
+      },
+      {
+        "value": "6px",
+        "count": 10
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1320px",
+        "count": 8
+      },
+      {
+        "value": "699.84px",
+        "count": 1
+      },
+      {
+        "value": "420px",
+        "count": 1
+      },
+      {
+        "value": "578px",
+        "count": 1
+      },
+      {
+        "value": "612px",
+        "count": 1
+      },
+      {
+        "value": "544px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--sky": "#E3E9E6",
+      "--sheet": "#F5F6F1",
+      "--ink": "#1C2420",
+      "--ink-2": "#46514B",
+      "--rule": "#B9C3BC",
+      "--moor": "#26332C",
+      "--moor-ink": "#E9EEE8",
+      "--moor-ink-2": "#B8C6BC",
+      "--oat": "#DCD3C1",
+      "--madder": "#A3342A",
+      "--madder-dk": "#86271F",
+      "--peg": "#C59C6B",
+      "--font": "\"Bricolage Grotesque\",\"Bricolage Fallback\",system-ui,sans-serif",
+      "--r-s": "6px",
+      "--r-m": "12px",
+      "--r-l": "20px",
+      "--pad": "clamp(16px,4vw,56px)",
+      "--max": "1320px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 0
+  },
+  "craft_critique": {},
+  "craft_critique_by_viewport": {
+    "desktop": {},
+    "tablet": {},
+    "mobile": {}
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

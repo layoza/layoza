@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold Architects, Glasgow</title>
+<meta name="description" content="Fold is a six-person architecture studio in Glasgow working on housing retrofits, small civic buildings and timber extensions.">
+<meta name="theme-color" content="#F1F2EE">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: "Sans Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica");
+  size-adjust: 100%;
+  ascent-override: 87%;
+  descent-override: 21%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Mono Fallback";
+  src: local("Courier New"), local("CourierNewPSMT");
+  size-adjust: 100%;
+  ascent-override: 102%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+:root {
+  --film: #F1F2EE;
+  --film-2: #E7E9E4;
+  --ink: #262B66;
+  --ink-2: #4C5187;
+  --tint: #DDE0EC;
+  --rev: #B8322A;
+  --rev-light: #FF9C8F;
+  --sans: "Archivo", "Sans Fallback", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", "Mono Fallback", ui-monospace, monospace;
+  --header-h: 4.5rem;
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+  --max: 82rem;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--header-h) + 1rem); -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--film);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  caret-color: var(--rev);
+  scrollbar-color: var(--ink-2) var(--film-2);
+}
+::selection { background: var(--ink); color: var(--film); }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+h1, h2, h3 { margin: 0; font-weight: 500; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--rev); outline-offset: 3px; border-radius: 2px; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.wrap { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
+.skip {
+  position: absolute; left: var(--gutter); top: -4rem; z-index: 50;
+  background: var(--ink); color: var(--film); padding: .6rem 1rem; text-decoration: none;
+}
+.skip:focus { top: .75rem; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--film);
+  border-bottom: 1px solid var(--ink);
+}
+.site-header .wrap {
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+}
+.wordmark {
+  display: inline-flex; align-items: center; gap: .6rem;
+  text-decoration: none; font-weight: 600; font-size: 1.5rem; letter-spacing: -0.02em;
+  min-height: 44px;
+}
+.wordmark svg { width: 34px; height: 22px; }
+.wordmark small { font-weight: 400; font-size: .9375rem; letter-spacing: 0; color: var(--ink-2); }
+.nav-list { display: flex; gap: .25rem; list-style: none; margin: 0; padding: 0; }
+.nav-list a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem;
+  text-decoration: none; font-weight: 500; white-space: nowrap;
+  border: 1px solid transparent;
+}
+.nav-list a:hover { border-color: var(--ink); }
+.menu-btn {
+  display: none; align-items: center; gap: .6rem;
+  min-height: 44px; padding: 0 1rem;
+  background: transparent; color: var(--ink); border: 1px solid var(--ink);
+  font: 500 1rem var(--sans); cursor: pointer;
+}
+.menu-btn svg { width: 18px; height: 18px; }
+.menu-btn .i-close { display: none; }
+.menu-btn[aria-expanded="true"] .i-open { display: none; }
+.menu-btn[aria-expanded="true"] .i-close { display: block; }
+
+@media (max-width: 760px) {
+  .menu-btn { display: inline-flex; }
+  .site-nav {
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: var(--film); border-bottom: 1px solid var(--ink);
+    display: none;
+  }
+  .site-nav.is-open { display: block; height: calc(100dvh - var(--header-h)); overflow-y: auto; }
+  .nav-list { flex-direction: column; gap: 0; width: min(100% - 2 * var(--gutter), var(--max)); margin: 0 auto; padding: .5rem 0 1.25rem; }
+  .nav-list li + li { border-top: 1px solid var(--tint); }
+  .nav-list a { width: 100%; min-height: 56px; padding: 0; font-size: 1.375rem; letter-spacing: -0.01em; border: 0; }
+  .nav-list a:hover { text-decoration: underline; }
+  .wordmark small { display: none; }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding: clamp(2rem, 5vw, 4rem) 0 clamp(2.5rem, 4vw, 3.5rem); }
+.hero .wrap {
+  display: grid; grid-template-columns: 5fr 7fr; gap: clamp(2rem, 4vw, 4rem); align-items: end;
+}
+.hero-copy { padding-bottom: 5.2rem; }
+.hero h1 {
+  font-size: clamp(2.4rem, 3.5vw, 3.4rem);
+  line-height: 1.04; letter-spacing: -0.025em; font-weight: 500;
+}
+.hero .lead { margin-top: 1.75rem; max-width: 34ch; font-size: 1.25rem; line-height: 1.5; color: var(--ink-2); }
+.cta {
+  display: inline-flex; align-items: center; gap: .75rem;
+  margin-top: 2.25rem; min-height: 48px; padding: 0 1.25rem;
+  background: var(--ink); color: var(--film); text-decoration: none; font-weight: 500;
+  border: 1px solid var(--ink);
+  transition: background-color .15s ease, color .15s ease;
+}
+.cta:hover { background: var(--film); color: var(--ink); }
+.cta svg { width: 16px; height: 16px; }
+
+.drawing { margin: 0; }
+.drawing svg { width: 100%; height: auto; }
+.titleblock {
+  display: grid; grid-template-columns: auto 1fr auto; border: 1px solid var(--ink); border-top-width: 2px;
+  font-size: .875rem; line-height: 1.35;
+}
+.titleblock > * { padding: .6rem .8rem; }
+.titleblock > * + * { border-left: 1px solid var(--ink); }
+.titleblock .no { font-family: var(--mono); font-weight: 500; font-size: 1rem; display: flex; align-items: center; }
+.titleblock b { font-weight: 600; display: block; }
+.titleblock .key { display: flex; align-items: center; gap: .5rem; color: var(--ink-2); }
+.titleblock .key i { width: 18px; height: 3px; background: var(--rev); display: inline-block; }
+
+@media (max-width: 980px) {
+  .hero .wrap { grid-template-columns: 1fr; align-items: start; }
+  .hero-copy { padding-bottom: 0; }
+  .hero h1 { font-size: clamp(2.25rem, 7vw, 3.5rem); max-width: 18ch; }
+}
+@media (max-width: 760px) {
+  .drawing .labels { display: none; }
+  .hero h1 { font-size: clamp(2rem, 8.6vw, 2.6rem); }
+  .hero .lead { font-size: 1.125rem; margin-top: 1.25rem; }
+  .cta { margin-top: 1.5rem; }
+}
+@media (max-width: 520px) {
+  .titleblock { grid-template-columns: auto 1fr; }
+  .titleblock .key { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--ink); }
+}
+
+/* ---------- Sheets (sections) ---------- */
+.sheet { padding: clamp(5rem, 10vw, 9rem) 0; }
+.sheet-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem;
+  border-bottom: 2px solid var(--ink); padding-bottom: 1rem; margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+.sheet-head h2 { font-size: clamp(2rem, 3.4vw, 2.75rem); line-height: 1.05; letter-spacing: -0.03em; }
+.sheet-head .no { font-family: var(--mono); font-size: .9375rem; color: var(--ink-2); text-align: right; }
+@media (max-width: 600px) { .sheet-head { flex-direction: column; align-items: flex-start; gap: .5rem; } .sheet-head .no { text-align: left; } }
+.intro { max-width: 52ch; font-size: 1.1875rem; color: var(--ink-2); }
+
+/* Work register */
+#work { background: var(--film); }
+.work-top { display: flex; justify-content: space-between; align-items: end; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.filters { display: grid; grid-template-columns: repeat(4, auto); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.filters button {
+  min-height: 44px; padding: 0 1.1rem; background: transparent; color: var(--ink);
+  border: 0; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  font: 500 1rem var(--sans); cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+@media (max-width: 520px) { .work-top > div { width: 100%; } .filters { grid-template-columns: 1fr 1fr; } }
+.filters button:hover { background: var(--tint); }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--film); }
+.filters button:focus-visible { outline-offset: -5px; outline-color: var(--rev); }
+.count { font-family: var(--mono); font-size: .9375rem; color: var(--ink-2); margin-bottom: 1.5rem; }
+
+.register { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.register li {
+  display: grid; grid-template-columns: 7.5rem 4.5rem minmax(0, 1fr) 9rem 4rem 7rem;
+  gap: 1.5rem; align-items: center;
+  padding: 1.25rem 0; border-bottom: 1px solid var(--ink);
+  transition: background-color .15s ease;
+}
+.register li[hidden] { display: none; }
+@media (hover: hover) {
+  .register li:hover { background: var(--film-2); }
+  .register li:hover .thumb { border-color: var(--ink); }
+}
+.register .thumb { width: 7.5rem; height: 5rem; border: 1px solid var(--tint); background: var(--film); transition: border-color .15s ease; }
+.register .thumb svg { width: 100%; height: 100%; }
+.register .ref { font-family: var(--mono); font-size: .9375rem; color: var(--ink-2); }
+.register h3 { font-size: 1.375rem; letter-spacing: -0.015em; line-height: 1.2; }
+.register .desc { margin-top: .25rem; color: var(--ink-2); max-width: 56ch; }
+.register .place, .register .year, .register .type { font-size: 1rem; }
+.register .year { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.register .type { justify-self: start; border: 1px solid var(--ink); padding: .1rem .5rem; font-size: .875rem; font-weight: 500; white-space: nowrap; }
+.register-cols {
+  display: grid; grid-template-columns: 7.5rem 4.5rem minmax(0, 1fr) 9rem 4rem 7rem; gap: 1.5rem;
+  padding: 0 0 .6rem; font-size: .875rem; color: var(--ink-2);
+}
+.empty { padding: 2rem 0; color: var(--ink-2); }
+.linklike { background: none; border: 0; padding: .5rem 0; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: .22em; cursor: pointer; min-height: 44px; }
+@media (max-width: 980px) {
+  .register-cols { display: none; }
+  .register li { grid-template-columns: 7.5rem minmax(0, 1fr); grid-template-areas: "thumb main" "thumb meta"; row-gap: .6rem; align-items: start; }
+  .register .thumb { grid-area: thumb; }
+  .register .main { grid-area: main; }
+  .register .ref { display: none; }
+  .register .meta { grid-area: meta; display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; }
+}
+@media (min-width: 981px) { .register .meta { display: contents; } }
+@media (max-width: 520px) {
+  .register li { grid-template-columns: 5.5rem minmax(0, 1fr); column-gap: 1rem; }
+  .register .thumb { width: 5.5rem; height: 3.7rem; }
+  .register h3 { font-size: 1.1875rem; }
+  .register .desc { font-size: 1rem; }
+}
+
+/* Approach */
+#approach { background: var(--tint); }
+#approach .sheet-head .no { color: var(--ink-2); }
+.buildup { margin: 0 0 2.5rem; border-block: 1px solid var(--ink); background: var(--film); padding: 1rem 0 .5rem; }
+.buildup svg { width: 100%; height: auto; }
+.buildup .hint { display: none; }
+@media (max-width: 760px) {
+  .buildup { overflow-x: auto; overscroll-behavior-x: contain; }
+  .buildup svg { width: 900px; max-width: none; }
+  .buildup .hint { display: block; position: sticky; left: 0; padding: .25rem .75rem 0; font-size: .875rem; color: var(--ink-2); }
+}
+.principles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; list-style: none; padding: 0; margin: 0; counter-reset: p; }
+.principles li { padding: 0 1.75rem 0 0; }
+.principles li + li { padding-left: 1.75rem; border-left: 1px solid var(--ink); }
+.principles .n { font-family: var(--mono); font-weight: 500; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid var(--ink); border-radius: 50%; font-size: .9375rem; }
+.principles h3 { margin-top: 1rem; font-size: 1.5rem; letter-spacing: -0.02em; line-height: 1.15; }
+.principles p { margin-top: .75rem; color: var(--ink-2); }
+.principles .layer { display: block; margin-top: 1rem; font-size: .875rem; color: var(--ink-2); }
+@media (max-width: 980px) {
+  .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2.5rem; }
+  .principles li:nth-child(3) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 600px) {
+  .principles { grid-template-columns: 1fr; row-gap: 0; }
+  .principles li, .principles li + li { padding: 1.5rem 0; border-left: 0; border-top: 1px solid var(--ink); }
+}
+
+/* Studio */
+.studio-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.studio-copy p + p { margin-top: 1rem; }
+.studio-copy p { max-width: 46ch; }
+.schedule { margin-top: 2.5rem; width: 100%; border-collapse: collapse; }
+.schedule caption { text-align: left; font-size: .875rem; color: var(--ink-2); padding-bottom: .5rem; }
+.schedule th, .schedule td { text-align: left; padding: .7rem 0; border-top: 1px solid var(--ink); vertical-align: baseline; }
+.schedule tr:last-child td, .schedule tr:last-child th { border-bottom: 1px solid var(--ink); }
+.schedule th { font-family: var(--mono); font-weight: 500; width: 3.5rem; font-size: .9375rem; }
+.schedule td.name { font-weight: 500; padding-right: 1rem; }
+.schedule td.role { color: var(--ink-2); }
+.plan { margin: 0; }
+.plan svg { width: 100%; height: auto; }
+@media (max-width: 600px) {
+  .plan svg text { font-size: 22px; }
+  .plan .room-label { display: none; }
+}
+.plan figcaption { margin-top: .75rem; font-size: .875rem; color: var(--ink-2); }
+@media (max-width: 860px) { .studio-grid { grid-template-columns: 1fr; } .plan { order: -1; } }
+@media (max-width: 520px) {
+  .schedule tr { display: grid; grid-template-columns: 3rem 1fr; border-top: 1px solid var(--ink); }
+  .schedule th, .schedule td { border: 0; padding: .55rem 0 0; }
+  .schedule td.role { grid-column: 2; padding: 0 0 .65rem; }
+  .schedule tr:last-child th, .schedule tr:last-child td { border: 0; }
+  .schedule tbody { border-bottom: 1px solid var(--ink); display: block; }
+}
+
+/* Contact */
+#contact { background: var(--ink); color: var(--film); }
+#contact .sheet-head { border-color: var(--film); }
+#contact .sheet-head .no, #contact .intro { color: #C9CCE0; }
+#contact :focus-visible { outline-color: var(--rev-light); }
+.contact-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.direct { margin-top: 2rem; font-size: 1.125rem; }
+.direct a { display: inline-block; padding: .35rem 0; }
+.direct p + p { margin-top: .25rem; }
+.next { list-style: none; margin: 2.5rem 0 0; padding: 0; border-top: 1px solid var(--film); max-width: 30rem; }
+.next li { display: grid; grid-template-columns: 2.25rem 1fr; padding: .8rem 0; border-bottom: 1px solid #5A5F92; }
+.next .mono { color: #C9CCE0; }
+form { border: 1px solid var(--film); }
+.row { display: grid; grid-template-columns: 1fr 1fr; }
+.row + .row, .field + .row, .row + .field { border-top: 1px solid var(--film); }
+.row .field + .field { border-left: 1px solid var(--film); }
+.field { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; }
+label { font-size: .9375rem; font-weight: 500; }
+label .opt { font-weight: 400; color: #C9CCE0; }
+input, select, textarea {
+  margin-top: .5rem; width: 100%;
+  font: 400 max(16px, 1.0625rem)/1.4 var(--sans);
+  color: var(--ink); background: var(--film);
+  border: 1px solid var(--film); border-radius: 0;
+  padding: .7rem .8rem; min-height: 48px;
+}
+textarea { min-height: 9rem; resize: vertical; }
+select {
+  appearance: none; -webkit-appearance: none; padding-right: 2.5rem; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23262B66' stroke-width='1.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .9rem center;
+}
+input::placeholder, textarea::placeholder { color: #5C6190; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--rev-light); outline-offset: 0; }
+[aria-invalid="true"] { border-color: var(--rev-light); box-shadow: inset 0 0 0 2px var(--rev-light); }
+.error { min-height: 1.4em; margin-top: .4rem; font-size: .9375rem; color: var(--rev-light); }
+.error:empty { min-height: 0; margin: 0; }
+.form-foot { border-top: 1px solid var(--film); padding: 1rem 1.1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.form-foot p { font-size: .9375rem; color: #C9CCE0; }
+.send {
+  min-height: 48px; padding: 0 1.4rem; font: 500 1.0625rem var(--sans);
+  background: var(--film); color: var(--ink); border: 1px solid var(--film); cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.send:hover { background: var(--ink); color: var(--film); }
+.success { border: 1px solid var(--film); padding: 2rem 1.5rem; }
+.success h3 { font-size: 1.75rem; letter-spacing: -0.02em; }
+.success p { margin-top: .75rem; color: #C9CCE0; max-width: 46ch; }
+.success button { margin-top: 1.5rem; min-height: 44px; padding: 0 1rem; background: transparent; color: var(--film); border: 1px solid var(--film); font: 500 1rem var(--sans); cursor: pointer; }
+.success button:hover { background: var(--film); color: var(--ink); }
+@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .row { grid-template-columns: 1fr; }
+  .row .field + .field { border-left: 0; border-top: 1px solid var(--film); }
+}
+
+/* Footer */
+.site-footer { padding: 3rem 0 2rem; }
+.footer-block {
+  display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 1fr; border: 1px solid var(--ink); border-top-width: 2px;
+}
+.footer-block > div { padding: 1.1rem 1.2rem 1.3rem; }
+.footer-block > div + div { border-left: 1px solid var(--ink); }
+.footer-block h2 { font-size: .875rem; font-weight: 500; color: var(--ink-2); margin-bottom: .5rem; letter-spacing: 0; }
+.footer-block .wm { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; display: flex; align-items: center; gap: .6rem; }
+.footer-block .wm svg { width: 34px; height: 22px; }
+.footer-block address { font-style: normal; }
+.footer-block ul { list-style: none; margin: 0; padding: 0; }
+.footer-block a { display: inline-block; padding: .2rem 0; }
+.footer-note { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; font-size: .875rem; color: var(--ink-2); }
+@media (max-width: 900px) {
+  .footer-block { grid-template-columns: 1fr 1fr; }
+  .footer-block > div:nth-child(3) { border-left: 0; }
+  .footer-block > div:nth-child(n+3) { border-top: 1px solid var(--ink); }
+}
+@media (max-width: 520px) {
+  .footer-block { grid-template-columns: 1fr; }
+  .footer-block > div + div { border-left: 0; border-top: 1px solid var(--ink); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="fold-mark" viewBox="0 0 34 22">
+      <path d="M1 21V9l15-6 17 7v11" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M16 3v18" fill="none" stroke="#B8322A" stroke-width="2"/>
+    </symbol>
+    <pattern id="stone" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#4C5187" stroke-width="0.9"/>
+    </pattern>
+    <pattern id="earth" width="14" height="10" patternUnits="userSpaceOnUse">
+      <path d="M1 3h5M8 8h4" stroke="#4C5187" stroke-width="0.9" stroke-linecap="round"/>
+    </pattern>
+    <pattern id="insul" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M0 0L6 3L0 6" fill="none" stroke="#B8322A" stroke-width="0.9"/>
+    </pattern>
+    <pattern id="joists" width="12" height="9" patternUnits="userSpaceOnUse">
+      <rect x="3" y="1" width="3" height="7" fill="none" stroke="#4C5187" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Fold Architects, home">
+      <svg aria-hidden="true"><use href="#fold-mark"/></svg>
+      Fold <small>Architects, Glasgow</small>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <svg class="i-open" viewBox="0 0 18 18" aria-hidden="true"><path d="M1 4h16M1 9h16M1 14h16" stroke="currentColor" stroke-width="1.6"/></svg>
+      <svg class="i-close" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span class="menu-label">Menu</span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#studio">Studio</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1 id="hero-title">Architects for housing retrofits, small civic buildings and timber extensions in Glasgow.</h1>
+        <p class="lead">Fold is six people working on the buildings the city already has, and the modest new ones its streets and back greens need.</p>
+        <a class="cta" href="#work">See the work
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v11M3 8.5L8 13.5 13 8.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </a>
+      </div>
+
+      <figure class="drawing">
+        <svg viewBox="0 72 760 468" role="img" aria-labelledby="sec-title sec-desc">
+          <title id="sec-title">Section A–A: a Glasgow tenement retrofit with a rear timber extension</title>
+          <desc id="sec-desc">An illustrative architectural section through a four-storey sandstone tenement. New work is drawn in red: insulation lining the inside of the stone walls and roof, and a single-storey timber extension at the back with a folded roof.</desc>
+          <g fill="none" stroke="#262B66" stroke-linejoin="round" stroke-linecap="round">
+            <!-- ground -->
+            <rect x="20" y="482" width="720" height="22" fill="url(#earth)" stroke="none"/>
+            <path d="M20 478H40V474H110M350 470H740" stroke-width="1.6"/>
+            <path d="M20 478h20" stroke-width="1.6"/>
+
+            <!-- foundations + walls (cut, hatched) -->
+            <path d="M104 512h24v-30h-6V196h-12v286h-6z" fill="url(#stone)" stroke-width="1.8"/>
+            <path d="M332 512h24v-30h-6V196h-12v286h-6z" fill="url(#stone)" stroke-width="1.8"/>
+
+            <!-- window openings front wall (cleared, then frames) -->
+            <g fill="#F1F2EE" stroke="none">
+              <rect x="109" y="232" width="14" height="44"/>
+              <rect x="109" y="304" width="14" height="44"/>
+              <rect x="109" y="376" width="14" height="44"/>
+              <rect x="109" y="410" width="14" height="44"/>
+              <rect x="337" y="232" width="14" height="44"/>
+              <rect x="337" y="304" width="14" height="44"/>
+              <rect x="337" y="376" width="14" height="44"/>
+              <rect x="337" y="414" width="14" height="56"/>
+            </g>
+            <!-- re-draw cut lines at openings -->
+            <g stroke-width="1.8">
+              <path d="M110 232h12M110 276h12M110 304h12M110 348h12M110 376h12M110 420h12M110 410h12M110 454h12"/>
+              <path d="M338 232h12M338 276h12M338 304h12M338 348h12M338 376h12M338 420h12M338 414h12"/>
+            </g>
+            <!-- sash windows -->
+            <g stroke-width="0.9">
+              <path d="M114 232v22h4v-22M116 254v22M114 276v0"/>
+              <path d="M112 254h8v22h-8z"/>
+              <path d="M114 304v22h4v-22M112 326h8v22h-8z"/>
+              <path d="M114 376v22h4v-22M112 398h8v22h-8z"/>
+              <path d="M342 232v22h4v-22M340 254h8v22h-8z"/>
+              <path d="M342 304v22h4v-22M340 326h8v22h-8z"/>
+              <path d="M342 376v22h4v-22M340 398h8v22h-8z"/>
+            </g>
+            <!-- ground floor front: close entrance door -->
+            <g stroke-width="0.9"><path d="M112 410h8v44h-8z"/><path d="M116 410v44"/></g>
+            <path d="M110 454h12v16h-12z" fill="url(#stone)" stroke-width="1.8"/>
+
+            <!-- floors (joist zones) -->
+            <g stroke-width="1.2">
+              <rect x="122" y="398" width="216" height="9" fill="url(#joists)"/>
+              <rect x="122" y="326" width="216" height="9" fill="url(#joists)"/>
+              <rect x="122" y="254" width="216" height="9" fill="url(#joists)"/>
+              <rect x="122" y="196" width="216" height="8" fill="url(#joists)"/>
+              <rect x="122" y="470" width="216" height="9" fill="url(#joists)"/>
+            </g>
+            <!-- internal partitions beyond (elevation, light) -->
+            <g stroke="#4C5187" stroke-width="0.8">
+              <path d="M200 407v63M200 335v63M200 263v63"/>
+              <path d="M262 407v63M262 335v63M262 263v63"/>
+              <path d="M214 470v-46h16v46M214 398v-46h16v46M214 326v-46h16v46"/>
+              <path d="M276 470v-46h16v46M276 398v-46h16v46M276 326v-46h16v46"/>
+            </g>
+
+            <!-- roof -->
+            <path d="M98 200L230 108L362 200l-6 4L230 116 104 204z" fill="#DDE0EC" stroke-width="1.6"/>
+            <path d="M150 166l0 30M190 138v58M270 138v58M310 166v30" stroke="#4C5187" stroke-width="0.8"/>
+            <path d="M200 140h60" stroke="#4C5187" stroke-width="0.8"/>
+            <path d="M226 110h8v-30h-8z" stroke-width="1"/>
+
+            <!-- NEW WORK: insulation (red) -->
+            <g stroke="#B8322A" stroke-width="1">
+              <rect x="122" y="204" width="6" height="28" fill="url(#insul)"/>
+              <rect x="122" y="276" width="6" height="50" fill="url(#insul)"/>
+              <rect x="122" y="348" width="6" height="50" fill="url(#insul)"/>
+              <rect x="122" y="420" width="6" height="50" fill="url(#insul)"/>
+              <rect x="332" y="204" width="6" height="28" fill="url(#insul)"/>
+              <rect x="332" y="276" width="6" height="50" fill="url(#insul)"/>
+              <rect x="332" y="348" width="6" height="50" fill="url(#insul)"/>
+              <path d="M116 200L230 120 344 200" stroke-width="2.2" stroke-dasharray="1 0"/>
+              <path d="M122 486h216" stroke-width="2.2"/>
+            </g>
+
+            <!-- NEW WORK: timber extension with folded roof -->
+            <g stroke="#B8322A">
+              <!-- slab -->
+              <rect x="356" y="470" width="150" height="10" fill="url(#insul)" stroke-width="1.4"/>
+              <!-- folded CLT roof -->
+              <path d="M350 404L432 386L514 410L514 420L432 396L356 414z" fill="#F6D9D5" stroke-width="1.6"/>
+              <path d="M432 386v10" stroke-width="1.6"/>
+              <!-- end wall: timber frame with full glazing -->
+              <path d="M496 414v56M506 417v53" stroke-width="1.6"/>
+              <path d="M496 470h10" stroke-width="1.6"/>
+              <path d="M499 420v50M503 420v50" stroke-width="0.8"/>
+              <!-- rooflight in the fold -->
+              <path d="M420 389l12-3 12 3" stroke-width="0.9"/>
+              <!-- opening into host building: new lintel -->
+              <rect x="337" y="404" width="14" height="10" fill="#F6D9D5" stroke-width="1.4"/>
+            </g>
+            <!-- kitchen bench & table beyond (light elevation) -->
+            <g stroke="#4C5187" stroke-width="0.8">
+              <path d="M362 470v-26h44v26M362 448h44"/>
+              <path d="M440 470v-22M478 470v-22M434 448h50"/>
+            </g>
+
+            <!-- back green: boundary wall beyond -->
+            <path d="M690 470v-38h40v38" stroke="#4C5187" stroke-width="0.9"/>
+            <path d="M690 440h40" stroke="#4C5187" stroke-width="0.6"/>
+
+            <!-- dimensions -->
+            <g stroke-width="0.8">
+              <path d="M110 524H506M110 518v12M350 518v12M506 518v12"/>
+              <path d="M106 528l8-8M346 528l8-8M502 528l8-8" stroke-width="1.2"/>
+            </g>
+            <g fill="#262B66" stroke="none" font-family="IBM Plex Mono, monospace" font-size="11" text-anchor="middle">
+              <text x="230" y="516">12 000</text>
+              <text x="428" y="516">7 800</text>
+            </g>
+
+            <!-- levels (datums) -->
+            <g class="labels">
+              <g stroke-width="0.8">
+                <path d="M600 470h120M600 398h120M600 326h120M600 254h120M600 196h120"/>
+                <path d="M606 470l-5-7h10zM606 398l-5-7h10zM606 326l-5-7h10zM606 254l-5-7h10zM606 196l-5-7h10z" fill="#262B66"/>
+              </g>
+              <g fill="#262B66" stroke="none" font-family="IBM Plex Mono, monospace" font-size="11">
+                <text x="616" y="465">FFL +0.00</text>
+                <text x="616" y="393">FFL +3.60</text>
+                <text x="616" y="321">FFL +7.20</text>
+                <text x="616" y="249">FFL +10.80</text>
+                <text x="616" y="191">CEIL +13.70</text>
+              </g>
+
+              <!-- callouts -->
+              <g stroke-width="0.8">
+                <path d="M300 152L392 152" /><circle cx="300" cy="152" r="2.4" fill="#262B66"/>
+                <path d="M357 236L392 236"/><circle cx="356" cy="236" r="2.4" fill="#262B66"/>
+                <path d="M335 296L392 296"/><circle cx="335" cy="296" r="2.4" fill="#B8322A" stroke="#B8322A"/>
+                <path d="M470 393L470 352L512 352"/><circle cx="470" cy="397" r="2.4" fill="#B8322A" stroke="#B8322A"/>
+              </g>
+              <g fill="#262B66" stroke="none" font-family="Archivo, Arial, sans-serif" font-size="12.5">
+                <text x="398" y="148">Roof insulated between rafters</text>
+                <text x="398" y="164" fill="#4C5187">slates and timbers kept</text>
+                <text x="398" y="232">Sandstone walls retained</text>
+                <text x="398" y="248" fill="#4C5187">repointed in lime</text>
+                <text x="398" y="292" fill="#B8322A">Wood-fibre lining, lime finish</text>
+                <text x="398" y="308" fill="#4C5187">vapour-open, inside face</text>
+                <text x="518" y="348" fill="#B8322A">Timber extension,</text>
+                <text x="518" y="364" fill="#B8322A">folded CLT roof</text>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <figcaption class="titleblock">
+          <span class="no">A-101</span>
+          <span><b>Section A–A</b>Tenement retrofit with rear timber extension</span>
+          <span class="key"><i aria-hidden="true"></i>Red is new work. Illustrative drawing.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="sheet" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="sheet-head">
+        <h2 id="work-title">Selected work</h2>
+        <span class="no">A-200 Drawing register</span>
+      </div>
+      <div class="work-top">
+        <p class="intro">Six recent projects. Most of our work is in occupied buildings, so most of it is quiet from the street.</p>
+        <div>
+          <div class="filters" role="group" aria-label="Filter projects by type">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="housing" aria-pressed="false">Housing</button>
+            <button type="button" data-filter="civic" aria-pressed="false">Civic</button>
+            <button type="button" data-filter="extensions" aria-pressed="false">Extensions</button>
+          </div>
+        </div>
+      </div>
+      <p class="count" id="count" aria-live="polite">Showing 6 of 6 projects</p>
+
+      <div class="register-cols" aria-hidden="true">
+        <span>Drawing</span><span>Ref.</span><span>Project</span><span>Place</span><span>Year</span><span>Type</span>
+      </div>
+      <ul class="register" id="register">
+        <li data-type="housing">
+          <div class="thumb"><svg viewBox="0 0 120 80" aria-hidden="true" fill="none" stroke="#262B66" stroke-width="1.2" stroke-linejoin="round">
+            <path d="M24 72V22h72v50M20 22h80M24 22l36-12 36 12"/>
+            <path d="M32 30h10v12H32zM55 30h10v12H55zM78 30h10v12H78zM32 48h10v12H32zM55 48h10v12H55zM78 48h10v12H78z" stroke-width="0.9"/>
+            <path d="M55 64h10v8H55z" stroke-width="0.9"/>
+            <path d="M27 25v44M93 25v44" stroke="#B8322A" stroke-dasharray="3 2"/>
+            <path d="M8 72h104" stroke-width="1.6"/>
+          </svg></div>
+          <span class="ref">P-01</span>
+          <div class="main"><h3>Kelvin Close retrofit</h3><p class="desc">Eight tenement flats insulated and re-ventilated while the tenants stayed at home.</p></div>
+          <div class="meta"><span class="place">Hillhead</span><span class="year">2024</span><span class="type">Housing</span></div>
+        </li>
+        <li data-type="civic">
+          <div class="thumb"><svg viewBox="0 0 120 80" aria-hidden="true" fill="none" stroke="#262B66" stroke-width="1.2" stroke-linejoin="round">
+            <path d="M30 72V36l30-24 30 24v36"/>
+            <path d="M44 42v20M54 38v24M66 38v24M76 42v20" stroke-width="0.9"/>
+            <path d="M90 72V50h20v22M90 50h20" stroke="#B8322A"/>
+            <path d="M96 72V58h8v14" stroke="#B8322A" stroke-width="0.9"/>
+            <path d="M8 72h104" stroke-width="1.6"/>
+          </svg></div>
+          <span class="ref">P-02</span>
+          <div class="main"><h3>Govanhill community hall</h3><p class="desc">A 1930s hall reopened with a level entrance, a new kitchen and a stage everyone can reach.</p></div>
+          <div class="meta"><span class="place">Govanhill</span><span class="year">2023</span><span class="type">Civic</span></div>
+        </li>
+        <li data-type="extensions">
+          <div class="thumb"><svg viewBox="0 0 120 80" aria-hidden="true" fill="none" stroke="#262B66" stroke-width="1.2" stroke-linejoin="round">
+            <path d="M14 72V20l22-10 22 10v52"/>
+            <path d="M24 28h8v12h-8zM40 28h8v12h-8z" stroke-width="0.9"/>
+            <path d="M58 46l22-6 26 8v24M58 50l22-6 26 8" stroke="#B8322A"/>
+            <path d="M80 40v4M100 52v20" stroke="#B8322A" stroke-width="0.9"/>
+            <path d="M8 72h104" stroke-width="1.6"/>
+          </svg></div>
+          <span class="ref">P-03</span>
+          <div class="main"><h3>Shawlands garden room</h3><p class="desc">A folded timber roof over a kitchen that now opens straight onto the back green.</p></div>
+          <div class="meta"><span class="place">Shawlands</span><span class="year">2024</span><span class="type">Extension</span></div>
+        </li>
+        <li data-type="housing">
+          <div class="thumb"><svg viewBox="0 0 120 80" aria-hidden="true" fill="none" stroke="#B8322A" stroke-width="1.2" stroke-linejoin="round">
+            <path d="M12 72V38l20-8v42M32 72V38l20-8v42M52 72V38l20-8v42M72 72V38l20-8v42M92 72V38"/>
+            <path d="M18 56h8v16h-8zM38 56h8v16h-8zM58 56h8v16h-8zM78 56h8v16h-8z" stroke-width="0.9"/>
+            <path d="M8 72h104" stroke="#262B66" stroke-width="1.6"/>
+            <path d="M100 72V24h8v48" stroke="#262B66" stroke-width="0.9"/>
+          </svg></div>
+          <span class="ref">P-04</span>
+          <div class="main"><h3>Partick lane houses</h3><p class="desc">Four timber-frame homes on a former garage lane, each with its own front door to the street.</p></div>
+          <div class="meta"><span class="place">Partick</span><span class="year">2022</span><span class="type">Housing</span></div>
+        </li>
+        <li data-type="civic">
+          <div class="thumb"><svg viewBox="0 0 120 80" aria-hidden="true" fill="none" stroke="#262B66" stroke-width="1.2" stroke-linejoin="round">
+            <path d="M18 36l42-8 42 8M18 40l42-8 42 8" stroke="#B8322A"/>
+            <path d="M26 39v25M46 35v29M74 35v29M94 39v25" stroke="#B8322A"/>
+            <path d="M74 64V46h20v18" stroke="#B8322A" stroke-width="0.9"/>
+            <path d="M8 64h104" stroke-width="1.6"/>
+            <path d="M8 70c6-3 10 3 16 0s10 3 16 0 10 3 16 0 10 3 16 0 10 3 16 0 10 3 16 0" stroke-width="0.9"/>
+          </svg></div>
+          <span class="ref">P-05</span>
+          <div class="main"><h3>Maryhill canal pavilion</h3><p class="desc">A shelter, toilets and a tea hatch for a towpath park, built from one timber kit.</p></div>
+          <div class="meta"><span class="place">Maryhill</span><span class="year">2025</span><span class="type">Civic</span></div>
+        </li>
+        <li data-type="extensions">
+          <div class="thumb"><svg viewBox="0 0 120 80" aria-hidden="true" fill="none" stroke="#262B66" stroke-width="1.2" stroke-linejoin="round">
+            <path d="M10 66V18h40v40"/>
+            <path d="M18 26h8v10h-8zM34 26h8v10h-8z" stroke-width="0.9"/>
+            <path d="M50 58h40l20-14" stroke-width="1.6"/>
+            <path d="M50 44h44v14M50 41h46" stroke="#B8322A"/>
+            <path d="M60 44v14M84 44v14" stroke="#B8322A" stroke-width="0.9"/>
+            <path d="M8 66h42" stroke-width="1.6"/>
+          </svg></div>
+          <span class="ref">P-06</span>
+          <div class="main"><h3>Dennistoun terrace extension</h3><p class="desc">A low timber room set into the slope behind a sandstone terrace, with a planted roof.</p></div>
+          <div class="meta"><span class="place">Dennistoun</span><span class="year">2023</span><span class="type">Extension</span></div>
+        </li>
+      </ul>
+      <p class="empty" id="empty" hidden>No projects of this type yet. <button type="button" class="linklike" data-filter="all">Show all projects</button></p>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="sheet" id="approach" aria-labelledby="approach-title">
+    <div class="wrap">
+      <div class="sheet-head">
+        <h2 id="approach-title">Approach</h2>
+        <span class="no">A-300 Wall build-up, outside to in</span>
+      </div>
+      <figure class="buildup" tabindex="0" aria-label="Wall build-up drawing">
+        <svg viewBox="0 0 1200 230" role="img" aria-label="Plan detail of a retrofitted stone wall, from outside to inside: existing sandstone, wood-fibre insulation, timber battens and service void, and the room with a door.">
+          <g fill="none" stroke="#262B66" stroke-linejoin="round">
+            <!-- outside -->
+            <!-- 1 stone -->
+            <rect x="0" y="40" width="300" height="150" fill="url(#stone)" stroke-width="2"/>
+            <path d="M0 90h150M150 40v50M200 90v50M0 140h200M110 140v50M200 90h100M250 140v50M200 140h100" stroke-width="1.2" fill="none"/>
+            
+            <!-- 2 insulation -->
+            <rect x="300" y="40" width="300" height="150" fill="#F1F2EE" stroke="#B8322A" stroke-width="2"/>
+            <path d="M306 115 Q314 -21 322 115 Q330 251 338 115 Q346 -21 354 115 Q362 251 370 115 Q378 -21 386 115 Q394 251 402 115 Q410 -21 418 115 Q426 251 434 115 Q442 -21 450 115 Q458 251 466 115 Q474 -21 482 115 Q490 251 498 115 Q506 -21 514 115 Q522 251 530 115 Q538 -21 546 115 Q554 251 562 115 Q570 -21 578 115 Q586 251 594 115" stroke="#B8322A" stroke-width="1.4"/>
+            <!-- 3 timber battens + service void -->
+            <rect x="600" y="40" width="300" height="150" stroke-width="2"/>
+            <g stroke="#B8322A" stroke-width="1.6">
+              <rect x="610" y="46" width="44" height="44"/><path d="M610 46l44 44M654 46l-44 44" stroke-width="0.9"/>
+              <rect x="610" y="140" width="44" height="44"/><path d="M610 140l44 44M654 140l-44 44" stroke-width="0.9"/>
+            </g>
+            <circle cx="760" cy="115" r="11" stroke="#4C5187" stroke-width="1.2"/><circle cx="800" cy="115" r="7" stroke="#4C5187" stroke-width="1.2"/>
+            <rect x="880" y="40" width="20" height="150" fill="#DDE0EC" stroke-width="1.6"/>
+            <!-- 4 room: door in plan -->
+            <path d="M900 40H1200M900 190h120M1150 190h50" stroke-width="2"/>
+            <path d="M1020 190V70" stroke="#B8322A" stroke-width="2.4"/>
+            <path d="M1020 70A120 120 0 0 1 1140 190" stroke="#B8322A" stroke-width="1" stroke-dasharray="4 4"/>
+            <path d="M1020 190h4M1146 190h4" stroke-width="3"/>
+            <!-- layer numbers -->
+            <g stroke-width="1.2">
+              <circle cx="18" cy="18" r="13" fill="#F1F2EE"/><circle cx="342" cy="18" r="13" fill="#F1F2EE"/>
+              <circle cx="642" cy="18" r="13" fill="#F1F2EE"/><circle cx="942" cy="18" r="13" fill="#F1F2EE"/>
+            </g>
+            <g fill="#262B66" stroke="none" font-family="IBM Plex Mono, monospace" font-size="14" text-anchor="middle">
+              <text x="18" y="23">1</text><text x="342" y="23">2</text><text x="642" y="23">3</text><text x="942" y="23">4</text>
+            </g>
+            <g fill="#4C5187" stroke="none" font-family="Archivo, Arial, sans-serif" font-size="15">
+              <text x="8" y="216">Outside</text>
+              <text x="1190" y="216" text-anchor="end">Room</text>
+            </g>
+          </g>
+        </svg>
+        <figcaption class="hint">Drawing continues to the right: scroll it sideways.</figcaption>
+      </figure>
+      <ol class="principles">
+        <li><span class="n">1</span><h3>Keep what is there</h3><p>Stone, slate and old timber are already paid for in carbon and money. Every project starts with a measured survey, not a demolition plan.</p><span class="layer">Layer 1: existing stone</span></li>
+        <li><span class="n">2</span><h3>Let old walls breathe</h3><p>Solid walls need to dry out. We use vapour-open insulation and detail every junction so moisture has somewhere to go.</p><span class="layer">Layer 2: wood-fibre lining</span></li>
+        <li><span class="n">3</span><h3>Build new in timber</h3><p>Where something new is needed, it is timber wherever it can be: light on old foundations and quick and quiet to put up.</p><span class="layer">Layer 3: battens and services</span></li>
+        <li><span class="n">4</span><h3>Plan for the people inside</h3><p>Retrofits happen around lives. We phase the work so residents, staff and hall users can stay while it happens.</p><span class="layer">Layer 4: the room</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- STUDIO -->
+  <section class="sheet" id="studio" aria-labelledby="studio-title">
+    <div class="wrap">
+      <div class="sheet-head">
+        <h2 id="studio-title">Studio</h2>
+        <span class="no">A-400 Studio plan</span>
+      </div>
+      <div class="studio-grid">
+        <div class="studio-copy">
+          <p class="intro">Six people around one long table in the West End. We are small on purpose: the person who draws your building is the person who visits the site.</p>
+          <p>Fold works with householders, housing associations and community groups. We take on a handful of projects a year and see each one through from first survey to the last snagging visit.</p>
+          <table class="schedule">
+            <caption>Room schedule</caption>
+            <tbody>
+              <tr><th scope="row">MD</th><td class="name">Mhairi Douglas</td><td class="role">Director, architect</td></tr>
+              <tr><th scope="row">CR</th><td class="name">Callum Reid</td><td class="role">Associate, architect</td></tr>
+              <tr><th scope="row">AR</th><td class="name">Aisha Rahman</td><td class="role">Architect, retrofit lead</td></tr>
+              <tr><th scope="row">TN</th><td class="name">Tomasz Nowak</td><td class="role">Architectural designer</td></tr>
+              <tr><th scope="row">EG</th><td class="name">Eilidh Grant</td><td class="role">Architectural assistant</td></tr>
+              <tr><th scope="row">RC</th><td class="name">Rory Campbell</td><td class="role">Studio and project manager</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="plan">
+          <svg viewBox="0 0 640 420" role="img" aria-label="Plan of the studio: one room with tall windows along one wall, a long table with six places marked with each person's initials, a model shelf and a door.">
+            <g fill="none" stroke="#262B66" stroke-linejoin="round">
+              <!-- walls -->
+              <path d="M30 30H610V390H160M100 390H30V30" stroke-width="12" stroke-linejoin="miter"/>
+              <!-- windows on top wall -->
+              <g fill="#F1F2EE" stroke="none"><rect x="90" y="22" width="90" height="16"/><rect x="275" y="22" width="90" height="16"/><rect x="460" y="22" width="90" height="16"/></g>
+              <g stroke-width="1"><path d="M90 24h90M90 30h90M90 36h90M275 24h90M275 30h90M275 36h90M460 24h90M460 30h90M460 36h90"/><path d="M90 22v16M180 22v16M275 22v16M365 22v16M460 22v16M550 22v16" stroke-width="1.4"/></g>
+              <!-- door -->
+              <path d="M100 390V330" stroke-width="2"/>
+              <path d="M100 330A60 60 0 0 1 160 390" stroke-width="1" stroke-dasharray="4 4"/>
+              <!-- long table -->
+              <rect x="150" y="170" width="340" height="80" fill="#DDE0EC" stroke-width="1.6"/>
+              <!-- chairs -->
+              <g stroke-width="1.2" fill="#F1F2EE">
+                <rect x="185" y="138" width="40" height="26"/><rect x="300" y="138" width="40" height="26"/><rect x="415" y="138" width="40" height="26"/>
+                <rect x="185" y="256" width="40" height="26"/><rect x="300" y="256" width="40" height="26"/><rect x="415" y="256" width="40" height="26"/>
+              </g>
+              <g fill="#262B66" stroke="none" font-family="IBM Plex Mono, monospace" font-size="15" text-anchor="middle">
+                <text x="205" y="200">MD</text><text x="320" y="200">CR</text><text x="435" y="200">AR</text>
+                <text x="205" y="236">TN</text><text x="320" y="236">EG</text><text x="435" y="236">RC</text>
+              </g>
+              <!-- model shelf (right wall) -->
+              <rect x="560" y="80" width="40" height="230" fill="url(#stone)" stroke-width="1.2"/>
+              <g stroke="#B8322A" stroke-width="1.2">
+                <path d="M566 104l14-8 14 8v20h-28z"/><path d="M566 160h28v24h-28zM570 160l10-8 14 8"/><path d="M566 230l14-6 14 6-14 6z M566 230v18h28v-18"/>
+              </g>
+              <!-- plan chest -->
+              <rect x="220" y="330" width="140" height="44" stroke-width="1.2"/><path d="M220 345h140M220 360h140" stroke-width="0.8"/>
+              <g fill="#4C5187" stroke="none" font-family="Archivo, Arial, sans-serif" font-size="14">
+                <text x="555" y="330" text-anchor="end">Model shelf</text>
+                <text x="290" y="320" text-anchor="middle">Plan chest</text>
+                <text class="room-label" x="320" y="70" text-anchor="middle">Windows to the street</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>Studio plan, drawn as we sit. Initials refer to the room schedule.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sheet" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="sheet-head">
+        <h2 id="contact-title">Tell us about the building</h2>
+        <span class="no">A-500 Enquiry sheet</span>
+      </div>
+      <div class="contact-grid">
+        <div>
+          <p class="intro">A few lines is enough: where it is, what it is now, and what you would like it to become. We reply to every enquiry within a week, usually with a call.</p>
+          <div class="direct">
+            <p><a href="mailto:studio@fold-architects.example">studio@fold-architects.example</a></p>
+            <p><a href="tel:+441414960318">0141 496 0318</a></p>
+          </div>
+          <ol class="next" aria-label="What happens after you send it">
+            <li><span class="mono">1</span>We read it and reply within a week.</li>
+            <li><span class="mono">2</span>One of us visits the building with you.</li>
+            <li><span class="mono">3</span>You get a short written note of options, costs to check and next steps.</li>
+          </ol>
+        </div>
+        <div id="form-area">
+          <form id="enquiry" novalidate>
+            <div class="row">
+              <div class="field">
+                <label for="f-name">Name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+                <p class="error" id="e-name"></p>
+              </div>
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="e-email">
+                <p class="error" id="e-email"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="f-type">Project type</label>
+                <select id="f-type" name="type" required aria-describedby="e-type">
+                  <option value="">Choose one</option>
+                  <option>Housing retrofit</option>
+                  <option>Timber extension</option>
+                  <option>Civic or community building</option>
+                  <option>Something else</option>
+                </select>
+                <p class="error" id="e-type"></p>
+              </div>
+              <div class="field">
+                <label for="f-budget">Budget range</label>
+                <select id="f-budget" name="budget" required aria-describedby="e-budget">
+                  <option value="">Choose one</option>
+                  <option>Under £50,000</option>
+                  <option>£50,000 to £150,000</option>
+                  <option>£150,000 to £500,000</option>
+                  <option>Over £500,000</option>
+                  <option>Not sure yet</option>
+                </select>
+                <p class="error" id="e-budget"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-msg">About the project</label>
+              <textarea id="f-msg" name="message" rows="5" required aria-describedby="e-msg" placeholder="Where is it, what is it now, what should it become?"></textarea>
+              <p class="error" id="e-msg"></p>
+            </div>
+            <div class="form-foot">
+              <p>All fields are needed.</p>
+              <button class="send" type="submit">Send enquiry</button>
+            </div>
+          </form>
+          <div class="success" id="success" hidden tabindex="-1">
+            <h3>Enquiry sent</h3>
+            <p id="success-text">Thank you. One of us will reply within a week.</p>
+            <button type="button" id="again">Send another enquiry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-block">
+      <div>
+        <p class="wm"><svg aria-hidden="true"><use href="#fold-mark"/></svg>Fold Architects</p>
+        <p style="margin-top:.4rem;color:var(--ink-2)">Retrofit, civic and timber architecture in Glasgow.</p>
+      </div>
+      <div>
+        <h2>Studio</h2>
+        <address>2nd floor, 14 Kelvin Lane<br>Glasgow G12 8XX</address>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:studio@fold-architects.example">Email the studio</a></li>
+          <li><a href="tel:+441414960318">0141 496 0318</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.are.na/" rel="noopener">Are.na</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>© 2026 Fold Architects</span>
+      <span class="mono">Sheet A-600, 6 of 6</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Mobile navigation
+  var btn = document.querySelector('.menu-btn');
+  var nav = document.getElementById('site-nav');
+  var label = btn.querySelector('.menu-label');
+  function setMenu(open) {
+    btn.setAttribute('aria-expanded', String(open));
+    nav.classList.toggle('is-open', open);
+    label.textContent = open ? 'Close' : 'Menu';
+  }
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') !== 'true';
+    setMenu(open);
+    if (open) { var first = nav.querySelector('a'); if (first) first.focus(); }
+  });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { setMenu(false); btn.focus(); }
+  });
+  window.matchMedia('(min-width: 761px)').addEventListener('change', function (m) { if (m.matches) setMenu(false); });
+
+  // Crop the section drawing to the building on narrow screens (labels are hidden there)
+  var sec = document.querySelector('.drawing svg');
+  var narrow = window.matchMedia('(max-width: 760px)');
+  function crop() { sec.setAttribute('viewBox', narrow.matches ? '60 72 560 468' : '0 72 760 468'); }
+  crop(); narrow.addEventListener('change', crop);
+
+  // Project filter
+  var buttons = document.querySelectorAll('.filters button');
+  var items = document.querySelectorAll('#register li');
+  var count = document.getElementById('count');
+  var empty = document.getElementById('empty');
+  function applyFilter(type) {
+    var shown = 0;
+    items.forEach(function (li) {
+      var match = type === 'all' || li.dataset.type === type;
+      li.hidden = !match;
+      if (match) shown++;
+    });
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === type)); });
+    count.textContent = 'Showing ' + shown + ' of ' + items.length + ' projects';
+    empty.hidden = shown !== 0;
+  }
+  buttons.forEach(function (b) { b.addEventListener('click', function () { applyFilter(b.dataset.filter); }); });
+  empty.querySelector('button').addEventListener('click', function () { applyFilter('all'); });
+
+  // Enquiry form
+  var form = document.getElementById('enquiry');
+  var success = document.getElementById('success');
+  var checks = {
+    name: function (v) { return v.trim() ? '' : 'Please add your name.'; },
+    email: function (v) {
+      if (!v.trim()) return 'Please add an email address so we can reply.';
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'That email address looks incomplete. Check for an @ and a domain.';
+    },
+    type: function (v) { return v ? '' : 'Please choose the kind of project.'; },
+    budget: function (v) { return v ? '' : 'Please choose a budget range, or "Not sure yet".'; },
+    message: function (v) { return v.trim().length >= 10 ? '' : 'Please tell us a little about the building (a sentence or two).'; }
+  };
+  function validate(field) {
+    var msg = checks[field.name](field.value);
+    var err = document.getElementById(field.getAttribute('aria-describedby'));
+    err.textContent = msg;
+    if (msg) field.setAttribute('aria-invalid', 'true'); else field.removeAttribute('aria-invalid');
+    return !msg;
+  }
+  Array.prototype.forEach.call(form.elements, function (el) {
+    if (!checks[el.name]) return;
+    el.addEventListener('blur', function () { if (el.value || el.hasAttribute('aria-invalid')) validate(el); });
+    el.addEventListener('input', function () { if (el.hasAttribute('aria-invalid')) validate(el); });
+    el.addEventListener('change', function () { if (el.tagName === 'SELECT') validate(el); });
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var firstBad = null;
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (checks[el.name] && !validate(el) && !firstBad) firstBad = el;
+    });
+    if (firstBad) { firstBad.focus(); return; }
+    var name = form.elements.name.value.trim().split(/\s+/)[0];
+    document.getElementById('success-text').textContent = 'Thank you, ' + name + '. One of us will reply to ' + form.elements.email.value.trim() + ' within a week.';
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
+  });
+  document.getElementById('again').addEventListener('click', function () {
+    form.reset();
+    success.hidden = true;
+    form.hidden = false;
+    form.elements.name.focus();
+  });
+})();
+</script>
+</body>
+</html>

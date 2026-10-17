@@ -1,0 +1,657 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-kinetic/layoza-v4/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; inp_ms is a lab interaction proxy (worst Event Timing duration >= 16ms across scripted Tab/Shift+Tab presses and, when a mobile menu toggle exists, its click), not field INP. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-overused-font",
+          "severity": "critique",
+          "detail": "Primary font: space grotesk (58% of text)"
+        },
+        {
+          "rule": "craft-hero-eyebrow-chip",
+          "severity": "critique",
+          "detail": "eyebrow chip (tracked-caps) \"Independent creative studio\" above h1 \"We make Ideas MOVE.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Who we are\" above h2 \"Not just another agency. A creative force for what's next.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Services\" above h2 \"What we do.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Selected work\" above h2 \"Selected work.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Philosophy\" above h2 \"Good design is seen. Great design is felt.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Process\" above h2 \"From possibilityto impact.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Experiments\" above h2 \"Built to make you feel something.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Insights\" above h2 \"Notes from the studio.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Have something in mind?\" above h2 \"Let's makeit matter.\""
+        },
+        {
+          "rule": "craft-codex-grid-background",
+          "severity": "critique",
+          "detail": "two-axis grid-line gradient background div.grid"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 12 primitive shapes, ~600x420px, 5 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 12 primitive shapes, ~600x420px, 5 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 13 primitive shapes, ~800x1000px, 9 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 22 primitive shapes, ~400x400px, 4 fill colors"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Not just another agency. A creative force for what's next.\" has 72px above vs 101px below; it reads as bound to the block above (5 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Selected work.\" has 40px above vs 100px below; it reads as bound to the block above (5 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Built to make you feel something.\" has 36px above vs 72px below; it reads as bound to the block above (5 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Notes from the studio.\" has 36px above vs 86px below; it reads as bound to the block above (5 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Let's makeit matter.\" has 43px above vs 101px below; it reads as bound to the block above (5 headings on page)"
+        },
+        {
+          "rule": "craft-caps-dash-label",
+          "severity": "critique",
+          "detail": "2 labels shaped \"WORD — fragment\", e.g. \"Fig. 01 — the signal, folded\", \"Obliq Reel — coded motion study\""
+        },
+        {
+          "rule": "craft-headline-accent-word",
+          "severity": "critique",
+          "detail": "h1 \"We make Ideas MOVE.\" accents only \"MOVE\" (colour)"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.58,
+      "contrast_failures": 0,
+      "lcp_ms": 284,
+      "cls": 0.0097,
+      "inp_proxy_ms": 168,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-kinetic\\layoza-v4\\qa\\screenshots\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-overused-font",
+          "severity": "critique",
+          "detail": "Primary font: space grotesk (58% of text)"
+        },
+        {
+          "rule": "craft-hero-eyebrow-chip",
+          "severity": "critique",
+          "detail": "eyebrow chip (tracked-caps) \"Independent creative studio\" above h1 \"We make Ideas MOVE.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Who we are\" above h2 \"Not just another agency. A creative force for what's next.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Services\" above h2 \"What we do.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Selected work\" above h2 \"Selected work.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Philosophy\" above h2 \"Good design is seen. Great design is felt.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Process\" above h2 \"From possibilityto impact.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Experiments\" above h2 \"Built to make you feel something.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Insights\" above h2 \"Notes from the studio.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Have something in mind?\" above h2 \"Let's makeit matter.\""
+        },
+        {
+          "rule": "craft-codex-grid-background",
+          "severity": "critique",
+          "detail": "two-axis grid-line gradient background div.grid"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 12 primitive shapes, ~600x420px, 5 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 12 primitive shapes, ~600x420px, 5 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 13 primitive shapes, ~800x1000px, 9 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 22 primitive shapes, ~400x400px, 4 fill colors"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Not just another agency. A creative force for what's next.\" has 40px above vs 56px below; it reads as bound to the block above (2 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Let's makeit matter.\" has 28px above vs 64px below; it reads as bound to the block above (2 headings on page)"
+        },
+        {
+          "rule": "craft-caps-dash-label",
+          "severity": "critique",
+          "detail": "2 labels shaped \"WORD — fragment\", e.g. \"Fig. 01 — the signal, folded\", \"Obliq Reel — coded motion study\""
+        },
+        {
+          "rule": "craft-headline-accent-word",
+          "severity": "critique",
+          "detail": "h1 \"We make Ideas MOVE.\" accents only \"MOVE\" (colour)"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.29,
+      "contrast_failures": 0,
+      "lcp_ms": 232,
+      "cls": 0.0087,
+      "inp_proxy_ms": 152,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 5,
+        "opened": true,
+        "screenshot": "examples\\benchmark-kinetic\\layoza-v4\\qa\\screenshots\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-kinetic\\layoza-v4\\qa\\screenshots\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-overused-font",
+          "severity": "critique",
+          "detail": "Primary font: space grotesk (58% of text)"
+        },
+        {
+          "rule": "craft-hero-eyebrow-chip",
+          "severity": "critique",
+          "detail": "eyebrow chip (tracked-caps) \"Independent creative studio\" above h1 \"We make Ideas MOVE.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Who we are\" above h2 \"Not just another agency. A creative force for what's next.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Services\" above h2 \"What we do.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Selected work\" above h2 \"Selected work.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Philosophy\" above h2 \"Good design is seen. Great design is felt.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Process\" above h2 \"From possibilityto impact.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Experiments\" above h2 \"Built to make you feel something.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Insights\" above h2 \"Notes from the studio.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"/ Have something in mind?\" above h2 \"Let's makeit matter.\""
+        },
+        {
+          "rule": "craft-codex-grid-background",
+          "severity": "critique",
+          "detail": "two-axis grid-line gradient background div.grid"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 12 primitive shapes, ~600x420px, 5 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 12 primitive shapes, ~600x420px, 5 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 13 primitive shapes, ~800x1000px, 9 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 22 primitive shapes, ~400x400px, 4 fill colors"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Not just another agency. A creative force for what's next.\" has 40px above vs 56px below; it reads as bound to the block above (2 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Let's makeit matter.\" has 28px above vs 64px below; it reads as bound to the block above (2 headings on page)"
+        },
+        {
+          "rule": "craft-caps-dash-label",
+          "severity": "critique",
+          "detail": "2 labels shaped \"WORD — fragment\", e.g. \"Fig. 01 — the signal, folded\", \"Obliq Reel — coded motion study\""
+        },
+        {
+          "rule": "craft-headline-accent-word",
+          "severity": "critique",
+          "detail": "h1 \"We make Ideas MOVE.\" accents only \"MOVE\" (colour)"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 4.58,
+      "contrast_failures": 0,
+      "lcp_ms": 188,
+      "cls": 0.0043,
+      "inp_proxy_ms": 104,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 5,
+        "opened": true,
+        "screenshot": "examples\\benchmark-kinetic\\layoza-v4\\qa\\screenshots\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-kinetic\\layoza-v4\\qa\\screenshots\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 4.29,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 102,
+  "contrast_indeterminate_elements": 89,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 14,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 284,
+  "cls": 0.0097,
+  "inp_ms": 168,
+  "inp_metric": "lab_interaction_proxy",
+  "inp_event_entries": 85,
+  "h1_to_body_ratio": 12.72,
+  "max_line_length_ch": 72,
+  "font_families": [
+    "inter",
+    "space grotesk"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Obliq — Independent creative studio",
+    "lang": "en",
+    "page_background": "#090B11",
+    "text_colors": [
+      {
+        "value": "#111318",
+        "count": 1668
+      },
+      {
+        "value": "#565C69",
+        "count": 799
+      },
+      {
+        "value": "#9299A8",
+        "count": 711
+      },
+      {
+        "value": "#F6F5F0",
+        "count": 513
+      },
+      {
+        "value": "#C9CDD6",
+        "count": 476
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 212
+      },
+      {
+        "value": "#E9EBF5",
+        "count": 124
+      },
+      {
+        "value": "#304EF0",
+        "count": 26
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#090B11",
+        "count": 8543.964735531925
+      },
+      {
+        "value": "#F6F5F0",
+        "count": 5233.547621617556
+      },
+      {
+        "value": "#2337C4",
+        "count": 1239.533037109375
+      },
+      {
+        "value": "#151923",
+        "count": 984.3892802734375
+      },
+      {
+        "value": "#05060A",
+        "count": 733.4273075866699
+      },
+      {
+        "value": "#4865FF",
+        "count": 72.2064638671875
+      },
+      {
+        "value": "#D8FF57",
+        "count": 22.63986317384243
+      },
+      {
+        "value": "#A99BFF",
+        "count": 9.9511201171875
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Inter",
+        "count": 2937
+      },
+      {
+        "value": "Space Grotesk",
+        "count": 1656
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "152.64px",
+        "weight": "700",
+        "line_height": "131.27px",
+        "letter_spacing": "-8.3952px",
+        "family": "Space Grotesk"
+      },
+      "h2": {
+        "size": "99.36px",
+        "weight": "700",
+        "line_height": "97.3728px",
+        "letter_spacing": "-4.968px",
+        "family": "Space Grotesk"
+      },
+      "h3": {
+        "size": "37.44px",
+        "weight": "600",
+        "line_height": "39.312px",
+        "letter_spacing": "-1.3104px",
+        "family": "Space Grotesk"
+      },
+      "h4": {
+        "size": "12px",
+        "weight": "500",
+        "line_height": "12px",
+        "letter_spacing": "2.4px",
+        "family": "Space Grotesk"
+      },
+      "p": {
+        "size": "12px",
+        "weight": "500",
+        "line_height": "14.4px",
+        "letter_spacing": "2.4px",
+        "family": "Space Grotesk"
+      },
+      "small": {
+        "size": "10px",
+        "weight": "500",
+        "line_height": "13px",
+        "letter_spacing": "1.4px",
+        "family": "Space Grotesk"
+      }
+    },
+    "radii": [
+      {
+        "value": "999px",
+        "count": 16
+      },
+      {
+        "value": "50%",
+        "count": 11
+      },
+      {
+        "value": "12px",
+        "count": 7
+      },
+      {
+        "value": "14px",
+        "count": 4
+      },
+      {
+        "value": "28px",
+        "count": 3
+      },
+      {
+        "value": "24px",
+        "count": 3
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1520px",
+        "count": 11
+      },
+      {
+        "value": "302.812px",
+        "count": 4
+      },
+      {
+        "value": "539.612px",
+        "count": 2
+      },
+      {
+        "value": "430.246px",
+        "count": 2
+      },
+      {
+        "value": "965.779px",
+        "count": 1
+      },
+      {
+        "value": "463.303px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--ob": "#090B11",
+      "--gr": "#151923",
+      "--po": "#F6F5F0",
+      "--ink": "#111318",
+      "--mute": "#9299A8",
+      "--mute-l": "#565C69",
+      "--bd-d": "#2B303B",
+      "--bd-l": "#D9DAD6",
+      "--co": "#4865FF",
+      "--co-h": "#304EF0",
+      "--co-deep": "#2337C4",
+      "--li": "#D8FF57",
+      "--la": "#A99BFF",
+      "--fd": "\"Space Grotesk\",\"Arial Narrow\",ui-sans-serif,system-ui,sans-serif",
+      "--fb": "Inter,ui-sans-serif,system-ui,-apple-system,\"Segoe UI\",sans-serif",
+      "--gut": "clamp(20px,4.4vw,72px)",
+      "--ease": "cubic-bezier(.23,1,.32,1)",
+      "--ease-io": "cubic-bezier(.77,0,.175,1)"
+    },
+    "framework_hints": [],
+    "motion_libraries": [
+      "GSAP",
+      "ScrollTrigger"
+    ],
+    "css_keyframes": 17
+  },
+  "craft_critique": {
+    "craft-caps-dash-label": 1,
+    "craft-codex-grid-background": 1,
+    "craft-heading-rhythm": 5,
+    "craft-headline-accent-word": 1,
+    "craft-hero-eyebrow-chip": 1,
+    "craft-kicker-above-heading": 8,
+    "craft-overused-font": 1,
+    "craft-shape-assembled-illustration": 4
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-overused-font": 1,
+      "craft-hero-eyebrow-chip": 1,
+      "craft-kicker-above-heading": 8,
+      "craft-codex-grid-background": 1,
+      "craft-shape-assembled-illustration": 4,
+      "craft-heading-rhythm": 5,
+      "craft-caps-dash-label": 1,
+      "craft-headline-accent-word": 1
+    },
+    "tablet": {
+      "craft-overused-font": 1,
+      "craft-hero-eyebrow-chip": 1,
+      "craft-kicker-above-heading": 8,
+      "craft-codex-grid-background": 1,
+      "craft-shape-assembled-illustration": 4,
+      "craft-heading-rhythm": 2,
+      "craft-caps-dash-label": 1,
+      "craft-headline-accent-word": 1
+    },
+    "mobile": {
+      "craft-overused-font": 1,
+      "craft-hero-eyebrow-chip": 1,
+      "craft-kicker-above-heading": 8,
+      "craft-codex-grid-background": 1,
+      "craft-shape-assembled-illustration": 4,
+      "craft-heading-rhythm": 2,
+      "craft-caps-dash-label": 1,
+      "craft-headline-accent-word": 1
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

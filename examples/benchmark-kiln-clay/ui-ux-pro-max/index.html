@@ -1,0 +1,1329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiln &amp; Clay — Handmade Stoneware &amp; Wheel Workshops, Lahore</title>
+<meta name="description" content="Small-batch, hand-thrown tableware from a Lahore ceramics studio. Shop the kiln's latest firing or book a weekend wheel-throwing workshop.">
+<meta name="theme-color" content="#F5F0E1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   Design system — "Nature Distilled" (ui-ux-pro-max style DB)
+   Palette: terracotta / sand / warm clay / soft cream / olive
+   Type: Fraunces (display serif) + Cabin (humanist sans body)
+   Density 3/10 (spacious) · Motion 4/10 (standard)
+   ========================================================== */
+:root{
+  color-scheme: light;
+  /* semantic colour tokens */
+  --color-background:#F5F0E1;      /* soft cream */
+  --color-surface:#FBF8F0;
+  --color-sand:#E9DFCB;
+  --color-sand-strong:#D4C4A8;     /* sand beige */
+  --color-foreground:#2E1D14;      /* fired-clay brown */
+  --color-muted-foreground:#5E4636;
+  --color-primary:#9A3412;         /* deep terracotta (CTA) */
+  --color-primary-hover:#7C2D12;
+  --color-on-primary:#FFFFFF;
+  --color-terracotta:#C67B5C;
+  --color-clay:#B5651D;
+  --color-olive:#6B7B3C;
+  --color-olive-text:#4A5626;
+  --color-dark:#2A1A12;
+  --color-on-dark:#F5ECDD;
+  --color-on-dark-muted:#D7C6B0;
+  --color-border:#DCCDB3;
+  --color-border-strong:#8A6F5C;
+  --color-destructive:#B42318;
+  --color-success:#3F5F17;
+  --color-ring:#9A3412;
+
+  /* type */
+  --font-display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body:"Cabin", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  --fs-12:.75rem; --fs-14:.875rem; --fs-16:1rem; --fs-18:1.125rem; --fs-20:1.25rem;
+  --fs-24:1.5rem; --fs-32:2rem; --fs-40:2.5rem;
+
+  /* spacing — spacious scale (density 3) */
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --space-9:96px;
+
+  --radius-sm:8px; --radius-md:14px; --radius-lg:24px; --radius-pill:999px;
+  --radius-organic:28px 22px 30px 20px;
+  --shadow-soft:0 1px 2px rgba(46,29,20,.06), 0 10px 30px -12px rgba(46,29,20,.18);
+  --shadow-lift:0 2px 4px rgba(46,29,20,.08), 0 22px 40px -18px rgba(46,29,20,.30);
+
+  /* motion tokens */
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-in:cubic-bezier(.55,0,1,.45);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  --container:1200px;
+  --gutter:clamp(16px, 4vw, 40px);
+  --header-h:72px;
+  --z-header:40; --z-drawer:50; --z-toast:100;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 16px);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--color-background);color:var(--color-foreground);
+  font-family:var(--font-body);font-size:var(--fs-16);line-height:1.6;
+  text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* subtle grain texture (Nature Distilled) */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.07;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .18 0 0 0 0 .11 0 0 0 0 .08 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;line-height:1.08;margin:0;letter-spacing:-.01em;text-wrap:balance;font-variation-settings:"opsz" 96}
+h2{font-size:clamp(2rem, 3.6vw, 3.25rem)}
+h3{font-size:var(--fs-24);line-height:1.2;font-variation-settings:"opsz" 36}
+p{margin:0}
+:focus-visible{outline:3px solid var(--color-ring);outline-offset:3px;border-radius:6px}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip-link{position:absolute;left:16px;top:-60px;z-index:200;background:var(--color-foreground);color:var(--color-background);padding:12px 18px;border-radius:var(--radius-sm);text-decoration:none;font-weight:600;transition:top var(--dur-fast) var(--ease-out)}
+.skip-link:focus{top:12px}
+
+.container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
+.section{position:relative;z-index:2;padding-block:clamp(64px, 9vw, 120px)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:var(--fs-14);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--color-primary)}
+.eyebrow::before{content:"";width:28px;height:2px;border-radius:2px;background:currentColor}
+.section-head{display:grid;gap:var(--space-4);max-width:640px;margin-bottom:clamp(40px,5vw,64px)}
+.section-head p{color:var(--color-muted-foreground);font-size:var(--fs-18);max-width:56ch}
+.italic{font-style:italic;color:var(--color-primary)}
+
+/* ---------- Buttons ---------- */
+.btn{
+  --btn-bg:var(--color-primary);--btn-fg:var(--color-on-primary);--btn-bd:var(--color-primary);
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 24px;
+  border-radius:var(--radius-pill);border:2px solid var(--btn-bd);background:var(--btn-bg);color:var(--btn-fg);
+  font-weight:600;font-size:var(--fs-16);text-decoration:none;line-height:1.2;white-space:nowrap;
+  transition:background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.btn:hover{--btn-bg:var(--color-primary-hover);--btn-bd:var(--color-primary-hover);box-shadow:0 10px 24px -12px rgba(124,45,18,.6)}
+.btn:active{transform:scale(.97)}
+.btn--ghost{--btn-bg:transparent;--btn-fg:var(--color-foreground);--btn-bd:var(--color-foreground)}
+.btn--ghost:hover{--btn-bg:var(--color-foreground);--btn-fg:var(--color-background);--btn-bd:var(--color-foreground);box-shadow:none}
+.btn svg{width:20px;height:20px;flex:none}
+.btn[aria-disabled="true"],.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- Header ---------- */
+.site-header{position:sticky;top:0;z-index:var(--z-header);background:var(--color-background);border-bottom:1px solid transparent;transition:border-color var(--dur-base),box-shadow var(--dur-base)}
+.site-header.is-scrolled{border-bottom-color:var(--color-border);box-shadow:0 8px 24px -20px rgba(46,29,20,.5)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);height:var(--header-h)}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;min-height:44px}
+.brand svg{width:40px;height:40px}
+.brand-name{font-family:var(--font-display);font-size:1.5rem;font-weight:500;letter-spacing:-.01em;line-height:1}
+.brand-name em{font-style:italic;color:var(--color-primary);font-weight:400}
+.nav-desktop{display:none}
+.nav-desktop ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav-desktop a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;text-decoration:none;font-weight:500;color:var(--color-muted-foreground);border-radius:var(--radius-pill);position:relative;transition:color var(--dur-fast)}
+.nav-desktop a::after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:2px;border-radius:2px;background:var(--color-primary);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-base) var(--ease-out)}
+.nav-desktop a:hover,.nav-desktop a[aria-current="true"]{color:var(--color-foreground)}
+.nav-desktop a:hover::after,.nav-desktop a[aria-current="true"]::after{transform:scaleX(1)}
+.header-actions{display:flex;align-items:center;gap:8px}
+.cart-btn{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 16px 0 14px;border-radius:var(--radius-pill);border:1.5px solid var(--color-foreground);background:transparent;font-weight:600;transition:background-color var(--dur-base),color var(--dur-base)}
+.cart-btn:hover{background:var(--color-foreground);color:var(--color-background)}
+.cart-btn svg{width:20px;height:20px}
+.cart-count{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:var(--radius-pill);background:var(--color-primary);color:var(--color-on-primary);font-size:var(--fs-14);font-weight:700;font-variant-numeric:tabular-nums;transition:transform var(--dur-base) var(--ease-out)}
+.cart-count.bump{animation:bump 420ms var(--ease-out)}
+@keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.3)}100%{transform:scale(1)}}
+.menu-btn{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:var(--radius-pill);border:1.5px solid var(--color-border-strong);background:var(--color-surface)}
+.menu-btn svg{width:22px;height:22px}
+.menu-btn .i-close{display:none}
+.menu-btn[aria-expanded="true"] .i-open{display:none}
+.menu-btn[aria-expanded="true"] .i-close{display:block}
+.cart-label{display:none}
+@media (min-width:480px){.cart-label{display:inline}}
+
+/* mobile drawer */
+.drawer{position:fixed;inset:var(--header-h) 0 0 0;z-index:var(--z-drawer);background:var(--color-background);padding:var(--space-6) var(--gutter) var(--space-7);display:flex;flex-direction:column;gap:var(--space-6);overflow-y:auto;border-top:1px solid var(--color-border)}
+.drawer[hidden]{display:none}
+.drawer.is-open{animation:drawerIn var(--dur-slow) var(--ease-out)}
+@keyframes drawerIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+.drawer ul{list-style:none;margin:0;padding:0;display:grid}
+.drawer li{border-bottom:1px solid var(--color-border)}
+.drawer a.drawer-link{display:flex;align-items:center;justify-content:space-between;min-height:64px;text-decoration:none;font-family:var(--font-display);font-size:2rem;font-weight:400}
+.drawer a.drawer-link span{font-family:var(--font-body);font-size:var(--fs-14);color:var(--color-muted-foreground);font-weight:500;letter-spacing:.08em}
+.drawer-foot{margin-top:auto;display:grid;gap:var(--space-4);color:var(--color-muted-foreground)}
+body.nav-open{overflow:hidden}
+@media (min-width:1024px){
+  .nav-desktop{display:block}
+  .menu-btn{display:none}
+  .drawer{display:none!important}
+}
+
+/* cart popover */
+.cart-wrap{position:relative}
+.cart-panel{position:absolute;right:0;top:calc(100% + 12px);width:min(360px, calc(100vw - 32px));background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);box-shadow:var(--shadow-lift);padding:var(--space-5);z-index:60}
+.cart-panel[hidden]{display:none}
+.cart-panel h2{font-size:var(--fs-24);margin-bottom:var(--space-3)}
+.cart-panel ul{list-style:none;margin:0 0 var(--space-4);padding:0;display:grid;gap:10px;max-height:240px;overflow:auto}
+.cart-panel li{display:flex;justify-content:space-between;gap:12px;font-size:var(--fs-14);border-bottom:1px dashed var(--color-border);padding-bottom:10px}
+.cart-panel .total{display:flex;justify-content:space-between;font-weight:700;margin-bottom:var(--space-4);font-variant-numeric:tabular-nums}
+.cart-panel .empty{color:var(--color-muted-foreground);margin-bottom:var(--space-4)}
+.cart-panel .row{display:flex;gap:8px;flex-wrap:wrap}
+.cart-panel .btn{min-height:44px;padding:10px 18px;font-size:var(--fs-14)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;z-index:2;padding-block:clamp(32px,6vw,80px) clamp(64px,8vw,112px);overflow:hidden}
+.hero-grid{display:grid;gap:clamp(40px,5vw,72px);align-items:center}
+.hero h1{font-size:clamp(2.75rem, 7.2vw, 5.75rem);line-height:.98;letter-spacing:-.025em;font-weight:400;font-variation-settings:"opsz" 144}
+.hero h1 em{font-style:italic;color:var(--color-primary)}
+.hero-lede{margin-top:var(--space-5);font-size:clamp(1.125rem,1.6vw,1.3rem);color:var(--color-muted-foreground);max-width:46ch}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-6)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:var(--space-5) var(--space-6);margin-top:var(--space-7);padding-top:var(--space-5);border-top:1px solid var(--color-border);list-style:none;padding-left:0;margin-bottom:0}
+.hero-meta li{display:grid;gap:2px}
+.hero-meta strong{font-family:var(--font-display);font-size:var(--fs-32);font-weight:500;line-height:1}
+.hero-meta span{font-size:var(--fs-14);color:var(--color-muted-foreground)}
+.hero-art{position:relative;margin-inline:auto;width:100%;max-width:560px}
+.hero-art .arch{width:100%;height:auto;filter:drop-shadow(0 30px 40px rgba(46,29,20,.18))}
+.stamp{position:absolute;left:-6%;bottom:6%;width:clamp(104px,22vw,148px);height:auto;color:var(--color-foreground)}
+.stamp .ring{transform-origin:50% 50%;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (min-width:1024px){.hero-grid{grid-template-columns:1.1fr .9fr}}
+@media (max-width:1023px){.stamp{left:0}}
+
+/* marquee-free strip */
+.strip{position:relative;z-index:2;background:var(--color-dark);color:var(--color-on-dark)}
+.strip ul{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 40px;list-style:none;margin:0;padding:18px var(--gutter)}
+.strip li{display:inline-flex;align-items:center;gap:10px;font-size:var(--fs-14);letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.strip svg{width:18px;height:18px;color:var(--color-terracotta)}
+
+/* ---------- Products ---------- */
+.shop-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:var(--space-5);margin-bottom:clamp(40px,5vw,64px)}
+.shop-head .section-head{margin-bottom:0}
+.products{display:grid;gap:clamp(20px,2.4vw,32px);grid-template-columns:1fr;list-style:none;margin:0;padding:0}
+@media (min-width:640px){.products{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1024px){.products{grid-template-columns:repeat(3,1fr)}}
+.product{display:flex;flex-direction:column;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out)}
+.product:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+.product-art{position:relative;aspect-ratio:5/4;display:grid;place-items:center;background:var(--art-bg, var(--color-sand))}
+.product-art svg{width:72%;height:auto}
+.product-tag{position:absolute;top:14px;left:14px;padding:4px 12px;border-radius:var(--radius-pill);background:var(--color-surface);font-size:var(--fs-12);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-foreground)}
+.product-body{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-5);flex:1}
+.product-body h3{font-size:1.5rem}
+.glaze{display:flex;align-items:flex-start;gap:10px;color:var(--color-muted-foreground);font-size:var(--fs-14)}
+.swatch{flex:none;width:16px;height:16px;margin-top:3px;border-radius:50%;background:var(--sw);box-shadow:inset 0 0 0 1.5px rgba(46,29,20,.35)}
+.product-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-top:auto;padding-top:var(--space-4)}
+.price{font-family:var(--font-display);font-size:var(--fs-24);font-weight:500;font-variant-numeric:tabular-nums lining-nums}
+.price small{font-family:var(--font-body);font-size:var(--fs-12);font-weight:700;letter-spacing:.1em;color:var(--color-muted-foreground);margin-right:4px}
+.add-btn{min-height:44px;padding:10px 18px;font-size:var(--fs-14)}
+.add-btn .i-check{display:none}
+.add-btn.is-added{--btn-bg:var(--color-success);--btn-bd:var(--color-success)}
+.add-btn.is-added .i-check{display:block}
+.add-btn.is-added .i-plus{display:none}
+
+/* ---------- Workshops ---------- */
+.workshops{background:var(--color-sand)}
+.workshops::before{content:"";position:absolute;inset:0 0 auto 0;height:40px;background:var(--color-background);clip-path:ellipse(60% 100% at 50% 0)}
+.ws-grid{display:grid;gap:clamp(32px,4vw,56px)}
+@media (min-width:1024px){.ws-grid{grid-template-columns:1.05fr .95fr;align-items:start}}
+.sessions{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-4)}
+.session{display:grid;grid-template-columns:auto 1fr;gap:var(--space-5);align-items:start;padding:var(--space-5);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-organic)}
+.date-tile{display:grid;place-items:center;width:76px;padding:10px 0;border-radius:18px;background:var(--color-dark);color:var(--color-on-dark);text-align:center;line-height:1.1}
+.date-tile .d{font-family:var(--font-display);font-size:2rem;font-weight:500}
+.date-tile .m{font-size:var(--fs-12);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.date-tile .w{font-size:var(--fs-12);color:var(--color-on-dark-muted)}
+.session h3{font-size:1.375rem}
+.session-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:6px;color:var(--color-muted-foreground);font-size:var(--fs-14)}
+.level{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--radius-pill);font-size:var(--fs-12);font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid currentColor}
+.level--beginner{color:var(--color-olive-text)}
+.level--intermediate{color:var(--color-primary)}
+.level--all{color:var(--color-foreground)}
+.seats{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:var(--space-3);font-size:var(--fs-14);font-weight:600}
+.seat-dots{display:flex;gap:4px}
+.seat-dots i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--color-border-strong)}
+.seat-dots i.free{background:var(--color-olive);border-color:var(--color-olive)}
+.seats.low{color:var(--color-primary)}
+.session .link-btn{margin-top:var(--space-3);background:none;border:0;padding:8px 0;min-height:44px;font-weight:700;color:var(--color-primary);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;display:inline-flex;align-items:center;gap:6px}
+.session .link-btn:hover{color:var(--color-primary-hover)}
+.session .link-btn svg{width:18px;height:18px;transition:transform var(--dur-base) var(--ease-out)}
+.session .link-btn:hover svg{transform:translateX(3px)}
+
+.booking{background:var(--color-surface);border-radius:var(--radius-lg);padding:clamp(24px,3.4vw,40px);border:1px solid var(--color-border);box-shadow:var(--shadow-soft)}
+.booking h3{font-size:clamp(1.75rem,2.6vw,2.25rem)}
+.booking > p{color:var(--color-muted-foreground);margin-top:8px}
+.form{display:grid;gap:var(--space-5);margin-top:var(--space-6)}
+.form-row{display:grid;gap:var(--space-5)}
+@media (min-width:640px){.form-row{grid-template-columns:1fr 1fr}}
+.field{display:grid;gap:6px;align-content:start}
+.field label{font-weight:600;font-size:var(--fs-14)}
+.req{color:var(--color-primary);margin-left:2px}
+.input{width:100%;min-height:52px;padding:12px 16px;border-radius:12px;border:1.5px solid var(--color-border-strong);background:#fff;font-size:var(--fs-16);transition:border-color var(--dur-fast),box-shadow var(--dur-fast)}
+.input:hover{border-color:var(--color-foreground)}
+.input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 4px rgba(154,52,18,.18)}
+select.input{appearance:none;padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E1D14' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:20px}
+.hint{font-size:var(--fs-14);color:var(--color-muted-foreground)}
+.error{display:none;align-items:flex-start;gap:6px;font-size:var(--fs-14);font-weight:600;color:var(--color-destructive)}
+.error svg{width:16px;height:16px;flex:none;margin-top:3px}
+.field.invalid .error{display:flex}
+.field.invalid .input{border-color:var(--color-destructive);box-shadow:0 0 0 3px rgba(180,35,24,.12)}
+.stepper{display:flex;align-items:center;gap:0;border:1.5px solid var(--color-border-strong);border-radius:12px;background:#fff;width:max-content;overflow:hidden}
+.stepper button{width:52px;height:52px;border:0;background:transparent;display:grid;place-items:center;transition:background-color var(--dur-fast)}
+.stepper button:hover:not(:disabled){background:var(--color-sand)}
+.stepper button:disabled{opacity:.4;cursor:not-allowed}
+.stepper button svg{width:18px;height:18px}
+.stepper input{width:56px;height:52px;border:0;border-inline:1.5px solid var(--color-border);text-align:center;font-weight:700;font-size:var(--fs-18);background:transparent;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.stepper input::-webkit-inner-spin-button,.stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.stepper input:focus{outline:none;background:var(--color-sand)}
+.stepper:focus-within{border-color:var(--color-primary);box-shadow:0 0 0 4px rgba(154,52,18,.18)}
+.field.invalid .stepper{border-color:var(--color-destructive)}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.form-foot .total{font-size:var(--fs-14);color:var(--color-muted-foreground)}
+.form-foot .total strong{display:block;font-family:var(--font-display);font-size:var(--fs-24);color:var(--color-foreground);font-weight:500;font-variant-numeric:tabular-nums}
+.spinner{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .8s linear infinite;display:none}
+.is-loading .spinner{display:block}
+.error-summary{border:2px solid var(--color-destructive);border-radius:14px;padding:var(--space-4) var(--space-5);background:#FDF1EE}
+.error-summary[hidden]{display:none}
+.error-summary h4{margin:0 0 6px;font-size:var(--fs-16);color:var(--color-destructive)}
+.error-summary ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.error-summary a{color:var(--color-destructive);font-weight:600}
+.success{display:grid;gap:var(--space-4);justify-items:start;padding:var(--space-6) 0 var(--space-2)}
+.success[hidden]{display:none}
+.success .tick{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#E8EDD9;color:var(--color-success)}
+.success .tick svg{width:32px;height:32px}
+.success h4{margin:0;font-family:var(--font-display);font-weight:500;font-size:var(--fs-32);line-height:1.1}
+.success p{color:var(--color-muted-foreground);max-width:46ch}
+
+/* ---------- Studio story ---------- */
+.studio{background:var(--color-dark);color:var(--color-on-dark);overflow:hidden}
+.studio .eyebrow{color:#E7A383}
+.studio-grid{display:grid;gap:clamp(40px,5vw,80px);align-items:center}
+@media (min-width:1024px){.studio-grid{grid-template-columns:.9fr 1.1fr}}
+.studio h2{color:var(--color-on-dark)}
+.studio h2 em{color:#E7A383}
+.studio-copy{display:grid;gap:var(--space-5)}
+.studio-copy p{color:var(--color-on-dark-muted);font-size:var(--fs-18);max-width:58ch}
+.studio-copy blockquote{margin:var(--space-2) 0 0;padding-left:var(--space-5);border-left:2px solid var(--color-terracotta);font-family:var(--font-display);font-style:italic;font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.35;color:var(--color-on-dark)}
+.studio-copy cite{display:block;margin-top:10px;font-family:var(--font-body);font-style:normal;font-size:var(--fs-14);color:var(--color-on-dark-muted);letter-spacing:.06em}
+.process{list-style:none;margin:var(--space-4) 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(245,236,221,.16);border-radius:var(--radius-md);overflow:hidden}
+@media (min-width:640px){.process{grid-template-columns:repeat(4,1fr)}}
+.process li{background:var(--color-dark);padding:var(--space-5) var(--space-4);display:grid;gap:4px}
+.process strong{font-family:var(--font-display);font-weight:500;font-size:var(--fs-32);line-height:1;color:var(--color-on-dark)}
+.process span{font-size:var(--fs-14);color:var(--color-on-dark-muted)}
+.studio-art{width:100%;max-width:520px;margin-inline:auto}
+
+/* ---------- Testimonials ---------- */
+.quotes{display:grid;gap:var(--space-5);list-style:none;margin:0;padding:0;grid-template-columns:minmax(0,1fr)}
+.quotes > li{display:flex}
+@media (min-width:1024px){.quotes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.quote{position:relative;margin:0;width:100%;display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-6) var(--space-5) var(--space-5);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg)}
+.quotes > li:nth-child(2) .quote{background:var(--color-sand)}
+@media (min-width:1024px){.quotes > li:nth-child(2){transform:translateY(32px)}}
+.quote svg.qm{width:40px;height:40px;color:var(--color-terracotta)}
+.quote blockquote{margin:0;font-family:var(--font-display);font-size:1.25rem;line-height:1.45;font-variation-settings:"opsz" 24}
+.quote figcaption{margin-top:auto;display:flex;align-items:center;gap:12px}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:var(--fs-14);color:#fff;background:var(--av)}
+.quote figcaption strong{display:block;font-size:var(--fs-16)}
+.quote figcaption span{font-size:var(--fs-14);color:var(--color-muted-foreground)}
+.stars{display:flex;gap:2px;color:var(--color-clay)}
+.stars svg{width:16px;height:16px}
+
+/* ---------- FAQ ---------- */
+.faq-grid{display:grid;gap:clamp(32px,4vw,64px)}
+@media (min-width:1024px){.faq-grid{grid-template-columns:.8fr 1.2fr}}
+.faq-aside p{color:var(--color-muted-foreground);margin-top:var(--space-4);max-width:40ch}
+.faq-aside a{color:var(--color-primary);font-weight:600;text-underline-offset:3px}
+.accordion{border-top:1px solid var(--color-border-strong)}
+.acc-item{border-bottom:1px solid var(--color-border-strong)}
+.acc-item h3{font-family:var(--font-body);font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:0;font-variation-settings:normal}
+.acc-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:72px;padding:var(--space-4) 0;background:none;border:0;text-align:left;font-family:var(--font-display);font-size:clamp(1.125rem,1.6vw,1.375rem);font-weight:500;line-height:1.3}
+.acc-trigger:hover{color:var(--color-primary)}
+.acc-icon{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;transition:transform var(--dur-base) var(--ease-out),background-color var(--dur-base)}
+.acc-icon svg{width:18px;height:18px}
+.acc-trigger[aria-expanded="true"] .acc-icon{transform:rotate(45deg);background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.acc-panel{padding:0 56px var(--space-5) 0;color:var(--color-muted-foreground);max-width:68ch}
+.acc-panel[hidden]{display:none}
+.acc-panel.is-open{animation:fadeUp var(--dur-base) var(--ease-out)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* ---------- Newsletter ---------- */
+.news-card{position:relative;overflow:hidden;display:grid;gap:var(--space-6);padding:clamp(32px,5vw,64px);border-radius:var(--radius-lg);background:var(--color-primary);color:#FFF6EE}
+@media (min-width:1024px){.news-card{grid-template-columns:1.1fr .9fr;align-items:center}}
+.news-card h2{color:#fff}
+.news-card .eyebrow{color:#FFE2CF}
+.news-card p{color:#FBE3D3;margin-top:var(--space-4);max-width:48ch;font-size:var(--fs-18)}
+.news-card .deco{position:absolute;right:-60px;top:-60px;width:260px;opacity:.18;pointer-events:none}
+.news-form{position:relative;display:grid;gap:8px}
+.news-form label{font-weight:600;font-size:var(--fs-14)}
+.news-row{display:flex;flex-wrap:wrap;gap:10px}
+.news-row .input{flex:1 1 220px;border-color:transparent}
+.news-row .input:focus{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.35)}
+.news-form .btn{--btn-bg:var(--color-dark);--btn-bd:var(--color-dark);--btn-fg:#fff}
+.news-form .btn:hover{--btn-bg:#000;--btn-bd:#000}
+.news-form .error{color:#fff;background:rgba(42,26,18,.55);padding:6px 10px;border-radius:8px}
+.news-form .field.invalid .input{border-color:#fff;box-shadow:0 0 0 3px rgba(42,26,18,.6)}
+.news-form .hint{color:#FBE3D3}
+.news-success{display:flex;align-items:center;gap:12px;font-weight:600;font-size:var(--fs-18);background:rgba(42,26,18,.35);padding:14px 18px;border-radius:12px}
+.news-success[hidden]{display:none}
+.news-success svg{width:24px;height:24px;flex:none}
+
+/* ---------- Footer ---------- */
+.site-footer{position:relative;z-index:2;background:var(--color-dark);color:var(--color-on-dark-muted);padding-block:clamp(56px,7vw,96px) var(--space-6)}
+.footer-grid{display:grid;gap:var(--space-7)}
+@media (min-width:768px){.footer-grid{grid-template-columns:1.3fr 1fr 1fr}}
+@media (min-width:1024px){.footer-grid{grid-template-columns:1.6fr 1fr 1fr 1fr}}
+.site-footer .brand{color:var(--color-on-dark)}
+.site-footer .brand-name em{color:#E7A383}
+.footer-blurb{margin-top:var(--space-4);max-width:36ch}
+.site-footer h2{font-family:var(--font-body);font-size:var(--fs-14);letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--color-on-dark);margin-bottom:var(--space-4)}
+.site-footer address{font-style:normal;line-height:1.8}
+.site-footer a{color:var(--color-on-dark);text-underline-offset:3px}
+.hours{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.hours li{display:flex;justify-content:space-between;gap:16px;max-width:260px}
+.socials{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.socials a{display:inline-flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;font-weight:500}
+.socials a:hover{color:#E7A383}
+.socials svg{width:20px;height:20px}
+.site-footer :focus-visible{outline-color:#E7A383}
+.footer-base{margin-top:var(--space-8);padding-top:var(--space-5);border-top:1px solid rgba(245,236,221,.16);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--space-3);font-size:var(--fs-14)}
+.big-word{font-family:var(--font-display);font-size:clamp(4rem,16vw,14rem);line-height:.85;letter-spacing:-.04em;color:rgba(245,236,221,.07);margin-top:var(--space-7);white-space:nowrap;overflow:hidden;user-select:none;font-style:italic}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:24px;z-index:var(--z-toast);transform:translate(-50%,0);display:flex;align-items:center;gap:10px;width:max-content;max-width:calc(100vw - 32px);padding:14px 20px;border-radius:var(--radius-pill);background:var(--color-dark);color:var(--color-on-dark);font-weight:600;font-size:var(--fs-14);box-shadow:var(--shadow-lift);transition:opacity var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.toast.is-hidden{opacity:0;transform:translate(-50%,16px);pointer-events:none}
+.toast svg{width:20px;height:20px;color:#A8C17A;flex:none}
+
+/* ---------- Reveal (progressive; content visible without JS) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .js .reveal{opacity:0;transform:translateY(18px);transition:opacity 560ms var(--ease-out),transform 560ms var(--ease-out);transition-delay:var(--d,0ms)}
+  .js .reveal.in{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .stamp .ring{animation:none}
+  .product:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label="Kiln &amp; Clay, home">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="23" fill="#9A3412"/>
+        <path d="M16 15h16v3c0 2-1.5 3-1.5 5 4 3 5 7 4.5 11-.6 4-4.5 6-11 6s-10.4-2-11-6c-.5-4 .5-8 4.5-11 0-2-1.5-3-1.5-5z" fill="#F5F0E1"/>
+        <path d="M13.2 30.5c3 1.3 6.8 2 10.8 2s7.8-.7 10.8-2" fill="none" stroke="#9A3412" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">Kiln <em>&amp;</em> Clay</span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
+        <li><a href="#shop" data-nav="shop">Shop</a></li>
+        <li><a href="#workshops" data-nav="workshops">Workshops</a></li>
+        <li><a href="#studio" data-nav="studio">Studio</a></li>
+        <li><a href="#journal" data-nav="journal">Journal</a></li>
+        <li><a href="#contact" data-nav="contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="cart-wrap">
+        <button class="cart-btn" id="cartBtn" type="button" aria-expanded="false" aria-controls="cartPanel" aria-label="Cart, 0 items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span class="cart-label" aria-hidden="true">Cart</span>
+          <span class="cart-count" id="cartCount" aria-hidden="true">0</span>
+        </button>
+        <div class="cart-panel" id="cartPanel" hidden role="region" aria-labelledby="cartTitle">
+          <h2 id="cartTitle">Your basket</h2>
+          <p class="empty" id="cartEmpty">Nothing here yet — the kiln shelf is waiting.</p>
+          <ul id="cartList"></ul>
+          <div class="total" id="cartTotalRow" hidden><span>Subtotal</span><span id="cartTotal">PKR 0</span></div>
+          <div class="row">
+            <a class="btn" href="#shop" id="cartShop">Browse collection</a>
+            <button class="btn btn--ghost" type="button" id="cartClear" hidden>Empty basket</button>
+          </div>
+        </div>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+        <svg class="i-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+        <svg class="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="drawer" id="drawer" hidden aria-label="Mobile">
+    <ul>
+      <li><a class="drawer-link" href="#shop">Shop <span>01</span></a></li>
+      <li><a class="drawer-link" href="#workshops">Workshops <span>02</span></a></li>
+      <li><a class="drawer-link" href="#studio">Studio <span>03</span></a></li>
+      <li><a class="drawer-link" href="#journal">Journal <span>04</span></a></li>
+      <li><a class="drawer-link" href="#contact">Contact <span>05</span></a></li>
+    </ul>
+    <div class="drawer-foot">
+      <a class="btn" href="#book">Book a wheel seat</a>
+      <p>Gulberg III, Lahore · Tue–Sat 11:00–19:00</p>
+    </div>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ================= HERO ================= -->
+<section class="hero" aria-labelledby="heroTitle">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow reveal">Small-batch stoneware · Lahore</p>
+      <h1 id="heroTitle" class="reveal" style="--d:60ms">Tableware thrown by hand, <em>fired slow</em> in Lahore.</h1>
+      <p class="hero-lede reveal" style="--d:120ms">Every plate, bowl and cup leaves our Gulberg studio in batches of a few dozen — glazed in colours borrowed from the Ravi, old brick and monsoon skies. Take a piece home, or spend a Saturday learning to centre clay yourself.</p>
+      <div class="hero-ctas reveal" style="--d:180ms">
+        <a class="btn" href="#shop">Shop the latest firing
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="#workshops">Book a wheel workshop</a>
+      </div>
+      <ul class="hero-meta reveal" style="--d:240ms">
+        <li><strong>1,240°C</strong><span>Reduction-fired stoneware</span></li>
+        <li><strong>36</strong><span>Pieces per kiln load</span></li>
+        <li><strong>8</strong><span>Wheels, max per class</span></li>
+      </ul>
+    </div>
+
+    <div class="hero-art reveal" style="--d:120ms">
+      <svg class="arch" viewBox="0 0 520 600" role="img" aria-labelledby="heroArtTitle">
+        <title id="heroArtTitle">Illustration: three glazed vessels — a celadon vase, a cobalt bowl and a rust-glazed jug — on a studio shelf beneath an arched window.</title>
+        <defs>
+          <linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9B48F"/><stop offset=".6" stop-color="#EFCDA9"/><stop offset="1" stop-color="#F3DFC4"/></linearGradient>
+          <linearGradient id="hCel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B9CBAA"/><stop offset="1" stop-color="#7F9A72"/></linearGradient>
+          <linearGradient id="hCob" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3D5A94"/><stop offset="1" stop-color="#1F3264"/></linearGradient>
+          <linearGradient id="hRust" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B5651D"/><stop offset="1" stop-color="#6E2F10"/></linearGradient>
+          <clipPath id="hArch"><path d="M20 600V250C20 120 125 20 260 20s240 100 240 230v350z"/></clipPath>
+          <clipPath id="hVase"><path d="M168 220h28v14c0 14 10 26 18 40 22 38 22 78 12 108-8 22-26 32-44 32s-36-10-44-32c-10-30-10-70 12-108 8-14 18-26 18-40z"/></clipPath>
+          <clipPath id="hJug"><path d="M332 268h72c-2 14-6 26-10 34 26 30 30 62 22 90-6 22-28 32-48 32s-42-10-48-32c-8-28-4-60 22-90-4-8-8-20-10-34z"/></clipPath>
+        </defs>
+        <g clip-path="url(#hArch)">
+          <rect width="520" height="600" fill="url(#hSky)"/>
+          <circle cx="360" cy="170" r="64" fill="#F7E6CF" opacity=".9"/>
+          <path d="M0 330c60-20 120-26 180-14s110 10 170-8 120-18 170 0v300H0z" fill="#D9B48F" opacity=".55"/>
+          <path d="M0 370c80-16 150-10 220 4s140 8 200-8 80-8 100 0v240H0z" fill="#C99472" opacity=".5"/>
+          <!-- shelf -->
+          <rect x="0" y="456" width="520" height="22" fill="#6E3E22"/>
+          <rect x="0" y="478" width="520" height="122" fill="#E9DFCB"/>
+          <path d="M0 478h520" stroke="#2E1D14" stroke-opacity=".2" stroke-width="2"/>
+          <!-- vase -->
+          <g>
+            <path d="M168 220h28v14c0 14 10 26 18 40 22 38 22 78 12 108-8 22-26 32-44 32s-36-10-44-32c-10-30-10-70 12-108 8-14 18-26 18-40z" fill="#C9A27E"/>
+            <g clip-path="url(#hVase)">
+              <path d="M100 200h170v170c-10 6-18-6-26 4s-6 22-14 22-8-16-18-16-10 12-20 12-8-20-18-20-12 14-22 14-8-10-16-10-14 12-36 4z" fill="url(#hCel)"/>
+              <path d="M150 260c-14 30-16 70-6 110" stroke="#fff" stroke-opacity=".45" stroke-width="7" stroke-linecap="round" fill="none"/>
+            </g>
+            <ellipse cx="182" cy="221" rx="15" ry="4" fill="#4E6A44"/>
+          </g>
+          <!-- cobalt bowl -->
+          <g>
+            <path d="M228 400h108c-4 30-20 50-44 54h-20c-24-4-40-24-44-54z" fill="url(#hCob)"/>
+            <ellipse cx="282" cy="400" rx="54" ry="10" fill="#16244A"/>
+            <ellipse cx="282" cy="399" rx="46" ry="6" fill="#F5F0E1" opacity=".18"/>
+            <path d="M240 414c6 18 18 30 36 34" stroke="#fff" stroke-opacity=".35" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <rect x="268" y="452" width="28" height="5" rx="2" fill="#C9A27E"/>
+          </g>
+          <!-- rust jug -->
+          <g>
+            <path d="M332 268h72c-2 14-6 26-10 34 26 30 30 62 22 90-6 22-28 32-48 32s-42-10-48-32c-8-28-4-60 22-90-4-8-8-20-10-34z" fill="#C9A27E"/>
+            <g clip-path="url(#hJug)">
+              <path d="M300 250h140v130c-8 4-14-4-20 4s-4 18-12 18-6-12-14-12-8 20-16 20-6-16-14-16-10 10-18 10-8-14-16-14-10 8-30 0z" fill="url(#hRust)"/>
+              <path d="M346 320c-10 22-12 50-4 80" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round" fill="none"/>
+            </g>
+            <path d="M332 268l-18-8 12 18z" fill="#8A3F16"/>
+            <path d="M404 292c34 2 38 64 6 80" stroke="#8A3F16" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="368" cy="268" rx="36" ry="5" fill="#4A1F0A"/>
+          </g>
+          <!-- sprig in vase -->
+          <path d="M182 222c-4-40 6-80 30-110" stroke="#4E6A44" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M196 160c14-10 30-10 40-4-12 10-28 12-40 4zM186 190c-14-8-30-6-38 2 12 8 28 8 38-2zM204 132c8-14 22-20 34-18-6 12-20 20-34 18z" fill="#6B7B3C"/>
+        </g>
+        <path d="M20 600V250C20 120 125 20 260 20s240 100 240 230v350" fill="none" stroke="#2E1D14" stroke-width="3"/>
+      </svg>
+
+      <svg class="stamp" viewBox="0 0 160 160" aria-hidden="true">
+        <circle cx="80" cy="80" r="78" fill="#F5F0E1" stroke="currentColor" stroke-width="2"/>
+        <defs><path id="stampPath" d="M80 80m-56 0a56 56 0 1 1 112 0a56 56 0 1 1-112 0"/></defs>
+        <g class="ring">
+          <text font-family="Cabin, sans-serif" font-size="13" font-weight="700" letter-spacing="3.4" fill="currentColor"><textPath href="#stampPath">THROWN IN LAHORE · FIRED BY HAND · </textPath></text>
+        </g>
+        <path d="M70 60h20v4c0 3-2 4-2 7 6 4 8 10 7 16-1 6-7 9-15 9s-14-3-15-9c-1-6 1-12 7-16 0-3-2-4-2-7z" fill="#9A3412"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="strip" aria-label="Studio promises">
+  <ul>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg>Lead-free, food-safe glazes</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Padded delivery across Pakistan</li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v5h-5"/></svg>Free breakage replacement</li>
+  </ul>
+</div>
+
+<!-- ================= SHOP ================= -->
+<section class="section" id="shop" aria-labelledby="shopTitle">
+  <div class="container">
+    <div class="shop-head">
+      <div class="section-head">
+        <p class="eyebrow">The October firing</p>
+        <h2 id="shopTitle">Featured <span class="italic">collection</span></h2>
+        <p>Six pieces from this month’s kiln. Each is thrown, trimmed and glazed by hand, so no two glazes break quite the same way.</p>
+      </div>
+      <a class="btn btn--ghost" href="#journal">Get notified of the next firing</a>
+    </div>
+
+    <ul class="products">
+      <!-- 1 Mug -->
+      <li class="product reveal">
+        <div class="product-art" style="--art-bg:#E3E6D4">
+          <span class="product-tag">Bestseller</span>
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <defs><clipPath id="pMug"><path d="M56 42h82v92c0 14-10 22-22 22H78c-12 0-22-8-22-22z"/></clipPath>
+            <linearGradient id="gCel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BCCDAD"/><stop offset="1" stop-color="#7E9A70"/></linearGradient></defs>
+            <ellipse cx="98" cy="160" rx="54" ry="6" fill="#2E1D14" opacity=".12"/>
+            <path d="M138 64c30-2 32 50 0 52" stroke="#7E9A70" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <path d="M56 42h82v92c0 14-10 22-22 22H78c-12 0-22-8-22-22z" fill="#CFAE8C"/>
+            <g clip-path="url(#pMug)"><path d="M40 30h110v88c-6 2-10-4-16 0s-2 14-10 14-6-12-14-12-8 8-14 8-6-14-14-14-8 18-16 18-6-10-14-10-8 4-12 0z" fill="url(#gCel)"/>
+            <path d="M70 56v58" stroke="#fff" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/></g>
+            <ellipse cx="97" cy="42" rx="41" ry="6" fill="#5F7A55"/>
+            <g fill="#2E1D14" opacity=".35"><circle cx="84" cy="138" r="1.2"/><circle cx="104" cy="144" r="1"/><circle cx="118" cy="136" r="1.2"/><circle cx="72" cy="146" r="1"/></g>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Ravi Morning Mug</h3>
+          <p class="glaze"><span class="swatch" style="--sw:#8FAA80" aria-hidden="true"></span>Indus Celadon — sea-glass green, dipped over speckled stoneware. 350 ml.</p>
+          <div class="product-foot">
+            <p class="price"><small>PKR</small>2,400</p>
+            <button class="btn add-btn" type="button" data-name="Ravi Morning Mug" data-price="2400">
+              <svg class="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+              <span class="lbl">Add to cart</span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <!-- 2 Bowl -->
+      <li class="product reveal" style="--d:60ms">
+        <div class="product-art" style="--art-bg:#DCE1EC">
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <defs><linearGradient id="gCob" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#46639E"/><stop offset="1" stop-color="#1D2E5E"/></linearGradient></defs>
+            <ellipse cx="100" cy="150" rx="70" ry="7" fill="#2E1D14" opacity=".12"/>
+            <path d="M24 78h152c-4 44-30 66-60 70H84c-30-4-56-26-60-70z" fill="url(#gCob)"/>
+            <ellipse cx="100" cy="78" rx="76" ry="14" fill="#F2ECE0"/>
+            <ellipse cx="100" cy="80" rx="66" ry="10" fill="#E6DCCB"/>
+            <path d="M28 80c2-6 10-10 18-12M172 80c-2-6-10-10-18-12" stroke="#2A4380" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M46 96c8 22 24 38 44 44" stroke="#fff" stroke-opacity=".3" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <g stroke="#B8C6E4" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"><path d="M70 104c10-8 20-8 30 0s20 8 30 0"/><path d="M78 118c8-6 14-6 22 0s14 6 22 0"/></g>
+            <rect x="82" y="146" width="36" height="6" rx="2" fill="#CFAE8C"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Shalimar Serving Bowl</h3>
+          <p class="glaze"><span class="swatch" style="--sw:#2F4A86" aria-hidden="true"></span>Multani Blue — cobalt tin glaze with a hand-brushed wave band. 26 cm.</p>
+          <div class="product-foot">
+            <p class="price"><small>PKR</small>6,800</p>
+            <button class="btn add-btn" type="button" data-name="Shalimar Serving Bowl" data-price="6800">
+              <svg class="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+              <span class="lbl">Add to cart</span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <!-- 3 Plate -->
+      <li class="product reveal" style="--d:120ms">
+        <div class="product-art" style="--art-bg:#EDE3D2">
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <ellipse cx="100" cy="124" rx="84" ry="30" fill="#2E1D14" opacity=".1"/>
+            <ellipse cx="100" cy="104" rx="84" ry="36" fill="#B99470"/>
+            <ellipse cx="100" cy="98" rx="84" ry="36" fill="#E4D6BE"/>
+            <ellipse cx="100" cy="98" rx="56" ry="22" fill="#D8C7AA"/>
+            <ellipse cx="100" cy="98" rx="70" ry="29" fill="none" stroke="#B5651D" stroke-width="2" opacity=".5"/>
+            <g fill="#6B4A32" opacity=".55"><circle cx="70" cy="90" r="1.4"/><circle cx="92" cy="106" r="1.1"/><circle cx="120" cy="92" r="1.4"/><circle cx="134" cy="104" r="1"/><circle cx="106" cy="84" r="1.2"/><circle cx="80" cy="108" r="1"/><circle cx="148" cy="88" r="1.2"/><circle cx="54" cy="100" r="1.2"/><circle cx="112" cy="118" r="1.2"/></g>
+            <path d="M40 84c16-14 40-20 60-20" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Anarkali Dinner Plate</h3>
+          <p class="glaze"><span class="swatch" style="--sw:#D9C8A9" aria-hidden="true"></span>Ash Oatmeal — soft matte with iron flecks and a raw clay rim line. 27 cm.</p>
+          <div class="product-foot">
+            <p class="price"><small>PKR</small>3,200</p>
+            <button class="btn add-btn" type="button" data-name="Anarkali Dinner Plate" data-price="3200">
+              <svg class="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+              <span class="lbl">Add to cart</span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <!-- 4 Vase -->
+      <li class="product reveal">
+        <div class="product-art" style="--art-bg:#EAD7C7">
+          <span class="product-tag">Only 4 left</span>
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <defs><clipPath id="pVase"><path d="M88 22h24v10c0 10 8 20 14 30 18 30 18 60 10 80-6 14-20 22-36 22s-30-8-36-22c-8-20-8-50 10-80 6-10 14-20 14-30z"/></clipPath>
+            <linearGradient id="gEmb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C0702A"/><stop offset=".55" stop-color="#7A3512"/><stop offset="1" stop-color="#3B1A0A"/></linearGradient></defs>
+            <ellipse cx="100" cy="166" rx="44" ry="5" fill="#2E1D14" opacity=".14"/>
+            <path d="M88 22h24v10c0 10 8 20 14 30 18 30 18 60 10 80-6 14-20 22-36 22s-30-8-36-22c-8-20-8-50 10-80 6-10 14-20 14-30z" fill="#CFAE8C"/>
+            <g clip-path="url(#pVase)"><path d="M50 10h100v120c-6 4-10-4-16 2s-2 16-10 16-6-14-14-14-6 18-14 18-6-14-14-14-8 10-14 8-8-10-18-6z" fill="url(#gEmb)"/>
+            <path d="M80 60c-10 22-12 50-4 76" stroke="#F3B37A" stroke-opacity=".45" stroke-width="5" stroke-linecap="round" fill="none"/></g>
+            <ellipse cx="100" cy="22" rx="12" ry="3.5" fill="#3B1A0A"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Badshahi Bud Vase</h3>
+          <p class="glaze"><span class="swatch" style="--sw:#8A3F16" aria-hidden="true"></span>Kiln Ember — tenmoku brown breaking to rust on the shoulders. 18 cm.</p>
+          <div class="product-foot">
+            <p class="price"><small>PKR</small>4,500</p>
+            <button class="btn add-btn" type="button" data-name="Badshahi Bud Vase" data-price="4500">
+              <svg class="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+              <span class="lbl">Add to cart</span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <!-- 5 Jug -->
+      <li class="product reveal" style="--d:60ms">
+        <div class="product-art" style="--art-bg:#F0DCD3">
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <defs><clipPath id="pJug"><path d="M66 30h64c-2 14-6 24-10 32 24 28 28 58 20 84-6 16-24 22-42 22s-36-6-42-22c-8-26-4-56 20-84-4-8-8-18-10-32z"/></clipPath>
+            <linearGradient id="gRose" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EBC1B0"/><stop offset="1" stop-color="#C98C78"/></linearGradient></defs>
+            <ellipse cx="98" cy="170" rx="50" ry="5" fill="#2E1D14" opacity=".12"/>
+            <path d="M130 52c34 2 38 60 4 76" stroke="#C98C78" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M66 30h64c-2 14-6 24-10 32 24 28 28 58 20 84-6 16-24 22-42 22s-36-6-42-22c-8-26-4-56 20-84-4-8-8-18-10-32z" fill="#B5714E"/>
+            <g clip-path="url(#pJug)"><path d="M40 20h120v120c-6 4-10-4-16 2s-4 14-10 14-6-12-14-12-6 16-14 16-6-12-14-12-8 8-14 6-8-10-14-8-10 8-24 0z" fill="url(#gRose)"/>
+            <path d="M74 86c-8 22-8 44 0 64" stroke="#fff" stroke-opacity=".5" stroke-width="6" stroke-linecap="round" fill="none"/></g>
+            <path d="M66 30l-16-6 10 18z" fill="#C98C78"/>
+            <ellipse cx="98" cy="30" rx="32" ry="5" fill="#A2614A"/>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Lassi Pouring Jug</h3>
+          <p class="glaze"><span class="swatch" style="--sw:#D9A391" aria-hidden="true"></span>Rose Clay — blush satin glaze over raw terracotta foot. 1 litre.</p>
+          <div class="product-foot">
+            <p class="price"><small>PKR</small>5,900</p>
+            <button class="btn add-btn" type="button" data-name="Lassi Pouring Jug" data-price="5900">
+              <svg class="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+              <span class="lbl">Add to cart</span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <!-- 6 Chai cups -->
+      <li class="product reveal" style="--d:120ms">
+        <div class="product-art" style="--art-bg:#DDD8D2">
+          <span class="product-tag">Set of 4</span>
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <defs><linearGradient id="gShino" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E6862"/><stop offset="1" stop-color="#2C2826"/></linearGradient>
+            <clipPath id="pc1"><path d="M30 76h40l-4 52c-1 6-5 8-10 8H44c-5 0-9-2-10-8z"/></clipPath>
+            <clipPath id="pc2"><path d="M80 60h40l-4 52c-1 6-5 8-10 8H94c-5 0-9-2-10-8z"/></clipPath>
+            <clipPath id="pc3"><path d="M130 76h40l-4 52c-1 6-5 8-10 8h-12c-5 0-9-2-10-8z"/></clipPath></defs>
+            <ellipse cx="100" cy="146" rx="80" ry="6" fill="#2E1D14" opacity=".12"/>
+            <g><path d="M30 76h40l-4 52c-1 6-5 8-10 8H44c-5 0-9-2-10-8z" fill="#CFAE8C"/><g clip-path="url(#pc1)"><path d="M20 70h60v40c-4 2-6-2-10 2s-2 8-6 8-4-8-8-8-4 10-8 10-4-6-8-6-6 4-20-2z" fill="url(#gShino)"/></g><ellipse cx="50" cy="76" rx="20" ry="4" fill="#1E1B19"/></g>
+            <g><path d="M80 60h40l-4 52c-1 6-5 8-10 8H94c-5 0-9-2-10-8z" fill="#CFAE8C"/><g clip-path="url(#pc2)"><path d="M70 54h60v42c-4 2-6-2-10 2s-2 8-6 8-4-8-8-8-4 10-8 10-4-6-8-6-6 4-20-2z" fill="url(#gShino)"/></g><ellipse cx="100" cy="60" rx="20" ry="4" fill="#1E1B19"/><path d="M90 70v28" stroke="#fff" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/></g>
+            <g><path d="M130 76h40l-4 52c-1 6-5 8-10 8h-12c-5 0-9-2-10-8z" fill="#CFAE8C"/><g clip-path="url(#pc3)"><path d="M120 70h60v40c-4 2-6-2-10 2s-2 8-6 8-4-8-8-8-4 10-8 10-4-6-8-6-6 4-20-2z" fill="url(#gShino)"/></g><ellipse cx="150" cy="76" rx="20" ry="4" fill="#1E1B19"/></g>
+          </svg>
+        </div>
+        <div class="product-body">
+          <h3>Dhaba Chai Cups</h3>
+          <p class="glaze"><span class="swatch" style="--sw:#3E3936" aria-hidden="true"></span>Charcoal Shino — smoky carbon-trap glaze, unglazed foot. 4 × 150 ml.</p>
+          <div class="product-foot">
+            <p class="price"><small>PKR</small>7,200</p>
+            <button class="btn add-btn" type="button" data-name="Dhaba Chai Cups (set of 4)" data-price="7200">
+              <svg class="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+              <span class="lbl">Add to cart</span>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= WORKSHOPS ================= -->
+<section class="section workshops" id="workshops" aria-labelledby="wsTitle">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Weekend wheel-throwing</p>
+      <h2 id="wsTitle">Get your hands <span class="italic">in the clay</span></h2>
+      <p>Three-hour sessions on our Shimpo wheels, with aprons, clay and chai included. We trim, glaze and fire your two best pieces — ready for pickup three weeks later.</p>
+    </div>
+
+    <div class="ws-grid">
+      <ul class="sessions" id="sessions">
+        <li class="session reveal" data-session="s1">
+          <div class="date-tile" aria-hidden="true"><span class="m">Oct</span><span class="d">24</span><span class="w">Sat</span></div>
+          <div>
+            <h3>First Pull: Wheel Basics</h3>
+            <div class="session-meta">
+              <span class="level level--beginner">Beginner</span>
+              <span><time datetime="2026-10-24T10:00">Sat 24 Oct</time> · 10:00–13:00</span>
+              <span>PKR 8,500 / person</span>
+            </div>
+            <p class="seats low" data-seats-for="s1"></p>
+            <button class="link-btn" type="button" data-book="s1">Book this session <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </li>
+        <li class="session reveal" style="--d:60ms" data-session="s2">
+          <div class="date-tile" aria-hidden="true"><span class="m">Nov</span><span class="d">08</span><span class="w">Sun</span></div>
+          <div>
+            <h3>Bowls, Trimming &amp; Feet</h3>
+            <div class="session-meta">
+              <span class="level level--intermediate">Intermediate</span>
+              <span><time datetime="2026-11-08T10:00">Sun 8 Nov</time> · 10:00–14:00</span>
+              <span>PKR 11,000 / person</span>
+            </div>
+            <p class="seats low" data-seats-for="s2"></p>
+            <button class="link-btn" type="button" data-book="s2">Book this session <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </li>
+        <li class="session reveal" style="--d:120ms" data-session="s3">
+          <div class="date-tile" aria-hidden="true"><span class="m">Nov</span><span class="d">21</span><span class="w">Sat</span></div>
+          <div>
+            <h3>Family Wheel Afternoon</h3>
+            <div class="session-meta">
+              <span class="level level--all">All levels · 10+</span>
+              <span><time datetime="2026-11-21T15:00">Sat 21 Nov</time> · 15:00–18:00</span>
+              <span>PKR 7,500 / person</span>
+            </div>
+            <p class="seats" data-seats-for="s3"></p>
+            <button class="link-btn" type="button" data-book="s3">Book this session <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </li>
+      </ul>
+
+      <div class="booking reveal" id="book" style="--d:120ms">
+        <h3 id="bookTitle">Reserve your wheel</h3>
+        <p>No payment now — we’ll confirm by email within a day and send bank-transfer details.</p>
+
+        <form class="form" id="bookingForm" novalidate aria-labelledby="bookTitle">
+          <div class="error-summary" id="errorSummary" role="alert" tabindex="-1" hidden aria-labelledby="errorSummaryTitle">
+            <h4 id="errorSummaryTitle">Please fix the following:</h4>
+            <ul id="errorSummaryList"></ul>
+          </div>
+
+          <div class="form-row">
+            <div class="field" data-field="name">
+              <label for="bName">Full name<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="bName" name="name" type="text" autocomplete="name" required aria-describedby="bName-err" aria-invalid="false">
+              <p class="error" id="bName-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+            </div>
+            <div class="field" data-field="email">
+              <label for="bEmail">Email<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="bEmail" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="bEmail-hint bEmail-err" aria-invalid="false">
+              <p class="hint" id="bEmail-hint">We’ll send your confirmation here.</p>
+              <p class="error" id="bEmail-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+            </div>
+          </div>
+
+          <div class="field" data-field="session">
+            <label for="bSession">Session<span class="req" aria-hidden="true">*</span></label>
+            <select class="input" id="bSession" name="session" required aria-describedby="bSession-err" aria-invalid="false">
+              <option value="">Choose a session…</option>
+              <option value="s1">Sat 24 Oct — First Pull: Wheel Basics (Beginner)</option>
+              <option value="s2">Sun 8 Nov — Bowls, Trimming &amp; Feet (Intermediate)</option>
+              <option value="s3">Sat 21 Nov — Family Wheel Afternoon (All levels)</option>
+            </select>
+            <p class="error" id="bSession-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+
+          <div class="field" data-field="people">
+            <label for="bPeople" id="bPeople-label">Participants<span class="req" aria-hidden="true">*</span></label>
+            <div class="stepper">
+              <button type="button" id="pMinus" aria-label="Remove one participant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+              <input id="bPeople" name="people" type="number" inputmode="numeric" min="1" max="4" step="1" value="1" required aria-describedby="bPeople-hint bPeople-err" aria-invalid="false">
+              <button type="button" id="pPlus" aria-label="Add one participant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+            </div>
+            <p class="hint" id="bPeople-hint">1 to 4 people per booking.</p>
+            <p class="error" id="bPeople-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+
+          <div class="form-foot">
+            <p class="total" aria-live="polite">Estimated total<strong id="bTotal">—</strong></p>
+            <button class="btn" type="submit" id="bSubmit"><span class="spinner" aria-hidden="true"></span><span class="lbl">Request booking</span></button>
+          </div>
+        </form>
+
+        <div class="success" id="bookingSuccess" hidden tabindex="-1" role="status">
+          <div class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+          <h4>Your wheel is held.</h4>
+          <p id="successText"></p>
+          <button class="btn btn--ghost" type="button" id="bookAnother">Book another session</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STUDIO STORY ================= -->
+<section class="section studio" id="studio" aria-labelledby="studioTitle">
+  <div class="container studio-grid">
+    <svg class="studio-art reveal" viewBox="0 0 480 480" role="img" aria-labelledby="studioArtTitle">
+      <title id="studioArtTitle">Illustration: hands shaping a cylinder of clay on a spinning potter’s wheel, with a brick kiln glowing behind.</title>
+      <defs><radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#E9894E"/><stop offset=".6" stop-color="#9A3412"/><stop offset="1" stop-color="#2A1A12" stop-opacity="0"/></radialGradient></defs>
+      <circle cx="240" cy="210" r="210" fill="url(#glow)" opacity=".55"/>
+      <!-- kiln arch bricks -->
+      <g fill="none" stroke="#C67B5C" stroke-width="3" opacity=".55">
+        <path d="M90 360V190a150 150 0 0 1 300 0v170"/>
+        <path d="M120 360V196a120 120 0 0 1 240 0v164"/>
+      </g>
+      <g stroke="#C67B5C" stroke-width="3" opacity=".45">
+        <path d="M90 230h30M90 280h30M90 330h30M360 230h30M360 280h30M360 330h30M240 40v30M140 92l20 22M340 92l-20 22"/>
+      </g>
+      <!-- wheel -->
+      <ellipse cx="240" cy="402" rx="190" ry="34" fill="#1B110C"/>
+      <ellipse cx="240" cy="372" rx="150" ry="26" fill="#5E4636"/>
+      <ellipse cx="240" cy="366" rx="150" ry="26" fill="#8A6F5C"/>
+      <g stroke="#2A1A12" stroke-opacity=".35" stroke-width="2" fill="none"><ellipse cx="240" cy="366" rx="110" ry="18"/><ellipse cx="240" cy="366" rx="70" ry="11"/></g>
+      <!-- clay cylinder -->
+      <path d="M190 366V262c0-8 22-14 50-14s50 6 50 14v104c0 8-22 14-50 14s-50-6-50-14z" fill="#B5714E"/>
+      <ellipse cx="240" cy="262" rx="50" ry="13" fill="#8C4F33"/>
+      <ellipse cx="240" cy="262" rx="36" ry="8" fill="#5E3220"/>
+      <g stroke="#7C3E24" stroke-width="2" fill="none" opacity=".6"><path d="M190 300c16 6 84 6 100 0"/><path d="M190 330c16 6 84 6 100 0"/></g>
+      <!-- hands -->
+      <path d="M120 300c20-10 50-12 68-4 6 3 8 10 4 14-8 8-26 8-40 12-16 4-30 10-42 4-10-6-6-20 10-26z" fill="#C79A7A"/>
+      <path d="M360 300c-20-10-50-12-68-4-6 3-8 10-4 14 8 8 26 8 40 12 16 4 30 10 42 4 10-6 6-20-10-26z" fill="#B88A6A"/>
+      <g fill="none" stroke="#F5ECDD" stroke-width="2.5" stroke-linecap="round" opacity=".5"><path d="M80 380c-14 10-22 22-20 34"/><path d="M400 380c14 10 22 22 20 34"/></g>
+    </svg>
+
+    <div class="studio-copy">
+      <p class="eyebrow">Our studio</p>
+      <h2 id="studioTitle">A converted <em>haveli</em> garage, two kilns, and a lot of patience.</h2>
+      <p>Kiln &amp; Clay began in 2017 when Mahnoor Rafiq traded her architecture desk for a second-hand wheel in a Gulberg garage. Today a team of four potters works with Punjab river clays and stoneware bodies, mixing every glaze in-house from tested, lead-free recipes.</p>
+      <p>We fire slowly — a full day up to temperature and two days to cool — because rushed kilns make brittle pots. It means smaller batches, and it means the mug in your hand will outlast the kitchen it lives in.</p>
+      <blockquote>“Clay remembers everything your hands do. We just try to give it good things to remember.”<cite>— Mahnoor Rafiq, founder</cite></blockquote>
+      <ul class="process" aria-label="How a piece is made">
+        <li><strong>01</strong><span>Wedge &amp; throw</span></li>
+        <li><strong>02</strong><span>Trim &amp; bisque</span></li>
+        <li><strong>03</strong><span>Dip &amp; glaze</span></li>
+        <li><strong>04</strong><span>Fire to 1,240°C</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="section" aria-labelledby="tTitle">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Kind words</p>
+      <h2 id="tTitle">On tables &amp; wheels <span class="italic">across Lahore</span></h2>
+    </div>
+    <ul class="quotes">
+      <li class="reveal">
+        <figure class="quote">
+          <svg class="qm" viewBox="0 0 40 40" aria-hidden="true"><path fill="currentColor" d="M6 30c0-9 3-16 11-20l2 3c-4 3-6 6-6 9h5v10H6zm17 0c0-9 3-16 11-20l2 3c-4 3-6 6-6 9h5v10H23z"/></svg>
+          <div class="stars" role="img" aria-label="Rated 5 out of 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></div>
+          <blockquote>The Multani Blue bowls arrived wrapped like heirlooms. Two years of daily daal and the glaze still looks like the day I unboxed it.</blockquote>
+          <figcaption><span class="avatar" style="--av:#2F4A86" aria-hidden="true">HM</span><div><strong>Hira Malik</strong><span>Model Town · Shalimar bowl set</span></div></figcaption>
+        </figure>
+      </li>
+      <li class="reveal" style="--d:80ms">
+        <figure class="quote">
+          <svg class="qm" viewBox="0 0 40 40" aria-hidden="true"><path fill="currentColor" d="M6 30c0-9 3-16 11-20l2 3c-4 3-6 6-6 9h5v10H6zm17 0c0-9 3-16 11-20l2 3c-4 3-6 6-6 9h5v10H23z"/></svg>
+          <div class="stars" role="img" aria-label="Rated 5 out of 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></div>
+          <blockquote>We booked the beginner class as an anniversary date and walked out with two wobbly, perfect cups. The team made total novices feel like apprentices.</blockquote>
+          <figcaption><span class="avatar" style="--av:#4A5626" aria-hidden="true">BS</span><div><strong>Bilal &amp; Sana Qureshi</strong><span>DHA · Workshop alumni</span></div></figcaption>
+        </figure>
+      </li>
+      <li class="reveal" style="--d:160ms">
+        <figure class="quote">
+          <svg class="qm" viewBox="0 0 40 40" aria-hidden="true"><path fill="currentColor" d="M6 30c0-9 3-16 11-20l2 3c-4 3-6 6-6 9h5v10H6zm17 0c0-9 3-16 11-20l2 3c-4 3-6 6-6 9h5v10H23z"/></svg>
+          <div class="stars" role="img" aria-label="Rated 5 out of 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></div>
+          <blockquote>Our café serves every cup of doodh patti in Dhaba Chai Cups now. Customers ask where they’re from almost daily — and they survive the dishwasher rush.</blockquote>
+          <figcaption><span class="avatar" style="--av:#9A3412" aria-hidden="true">AK</span><div><strong>Ayesha Khan</strong><span>Owner, Chai Khana · Gulberg</span></div></figcaption>
+        </figure>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section" id="faq" aria-labelledby="faqTitle" style="padding-top:clamp(32px,5vw,64px)">
+  <div class="container faq-grid">
+    <div class="faq-aside">
+      <p class="eyebrow">Good to know</p>
+      <h2 id="faqTitle">Questions, <span class="italic">answered</span></h2>
+      <p>Can’t find what you need? Write to <a href="mailto:hello@kilnandclay.pk">hello@kilnandclay.pk</a> — a potter (not a bot) replies within a day.</p>
+    </div>
+    <div class="accordion" id="accordion">
+      <div class="acc-item">
+        <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq1" id="faq1-btn">Is your tableware food, microwave and dishwasher safe?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="faq1" role="region" aria-labelledby="faq1-btn" hidden><p>Yes. All glazes are lead-free and fired to stoneware temperature (1,240°C), so pieces are fully vitrified. They’re microwave and dishwasher safe, though hand-washing keeps satin glazes looking new for longer. Avoid moving pieces straight from fridge to a hot oven.</p></div>
+      </div>
+      <div class="acc-item">
+        <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq2" id="faq2-btn">Where do you deliver, and how long does it take?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="faq2" role="region" aria-labelledby="faq2-btn" hidden><p>We deliver across Pakistan. Lahore orders arrive in 1–2 working days; Karachi, Islamabad and other cities in 3–5. Every piece is double-boxed, and if anything arrives broken, send us a photo within 48 hours and we’ll replace it free.</p></div>
+      </div>
+      <div class="acc-item">
+        <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq3" id="faq3-btn">Do I need any experience for a workshop?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="faq3" role="region" aria-labelledby="faq3-btn" hidden><p>None for “First Pull” or the Family Afternoon. The Bowls &amp; Trimming class assumes you can already centre about 1 kg of clay. Wear clothes you don’t mind getting muddy and keep nails short — we provide aprons, tools, clay and chai.</p></div>
+      </div>
+      <div class="acc-item">
+        <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq4" id="faq4-btn">Can I reschedule or cancel a workshop booking?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="faq4" role="region" aria-labelledby="faq4-btn" hidden><p>Reschedule for free up to 72 hours before your session. Inside 72 hours we can move you to a later date if a seat is open, or offer studio credit for the full amount, valid for six months.</p></div>
+      </div>
+      <div class="acc-item">
+        <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq5" id="faq5-btn">Do you take custom or wedding orders?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="faq5" role="region" aria-labelledby="faq5-btn" hidden><p>Yes — dinner sets, café ware and mehndi favours from 24 pieces. Custom glazes need about 8 weeks from approved test tile to delivery. Email us with quantities and your date, and we’ll send a quote and glaze samples.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NEWSLETTER / JOURNAL ================= -->
+<section class="section" id="journal" aria-labelledby="newsTitle" style="padding-top:0">
+  <div class="container">
+    <div class="news-card reveal">
+      <svg class="deco" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="2"><circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="76"/><circle cx="100" cy="100" r="56"/><circle cx="100" cy="100" r="36"/></g></svg>
+      <div>
+        <p class="eyebrow">The Kiln Journal</p>
+        <h2 id="newsTitle">Hear when the kiln opens.</h2>
+        <p>One short letter a month: first look at new firings (they sell out in days), workshop dates before they’re public, and notes from the wheel. No spam, unsubscribe anytime.</p>
+      </div>
+      <form class="news-form" id="newsForm" novalidate>
+        <div class="field" data-field="nEmail">
+          <label for="nEmail">Your email</label>
+          <div class="news-row">
+            <input class="input" id="nEmail" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="nEmail-err" aria-invalid="false" placeholder="you@example.com">
+            <button class="btn" type="submit">Subscribe</button>
+          </div>
+          <p class="error" id="nEmail-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+        </div>
+        <p class="news-success" id="newsSuccess" role="status" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span></span></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="#top" aria-label="Kiln &amp; Clay, back to top">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#C67B5C"/><path d="M16 15h16v3c0 2-1.5 3-1.5 5 4 3 5 7 4.5 11-.6 4-4.5 6-11 6s-10.4-2-11-6c-.5-4 .5-8 4.5-11 0-2-1.5-3-1.5-5z" fill="#2A1A12"/></svg>
+          <span class="brand-name">Kiln <em>&amp;</em> Clay</span>
+        </a>
+        <p class="footer-blurb">Small-batch stoneware and weekend wheel workshops, made slowly in Lahore since 2017.</p>
+      </div>
+      <div>
+        <h2>Visit</h2>
+        <address>Plot 22, Street 7, Gulberg III<br>Lahore 54660, Pakistan<br><a href="mailto:hello@kilnandclay.pk">hello@kilnandclay.pk</a></address>
+      </div>
+      <div>
+        <h2>Studio hours</h2>
+        <ul class="hours">
+          <li><span>Tue – Sat</span><span>11:00 – 19:00</span></li>
+          <li><span>Sunday</span><span>Workshops only</span></li>
+          <li><span>Monday</span><span>Closed</span></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <ul class="socials">
+          <li><a href="https://www.instagram.com/" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg>Instagram</a></li>
+          <li><a href="https://www.facebook.com/" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a></li>
+          <li><a href="https://www.youtube.com/" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49 49 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49 49 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="big-word" aria-hidden="true">Kiln &amp; Clay</p>
+    <div class="footer-base">
+      <p>© 2026 Kiln &amp; Clay Studio. A fictional brand.</p>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast is-hidden" id="toast" role="status" aria-live="polite" aria-atomic="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>
+  <span id="toastText"></span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  root.classList.add("js");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var fmt = function(n){ return "PKR " + n.toLocaleString("en-PK"); };
+  var $ = function(s, c){ return (c || document).querySelector(s); };
+  var $$ = function(s, c){ return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------- Header shadow on scroll ---------- */
+  var header = $(".site-header");
+  var onScroll = function(){ header.classList.toggle("is-scrolled", window.scrollY > 8); };
+  window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+  /* ---------- Mobile navigation ---------- */
+  var menuBtn = $("#menuBtn"), drawer = $("#drawer");
+  function setMenu(open, returnFocus){
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    drawer.hidden = !open;
+    drawer.classList.toggle("is-open", open);
+    document.body.classList.toggle("nav-open", open);
+    if (open) { var first = $("a", drawer); if (first) first.focus(); }
+    else if (returnFocus) { menuBtn.focus(); }
+  }
+  menuBtn.addEventListener("click", function(){ setMenu(menuBtn.getAttribute("aria-expanded") !== "true"); closeCart(); });
+  $$("a", drawer).forEach(function(a){ a.addEventListener("click", function(){ setMenu(false); }); });
+  drawer.addEventListener("keydown", function(e){
+    if (e.key !== "Tab") return;
+    var f = $$("a, button", drawer); var firstEl = f[0], lastEl = f[f.length-1];
+    if (e.shiftKey && document.activeElement === firstEl) { e.preventDefault(); menuBtn.focus(); }
+    else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); menuBtn.focus(); }
+  });
+  window.matchMedia("(min-width: 1024px)").addEventListener("change", function(m){ if (m.matches) setMenu(false); });
+
+  /* ---------- Cart ---------- */
+  var cart = []; // {name, price, qty}
+  var cartBtn = $("#cartBtn"), cartCount = $("#cartCount"), cartPanel = $("#cartPanel");
+  var toast = $("#toast"), toastText = $("#toastText"), toastTimer;
+  function totalQty(){ return cart.reduce(function(s,i){ return s + i.qty; }, 0); }
+  function renderCart(){
+    var q = totalQty();
+    cartCount.textContent = q;
+    cartBtn.setAttribute("aria-label", "Cart, " + q + (q === 1 ? " item" : " items"));
+    var list = $("#cartList"); list.innerHTML = "";
+    cart.forEach(function(i){
+      var li = document.createElement("li");
+      var a = document.createElement("span"); a.textContent = i.qty + " × " + i.name;
+      var b = document.createElement("span"); b.textContent = fmt(i.qty * i.price);
+      li.appendChild(a); li.appendChild(b); list.appendChild(li);
+    });
+    var sum = cart.reduce(function(s,i){ return s + i.qty * i.price; }, 0);
+    $("#cartTotal").textContent = fmt(sum);
+    $("#cartEmpty").hidden = q > 0;
+    $("#cartTotalRow").hidden = q === 0;
+    $("#cartClear").hidden = q === 0;
+  }
+  function showToast(msg){
+    toastText.textContent = msg;
+    toast.classList.remove("is-hidden");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.add("is-hidden"); }, 4000);
+  }
+  $$(".add-btn").forEach(function(btn){
+    var timer;
+    btn.addEventListener("click", function(){
+      var name = btn.dataset.name, price = Number(btn.dataset.price);
+      var item = cart.filter(function(i){ return i.name === name; })[0];
+      if (item) item.qty++; else cart.push({name:name, price:price, qty:1});
+      renderCart();
+      cartCount.classList.remove("bump"); void cartCount.offsetWidth; cartCount.classList.add("bump");
+      btn.classList.add("is-added"); $(".lbl", btn).textContent = "Added";
+      clearTimeout(timer);
+      timer = setTimeout(function(){ btn.classList.remove("is-added"); $(".lbl", btn).textContent = "Add to cart"; }, 1600);
+      var q = totalQty();
+      showToast(name + " added — " + q + (q === 1 ? " item" : " items") + " in cart");
+    });
+  });
+  function openCart(){ cartPanel.hidden = false; cartBtn.setAttribute("aria-expanded","true"); }
+  function closeCart(returnFocus){ if (cartPanel.hidden) return; cartPanel.hidden = true; cartBtn.setAttribute("aria-expanded","false"); if (returnFocus) cartBtn.focus(); }
+  cartBtn.addEventListener("click", function(e){ e.stopPropagation(); if (cartPanel.hidden) { openCart(); setMenu(false); } else closeCart(); });
+  cartPanel.addEventListener("click", function(e){ e.stopPropagation(); });
+  document.addEventListener("click", function(){ closeCart(); });
+  $("#cartShop").addEventListener("click", function(){ closeCart(); });
+  $("#cartClear").addEventListener("click", function(){ cart = []; renderCart(); showToast("Basket emptied — 0 items in cart"); cartBtn.focus(); closeCart(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") {
+      if (!cartPanel.hidden) closeCart(true);
+      if (menuBtn.getAttribute("aria-expanded") === "true") setMenu(false, true);
+    }
+  });
+  renderCart();
+
+  /* ---------- Workshops: seats ---------- */
+  var sessions = {
+    s1:{title:"First Pull: Wheel Basics", date:"Saturday 24 October, 10:00", seats:3, cap:8, price:8500},
+    s2:{title:"Bowls, Trimming & Feet", date:"Sunday 8 November, 10:00", seats:2, cap:8, price:11000},
+    s3:{title:"Family Wheel Afternoon", date:"Saturday 21 November, 15:00", seats:6, cap:8, price:7500}
+  };
+  function renderSeats(){
+    Object.keys(sessions).forEach(function(id){
+      var s = sessions[id], el = $('[data-seats-for="'+id+'"]');
+      var dots = '<span class="seat-dots" aria-hidden="true">';
+      for (var i=0;i<s.cap;i++) dots += '<i class="'+(i < s.seats ? "free" : "")+'"></i>';
+      dots += '</span>';
+      var label = s.seats === 0 ? "Fully booked" : s.seats + (s.seats === 1 ? " seat" : " seats") + " left of " + s.cap;
+      el.innerHTML = dots + '<span>' + label + '</span>';
+      el.classList.toggle("low", s.seats <= 3);
+      var opt = $('#bSession option[value="'+id+'"]');
+      if (opt) opt.disabled = s.seats === 0;
+      var b = $('[data-book="'+id+'"]'); if (b && s.seats === 0) { b.disabled = true; b.textContent = "Fully booked"; }
+    });
+  }
+  renderSeats();
+
+  /* ---------- Booking form ---------- */
+  var form = $("#bookingForm"), fName = $("#bName"), fEmail = $("#bEmail"), fSession = $("#bSession"), fPeople = $("#bPeople");
+  var summary = $("#errorSummary"), summaryList = $("#errorSummaryList");
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var touched = {};
+
+  function setError(input, msg){
+    var field = input.closest(".field");
+    var err = $(".error span", field);
+    field.classList.toggle("invalid", !!msg);
+    input.setAttribute("aria-invalid", msg ? "true" : "false");
+    err.textContent = msg || "";
+    return !msg;
+  }
+  var validators = {
+    name: function(){ var v = fName.value.trim(); return !v ? "Enter your full name so we can put it on your wheel." : v.length < 2 ? "Name looks too short — enter at least 2 characters." : ""; },
+    email: function(){ var v = fEmail.value.trim(); return !v ? "Enter your email address for the booking confirmation." : !emailRe.test(v) ? "Enter an email in the format name@example.com." : ""; },
+    session: function(){ return fSession.value ? "" : "Choose which session you’d like to join."; },
+    people: function(){
+      var raw = fPeople.value.trim(), n = Number(raw);
+      if (!raw || !Number.isInteger(n) || n < 1 || n > 4) return "Choose between 1 and 4 participants.";
+      var s = sessions[fSession.value];
+      if (s && n > s.seats) return "Only " + s.seats + (s.seats === 1 ? " seat is" : " seats are") + " left in this session — choose " + s.seats + " or fewer, or pick another date.";
+      return "";
+    }
+  };
+  var inputs = {name:fName, email:fEmail, session:fSession, people:fPeople};
+  function validate(key){ return setError(inputs[key], validators[key]()); }
+
+  Object.keys(inputs).forEach(function(k){
+    var el = inputs[k];
+    el.addEventListener("blur", function(e){ if (e.relatedTarget && e.relatedTarget.type === "submit") return; /* submit handler validates; avoids layout shift under the pointer */ touched[k] = true; validate(k); });
+    el.addEventListener("input", function(){ if (touched[k] || el.closest(".field").classList.contains("invalid")) validate(k); updateTotal(); });
+    el.addEventListener("change", function(){ if (k === "name" || k === "email") return; /* text fields validate on blur */ touched[k] = true; validate(k); if (k === "session" && touched.people) validate("people"); updateTotal(); });
+  });
+
+  function clampPeople(n){ return Math.min(4, Math.max(1, n)); }
+  function syncStepper(){
+    var n = Number(fPeople.value) || 1;
+    $("#pMinus").disabled = n <= 1; $("#pPlus").disabled = n >= 4;
+  }
+  $("#pMinus").addEventListener("click", function(){ fPeople.value = clampPeople((Number(fPeople.value)||1) - 1); syncStepper(); touched.people = true; validate("people"); updateTotal(); });
+  $("#pPlus").addEventListener("click", function(){ fPeople.value = clampPeople((Number(fPeople.value)||0) + 1); syncStepper(); touched.people = true; validate("people"); updateTotal(); });
+  fPeople.addEventListener("input", syncStepper);
+  syncStepper();
+
+  function updateTotal(){
+    var s = sessions[fSession.value], n = Number(fPeople.value);
+    $("#bTotal").textContent = (s && n >= 1 && n <= 4) ? fmt(s.price * n) : "—";
+  }
+
+  $$("[data-book]").forEach(function(b){
+    b.addEventListener("click", function(){
+      fSession.value = b.dataset.book; touched.session = true; validate("session"); if (touched.people) validate("people"); updateTotal();
+      $("#book").scrollIntoView({behavior: reduceMotion.matches ? "auto" : "smooth", block:"start"});
+      setTimeout(function(){ fName.focus({preventScroll:true}); }, reduceMotion.matches ? 0 : 450);
+    });
+  });
+
+  var labels = {name:"Full name", email:"Email", session:"Session", people:"Participants"};
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var errors = [];
+    Object.keys(inputs).forEach(function(k){ touched[k] = true; if (!validate(k)) errors.push(k); });
+    summaryList.innerHTML = "";
+    if (errors.length) {
+      if (errors.length > 1) {
+        errors.forEach(function(k){
+          var li = document.createElement("li"), a = document.createElement("a");
+          a.href = "#" + inputs[k].id; a.textContent = labels[k] + ": " + validators[k]();
+          a.addEventListener("click", function(ev){ ev.preventDefault(); inputs[k].focus(); });
+          li.appendChild(a); summaryList.appendChild(li);
+        });
+        summary.hidden = false; summary.focus();
+      } else {
+        summary.hidden = true; inputs[errors[0]].focus();
+      }
+      return;
+    }
+    summary.hidden = true;
+    var btn = $("#bSubmit");
+    btn.classList.add("is-loading"); btn.disabled = true; btn.setAttribute("aria-busy","true"); $(".lbl", btn).textContent = "Reserving…";
+    setTimeout(function(){
+      var s = sessions[fSession.value], n = Number(fPeople.value);
+      s.seats -= n; renderSeats();
+      var first = fName.value.trim().split(/\s+/)[0];
+      $("#successText").textContent = "Thanks, " + first + ". " + n + (n === 1 ? " seat" : " seats") + " held for “" + s.title + "” on " + s.date + ". A confirmation is on its way to " + fEmail.value.trim() + ".";
+      form.hidden = true;
+      var ok = $("#bookingSuccess"); ok.hidden = false; ok.focus();
+      btn.classList.remove("is-loading"); btn.disabled = false; btn.removeAttribute("aria-busy"); $(".lbl", btn).textContent = "Request booking";
+    }, 900);
+  });
+  $("#bookAnother").addEventListener("click", function(){
+    form.reset(); touched = {}; Object.keys(inputs).forEach(function(k){ setError(inputs[k], ""); });
+    fPeople.value = 1; syncStepper(); updateTotal();
+    $("#bookingSuccess").hidden = true; form.hidden = false; fName.focus();
+  });
+
+  /* ---------- FAQ accordion ---------- */
+  $$(".acc-trigger").forEach(function(t){
+    t.addEventListener("click", function(){
+      var open = t.getAttribute("aria-expanded") === "true";
+      var panel = document.getElementById(t.getAttribute("aria-controls"));
+      t.setAttribute("aria-expanded", String(!open));
+      panel.hidden = open;
+      panel.classList.toggle("is-open", !open);
+    });
+  });
+
+  /* ---------- Newsletter ---------- */
+  var nForm = $("#newsForm"), nEmail = $("#nEmail"), nTouched = false;
+  function nValidate(){
+    var v = nEmail.value.trim();
+    var msg = !v ? "Enter your email address to subscribe." : !emailRe.test(v) ? "Enter an email in the format name@example.com." : "";
+    return setError(nEmail, msg);
+  }
+  nEmail.addEventListener("blur", function(e){ if (e.relatedTarget && e.relatedTarget.type === "submit") return; if (nEmail.value.trim()) { nTouched = true; nValidate(); } });
+  nEmail.addEventListener("input", function(){ if (nTouched) nValidate(); });
+  nForm.addEventListener("submit", function(e){
+    e.preventDefault(); nTouched = true;
+    if (!nValidate()) { nEmail.focus(); return; }
+    var ok = $("#newsSuccess");
+    $("span", ok).textContent = "You’re on the list. Watch " + nEmail.value.trim() + " for the next kiln opening.";
+    $(".field", nForm).hidden = true; ok.hidden = false;
+  });
+
+  /* ---------- Active nav section ---------- */
+  var navLinks = $$(".nav-desktop a");
+  if ("IntersectionObserver" in window) {
+    var secObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) {
+          navLinks.forEach(function(a){ a.toggleAttribute("aria-current", a.dataset.nav === en.target.id); if (a.dataset.nav === en.target.id) a.setAttribute("aria-current","true"); });
+        }
+      });
+    }, {rootMargin:"-45% 0px -50% 0px"});
+    ["shop","workshops","studio","journal","contact"].forEach(function(id){ var el = document.getElementById(id); if (el) secObs.observe(el); });
+  }
+
+  /* ---------- Reveal on scroll (content visible by default) ---------- */
+  var reveals = $$(".reveal");
+  if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, {rootMargin:"0px 0px -8% 0px", threshold:0.08});
+    reveals.forEach(function(el){ io.observe(el); });
+    // safety net: never leave content hidden
+    window.addEventListener("load", function(){ setTimeout(function(){ reveals.forEach(function(el){ var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) el.classList.add("in"); }); }, 1200); });
+    window.addEventListener("pagehide", function(){ io.disconnect(); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+{
+ "1440": {
+  "overflow": false,
+  "status": "Lamps out. Next lit today at 18:00.",
+  "h1_visible": "none",
+  "arrow": [
+   "t-dinner",
+   "true",
+   [
+    "p-dinner"
+   ]
+  ],
+  "end": "t-drinks",
+  "home": "t-lunch",
+  "vg": [
+   2,
+   "Showing 2 of 8 lunch items that are vegan."
+  ],
+  "vg_gf": "Showing 1 of 8 lunch items that are vegan and gluten free.",
+  "drinks_all3": "Showing 5 of 7 drinks items that are vegetarian and vegan and gluten free.",
+  "empty_submit": [
+   "bk-sum",
+   "alert",
+   4
+  ],
+  "sum_link": "date",
+  "monday": true,
+  "slots8": [
+   9,
+   6
+  ],
+  "slots2": [
+   9,
+   3
+  ],
+  "bad_email": "Enter an email like name@example.com",
+  "confirm": [
+   "done-h",
+   "Guests | 2 | Day | Friday 23 October | Sitting | 12:00 | Name | Ada Quill"
+  ],
+  "again": [
+   true,
+   "party"
+  ],
+  "pd_err": [
+   "pd-sum",
+   4
+  ],
+  "pd_mon_30": [
+   "We are closed on Mondays. Choose another day",
+   "The Sail Loft seats 10 to 22. For fewer, book a table"
+  ],
+  "pd_ok": "Thank you, Ada. Your enquiry for 12 on Wednesday 2",
+  "voucher": "\u00a3120 voucher for Sam is ready. This is a",
+  "anim": "none",
+  "today_row": "Fri and Sat (today)",
+  "focus_ring": "solid",
+  "overflow_end": false,
+  "errors": []
+ },
+ "390": {
+  "overflow": false,
+  "status": "Lamps out. Next lit today at 18:00.",
+  "h1_visible": "none",
+  "arrow": [
+   "t-dinner",
+   "true",
+   [
+    "p-dinner"
+   ]
+  ],
+  "end": "t-drinks",
+  "home": "t-lunch",
+  "vg": [
+   2,
+   "Showing 2 of 8 lunch items that are vegan."
+  ],
+  "vg_gf": "Showing 1 of 8 lunch items that are vegan and gluten free.",
+  "drinks_all3": "Showing 5 of 7 drinks items that are vegetarian and vegan and gluten free.",
+  "empty_submit": [
+   "bk-sum",
+   "alert",
+   4
+  ],
+  "sum_link": "date",
+  "monday": true,
+  "slots8": [
+   9,
+   6
+  ],
+  "slots2": [
+   9,
+   3
+  ],
+  "bad_email": "Enter an email like name@example.com",
+  "confirm": [
+   "done-h",
+   "Guests | 2 | Day | Friday 23 October | Sitting | 12:00 | Name | Ada Quill"
+  ],
+  "again": [
+   true,
+   "party"
+  ],
+  "pd_err": [
+   "pd-sum",
+   4
+  ],
+  "pd_mon_30": [
+   "We are closed on Mondays. Choose another day",
+   "The Sail Loft seats 10 to 22. For fewer, book a table"
+  ],
+  "pd_ok": "Thank you, Ada. Your enquiry for 12 on Wednesday 2",
+  "voucher": "\u00a3120 voucher for Sam is ready. This is a",
+  "anim": "none",
+  "today_row": "Fri and Sat (today)",
+  "focus_ring": "solid",
+  "overflow_end": false,
+  "errors": []
+ }
+}

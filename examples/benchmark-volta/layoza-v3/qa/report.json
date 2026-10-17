@@ -1,0 +1,331 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-volta/layoza-v3/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-uniform-radius",
+          "severity": "critique",
+          "detail": "border-radius 4px on 17 of 19 rounded elements across control, surface, field"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@6); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 6.77,
+      "contrast_failures": 0,
+      "lcp_ms": 1812,
+      "cls": 0.0528,
+      "inp_proxy_ms": 320,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-volta\\layoza-v3\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-uniform-radius",
+          "severity": "critique",
+          "detail": "border-radius 4px on 17 of 19 rounded elements across control, surface, field"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@6); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 6.77,
+      "contrast_failures": 0,
+      "lcp_ms": 1752,
+      "cls": 0.0374,
+      "inp_proxy_ms": 264,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-volta\\layoza-v3\\qa\\tablet-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-volta\\layoza-v3\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-uniform-radius",
+          "severity": "critique",
+          "detail": "border-radius 4px on 17 of 19 rounded elements across control, surface, field"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@6); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 6.77,
+      "contrast_failures": 0,
+      "lcp_ms": 1712,
+      "cls": 0.0349,
+      "inp_proxy_ms": 272,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-volta\\layoza-v3\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-volta\\layoza-v3\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 6.77,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 141,
+  "contrast_indeterminate_elements": 6,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 28,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1812,
+  "cls": 0.0528,
+  "inp_ms": 320,
+  "inp_event_entries": 33,
+  "h1_to_body_ratio": 12.86,
+  "max_line_length_ch": 59,
+  "font_families": [
+    "archivo",
+    "arial"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Volta One — the 16 kg electric city bike from Bristol",
+    "lang": "en-GB",
+    "page_background": "#C4DCE8",
+    "text_colors": [
+      {
+        "value": "#172126",
+        "count": 2637
+      },
+      {
+        "value": "#F6F2EA",
+        "count": 551
+      },
+      {
+        "value": "#DCE6E4",
+        "count": 301
+      },
+      {
+        "value": "#9B1C14",
+        "count": 141
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 57
+      },
+      {
+        "value": "#33434A",
+        "count": 54
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#C4DCE8",
+        "count": 4730.85
+      },
+      {
+        "value": "#1D4C52",
+        "count": 2592
+      },
+      {
+        "value": "#E3AA2E",
+        "count": 1458.6640532226563
+      },
+      {
+        "value": "#F6F2EA",
+        "count": 634.1669448242187
+      },
+      {
+        "value": "#8C979B",
+        "count": 289.716
+      },
+      {
+        "value": "#ABDCC6",
+        "count": 187.3875478515625
+      },
+      {
+        "value": "#F4B9C4",
+        "count": 137.9290478515625
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 93.28392431640626
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Archivo",
+        "count": 3741
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "192.96px",
+        "weight": "850",
+        "line_height": "165.946px",
+        "letter_spacing": "-3.8592px",
+        "family": "Archivo"
+      },
+      "h2": {
+        "size": "77.76px",
+        "weight": "850",
+        "line_height": "73.0944px",
+        "letter_spacing": "-1.5552px",
+        "family": "Archivo"
+      },
+      "h3": {
+        "size": "28px",
+        "weight": "750",
+        "line_height": "30.8px",
+        "letter_spacing": "-0.28px",
+        "family": "Archivo"
+      },
+      "p": {
+        "size": "15px",
+        "weight": "700",
+        "line_height": "23.25px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      },
+      "small": {
+        "size": "14px",
+        "weight": "500",
+        "line_height": "16.8px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      }
+    },
+    "radii": [
+      {
+        "value": "4px",
+        "count": 28
+      },
+      {
+        "value": "8px",
+        "count": 2
+      },
+      {
+        "value": "50%",
+        "count": 1
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "685.44px",
+        "count": 8
+      },
+      {
+        "value": "510px",
+        "count": 7
+      },
+      {
+        "value": "480px",
+        "count": 5
+      },
+      {
+        "value": "612px",
+        "count": 5
+      },
+      {
+        "value": "952px",
+        "count": 3
+      },
+      {
+        "value": "448px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--render": "#C4DCE8",
+      "--render-deep": "#A9C9D9",
+      "--sherbet": "#F4B9C4",
+      "--mustard": "#E3AA2E",
+      "--mint": "#ABDCC6",
+      "--teal": "#1D4C52",
+      "--teal-deep": "#153A3F",
+      "--ink": "#172126",
+      "--ink-soft": "#33434A",
+      "--bone": "#F6F2EA",
+      "--door": "#B0231B",
+      "--door-hover": "#8F1B15",
+      "--stone": "#8C979B",
+      "--stone-deep": "#6F7B80",
+      "--paint": "#56653A",
+      "--paint-name": "\"Moss\"",
+      "--wall": "var(--render)",
+      "--header-h": "4.5rem",
+      "--gutter": "clamp(1rem,4vw,4rem)",
+      "--display": "\"Archivo\",\"Volta Display Fallback\",sans-serif",
+      "--body": "\"Archivo\",\"Volta Body Fallback\",sans-serif",
+      "--ease-out": "cubic-bezier(.23,1,.32,1)",
+      "--ease-io": "cubic-bezier(.77,0,.175,1)",
+      "--r-control": "4px",
+      "--r-panel": "8px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 5
+  },
+  "craft_critique": {
+    "craft-uniform-radius": 1
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-uniform-radius": 1
+    },
+    "tablet": {
+      "craft-uniform-radius": 1
+    },
+    "mobile": {
+      "craft-uniform-radius": 1
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

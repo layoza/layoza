@@ -1,0 +1,508 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T16:08:11.748Z",
+  "title": "Design System: Ledgerline",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Intaglio Green",
+        "canonical": "oklch(31.4% 0.055 168)",
+        "tonalRamp": [
+          "oklch(15% 0.047 168)",
+          "oklch(26% 0.055 168)",
+          "oklch(38% 0.055 168)",
+          "oklch(49% 0.055 168)",
+          "oklch(61% 0.055 168)",
+          "oklch(72% 0.055 168)",
+          "oklch(84% 0.048 168)",
+          "oklch(95% 0.040 168)"
+        ]
+      },
+      "ink-deep": {
+        "role": "primary",
+        "displayName": "Deep Intaglio",
+        "canonical": "oklch(25.7% 0.044 168)",
+        "tonalRamp": [
+          "oklch(15% 0.042 168)",
+          "oklch(26% 0.044 168)",
+          "oklch(38% 0.044 168)",
+          "oklch(49% 0.044 168)",
+          "oklch(61% 0.044 168)",
+          "oklch(72% 0.044 168)",
+          "oklch(84% 0.043 168)",
+          "oklch(95% 0.036 168)"
+        ]
+      },
+      "ink-2": {
+        "role": "primary",
+        "displayName": "Engraver's Green",
+        "canonical": "oklch(39.1% 0.069 168)",
+        "tonalRamp": [
+          "oklch(15% 0.055 168)",
+          "oklch(26% 0.066 168)",
+          "oklch(38% 0.069 168)",
+          "oklch(49% 0.069 168)",
+          "oklch(61% 0.069 168)",
+          "oklch(72% 0.067 168)",
+          "oklch(84% 0.056 168)",
+          "oklch(95% 0.045 168)"
+        ]
+      },
+      "ink-line": {
+        "role": "primary",
+        "displayName": "Plate Line",
+        "canonical": "oklch(48.1% 0.072 169)",
+        "tonalRamp": [
+          "oklch(15% 0.056 169)",
+          "oklch(26% 0.068 169)",
+          "oklch(38% 0.072 169)",
+          "oklch(49% 0.072 169)",
+          "oklch(61% 0.072 169)",
+          "oklch(72% 0.069 169)",
+          "oklch(84% 0.057 169)",
+          "oklch(95% 0.046 169)"
+        ]
+      },
+      "plum": {
+        "role": "secondary",
+        "displayName": "Exception Plum",
+        "canonical": "oklch(39.7% 0.129 4)",
+        "tonalRamp": [
+          "oklch(15% 0.085 4)",
+          "oklch(26% 0.106 4)",
+          "oklch(38% 0.127 4)",
+          "oklch(49% 0.129 4)",
+          "oklch(61% 0.129 4)",
+          "oklch(72% 0.108 4)",
+          "oklch(84% 0.087 4)",
+          "oklch(95% 0.066 4)"
+        ]
+      },
+      "plum-tint": {
+        "role": "secondary",
+        "displayName": "Plum Tint",
+        "canonical": "oklch(93.2% 0.018 351)",
+        "tonalRamp": [
+          "oklch(15% 0.018 351)",
+          "oklch(26% 0.018 351)",
+          "oklch(38% 0.018 351)",
+          "oklch(49% 0.018 351)",
+          "oklch(61% 0.018 351)",
+          "oklch(72% 0.018 351)",
+          "oklch(84% 0.018 351)",
+          "oklch(95% 0.018 351)"
+        ]
+      },
+      "act": {
+        "role": "tertiary",
+        "displayName": "Vermilion Overprint",
+        "canonical": "oklch(55.3% 0.173 36)",
+        "tonalRamp": [
+          "oklch(15% 0.106 36)",
+          "oklch(26% 0.134 36)",
+          "oklch(38% 0.163 36)",
+          "oklch(49% 0.173 36)",
+          "oklch(61% 0.166 36)",
+          "oklch(72% 0.138 36)",
+          "oklch(84% 0.110 36)",
+          "oklch(95% 0.082 36)"
+        ]
+      },
+      "act-hover": {
+        "role": "tertiary",
+        "displayName": "Pressed Vermilion",
+        "canonical": "oklch(49.7% 0.155 35)",
+        "tonalRamp": [
+          "oklch(15% 0.097 35)",
+          "oklch(26% 0.123 35)",
+          "oklch(38% 0.148 35)",
+          "oklch(49% 0.155 35)",
+          "oklch(61% 0.151 35)",
+          "oklch(72% 0.126 35)",
+          "oklch(84% 0.100 35)",
+          "oklch(95% 0.075 35)"
+        ]
+      },
+      "focus": {
+        "role": "tertiary",
+        "displayName": "Signal Amber",
+        "canonical": "oklch(77.2% 0.146 69)",
+        "tonalRamp": [
+          "oklch(15% 0.093 69)",
+          "oklch(26% 0.117 69)",
+          "oklch(38% 0.141 69)",
+          "oklch(49% 0.146 69)",
+          "oklch(61% 0.144 69)",
+          "oklch(72% 0.120 69)",
+          "oklch(84% 0.096 69)",
+          "oklch(95% 0.072 69)"
+        ]
+      },
+      "tint": {
+        "role": "neutral",
+        "displayName": "Security Tint",
+        "canonical": "oklch(94.4% 0.012 162)",
+        "tonalRamp": [
+          "oklch(15% 0.012 162)",
+          "oklch(26% 0.012 162)",
+          "oklch(38% 0.012 162)",
+          "oklch(49% 0.012 162)",
+          "oklch(61% 0.012 162)",
+          "oklch(72% 0.012 162)",
+          "oklch(84% 0.012 162)",
+          "oklch(95% 0.012 162)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Document Paper",
+        "canonical": "oklch(97.2% 0.006 154)",
+        "tonalRamp": [
+          "oklch(15% 0.006 154)",
+          "oklch(26% 0.006 154)",
+          "oklch(38% 0.006 154)",
+          "oklch(49% 0.006 154)",
+          "oklch(61% 0.006 154)",
+          "oklch(72% 0.006 154)",
+          "oklch(84% 0.006 154)",
+          "oklch(95% 0.006 154)"
+        ]
+      },
+      "stub-ground": {
+        "role": "neutral",
+        "displayName": "Stub Ground",
+        "canonical": "oklch(95.1% 0.010 165)",
+        "tonalRamp": [
+          "oklch(15% 0.010 165)",
+          "oklch(26% 0.010 165)",
+          "oklch(38% 0.010 165)",
+          "oklch(49% 0.010 165)",
+          "oklch(61% 0.010 165)",
+          "oklch(72% 0.010 165)",
+          "oklch(84% 0.010 165)",
+          "oklch(95% 0.010 165)"
+        ]
+      },
+      "perforation": {
+        "role": "neutral",
+        "displayName": "Perforation",
+        "canonical": "oklch(79.4% 0.033 166)",
+        "tonalRamp": [
+          "oklch(15% 0.033 166)",
+          "oklch(26% 0.033 166)",
+          "oklch(38% 0.033 166)",
+          "oklch(49% 0.033 166)",
+          "oklch(61% 0.033 166)",
+          "oklch(72% 0.033 166)",
+          "oklch(84% 0.033 166)",
+          "oklch(95% 0.032 166)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Ledger Rule",
+        "canonical": "oklch(83.5% 0.027 167)",
+        "tonalRamp": [
+          "oklch(15% 0.027 167)",
+          "oklch(26% 0.027 167)",
+          "oklch(38% 0.027 167)",
+          "oklch(49% 0.027 167)",
+          "oklch(61% 0.027 167)",
+          "oklch(72% 0.027 167)",
+          "oklch(84% 0.027 167)",
+          "oklch(95% 0.027 167)"
+        ]
+      },
+      "rule-soft": {
+        "role": "neutral",
+        "displayName": "Soft Rule",
+        "canonical": "oklch(90.0% 0.019 166)",
+        "tonalRamp": [
+          "oklch(15% 0.019 166)",
+          "oklch(26% 0.019 166)",
+          "oklch(38% 0.019 166)",
+          "oklch(49% 0.019 166)",
+          "oklch(61% 0.019 166)",
+          "oklch(72% 0.019 166)",
+          "oklch(84% 0.019 166)",
+          "oklch(95% 0.019 166)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "oklch(45.7% 0.042 169)",
+        "tonalRamp": [
+          "oklch(15% 0.041 169)",
+          "oklch(26% 0.042 169)",
+          "oklch(38% 0.042 169)",
+          "oklch(49% 0.042 169)",
+          "oklch(61% 0.042 169)",
+          "oklch(72% 0.042 169)",
+          "oklch(84% 0.042 169)",
+          "oklch(95% 0.035 169)"
+        ]
+      },
+      "on-ink-muted": {
+        "role": "neutral",
+        "displayName": "Muted On-Ink",
+        "canonical": "oklch(80.4% 0.037 167)",
+        "tonalRamp": [
+          "oklch(15% 0.037 167)",
+          "oklch(26% 0.037 167)",
+          "oklch(38% 0.037 167)",
+          "oklch(49% 0.037 167)",
+          "oklch(61% 0.037 167)",
+          "oklch(72% 0.037 167)",
+          "oklch(84% 0.037 167)",
+          "oklch(95% 0.033 167)"
+        ]
+      },
+      "field-line-on-ink": {
+        "role": "neutral",
+        "displayName": "Field Line on Ink",
+        "canonical": "oklch(57.3% 0.066 170)",
+        "tonalRamp": [
+          "oklch(15% 0.053 170)",
+          "oklch(26% 0.064 170)",
+          "oklch(38% 0.066 170)",
+          "oklch(49% 0.066 170)",
+          "oklch(61% 0.066 170)",
+          "oklch(72% 0.065 170)",
+          "oklch(84% 0.054 170)",
+          "oklch(95% 0.044 170)"
+        ]
+      },
+      "on-ink": {
+        "role": "neutral",
+        "displayName": "On-Ink (Security Tint)",
+        "canonical": "oklch(94.4% 0.012 162)",
+        "tonalRamp": [
+          "oklch(15% 0.012 162)",
+          "oklch(26% 0.012 162)",
+          "oklch(38% 0.012 162)",
+          "oklch(49% 0.012 162)",
+          "oklch(61% 0.012 162)",
+          "oklch(72% 0.012 162)",
+          "oklch(84% 0.012 162)",
+          "oklch(95% 0.012 162)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only; Bodoni at opsz 96, balanced wrap."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings; Bodoni at opsz 72."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Document titles, step/capability/plan names, fact terms, FAQ questions; opsz steps 18-40 with size."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text in Schibsted Grotesk with ss01; intros capped at 60ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase tracked captions: table heads, VAT box captions, cheque keys, footer heads."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Every amount, date, reference, code and MICR line; tabular numerals."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet-on-ink",
+        "value": "0 2px 3px rgba(0,0,0,.18), 0 30px 60px -24px rgba(0,0,0,.55)",
+        "purpose": "Paper documents lying on green bands."
+      },
+      {
+        "name": "sheet-on-tint",
+        "value": "0 1px 2px rgba(13,58,44,.12), 0 24px 48px -30px rgba(13,58,44,.45)",
+        "purpose": "Paper on the mint ground (statement, plan book)."
+      },
+      {
+        "name": "overprint-press",
+        "value": "0 1px 0 rgba(0,0,0,.18), 0 6px 16px -8px rgba(120,30,10,.55)",
+        "purpose": "Vermilion action button only."
+      },
+      {
+        "name": "drawer-drop",
+        "value": "0 18px 30px -12px rgba(0,0,0,.45)",
+        "purpose": "Mobile navigation drawer."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Single easing for every transition and WAAPI animation."
+      },
+      {
+        "name": "state",
+        "value": "200ms",
+        "purpose": "Button background, shadow and press transform; FAQ disc colour."
+      },
+      {
+        "name": "drawer",
+        "value": "250ms",
+        "purpose": "Drawer opacity plus 8px translate; none under reduced motion."
+      },
+      {
+        "name": "faq-collapse",
+        "value": "260ms",
+        "purpose": "FAQ answer height close."
+      },
+      {
+        "name": "faq-expand",
+        "value": "320ms",
+        "purpose": "FAQ answer height open; disc rotates 45deg over 300ms."
+      },
+      {
+        "name": "clearing-pass",
+        "value": "300ms delay, 650ms first row, 380ms per row",
+        "purpose": "Hero rows resolve Matching to matched/flagged in sequence; skipped under prefers-reduced-motion, final state shown."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "1080px"
+      },
+      {
+        "name": "book",
+        "value": "820px"
+      },
+      {
+        "name": "compact",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Action Button",
+      "kind": "button",
+      "refersTo": "button-act",
+      "description": "Vermilion overprint; the only pressable primary action.",
+      "html": "<button class=\"ds-btn-act\">Start free trial</button>",
+      "css": ".ds-btn-act{display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:48px;padding:.7em 1.25em;border:0;border-radius:3px;cursor:pointer;font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif);font-weight:650;font-size:1rem;letter-spacing:.005em;background:var(--act,#C2401C);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.18),0 6px 16px -8px rgba(120,30,10,.55);transition:background-color .2s cubic-bezier(.16,1,.3,1),transform .2s cubic-bezier(.16,1,.3,1)}.ds-btn-act:hover{background:var(--act-hover,#A8361A)}.ds-btn-act:active{transform:translateY(1px)}.ds-btn-act:focus-visible{outline:3px solid var(--focus,#F0A23B);outline-offset:3px}"
+    },
+    {
+      "name": "Line Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Secondary action; inset currentColor stroke that thickens on hover.",
+      "html": "<button class=\"ds-btn-line\">Start trial on Practice</button>",
+      "css": ".ds-btn-line{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.7em 1.25em;border:0;border-radius:3px;cursor:pointer;background:transparent;color:var(--ink,#0D3A2C);font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif);font-weight:650;font-size:1rem;box-shadow:inset 0 0 0 1.5px currentColor;transition:box-shadow .2s cubic-bezier(.16,1,.3,1)}.ds-btn-line:hover{box-shadow:inset 0 0 0 2.5px currentColor}.ds-btn-line:focus-visible{outline:3px solid var(--focus,#F0A23B);outline-offset:3px}"
+    },
+    {
+      "name": "Field on Paper",
+      "kind": "input",
+      "refersTo": "input-on-paper",
+      "description": "Labelled form field on a paper slip; plum on invalid.",
+      "html": "<label class=\"ds-field\"><span>Practice name</span><input placeholder=\"Wren &amp; Hollis\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif);color:var(--ink,#0D3A2C)}.ds-field span{font-weight:600;font-size:.95rem;margin-bottom:6px}.ds-field input{min-height:50px;border:1.5px solid #7E9C90;border-radius:3px;background:#fff;padding:.6em .8em;font:inherit;color:inherit}.ds-field input:hover{border-color:var(--ink,#0D3A2C)}.ds-field input:focus-visible{outline:3px solid var(--focus,#F0A23B);outline-offset:3px}.ds-field input[aria-invalid=true]{border-color:var(--plum,#7B1E3F);background:#FCF6F8}"
+    },
+    {
+      "name": "Field on Ink",
+      "kind": "input",
+      "refersTo": "input-on-ink",
+      "description": "Inset field on a green band (hero email, estimator numbers).",
+      "html": "<div class=\"ds-band-f\"><label class=\"ds-field-ink\"><span>Work email</span><input placeholder=\"you@yourpractice.co.uk\"></label></div>",
+      "css": ".ds-band-f{background:var(--ink,#0D3A2C);padding:20px}.ds-field-ink{display:flex;flex-direction:column;font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif)}.ds-field-ink span{font-size:.85rem;font-weight:600;color:var(--on-ink-muted,#A9C7BA);margin-bottom:6px}.ds-field-ink input{min-height:52px;padding:.7em .9em;border-radius:3px;border:1.5px solid #4E8572;background:var(--ink-deep,#082A1F);color:var(--on-ink,#E6EFEA);font:inherit}.ds-field-ink input::placeholder{color:#8DB1A2}.ds-field-ink input:hover{border-color:#6FA08D}.ds-field-ink input:focus-visible{outline:3px solid var(--focus,#F0A23B);outline-offset:3px}"
+    },
+    {
+      "name": "Primary Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Mint links on the intaglio header band with Bodoni wordmark.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-brand\" href=\"#\">Ledgerline</a><a href=\"#\">Product</a><a href=\"#\">How it works</a><a href=\"#\">Pricing</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:26px;background:var(--ink,#0D3A2C);color:var(--on-ink,#E6EFEA);padding:0 24px;min-height:76px;font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif)}.ds-nav a{color:inherit;text-decoration:none;font-size:.97rem;font-weight:500;padding:6px 0;border-bottom:1.5px solid transparent}.ds-nav a:hover{border-bottom-color:var(--on-ink-muted,#A9C7BA)}.ds-nav a:focus-visible{outline:3px solid var(--focus,#F0A23B);outline-offset:3px}.ds-nav .ds-brand{font-family:var(--f-display,'Bodoni Moda',Georgia,serif);font-weight:600;font-size:1.6rem;letter-spacing:-.01em;margin-right:auto;border:0}"
+    },
+    {
+      "name": "Billing Toggle",
+      "kind": "chip",
+      "refersTo": "segmented-option-checked",
+      "description": "Segmented control; checked option fills ink.",
+      "html": "<div class=\"ds-seg\"><button aria-pressed=\"true\">Monthly</button><button aria-pressed=\"false\">Yearly</button></div>",
+      "css": ".ds-seg{display:inline-flex;border:1.5px solid var(--ink,#0D3A2C);border-radius:3px;padding:3px;gap:3px;background:var(--paper,#F3F7F4)}.ds-seg button{padding:.55em 1.1em;min-height:42px;border:0;border-radius:2px;background:transparent;color:var(--ink,#0D3A2C);font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif);font-weight:600;font-size:.95rem;cursor:pointer}.ds-seg button[aria-pressed=true]{background:var(--ink,#0D3A2C);color:var(--paper,#F3F7F4)}.ds-seg button:focus-visible{outline:3px solid var(--focus,#F0A23B);outline-offset:2px}"
+    },
+    {
+      "name": "Bank-Feed Rows",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Fixed-column rows; state is glyph + word + mono ref, flagged row in plum.",
+      "html": "<table class=\"ds-rows\"><thead><tr><th>Bank line</th><th class=\"a\">Amount</th><th>Matched to</th></tr></thead><tbody><tr><td>Stonebridge Flooring</td><td class=\"a\">1,240.00</td><td class=\"s\"><svg viewBox=\"0 0 16 16\"><path d=\"M2.5 8.6l3.6 3.4L13.5 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>Invoice <code>INV-0418</code></td></tr><tr class=\"f\"><td>FPS M Okafor</td><td class=\"a\">&minus;600.00</td><td class=\"s\"><svg viewBox=\"0 0 16 16\"><path d=\"M3.5 14.5V2\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 2.5h8.2l-1.9 3 1.9 3H3.5\" fill=\"currentColor\"/></svg>No match <code>&middot; 2 possible bills</code></td></tr></tbody></table>",
+      "css": ".ds-rows{border-collapse:collapse;width:100%;background:var(--paper,#F3F7F4);color:var(--ink,#0D3A2C);font-family:var(--f-text,'Schibsted Grotesk',system-ui,sans-serif);font-size:.88rem}.ds-rows th{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted,#3F5F53);text-align:left;padding:0 8px 8px;border-bottom:1.5px solid var(--ink,#0D3A2C)}.ds-rows td{padding:9px 8px;border-bottom:1px solid var(--rule-soft,#D3E2DB)}.ds-rows .a{text-align:right;font-family:var(--f-figure,'Spline Sans Mono',monospace);font-variant-numeric:tabular-nums}.ds-rows .s{font-weight:600;font-size:.82rem}.ds-rows .s svg{width:15px;height:15px;display:inline-block;vertical-align:-3px;margin-right:6px}.ds-rows code{font-family:var(--f-figure,'Spline Sans Mono',monospace);font-weight:500}.ds-rows tr.f{background:var(--plum-tint,#F3E4EA)}.ds-rows tr.f .s{color:var(--plum,#7B1E3F)}"
+    },
+    {
+      "name": "Perforated Stub Sheet",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Paper sheet on ink with dashed perforation, punched notches and a vertical stub caption.",
+      "html": "<div class=\"ds-band-s\"><div class=\"ds-sheet\"><div class=\"ds-stub\"><span>Bank feed &middot; Sept</span></div><div class=\"ds-sheet-body\">Wren &amp; Hollis Joinery Ltd</div></div></div>",
+      "css": ".ds-band-s{background:var(--ink,#0D3A2C);padding:28px}.ds-sheet{display:grid;grid-template-columns:62px 1fr;background:var(--paper,#F3F7F4);color:var(--ink,#0D3A2C);border-radius:2px;box-shadow:0 2px 3px rgba(0,0,0,.18),0 30px 60px -24px rgba(0,0,0,.55);min-height:160px}.ds-stub{position:relative;border-right:2px dashed #A9C3B7;background:#E9F1ED;display:flex;align-items:center;justify-content:center}.ds-stub::before,.ds-stub::after{content:'';position:absolute;right:-9px;width:16px;height:16px;border-radius:50%;background:var(--ink,#0D3A2C)}.ds-stub::before{top:-8px}.ds-stub::after{bottom:-8px}.ds-stub span{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--f-figure,'Spline Sans Mono',monospace);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#3F5F53)}.ds-sheet-body{padding:22px 28px;font-family:var(--f-display,'Bodoni Moda',Georgia,serif);font-weight:650;font-size:1.35rem}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Security Print",
+    "overview": "Ledgerline is printed, not rendered. Every surface is a piece of security stationery: a mint security-tint ground under fine generated guilloche line-work, deep intaglio green that owns whole bands of the page, and paper documents (remittance advice, statement, cheque, application slip) laid on those bands with perforated stub edges and MICR-style code lines. The product is shown as the document it produces, never as a dashboard screenshot.\n\nDensity is that of a financial document: rows on fixed columns, hairline rules, tabular figures, written-out amounts. Colour is ink discipline. Green is the ink, plum is overprinted only where something needs a person, vermilion is overprinted only on things you can press. Display type is engraved Bodoni at large optical sizes; the working text is a plain grotesk; every figure and code sits in a monospace with tabular numerals.\n\nMotion is a single authored moment (the hero clearing pass) plus quiet state transitions; content is always visible by default and reduced motion shows the finished state.",
+    "keyCharacteristics": [
+      "Alternating bands: intaglio-green fields and mint-tint fields, with paper documents lifted onto them.",
+      "Procedurally generated guilloche (wave bands, rose fields, hypotrochoid rosettes) behind every paper and band, each from its own seed.",
+      "Rows on fixed columns; state restyles a row, never the grid.",
+      "Three-ink colour logic: green structure, plum exceptions, vermilion actions.",
+      "Bodoni display, Schibsted Grotesk text, Spline Sans Mono figures.",
+      "Near-square corners (2-3px); perforation (2px dashed) is the divider between a document and its stub."
+    ],
+    "rules": [
+      {
+        "name": "The Three Inks Rule",
+        "body": "Green carries structure and text; plum appears only where a person must judge something; vermilion appears only on something you can press. If an element is neither an exception nor an action, it is green.",
+        "section": "colors"
+      },
+      {
+        "name": "The Glyph-And-Word Rule",
+        "body": "Every state carries a glyph and a word (tick + \"Invoice INV-0418\", flag + \"No match\"), never colour alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Any number that can be compared (amounts, counts, box values, inputs) is set in the figure face with tabular numerals, right-aligned in its column.",
+        "section": "typography"
+      },
+      {
+        "name": "The Optical Size Rule",
+        "body": "Bodoni is always set with `opsz` matched to its size; never use the display cut small or the text cut large.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper Lift Rule",
+        "body": "Only paper objects cast shadows, and only downward; bands and rows stay flat.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** generate each guilloche from its own seed so no two surfaces share a pattern.",
+      "**Do** put every comparable number in Spline Sans Mono with tabular numerals, right-aligned.",
+      "**Do** pair every state with a glyph and a word (tick + reference, flag + \"No match\").",
+      "**Do** lay paper documents on flat bands and lift only the paper (Sheet on Ink / Sheet on Tint).",
+      "**Do** use perforation (2px dashed, punched notches) to separate a document from its stub, counterfoil or sibling leaf.",
+      "**Do** keep the hero clearing pass as the single authored motion moment, with the cleared state shown by default under reduced motion."
+    ],
+    "donts": [
+      "**Don't** use vermilion on anything that cannot be pressed.",
+      "**Don't** use plum for anything that is not an exception, flag or error.",
+      "**Don't** put content in rounded soft cards; corners stay at 2-3px and containers are documents.",
+      "**Don't** let a state change move a column or reflow a row grid.",
+      "**Don't** show the product as a floating dashboard screenshot; show the paper document it produces."
+    ]
+  }
+}

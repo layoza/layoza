@@ -1,0 +1,2201 @@
+[
+  {
+    "id": "hero-object-between-lines",
+    "name": "Object Between the Lines",
+    "kind": "hero",
+    "role": "hero",
+    "family": "object-interlock",
+    "niches": [
+      "3d",
+      "store",
+      "landing"
+    ],
+    "moods": [
+      "bold",
+      "luxe",
+      "experimental"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": true,
+    "blueprint": "Full-viewport section, min-height 100svh, padding clamp(4rem, 10vw, 9rem) clamp(1rem, 5vw, 4rem). Headline is an h1 with two block spans: line one top-aligned, line two bottom-aligned, size clamp(3rem, 10vw, 10rem), line-height 0.9. Between them a gap element whose height is a CSS variable --gap, starting at 0.4em and opening to clamp(14rem, 34vw, 30rem). A WebGL canvas (the product: bottle, sneaker, speaker) is absolutely centred in that gap at z-index 1; the headline spans sit at z-index 2 but never overlap the object footprint. Below line two: one-sentence deck at clamp(1rem, 1.4vw, 1.25rem), primary CTA and price chip. States: idle (lines parted, object slowly turning), hover on canvas (object faces cursor up to 12deg), in-view, done (gap fully open, CTA focusable).",
+    "motion": "Load: lines start almost touching, then part over 900ms cubic-bezier(.2,.8,.2,1) while the object scales from 0.6 to 1 into the opening. Scroll progress 0-40%: object rotates 0 to 120deg on Y. 40-80%: lines drift a further 6vh apart and the object tilts to show its underside. 80-100%: object settles at three-quarter view, a soft floor shadow sharpens, CTA lifts 8px into place.",
+    "still_check": "At 50% both headline lines are fully set and readable above and below a fully lit product, no letters cut by the canvas, CTA visible. 25% shows the object front-on with a tighter gap; 75% shows it tilted with wider spacing.",
+    "mobile": "At 375px the gap opens to 62vw and the object renders as a pre-rendered poster image unless the device reports good GPU memory. Scroll rotation is replaced by a single 1.2s turntable on first view. Lines drop to clamp(2.6rem, 13vw, 3.4rem).",
+    "a11y": "h1 is one element read as a single sentence; the canvas is aria-hidden with an adjacent visually hidden product description. Reduced motion: lines start parted, object static at three-quarter view. CTA keeps a 3px focus-visible ring with 3:1 contrast against the backdrop.",
+    "avoid": "Object drifting over letters, gap collapsing into an empty band before the model loads (show a poster image first), layout shift when --gap animates (reserve final height), scroll hijack that pins longer than one viewport.",
+    "stack_notes": {
+      "css": "Lines as grid rows; gap row height animated with animation-timeline: view() on a registered @property --gap. Poster image sits in the gap with a CSS rotateY via view() timeline for the turn. IntersectionObserver adds an in-view class where scroll timelines are unsupported.",
+      "js": "three.js or raw WebGL renders the model into a canvas sized to the gap rect, measured with ResizeObserver. rAF reads section progress 0..1 from getBoundingClientRect and maps it to rotation and gap height. Pause rendering when out of view; dispose geometry, textures and the renderer on unmount."
+    }
+  },
+  {
+    "id": "hero-seam-split-ink",
+    "name": "Seam-Split Headline",
+    "kind": "hero",
+    "role": "hero",
+    "family": "split-ink",
+    "niches": [
+      "kinetic",
+      "agency",
+      "portfolio"
+    ],
+    "moods": [
+      "bold",
+      "experimental",
+      "brutal"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": true,
+    "blueprint": "One-line headline at clamp(3.5rem, 12vw, 12rem), weight 800, centred in a 100svh section with padding clamp(4rem, 10vw, 9rem). The real h1 carries the text. Two aria-hidden copies are stacked exactly over it: the top copy in ink A (paper colour on black band) clipped to the upper half with clip-path inset(0 0 50% 0), the bottom copy in ink B (accent on paper) clipped to the lower half. A diagonal ribbon 4px tall, rotated -4deg, runs across the full width along the seam, carrying a tiny marquee of the studio's services at 0.75rem. Background splits in the same two inks. States: idle, hover on headline (seam angle eases to 0deg), in-view, done.",
+    "motion": "Load: seam draws across left to right in 700ms ease-out, then the halves separate vertically by 0.08em. Scroll progress 0-50%: seam angle rotates from -4deg to +4deg, re-cutting letters so each moment shows a different split. 50-100%: halves slide horizontally opposite each other by up to 0.3em, then re-register flush at 100%. Ribbon marquee runs at a constant 40s loop.",
+    "still_check": "At 50% the headline reads as one word in two inks with the seam level, both halves aligned enough to read. 25% shows a downward-tilted seam, 75% shows the halves offset sideways, both still legible.",
+    "mobile": "At 375px the headline breaks onto two lines and each line gets its own seam; horizontal slip is capped at 0.12em. The ribbon marquee becomes a static line of services. Tap on the headline toggles seam angle instead of hover.",
+    "a11y": "Only the base h1 is exposed; both clipped copies and the ribbon duplicate are aria-hidden. Each ink pair meets 4.5:1 against its own background. Reduced motion: seam level, halves flush, marquee stopped and shown as a static list.",
+    "avoid": "Halves offset far enough to make the word unreadable, a seam that hides the x-height of every letter, mismatched copies that ghost at sub-pixel offsets, colour pairs failing contrast on one side of the split.",
+    "stack_notes": {
+      "css": "Stack three spans in one grid cell. Animate a registered @property --seam angle and --slip length with animation-timeline: view(), feeding clip-path polygon() points and translate. The ribbon is a rotated flex row with a CSS keyframe marquee.",
+      "js": "rAF maps section progress to seam angle and slip, writing CSS variables on the wrapper so the copies share one source of truth. WAAPI plays the load-in seam draw. Remove listeners and cancel animations on unmount; re-measure on font load."
+    }
+  },
+  {
+    "id": "hero-type-on-ribbon",
+    "name": "Headline on a Ribbon Path",
+    "kind": "hero",
+    "role": "hero",
+    "family": "type-on-path",
+    "niches": [
+      "portfolio",
+      "events",
+      "kinetic"
+    ],
+    "moods": [
+      "playful",
+      "editorial",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": true,
+    "blueprint": "Section 100svh, padding clamp(4rem, 10vw, 9rem). A real h1 sits in normal flow at the top left, clamp(2.5rem, 6vw, 5.5rem), fully readable. Behind and around it a full-width SVG ribbon: a wide S-curve band 9vw tall in accent colour, carrying the same headline repeated on a textPath at clamp(1.5rem, 4vw, 3.5rem) in the paper colour. The ribbon threads through a central portrait or work image (clamp(16rem, 30vw, 26rem) wide), passing behind it on the left and in front on the right using two path segments at different z-index. Below: name, role line, two links. States: idle, hover on ribbon (letter-spacing widens 0.02em), in-view, done.",
+    "motion": "Scroll progress 0-100% moves startOffset of the textPath from 0% to -60%, so the words travel along the curve like a conveyor. 0-30%: ribbon unrolls via stroke-dashoffset from left. 30-70%: travel. 70-100%: travel slows on an ease-out mapping and the ribbon curvature relaxes 15% flatter. Load: image fades up 400ms.",
+    "still_check": "At 50% the DOM h1 is fully readable, the ribbon fully drawn, its text mid-travel with whole words visible, the image framed by the ribbon passing behind and in front. 25% shows the ribbon partly unrolled; 75% shows flatter curvature.",
+    "mobile": "At 375px the ribbon becomes a single gentle arc above the image, the path text shrinks to clamp(1rem, 5vw, 1.4rem) and travel distance halves. Image goes full width under the h1. No scroll pinning.",
+    "a11y": "The SVG ribbon is aria-hidden because the h1 carries the same words in the DOM, selectable and translatable. Reduced motion: ribbon fully drawn, text static at offset 0. Links get visible focus-visible outlines offset 3px.",
+    "avoid": "Making the ribbon text the only copy of the headline, ribbon crossing the h1 or the image subject's face, letters bunching on tight curve radii, scroll-velocity-driven speed changes, an empty first frame before the ribbon draws.",
+    "stack_notes": {
+      "css": "Inline SVG with textPath; animate startOffset is not CSS-animatable, so the CSS path animates the ribbon group translate along x with animation-timeline: view() and draws the band with stroke-dashoffset. Split the band into two paths at different z-index around the image.",
+      "js": "rAF reads section progress and sets the textPath startOffset attribute and the band dashoffset. Recompute path length with getTotalLength on resize. Cancel rAF when the section leaves view via IntersectionObserver and on unmount."
+    }
+  },
+  {
+    "id": "hero-occluding-ridge",
+    "name": "Ridge in Front, Ridge Behind",
+    "kind": "hero",
+    "role": "hero",
+    "family": "parallax-depth",
+    "niches": [
+      "travel",
+      "education",
+      "3d"
+    ],
+    "moods": [
+      "organic",
+      "bold",
+      "calm"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": true,
+    "blueprint": "Section 100svh, overflow hidden. Three stacked layers in one grid cell: back layer is the sky and far ridge photo, middle layer is the h1 at clamp(4rem, 14vw, 14rem), weight 900, letters spanning the width, bottom edge sitting low; front layer is a cut-out PNG or AVIF of the near ridge, peak or landmark with a transparent sky, so the subject stands in front of the lower parts of some letters and behind others are clear. Subhead and CTA sit in a frosted strip at the bottom, padding clamp(1rem, 3vw, 2rem). z-order: back 0, h1 1, cut-out 2, strip 3. States: idle, in-view, done; no hover dependence.",
+    "motion": "Scroll progress 0-100% drives depth: back layer moves 4vh, h1 moves 12vh upward, cut-out moves 0. 0-40%: the cut-out covers about 30% of letter height. 40-100%: the h1 rises until letters clear the peaks almost entirely, revealing the full word. Load: h1 letters rise 0.2em with 40ms stagger, 600ms ease-out.",
+    "still_check": "At 50% the word is recognisable with the peak overlapping only the lower third of two or three letters, strip readable. 25% shows deeper occlusion; 75% shows letters mostly clear above the ridge.",
+    "mobile": "At 375px the h1 breaks into two stacked lines at clamp(3rem, 18vw, 4.5rem), the cut-out is a portrait crop, and parallax distances halve. Occlusion is capped at 20% of letter height so short words still read.",
+    "a11y": "The h1 is live DOM text and its full word is available to assistive tech regardless of occlusion; the cut-out has an empty alt because the back image carries the descriptive alt. Reduced motion: final state, letters mostly clear. Strip text meets 4.5:1.",
+    "avoid": "Occlusion that hides letters needed to read the word, cut-out edges with halos, layer drift causing horizontal overflow, parallax so strong it induces nausea, empty sky above the type at the start.",
+    "stack_notes": {
+      "css": "Grid stack of three layers; translate each with animation-timeline: view() and different keyframe distances. A tight cut-out mask image keeps edges crisp. IntersectionObserver toggles an in-view class for the letter stagger fallback.",
+      "js": "rAF maps progress to translateY per layer via CSS variables; a light WebGL depth-map displacement is optional where the project already uses it. Observe visibility to stop updates, and remove listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-headline-wraps-object",
+    "name": "Headline Wrapped Around the Specimen",
+    "kind": "hero",
+    "role": "hero",
+    "family": "shape-wrap",
+    "niches": [
+      "health",
+      "education",
+      "editorial",
+      "portfolio",
+      "agency",
+      "travel",
+      "professional"
+    ],
+    "moods": [
+      "calm",
+      "editorial",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "blueprint": "Two-thirds width text column inside a max-width 78rem container, padding clamp(4rem, 10vw, 9rem) clamp(1rem, 5vw, 4rem). A cut-out object image (a ceramic pill bottle, an anatomical model, a seed pod) floats right at clamp(14rem, 32vw, 28rem) with shape-outside: url(object.png) and shape-margin 1.2rem, so the h1 at clamp(2.75rem, 6.5vw, 6rem) and the 2-sentence lede wrap tightly along the object's silhouette. A small caption with a hairline leader points to one detail of the object. CTA pair below. States: idle, in-view (caption leader drawn), hover on caption (object detail outline highlights), done.",
+    "motion": "On entering view the object fades from 0 to 1 opacity and rises 12px over 600ms ease-out; the caption hairline draws in 400ms after a 300ms delay. Scroll progress 0-100% rotates the object by only 3deg, never changing the wrap outline enough to reflow text.",
+    "still_check": "At 50% the headline lines visibly hug the object contour with no awkward single-word lines, caption and CTA readable. 25% and 75% differ only in a slight object rotation and the caption leader state.",
+    "mobile": "At 375px shape-outside is removed; the object sits above the headline at 70vw width, and the caption becomes a numbered note under the lede. Headline uses clamp(2.25rem, 10vw, 2.8rem).",
+    "a11y": "Object image has descriptive alt; the caption is a figcaption tied to the figure. Reduced motion: object and leader shown at final state immediately. Reading order is headline, lede, CTA; the float does not reorder focus.",
+    "avoid": "Shape images with loose alpha that make text wrap around invisible pixels, ragged one-word lines, rotating the object enough to reflow text mid-scroll, caption only revealed on hover.",
+    "stack_notes": {
+      "css": "float right plus shape-outside using the same alpha PNG, shape-image-threshold 0.4, shape-margin. Use @starting-style for the fade-in and animation-timeline: view() for the tiny rotation. text-wrap: balance on the h1.",
+      "js": "Only an IntersectionObserver that adds an in-view class for the caption leader draw in browsers without scroll timelines. Any library the project uses can run the fade; no layout measurement needed."
+    }
+  },
+  {
+    "id": "hero-letters-as-oven-windows",
+    "name": "Letters as Windows",
+    "kind": "hero",
+    "role": "hero",
+    "family": "mask-reveal",
+    "niches": [
+      "local-business",
+      "restaurant",
+      "landing"
+    ],
+    "moods": [
+      "warm",
+      "bold",
+      "organic"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": true,
+    "blueprint": "Section 100svh with a flat dough-coloured background. The h1, one or two short words at clamp(5rem, 18vw, 18rem), weight 900, tight tracking, is filled with a muted looping video of the trade (bread in the oven, a barber's chair, kiln glow) using background-clip: text on a wrapper, or an SVG mask where video clip is needed. A thin outline stroke keeps letter edges defined. Beneath: opening hours chip, address line, and a Order or Book button. A small aria-hidden caption reads what the video shows. States: idle, hover on h1 (video playback rate 1 to 0.6), in-view, done.",
+    "motion": "Scroll progress 0-50%: the mask letters scale from 1.0 to 1.6 from the centre, enlarging the windows onto the footage. 50-80%: the background outside the letters fades to 15% opacity, letting the full video show. 80-100%: it fades back to solid and letters return to 1.15, setting up the next section.",
+    "still_check": "At 50% the word is crisply readable as large letters full of moving footage, edges outlined, hours chip visible. 25% shows smaller letters on solid ground; 75% shows the video spilling beyond the letters at low opacity.",
+    "mobile": "At 375px the video is replaced by a still poster unless the user has not opted into data saving; scale range is 1.0 to 1.25. Words stack on two lines. Hours chip and button sit in a sticky bottom bar.",
+    "a11y": "The visible word remains a real h1; the video is muted, aria-hidden, and has a pause control reachable by keyboard. Reduced motion: still poster in letters, no scaling. Outline stroke guarantees letter shapes when footage is dark.",
+    "avoid": "Footage too busy for letters to read, autoplaying sound, letters scaling past the viewport so the word breaks, a blank frame before the video loads (use poster), relying on background-clip in browsers lacking it.",
+    "stack_notes": {
+      "css": "Wrapper with background video replaced by background-clip: text on an animated image, or an SVG mask with text element over a video element. Scale and outer fade via animation-timeline: view(). Provide @supports fallback to solid text.",
+      "js": "IntersectionObserver plays and pauses the video only when visible; rAF maps progress to mask scale for browsers without scroll timelines. Honour Save-Data and matchMedia reduced motion; release the video source on unmount."
+    }
+  },
+  {
+    "id": "hero-object-stands-for-word",
+    "name": "The Object Is the Word",
+    "kind": "hero",
+    "role": "hero",
+    "family": "object-3d",
+    "niches": [
+      "3d",
+      "store",
+      "landing"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "experimental"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": true,
+    "blueprint": "Centred h1 at clamp(3rem, 9vw, 9rem) reading, for example, Built like a [object] for your desk. The bracketed word is a real span with the word in it, but its visible box is an inline canvas sized 1.6em wide by 1.1em tall holding a rotating 3D model of the product, baseline-aligned so the line reads continuously. The span's text is visually hidden yet present for screen readers and selection. Below: deck at clamp(1rem, 1.4vw, 1.25rem), swatch dots that change the model finish, Buy CTA. States: idle (slow spin), hover on object (spins toward cursor), swatch active, in-view, done.",
+    "motion": "Load: the word briefly shows as text for 500ms, then the letters fall away 300ms as the model scales into the same slot. Scroll progress 0-60%: the inline model grows from 1.6em to 3.2em wide and the line reflows smoothly around it. 60-100%: model rotates to hero angle and swatch dots stagger in at 60ms each.",
+    "still_check": "At 50% the full sentence reads with the model clearly occupying the word slot, other words intact on either side, no overlap. 25% shows a smaller model; 75% shows the larger model at hero angle with swatches visible.",
+    "mobile": "At 375px the object slot moves to its own line at 2.4em, the model uses a lower poly variant, and growth on scroll is disabled. Swatches become 44px tap targets in a row below the deck.",
+    "a11y": "The span keeps the real word in DOM text with a visually hidden class; the canvas is aria-hidden. Swatches are radio inputs in a fieldset with a legend. Reduced motion: model static at hero angle, no letter fall, no growth.",
+    "avoid": "Removing the word from DOM, inline slot height changing line-height and causing jumps, model failing to load leaving a hole (show a poster image), swatches only changing colour without a text label.",
+    "stack_notes": {
+      "css": "Fallback: span contains a looping image sequence or a CSS 3D layered image with rotateY keyframes; width grows via animation-timeline: view() on a registered --slot length. Visually hidden text with clip-path inset(50%).",
+      "js": "three.js or WebGL renders into the inline canvas measured by ResizeObserver; rAF maps progress to slot width and rotation. Swatch change swaps a material uniform. Pause when offscreen and dispose renderer, geometry and textures on unmount."
+    }
+  },
+  {
+    "id": "hero-odometer-in-headline",
+    "name": "Odometer Inside the Sentence",
+    "kind": "hero",
+    "role": "hero",
+    "family": "counter-ticker",
+    "niches": [
+      "finance",
+      "saas",
+      "dashboard",
+      "nonprofit",
+      "landing",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "technical"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "blueprint": "Left-aligned h1 at clamp(2.5rem, 6vw, 5.75rem), max 16ch, inside a 12-column grid, text spanning columns 1-9. The sentence contains a live figure, e.g. We have paid out 41,208,550 to members. The figure is a set of digit windows: each digit is a 1em-tall, overflow-hidden slot with a vertical strip of 0-9 in tabular figures, framed by hairline borders like a mechanical counter, set inline on the baseline. A small source line under the headline states as-of date and source. Right columns 10-12 hold a compact sparkline card. States: idle, in-view (digits roll), done (final value settled).",
+    "motion": "On first view the digits roll from a lower value to the real figure over 1.4s, least significant digits spinning more turns, ease cubic-bezier(.2,.7,.1,1), settling right to left with 40ms stagger. No scroll-driven motion beyond a 2% opacity shift on the hairlines; after settling it stays still.",
+    "still_check": "At 50% the headline shows the final figure fully settled and readable, source line visible, sparkline drawn. 25% and 75% look identical in content; only the hairline tone differs subtly, which is acceptable for a calm hero.",
+    "mobile": "At 375px the figure moves onto its own line at clamp(2.5rem, 12vw, 3.5rem), digit windows keep tabular width, the sparkline card drops beneath the source line at full width.",
+    "a11y": "Figure has a visually hidden text span with the final value; the digit strips are aria-hidden. Reduced motion: final digits shown immediately. Source line is real text linked to methodology. Contrast of digits and hairlines meets AA.",
+    "avoid": "Screen readers reading every strip digit, rolling to a made-up number, proportional figures that wobble width, re-rolling every time the user scrolls back, values without as-of date.",
+    "stack_notes": {
+      "css": "Each slot holds a column of digits translated by a CSS variable --d times -1em; transition on translate with per-slot delay. A tiny IntersectionObserver sets the final values once. font-variant-numeric: tabular-nums.",
+      "js": "Fetch the real figure, compute target digits, then animate each strip with WAAPI. Observe once and unobserve after the roll. Format with Intl.NumberFormat for locale grouping; update the hidden text span at the same time."
+    }
+  },
+  {
+    "id": "hero-live-product-fragment",
+    "name": "Working Product Fragment",
+    "kind": "hero",
+    "role": "hero",
+    "family": "filter-sort",
+    "niches": [
+      "saas",
+      "dashboard",
+      "landing"
+    ],
+    "moods": [
+      "technical",
+      "bright",
+      "trustworthy"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Split grid 5/7 inside max-width 80rem, padding clamp(4rem, 9vw, 8rem) clamp(1rem, 4vw, 3rem). Left: h1 at clamp(2.5rem, 5.5vw, 5rem), lede, CTA pair, and a one-line hint Try it: type a customer name. Right: a real, working fragment of the product in a framed window: a search input, three filter chips, and an 8-row table of sample records that genuinely filters and sorts. A live counter reads 8 of 8 rows. Window chrome is minimal: title bar with workspace name. States: idle (a ghost cursor types a demo query once), user focus (ghost stops), filtered, empty-result (helpful message), done.",
+    "motion": "Load: window rises 16px with 500ms ease-out. After 1.2s idle, a ghost typing demo enters a query at 70ms per character, rows filter with a 180ms height and opacity transition, then clears. User interaction cancels the demo permanently. Scroll progress only tilts the window from 2deg to 0deg over 0-40%.",
+    "still_check": "At 50% the headline and the full fragment are visible with all rows legible and controls clearly interactive. 25% shows a slight window tilt; 75% shows it flat, possibly mid-demo with a filtered row set, never empty.",
+    "mobile": "At 375px the fragment stacks below the copy, the table becomes a card list of 5 records, chips scroll horizontally in one row, and the ghost demo is skipped. Input is 16px font to avoid zoom.",
+    "a11y": "Real input with label, chips as toggle buttons with aria-pressed, table as a semantic table with sortable header buttons and aria-sort. Result count in a polite live region. Reduced motion: no ghost typing, no tilt.",
+    "avoid": "A screenshot pretending to be interactive, ghost demo fighting the user's typing, filter producing an empty table with no message, fake data that looks like real personal data, heavy app bundle loaded just for the hero.",
+    "stack_notes": {
+      "css": "Rows marked with data attributes; :has() on the fieldset with checked chip inputs hides non-matching rows, giving a no-JS filter. Tilt via animation-timeline: view(). Row exit uses transition on grid-template-rows for smooth collapse.",
+      "js": "Small vanilla module: input event filters an in-memory array and re-renders rows, sort toggles by column. Ghost demo uses a cancellable timer chain. Clean up timers and listeners on unmount; lazy-load nothing beyond this module."
+    }
+  },
+  {
+    "id": "hero-shoppable-still-life",
+    "name": "Shoppable Still Life",
+    "kind": "hero",
+    "role": "hero",
+    "family": "hover-preview",
+    "niches": [
+      "store",
+      "local-business",
+      "editorial",
+      "real-estate"
+    ],
+    "moods": [
+      "warm",
+      "luxe",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Full-bleed art-directed photograph of a styled table or shelf, aspect 16/9 on desktop, with the h1 at clamp(2.25rem, 5vw, 4.5rem) set in a quiet corner of negative space. Five to seven numbered hotspots (28px circles with a 1px ring) sit on real products in the photo, positioned with percentage coordinates. Each opens a small card: thumbnail, name, price, swatch count, Add to bag button. A right-edge index lists the same items in order as a plain list. States: idle (hotspots gently pulse once), hover or focus on hotspot (card opens), active (card pinned), done.",
+    "motion": "On view, hotspots appear in numeric order with 80ms stagger and a single 1.2s ring pulse each, then stay still. Cards open with 180ms opacity and 6px translate. Scroll progress 0-100% shifts the photo 3% scale for a gentle settle; nothing else moves.",
+    "still_check": "At 50% the photo is sharp, headline readable, all hotspots visible, index list present. 25% and 75% differ only by the slight photo scale; no card should be half-open in a static capture.",
+    "mobile": "At 375px the photo crops to 4/5 around the products, hotspots stay but cards open as a bottom sheet. The index list becomes a horizontal swipe row of product chips below the photo; tap replaces hover.",
+    "a11y": "Hotspots are buttons labelled with the product name and price; the card is a popover tied with aria-controls. The index list mirrors all products for non-visual users. Reduced motion: no pulse or scale. Focus ring visible on the photo.",
+    "avoid": "Product info available only on hover, hotspots covering the product itself, cards spilling off-screen, more than seven hotspots, headline set over a busy part of the photo without a scrim.",
+    "stack_notes": {
+      "css": "Hotspots as buttons with popovertarget opening popover cards, positioned with anchor positioning where supported or fixed offsets otherwise. Stagger via animation-delay with @starting-style; scale via animation-timeline: view().",
+      "js": "A small module adds focus-trap-free card toggling, closes on Escape and outside click, and flips card side when near edges using getBoundingClientRect. Add to bag posts to the existing cart API. Remove listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-tonights-menu-card",
+    "name": "Tonight's Menu Card",
+    "kind": "hero",
+    "role": "hero",
+    "family": "layered-paper",
+    "niches": [
+      "restaurant",
+      "local-business",
+      "events"
+    ],
+    "moods": [
+      "warm",
+      "editorial",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Linen-textured background, section padding clamp(4rem, 10vw, 9rem). Left column: restaurant name as a small wordmark, h1 at clamp(2.5rem, 6vw, 5.5rem) such as Tonight, Thursday 17 October, plus Book a table CTA and walk-in note. Right column: an upright paper menu card clamp(18rem, 32vw, 26rem) wide, rotated 1.5deg, with a soft shadow, set in a serif: five courses with one-line descriptions and prices in a dotted-leader layout, a handwritten-style chef's note line, and a small clipped-on paper slip listing the wine of the night. States: idle, hover on card (rotation eases to 0, shadow lifts), in-view, done.",
+    "motion": "On view the card slides up 20px and rotates from 3deg to 1.5deg over 700ms ease-out; the clipped slip follows 150ms later. Hover straightens the card over 300ms. Scroll progress 0-100% adds only 8px of parallax between card and slip.",
+    "still_check": "At 50% the date headline, every course name and price are readable on the card, slip visible, CTA present. 25% and 75% differ only by the small card-to-slip offset; no blank card.",
+    "mobile": "At 375px the card moves below the headline at 92vw, rotation drops to 0.5deg, the slip tucks under the card bottom edge, and Book becomes a sticky bottom button with the walk-in note.",
+    "a11y": "Menu is a real list of courses with prices as text, not an image. Date uses a time element. Reduced motion: card placed at rest without slide. Dotted leaders are decorative and aria-hidden. Serif body meets 4.5:1 on paper.",
+    "avoid": "A scanned menu image, stale dates when the menu is not updated (render from data), illegible script fonts for prices, paper texture lowering contrast, card overlapping the CTA.",
+    "stack_notes": {
+      "css": "Card is an article with a CSS paper gradient and box-shadow; course rows use a flex row with a dotted border filler for leaders. Entry via @starting-style transitions; parallax via animation-timeline: view().",
+      "js": "Render courses from a small JSON or CMS feed by date; IntersectionObserver adds an in-view class for older browsers that lack @starting-style. No animation library required; the menu data feed is the only script worth shipping here."
+    }
+  },
+  {
+    "id": "hero-dashboard-today",
+    "name": "Today, at a Glance",
+    "kind": "hero",
+    "role": "hero",
+    "family": "progress-meter",
+    "niches": [
+      "dashboard",
+      "health",
+      "saas"
+    ],
+    "moods": [
+      "calm",
+      "minimal",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Calm signed-in hero inside the app shell, padding clamp(2rem, 5vw, 4rem). Top row: greeting h1 at clamp(1.75rem, 3.5vw, 2.75rem) with the date and one sentence summarising the day (3 things need you, all else on track). Below, a row of three to four meters: a ring for daily goal, a slim bar for budget used, a stepped bar for tasks done, each with a large tabular number, label and delta. Under the meters, one prominent Next up item with a single action button. States: idle, in-view (meters fill), hover on meter (tooltip with breakdown, also visible on focus), done.",
+    "motion": "On load meters fill from 0 to their values over 800ms ease-out with 100ms stagger, numbers count with them. Afterwards everything stays still. Live data changes animate only the changed meter over 400ms with the same easing, and its number crossfades. Hover or focus tooltips fade in over 150ms. No scroll-linked motion at all.",
+    "still_check": "At 50% scroll the greeting, summary sentence, every meter value and the Next up item are fully visible and filled. 25% and 75% show the same composition; the only allowed difference is a live data update.",
+    "mobile": "At 375px meters become a 2x2 grid with rings at 64px, the summary sentence stays under the greeting, and Next up becomes a full-width card with a 48px action button.",
+    "a11y": "Each meter is a meter or progressbar element with aria-valuenow, min and max, plus a visible text value. Breakdowns are reachable by focus, not hover-only. Reduced motion: values appear filled. Status uses text plus colour, never colour alone.",
+    "avoid": "Wall of KPIs, alarming red for normal states, meters without numbers, counts that re-animate on every re-render, breakdown data hidden behind hover only.",
+    "stack_notes": {
+      "css": "Rings via conic-gradient driven by a registered @property --pct with a transition; bars via scaleX on a pseudo-element. @starting-style sets 0 for the first fill. Container queries switch meter layout.",
+      "js": "Framework component sets --pct from data; Intl.NumberFormat for values. Live updates arrive via existing data hooks; diff old and new values so only changed meters transition. No animation library. Cancel any polling or subscriptions on unmount."
+    }
+  },
+  {
+    "id": "hero-editorial-cover-issue",
+    "name": "Issue Cover Zoom-In",
+    "kind": "hero",
+    "role": "hero",
+    "family": "specimen-zoom",
+    "niches": [
+      "editorial",
+      "portfolio",
+      "education",
+      "professional"
+    ],
+    "moods": [
+      "editorial",
+      "bold",
+      "luxe"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Section height 220svh with a sticky 100svh stage. The stage shows a magazine cover at aspect 3/4, height 82svh, centred: masthead across the top, issue number large in the corner (No. 14 at clamp(3rem, 8vw, 7rem)), cover line h1 at clamp(2rem, 4.5vw, 4rem), three secondary cover lines with page numbers, barcode and date. Cover lines are real links to the stories. Around the cover, desk space with the table of contents peeking from the right. States: idle, in-view, zooming, done (zoomed into the lead story's image with its standfirst readable).",
+    "motion": "Scroll progress 0-30%: cover sits at full size, cover lines stagger in. 30-80%: the cover scales from 1 to 2.6 with transform-origin on the lead story image, masthead sliding out of frame. 80-100%: the lead image fills the stage and the story standfirst fades in on a scrim; the sticky releases.",
+    "still_check": "At 50% the cover is mid-zoom but the cover line h1 and issue number remain inside the frame and legible. 25% shows the full cover; 75% shows the lead image dominant with standfirst appearing, still readable.",
+    "mobile": "At 375px sticky length shortens to 150svh, cover fills 92vw width, zoom maxes at 1.8, and the table of contents becomes a link list below. Cover lines remain tappable links.",
+    "a11y": "Cover lines are a list of links with page numbers as text; issue number is in the h1 context via a visually hidden prefix. Reduced motion: no zoom, show the full cover then the lead story card beneath. Focus jumps do not trap inside the sticky.",
+    "avoid": "Zoom that crops the h1 mid-word, a sticky range much longer than the content, cover rendered as one flat image, scaled text going blurry (scale the container, keep text crisp via final layout swap).",
+    "stack_notes": {
+      "css": "position: sticky stage with animation-timeline: view() on the section driving scale and transform-origin on the cover. Standfirst opacity keyed to the 80-100% range with animation-range. Masthead slide via translate keyframes.",
+      "js": "rAF maps sticky progress 0..1 to scale with a swap to a sharp final layout at 100%. IntersectionObserver fallback simply shows cover then story card. Remove scroll listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-floor-plan-draw",
+    "name": "Floor Plan That Draws Itself",
+    "kind": "hero",
+    "role": "hero",
+    "family": "drawn-line",
+    "niches": [
+      "real-estate",
+      "local-business",
+      "portfolio"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "luxe"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Split grid 5/7, padding clamp(4rem, 9vw, 8rem). Left: address line, h1 at clamp(2.25rem, 5vw, 4.5rem) such as Three bedrooms, west light, a facts row (sqm, beds, baths, price) in tabular figures, and Book a viewing CTA. Right: an SVG floor plan of the actual property at max 44rem wide on a blueprint-paper ground. Walls are strokes, doors are arcs, each room is a labelled path with area. A small north arrow and scale bar. Hovering or focusing a room fills it with a pale tint and shows a photo thumbnail beside the plan. States: idle, in-view (walls draw), room active, done.",
+    "motion": "Scroll progress 0-50%: exterior walls draw via stroke-dashoffset, then interior walls. 50-75%: door arcs swing in and room labels fade in by room. 75-100%: a sun-angle wedge sweeps across west-facing rooms showing evening light, then holds. Room hover or focus tint fades in over 160ms ease and the thumbnail crossfades in 200ms.",
+    "still_check": "At 50% all walls are drawn, labels starting to appear, headline and facts fully readable. 25% shows exterior walls only with a clear outline; 75% shows labels complete and the light wedge on the west rooms.",
+    "mobile": "At 375px the plan sits above the facts at full width, draw range shortens, rooms are tapped to open a bottom sheet with photo and dimensions. The light wedge is a static overlay.",
+    "a11y": "The SVG has a title and the room list is duplicated as a real list of rooms with areas. Rooms are focusable with role button and aria-label. Reduced motion: plan fully drawn, labels visible, wedge static.",
+    "avoid": "Half-drawn plan in the first frame with no outline, labels too small to read, photo previews only on hover, a generic plan not matching the property, plan pushing facts below the fold.",
+    "stack_notes": {
+      "css": "Paths with pathLength 1 and stroke-dasharray 1; animate stroke-dashoffset with animation-timeline: view() and staggered animation-range per layer. Room tint via :hover and :focus-visible fill transitions.",
+      "js": "rAF maps section progress to per-layer draw values; room focus swaps the thumbnail src and preloads neighbours. IntersectionObserver fallback triggers a timed 1.2s draw instead. Remove listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-route-line-globe",
+    "name": "Route Line Across the Land",
+    "kind": "hero",
+    "role": "hero",
+    "family": "map-route",
+    "niches": [
+      "travel",
+      "events",
+      "3d"
+    ],
+    "moods": [
+      "bold",
+      "organic",
+      "experimental"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "blueprint": "Section 250svh with a sticky 100svh stage. Background is a WebGL terrain or globe quadrant with muted relief. Overlay at z-index 2: h1 at clamp(2.5rem, 7vw, 6.5rem) top left, trip name and dates; bottom left a stop card (place name, day number, one line, photo thumb). A glowing route line traces the itinerary across the terrain with stop pins. Right edge: a vertical day index of the 7 to 10 stops as links. States: idle, in-view, travelling (camera follows route), stop active, done (whole route visible from above).",
+    "motion": "Scroll progress 0-10%: camera high, route undrawn, headline in. 10-85%: route draws to each stop in sequence, camera eases along, the stop card swaps at each pin with 200ms crossfade. 85-100%: camera pulls up to show the entire route lit, Book this trip CTA appears.",
+    "still_check": "At 50% the route is drawn to roughly the middle stop, its card readable, headline still present, terrain lit. 25% shows the early stops; 75% shows later stops with different terrain and card.",
+    "mobile": "At 375px the terrain becomes a static illustrated map image with an SVG route drawn by scroll, sticky length shortens to 160svh, stop card becomes a bottom sheet, and the day index becomes a horizontal chip row.",
+    "a11y": "The itinerary is a real ordered list of stops linked from the index; the canvas is aria-hidden. Reduced motion: overview camera with the full route drawn and all stops listed. Keyboard focus on a stop scrolls to its position.",
+    "avoid": "Camera spins that cause motion sickness, an undrawn empty map at 50%, stop cards covering the line, heavy terrain loading blocking the headline, scroll pinning longer than the content justifies.",
+    "stack_notes": {
+      "css": "Static map image with an inline SVG route path; stroke-dashoffset tied to animation-timeline: view() on the sticky section, pins revealed with staggered animation-range. Stop cards stack and swap by range.",
+      "js": "WebGL terrain or three.js scene with a route tube geometry; rAF maps progress to the drawn fraction and a camera path. Any map library the project already uses can supply tiles. Dispose scene and stop rAF on unmount."
+    }
+  },
+  {
+    "id": "hero-one-real-number-dots",
+    "name": "One Dot per Family",
+    "kind": "hero",
+    "role": "hero",
+    "family": "particle-field",
+    "niches": [
+      "nonprofit",
+      "health",
+      "education"
+    ],
+    "moods": [
+      "warm",
+      "trustworthy",
+      "experimental"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "blueprint": "Section 200svh with a sticky 100svh stage. A canvas field fills the stage behind the copy. One real number anchors it: e.g. 12,480 families housed since 2019, stated as the h1 at clamp(2.5rem, 6vw, 5.5rem). Each dot equals one family; the field holds exactly that many dots, 2-3px each, in a warm neutral. Bottom bar: source and as-of date, Donate CTA, and a sentence explaining what one dot is. A single highlighted dot carries a small label with one real family's story excerpt link. States: idle, in-view, filling, done (all dots placed, one highlighted).",
+    "motion": "Scroll progress 0-20%: one dot alone, centred, labelled. 20-80%: dots pour in by year, each year a slightly different tone, a small year label ticking 2019 to 2026. 80-100%: dots settle into a dense shape (a house silhouette or map), the highlighted dot stays visible, CTA rises.",
+    "still_check": "At 50% the h1 with the real number is fully readable, roughly half the dots placed with a visible year label, the single highlighted dot distinguishable. 25% shows a sparse field; 75% shows the shape forming.",
+    "mobile": "At 375px dot count stays truthful but dots render at 1px with a Canvas2D path, sticky shortens to 140svh, the h1 stacks above the field and the story label becomes a tappable card below.",
+    "a11y": "The number and source are DOM text; the canvas is aria-hidden with a text summary of growth per year in a details element. Reduced motion: final shape shown immediately. Donate button keeps a visible focus ring.",
+    "avoid": "Fake or rounded-up numbers, dots that do not equal the stated unit, a blank field at 50%, contrast loss behind the h1 (add a scrim), unexplained colour changes by year.",
+    "stack_notes": {
+      "css": "Fallback: pre-rendered stages as images layered in the sticky stage, crossfaded via animation-timeline: view() ranges; the year label uses a stepped counter with @property integer animation.",
+      "js": "WebGL point sprites or Canvas2D draw N dots with precomputed target positions; rAF maps progress to how many are placed and eased toward targets. Stop rendering offscreen and free buffers on unmount."
+    }
+  },
+  {
+    "id": "hero-ticket-stub-tear",
+    "name": "Ticket Stub Tear-Off",
+    "kind": "hero",
+    "role": "hero",
+    "family": "receipt-print",
+    "niches": [
+      "events",
+      "kinetic",
+      "landing"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "bright"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 100svh, padding clamp(3rem, 8vw, 7rem). Centre: an oversized ticket clamp(20rem, 70vw, 60rem) wide, aspect 2.4/1, with a notched perforation 72% along. Main body: event name as h1 at clamp(2.5rem, 6.5vw, 6rem), date, venue, doors and lineup in a ticket grid. Stub: seat-style admit label, price from, a QR-like decorative pattern, and Get tickets button. Background is a paper-coloured board. States: idle, hover on stub (perforation wiggles 1deg), in-view, torn (stub separates), done.",
+    "motion": "Load: ticket feeds up from a slot at the bottom edge over 900ms with a stepped ease mimicking a printer. Scroll progress 0-60%: ticket rests. 60-100%: the stub tears along the perforation, rotating 6deg and sliding 4vw right, revealing the price and CTA in full beside the body. Click on CTA does not depend on tear state.",
+    "still_check": "At 50% the whole ticket is printed and still intact with event name, date, venue and the stub's CTA readable. 25% looks the same but newly settled; 75% shows the stub partly torn away with a ragged perforation edge.",
+    "mobile": "At 375px the ticket rotates to portrait, perforation runs horizontally, the stub sits below the body, and the tear is a short 150ms animation on first view instead of scroll-linked.",
+    "a11y": "Ticket is an article with a heading and a description list for date, venue and doors. The decorative QR pattern is aria-hidden. Reduced motion: printed and intact, no tear. CTA is a real link with visible focus ring.",
+    "avoid": "CTA only reachable after tearing, printer effect so slow the headline arrives late, a fake QR that looks scannable, ragged edge clipping text, ticket overflowing narrow screens.",
+    "stack_notes": {
+      "css": "Ticket built from two grid areas with a mask of radial-gradient notches for perforation; the tear uses translate and rotate keyed to animation-timeline: view() with animation-range 60% 100%. Printer feed via steps() keyframes.",
+      "js": "rAF maps progress to tear rotation and offset; WAAPI plays the feed on load. A clip-path polygon with jittered points draws the ragged edge, computed once on resize. Clean up on unmount."
+    }
+  },
+  {
+    "id": "hero-docs-search-first",
+    "name": "Search-First Docs Front Door",
+    "kind": "hero",
+    "role": "hero",
+    "family": "focus-dim",
+    "niches": [
+      "docs",
+      "saas",
+      "education"
+    ],
+    "moods": [
+      "calm",
+      "technical",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Compact hero, padding clamp(3rem, 7vw, 6rem) clamp(1rem, 4vw, 3rem), max width 52rem centred. Small h1 at clamp(1.75rem, 3.5vw, 2.75rem) naming the product docs, one line of version and changelog link. Then the star: a wide search field 3.5rem tall with a keyboard shortcut hint, and below it six popular starting points as a 3x2 list (Install, Quickstart, Auth, API reference, Errors, Migrate). Under that, a quiet row of version selector and status. States: idle, focus on search (the rest of the page dims to 40% and results drop below), typing (live results grouped by section), done.",
+    "motion": "Focus: surrounding content fades to 40% opacity over 200ms ease-out and the search field expands 4px with a subtle shadow. Results list appears with 120ms fade. Arrow-key movement through results slides the highlight bar in 100ms. Blur or Escape returns everything to full opacity in 160ms. No scroll-linked motion.",
+    "still_check": "At 50% the h1, search field with shortcut hint and all six starting points are readable at full opacity. 25% and 75% show the same composition; only an active focus state may differ.",
+    "mobile": "At 375px the search field becomes full width and sticky at the top on scroll, starting points become a single-column list of 48px rows, and the shortcut hint is hidden.",
+    "a11y": "Search uses role search landmark with a labelled input and a combobox pattern for results with aria-activedescendant. Shortcut hint is a kbd element. Dimming never applies to the focused region. Reduced motion: instant dim without transition.",
+    "avoid": "Marketing illustration pushing search below the fold, dimming so strong the page looks disabled, results only via mouse, shortcut that conflicts with browser find, missing empty-results guidance.",
+    "stack_notes": {
+      "css": "body:has(.docs-search input:focus) dims siblings with an opacity transition. Starting points are a grid list. Results area shown with :focus-within and @starting-style for its first appearance.",
+      "js": "Hook the existing search index (local JSON or the docs platform API), debounce input 120ms, render grouped results, handle arrow keys and Enter, and register the slash shortcut. Remove key listeners on unmount."
+    }
+  },
+  {
+    "id": "process-recipe-card-checklist",
+    "name": "Recipe card with ticking steps",
+    "kind": "section",
+    "family": "progress-meter",
+    "role": "process",
+    "niches": [
+      "restaurant",
+      "local-business",
+      "education"
+    ],
+    "moods": [
+      "warm",
+      "calm",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A single cream index card centred in the section, max-width min(44rem, 92vw), padding clamp(1.5rem, 4vw, 3rem), section padding clamp(4rem, 10vw, 9rem). Card header: dish-style title clamp(2rem, 5vw, 3.5rem), a serves / time / difficulty row in small caps. Left column (30%): ingredient list as a real ul with hairline rules. Right column: an ordered list of 4-6 method steps, each with a 1.25rem square checkbox glyph, step text at 1.0625rem, and a margin timestamp ('min 12'). A thin vertical progress rule in the card gutter fills as steps tick. States: idle step = ink 70%; in-view step = box ticks, text full ink; done = tick plus faint strikethrough on the matching ingredient.",
+    "motion": "Each step owns its own view() range. 0-40% of a step entering: checkbox stroke draws in (stroke-dashoffset), 40-60%: tick snaps with a 120ms ease-out scale 0.8 to 1, 60-100%: linked ingredient gets a 1px strike that draws left to right. The gutter rule height maps 0..1 to section progress. No card movement at all; only ink and ticks.",
+    "still_check": "At 50% the card is fully readable with roughly half the steps ticked, gutter rule half full, and matching ingredients struck. At 25% only one or two ticks show; at 75% most are ticked and the final step is next.",
+    "mobile": "Card goes full width minus 16px gutters; ingredients collapse into a details summary above the method so steps stay the focus. Step ranges shorten to the step's own height, and the gutter rule moves to the left edge.",
+    "a11y": "Steps are an ol; ticks are aria-hidden decoration, so no fake checkboxes. Under prefers-reduced-motion all ticks and strikes render in their done state immediately. If steps are interactive, use real input type checkbox with labels and a visible focus ring.",
+    "avoid": "Striking text so heavily it becomes unreadable, faking checkboxes that look clickable but are not, ticking all steps before the user reaches them, or making the card scroll inside itself.",
+    "stack_notes": {
+      "css": "animation-timeline: view() on each li with animation-range entry 20% cover 50%; tick via stroke-dashoffset keyframes on an inline SVG; ingredient strike via a background-size gradient keyed by a shared custom property. Gutter rule uses scroll-timeline on the section. @supports fallback adds a done class via IntersectionObserver.",
+      "js": "IntersectionObserver with thresholds per step toggles data-done; WAAPI plays the stroke draw and strike. Optionally let users tap to tick, storing state in sessionStorage. Any library the project already uses can drive the same attributes."
+    }
+  },
+  {
+    "id": "process-pinned-workbench-assembly",
+    "name": "Pinned workbench assembly",
+    "kind": "section",
+    "family": "object-3d",
+    "role": "process",
+    "niches": [
+      "store",
+      "3d",
+      "kinetic"
+    ],
+    "moods": [
+      "technical",
+      "bold",
+      "experimental"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "blueprint": "Section height 400vh with a sticky 100vh stage. Stage grid: left 38% text rail, right 62% WebGL canvas showing a workbench top-down at three-quarter angle. The product (lamp, shoe, speaker) starts as exploded parts laid out like a parts tray. Text rail holds 5 steps as an ol, step label clamp(1.75rem, 4vw, 3rem), body 1rem, with part names matching parts on the bench. A part tag (small DOM label, absolutely positioned via projected coordinates) follows each active part. States: inactive step = 40% ink; active = full ink plus its part glowing; done = part seated, label greyed with a small check.",
+    "motion": "Progress 0-15%: camera settles on the full tray. 15-80%: each step's 13% slice lifts one part, rotates it on an arc and seats it into the assembly with a soft overshoot; screws spin in. 80-100%: camera orbits 30 degrees to a hero beauty angle, rim light sweeps the finished object, and the step list collapses into a single 'assembled in 5 steps' line.",
+    "still_check": "At 50% the object is visibly half assembled, one part mid-flight but clearly identifiable, its step text fully legible and active. At 25% most parts still lie on the tray; at 75% only the last part remains loose.",
+    "mobile": "Unpin and stack: a short 60vh canvas above the step list, each step tap or scroll-snap advancing the assembly one stage with a 600ms tween. Drop the orbit, keep a fixed camera, and halve geometry detail.",
+    "a11y": "Step list is a real ol and carries all content; canvas is aria-hidden with a short alt description. Reduced motion shows five static rendered frames beside each step. Keyboard users can Tab through steps, and focusing a step jumps the assembly to that stage.",
+    "avoid": "Parts flying over the text rail, step text that only exists in the canvas, a blank canvas while the model loads (show a poster render), scroll lock, and assembly stages that feel random rather than mechanically plausible.",
+    "stack_notes": {
+      "css": "Fallback without WebGL: five pre-rendered PNG or AVIF frames stacked in the sticky stage, each crossfaded by animation-timeline: view() on its matching step, with position: sticky for the stage. Still reads as assembly, just stepped.",
+      "js": "three.js or raw WebGL scene; rAF loop reads section progress from getBoundingClientRect and lerps each part along a precomputed bezier with a damped spring. Project part anchors to screen for DOM labels. Dispose geometry, textures and listeners on unmount; pause when off-screen."
+    }
+  },
+  {
+    "id": "process-floor-plan-drawn",
+    "name": "Build stages inked onto a plan",
+    "kind": "section",
+    "family": "drawn-line",
+    "role": "process",
+    "niches": [
+      "real-estate",
+      "agency",
+      "local-business"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "trustworthy"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 250vh, sticky stage 100vh on blueprint-blue paper with a faint 24px grid. Centre: an inline SVG floor plan, width min(56rem, 70vw). Around it, four step callouts (Survey, Plan, Build, Handover) pinned to the plan corners with leader lines, each callout a DOM block: number, title clamp(1.5rem, 3vw, 2.25rem), 2-line body. Dimension annotations sit as DOM text on the plan. States: pending step = dashed outline only; active = its walls ink in and its callout lifts to full contrast; done = plan section gets a soft fill and room labels appear.",
+    "motion": "0-25%: survey dots and dimension ticks appear around the plot boundary. 25-50%: exterior walls draw via stroke-dashoffset in drafting order. 50-75%: interior walls, doors (quarter-arc swings) and windows draw. 75-100%: rooms fill with a light wash, room names and areas fade up, and a keys icon drops at the entrance for Handover.",
+    "still_check": "At 50% exterior walls are complete, interior walls just starting, two callouts at full contrast and readable. At 25% only the boundary and survey ticks exist; at 75% rooms are walled and doors drawn but not yet filled.",
+    "mobile": "Unpin; plan scales to 100% width at the top of each step block, and each step block shows the plan at its own stage (four small static states) with the current one drawn as it enters view.",
+    "a11y": "Steps are an ol in DOM order; the SVG has role img with a title summarising the plan. Room labels are DOM text, not paths. Reduced motion shows the completed, filled plan with all callouts visible.",
+    "avoid": "Strokes drawing so thin they vanish on low-DPI screens, leader lines crossing callout text, a blank grid at section start, and hiding step copy until its walls finish drawing.",
+    "stack_notes": {
+      "css": "SVG paths with pathLength=1 and stroke-dasharray 1; stroke-dashoffset keyframes bound to animation-timeline: scroll() on the section via timeline-scope, each group with its own animation-range. IntersectionObserver adds stage classes where scroll timelines are unsupported.",
+      "js": "Compute section progress in a rAF-throttled scroll handler and set a --p custom property; map ranges per path group. Optionally measure path lengths with getTotalLength for non-normalised paths. Works with any tween library already present."
+    }
+  },
+  {
+    "id": "services-hairline-directory-index",
+    "name": "Building directory index",
+    "kind": "section",
+    "family": "sticky-index",
+    "role": "services",
+    "niches": [
+      "agency",
+      "local-business",
+      "health",
+      "professional"
+    ],
+    "moods": [
+      "minimal",
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Two-column grid, 1fr 2fr, section padding clamp(4rem, 10vw, 9rem). Left: a sticky directory board styled like a lobby sign, black felt with white set-in letters, listing services with floor numbers ('3 . Physiotherapy'). Right: one long column of service entries, each min-height 70vh, with title clamp(2rem, 5vw, 4rem), a 3-line description, duration and price in tabular figures, and a 'Book this' link. A hairline rule separates entries. States: the directory row matching the in-view entry gets an arrow marker and full white; others sit at 55%.",
+    "motion": "As each entry crosses the viewport centre, its directory row's arrow slides in 8px over 200ms ease-out and the row brightens. No other motion. The felt board never moves except staying sticky. On first in-view the board letters settle from 2px below with a 20ms stagger per row, once only, like letters pressed into felt.",
+    "still_check": "At 50% the board shows the middle service highlighted with its arrow, and the right column shows that service's full text. At 25% and 75% a different row is lit and a different entry fills the right.",
+    "mobile": "Board becomes a horizontal scrolling chip strip pinned under the header; the active chip scrolls into view. Entries shorten to content height with 3rem gaps.",
+    "a11y": "Board is a nav with a list of in-page anchor links; the active one gets aria-current location. Focus ring on each link is clearly visible against felt. Reduced motion removes the arrow slide but keeps the highlight swap.",
+    "avoid": "Highlight lagging behind or jumping two items, services only discoverable by hovering the board, a board taller than the viewport, and felt-board text below 4.5:1 contrast at the dim state.",
+    "stack_notes": {
+      "css": "position: sticky board; each entry defines view-timeline-name, hoisted with timeline-scope on the section so board rows animate against their entry's view timeline (range contain). Fallback: IntersectionObserver with rootMargin -50% 0 sets aria-current.",
+      "js": "IntersectionObserver on entries with a centre band rootMargin toggles a data-active attribute; scrollIntoView with block nearest keeps mobile chips aligned. Clicking a row uses native smooth anchor scrolling, respecting reduced motion."
+    }
+  },
+  {
+    "id": "services-triage-board-filter",
+    "name": "Triage board that reshuffles",
+    "kind": "section",
+    "family": "filter-sort",
+    "role": "services",
+    "niches": [
+      "health",
+      "nonprofit",
+      "education"
+    ],
+    "moods": [
+      "warm",
+      "trustworthy",
+      "bright"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Top: a question line clamp(1.75rem, 4vw, 3rem) such as 'What brings you in?' followed by a wrap of 6-8 need chips (pill buttons, min 44px tall). Below: a board of service tiles in a masonry-like 12-column grid with tiles of three sizes; each tile shows service name, who it is for, wait time and a coloured urgency stripe. States: idle = all tiles at equal weight; chip selected = matching tiles grow to the large size and move to the top, non-matching shrink to compact rows at the bottom; tile hover/focus = lifts 2px and reveals its book link.",
+    "motion": "On chip toggle, tiles reflow with a FLIP animation: 420ms cubic-bezier(.2,.8,.2,1), matching tiles scale up and slide to the top while others compress, staggered 30ms. Urgency stripes widen on matching tiles. A small count line ('3 services match') ticks to its new number.",
+    "still_check": "Not scroll-driven: any screenshot must show a chosen or default chip state with every tile readable. Default state shows a balanced board; with a chip selected, matched tiles clearly lead and unmatched remain listed below.",
+    "mobile": "Chips become a horizontal scroll strip; board collapses to one column where matching services sort to the top and unmatched collapse into a details 'Other services' group.",
+    "a11y": "Chips are toggle buttons with aria-pressed; board is a list; the match count is an aria-live polite region. Reduced motion swaps FLIP for instant reorder. Never hide non-matching services entirely, keep them reachable.",
+    "avoid": "Tiles disappearing so users think a service does not exist, layout jumping without animation causing lost place, chips that look like decorative tags, and reflow that shifts the chip row itself.",
+    "stack_notes": {
+      "css": "Use :has() on the section, e.g. section:has(#need-back:checked) .tile[data-need~=back], to set order and grid-span with radio or checkbox inputs styled as chips; transitions on size only. Order changes jump without JS, which is acceptable.",
+      "js": "FLIP: record getBoundingClientRect, apply new order, invert with transforms, play with WAAPI. Or document.startViewTransition with a view-transition-name per tile. Update the live count text after sort."
+    }
+  },
+  {
+    "id": "work-contact-sheet-loupe",
+    "name": "Contact sheet with loupe",
+    "kind": "section",
+    "family": "lens-magnify",
+    "role": "work",
+    "niches": [
+      "portfolio",
+      "editorial",
+      "travel"
+    ],
+    "moods": [
+      "editorial",
+      "technical",
+      "dark"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 300vh, sticky 100vh stage on near-black. A horizontal film strip contact sheet: 3 rows of 35mm frames, each frame 18vw wide with sprocket holes and edge numbers ('14A') as DOM text. Grease-pencil circles mark chosen frames. A circular loupe, diameter clamp(10rem, 22vw, 18rem), sits fixed at stage centre and magnifies 2.5x whatever passes under it. Below the loupe, a caption block shows the frame's project, client and year at 1rem. States: frame under loupe = sharp and captioned; circled frames under loupe add a red grease mark and a 'View case' link.",
+    "motion": "Section progress 0..1 translates the sheet horizontally from 0 to minus its overflow width, so frames slide under the fixed loupe. The loupe's inner image is the same sheet scaled 2.5x and offset to match. Caption swaps with a 160ms crossfade when a new frame centre passes the loupe. A slight 1 degree loupe tilt follows progress, never velocity.",
+    "still_check": "At 50% a frame sits squarely in the loupe with its caption readable and neighbouring frames visible around it. At 25% and 75% different frames and captions are in the loupe, and the sheet edge numbers differ.",
+    "mobile": "Unpin; the sheet becomes a native horizontal scroll-snap strip, and the loupe becomes a tap: tapping a frame opens it full width with its caption in a dialog.",
+    "a11y": "Frames are a list of links with real alt text and captions; the magnified duplicate is aria-hidden. Keyboard focus on a frame scrolls it under the loupe. Reduced motion presents the sheet as a static grid with captions visible.",
+    "avoid": "Loupe content misaligned with the sheet beneath, captions only visible in the loupe, an empty loupe between frames, and horizontal motion driven by wheel hijacking instead of normal vertical scroll.",
+    "stack_notes": {
+      "css": "Sticky stage plus a scroll() timeline translating the track; loupe uses a second copy of the track inside a circle clip-path, scaled with transform and bound to the same timeline. Captions switch via per-frame view() timelines on the horizontal axis where supported.",
+      "js": "Measure track overflow on resize, map progress to translateX in rAF, compute which frame centre is nearest the loupe to set the caption. A Canvas2D loupe can sample a pre-drawn sheet for sharper magnification."
+    }
+  },
+  {
+    "id": "work-filing-drawer-case-files",
+    "name": "Filing drawer case files",
+    "kind": "section",
+    "family": "stack-deck",
+    "role": "work",
+    "niches": [
+      "agency",
+      "finance",
+      "editorial"
+    ],
+    "moods": [
+      "editorial",
+      "warm",
+      "trustworthy"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 350vh with a sticky stage. A manila filing drawer seen from slightly above; 5 case folders stand in it with staggered tabs labelled by client in typewriter face. As each case activates, its folder rises out and lays flat in front, opening to show a cover sheet: project title clamp(2rem, 5vw, 4rem), brief, three outcome figures, a paper-clipped photo. Previous folders slide back into the drawer with their tab now stamped 'Closed'. States: in drawer, lifting, open, filed.",
+    "motion": "Each case owns 20% of progress. 0-30% of its slice: folder lifts out with a 3D rotateX from 70 to 0 degrees. 30-80%: folder open and still so the sheet reads. 80-100%: folder slides back down while the next tab starts rising. Paper clip photo has a 2 degree settle on open.",
+    "still_check": "At 50% case three is fully open and flat with all text legible; drawer behind shows two stamped tabs and two waiting. At 25% case two is open; at 75% case four is open and three is stamped.",
+    "mobile": "Unpin; drawer becomes a row of tabs at the top, and each case renders as a stacked open folder in normal flow with a sticky tab header while it is in view.",
+    "a11y": "Each case is an article with a heading; the tab strip is a nav of anchors. Typewriter face only for labels, body in a readable text face. Reduced motion shows all folders open in sequence without 3D lifts.",
+    "avoid": "Folders that are mid-rotation when text should be read, rotateX making text blurry, stacked folders occluding the active sheet, and more than 6 cases making the section endless.",
+    "stack_notes": {
+      "css": "position: sticky stage with perspective; each folder animated by a view() timeline of an invisible spacer block in the scroll column, using animation-range for lift, hold and file phases. Fallback: IntersectionObserver toggles data-state with transitions.",
+      "js": "Compute section progress, derive active index and local t, set transforms per folder in rAF. Use will-change only during the section and remove it after. Any tween library already in the project may replace the manual mapping."
+    }
+  },
+  {
+    "id": "work-shader-dissolve-index",
+    "name": "Index with shader dissolve stage",
+    "kind": "section",
+    "family": "shader-surface",
+    "role": "work",
+    "niches": [
+      "kinetic",
+      "portfolio",
+      "agency"
+    ],
+    "moods": [
+      "experimental",
+      "dark",
+      "bold"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "blueprint": "Section 400vh, sticky 100vh stage. Left 40%: a numbered project index as a large typographic list, item size clamp(2rem, 5vw, 4.5rem), year and discipline in small caps. Right 60%: a full-bleed WebGL plane showing project imagery. Between projects, the image doesn't fade but melts through a displacement shader shaped by that project's own motif (ink bleed, pixel sort, liquid ripple). States: inactive list item = outline-free dim 40% ink; active = solid ink plus a thin rule extending toward the stage; done = 60% ink with a small index tick.",
+    "motion": "Progress splits into equal slices per project. In each slice 0-70% the image holds with a slow 4% scale drift; 70-100% the shader uniform mix goes 0 to 1 dissolving into the next project using a noise texture. The list rule extends with progress inside the slice, acting as a timer toward the next case.",
+    "still_check": "At 50% one project image is crisp and its list item active and legible; dissolves happen only in the last 30% of each slice. At 25% and 75% a different project is active with a different image.",
+    "mobile": "Unpin; each project becomes a block with its image as a plain img and the shader used only as a brief on-enter ripple. Index list collapses to a sticky count ('03 / 06').",
+    "a11y": "Index is an ol of links to case pages; canvas aria-hidden, each image duplicated as an img with alt for screen readers. Reduced motion replaces dissolves with instant cuts and stops drift. Focus on an item jumps the stage to it.",
+    "avoid": "Showing mush during dissolves at common screenshot points, dissolves tied to scroll speed, a WebGL failure leaving a black panel (render img fallback), and list items using outline-only type.",
+    "stack_notes": {
+      "css": "Fallback: stacked img elements with mask-image driven by a scroll() timeline using a noise PNG mask whose mask-size grows, giving a dissolve-like wipe. Sticky stage and active list styling through view() timelines on spacers.",
+      "js": "WebGL fragment shader with uniforms texA, texB, noise, mix; rAF reads progress and sets mix with smoothstep in each slice. Lazy-load textures one project ahead; dispose textures and context on unmount; pause rendering when the section is off-screen."
+    }
+  },
+  {
+    "id": "pricing-receipt-printer-slider",
+    "name": "Slider-driven receipt printer",
+    "kind": "section",
+    "family": "receipt-print",
+    "role": "pricing",
+    "niches": [
+      "saas",
+      "store",
+      "landing"
+    ],
+    "moods": [
+      "playful",
+      "technical",
+      "bright"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Two-column grid 1fr 1fr, section padding clamp(4rem, 10vw, 9rem). Left: configuration controls, a large seats slider, a usage slider and 3 add-on toggles, each with label and current value in tabular figures. Right: a receipt printer slot (dark bar 2rem tall) from which a thermal-paper receipt hangs, width clamp(18rem, 30vw, 24rem), monospace 0.9375rem. Receipt lines: plan, seats x unit price, add-ons, discount, a dashed total line, total at 2rem, and a barcode footer. States: idle default config; adjusting = lines update; new line added = it prints in; removed line = torn off and drops.",
+    "motion": "When a toggle adds a line, the receipt grows downward by one line height over 260ms steps(6) to mimic stepped printing, with a faint 1px jitter. Changed numbers roll digit by digit over 300ms. Removing an add-on clips its line out with a tear edge and a 200ms drop. Total updates last, with a quick highlight.",
+    "still_check": "Interaction-driven: any screenshot shows a complete receipt with plan, at least two lines, and total readable; no line half-printed at rest. Default and adjusted states differ in line count and total.",
+    "mobile": "Stack: receipt first (sticky at top, max 45vh, scrollable inside only if needed), controls below. Sliders get 48px thumbs. Printing animation shortens to 160ms. The total also appears in a sticky bottom bar.",
+    "a11y": "Controls are native input range and checkbox with labels; receipt is a table with a caption; total in an aria-live polite region. Reduced motion updates instantly. Never rely on colour alone for discounts, include a text label.",
+    "avoid": "Receipt height changes that shift the controls column, numbers rolling so long they misreport the price, hidden fees appearing only on the receipt, and sliders with no visible value.",
+    "stack_notes": {
+      "css": "Native inputs plus :has() to show or hide add-on rows; line entry via @starting-style height and translate transitions; totals require JS unless pre-computed per state. Use steps() timing for the stepped print.",
+      "js": "Compute totals in a small pure function; render rows with keyed DOM; WAAPI for print-in and tear-off; number roll via per-digit translateY spans. Format with Intl.NumberFormat for currency."
+    }
+  },
+  {
+    "id": "pricing-ledger-column-lock",
+    "name": "Hairline ledger with column lock",
+    "kind": "section",
+    "family": "ledger-table",
+    "role": "pricing",
+    "niches": [
+      "finance",
+      "saas",
+      "education",
+      "professional"
+    ],
+    "moods": [
+      "minimal",
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A full-width accountant's ledger: real table with 3-4 plan columns, rows for price, limits and key inclusions, hairline 1px rules, alternating faint rows, tabular figures throughout. Header row has plan name clamp(1.25rem, 2.5vw, 1.75rem) and price clamp(2.5rem, 6vw, 4.5rem). Above: a monthly / annual segmented control. A pencil-mark tick column on the far left. States: hover or focus on a column = it gets a soft highlight band and its tick marks darken; selected plan (radio) = column locked with a double rule under its total like a closed ledger line.",
+    "motion": "Billing toggle: prices roll vertically digit by digit over 280ms ease-out, the 'save 2 months' note writes in with a 200ms clip. In-view: the hairlines extend from left to right once over 600ms, staggered 40ms per row, so the ledger appears ruled before figures fade in.",
+    "still_check": "Any screenshot shows a complete ruled table with every price and row label legible. Before and after toggling, prices and the savings note differ; with a plan chosen, its column shows the double rule.",
+    "mobile": "Table becomes a plan selector (segmented) with a single column of rows for the chosen plan, keeping the ledger rules; a 'compare all' details reveals the full table with horizontal scroll inside a labelled region.",
+    "a11y": "Use table, th scope col/row, caption. Billing toggle is a radio group. Price changes announced via aria-live polite. Reduced motion skips the rule draw and digit roll. Column highlight must not be the only selection cue.",
+    "avoid": "Fake tables made of divs, prices that jump layout width when toggling (use tabular figures and fixed widths), hover-only details, and greyed rows dropping below 4.5:1.",
+    "stack_notes": {
+      "css": ":has(input[value=annual]:checked) swaps price spans; :has(td:nth-child(3):hover) highlights a column via a shared class trick or col elements; rules draw with scaleX transitions under @starting-style or an in-view view() timeline.",
+      "js": "Minimal: a click handler on the billing toggle to update prices and the live region; IntersectionObserver adds a ruled class once. Optional per-digit roll with spans translated by WAAPI."
+    }
+  },
+  {
+    "id": "proof-audit-trail-log",
+    "name": "Audit trail log",
+    "kind": "section",
+    "family": "stagger-cascade",
+    "role": "proof",
+    "niches": [
+      "dashboard",
+      "saas",
+      "docs"
+    ],
+    "moods": [
+      "technical",
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A terminal-like but light panel, max-width 60rem, monospace 0.9375rem, line height 1.7. Header: 'What happened last quarter' clamp(1.75rem, 4vw, 3rem) in the display face above the panel. Each log line: ISO timestamp, actor (named customer or system), event ('migrated 1.2M rows, 0 errors'), and a short verification chip (commit hash or invoice id) that links to evidence. 12-16 lines, grouped by month with sticky month headers inside the panel. Right gutter: a running tally of uptime and incidents. States: older lines 70% ink; in-view line full ink; hovered chip shows source tooltip and underline.",
+    "motion": "Lines appear as their row enters view: 0-50% of entry, a caret blinks once at line start; 50-100%, the line opacity eases 0.35 to 1 and the chip slides 6px in. The gutter tally numbers tick as their month header passes. Nothing moves after entry.",
+    "still_check": "At 50% two months of entries are fully visible with timestamps, events and chips readable, plus a tally partially counted. At 25% only the first month is in; at 75% the incidents total and later months show.",
+    "mobile": "Drop the gutter tally into a summary row above the log; wrap long events below the timestamp; chips go on their own line with 44px tap height.",
+    "a11y": "Log is an ol with time elements; chips are links with descriptive names, not raw hashes only. Tooltips are also available on focus. Reduced motion shows all lines at full ink. Avoid role=log since content is static.",
+    "avoid": "Invented evidence, unclickable verification chips, lines too faint before entry, auto-typing every character, and a scrolling panel inside the page.",
+    "stack_notes": {
+      "css": "Each li gets animation-timeline: view() with animation-range entry 0% entry 100%; caret is a pseudo-element with a single blink keyframe. Month headers use position: sticky inside the panel. IntersectionObserver fallback adds a seen class.",
+      "js": "IntersectionObserver per line toggles data-seen; requestAnimationFrame counter for the tally using an ease-out over 900ms, started once. Pull lines from a JSON feed of real events if available."
+    }
+  },
+  {
+    "id": "proof-before-after-measured",
+    "name": "Before and after with measurements",
+    "kind": "section",
+    "family": "compare-slider",
+    "role": "proof",
+    "niches": [
+      "local-business",
+      "real-estate",
+      "health",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "bright",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Grid of 1 large compare frame (aspect 3/2, width min(64rem, 92vw)) plus a row of 3 thumbnail jobs below. The frame stacks before and after photos; a vertical handle with a 44px grip splits them. Annotations are DOM pins with measured facts tied to each side ('damp reading 28%' on before, '9%' on after; 'room 14m2' constant). Below the frame: job card with address area, date, crew size and cost range. States: handle default at 50%; dragging moves the split; pins belonging to the hidden side fade to 0.3; thumbnail selection swaps the job.",
+    "motion": "On first in-view, the handle eases from 70% to 50% once over 900ms to hint it is draggable. During drag, pins crossfade by side with 150ms. Job swap crossfades photos over 250ms. No scroll-driven motion beyond the one-time hint. Pins scale from 0.9 to 1 when their side becomes dominant.",
+    "still_check": "Any screenshot shows both halves with the handle visible, at least two measurement pins readable, and the job facts below. At 25% and 75% handle positions, different pins dominate.",
+    "mobile": "Frame full width; handle grip enlarges to 56px; pins collapse into a two-column before / after fact list under the frame so the image stays uncluttered.",
+    "a11y": "Handle is a native input range labelled 'Reveal after photo' with arrow-key support. Both images have alt text describing the state. Pins are a dl in DOM order. Reduced motion skips the hint animation.",
+    "avoid": "Mismatched camera angles, pins over faces or key details, measurement claims without units or dates, and a drag area that blocks page scroll on touch.",
+    "stack_notes": {
+      "css": "Overlay the after img with clip-path: inset(0 0 0 var(--split)); a transparent input range across the frame updates --split via a tiny oninput or via @property registered value with a range selector (needs JS to write the var). Pins use :has() based on a data-side state.",
+      "js": "Pointer events with setPointerCapture for dragging; update --split in rAF; sync the range input value for keyboard. touch-action pan-y on the frame so vertical scroll still works."
+    }
+  },
+  {
+    "id": "data-story-annotated-chart-build",
+    "name": "Chart that builds with annotated stills",
+    "kind": "section",
+    "family": "chart-build",
+    "role": "data-story",
+    "niches": [
+      "finance",
+      "editorial",
+      "nonprofit"
+    ],
+    "moods": [
+      "editorial",
+      "trustworthy",
+      "technical"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 400vh. Sticky 100vh stage holds an SVG line chart, width min(70rem, 94vw), height 60vh, with real DOM axis labels. Scrolling text cards (max-width 24rem, 1.0625rem) pass on the left, each tied to one annotation frame: a year range, a callout label, a shaded band. Headline above chart clamp(1.75rem, 4vw, 3rem) changes per frame. States: frame inactive; frame active = band shaded, callout pinned to a data point with a leader line, line drawn up to that date; final = full series plus comparison series in a second hue.",
+    "motion": "0-20%: axes and first decade draw. 20-45%: line extends to the first event, band shades, callout appears. 45-70%: line continues, previous callout shrinks into a small numbered marker. 70-90%: second series draws in. 90-100%: y-axis rescales smoothly to show the full range and markers align into a footnote list.",
+    "still_check": "At 50% the line reaches the second event with that callout fully readable and earlier markers visible; chart never empty. At 25% only the first event is annotated; at 75% both series appear.",
+    "mobile": "Unpin and render each annotation frame as its own static chart snapshot inline after its text card, with the active segment drawn on entry. Labels move below the chart.",
+    "a11y": "Provide a data table in a details element and a text summary. Chart SVG role img with title. Callouts are DOM text. Reduced motion shows the final annotated chart with all numbered markers and the footnote list.",
+    "avoid": "Axes rescaling mid-read with no cue, callouts overlapping the line, cards scrolling over the chart, colours that fail in greyscale, and frames where the line is mid-stroke at the screenshot point.",
+    "stack_notes": {
+      "css": "Path with pathLength=1 and dashoffset bound to a scroll() timeline; bands and callouts per card via view() timelines hoisted with timeline-scope. Rescale is not practical in CSS, so pre-render the final axis and crossfade.",
+      "js": "Compute scales, generate the path, and in rAF clip the path to the date for progress via a clipPath rect width. Animate scale domain changes with an interpolated domain. Works with any charting code the project already uses."
+    }
+  },
+  {
+    "id": "data-story-unit-dots-regroup",
+    "name": "Every dot is a person",
+    "kind": "section",
+    "family": "particle-field",
+    "role": "data-story",
+    "niches": [
+      "nonprofit",
+      "dashboard",
+      "editorial"
+    ],
+    "moods": [
+      "experimental",
+      "warm",
+      "bold"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "blueprint": "Section 500vh, sticky canvas stage 100vh. One dot represents a real unit (100 people, 1,000 meals); legend chip states the unit in the corner. Stages: a loose crowd field; dots sort into a waffle grid of total reach; split into colour-coded bars by region; a slice drifts off to show the unmet need; final, dots form the year's figure as a large numeral. A DOM caption column on the left (max 26rem) changes per stage, headline clamp(2rem, 4.5vw, 3.5rem) with the key number. States per stage: forming, settled, labelled.",
+    "motion": "Each of 5 stages takes 20% of progress: first 40% of a stage dots travel to targets with eased interpolation and slight per-dot delay; next 60% they hold settled while DOM labels for that formation fade in. Final numeral stage arranges dots into digit outlines with the DOM number overlaid exactly.",
+    "still_check": "At 50% dots sit settled as labelled regional bars, caption and DOM labels readable, no dots mid-flight. At 25% the waffle grid shows; at 75% the unmet-need slice has separated.",
+    "mobile": "Halve dot count with each dot meaning double units and state it in the legend; unpin and render each stage as a short 100vh block with its own settle animation; labels stack below the canvas.",
+    "a11y": "Each stage has a DOM caption and a data table fallback; canvas aria-hidden. Reduced motion shows each stage's settled frame as a static image beside its caption. Unit legend is always visible text.",
+    "avoid": "Dots that never settle during readable windows, numbers baked only into the canvas, misleading units, frame drops on low-end devices (cap at around 20k points), and a black canvas while initializing.",
+    "stack_notes": {
+      "css": "Fallback: five pre-rendered SVG or AVIF frames in a sticky stage, crossfaded by view() timelines on caption blocks. Waffle and bars can be pure CSS grid of small spans if counts are under a few hundred.",
+      "js": "WebGL points with per-vertex start and target attributes; vertex shader mixes positions by a uniform eased t per stage. Precompute targets with layout functions. Canvas2D works below 5k dots. Dispose buffers and stop rAF when off-screen."
+    }
+  },
+  {
+    "id": "features-focus-dim-cropped-screen",
+    "name": "Feature list that crops the screen",
+    "kind": "section",
+    "family": "focus-dim",
+    "role": "features",
+    "niches": [
+      "saas",
+      "docs",
+      "landing"
+    ],
+    "moods": [
+      "minimal",
+      "technical",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Grid 5fr 7fr, section padding clamp(4rem, 10vw, 9rem). Right: a sticky product screenshot in a frame, width 100%, aspect 16/10. Left: 5 feature entries, each min-height 60vh, title clamp(1.5rem, 3vw, 2.25rem), 2-line body and a keyboard hint. The frame holds one large UI image; per feature, a CSS crop window (object-position plus scale) zooms to the relevant UI region and a soft dim vignette darkens everything else. States: in-view feature = text full ink and frame cropped to its area; others 45% ink.",
+    "motion": "When a feature crosses the centre, the screenshot pans and scales to its region over 500ms cubic-bezier(.3,.7,.2,1); the vignette mask moves with it. Non-active feature text fades to 45% over 200ms. That is the entire choreography. A thin outline ring draws around the target region after the pan settles, over 250ms.",
+    "still_check": "At 50% the third feature's text is full ink and the screenshot is zoomed to the matching panel, readable and not mid-pan. At 25% and 75% a different region and feature are active.",
+    "mobile": "Unstick; each feature shows its own pre-cropped screenshot directly under its text, no pan, so nothing is too small at 375px. Each crop gets a small caption naming the UI area.",
+    "a11y": "Features are a list with headings; screenshot img has alt describing the whole UI, crops are visual only. Reduced motion jumps to crops without panning. Dimmed text stays above 4.5:1.",
+    "avoid": "Crops that blur because the source image is low resolution, dimming text below contrast, pans tied to scroll so it judders, and sticky frames taller than the viewport.",
+    "stack_notes": {
+      "css": "Sticky frame; each feature declares a view-timeline-name, hoisted with timeline-scope; or simpler, use :has() with scroll-state or IntersectionObserver adding data-active to the section and selecting transforms per value via attribute selectors with transitions.",
+      "js": "IntersectionObserver on entries with a centre band sets data-active; CSS handles the transform transitions. Use a 2x source image and transform scale on a wrapper rather than resizing the image."
+    }
+  },
+  {
+    "id": "features-keyboard-shortcut-board",
+    "name": "Press the key to see the feature",
+    "kind": "section",
+    "family": "tab-switch",
+    "role": "features",
+    "niches": [
+      "saas",
+      "docs",
+      "kinetic"
+    ],
+    "moods": [
+      "playful",
+      "technical",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Top: a rendered keyboard, width min(62rem, 94vw), with real key caps as buttons; 6 feature keys are coloured and labelled with the feature ('K Search', 'D Duplicate'). Below: a demo window aspect 16/9 showing a looping short clip or live mini-UI for the active feature, with a caption title clamp(1.5rem, 3vw, 2.25rem) and one line of body. States: idle = first feature active; key hover = cap lifts 2px; key pressed (click or real keypress while section focused) = cap depresses 3px with shadow collapse and the demo switches; visited keys get a small dot.",
+    "motion": "Key press: translateY 3px and shadow shrink over 70ms, release over 120ms. Demo window crossfades with a 220ms clip-path wipe from the key's direction. On first in-view, three feature keys auto-press in sequence 600ms apart as a hint, then stop.",
+    "still_check": "Any screenshot shows the full keyboard with legible caps and one active feature demo with caption. Different active keys show different demos and captions; never an empty demo window.",
+    "mobile": "Keyboard shrinks to just the 6 feature keys in a 3x2 grid of 64px caps; demo sits above them. Physical keypress listening is disabled on touch devices.",
+    "a11y": "Implement as a tablist of tab buttons with aria-controls; arrow keys move between tabs. Real keypress shortcuts only when the section has focus and never override typing in inputs. Reduced motion removes depress and wipe, and the auto hint.",
+    "avoid": "Global key listeners hijacking browser shortcuts, decorative keys that look clickable, demos that autoplay sound, and the keyboard rendered as an image with no real buttons.",
+    "stack_notes": {
+      "css": "Radio inputs styled as key caps with labels; :has(#key-k:checked) shows the matching panel. :active gives depress styling. Wipe via clip-path transition. Works fully without JS except physical keypress.",
+      "js": "Tablist pattern with roving tabindex; keydown handler scoped to the section maps letters to tabs. WAAPI for the wipe; IntersectionObserver triggers the one-time hint and pauses demo videos off-screen."
+    }
+  },
+  {
+    "id": "team-sign-in-sheet-roster",
+    "name": "Sign-in sheet roster",
+    "kind": "section",
+    "family": "hover-preview",
+    "role": "team",
+    "niches": [
+      "agency",
+      "education",
+      "nonprofit",
+      "restaurant",
+      "professional"
+    ],
+    "moods": [
+      "warm",
+      "editorial",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A lined sign-in sheet on paper: table with columns Name, Role, Since, Ask me about. Name column in a handwritten-feeling display face at clamp(1.25rem, 2.5vw, 1.75rem), other columns in a text face. A fixed portrait slot (aspect 4/5, width clamp(12rem, 20vw, 18rem)) sits pinned in the right margin like a clipped Polaroid. States: idle = slot shows a group photo; row hover or focus = row gets a highlighter swipe and the slot swaps to that person's portrait with their name caption; leaving restores the group photo.",
+    "motion": "Highlighter swipe: background-size 0 to 100% over 220ms ease-out. Portrait swap: crossfade 180ms with a 1.5 degree tilt settle, like a photo being re-clipped. On in-view, rows' rules draw left to right once with a 30ms stagger. Hovering a name also nudges its pen underline 2px right over 160ms.",
+    "still_check": "Any screenshot shows the full sheet with all names and roles readable and a photo in the slot. Hovered and idle states differ only in highlight and photo, never in hidden text.",
+    "mobile": "Portrait slot moves inline: each row becomes a compact card with a small 56px portrait beside the name, and the sheet columns stack under the name. No hover required.",
+    "a11y": "Real table with th headers or a list if few columns. Each row is focusable via a link to the person's bio so keyboard users trigger the swap. Portraits have alt with names. Reduced motion disables swipe and tilt.",
+    "avoid": "Portraits that only appear on hover with no other way to see them, handwriting faces for body text, rows that shift height on hover, and fake signatures.",
+    "stack_notes": {
+      "css": "Portrait slot stacks all portraits absolutely; section:has(tr:nth-child(3):is(:hover, :focus-within)) .portrait:nth-child(3) shows it. Highlighter via linear-gradient background-size transition. Sticky slot with position: sticky. Preload portraits with loading eager only for the first few rows.",
+      "js": "Optional: pointerenter and focusin set data-person on the section; preload portraits after idle with requestIdleCallback. On touch devices, tapping a row toggles the portrait instead."
+    }
+  },
+  {
+    "id": "timeline-tape-measure-track",
+    "name": "Tape measure timeline",
+    "kind": "section",
+    "family": "horizontal-track",
+    "role": "timeline",
+    "niches": [
+      "events",
+      "nonprofit",
+      "finance",
+      "editorial",
+      "professional"
+    ],
+    "moods": [
+      "bold",
+      "warm",
+      "playful"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 350vh, sticky stage. A yellow steel tape measure extends horizontally across the stage, 6rem tall, with year ticks as real DOM labels every year and minor ticks for months. The tape case sits fixed at the left edge. Milestone tags hang from the tape on short strings: year clamp(2rem, 5vw, 3.5rem), title, one sentence, optional photo. A fixed reading notch at 40% of the stage width marks 'now reading'. States: tag before notch = settled; at notch = enlarged 1.1x, full ink; after = waiting, 70% ink.",
+    "motion": "Progress 0..1 pulls the tape out of the case: track translateX from 0 to minus overflow, tick labels sliding under the notch. Tags swing gently on their strings with rotation mapped to their distance from the notch (max 4 degrees), not velocity. At 100% the tape locks with a small detent.",
+    "still_check": "At 50% the notch sits on a mid-history year with that tag enlarged and readable, neighbouring tags visible. At 25% and 75% different years sit under the notch and more tape has extended from the case.",
+    "mobile": "Rotate the axis: the tape runs vertically down the left edge, tags stack on the right in normal flow, and the notch becomes a sticky year badge at the top. No pinning.",
+    "a11y": "Milestones are an ol with time elements; the tape graphic and ticks are aria-hidden except the milestone years. Reduced motion shows the static vertical layout. Keyboard focus on a tag scrolls the track to it.",
+    "avoid": "Tags overlapping each other at dense years, tick labels too small to read, horizontal scroll hijack from wheel events, and swing animations that make text wobble at read time.",
+    "stack_notes": {
+      "css": "Sticky stage with a scroll() timeline translating the track; tag rotation via view() timeline with inline axis where supported. Fallback is the vertical layout for all browsers without scroll timelines via @supports.",
+      "js": "Measure overflow, map progress to translateX in rAF; compute each tag's distance to the notch to set rotation and scale. Recompute on resize via ResizeObserver."
+    }
+  },
+  {
+    "id": "comparison-balance-scale",
+    "name": "Balance scale comparison",
+    "kind": "section",
+    "family": "balance-scale",
+    "role": "comparison",
+    "niches": [
+      "finance",
+      "real-estate",
+      "store",
+      "saas"
+    ],
+    "moods": [
+      "playful",
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Centre: a simple line-drawn balance scale, beam width min(40rem, 80vw), two pans labelled with the options (Rent vs Buy, Plan A vs Plan B). Below each pan: a column of factor checkboxes with weights ('Lower monthly cost', 'Equity after 5 years'). Checking a factor drops a small weight block with its label onto that pan. Header clamp(1.75rem, 4vw, 3rem) poses the question; a verdict line under the beam reads the current lean. States: balanced default; leaning left or right by the summed weight; tied.",
+    "motion": "Beam rotation maps to the weight difference, clamped to plus or minus 12 degrees, transitioning over 600ms with a slight overshoot cubic-bezier(.34,1.4,.64,1). Weight blocks drop with @starting-style translateY minus 40px to 0 over 300ms. Verdict text crossfades 150ms. The heavier pan sinks 8px further and its option label bolds.",
+    "still_check": "Any screenshot shows the scale, both option labels, all factor checkboxes and a verdict line legible. Different checked sets show different tilts and pan contents.",
+    "mobile": "Scale shrinks to 100% width at the top and stays sticky while the two factor columns stack below in one list with option tags on each factor.",
+    "a11y": "Factors are fieldsets with real checkboxes; verdict is aria-live polite. The scale is aria-hidden; the verdict states the same outcome in words with the totals. Reduced motion removes overshoot and drops.",
+    "avoid": "Presenting a weighted toy as financial advice, invisible weights, tilt so strong that labels rotate out of reach, and factors with no stated weight.",
+    "stack_notes": {
+      "css": "Compute tilt with :has() counting: register --w with @property, and set it via several :has(#f1:checked) rules adding values through calc() of individual custom properties per factor. Pans counter-rotate to stay level.",
+      "js": "A change listener sums weights, sets --tilt and updates the verdict text. Keep the logic pure and testable; optionally persist choices in sessionStorage. Animate beam with WAAPI if CSS transitions on custom properties are unsupported."
+    }
+  },
+  {
+    "id": "about-founding-letter-papers",
+    "name": "Founding letter on stacked paper",
+    "kind": "section",
+    "family": "layered-paper",
+    "role": "about",
+    "niches": [
+      "editorial",
+      "local-business",
+      "nonprofit",
+      "restaurant",
+      "professional"
+    ],
+    "moods": [
+      "warm",
+      "editorial",
+      "organic",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A letter on a cream sheet, max-width 40rem, padding clamp(2rem, 5vw, 4rem), body serif 1.125rem line height 1.75, signed at the bottom. Behind it, two offset sheets peek out (rotated -2 and 1.5 degrees) holding an old photo and a handwritten recipe or first invoice. Margin notes in a second colour sit in the left margin at 0.875rem, each tied to a sentence. Section padding clamp(4rem, 10vw, 9rem). States: in-view = sheets fan slightly open; margin notes appear as their sentence passes centre; done = signature visible.",
+    "motion": "Across the section's view range, back sheets rotate from 0 to their resting angles and translate 12-24px outward, so the stack fans gradually as you read. Margin notes fade from 0 to 1 over their sentence's entry range. Signature stroke draws in over the last 15% of the range.",
+    "still_check": "At 50% the letter is fully legible, sheets are half fanned, and the first two margin notes are visible. At 25% sheets are nearly closed with one note; at 75% sheets are fully fanned and the signature starts.",
+    "mobile": "Back sheets become a single peeking sheet above the letter with the photo; margin notes become inline indented asides after their sentence. Fan angles halve.",
+    "a11y": "Letter is an article with a heading and signature as text; margin notes are aside elements in reading order. Photo has alt text. Reduced motion shows the fully fanned state and signature at once.",
+    "avoid": "Paper textures that reduce text contrast, notes covering letter text, cursive body copy, and rotating the main letter itself so lines tilt.",
+    "stack_notes": {
+      "css": "animation-timeline: view() on the section drives back-sheet transforms; per-note view() timelines for fades; signature SVG stroke-dashoffset with animation-range exit. IntersectionObserver fallback adds fanned class. Use transform-origin at the bottom corner of each sheet.",
+      "js": "Only needed for fallback: IntersectionObserver with multiple thresholds sets a --p custom property; CSS maps --p to rotations. No other script. Disconnect the observer once fully fanned and on unmount."
+    }
+  },
+  {
+    "id": "gallery-hallway-dolly",
+    "name": "Walk-through hallway gallery",
+    "kind": "section",
+    "family": "parallax-depth",
+    "role": "gallery",
+    "niches": [
+      "travel",
+      "real-estate",
+      "events",
+      "3d",
+      "portfolio"
+    ],
+    "moods": [
+      "luxe",
+      "experimental",
+      "dark"
+    ],
+    "intensity": "wild",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 500vh, sticky stage with perspective 900px. A CSS 3D hallway: two side walls built from rotated planes plus floor and ceiling, each wall holding 4-5 framed images at rotateY 90 and -90 degrees. A placard below each frame gives title, place and date as DOM text at 0.9375rem. The far end wall holds a hero image and a call link. Section headline clamp(2.5rem, 7vw, 6rem) sits on the end wall. States: frame approaching = lit by a soft spotlight gradient; frame passing = spotlight fades; end = camera stops facing the end wall.",
+    "motion": "Progress 0..1 dollies the camera: hallway container translateZ from 0 to the hallway length. 0-85% travel past the frames, with the nearest frame's spotlight brightening as it gets within range. At points matching each frame, the camera turns 12 degrees toward it for readability, easing back. 85-100%: camera halts at the end wall; headline and link fully lit.",
+    "still_check": "At 50% two framed images and their placards sit at a readable angle, the end wall visible but distant; no blank corridor. At 25% the first frames dominate; at 75% the end wall is large and later frames pass.",
+    "mobile": "Drop 3D: convert to a vertical scroll of full-width framed images with placards, each sliding in with a slight perspective tilt on entry, and the end wall becoming the final block.",
+    "a11y": "Frames are a list of figures with figcaption placards in DOM order. Reduced motion renders the flat mobile layout on all sizes. Keyboard focus on a frame jumps progress so that frame faces the camera.",
+    "avoid": "Placards rotated so steeply they become unreadable, camera passing through frames, nausea-inducing turns, images loading as blank walls, and long 500vh runs with no visible progress cue.",
+    "stack_notes": {
+      "css": "transform-style: preserve-3d stage; hallway translateZ bound to a scroll() timeline on the section with position: sticky. Spotlights via view() timeline is not possible inside 3D, so use opacity keyframes on the same scroll timeline at offsets.",
+      "js": "Compute progress, set translateZ and small rotateY in rAF with damping; per-frame distance drives spotlight opacity. three.js can replace CSS 3D for real lighting if already in the project. Lazy-load images two frames ahead."
+    }
+  },
+  {
+    "id": "menu-chalkboard-daypart-switch",
+    "name": "Chalkboard day-part board",
+    "kind": "section",
+    "family": "tab-switch",
+    "role": "menu",
+    "niches": [
+      "restaurant",
+      "local-business"
+    ],
+    "moods": [
+      "warm",
+      "organic",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A framed slate panel, max-width 72rem, dark green-black ground with a 1.25rem wooden frame border and faint chalk-dust noise texture. Top edge carries three hand-lettered day-part tabs (Breakfast, Lunch, Supper) as radio inputs styled like chalk labels, font-size clamp(1.1rem, 2vw, 1.5rem). Below, a two-column dish list: dish name in a chalk script at clamp(1.25rem, 2.6vw, 1.9rem), one-line description, price right-aligned. A small smudged eraser mark sits behind the active tab. The current day-part is preselected from the local clock. Section padding clamp(4rem, 10vw, 8rem). States: idle (slate rests), active tab (underline chalk stroke), switching (old list wiped, new list written), done.",
+    "motion": "On tab change the outgoing list fades to 0 opacity with a 6px horizontal smear over 220ms ease-in, like an eraser pass; the incoming list draws in with a left-to-right clip-path inset reveal over 420ms cubic-bezier(.2,.7,.2,1), staggered 40ms per dish. The chalk underline under the active tab scales from 0 to 1 on the x axis over 300ms. No scroll-linked motion.",
+    "still_check": "At 50% the slate is fully visible with one day-part list complete and its tab underlined; all prices legible. 25% and 75% differ only in framing: top tabs entering versus full list and frame bottom with the specials note visible.",
+    "mobile": "At 375px the slate drops the frame to 0.5rem, tabs become a horizontally scrollable segmented row pinned at the top of the slate, and the dish list collapses to one column with prices on the same line as names.",
+    "a11y": "Tabs are a real radio group inside a fieldset with a legend, so arrow keys switch day-parts. Panels use hidden states, not opacity alone. Reduced motion swaps the eraser and write-in for an instant swap. Chalk text keeps at least 7:1 contrast on the slate.",
+    "avoid": "Chalk script fonts that are illegible at small sizes, texture so heavy it lowers contrast, prices baked into an image, defaulting to breakfast at 8pm, or layout jump when lists of different lengths swap.",
+    "stack_notes": {
+      "css": "Radio inputs plus :has(#lunch:checked) toggle panel visibility; @starting-style gives the write-in clip-path entry; a grid-template-areas stack keeps all panels in one cell so height is the max of the three and nothing shifts.",
+      "js": "A few lines read new Date().getHours() to preselect the day-part; optional WAAPI animates clip-path for older engines. Any framework tab component works if it renders all three lists in the DOM and only toggles visibility."
+    }
+  },
+  {
+    "id": "menu-printed-card-allergen-filter",
+    "name": "Printed card with allergen toggles",
+    "kind": "section",
+    "family": "filter-sort",
+    "role": "menu",
+    "niches": [
+      "restaurant",
+      "health",
+      "local-business"
+    ],
+    "moods": [
+      "editorial",
+      "luxe",
+      "minimal",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A cream card-stock panel, max-width 46rem, centred on a darker linen ground, with a 1px inset rule 1rem from the edge like a printed menu. Course headings in small caps at clamp(0.85rem, 1.4vw, 1rem) with wide tracking. Each dish row: name, a dotted leader line filling the gap, and the price, using a flex row with the leader as a border-bottom dotted spacer. Allergen codes (G, D, N, S) sit as tiny superscript letters. Above the card, a row of toggle chips labelled No gluten, No dairy, No nuts, Vegan. Section padding clamp(4rem, 9vw, 8rem). States: idle, filter active (non-matching rows dim to 30% and get a hairline strike), all clear.",
+    "motion": "Toggling a chip dims non-matching rows over 200ms ease-out and draws a hairline strike through them from left to right over 260ms; matching rows stay in place so the card never reflows. The chip fills with ink colour over 150ms. A count line under the chips updates its number with a short 120ms crossfade.",
+    "still_check": "At 50% the full printed card is visible with course headings, dotted leaders and prices aligned; if a filter is on, dimmed rows remain readable. At 25% the chips and first course show; at 75% the last course and allergen key show.",
+    "mobile": "At 375px the card loses its outer linen margin, leaders shrink to a minimum 1.5rem, long dish names wrap above the leader and price, and chips become a two-by-two grid sitting sticky above the card while it scrolls.",
+    "a11y": "Chips are checkbox inputs with visible focus rings. Filtered rows get a visually hidden note saying contains nuts rather than being removed. The allergen key is a definition list. Reduced motion skips the strike draw. A live region announces the matching dish count.",
+    "avoid": "Removing filtered dishes so the card jumps, relying on colour alone for allergens, leaders that break onto two lines, tiny superscripts below 0.7rem, or chips that claim safety without a kitchen note about cross-contact.",
+    "stack_notes": {
+      "css": "Checkboxes plus :has() selectors such as .menu:has(#nuts:checked) .dish[data-n] apply the dim and strike; the strike is a pseudo-element scaled on the x axis with a transition; leaders use flex-grow and a dotted border-bottom.",
+      "js": "Optional: a tiny script counts visible matches into an aria-live element and syncs chips to the URL hash. Data can come from any CMS as dish rows with allergen data attributes; no library required."
+    }
+  },
+  {
+    "id": "catalogue-swatch-book-fan",
+    "name": "Swatch book fan-out",
+    "kind": "section",
+    "family": "stack-deck",
+    "role": "catalogue",
+    "niches": [
+      "store",
+      "real-estate",
+      "agency"
+    ],
+    "moods": [
+      "playful",
+      "bright",
+      "luxe"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Products sold in colourways (paint, fabric, tiles) shown as a physical swatch book. Left column 5/12: product name at clamp(2rem, 5vw, 4rem), material notes, price, add button. Right column 7/12: a stack of 8-12 tall swatch strips, each 9rem by 26rem with a rounded top, colour name and code printed at the bottom like a paint chip, pivoting from a shared rivet at the bottom-left. Section is pinned for 200vh. States: closed (strips stacked), fanning (strips rotate apart), open (full arc of 70 degrees), selected (one strip lifts 2rem and the left column updates to that colourway).",
+    "motion": "0-20%: stack sits closed with the top swatch name readable. 20-70%: strips rotate about the rivet from 0 to their slot angle, each offset by index times 7 degrees, eased with progress squared. 70-100%: the arc holds open and the swatch nearest the centre line lifts and becomes selected. Clicking a strip selects it with a 260ms lift transition.",
+    "still_check": "At 50% the fan is half open with at least five colour names legible and the left product copy complete. At 25% only two or three strips have separated; at 75% the full arc is open with one strip lifted and its name in the left column.",
+    "mobile": "At 375px the pin is removed; the fan becomes a horizontal scroll-snap row of swatch strips at 6rem wide below the product copy, with the selected strip raised and its name shown in a sticky bar with the add button.",
+    "a11y": "Swatches are a radio group of buttons with colour name and code as text, so selection works by keyboard alone. Reduced motion renders the open arc statically. Focus raises the strip like hover. Colour names never rely on the chip colour itself.",
+    "avoid": "Strips overlapping the colour name text, a closed stack at mid-scroll that looks empty, scroll hijack that traps the page, selecting by scroll position only, or colour chips that misrepresent the real product shade.",
+    "stack_notes": {
+      "css": "Scroll-driven path: each strip gets a custom property --i and an animation keyed to animation-timeline: view() on a tall wrapper, rotating to calc(var(--i) * 7deg); position: sticky pins the stage; IntersectionObserver toggles a fallback open class.",
+      "js": "rAF reads wrapper progress from getBoundingClientRect and sets --p on the stack; WAAPI handles the click lift. Selected colourway swaps the product image and price; any project animation library can drive the same --p variable."
+    }
+  },
+  {
+    "id": "catalogue-turntable-loupe",
+    "name": "Turntable with jeweller's loupe",
+    "kind": "section",
+    "family": "lens-magnify",
+    "role": "catalogue",
+    "niches": [
+      "store",
+      "3d",
+      "portfolio"
+    ],
+    "moods": [
+      "luxe",
+      "dark",
+      "technical"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "blueprint": "One hero product per row in a short catalogue of 3-5 crafted items (watches, ceramics, shoes). Grid: 7/12 stage on the left with a WebGL canvas showing the product on a turntable, 5/12 spec column on the right: maker mark, name at clamp(1.75rem, 4vw, 3.25rem), a materials ledger, price, add button. A circular loupe, clamp(8rem, 16vw, 12rem) wide with a brass rim, follows the pointer over the stage and shows a 3x magnified render with a small caption naming the detail under it (hand-stitched welt, 18k crown). Stage sits beneath the loupe; spec text never overlaps the stage. States: idle, rotating with progress, loupe active, detail pinned.",
+    "motion": "As the row scrolls from 0 to 100% the turntable rotates the product 0 to 300 degrees on the y axis, so each still shows a different face. Hotspot dots fade in at 30%, 55% and 80% of the rotation. The loupe follows the pointer with a 90ms lerp and scales in from 0.6 over 180ms on enter. Clicking a hotspot pins the loupe there.",
+    "still_check": "At 50% the product is fully lit at roughly 150 degrees with at least one hotspot visible and the spec column complete. At 25% the front face shows; at 75% the back detail and a different hotspot caption show.",
+    "mobile": "At 375px the stage stacks above the specs at 80vw tall; the loupe becomes tap-to-inspect on hotspot dots, opening a fixed circular detail view near the bottom of the stage; rotation is a drag gesture plus the scroll progress, shortened to 180 degrees.",
+    "a11y": "Every hotspot is a button with its detail caption as text, listed again in the spec ledger. Canvas is aria-hidden with a poster image fallback. Reduced motion freezes rotation at the hero angle and replaces the follow loupe with static magnified crops.",
+    "avoid": "Heavy GLB files that delay LCP, a loupe that covers the price or add button, hotspot copy that only exists inside the canvas, uninitialised black canvas frames, or rotation tied to wheel velocity.",
+    "stack_notes": {
+      "css": "CSS fallback: a sequence of 12 product photos swapped by a scroll-driven steps() animation on a background-position sprite, and the loupe as a circular element using a second high-resolution background positioned from pointer custom properties.",
+      "js": "WebGL path with three.js or raw WebGL: load a compressed GLB lazily via IntersectionObserver, map section progress to rotation.y, render the loupe as a second camera with narrower fov to a circular scissor region."
+    }
+  },
+  {
+    "id": "catalogue-aisle-shelf-track",
+    "name": "Aisle shelf with hanging signs",
+    "kind": "section",
+    "family": "horizontal-track",
+    "role": "catalogue",
+    "niches": [
+      "store",
+      "local-business",
+      "restaurant"
+    ],
+    "moods": [
+      "warm",
+      "playful",
+      "bright"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "A shop-floor shelf, pinned for 300vh, translating horizontally. Above the shelf, hanging aisle signs (Pantry, Dairy, Bakery, Household) clamp(1rem, 2vw, 1.4rem) on short strings mark category boundaries. The shelf is a long row of products standing on a 0.75rem wooden ledge, each with a shelf-edge price label: product name, unit price per 100g, big price at clamp(1.25rem, 2.4vw, 1.75rem), and a small barcode stripe. A fixed aisle indicator at bottom-left reads Aisle 2 of 4. Section padding top clamp(3rem, 7vw, 6rem). States: idle, travelling, sign passing centre (sign swings slightly), item hover (label lifts, quick add appears).",
+    "motion": "0-100% progress translates the shelf track from 0 to minus its overflow width, linear with scroll. Each hanging sign rotates from minus 4 to plus 4 degrees as it crosses the viewport centre, mapped to its own local progress. The aisle indicator number updates when a sign passes centre, with a 160ms vertical slide. Hover lifts a label 4px over 150ms.",
+    "still_check": "At 50% the shelf is mid-aisle with one hanging sign readable, at least five full price labels legible, and no empty shelf gaps. At 25% the Pantry and Dairy signs show; at 75% Bakery to Household with a different indicator number.",
+    "mobile": "At 375px the pin is dropped; each aisle becomes its own native horizontal scroll-snap row with its sign as a sticky left label, products at 9rem wide, and the quick add always visible on the label rather than on hover.",
+    "a11y": "The shelf is a list of products grouped by headings for each aisle, so screen readers get categories. Native scroll stays available; arrow keys move focus product to product. Reduced motion shows aisles as stacked rows. Price labels meet 4.5:1 contrast.",
+    "avoid": "Track widths measured before images load causing jumps, products cut in half at the end, labels that only appear on hover, scroll hijack that blocks vertical skimming, or a final frame with an empty shelf.",
+    "stack_notes": {
+      "css": "position: sticky stage with a tall wrapper; the track uses animation-timeline: view() with a translateX keyframe to a calc of the overflow width stored in a custom property set once; signs use their own view() timelines on the inline axis.",
+      "js": "Measure track scrollWidth on load and resize with ResizeObserver, map wrapper progress to translateX in rAF, and update the aisle indicator from IntersectionObserver on signs. Any existing scroll library can drive the same progress."
+    }
+  },
+  {
+    "id": "faq-index-card-drawer",
+    "name": "Index-card file drawer",
+    "kind": "section",
+    "family": "accordion-fold",
+    "role": "faq",
+    "niches": [
+      "education",
+      "local-business",
+      "finance",
+      "health",
+      "professional"
+    ],
+    "moods": [
+      "warm",
+      "trustworthy",
+      "calm",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Questions filed as index cards in an open card-catalogue drawer, max-width 52rem. Each card is a details element: the summary is the card's top strip with a coloured filing tab offset per category (Booking, Payment, Policies) at clamp(0.75rem, 1.2vw, 0.9rem), question text at clamp(1.05rem, 1.8vw, 1.3rem) on a ruled card with a red top rule. Cards overlap by 0.75rem like a drawer of cards seen from above at a slight angle. Opening a card lifts it out of the row, revealing the full ruled answer area with a stamped reviewed-on date. Drawer front with brass label holder titled Questions, A to Z. States: filed, hover (card rises 6px), open (card fully pulled), closed.",
+    "motion": "Hover raises a card 6px over 160ms ease-out. Open uses interpolate-size so the card height grows from the summary strip to full content over 320ms cubic-bezier(.2,.8,.2,1) while its shadow deepens. Cards below slide down naturally with the height change. The reviewed stamp fades and rotates from minus 8 to minus 4 degrees in 200ms.",
+    "still_check": "At 50% the drawer shows a run of filed cards with all question strips legible and one card opened with complete answer text. At 25% the drawer front label and top cards show; at 75% the final category tabs and a contact note show.",
+    "mobile": "At 375px the slight perspective is removed, overlap reduces to 0.4rem, category tabs move to the left edge of each strip as a coloured bar with a text label, and cards take full width with 1rem gutters.",
+    "a11y": "Native details and summary give keyboard toggling and state. Category is text, not just tab colour. Reduced motion opens instantly. Focus ring outlines the whole card strip. Questions sit under an h2 with categories as h3 for navigation.",
+    "avoid": "Overlap that hides question text, a closed card showing a half answer, colour-only categories, fixed heights that clip long answers, or every card opening at once on load.",
+    "stack_notes": {
+      "css": "details elements with interpolate-size: allow-keywords on the root and a transition on block-size for ::details-content; :has(details[open]) adjusts sibling overlap; the paper look is linear-gradient ruling plus a box-shadow stack.",
+      "js": "For engines without interpolate-size, a small script measures scrollHeight and animates height with WAAPI on toggle events, then resets to auto. Optional: deep link to a card via hash and open it on load."
+    }
+  },
+  {
+    "id": "contact-postcard-flip",
+    "name": "Postcard contact",
+    "kind": "section",
+    "family": "tilt-depth",
+    "role": "contact",
+    "niches": [
+      "local-business",
+      "portfolio",
+      "agency",
+      "travel"
+    ],
+    "moods": [
+      "warm",
+      "playful",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Contact details set as the message side of a postcard, aspect-ratio 3 / 2, max-width 56rem, on a desk-coloured ground. Left half: a short handwritten-style note at clamp(1.1rem, 2vw, 1.5rem) and a reply link set as a mailto with the address in full. A vertical divider rule. Right half: a postage stamp in the corner showing the studio photo, a postmark ring with today's date and city, and four address lines holding street, hours, phone and email. The front side (a photo of the shop) is reachable by a Turn over button. States: idle (card tilted minus 1.5 degrees), hover (card flattens, shadow lifts), flipped (photo side), focus.",
+    "motion": "Hover or focus within removes the slight tilt and raises the shadow over 240ms ease-out. Turn over rotates the card 180 degrees on the y axis over 600ms cubic-bezier(.3,.7,.2,1) with backface hidden. The postmark ring rotates 10 degrees once on first view through a 700ms ease-out entry.",
+    "still_check": "At 50% the message side faces up with all contact lines, the stamp and postmark legible, no partial flip. At 25% the card top and note show; at 75% the full card plus a line below with directions link.",
+    "mobile": "At 375px the card drops its aspect ratio and stacks: stamp and postmark row on top, address lines next, note last, at full width with 1rem gutters; the tilt is removed and Turn over becomes a simple link to the photo.",
+    "a11y": "Address uses the address element with tel and mailto links. Both card faces are real DOM and the hidden face gets inert. Reduced motion swaps the flip for a crossfade. Turn over is a button with aria-pressed and a visible focus ring.",
+    "avoid": "Handwriting fonts for the phone number, the flip leaving both sides inert, contact info only on the back, decorative postmark text over the address, or a card too wide to read lines comfortably.",
+    "stack_notes": {
+      "css": "transform-style: preserve-3d with backface-visibility: hidden on two faces; :has(button[aria-pressed=true]) or a checkbox toggles rotateY(180deg); the hover flatten is a transition on rotate; entry via @starting-style.",
+      "js": "A few lines toggle aria-pressed and inert on faces; optional pointer tilt with a 6 degree maximum using pointermove and custom properties, skipped when reduced motion is set. Date in the postmark generated with Intl.DateTimeFormat."
+    }
+  },
+  {
+    "id": "contact-department-switchboard",
+    "name": "Switchboard routing",
+    "kind": "section",
+    "family": "focus-dim",
+    "role": "contact",
+    "niches": [
+      "saas",
+      "finance",
+      "agency",
+      "professional"
+    ],
+    "moods": [
+      "technical",
+      "trustworthy",
+      "minimal",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "An old telephone switchboard reinterpreted: a panel of 5 jack sockets in a row, each labelled with a department (Sales, Support, Billing, Press, Security) and an extension number like ext 204. Panel max-width 64rem, dark enamel with brass socket rings 3.5rem wide. Choosing a socket patches a curved cable from an operator plug on the left to that socket and opens a routing card beneath: who answers, response time promise, direct email, phone, and the one thing to include in your message. Heading at clamp(2rem, 4.5vw, 3.5rem). States: idle (all sockets lit dim), hover (socket lamp glows), selected (others dim to 40%, cable connected, card open).",
+    "motion": "Selecting a socket draws the SVG patch cable along its path with stroke-dashoffset over 420ms ease-in-out, then the lamp above the socket brightens over 150ms. Other sockets dim to 40% over 200ms. The routing card enters with a 12px upward translate and fade over 260ms.",
+    "still_check": "At 50% the panel shows all five labelled sockets, one patched, and its routing card complete with email and response time. At 25% the heading and panel top show; at 75% the routing card and a fallback general address show.",
+    "mobile": "At 375px sockets become a vertical list of rows, each with lamp, department, and extension; the cable is replaced by a short lit connector bar on the selected row, and the routing card opens directly under that row.",
+    "a11y": "Sockets are a radio group with visible labels; the cable SVG is aria-hidden. Dimmed options stay at 4.5:1 contrast. Reduced motion shows the cable fully drawn instantly. The routing card is an output region announced politely on change.",
+    "avoid": "Hiding all contact details until a choice is made, dimmed labels that become unreadable, a cable crossing the routing text, skeuomorph textures that load slowly, or no generic address for people unsure where to go.",
+    "stack_notes": {
+      "css": "Radio inputs with :has(#billing:checked) to dim siblings, show the matching card, and set --path on the cable; the SVG path per socket animates stroke-dashoffset via transition; lamps are radial-gradient pseudo-elements.",
+      "js": "Optional script preselects a department from a query string such as from a pricing page link, and updates the cable path with getBoundingClientRect when sockets reflow. Any form library can attach to the routing card if a form is needed."
+    }
+  },
+  {
+    "id": "footer-till-receipt",
+    "name": "Till receipt footer",
+    "kind": "section",
+    "family": "receipt-print",
+    "role": "footer",
+    "niches": [
+      "restaurant",
+      "store",
+      "local-business"
+    ],
+    "moods": [
+      "playful",
+      "warm",
+      "minimal",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "The footer is a narrow thermal receipt, width clamp(18rem, 32vw, 24rem), centred on the page ground with a zigzag torn bottom edge. Monospace type at clamp(0.85rem, 1.2vw, 0.95rem). Header: shop name in double-width caps, address, VAT style line. Body: site links as line items with quantity 1 and a dotted spacer, grouped under rules (MENU, VISIT, ABOUT). Total line is opening hours. Footer of receipt: thank you, a barcode made of CSS stripes that encodes nothing, social links, legal line, newsletter as Join the receipt club field. Padding clamp(3rem, 8vw, 6rem) top. States: printing (entering), printed, link hover (line item highlights like a scanned row).",
+    "motion": "As the footer enters, using its view() range 0 to 60%, the receipt grows downward from the printer slot by animating clip-path inset from bottom 100% to 0, as if printed line by line in 12 steps. Link hover sets a row background band over 120ms. After print, nothing moves.",
+    "still_check": "At 50% of the footer range the receipt is printed past the link groups with header and items fully legible, and no line sliced through mid-glyph thanks to stepped reveal. At 25% only the header shows; at 75% the total and barcode show.",
+    "mobile": "At 375px the receipt takes full width minus 1rem gutters, monospace size holds at 0.9rem, link groups remain stacked, and the print reveal range shortens so the whole receipt prints within one screen of scroll.",
+    "a11y": "Content is a nav with lists under headings, not a table. The barcode is aria-hidden. Reduced motion shows the receipt fully printed. Links have clear focus outlines and 44px tall rows. Newsletter input has a real label.",
+    "avoid": "A reveal that never completes for short pages, monospace lines overflowing at small widths, faux prices next to links that confuse, low-contrast thermal grey text, or the torn edge clipping the legal line.",
+    "stack_notes": {
+      "css": "animation-timeline: view() with animation-range entry 0% to cover 40%, using steps(12) on clip-path inset; the zigzag edge is a mask-image of a repeating conic or linear gradient; dotted spacers via flex and border-bottom.",
+      "js": "Fallback: IntersectionObserver adds a printing class that runs a CSS keyframe once. Short pages where the footer is already in view get printed state immediately. No library needed."
+    }
+  },
+  {
+    "id": "footer-colophon-wordmark-mask",
+    "name": "Colophon wordmark rising",
+    "kind": "section",
+    "family": "mask-reveal",
+    "role": "footer",
+    "niches": [
+      "editorial",
+      "agency",
+      "kinetic",
+      "portfolio"
+    ],
+    "moods": [
+      "bold",
+      "editorial",
+      "dark",
+      "experimental"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A tall dark footer, min-height 90vh. Top band: a 12-column grid with a colophon block (typefaces used, printed in, set by), sitemap columns, contact, and a small issue or version number, all at clamp(0.85rem, 1.1vw, 1rem). Bottom band: the studio wordmark in one line at clamp(5rem, 22vw, 22rem), set in the display face, cropped by the viewport bottom so only its top 70% shows. A rolling image strip of recent work lives inside the letterforms through background-clip text. States: entering (letters masked below a baseline), risen (wordmark at rest), hover over a sitemap link (the matching project image fills the letters).",
+    "motion": "Across the footer range 0-70%, a mask edge rises from below the baseline so the wordmark is revealed bottom to top, while the image inside the letters drifts upward 8% for depth. 70-100% holds. Hovering a sitemap link crossfades the letter fill image over 300ms ease-out.",
+    "still_check": "At 50% the colophon and sitemap are fully legible and the wordmark is at least 60% revealed with crisp edges, not a blurred smear. At 25% the wordmark is a low sliver; at 75% it is fully risen with the fill image settled.",
+    "mobile": "At 375px the wordmark size drops to clamp(3.5rem, 24vw, 6rem) and may break onto two lines; sitemap becomes a two-column list, and the hover image swap becomes a static single fill.",
+    "a11y": "The wordmark is a real text element, aria-hidden only if the brand name already appears as text in the footer. Reduced motion shows it fully risen with a flat colour fill. Fill images keep the letters above 3:1 contrast against the ground.",
+    "avoid": "Busy fill images that make letters unreadable, a wordmark cropped so much the name is lost, mask edges that leave the page bottom empty at short scroll, or sitemap text placed over the giant type.",
+    "stack_notes": {
+      "css": "mask-image linear-gradient with mask-position animated by animation-timeline: view(); background-clip: text with a background-image per state toggled by :has(a[data-work=x]:hover) on the footer; translate the background on the same timeline.",
+      "js": "IntersectionObserver fallback adds a risen class with a 900ms transition. Optional WAAPI or any existing library can scrub the mask position by measured progress for engines without scroll timelines."
+    }
+  },
+  {
+    "id": "location-transit-directions-route",
+    "name": "From the station, on foot",
+    "kind": "section",
+    "family": "map-route",
+    "role": "location",
+    "niches": [
+      "local-business",
+      "restaurant",
+      "travel",
+      "health"
+    ],
+    "moods": [
+      "trustworthy",
+      "bright",
+      "minimal",
+      "warm"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Split 6/6 grid. Left: an illustrated SVG street map in two inks with the nearest transit stop, three landmarks, and the shop marked by a door icon, inside a rounded frame clamp(20rem, 45vw, 34rem) tall. Right: numbered walking steps written as real directions (Exit the station by the north stairs, Pass the green bakery awning, Our door is the blue one next to the pharmacy), each with a landmark thumbnail and distance, plus a summary line: 4 min walk, step-free route. Section padding clamp(4rem, 9vw, 8rem). States: idle, step active (its path segment and landmark highlight), done (full route drawn, door pulses once).",
+    "motion": "Scroll progress through the section draws the route line with stroke-dashoffset from 0 to 100% of its length; each step activates when progress passes its segment threshold (0-25%, 25-55%, 55-85%), highlighting the landmark with a 200ms ring scale. 85-100%: route complete, door icon pulses once over 600ms.",
+    "still_check": "At 50% the route is drawn past the second landmark, step 2 is active, all step text is legible, and the map is never blank. At 25% the first segment and step 1 show; at 75% step 3 and most of the route show.",
+    "mobile": "At 375px the map stacks above the steps at 70vw height, becomes sticky at the top while steps scroll beneath it, and the route draws per step entry; a button opens the address in the device map app.",
+    "a11y": "Steps are an ordered list and include accessibility notes such as step-free. The SVG map has a title and aria-describedby pointing to the list. Reduced motion shows the full route with all landmarks labelled. The map app link is a normal anchor.",
+    "avoid": "Embedding a heavy third-party map iframe above the fold, directions that only exist as map art, a route that animates by time and is blank when scrolled fast, or tiny landmark labels on mobile.",
+    "stack_notes": {
+      "css": "SVG path with pathLength set to 1 and stroke-dashoffset animated by animation-timeline: view(); steps highlight with their own view() timelines; position: sticky keeps the map in view on mobile.",
+      "js": "Compute section progress with getBoundingClientRect in rAF and set stroke-dashoffset; IntersectionObserver per step sets the active landmark. A mapping library already in the project can replace the SVG while keeping the ordered list."
+    }
+  },
+  {
+    "id": "schedule-festival-playhead-timetable",
+    "name": "Festival timetable with playhead",
+    "kind": "section",
+    "family": "timeline-rail",
+    "role": "schedule",
+    "niches": [
+      "events",
+      "kinetic",
+      "education"
+    ],
+    "moods": [
+      "bold",
+      "bright",
+      "playful",
+      "technical"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "A multi-stage festival timetable. Columns are stages (Main, Tent, Garden, Club) with sticky colour headers; rows are 15-minute slots from 12:00 to 00:00 with a sticky time gutter clamp(3rem, 6vw, 4.5rem) wide. Each act is a block whose height equals its set length, showing artist, start and end, and a star button to add to My day. A horizontal playhead line labelled with a time marker crosses all stages. Day tabs (Fri, Sat, Sun) above. A clash badge appears when two starred sets overlap. Section padding clamp(3rem, 8vw, 7rem). States: idle, playhead moving, act under playhead (highlighted as on now), starred, clash.",
+    "motion": "During the event the playhead sits at the real time. Before or after, scroll progress through the grid maps 0-100% to 12:00-00:00 and moves the playhead down; acts it crosses lift with a 2px outline and an on now tag over 150ms. Starring fills the star with a 200ms scale pop and recounts My day.",
+    "still_check": "At 50% the playhead sits near 18:00 across all four stages, at least eight act blocks are legible with times, and headers are visible. At 25% early afternoon acts show; at 75% evening headliners show under the playhead.",
+    "mobile": "At 375px the grid shows one stage at a time as a swipeable column with stage tabs, or a list sorted by time with stage chips; the playhead becomes a sticky now bar at the top of the list.",
+    "a11y": "Underlying markup is a table per day with stages as column headers and times as row headers, enhanced visually as a grid. Star buttons have aria-pressed. Reduced motion pins the playhead to real time without scroll scrubbing. Stage colours always have text labels.",
+    "avoid": "A grid wider than the screen with no stage indicator, act names truncated in short slots without a tooltip or detail link, playhead covering text, clash badges by colour only, or time zones not stated.",
+    "stack_notes": {
+      "css": "CSS grid with grid-row spans computed from slot indexes in inline custom properties; sticky headers and time gutter via position: sticky; playhead translate driven by animation-timeline: view() on the grid wrapper.",
+      "js": "Script sets the playhead to the current time with a minute interval when live, stores starred acts in localStorage behind try catch, and detects clashes by comparing start and end values. Any framework renders the blocks from a JSON line-up."
+    }
+  },
+  {
+    "id": "schedule-class-week-grid",
+    "name": "Studio week board",
+    "kind": "section",
+    "family": "calendar-grid",
+    "role": "schedule",
+    "niches": [
+      "health",
+      "education",
+      "local-business"
+    ],
+    "moods": [
+      "calm",
+      "organic",
+      "trustworthy",
+      "bright"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A pinboard-style week grid for a yoga, climbing, or cooking studio. Seven day columns with dates, three day-part bands (Morning, Midday, Evening). Each class is a peg tag: time, class name at clamp(0.95rem, 1.5vw, 1.1rem), teacher, level dot with text, and a capacity strip of 12 small pips showing booked versus open. Above: filter chips by class type and a This week or Next week toggle. Today's column has a warm wash and a Today label. Padding clamp(4rem, 9vw, 8rem). States: idle, filter active (other tags fade to 25% but keep slots), tag hover (lifts and shows Book a spot), full (tag reads Waitlist).",
+    "motion": "Filtering fades non-matching tags to 25% opacity over 200ms and scales them to 0.97 so the week keeps its shape. Hover lifts a tag 3px with a 150ms shadow transition. On first view the today column wash grows from 0 to full height over 500ms ease-out. Capacity pips fill on entry with a 30ms stagger.",
+    "still_check": "At 50% all seven columns and the Morning and Evening bands are visible, tags legible with times and capacity, and today highlighted. At 25% the chips and morning band show; at 75% evening classes and the timezone note show.",
+    "mobile": "At 375px the grid becomes a day strip of seven date buttons at the top with today selected, and the selected day shows its classes as a vertical list of tags grouped by day-part; filters scroll horizontally.",
+    "a11y": "Each day is a list under a heading with the date; capacity is text such as 3 of 12 spots left, with pips aria-hidden. Filters are checkboxes. Reduced motion skips lifts and fills. Level uses text, not only coloured dots.",
+    "avoid": "A seven-column grid squeezed into phone width, hiding filtered classes so days look empty, capacity shown only as pips, buttons that appear only on hover, or stale weeks shown without dates.",
+    "stack_notes": {
+      "css": "Grid with seven columns and named rows per day-part; :has() on filter checkboxes dims tags by data type; today wash is a scaled pseudo-element with @starting-style; container queries switch to the day strip layout under 40rem.",
+      "js": "A small script marks today from the date, switches week data, and fills capacity from a booking API if present. IntersectionObserver triggers the pip stagger. Any calendar backend can supply class rows."
+    }
+  },
+  {
+    "id": "listing-floor-plan-draws",
+    "name": "Listing told room by room",
+    "kind": "section",
+    "family": "drawn-line",
+    "role": "listing",
+    "niches": [
+      "real-estate",
+      "editorial",
+      "portfolio"
+    ],
+    "moods": [
+      "luxe",
+      "minimal",
+      "technical",
+      "calm"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "A single property listing told through its floor plan. Pinned stage 220vh. Left 7/12: an architectural SVG plan in thin ink lines, with room labels and square metres as real text positioned over rooms. Right 5/12: a spec ledger (address, price at clamp(1.75rem, 4vw, 3rem), beds, baths, total area, energy rating), and a room card that changes as rooms highlight, showing a photo of that room and two facts (south light, original parquet). A north arrow and scale bar sit bottom-left. States: drawing (walls trace), room focus (room fill tint and card swap), complete (whole plan, all labels), hover a room (focus that room).",
+    "motion": "0-35%: exterior walls draw with stroke-dashoffset, then interior walls, doors swing in as quarter arcs. 35-90%: rooms take focus in walk-through order (hall, living, kitchen, bedrooms), each tint fading in at 20% opacity and the room card crossfading over 250ms. 90-100%: full plan with every label, ledger fully visible throughout.",
+    "still_check": "At 50% walls are fully drawn, the living room is tinted, its card shows photo and facts, and the spec ledger is complete. At 25% walls are mid-trace with ledger visible; at 75% a bedroom is focused with a different photo.",
+    "mobile": "At 375px the pin is removed; the plan sits full-width at top with walls drawn on entry, and rooms are a horizontal scroll-snap row of room cards below; tapping a card tints its room on the plan above.",
+    "a11y": "Rooms are also an ordered list with areas, so the plan is not the only source. SVG has a title and is labelled as a floor plan. Reduced motion shows the complete plan and lets users pick rooms by button. Price and specs stay real text.",
+    "avoid": "Room labels inside SVG paths with no DOM copy, a blank plan at the top of the range, card photos loading late and shifting the ledger, scroll lock on mobile, or areas without units.",
+    "stack_notes": {
+      "css": "SVG with pathLength 1 on wall groups and stroke-dashoffset animated on a view() timeline; room tints keyed to animation-range segments; sticky stage; :has(.room:hover) highlights a room and its card.",
+      "js": "rAF maps section progress to wall drawing and to the active room index, swapping the room card with a crossfade; IntersectionObserver lazy-loads room photos ahead of their segment. Plans can come from the agent's CAD export as SVG."
+    }
+  },
+  {
+    "id": "listing-jobs-split-flap-board",
+    "name": "Departures board of open roles",
+    "kind": "section",
+    "family": "counter-ticker",
+    "role": "listing",
+    "niches": [
+      "saas",
+      "agency",
+      "kinetic",
+      "travel"
+    ],
+    "moods": [
+      "bold",
+      "dark",
+      "playful",
+      "technical"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Open jobs listed as a station departures board. A dark panel, max-width 76rem, with yellow-on-black split-flap characters in a monospace at clamp(0.95rem, 1.6vw, 1.25rem). Columns: Departs (start date), Role, Team, Platform (Remote, Berlin, Lisbon), Status (Boarding, On time, Closing). A header row in small caps and a board title Now hiring, clamp(2rem, 5vw, 4rem). Filter flaps above for team and location. Each row is a link to the job page with an arrow on hover. States: idle, flipping (characters cycle into place), filtered, row hover (row back-lights), closing soon (status flap blinks once).",
+    "motion": "When the board enters view, each character cell flips through 3 to 6 random glyphs before landing, 40ms per flip, staggered 20ms per column and 60ms per row; total under 1.4s. Filtering re-flips only changed cells. Row hover back-lights over 120ms. After landing, all characters are static.",
+    "still_check": "At 50% the board shows at least five fully settled rows with roles readable, not mid-flip noise. At 25% the board title and header row show with first rows; at 75% last rows and an Apply anyway row show.",
+    "mobile": "At 375px the board keeps Role and Platform as the visible flap columns, moving Team and Departs into a second line per row; flap animation runs only on the role text, and rows become 56px tall tap targets.",
+    "a11y": "The board is a table with real header cells, each role an anchor. Individual flap glyphs are aria-hidden; each cell carries the final text for assistive tech. Reduced motion skips flipping. Status words not colour carry meaning.",
+    "avoid": "Screen readers hearing random glyphs, flipping that repeats on every scroll, rows unreadable while flipping at screenshot time, fixed character widths that truncate role titles, or yellow on black below contrast at small sizes.",
+    "stack_notes": {
+      "css": "Each cell renders the final text with a CSS counter-free fallback; flip faces use two halves with rotateX transitions and backface hidden; @starting-style gives a single settle flip without script; table layout with sticky header.",
+      "js": "Split final strings into spans and run a short glyph cycle with setTimeout or WAAPI per cell, triggered once by IntersectionObserver; rows rendered from the careers API or a JSON file. No library needed."
+    }
+  },
+  {
+    "id": "itinerary-boarding-pass-route",
+    "name": "Boarding pass itinerary",
+    "kind": "section",
+    "family": "scrollytelling-map",
+    "role": "itinerary",
+    "niches": [
+      "travel",
+      "events",
+      "editorial"
+    ],
+    "moods": [
+      "warm",
+      "editorial",
+      "bright",
+      "luxe"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "A multi-day trip itinerary. Left 6/12: a sticky illustrated map, height 80vh, with stops as numbered pins and a dashed route. Right 6/12: a stack of day passes styled as boarding passes, each 100% wide with a perforated stub: day number in large type clamp(2.5rem, 6vw, 4.5rem), from and to stops with three-letter codes, departure time, transport mode icon with text, and a short paragraph of what happens; stub side shows stay name and a meal included note. Section padding clamp(4rem, 10vw, 9rem). States: pass inactive (muted), pass active (full colour, stub stamped), map focused on that leg, final (route complete, total km and nights summary).",
+    "motion": "As each pass crosses the viewport centre, local progress 0-100% advances the map: the route segment for that leg draws from 0 to full, the map pans and zooms to frame both stops over the same range, and the stub receives a rotated stamp at 60%. Between legs the map holds the previous leg fully drawn.",
+    "still_check": "At 50% the map shows roughly half the route drawn with the current leg framed, and the active pass is fully legible with codes and times. At 25% early legs are drawn; at 75% the later region is framed with a different active pass.",
+    "mobile": "At 375px the map becomes a short sticky strip 40vh tall at the top, showing only the active leg, while passes scroll beneath it at full width; the perforated stub folds under the main pass as a second row.",
+    "a11y": "Days are an ordered list of articles with headings; the map is decorative with aria-hidden and the passes carry all stop names and times. Reduced motion shows the complete route and static active styles. Codes are explained once in an abbr title.",
+    "avoid": "A map that pans with fixed timing and lands mid-leg, passes overlapping the map on narrow screens, invented airport codes that look real but are wrong, tiny stamp text as the only info, or a blank map before the first pass.",
+    "stack_notes": {
+      "css": "Sticky map with an SVG route; each leg path animates stroke-dashoffset on a named view-timeline set on its pass via view-timeline-name and timeline-scope; transform on the map group pans with the same timelines.",
+      "js": "IntersectionObserver picks the active pass; rAF maps its local progress to route drawing and a viewBox interpolation between leg bounds. A tile-map library the project already uses can replace the SVG, reading the same progress."
+    }
+  },
+  {
+    "id": "impact-gift-allocation-bar",
+    "name": "Where each gift goes",
+    "kind": "section",
+    "family": "allocation-bar",
+    "role": "impact",
+    "niches": [
+      "nonprofit",
+      "education",
+      "health",
+      "any"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy",
+      "warm",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Section padding clamp(4rem, 10vw, 8rem), max width 72rem. Top: h2 at clamp(2rem, 4.5vw, 3.5rem) and one line naming last year audited total. Middle: one full-width bar 100% wide, height clamp(3rem, 7vw, 5rem), split into 4 to 6 labelled segments (Field programmes 71%, Training 14%, Fundraising 9%, Running costs 6%); each segment label is DOM text above it with its percentage in tabular figures. Below: a radiogroup of gift amounts (10, 25, 50, 100) styled as chips; the chosen amount shows a sentence card naming what it funds (25 pays two days of a field nurse) and outlines the matching share of each segment. States: idle (all segments solid), chip chosen (outline overlay, sentence swaps), in-view (segments grow to width once).",
+    "motion": "Entering view (view timeline 0-40% of entry): segments grow from 0 to their width left to right, each starting 60ms after the previous, ease-out, labels fade up with their segment. After that the bar is static. Choosing a gift chip cross-fades the sentence card over 200ms and slides the outline overlay to its new widths over 240ms. No scroll-linked motion after entry.",
+    "still_check": "At 50% the full bar shows every segment at its final width with every label and percentage readable, and the default gift sentence is visible. At 25% the bar may be mid-growth but labels already sit at final positions.",
+    "mobile": "At 375px the single bar turns vertical-stacked: one row per segment with a thin bar, label left and percentage right, so no label is squeezed. Gift chips wrap into a 2 by 2 grid with 44px targets; the sentence card sits below them.",
+    "a11y": "Under reduced motion segments render at final width with no growth. The bar has a visually hidden table (category, percentage) as its accessible source and the graphic is aria-hidden. Gift chips are a native radio group with visible focus rings; the sentence card is an aria-live polite region.",
+    "avoid": "Segments under 4% with labels crammed inside them, percentages that do not sum to 100, growth that replays on every scroll, colour as the only label, and vague sentences that name no concrete thing a gift buys.",
+    "stack_notes": {
+      "css": "Segments are flex children with flex-basis set from a custom property; animation-timeline: view() with animation-range entry 0% entry 40% scales them from scaleX(0) with transform-origin left. Chip state uses :has(input:checked) to swap the sentence and set overlay widths. IntersectionObserver adds an in-view class where view timelines are unsupported.",
+      "js": "Optional: read the allocation from JSON, set custom properties, and update the overlay widths on radio change with WAAPI. Any chart library the project already ships can draw the bar, as long as the hidden table stays the source of truth."
+    }
+  },
+  {
+    "id": "curriculum-binder-tab-pages",
+    "name": "Syllabus binder",
+    "kind": "section",
+    "family": "layered-paper",
+    "role": "curriculum",
+    "niches": [
+      "education",
+      "saas",
+      "health"
+    ],
+    "moods": [
+      "organic",
+      "trustworthy",
+      "warm",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A course syllabus as a ring binder. Pinned stage 240vh. Centre: a stack of 6 module pages, each a paper sheet max-width 44rem with three punched holes on the left and a coloured index tab protruding from the right edge at a different height, labelled Module 1 to 6 with a short title. Each page shows module title at clamp(1.6rem, 3.6vw, 2.6rem), lessons as a checklist with durations, an outcome sentence, and a project brief box. Behind the stack, the binder spine and rings. States: page resting, page lifting (rotates over the rings to the left), page turned (rests as a thin edge on the left), tab clicked (jumps to that page).",
+    "motion": "Progress is divided into six equal ranges. In each range the current page rotates on the y axis from 0 to minus 165 degrees around its left edge, with a 4% shadow sweep across the page beneath. Turned pages stack on the left as thin edges. Clicking a tab scrolls to that range smoothly over about 500ms.",
+    "still_check": "At 50% three pages are turned, Module 4 lies flat and fully legible with lessons and durations, and all six tabs remain visible on the right. At 25% Module 2 is readable; at 75% Module 5 is readable.",
+    "mobile": "At 375px the pin and 3D turn are removed; modules become stacked sheets with their tab as a coloured top strip, and the tab row becomes a sticky horizontal jump bar of six numbered chips.",
+    "a11y": "Modules are an ordered list of sections with headings; tabs are anchor links to each module. Reduced motion stacks pages flat in order. Turned pages are inert while out of view. Lesson checklists are lists, not checkbox inputs.",
+    "avoid": "Mid-turn pages at screenshot time with text sheared, tabs covered by turned pages, more than eight modules in one stack, hard-to-read handwriting fonts, or scroll hijack when users only want to read one module.",
+    "stack_notes": {
+      "css": "Each page has --i and an animation on a shared view() timeline with animation-range computed from calc(var(--i) * 16.66%), rotating on transform-origin left; perspective on the stage; sticky stage inside a tall wrapper.",
+      "js": "rAF computes progress and sets each page rotation, snapping slightly so pages never rest mid-turn at range ends; tabs call scrollTo with the computed offset. Any existing animation library can consume the same progress."
+    }
+  },
+  {
+    "id": "docs-nav-version-rail-scrollspy",
+    "name": "Docs rail with live section ticks",
+    "kind": "section",
+    "family": "sticky-index",
+    "role": "docs-nav",
+    "niches": [
+      "docs",
+      "saas",
+      "dashboard"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Three-column docs layout: left nav 16rem, content max 46rem, right on-this-page rail 14rem. Left nav is a tree of guides with a version picker at the top styled like a package tag (v3.2 stable). The right rail lists h2 and h3 anchors as rows, each with a vertical tick on its left edge; the tick for the section in view is filled, the ones read are half-tone, upcoming are hairlines. A small API status chip and an Edit this page link sit at the rail bottom. Body text at clamp(1rem, 1.1vw, 1.0625rem), line length 68ch. States: idle, section in view (tick fills, label bolds), read, version switched (banner noting changed pages).",
+    "motion": "Each tick fills from top to bottom as its section scrolls through the viewport, mapped to that section's own progress, so the rail shows exactly how far through the current section you are. Label weight shifts over 150ms. Version switch shows a 240ms banner slide from the top of the content column.",
+    "still_check": "At 50% of a long page the rail shows earlier ticks half-tone, one tick partly filled, upcoming hairlines, and all labels legible; content text unobscured. At 25% and 75% a different tick is partial.",
+    "mobile": "At 375px both rails collapse: the left tree moves to a menu button, and the right rail becomes a sticky top bar showing the current section title with a thin fill under it and a drop-down listing all sections.",
+    "a11y": "The rail is a nav with aria-label On this page and an ordered list of links; the current link gets aria-current location. Reduced motion uses discrete filled or empty ticks. Version picker is a native select with a label.",
+    "avoid": "Scroll spy that flickers between sections, sticky rails taller than the viewport with no scroll, ticks as the only current indicator, version picker that loses the reader's page, or rails stealing content width on tablets.",
+    "stack_notes": {
+      "css": "Each section declares view-timeline-name and the rail sets timeline-scope on the layout root so each tick animates scale on its section's timeline; position: sticky for rails; container queries collapse rails under 64rem.",
+      "js": "IntersectionObserver with rootMargin marks the current section and sets aria-current; optional progress per section via getBoundingClientRect for engines without timeline-scope. Works with any static docs generator."
+    }
+  },
+  {
+    "id": "cta-perforated-ticket-tearoff",
+    "name": "Tear-off ticket call to action",
+    "kind": "section",
+    "family": "clip-wipe",
+    "role": "cta",
+    "niches": [
+      "landing",
+      "events",
+      "saas",
+      "store"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "bright",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A single wide admission ticket, max-width 60rem, aspect-ratio about 5 / 2, centred in a section with padding clamp(4rem, 10vw, 9rem). Main body: offer headline at clamp(2rem, 5vw, 4rem), one line of terms, and a serial number. Right 30%: the stub, separated by a dashed perforation with half-circle notches top and bottom, holding the primary button (Claim your seat, Start free) and a tiny admit one label. Ticket edges have notched corners via mask. States: idle, hover or focus on stub (stub shifts 6px right and tilts 2 degrees, perforation darkens), pressed (stub separates 1.5rem with a slight rotation before navigation), done.",
+    "motion": "Hover or focus nudges the stub 6px and 2 degrees over 180ms ease-out, as if starting to tear. Pressing the button runs a 260ms tear: the stub translates 1.5rem and rotates 5 degrees while a clip-path along the perforation reveals a paper fibre edge, then navigation proceeds. On entry the ticket slides up 16px once.",
+    "still_check": "At 50% the whole ticket is visible with headline, terms, serial, and stub button readable, stub attached. At 25% the ticket top and headline show; at 75% the ticket plus a secondary link below it show.",
+    "mobile": "At 375px the ticket rotates its layout: the body stacks on top and the stub sits below a horizontal perforation, full width, with the button 52px tall; the tear motion becomes a short downward shift.",
+    "a11y": "The stub action is a real link or button with text, not the whole ticket. Reduced motion removes tilt and tear, keeping a colour change. Focus-visible ring sits outside the notched mask so it is not clipped. Serial is decorative and aria-hidden.",
+    "avoid": "Delaying navigation more than 300ms, mask clipping the focus ring, a ticket that looks like a raffle with hidden terms, button text crammed into a narrow stub, or tear motion repeating on every hover.",
+    "stack_notes": {
+      "css": "mask with radial-gradient notches; :has(.stub a:hover, .stub a:focus-visible) moves the stub via transition; :active triggers the tear transform; entry via @starting-style; perforation as a repeating linear-gradient border.",
+      "js": "Optional: intercept click, play a WAAPI tear keyframe for 260ms, then follow the href; skip when reduced motion is set or modifier keys are held. No library required; any existing animation tool can run the same keyframes."
+    }
+  },
+  {
+    "id": "transition-card-to-detail-morph",
+    "name": "Card to detail shared-element morph",
+    "kind": "transition",
+    "family": "view-transition",
+    "role": "transition",
+    "niches": [
+      "store",
+      "real-estate",
+      "portfolio",
+      "travel"
+    ],
+    "moods": [
+      "luxe",
+      "minimal",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Applies between a listing page and a detail page. On the listing, each item shows an image, title, and price. On the detail page, the same image sits as a large hero clamp(20rem, 60vh, 44rem) tall, the title becomes the h1 at clamp(2.25rem, 6vw, 5rem), the price moves to a buy panel. The three elements share view-transition-name values per item id, so the browser morphs position, size, and crop between pages. Other content crossfades. A back navigation reverses the morph into the original card slot. States: listing, morphing, detail, returning.",
+    "motion": "On navigation, image, title, and price morph from card geometry to detail geometry over 380ms cubic-bezier(.2,.7,.1,1); the image keeps object-fit cover and its crop eases. Page root crossfades over 200ms. Detail secondary content fades and rises 12px, starting at 180ms. Back navigation uses the same timing in reverse.",
+    "still_check": "Not scroll-linked. A paused frame mid-transition must show one image and one title, both readable, never doubled ghost text. The listing and detail end states are each complete compositions on their own.",
+    "mobile": "At 375px the morph still runs but shortens to 300ms; the detail hero is full-bleed at 60vw tall; titles that wrap differently are crossfaded rather than morphed by assigning the name only to the image.",
+    "a11y": "Reduced motion disables the morph via a media query and uses an instant swap. Focus moves to the detail h1 after navigation. Names never sit on interactive elements that would trap focus. Both pages work without the API.",
+    "avoid": "Duplicate view-transition-name values on one page, which aborts the transition, text stretched during the morph, morphs over 500ms that feel slow, images loading late at the destination, or animating every card at once.",
+    "stack_notes": {
+      "css": "Cross-document: the at-rule view-transition with navigation auto on both pages; set view-transition-name inline per item id on listing and detail; style ::view-transition-group and ::view-transition-old or new for timing and to crossfade titles.",
+      "js": "Single page apps call document.startViewTransition around the route update, assigning names only to the clicked card just before. Fallback: FLIP with getBoundingClientRect and WAAPI for engines without the API."
+    }
+  },
+  {
+    "id": "transition-ground-colour-handoff",
+    "name": "Ground colour handoff",
+    "kind": "transition",
+    "family": "colour-shift",
+    "role": "transition",
+    "niches": [
+      "editorial",
+      "agency",
+      "kinetic",
+      "landing"
+    ],
+    "moods": [
+      "editorial",
+      "bold",
+      "calm",
+      "warm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Each section declares its own ground and ink colours as custom properties, for example a bone ground with ink text, then a terracotta ground with cream text, then a deep green with mint. The page body background is not set per section; instead a fixed ground layer behind all content blends between neighbouring section colours based on scroll progress across the boundary zone, the 30vh before and after each seam. Text colour flips at the midpoint of the zone, not during it. States: inside section (stable colour), in seam zone (blending ground), past midpoint (ink swapped).",
+    "motion": "Across each seam zone, 0-100% progress interpolates the ground from the previous section colour to the next in oklch space, linear with scroll. At 50% the ink colour switches in a 120ms transition, so text never sits mid-blend at low contrast. Outside zones, nothing moves.",
+    "still_check": "At 50% of a seam, the ground is a mixed colour and all visible text uses whichever ink passes 4.5:1 on that mix. At 25% the ground is near the previous colour; at 75% near the next.",
+    "mobile": "At 375px seam zones shorten to 20vh so colour changes complete within a thumb flick; the fixed layer stays a single element, avoiding repaint of large backgrounds.",
+    "a11y": "Each section also sets its own background, so reduced motion or no support shows hard seams with correct contrast. Every colour pair is checked for contrast, including the midpoint mix. Colour carries no meaning on its own.",
+    "avoid": "Text mid-blend dropping under contrast, ground keyed to scroll speed, images with transparent edges showing a mismatched colour, flashing between saturated hues, or colour changes inside a pinned section that already animates.",
+    "stack_notes": {
+      "css": "Register --ground as an at-property color; animate it on each seam element's view() timeline with animation-range cover 30% to 70%; the fixed ground layer reads var(--ground); ink flips with a step at the midpoint.",
+      "js": "IntersectionObserver with thresholds per seam computes progress and writes color-mix(in oklch) results to the ground layer style; the ink swap is a class at 0.5. Any library can drive the same custom property."
+    }
+  },
+  {
+    "id": "micro-button-ink-spread",
+    "name": "Button press ink spread",
+    "kind": "transition",
+    "family": "split-ink",
+    "role": "micro",
+    "niches": [
+      "landing",
+      "saas",
+      "store",
+      "editorial"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "calm",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Primary buttons are outlined with a 2px ink border on the page ground, label in ink. A pseudo-element holds an ink blot shaped by an organic blob mask, not a circle, positioned at the press point using pointer custom properties (defaulting to the centre for keyboard). Button height 3rem, padding inline clamp(1.25rem, 3vw, 2rem), radius 999px. States: idle (outline), hover (ink fills 15% as a faint wash), pressed (blot spreads from the press point to fill), released (filled for 200ms, label in ground colour, then settles to hover state or navigates).",
+    "motion": "Press: the blot scales from 0 to 2.2 over 320ms cubic-bezier(.2,.8,.2,1) from the pointer position, with its blob mask rotating 20 degrees so the edge feels liquid. Label colour swaps at 40% of the spread. Release: blot fades to the hover wash over 260ms. Keyboard activation spreads from the centre.",
+    "still_check": "Not scroll-linked. Any frame must keep the label legible: the label colour switch happens when the blot covers it, never leaving ink text on ink fill. Idle, hover, and pressed are each distinct at a glance.",
+    "mobile": "At 375px the spread originates from the touch point using pointer events, runs 260ms, and buttons keep a minimum 48px height; hover wash is skipped on touch devices via hover media queries.",
+    "a11y": "Uses a native button or link. Focus-visible ring sits 3px outside the outline. Reduced motion replaces the spread with an instant fill. The label stays the accessible name; the blot is a pseudo-element only.",
+    "avoid": "Ink text on ink fill mid-press, blots overflowing the radius, delaying navigation for the animation, circular Material-like ripples that look stock, or rerunning on every hover.",
+    "stack_notes": {
+      "css": "Pseudo-element with mask-image of an inline SVG blob, transform-origin set from --x and --y; :active triggers scale with transition; label colour via :active plus a short transition-delay.",
+      "js": "A pointerdown listener writes offsetX and offsetY to --x and --y; WAAPI can animate the blot for finer control and is cancelled on pointerleave. Listeners attach once with event delegation."
+    }
+  },
+  {
+    "id": "micro-underline-traces-word",
+    "name": "Underline that traces the word",
+    "kind": "transition",
+    "family": "drawn-line",
+    "role": "micro",
+    "niches": [
+      "editorial",
+      "docs",
+      "portfolio",
+      "agency",
+      "professional"
+    ],
+    "moods": [
+      "editorial",
+      "minimal",
+      "calm",
+      "luxe"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Inline text links in body copy. Idle: a hairline underline at 1px, 30% ink, with text-underline-offset 0.2em. Hover or focus: a second 2px line draws left to right along the word, following the line of text even when the link wraps onto two lines, because it is painted as a background on the inline box with box-decoration-break clone. Visited links keep a dotted idle line. Arrow glyph optional for external links. States: idle, hover or focus (line draws), active (line thickens to 3px), leave (line retracts to the right edge, not back to the left).",
+    "motion": "Hover draws the line by animating background-size from 0 to 100% width over 280ms cubic-bezier(.3,.7,.2,1), anchored left. On leave, the anchor switches to right and the line retracts over 220ms, so it travels through the word rather than rewinding. Wrapped links draw each line fragment simultaneously.",
+    "still_check": "Not scroll-linked. In any still, link text must be fully legible and distinguishable as a link by the idle hairline alone, without relying on hover. Idle, hover, and visited states differ visibly.",
+    "mobile": "At 375px there is no hover, so links show a 1.5px idle underline at 50% ink; tapping draws the full line during the press as feedback before navigation, using the active state.",
+    "a11y": "Links always have an underline, never colour only. Focus-visible gets the full line plus a 2px outline offset. Reduced motion shows the drawn line instantly. Contrast of the idle line versus text is noted but text itself meets 4.5:1.",
+    "avoid": "Removing the idle underline, lines that skip descender gaps awkwardly, animation on block-level nav items where it feels slow, wrapped links where only the last line draws, or rewinding retract motion.",
+    "stack_notes": {
+      "css": "background-image linear-gradient currentColor, background-size 0 2px to 100% 2px, background-position left bottom switching to right bottom on leave, box-decoration-break clone for wraps; transitions only, no script.",
+      "js": "None needed. For SVG hand-drawn variants, inject a path per link fragment using getClientRects and animate stroke-dashoffset with WAAPI, keeping the CSS underline as the base."
+    }
+  },
+  {
+    "id": "micro-add-to-cart-flight",
+    "name": "Add to bag flight",
+    "kind": "transition",
+    "family": "flight-path",
+    "role": "micro",
+    "niches": [
+      "store",
+      "restaurant",
+      "local-business"
+    ],
+    "moods": [
+      "playful",
+      "bright",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "On product cards and detail pages. Pressing Add to bag clones a small thumbnail of the product (4rem square, rounded) at the button location and flies it along an arc to the bag icon in the header. The bag icon is a tote outline with a count badge. On arrival, the tote dips 3px as if catching weight and the badge number rolls up. A short line under the button confirms Added, size M, with an Undo link. States: idle, adding (button shows spinner text Adding), flying, landed (badge updated), undone.",
+    "motion": "The clone travels a quadratic arc from button to bag over 520ms: x uses ease-in-out, y uses ease-out then ease-in for a natural lob, scale goes from 1 to 0.35 and opacity holds until the final 80ms. On landing, the tote dips with a 220ms spring-like keyframe and the badge digit slides up over 180ms.",
+    "still_check": "Not scroll-linked. Any frame must show the button label and the bag count as legible text; the flying clone never covers the header nav labels or the price. The landed state shows the new count and the confirmation line.",
+    "mobile": "At 375px the header bag may be off-screen; the clone flies to a sticky bottom bag bar instead, which slides up showing item count and Checkout. Arc height reduces to keep the clone on screen.",
+    "a11y": "The clone is aria-hidden. A live region announces Added to bag, 3 items. Reduced motion skips the flight and pulses the badge. Undo is a focusable button. The bag link label includes the count as text.",
+    "avoid": "Flight ending at a stale position after scroll, updating the count before the server confirms, clones left in the DOM, covering the price during flight, or flights for bulk add that spawn dozens of clones.",
+    "stack_notes": {
+      "css": "CSS path: offset-path with a path() arc computed into a custom property, plus offset-distance animated from 0 to 100% via a keyframe; badge roll uses a translated stack of digits; position fixed clone.",
+      "js": "Measure button and bag rects with getBoundingClientRect at click, create a fixed clone, animate with WAAPI using separate x and y keyframes for the arc, remove on finish, then update the badge after the cart request resolves."
+    }
+  },
+  {
+    "id": "micro-number-tick-on-change",
+    "name": "Odometer number tick",
+    "kind": "transition",
+    "family": "counter-ticker",
+    "role": "micro",
+    "niches": [
+      "finance",
+      "dashboard",
+      "saas",
+      "store"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Any number that changes in response to input: a pricing total when switching monthly to yearly, a mortgage payment as a slider moves, a dashboard metric on refresh. Each digit sits in a fixed-width cell using tabular numerals, clipped to one line height, containing a vertical strip of 0 to 9. Currency symbol and separators are static cells. A small delta chip appears to the right (plus 12 or minus 40) in the direction's text. States: idle, changing (digits roll), settled, delta shown for 2s then fades to 50%.",
+    "motion": "On change, each digit strip translates vertically to its new value over 360ms cubic-bezier(.2,.8,.2,1), with lower-order digits starting 20ms later than higher ones so the change reads left to right. Digits roll upward for increases and downward for decreases. Delta chip fades in over 150ms.",
+    "still_check": "Not scroll-linked. Any frame must show a readable number; mid-roll frames show each digit at most half offset, and the settled state shows the exact value with its delta chip. Width never changes during the roll.",
+    "mobile": "At 375px the same behaviour holds; for very large numbers, the roll applies only to the last four digits to avoid jitter, and slider-driven changes throttle the roll so it settles after input stops.",
+    "a11y": "The digit strips are aria-hidden; a visually hidden span holds the full formatted value and updates via aria-live polite, debounced so sliders do not spam announcements. Reduced motion swaps values instantly with tabular numerals.",
+    "avoid": "Width jumps from proportional digits, rolling through every intermediate value on large jumps, announcing every slider tick, formatting that drops currency, or a roll so long the value lags the input.",
+    "stack_notes": {
+      "css": "Register --d as an integer at-property per digit and transition it; translate the strip by calc(var(--d) * -1lh); font-variant-numeric tabular-nums; direction class picks up or down travel.",
+      "js": "Format with Intl.NumberFormat, split into characters, set --d per digit cell, and update the hidden live text after a 400ms debounce. WAAPI can replace the transition for older engines."
+    }
+  },
+  {
+    "id": "micro-focus-ring-follows",
+    "name": "Focus ring that travels",
+    "kind": "transition",
+    "family": "focus-follow",
+    "role": "micro",
+    "niches": [
+      "docs",
+      "saas",
+      "dashboard",
+      "education"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "calm",
+      "bright"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "One shared focus indicator per component group (a toolbar, a nav, a filter row, a pricing toggle). Instead of each control drawing its own ring, a single absolutely positioned ring element, 2px solid accent with a 3px offset and the control's radius, slides from the previously focused control to the newly focused one. The ring sits above controls in z-order but has pointer-events none. Outside groups, standard per-element focus-visible rings remain. States: no focus (ring hidden), focus enters group (ring fades in at target), focus moves (ring travels), focus leaves (ring fades out).",
+    "motion": "When focus moves within a group, the ring animates position, width, height, and radius to the new target over 180ms cubic-bezier(.3,.7,.2,1), fast enough that keyboard users never wait. Entering the group fades the ring in over 100ms at the target without travel. Leaving fades it out over 120ms.",
+    "still_check": "Not scroll-linked. In any still where a control in the group has keyboard focus, the ring fully encloses that control with no part lagging over a neighbour; labels stay readable under the 3px offset.",
+    "mobile": "At 375px touch input rarely shows focus-visible, so the ring appears only with a hardware keyboard; groups that wrap onto two rows still travel correctly because positions are measured or anchored each time.",
+    "a11y": "Each control keeps a native fallback outline that is suppressed only when the shared ring is confirmed active. Reduced motion jumps the ring without travel. Ring colour meets 3:1 against adjacent colours as WCAG 2.2 focus appearance asks.",
+    "avoid": "Removing native outlines before the ring works, a ring that lags behind fast tabbing, rings clipped by overflow hidden parents, travel across the whole page between unrelated groups, or rings appearing on mouse clicks.",
+    "stack_notes": {
+      "css": "CSS anchor positioning: give the focused control anchor-name via :focus-visible, and position the ring with position-anchor and anchor() insets, with transitions on inset properties; fallback outlines under @supports not.",
+      "js": "On focusin within the group, read getBoundingClientRect of the target relative to the group and animate the ring with WAAPI; reposition on resize via ResizeObserver; check matches(':focus-visible') to skip pointer focus."
+    }
+  },
+  {
+    "id": "transition-section-seam-diagonal-wipe",
+    "name": "Diagonal seam wipe",
+    "kind": "transition",
+    "family": "clip-wipe",
+    "role": "transition",
+    "niches": [
+      "agency",
+      "kinetic",
+      "portfolio",
+      "events"
+    ],
+    "moods": [
+      "bold",
+      "experimental",
+      "dark",
+      "brutal"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Applied at the boundary between two contrasting sections, for example a light case study followed by a dark showreel. The incoming section overlaps the previous one by 40vh and is clipped by a polygon with a diagonal leading edge at 12 degrees. A thin accent rule 3px tall rides the diagonal edge, and a small label (Next: Showreel) travels on that rule in the section's mono face at clamp(0.75rem, 1vw, 0.9rem). States: before seam (incoming fully clipped), wiping (edge travels up), after seam (incoming fully revealed, rule fades).",
+    "motion": "Over the 40vh overlap, 0-100% progress moves the diagonal edge from the bottom of the viewport to above the top, revealing the incoming section. The outgoing content scales down to 0.97 and dims 20% across the same range. The rule and label travel with the edge; the rule fades out over the last 10%.",
+    "still_check": "At 50% of the seam, the diagonal splits the viewport with both sections' visible text legible on its own side and the label readable on the rule. At 25% the incoming wedge is small; at 75% it dominates.",
+    "mobile": "At 375px the angle drops to 6 degrees and the overlap shortens to 25vh; the outgoing scale is skipped to avoid reflow, and the label shortens to the next section's name only.",
+    "a11y": "Content order stays linear in the DOM; the overlap is purely visual through negative margin and clip. Reduced motion shows a hard horizontal seam. The label is aria-hidden as it repeats the next heading. No content is hidden while clipped once revealed.",
+    "avoid": "Clipping text that should be readable at the seam, overlapping interactive elements that become unclickable, using it on every boundary, scroll velocity triggers, or a diagonal that crosses headlines at 50%.",
+    "stack_notes": {
+      "css": "clip-path polygon with a custom property for the edge offset animated on the incoming section's view() timeline with animation-range entry; outgoing section gets a matching scale animation on its exit range.",
+      "js": "IntersectionObserver with fine thresholds or rAF progress sets --edge on the incoming section; pointer-events none on the clipped part until revealed. Any existing scroll library can scrub the same variable."
+    }
+  },
+  {
+    "id": "micro-hover-second-state-reveal",
+    "name": "Second-state image reveal",
+    "kind": "transition",
+    "family": "hover-preview",
+    "role": "micro",
+    "niches": [
+      "store",
+      "real-estate",
+      "portfolio",
+      "restaurant"
+    ],
+    "moods": [
+      "minimal",
+      "luxe",
+      "calm",
+      "warm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Product, property, or dish images that have a meaningful second state: a garment on a model then flat, a room furnished then empty, a dish plated then sliced, a property by day then at dusk. Both images stack in one aspect-ratio frame (4 / 5). The second image reveals through a soft vertical blind of 6 slats that open one after another, not a crossfade. A small caption chip names the state (Worn, Flat lay). States: idle (first image), hover or focus (slats open to second), touch (tap toggles), loading (second image lazy-loaded on first hover intent).",
+    "motion": "Hover opens six vertical slat masks in sequence from left to right, each scaling on the x axis from 0 to 1 over 260ms with a 35ms stagger, revealing the second image. The caption chip text swaps with a 120ms fade. Leaving closes slats right to left at the same speed.",
+    "still_check": "Not scroll-linked. Idle shows the first image complete with chip; hovered still shows the second image complete with its chip; product name and price below the frame are always legible and never covered.",
+    "mobile": "At 375px there is no hover; a small toggle chip on the image switches states on tap, and a swipe within the frame moves between the two images as a two-slide scroll-snap track.",
+    "a11y": "Both images have alt text describing their state; the toggle is a button with aria-pressed. Reduced motion uses an instant swap. Hover-revealed information is also reachable by focus. The second state never carries the only copy of any detail.",
+    "avoid": "Loading both images eagerly for every card, slats leaving gaps at fractional widths, hover-only state switches on touch, revealing a state that misleads such as staged furniture without saying so, or covering price text.",
+    "stack_notes": {
+      "css": "Second image with a mask-image built from six linear-gradient stops whose sizes transition per slat via custom properties and transition-delay; :hover and :focus-within on the card trigger; loading lazy on the second image.",
+      "js": "On pointerenter intent, set the second image src from a data attribute so it loads only when needed; tap toggles a class on touch. WAAPI can animate slat masks if mask transitions are unsupported."
+    }
+  },
+  {
+    "id": "micro-cursor-tethered-caption",
+    "name": "Cursor-tethered caption",
+    "kind": "transition",
+    "family": "cursor-tether",
+    "role": "micro",
+    "niches": [
+      "portfolio",
+      "editorial",
+      "travel",
+      "agency"
+    ],
+    "moods": [
+      "editorial",
+      "experimental",
+      "minimal",
+      "dark"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "On a photo gallery or work index. Hovering an image shows a caption card tethered to the pointer by a thin 1px line, offset 2rem below-right: title, place and year, photographer credit, in a small label at clamp(0.75rem, 1vw, 0.9rem) on a solid chip. The card lags behind the pointer on a spring so the line stretches and relaxes. The card flips side when near a viewport edge. Static captions also exist under each image in the DOM. States: idle (no tether), hover (tether shown), moving (line stretches), edge (card flips), leave (card retracts to pointer and fades).",
+    "motion": "While hovering, the card position lerps toward pointer plus offset at 0.18 per frame, so fast moves stretch the line up to about 8rem before it recovers. Line length and angle derive from card and pointer positions each frame. Enter fades the card in over 140ms; leave retracts it toward the pointer over 160ms.",
+    "still_check": "Not scroll-linked. Any hover still shows a fully legible caption card not overlapping the hovered image's focal point, with the tether line visible. Without hover, images still show their DOM captions below.",
+    "mobile": "At 375px there is no pointer tether; captions show under images as normal text, and tapping an image opens it in a lightbox with the caption pinned at the bottom.",
+    "a11y": "The floating card is aria-hidden because the same caption is in the figcaption. Reduced motion places the card at a fixed offset without lag or line stretch. Keyboard focus on a figure shows its caption anchored to the image corner.",
+    "avoid": "Captions that exist only in the floating card, cards covering the subject of the photo, rAF loops running when no gallery is hovered, cards clipped at screen edges, or the tether persisting after leaving.",
+    "stack_notes": {
+      "css": "CSS-only approximation: a caption chip positioned by anchor() to the hovered figure corner, revealed with :hover and :focus-within transitions; no tether line, but the same content and layering.",
+      "js": "pointermove writes target coordinates; a single rAF loop runs only while a figure is hovered, lerps card position, and draws the tether as an SVG line or a rotated div. Loop stops on pointerleave and cleans up listeners on unmount."
+    }
+  },
+  {
+    "id": "transition-scroll-progress-thread",
+    "name": "Stitched progress thread",
+    "kind": "transition",
+    "family": "progress-meter",
+    "role": "transition",
+    "niches": [
+      "editorial",
+      "docs",
+      "education",
+      "nonprofit",
+      "professional"
+    ],
+    "moods": [
+      "editorial",
+      "organic",
+      "calm",
+      "warm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A reading progress indicator for long articles or lessons: a 2px thread running down the left margin of the content column, positioned at 1.5rem from the text, drawn as a dashed stitch line. As the reader advances, the stitches fill solid from top. Each h2 in the article places a small knot (a 6px filled circle with a label of the section number) on the thread at its relative position. At the end, the thread ties off with a small bow mark beside the closing paragraph. States: unread (dashed), read (solid stitch), at knot (knot fills and its section number shows), complete (tie-off mark).",
+    "motion": "Page scroll progress 0-100% through the article body maps to the thread fill height, linear with scroll. Knots fill as the fill reaches them, with a 140ms scale pop. At 100% the tie-off mark draws its two loops via stroke-dashoffset over 400ms once. No motion when idle.",
+    "still_check": "At 50% of the article, the thread is solid to the midpoint knot with remaining stitches dashed, and article text is untouched. At 25% fewer knots are filled; at 75% most are filled with the tie-off still undrawn.",
+    "mobile": "At 375px the margin is too narrow, so the thread becomes a horizontal stitch line 2px tall fixed at the top of the viewport under the header, with knots as small notches and no labels.",
+    "a11y": "The thread is decorative and aria-hidden; the article keeps a regular table of contents. Reduced motion keeps the fill since it is position not animation, but removes pops and the tie-off draw. The thread never overlaps text.",
+    "avoid": "Measuring the whole page instead of the article body, knot positions drifting as images load, thread overlapping pull quotes, a progress bar that also acts as a scrubber stealing drags, or duplicating the docs rail.",
+    "stack_notes": {
+      "css": "A fixed or sticky thread element with scale on the y axis animated on a named view-timeline on the article element; knots placed by their own view timelines; dashed stitches by repeating-linear-gradient.",
+      "js": "Compute progress from the article's getBoundingClientRect in a passive scroll listener with rAF, position knots from h2 offsetTop relative to article height, and recompute with ResizeObserver after images load."
+    }
+  },
+  {
+    "id": "micro-details-height-interpolate",
+    "name": "Disclosure with measured height",
+    "kind": "transition",
+    "family": "accordion-fold",
+    "role": "micro",
+    "niches": [
+      "docs",
+      "health",
+      "finance",
+      "any",
+      "education"
+    ],
+    "moods": [
+      "minimal",
+      "calm",
+      "trustworthy",
+      "technical"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A native details and summary pattern used for spec sheets, dosage notes, fee breakdowns, or code examples. Summary row 3rem tall with label at clamp(1rem, 1.4vw, 1.125rem) and a plus mark built from two bars, where the vertical bar rotates flat to form a minus. Content area animates its height from 0 to auto using interpolate-size, with a 1px top rule that draws across when open. Content padding block 1rem. States: closed, hover (summary background tint), opening, open, closing.",
+    "motion": "Opening animates block-size from 0 to auto over 280ms cubic-bezier(.2,.8,.2,1) while content opacity goes from 0 to 1 starting 60ms in. The vertical bar of the plus rotates 90 degrees over the same duration. The top rule scales on the x axis from 0 to 1 over 220ms. Closing reverses in 220ms.",
+    "still_check": "Not scroll-linked. Closed and open stills must both be complete: closed shows the summary label and plus mark; open shows all content with no clipped last line. Content is never shown half-height in a settled state.",
+    "mobile": "At 375px summaries keep a 48px minimum tap height, the plus mark sits at the right edge with 1rem padding, and long content such as code blocks scroll horizontally inside the panel rather than widening the page.",
+    "a11y": "Native details provides state and keyboard toggling; summary keeps a visible focus ring. Reduced motion opens instantly. Content inside is findable by in-page search because hidden until found is honoured by details. No ARIA overrides needed.",
+    "avoid": "Fixed max-height hacks that clip content or delay closing, animating padding causing jitter, removing the default marker without a replacement, nesting interactive elements inside summary, or animating many panels open at once.",
+    "stack_notes": {
+      "css": "interpolate-size: allow-keywords on :root; transition on block-size and content-visibility with allow-discrete on the ::details-content pseudo-element; plus mark bars rotated via details[open] selectors, with no script and no fixed max-height values needed.",
+      "js": "Fallback for engines without interpolate-size: on toggle, measure scrollHeight and run a WAAPI height animation from 0 to the measured value, then clear the inline height. Listeners removed on unmount."
+    }
+  }
+]

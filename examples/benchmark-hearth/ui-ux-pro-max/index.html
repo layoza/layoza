@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth &amp; Rye · Wood-fired restaurant &amp; morning bakery, Northern Quarter</title>
+<meta name="description" content="Hearth & Rye is a 40-cover wood-fired restaurant and morning bakery in Manchester's Northern Quarter. Bread from 6am, dinner Wednesday to Sunday, from the same oven.">
+<meta name="theme-color" content="#1C1410">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display+SC:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5F0E1; --paper:#FFFBF2; --sand:#EBE1CC; --sand-2:#D4C4A8;
+  --ink:#2A1D15; --muted:#6B5544; --soot:#1C1410; --soot-2:#2A1F18;
+  --clay:#9A4A1C; --clay-hover:#7E3C16; --terracotta:#C67B5C; --ember:#E8925A; --gold:#C99A4B;
+  --olive:#55622E; --error:#A3341F; --on-dark:#F5F0E1; --on-dark-muted:#BFAE96;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sc:"Playfair Display SC","Playfair Display",Georgia,serif;
+  --sans:"Karla",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gutter:clamp(16px,4vw,48px); --max:1240px;
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:48px; --s6:72px; --s7:clamp(72px,10vw,128px);
+  --r:14px; --ease:cubic-bezier(.2,.7,.2,1);
+  --shadow:0 1px 2px rgba(42,29,21,.06),0 10px 30px -12px rgba(42,29,21,.22);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;line-height:1.6;overflow-x:hidden}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;text-wrap:balance}
+p{margin:0 0 1em;text-wrap:pretty}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--clay);outline-offset:3px;border-radius:4px}
+.dark :focus-visible,.site-header.on-dark :focus-visible,.drawer :focus-visible{outline-color:var(--ember)}
+.skip{position:absolute;left:16px;top:-80px;z-index:100;background:var(--ink);color:var(--cream);padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.eyebrow{font-family:var(--sc);font-size:.95rem;letter-spacing:.14em;color:var(--clay);display:inline-flex;align-items:center;gap:12px;margin-bottom:var(--s2)}
+.eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
+.dark .eyebrow{color:var(--ember)}
+.h2{font-size:clamp(2.2rem,4.6vw,3.75rem);letter-spacing:-.01em}
+.h2 em{font-style:italic;color:var(--clay)}
+.dark .h2 em{color:var(--ember)}
+.lede{font-size:clamp(1.06rem,1.4vw,1.2rem);color:var(--muted);max-width:56ch}
+.dark .lede{color:var(--on-dark-muted)}
+section{position:relative}
+.dark{background:var(--soot);color:var(--on-dark)}
+/* grain */
+.grain::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.07;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.dark.grain::after{mix-blend-mode:screen;opacity:.05}
+
+/* buttons */
+.btn{--bg:var(--clay);--fg:#FFF8EC;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 24px;border-radius:999px;border:1.5px solid var(--bg);background:var(--bg);color:var(--fg);font-weight:700;font-size:1rem;letter-spacing:.01em;text-decoration:none;cursor:pointer;transition:background-color .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease),transform .2s var(--ease)}
+.btn:hover{--bg:var(--clay-hover)}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-ghost{background:transparent;color:var(--ink);border-color:rgba(42,29,21,.35)}
+.btn-ghost:hover{background:rgba(42,29,21,.06);border-color:var(--ink)}
+.dark .btn-ghost,.on-dark .btn-ghost{color:var(--on-dark);border-color:rgba(245,240,225,.4)}
+.dark .btn-ghost:hover{background:rgba(245,240,225,.08);border-color:var(--on-dark)}
+.btn-ember{--bg:var(--ember);--fg:var(--soot)}
+.btn-ember:hover{--bg:#F0A672}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:50;background:rgba(245,240,225,.92);backdrop-filter:saturate(140%) blur(10px);-webkit-backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid rgba(42,29,21,.1);transition:background-color .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease)}
+.site-header.on-dark{background:rgba(28,20,16,.86);color:var(--on-dark);border-color:rgba(245,240,225,.08)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:72px}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--serif);font-size:1.45rem;letter-spacing:-.01em;white-space:nowrap}
+.brand em{font-style:italic;color:var(--clay)}
+.on-dark .brand em{color:var(--ember)}
+.brand svg{width:30px;height:30px}
+.nav-links{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;text-decoration:none;font-weight:500;border-radius:999px;transition:background-color .2s var(--ease)}
+.nav-links a:hover{background:rgba(127,90,60,.14)}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.menu-toggle{display:none;width:48px;height:48px;border-radius:999px;border:1.5px solid currentColor;background:transparent;cursor:pointer;align-items:center;justify-content:center;opacity:.9}
+.menu-toggle svg{width:22px;height:22px}
+@media (max-width:980px){
+  .nav-links,.nav-cta .btn-book{display:none}
+  .menu-toggle{display:inline-flex}
+}
+.drawer{position:fixed;inset:0;z-index:60;background:var(--soot);color:var(--on-dark);display:flex;flex-direction:column;padding:0 var(--gutter) var(--s4);visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility 0s linear .25s;overflow-y:auto}
+.drawer.open{visibility:visible;opacity:1;transform:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.drawer-top{display:flex;align-items:center;justify-content:space-between;min-height:72px}
+.drawer-top .brand em{color:var(--ember)}
+.drawer ol{list-style:none;margin:var(--s4) 0;padding:0;counter-reset:d}
+.drawer li{border-bottom:1px solid rgba(245,240,225,.12)}
+.drawer li a{display:flex;align-items:baseline;gap:16px;padding:16px 0;text-decoration:none;font-family:var(--serif);font-size:clamp(2rem,8vw,2.6rem);line-height:1.1}
+.drawer li a::before{counter-increment:d;content:"0" counter(d);font-family:var(--sans);font-size:.85rem;color:var(--ember);letter-spacing:.1em}
+.drawer .btn{width:100%}
+.drawer-meta{margin-top:var(--s4);color:var(--on-dark-muted);font-size:.95rem}
+body.locked{overflow:hidden}
+
+/* hero */
+.hero{padding:clamp(32px,4.5vw,64px) 0 clamp(56px,7vw,96px);overflow:hidden}
+.hero::before{content:"";position:absolute;right:-10%;top:10%;width:70vw;height:70vw;max-width:900px;max-height:900px;background:radial-gradient(closest-side,rgba(232,146,90,.22),rgba(232,146,90,0));pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(32px,5vw,80px);align-items:center;position:relative}
+.hero h1{font-size:clamp(2.75rem,6vw,5.4rem);letter-spacing:-.02em;line-height:.98}
+.hero h1 em{font-style:italic;color:var(--ember);display:block}
+.hero .lede{margin:var(--s3) 0 var(--s4);max-width:50ch;font-size:clamp(1.08rem,1.5vw,1.25rem)}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:0;margin:var(--s5) 0 0;padding:0;list-style:none;border-top:1px solid rgba(245,240,225,.14)}
+.hero-facts li{padding:var(--s2) var(--s3) 0 0;margin-right:var(--s3);font-size:.95rem;color:var(--on-dark-muted)}
+.hero-facts strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.6rem;color:var(--on-dark);line-height:1.2}
+.oven{position:relative;aspect-ratio:1/1.06;width:100%;max-width:560px;justify-self:end}
+.oven svg.oven-art{position:absolute;inset:0;width:100%;height:100%}
+.oven canvas{position:absolute;left:21.5%;top:38%;width:57%;height:41%;border-radius:50% 50% 0 0/64% 64% 0 0}
+.oven-status{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(28,20,16,.92);border:1px solid rgba(245,240,225,.16);border-radius:999px;padding:10px 18px 10px 14px;white-space:nowrap;font-size:.95rem;box-shadow:0 12px 30px -10px rgba(0,0,0,.6)}
+.oven-status .dot{width:10px;height:10px;border-radius:50%;background:var(--ember);box-shadow:0 0 0 4px rgba(232,146,90,.22);flex:none}
+.oven-status .dot.cool{background:var(--on-dark-muted);box-shadow:0 0 0 4px rgba(191,174,150,.2)}
+.oven-status b{font-weight:700}
+.oven-status span.t{color:var(--on-dark-muted)}
+
+/* section shell */
+.section{padding:var(--s7) 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);align-items:end;gap:var(--s3);margin-bottom:var(--s5)}
+.sec-head>:first-child{min-width:min(100%,600px)}
+.filters{justify-content:flex-start;max-width:520px}
+@media (max-width:1100px){.sec-head{grid-template-columns:1fr}}
+
+/* menu */
+.menu-date{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:1.15rem;margin-top:12px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters .label{font-size:.9rem;font-weight:600;color:var(--muted);margin-right:4px;width:100%}
+.chip{min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid rgba(42,29,21,.25);background:var(--paper);cursor:pointer;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:8px;transition:background-color .18s var(--ease),border-color .18s var(--ease),color .18s var(--ease)}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.chip abbr{text-decoration:none}
+.menu-count{font-size:.95rem;color:var(--muted);margin:0 0 var(--s3)}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s4)}
+.course{background:var(--paper);border-radius:var(--r);padding:var(--s4) var(--s4) var(--s3);box-shadow:var(--shadow);border:1px solid rgba(42,29,21,.06);position:relative}
+.course h3{font-family:var(--sc);font-size:1.35rem;letter-spacing:.06em;display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:var(--s2);border-bottom:1px solid var(--sand-2);margin-bottom:var(--s1)}
+.course h3 small{font-family:var(--sans);font-size:.85rem;letter-spacing:0;color:var(--muted);font-weight:500}
+.dish{list-style:none;padding:var(--s2) 0;border-bottom:1px dashed rgba(42,29,21,.16);transition:opacity .25s var(--ease)}
+.dish:last-child{border-bottom:0}
+.dish[hidden]{display:none}
+.dish-top{display:flex;align-items:baseline;gap:10px}
+.dish-name{font-family:var(--serif);font-size:1.18rem;line-height:1.25}
+.dish-top .lead{flex:1;border-bottom:1.5px dotted rgba(42,29,21,.3);transform:translateY(-5px);min-width:16px}
+.dish-price{font-weight:700;font-variant-numeric:tabular-nums}
+.dish p{margin:4px 0 8px;color:var(--muted);font-size:.98rem;line-height:1.5}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:.75rem;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:6px;border:1.5px solid currentColor;color:var(--olive);text-decoration:none;line-height:1.5}
+.tag.gf{color:var(--clay)}
+.empty{color:var(--muted);font-style:italic;font-family:var(--serif);padding:var(--s3) 0}
+.menu-note{margin-top:var(--s4);color:var(--muted);font-size:.95rem}
+@media (max-width:1060px){.menu-grid{grid-template-columns:1fr 1fr}.course.dessert{grid-column:1/-1}}
+@media (max-width:700px){.menu-grid{grid-template-columns:1fr}.course{padding:var(--s3) var(--s3) var(--s2)}}
+
+/* bakery */
+.bakery{background:var(--sand)}
+.bakery-intro{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);align-items:end;margin-bottom:var(--s5)}
+.hours-card{justify-self:end;background:var(--paper);border-radius:var(--r);padding:var(--s3);box-shadow:var(--shadow);min-width:280px}
+.hours-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 20px}
+.hours-card dt{font-weight:700}
+.hours-card dd{margin:0;color:var(--muted)}
+.breads{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);list-style:none;margin:0;padding:0}
+.bread{background:var(--paper);border-radius:var(--r);padding:var(--s3);display:grid;grid-template-columns:96px 1fr;gap:var(--s2) var(--s3);align-items:center;box-shadow:var(--shadow)}
+.bread svg{width:96px;height:72px}
+.bread h3{font-size:1.3rem;line-height:1.2}
+.bread .price{font-weight:700;margin-top:2px}
+.bread p{grid-column:1/-1;margin:0;color:var(--muted);font-size:.97rem}
+.soldout{grid-column:1/-1}
+.soldout-row{display:flex;justify-content:space-between;font-size:.88rem;font-weight:600;margin-bottom:6px}
+.soldout-row span:last-child{color:var(--clay)}
+.bar{position:relative;height:8px;border-radius:99px;background:var(--sand)}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--clay))}
+.bar-scale{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
+.bakery-foot{margin-top:var(--s4);display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center;justify-content:space-between}
+.bakery-foot p{margin:0;color:var(--muted)}
+@media (max-width:1060px){.breads{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.bakery-intro{grid-template-columns:1fr}.hours-card{justify-self:stretch;min-width:0}}
+@media (max-width:640px){.breads{grid-template-columns:1fr}.bread{grid-template-columns:80px 1fr}.bread svg{width:80px;height:60px}}
+
+/* oven story */
+.story-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(32px,6vw,96px);align-items:start}
+.story-grid .lede p{margin-bottom:1em}
+.curve-wrap{margin-top:var(--s5)}
+.curve{width:100%;height:auto;overflow:visible}
+.curve text{font-family:var(--sans);fill:var(--on-dark-muted);font-size:15px}
+.day{list-style:none;margin:0;padding:0;position:relative}
+.day::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--ember),rgba(232,146,90,.15) 45%,var(--ember) 75%,rgba(232,146,90,.1))}
+.day li{position:relative;padding:0 0 var(--s4) 56px}
+.day li:last-child{padding-bottom:0}
+.day li::before{content:"";position:absolute;left:8px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--soot);border:2px solid var(--ember)}
+.day time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ember);letter-spacing:.04em}
+.day h3{font-size:1.5rem;margin:4px 0 6px}
+.day p{color:var(--on-dark-muted);margin:0;max-width:52ch}
+@media (max-width:900px){.story-grid{grid-template-columns:1fr}}
+@media (max-width:560px){.curve text{font-size:21px}}
+
+/* booking */
+.book-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,5vw,80px);align-items:start}
+.book-aside ul{list-style:none;margin:var(--s4) 0 0;padding:0;display:grid;gap:var(--s2)}
+.book-aside li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}
+.book-aside li svg{width:40px;height:40px;padding:9px;border-radius:50%;background:var(--sand);color:var(--clay)}
+.book-aside li b{display:block}
+.book-aside li span{color:var(--muted);font-size:.97rem}
+.form-card{background:var(--paper);border-radius:20px;padding:clamp(24px,4vw,44px);box-shadow:var(--shadow);border:1px solid rgba(42,29,21,.06)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3) var(--s3)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-weight:700;font-size:.97rem}
+.field .hint{font-size:.88rem;color:var(--muted);font-weight:400}
+.field input,.field select,.field textarea{width:100%;min-height:50px;padding:12px 14px;border-radius:10px;border:1.5px solid #B9A88E;background:#fff;font-size:1rem;transition:border-color .18s var(--ease),box-shadow .18s var(--ease)}
+.field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232A1D15' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer}
+.field textarea{min-height:104px;resize:vertical}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--muted)}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:none;border-color:var(--clay);box-shadow:0 0 0 3px rgba(154,74,28,.25)}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--error)}
+.field .err{display:none;color:var(--error);font-size:.92rem;font-weight:600;align-items:center;gap:6px}
+.field.invalid .err{display:flex}
+.err svg{width:16px;height:16px;flex:none}
+.field.valid input,.field.valid select{border-color:var(--olive)}
+.counter{font-size:.85rem;color:var(--muted);text-align:right}
+.summary{display:none;border:2px solid var(--error);border-radius:12px;padding:var(--s2) var(--s3);margin-bottom:var(--s3);background:#FBEDE7}
+.summary.show{display:block}
+.summary h3{font-family:var(--sans);font-weight:700;font-size:1.05rem;color:var(--error);margin-bottom:6px}
+.summary ul{margin:0;padding-left:20px}
+.summary a{color:var(--error);font-weight:600}
+.form-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2);margin-top:var(--s4)}
+.form-actions p{margin:0;font-size:.92rem;color:var(--muted);max-width:36ch}
+.btn[aria-busy="true"]{opacity:.75;cursor:progress}
+.success{text-align:left}
+.success .tick{width:56px;height:56px;border-radius:50%;background:var(--olive);color:#fff;display:grid;place-items:center;margin-bottom:var(--s3)}
+.success .tick svg{width:28px;height:28px}
+.success h3{font-size:2rem;margin-bottom:var(--s2)}
+.success dl{display:grid;grid-template-columns:auto 1fr;gap:8px 24px;margin:var(--s3) 0;padding:var(--s3);background:var(--cream);border-radius:12px}
+.success dt{font-weight:700}
+.success dd{margin:0}
+@media (max-width:900px){.book-grid{grid-template-columns:1fr}}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
+
+/* private dining */
+.pd{background:var(--soot-2)}
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
+.pd-art{background:radial-gradient(circle at 50% 40%,rgba(232,146,90,.16),transparent 65%);border-radius:24px;padding:var(--s3)}
+.included{list-style:none;padding:0;margin:var(--s4) 0;display:grid;grid-template-columns:1fr 1fr;gap:var(--s2) var(--s3)}
+.included li{display:flex;gap:12px;align-items:flex-start;color:var(--on-dark-muted)}
+.included li b{color:var(--on-dark);display:block;font-weight:600}
+.included svg{width:22px;height:22px;flex:none;color:var(--ember);margin-top:2px}
+.pd-price{font-family:var(--serif);font-size:1.4rem;margin-bottom:var(--s3)}
+.pd-price span{color:var(--on-dark-muted);font-family:var(--sans);font-size:1rem}
+@media (max-width:900px){.pd-grid{grid-template-columns:1fr}.pd-art{order:2}}
+@media (max-width:520px){.included{grid-template-columns:1fr}}
+
+/* reviews */
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);list-style:none;margin:0;padding:0}
+.review{background:var(--paper);border-radius:var(--r);padding:var(--s4);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:var(--s3)}
+.review:nth-child(2){transform:translateY(32px);background:var(--sand)}
+.review blockquote{margin:0;font-family:var(--serif);font-size:1.28rem;line-height:1.45}
+.review blockquote::before{content:"\201C";display:block;font-size:3.5rem;line-height:.6;color:var(--terracotta);margin-bottom:12px}
+.review figcaption{margin-top:auto;font-size:.95rem;color:var(--muted)}
+.review figcaption b{color:var(--ink);display:block}
+.stars{display:flex;gap:2px;color:var(--gold)}
+.stars svg{width:16px;height:16px}
+@media (max-width:960px){.reviews{grid-template-columns:1fr}.review:nth-child(2){transform:none}}
+
+/* faq */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,5vw,80px);align-items:start}
+.acc{border-top:1px solid var(--sand-2)}
+.acc-item{border-bottom:1px solid var(--sand-2)}
+.acc-item h3{font-family:var(--sans);font-size:1.12rem;font-weight:600;line-height:1.35}
+.acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:var(--s2);text-align:left;background:none;border:0;padding:20px 0;cursor:pointer;min-height:64px}
+.acc-btn:hover .acc-q{color:var(--clay)}
+.acc-icon{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(42,29,21,.25);display:grid;place-items:center;flex:none;transition:transform .25s var(--ease),background-color .2s var(--ease)}
+.acc-icon svg{width:16px;height:16px}
+.acc-btn[aria-expanded="true"] .acc-icon{transform:rotate(45deg);background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+.acc-panel.open{grid-template-rows:1fr}
+.acc-panel>div{overflow:hidden}
+.acc-panel p{color:var(--muted);padding-bottom:20px;margin:0;max-width:62ch}
+@media (max-width:900px){.faq-grid{grid-template-columns:1fr}}
+
+/* footer */
+.footer{padding:var(--s6) 0 var(--s4)}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:var(--s4)}
+.footer h2{font-family:var(--sc);font-size:1rem;letter-spacing:.12em;color:var(--ember);margin-bottom:var(--s2)}
+.footer p,.footer dd,.footer address{color:var(--on-dark-muted);font-style:normal}
+.footer a{color:var(--on-dark);text-underline-offset:3px}
+.footer dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px}
+.footer dt{color:var(--on-dark);font-weight:600}
+.footer dd{margin:0}
+.big-word{font-family:var(--serif);font-size:clamp(3rem,13vw,11rem);line-height:.9;letter-spacing:-.03em;color:var(--on-dark);margin:0 0 var(--s5);white-space:nowrap}
+.big-word em{color:var(--ember)}
+.social{display:flex;gap:10px;list-style:none;padding:0;margin:var(--s2) 0 0}
+.social a{width:44px;height:44px;border-radius:50%;border:1px solid rgba(245,240,225,.25);display:grid;place-items:center;transition:background-color .2s var(--ease)}
+.social a:hover{background:rgba(245,240,225,.1)}
+.social svg{width:20px;height:20px}
+.legal{margin-top:var(--s5);padding-top:var(--s3);border-top:1px solid rgba(245,240,225,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.9rem;color:var(--on-dark-muted)}
+@media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+/* hero responsive */
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .oven{justify-self:center;max-width:400px;margin-top:var(--s4)}
+}
+@media (max-width:560px){
+  .oven{max-width:300px}
+  .hero-ctas .btn{flex:1 1 100%}
+  .oven-status{font-size:.85rem;padding:8px 14px 8px 12px}
+}
+
+/* reveal (content stays visible without JS) */
+.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header on-dark" id="top">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Hearth &amp; Rye, back to top">
+      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 27V16a12 12 0 0 1 24 0v11"/><path d="M9 27v-9a7 7 0 0 1 14 0v9"/><path d="M2 27h28"/><path d="M16 25c-2.4-1.4-3-3.6-1.4-6 .4 1.4 1.4 1.8 2 1.2.8-.8.2-2.4 1-3.6 1.6 2.4 2.4 5.6-1.6 8.4z" fill="#E8925A" stroke="none"/></svg>
+      <span>Hearth <em>&amp;</em> Rye</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#bakery">Bakery</a></li>
+        <li><a href="#book">Book</a></li>
+        <li><a href="#private-dining">Private dining</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ember btn-book" href="#book">Book a table</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="drawer-top">
+    <a class="brand" href="#top" data-close><span>Hearth <em>&amp;</em> Rye</span></a>
+    <button class="menu-toggle" type="button" data-close aria-label="Close menu" style="display:inline-flex">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Mobile">
+    <ol>
+      <li><a href="#menu" data-close>Menu</a></li>
+      <li><a href="#bakery" data-close>Bakery</a></li>
+      <li><a href="#book" data-close>Book</a></li>
+      <li><a href="#private-dining" data-close>Private dining</a></li>
+      <li><a href="#visit" data-close>Visit</a></li>
+    </ol>
+  </nav>
+  <a class="btn btn-ember" href="#book" data-close>Book a table</a>
+  <p class="drawer-meta">Dinner Wed–Sun from 17:30 · Bakery counter Tue–Sun from 08:00<br>18 Copper Yard, Northern Quarter, Manchester</p>
+</div>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero dark grain" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Northern Quarter · Manchester</p>
+      <h1 id="hero-title">One oven.<em>Bread at dawn, dinner by dusk.</em></h1>
+      <p class="lede">Hearth &amp; Rye is a 40-cover wood-fired restaurant and morning bakery. The fire is lit before six, the loaves come out first, and by evening the same oven is cooking your dinner, in full view of the room.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-ember" href="#book">Book a table
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="#menu">See tonight’s menu</a>
+      </div>
+      <ul class="hero-facts">
+        <li><strong>06:00</strong>first bake</li>
+        <li><strong>40</strong>covers, open kitchen</li>
+        <li><strong>Wed–Sun</strong>dinner from 17:30</li>
+      </ul>
+    </div>
+
+    <div class="oven" aria-hidden="true">
+      <svg class="oven-art" viewBox="0 0 400 424" fill="none">
+        <defs>
+          <radialGradient id="mouth" cx="50%" cy="85%" r="70%">
+            <stop offset="0" stop-color="#F3A260" stop-opacity=".9"/>
+            <stop offset=".45" stop-color="#9A4A1C" stop-opacity=".7"/>
+            <stop offset="1" stop-color="#1C1410"/>
+          </radialGradient>
+          <linearGradient id="dome" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#3A2A20"/><stop offset="1" stop-color="#241912"/>
+          </linearGradient>
+          <pattern id="bricks" width="40" height="20" patternUnits="userSpaceOnUse">
+            <path d="M0 .5h40M0 10.5h40M.5 0v10M20.5 10v10" stroke="#4A372A" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <!-- chimney -->
+        <rect x="178" y="8" width="44" height="70" fill="#2C1F17" stroke="#4A372A"/>
+        <path d="M200 6c-10-8 2-18-6-26" stroke="#BFAE96" stroke-opacity=".25" stroke-width="2" stroke-linecap="round"/>
+        <!-- dome -->
+        <path d="M30 332V230C30 136 106 60 200 60s170 76 170 170v102z" fill="url(#dome)"/>
+        <path d="M30 332V230C30 136 106 60 200 60s170 76 170 170v102z" fill="url(#bricks)" opacity=".8"/>
+        <path d="M30 332V230C30 136 106 60 200 60s170 76 170 170v102z" stroke="#5A4434" stroke-width="2"/>
+        <!-- arch voussoirs -->
+        <g stroke="#6B5544" stroke-width="2">
+          <path d="M70 336V262c0-72 58-130 130-130s130 58 130 130v74" fill="#1C1410"/>
+          <path d="M86 336V262c0-63 51-114 114-114s114 51 114 114v74" fill="url(#mouth)"/>
+        </g>
+        <g stroke="#6B5544" stroke-width="1.5" opacity=".9">
+          <path d="M70 262h16M314 262h16M78 222l15 6M322 222l-15 6M97 186l12 10M303 186l-12 10M124 158l9 13M276 158l-9 13M158 139l5 15M242 139l-5 15M200 132v16"/>
+        </g>
+        <!-- hearth floor + bread peel -->
+        <rect x="0" y="332" width="400" height="18" rx="2" fill="#3A2A20" stroke="#5A4434"/>
+        <rect x="16" y="350" width="368" height="74" fill="#241912"/>
+        <path d="M16 350h368" stroke="#5A4434"/>
+        <g opacity=".9">
+          <rect x="120" y="386" width="160" height="7" rx="3.5" fill="#6B5544"/>
+        </g>
+        <!-- logs -->
+        <g transform="translate(0 4)">
+          <rect x="128" y="308" width="80" height="16" rx="8" fill="#3A2416" transform="rotate(-8 168 316)"/>
+          <rect x="188" y="310" width="86" height="16" rx="8" fill="#2E1C12" transform="rotate(7 231 318)"/>
+        </g>
+      </svg>
+      <canvas id="fire" width="456" height="328"></canvas>
+      <p class="oven-status" id="oven-status" aria-live="off"><span class="dot"></span><b id="oven-now">The oven</b><span class="t" id="oven-time"></span></p>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="section" id="menu" aria-labelledby="menu-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="reveal">
+        <p class="eyebrow">Tonight’s menu</p>
+        <h2 class="h2" id="menu-title">Cooked over <em>wood</em>, written daily.</h2>
+        <p class="menu-date" id="menu-date">Served Wednesday to Sunday from 17:30</p>
+      </div>
+      <div class="filters" role="group" aria-labelledby="filter-label">
+        <span class="label" id="filter-label">Filter by dietary need</span>
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">All dishes</button>
+        <button class="chip" type="button" data-filter="V" aria-pressed="false"><abbr title="Vegetarian">V</abbr> Vegetarian</button>
+        <button class="chip" type="button" data-filter="VG" aria-pressed="false"><abbr title="Vegan">VG</abbr> Vegan</button>
+        <button class="chip" type="button" data-filter="GF" aria-pressed="false"><abbr title="Gluten-free">GF</abbr> Gluten-free</button>
+      </div>
+    </div>
+    <p class="menu-count" id="menu-count" aria-live="polite">Showing all 11 dishes</p>
+    <div class="menu-grid" id="menu-grid"><!-- rendered from data; static fallback below --></div>
+    <noscript><p>Our full menu is printed at the door. Enable JavaScript to filter by dietary tag.</p></noscript>
+    <p class="menu-note">V vegetarian · VG vegan · GF gluten-free. Our kitchen handles gluten, nuts and dairy every day; please tell us about allergies when you book. Dishes change with what’s good, so this is tonight’s list, not a promise for next week.</p>
+  </div>
+</section>
+
+<!-- BAKERY -->
+<section class="section bakery grain" id="bakery" aria-labelledby="bakery-title">
+  <div class="wrap">
+    <div class="bakery-intro">
+      <div class="reveal">
+        <p class="eyebrow">Morning bakery</p>
+        <h2 class="h2" id="bakery-title">First out of the oven, <em>first to go.</em></h2>
+        <p class="lede" style="margin-top:16px">Dough is shaped the night before and baked from 6am in the full heat of the fire. When a tray is gone, it’s gone, so here’s roughly when each one sells out.</p>
+      </div>
+      <div class="hours-card reveal">
+        <dl>
+          <dt>Counter</dt><dd>Tue–Sun, 08:00–13:00</dd>
+          <dt>Pre-order</dt><dd>By 18:00 the day before</dd>
+          <dt>Monday</dt><dd>The oven rests</dd>
+        </dl>
+      </div>
+    </div>
+    <ul class="breads" id="breads"></ul>
+    <div class="bakery-foot">
+      <p>Sell-out times are typical on a weekday; Saturdays run earlier.</p>
+      <a class="btn btn-ghost" href="#faq">How to pre-order a loaf</a>
+    </div>
+  </div>
+</section>
+
+<!-- OVEN STORY -->
+<section class="section dark grain" id="oven" aria-labelledby="oven-title">
+  <div class="wrap story-grid">
+    <div class="reveal">
+      <p class="eyebrow">The oven</p>
+      <h2 class="h2" id="oven-title">One fire, <em>the whole day.</em></h2>
+      <div class="lede" style="margin-top:20px">
+        <p>We don’t have a gas range or a back-up oven. Everything on this page comes out of one brick dome, and the menu follows its heat.</p>
+        <p>The fire is fierce at dawn, which is when bread wants it. As it falls, pastries go in, then pots that need hours. By evening we build it back up for the dinner menu and cook in front of you.</p>
+      </div>
+      <div class="curve-wrap">
+        <svg class="curve" viewBox="0 0 520 220" role="img" aria-labelledby="curve-t curve-d">
+          <title id="curve-t">How hot the oven runs through the day</title>
+          <desc id="curve-d">Heat peaks at dawn for bread, falls through the morning and afternoon for pastries and slow cooking, rises again for dinner service, then is left to die down overnight.</desc>
+          <defs>
+            <linearGradient id="heat" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#E8925A"/><stop offset=".45" stop-color="#C99A4B"/><stop offset=".7" stop-color="#E8925A"/><stop offset="1" stop-color="#9A4A1C"/>
+            </linearGradient>
+            <linearGradient id="heatfill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E8925A" stop-opacity=".35"/><stop offset="1" stop-color="#E8925A" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#F5F0E1" stroke-opacity=".08"><path d="M20 40h490M20 90h490M20 140h490M20 190h490"/></g>
+          <path d="M20 190 C40 120 50 34 70 32 S120 60 160 92 S240 150 290 152 S330 70 360 56 S430 64 450 96 S490 170 510 186 L510 190Z" fill="url(#heatfill)"/>
+          <path id="heatline" d="M20 190 C40 120 50 34 70 32 S120 60 160 92 S240 150 290 152 S330 70 360 56 S430 64 450 96 S490 170 510 186" stroke="url(#heat)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <g fill="#E8925A"><circle cx="70" cy="32" r="5"/><circle cx="160" cy="92" r="5"/><circle cx="290" cy="152" r="5"/><circle cx="360" cy="56" r="5"/><circle cx="510" cy="186" r="5"/></g>
+          <g text-anchor="middle"><text x="70" y="214">06:00</text><text x="160" y="214">10:00</text><text x="290" y="214">14:00</text><text x="360" y="214">17:30</text><text x="490" y="214">23:00</text></g>
+          <g><text x="80" y="26" fill="#F5F0E1" style="fill:#F5F0E1">bread</text><text x="370" y="48" style="fill:#F5F0E1">dinner</text><text x="250" y="140" style="fill:#F5F0E1">slow pots</text></g>
+        </svg>
+      </div>
+    </div>
+    <ol class="day">
+      <li class="reveal"><time>05:30</time><h3>The fire is lit</h3><p>Seasoned hardwood goes in on the left of the floor. In about half an hour the soot on the dome burns off to clean, pale brick: the sign it’s hot enough.</p></li>
+      <li class="reveal"><time>06:00</time><h3>Bread, in the fiercest heat</h3><p>The embers are swept aside and the sourdough goes straight onto the bricks. The first loaves are out and cooling before the street wakes up.</p></li>
+      <li class="reveal"><time>10:00</time><h3>Pastries in the falling heat</h3><p>As the oven eases off, croissants and cardamom knots bake gently enough not to scorch.</p></li>
+      <li class="reveal"><time>14:00</time><h3>Pots for the evening</h3><p>Beans, stocks and braises sit in the retained heat for hours. Nothing is wasted: the morning’s fire becomes the evening’s depth.</p></li>
+      <li class="reveal"><time>17:30</time><h3>Built back up for dinner</h3><p>Fresh wood, a live flame, and the kitchen faces the room. You’ll see your dinner go in, and come out.</p></li>
+      <li class="reveal"><time>23:00</time><h3>Embers banked</h3><p>The fire is raked back and left to cool, ready to be lit again in a few hours.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section class="section" id="book" aria-labelledby="book-title">
+  <div class="wrap book-grid">
+    <div class="book-aside reveal">
+      <p class="eyebrow">Book a table</p>
+      <h2 class="h2" id="book-title">Pull up a chair <em>by the fire.</em></h2>
+      <p class="lede" style="margin-top:16px">We seat dinner Wednesday to Sunday, 17:30 to 21:30, for parties of up to eight. Bookings open 30 days ahead.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Two hours at the table</b><span>Linger longer at the counter afterwards if it’s free.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><div><b>More than eight of you?</b><span>Our <a href="#private-dining">chef’s table</a> seats up to ten.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><div><b>Walk-ins welcome</b><span>Counter seats facing the oven are kept free each night.</span></div></li>
+      </ul>
+    </div>
+
+    <div class="form-card" id="form-card">
+      <form id="booking" novalidate aria-describedby="form-note">
+        <div class="summary" id="summary" role="alert" tabindex="-1" aria-labelledby="summary-title">
+          <h3 id="summary-title">Please check a few details</h3>
+          <ul id="summary-list"></ul>
+        </div>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-err">
+            <p class="err" id="name-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+          <div class="field full">
+            <label for="email">Email <span class="hint">· for your confirmation</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="email-err">
+            <p class="err" id="email-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+          <div class="field">
+            <label for="party">Party size</label>
+            <select id="party" name="party" required aria-describedby="party-err">
+              <option value="">Choose…</option>
+              <option value="1">1 guest</option><option value="2">2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option>
+              <option value="5">5 guests</option><option value="6">6 guests</option><option value="7">7 guests</option><option value="8">8 guests</option>
+            </select>
+            <p class="err" id="party-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+          <div class="field">
+            <label for="date">Date <span class="hint">· Wed–Sun</span></label>
+            <select id="date" name="date" required aria-describedby="date-err"><option value="">Choose a date…</option></select>
+            <p class="err" id="date-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+          <div class="field full">
+            <label for="time">Time</label>
+            <select id="time" name="time" required aria-describedby="time-hint time-err">
+              <option value="">Choose a time…</option>
+            </select>
+            <span class="hint" id="time-hint">Seatings every 30 minutes, 17:30 to 21:30.</span>
+            <p class="err" id="time-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+          <div class="field full">
+            <label for="notes">Dietary notes <span class="hint">· optional</span></label>
+            <textarea id="notes" name="notes" maxlength="300" aria-describedby="notes-count notes-err" placeholder="Allergies, intolerances, or anything we should know"></textarea>
+            <span class="counter" id="notes-count">0 / 300</span>
+            <p class="err" id="notes-err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span></span></p>
+          </div>
+        </div>
+        <div class="form-actions">
+          <p id="form-note">We’ll hold your table for 15 minutes. No card needed for parties under six.</p>
+          <button class="btn" type="submit" id="submit">Request this table</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVATE DINING -->
+<section class="section dark pd grain" id="private-dining" aria-labelledby="pd-title">
+  <div class="wrap pd-grid">
+    <div class="pd-art reveal" aria-hidden="true">
+      <svg viewBox="0 0 480 360" fill="none">
+        <!-- oven at top -->
+        <path d="M170 64V40a70 70 0 0 1 140 0v24z" fill="#3A2A20" stroke="#6B5544" stroke-width="2"/>
+        <path d="M200 64V48a40 40 0 0 1 80 0v16z" fill="#9A4A1C" opacity=".85"/>
+        <path d="M232 60c-6-4-6-10-1-15 1 4 4 5 5 3 1-3 0-6 2-9 5 6 6 14-6 21z" fill="#E8925A"/>
+        <rect x="150" y="64" width="180" height="10" rx="3" fill="#5A4434"/>
+        <text x="240" y="100" text-anchor="middle" font-family="Karla, sans-serif" font-size="12" letter-spacing="2" fill="#BFAE96">THE PASS</text>
+        <!-- table -->
+        <rect x="80" y="170" width="320" height="96" rx="48" fill="#4A3426" stroke="#C99A4B" stroke-opacity=".6" stroke-width="2"/>
+        <path d="M120 218h240" stroke="#C99A4B" stroke-opacity=".25" stroke-dasharray="2 8" stroke-width="2" stroke-linecap="round"/>
+        <!-- plates -->
+        <g fill="#F5F0E1" fill-opacity=".9">
+          <circle cx="140" cy="196" r="10"/><circle cx="200" cy="196" r="10"/><circle cx="260" cy="196" r="10"/><circle cx="320" cy="196" r="10"/>
+          <circle cx="140" cy="240" r="10"/><circle cx="200" cy="240" r="10"/><circle cx="260" cy="240" r="10"/><circle cx="320" cy="240" r="10"/>
+          <circle cx="104" cy="218" r="10"/><circle cx="376" cy="218" r="10"/>
+        </g>
+        <!-- chairs -->
+        <g fill="#E8925A">
+          <rect x="128" y="146" width="24" height="16" rx="6"/><rect x="188" y="146" width="24" height="16" rx="6"/><rect x="248" y="146" width="24" height="16" rx="6"/><rect x="308" y="146" width="24" height="16" rx="6"/>
+          <rect x="128" y="274" width="24" height="16" rx="6"/><rect x="188" y="274" width="24" height="16" rx="6"/><rect x="248" y="274" width="24" height="16" rx="6"/><rect x="308" y="274" width="24" height="16" rx="6"/>
+          <rect x="56" y="206" width="16" height="24" rx="6"/><rect x="408" y="206" width="16" height="24" rx="6"/>
+        </g>
+        <text x="240" y="330" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="20" fill="#F5F0E1">ten seats, one long table</text>
+      </svg>
+    </div>
+    <div class="reveal">
+      <p class="eyebrow">Private dining</p>
+      <h2 class="h2" id="pd-title">The chef’s table, <em>for up to ten.</em></h2>
+      <p class="lede" style="margin-top:16px">A single long table at the edge of the pass, close enough to feel the oven. One party a night, Wednesday to Sunday, with a menu built with you in advance.</p>
+      <ul class="included">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><b>Seven-course menu</b>Cooked and served by the chefs at the pass.</div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><b>Bread course from the morning bake</b>Plus a loaf each to take home.</div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><b>Drinks pairing, optional</b>Wine, or a non-alcoholic pairing.</div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><b>Every diet planned ahead</b>Tell us once; we write the menu around it.</div></li>
+      </ul>
+      <p class="pd-price">£85 <span>per guest, food only · minimum six guests</span></p>
+      <a class="btn btn-ember" href="mailto:tables@hearthandrye.example?subject=Chef%E2%80%99s%20table%20enquiry">Enquire about the chef’s table
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" aria-labelledby="reviews-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow">From the guest book</p>
+        <h2 class="h2" id="reviews-title">What people say <em>on the way out.</em></h2>
+      </div>
+    </div>
+    <ul class="reviews">
+      <li class="reveal"><figure class="review">
+        <div class="stars" role="img" aria-label="5 out of 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg></div>
+        <blockquote><p>We sat at the counter and watched our hake go onto the oven floor. The cabbage alone was worth the trip into town.</p></blockquote>
+        <figcaption><b>Priya S.</b>Dinner for two, a Thursday</figcaption>
+      </figure></li>
+      <li class="reveal"><figure class="review">
+        <div class="stars" role="img" aria-label="5 out of 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg></div>
+        <blockquote><p>I come for a croissant before work and it’s usually still warm. I’ve learned the hard way: after half nine, they’re gone.</p></blockquote>
+        <figcaption><b>Dele O.</b>Bakery regular</figcaption>
+      </figure></li>
+      <li class="reveal"><figure class="review">
+        <div class="stars" role="img" aria-label="5 out of 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.2 4.8 1.5 7L12 17.8 5.7 21.2l1.5-7L2 9.4l7-.8z"/></svg></div>
+        <blockquote><p>Ten of us at the chef’s table for my dad’s seventieth. Two vegans, one coeliac, and nobody felt like an afterthought.</p></blockquote>
+        <figcaption><b>Hannah &amp; family</b>Chef’s table, a Saturday</figcaption>
+      </figure></li>
+    </ul>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq" aria-labelledby="faq-title" style="padding-top:clamp(40px,6vw,80px)">
+  <div class="wrap faq-grid">
+    <div class="reveal">
+      <p class="eyebrow">Questions</p>
+      <h2 class="h2" id="faq-title">Before you <em>visit.</em></h2>
+      <p class="lede" style="margin-top:16px">Anything else, call us on <a href="tel:+441614960732">0161 496 0732</a> between 10:00 and 16:00.</p>
+    </div>
+    <div class="acc" id="acc">
+      <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="a1" id="q1"><span class="acc-q">Do you take walk-ins for dinner?</span><span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="a1" role="region" aria-labelledby="q1"><div><p>Yes. We keep the counter seats facing the oven for walk-ins every night, first come, first served. Earlier in the evening is your best chance.</p></div></div></div>
+      <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="a2" id="q2"><span class="acc-q">Can you cater for allergies and coeliac disease?</span><span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="a2" role="region" aria-labelledby="q2"><div><p>Dishes tagged GF are made without gluten, but flour is in the air every morning and the oven floor is shared. Tell us in your dietary notes and the chef will talk you through what’s safest for you.</p></div></div></div>
+      <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="a3" id="q3"><span class="acc-q">How do I pre-order bread?</span><span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="a3" role="region" aria-labelledby="q3"><div><p>Call or email by 18:00 the day before and we’ll set your loaves aside until 12:00. Pre-orders are paid for at the counter on collection.</p></div></div></div>
+      <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="a4" id="q4"><span class="acc-q">Is the restaurant step-free?</span><span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="a4" role="region" aria-labelledby="q4"><div><p>Yes, the entrance, dining room and bakery counter are all on one level, and there’s an accessible toilet. Let us know when you book and we’ll seat you with easy access.</p></div></div></div>
+      <div class="acc-item"><h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="a5" id="q5"><span class="acc-q">What if I need to cancel?</span><span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+        <div class="acc-panel" id="a5" role="region" aria-labelledby="q5"><div><p>Reply to your confirmation email any time up to 24 hours before. For the chef’s table we ask for a week’s notice, because we buy for your menu.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer dark grain" id="visit" aria-labelledby="visit-title">
+  <div class="wrap">
+    <p class="big-word" aria-hidden="true">Hearth <em>&amp;</em> Rye</p>
+    <div class="foot-grid">
+      <div>
+        <h2 id="visit-title">Visit</h2>
+        <address>18 Copper Yard<br>Northern Quarter<br>Manchester M4</address>
+        <p style="margin-top:12px">Five minutes’ walk from Piccadilly Gardens.</p>
+      </div>
+      <div>
+        <h2>Dinner</h2>
+        <dl><dt>Wed–Sun</dt><dd>17:30–22:30</dd><dt>Last table</dt><dd>21:30</dd><dt>Mon–Tue</dt><dd>Closed</dd></dl>
+      </div>
+      <div>
+        <h2>Bakery</h2>
+        <dl><dt>Tue–Sun</dt><dd>08:00–13:00</dd><dt>Monday</dt><dd>Closed</dd></dl>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <p><a href="tel:+441614960732">0161 496 0732</a><br><a href="mailto:hello@hearthandrye.example">hello@hearthandrye.example</a></p>
+        <ul class="social">
+          <li><a href="#" aria-label="Hearth &amp; Rye on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a></li>
+          <li><a href="#" aria-label="Hearth &amp; Rye on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/></svg></a></li>
+          <li><a href="#" aria-label="Hearth &amp; Rye on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2.2 4.4 5 4.6"/></svg></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal"><span>© Hearth &amp; Rye. A fictional restaurant.</span><a href="#top">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add("js");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  /* ---------- Data ---------- */
+  var MENU = [
+    {c:"small", n:"Rye flatbread", d:"Blistered on the oven floor, smoked whipped butter, sea salt.", p:6, t:["V"]},
+    {c:"small", n:"Ember-roasted beetroot", d:"Cultured cream, dill, toasted rye crumb.", p:9, t:["V"]},
+    {c:"small", n:"Charred leeks", d:"Hazelnut romesco, sherry vinegar, crispy shallot.", p:9, t:["VG","GF"]},
+    {c:"small", n:"Cured trout", d:"Burnt cucumber, horseradish, brown-butter crumbs on the side.", p:11, t:["GF"]},
+    {c:"large", n:"Whole hispi cabbage", d:"Roasted in the embers, brown butter, capers, lemon.", p:18, t:["V","GF"]},
+    {c:"large", n:"Squash & chickpea stew", d:"From the afternoon pot, chilli oil, wood-baked flatbread.", p:19, t:["VG"]},
+    {c:"large", n:"Hake from the oven floor", d:"Mussels, cider, sea herbs, charred lemon.", p:27, t:["GF"]},
+    {c:"large", n:"Dry-aged beef rump", d:"Beef-fat potatoes, green sauce, watercress.", p:32, t:["GF"]},
+    {c:"dessert", n:"Burnt honey custard tart", d:"Baked in the falling heat, crème fraîche.", p:8, t:["V"]},
+    {c:"dessert", n:"Rye sourdough ice cream", d:"Malted crumb, salted caramel.", p:7, t:["V"]},
+    {c:"dessert", n:"Wood-roasted plums", d:"Oat crumble, oat cream, star anise.", p:8, t:["VG"]}
+  ];
+  var COURSES = [["small","Small plates","to share"],["large","Large plates","one each"],["dessert","Desserts","to finish"]];
+  var TAG = {V:"Vegetarian",VG:"Vegan",GF:"Gluten-free"};
+  var BREADS = [
+    {n:"Country sourdough", d:"900g, dark crust, three-day ferment.", p:5.5, s:"10:30", k:"boule"},
+    {n:"Dark rye", d:"100% rye, caraway, dense and sour.", p:6, s:"12:00", k:"tin"},
+    {n:"Seeded spelt", d:"Sunflower, linseed and pumpkin, soft crumb.", p:5, s:"11:30", k:"tin2"},
+    {n:"Butter croissant", d:"Laminated over two days, baked at 7am.", p:3.2, s:"09:15", k:"croissant"},
+    {n:"Cardamom knot", d:"Brown-butter sugar, crushed cardamom.", p:3.6, s:"09:45", k:"knot"},
+    {n:"Rosemary focaccia", d:"Olive oil, flaky salt, by the slab.", p:4, s:"11:00", k:"focaccia"}
+  ];
+  var gbp = function(v){ return "£" + (v % 1 ? v.toFixed(2) : v); };
+  var esc = function(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); };
+
+  /* ---------- London time helper ---------- */
+  function londonParts(d){
+    var f = new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/London",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false});
+    var o = {}; f.formatToParts(d||new Date()).forEach(function(p){o[p.type]=p.value;});
+    var days = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+    return {dow:days[o.weekday], mins:(+o.hour%24)*60 + (+o.minute), hm:o.hour.replace("24","00")+":"+o.minute};
+  }
+
+  /* ---------- Menu ---------- */
+  var grid = document.getElementById("menu-grid");
+  grid.innerHTML = COURSES.map(function(c){
+    var items = MENU.filter(function(m){return m.c===c[0];});
+    return '<article class="course '+c[0]+' reveal" aria-labelledby="h-'+c[0]+'"><h3 id="h-'+c[0]+'">'+c[1]+' <small>'+c[2]+'</small></h3><ul style="margin:0;padding:0">'+
+      items.map(function(m){
+        return '<li class="dish" data-tags="'+m.t.join(" ")+'"><div class="dish-top"><span class="dish-name">'+esc(m.n)+'</span><span class="lead" aria-hidden="true"></span><span class="dish-price">'+gbp(m.p)+'</span></div><p>'+esc(m.d)+'</p><div class="tags">'+
+          m.t.map(function(t){return '<abbr class="tag '+t.toLowerCase()+'" title="'+TAG[t]+'">'+t+'</abbr>';}).join("")+'</div></li>';
+      }).join("")+'</ul><p class="empty" hidden>Nothing in this course tonight matches that filter. Ask us, we can often adapt.</p></article>';
+  }).join("");
+
+  var chips = document.querySelectorAll(".chip");
+  var count = document.getElementById("menu-count");
+  function applyFilter(f){
+    var shown = 0;
+    chips.forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.filter===f)); });
+    grid.querySelectorAll(".course").forEach(function(course){
+      var vis = 0;
+      course.querySelectorAll(".dish").forEach(function(li){
+        var ok = f==="all" || li.dataset.tags.split(" ").indexOf(f) > -1;
+        li.hidden = !ok; if(ok){vis++;}
+      });
+      course.querySelector(".empty").hidden = vis>0;
+      shown += vis;
+    });
+    count.textContent = f==="all" ? "Showing all " + MENU.length + " dishes" : "Showing " + shown + " " + TAG[f].toLowerCase() + " dish" + (shown===1?"":"es") + " of " + MENU.length;
+  }
+  chips.forEach(function(b){ b.addEventListener("click", function(){ applyFilter(b.dataset.filter); }); });
+
+  // menu date line
+  (function(){
+    var lp = londonParts(), names=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var el = document.getElementById("menu-date");
+    if(lp.dow>=3 || lp.dow===0){ el.textContent = "Tonight, " + names[lp.dow] + " · served from 17:30"; }
+    else { el.textContent = "Next served Wednesday from 17:30 · here’s this week’s list"; }
+  })();
+
+  /* ---------- Bakery ---------- */
+  var ART = {
+    boule:'<ellipse cx="48" cy="56" rx="40" ry="8" fill="#D4C4A8"/><path d="M10 50c0-20 17-36 38-36s38 16 38 36c0 4-4 6-8 6H18c-4 0-8-2-8-6z" fill="#B5651D"/><path d="M28 30c8 6 12 14 12 22M48 22c2 10 2 20 0 30M68 30c-8 6-12 14-12 22" stroke="#F5F0E1" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".75"/>',
+    tin:'<ellipse cx="48" cy="60" rx="40" ry="6" fill="#D4C4A8"/><rect x="16" y="22" width="64" height="38" rx="8" fill="#4A2E1E"/><path d="M24 34h48M24 44h48" stroke="#7A5038" stroke-width="2" stroke-dasharray="3 5" stroke-linecap="round"/>',
+    tin2:'<ellipse cx="48" cy="60" rx="40" ry="6" fill="#D4C4A8"/><path d="M16 36c0-10 14-16 32-16s32 6 32 16v24H16z" fill="#A86A36"/><g fill="#F5F0E1" opacity=".8"><circle cx="30" cy="28" r="1.6"/><circle cx="40" cy="25" r="1.6"/><circle cx="52" cy="24" r="1.6"/><circle cx="62" cy="27" r="1.6"/><circle cx="46" cy="30" r="1.6"/><circle cx="68" cy="32" r="1.6"/><circle cx="26" cy="34" r="1.6"/></g>',
+    croissant:'<ellipse cx="48" cy="58" rx="40" ry="6" fill="#D4C4A8"/><path d="M8 50c6-18 22-30 40-30s34 12 40 30c-6 4-12 4-16 0-6 6-16 8-24 8s-18-2-24-8c-4 4-10 4-16 0z" fill="#C67B5C"/><path d="M30 28l4 26M48 22v34M66 28l-4 26" stroke="#8A4A22" stroke-width="2" stroke-linecap="round"/>',
+    knot:'<ellipse cx="48" cy="58" rx="36" ry="6" fill="#D4C4A8"/><circle cx="48" cy="36" r="22" fill="#B5651D"/><path d="M30 30c10-10 26-10 36 0M30 42c10 10 26 10 36 0M48 14c-8 10-8 34 0 44" stroke="#E2B48A" stroke-width="3" fill="none" stroke-linecap="round"/>',
+    focaccia:'<ellipse cx="48" cy="58" rx="42" ry="6" fill="#D4C4A8"/><rect x="8" y="30" width="80" height="26" rx="6" fill="#D49A55"/><g fill="#8A5A2C"><circle cx="22" cy="40" r="2.4"/><circle cx="38" cy="46" r="2.4"/><circle cx="54" cy="38" r="2.4"/><circle cx="70" cy="46" r="2.4"/><circle cx="80" cy="38" r="2.4"/></g><path d="M28 36l4-4M60 48l4-4M46 44l3-5" stroke="#55622E" stroke-width="2.4" stroke-linecap="round"/>'
+  };
+  var OPEN=8*60, CLOSE=13*60;
+  document.getElementById("breads").innerHTML = BREADS.map(function(b){
+    var hm=b.s.split(":"), m=(+hm[0])*60+(+hm[1]), pct=Math.round((m-OPEN)/(CLOSE-OPEN)*100);
+    return '<li class="bread reveal"><svg viewBox="0 0 96 72" aria-hidden="true">'+ART[b.k]+'</svg><div><h3>'+esc(b.n)+'</h3><div class="price">'+gbp(b.p)+'</div></div><p>'+esc(b.d)+'</p>'+
+      '<div class="soldout"><div class="soldout-row"><span>Usually sold out by</span><span>'+b.s+'</span></div><div class="bar" role="img" aria-label="Usually sold out by '+b.s+', counter open 08:00 to 13:00"><i style="width:'+pct+'%"></i></div><div class="bar-scale" aria-hidden="true"><span>08:00</span><span>13:00</span></div></div></li>';
+  }).join("");
+
+  /* ---------- Oven status ---------- */
+  function ovenState(){
+    var lp = londonParts(), m=lp.mins, d=lp.dow, s;
+    if(d===1){ s=["Resting today", false]; }
+    else if(m>=330 && m<360){ s=["Fire being lit", true]; }
+    else if(m>=360 && m<600){ s=["Bread is baking", true]; }
+    else if(m>=600 && m<840){ s=["Pastries in the falling heat", true]; }
+    else if(m>=840 && m<1050){ s=["Slow pots for tonight", true]; }
+    else if(m>=1050 && m<1350 && d!==2){ s=["Dinner service on", true]; }
+    else { s=["Embers banked till dawn", false]; }
+    document.getElementById("oven-now").textContent = "Now: " + s[0];
+    document.getElementById("oven-time").textContent = lp.hm + " in Manchester";
+    document.querySelector(".oven-status .dot").classList.toggle("cool", !s[1]);
+  }
+  ovenState(); setInterval(ovenState, 60000);
+
+  /* ---------- Fire canvas ---------- */
+  (function(){
+    var cv = document.getElementById("fire"); if(!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d"), W=cv.width, H=cv.height, parts=[], raf=null, visible=true;
+    function spawn(){ return {x:W*0.3+Math.random()*W*0.4, y:H-30-Math.random()*10, vx:(Math.random()-.5)*.6, vy:-(0.6+Math.random()*1.6), life:0, max:60+Math.random()*70, r:1+Math.random()*2.4}; }
+    for(var i=0;i<70;i++){ var p=spawn(); p.life=Math.random()*p.max; parts.push(p); }
+    function flame(t){
+      if("filter" in ctx) ctx.filter="blur(5px)";
+      var g = ctx.createRadialGradient(W/2,H-20,4,W/2,H-30,H*0.75);
+      var flick = 0.85 + Math.sin(t/180)*0.06 + Math.sin(t/67)*0.04;
+      g.addColorStop(0,"rgba(255,214,150,"+(0.85*flick)+")");
+      g.addColorStop(0.25,"rgba(240,150,80,"+(0.6*flick)+")");
+      g.addColorStop(0.6,"rgba(154,74,28,0.25)");
+      g.addColorStop(1,"rgba(28,20,16,0)");
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+      // tongues
+      for(var k=0;k<5;k++){
+        var cx=W*0.32+k*W*0.09, h=H*(0.35+0.18*Math.sin(t/(220+k*37)+k));
+        ctx.beginPath(); ctx.moveTo(cx-22,H-24);
+        ctx.quadraticCurveTo(cx-14+Math.sin(t/140+k)*8, H-24-h*0.6, cx+Math.sin(t/120+k)*6, H-24-h);
+        ctx.quadraticCurveTo(cx+14+Math.sin(t/160+k)*8, H-24-h*0.6, cx+22, H-24);
+        ctx.closePath();
+        ctx.fillStyle="rgba(255,"+(150+k*12)+",80,0.2)"; ctx.fill();
+      }
+    }
+    function frame(t){
+      ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation="lighter"; flame(t||0); if("filter" in ctx) ctx.filter="none";
+      for(var i=0;i<parts.length;i++){
+        var p=parts[i]; p.life++; p.x+=p.vx+Math.sin((p.life+i)/12)*.3; p.y+=p.vy;
+        if(p.life>p.max||p.y<0){ parts[i]=spawn(); continue; }
+        var a=1-p.life/p.max; ctx.fillStyle="rgba(255,"+(170+Math.round(60*a))+",110,"+a.toFixed(2)+")";
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r*a+0.4,0,6.283); ctx.fill();
+      }
+      ctx.globalCompositeOperation="source-over";
+      if(!reduce.matches && visible){ raf=requestAnimationFrame(frame); } else { raf=null; }
+    }
+    function start(){ if(!raf && !reduce.matches && visible && !document.hidden){ raf=requestAnimationFrame(frame); } }
+    frame(1200); // static first frame, also the reduced-motion state
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible) start(); },{threshold:0}).observe(cv);
+    }
+    document.addEventListener("visibilitychange", function(){ if(document.hidden && raf){ cancelAnimationFrame(raf); raf=null; } else start(); });
+    reduce.addEventListener && reduce.addEventListener("change", function(){ if(reduce.matches){ if(raf) cancelAnimationFrame(raf); raf=null; frame(1200);} else start(); });
+    start();
+  })();
+
+  /* ---------- Header colour over dark hero ---------- */
+  var header = document.querySelector(".site-header");
+  var hero = document.querySelector(".hero");
+  if("IntersectionObserver" in window){
+    new IntersectionObserver(function(es){ header.classList.toggle("on-dark", es[0].isIntersecting); },{rootMargin:"-72px 0px 0px 0px",threshold:0}).observe(hero);
+  }
+
+  /* ---------- Mobile drawer ---------- */
+  var drawer = document.getElementById("drawer");
+  var toggle = document.querySelector(".nav-cta .menu-toggle");
+  var lastFocus = null;
+  function focusables(){ return Array.prototype.slice.call(drawer.querySelectorAll("a[href],button")); }
+  function openDrawer(){
+    lastFocus = document.activeElement;
+    drawer.classList.add("open"); toggle.setAttribute("aria-expanded","true");
+    document.body.classList.add("locked");
+    document.getElementById("main").setAttribute("inert","");
+    setTimeout(function(){ drawer.querySelector("button[data-close]").focus(); }, 30);
+  }
+  function closeDrawer(returnFocus){
+    drawer.classList.remove("open"); toggle.setAttribute("aria-expanded","false");
+    document.body.classList.remove("locked");
+    document.getElementById("main").removeAttribute("inert");
+    if(returnFocus!==false && lastFocus) lastFocus.focus();
+  }
+  toggle.addEventListener("click", openDrawer);
+  drawer.addEventListener("click", function(e){
+    var t = e.target.closest("[data-close]"); if(!t) return;
+    closeDrawer(t.tagName!=="A");
+  });
+  document.addEventListener("keydown", function(e){
+    if(!drawer.classList.contains("open")) return;
+    if(e.key==="Escape"){ closeDrawer(); return; }
+    if(e.key==="Tab"){
+      var f = focusables(), first=f[0], last=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  });
+  window.matchMedia("(min-width:981px)").addEventListener("change", function(m){ if(m.matches && drawer.classList.contains("open")) closeDrawer(false); });
+
+  /* ---------- Booking form ---------- */
+  var form = document.getElementById("booking");
+  var dateSel = document.getElementById("date"), timeSel = document.getElementById("time");
+  var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var SLOTS = []; for(var mm=17*60+30; mm<=21*60+30; mm+=30){ SLOTS.push(("0"+Math.floor(mm/60)).slice(-2)+":"+("0"+mm%60).slice(-2)); }
+  var lpNow = londonParts();
+  (function buildDates(){
+    var today = new Date(); today.setHours(12,0,0,0);
+    for(var i=0;i<=30;i++){
+      var d = new Date(today); d.setDate(today.getDate()+i);
+      var w = d.getDay(); if(w===1||w===2) continue;
+      var iso = d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+      if(i===0){
+        var lastSlot = 21*60+30; if(lpNow.mins > lastSlot - 30) continue; // too late tonight
+      }
+      var label = (i===0?"Tonight · ":i===1?"Tomorrow · ":"") + DOW[w]+" "+d.getDate()+" "+MON[d.getMonth()];
+      var o = document.createElement("option"); o.value=iso; o.textContent=label; o.dataset.today = i===0 ? "1" : ""; dateSel.appendChild(o);
+    }
+  })();
+  function buildTimes(){
+    var keep = timeSel.value, isToday = dateSel.selectedOptions[0] && dateSel.selectedOptions[0].dataset.today==="1";
+    timeSel.length = 1;
+    SLOTS.forEach(function(s){
+      var p=s.split(":"), m=(+p[0])*60+(+p[1]);
+      var o=document.createElement("option"); o.value=s; o.textContent=s;
+      if(isToday && m <= lpNow.mins + 30){ o.disabled=true; o.textContent = s + " (no longer available)"; }
+      timeSel.appendChild(o);
+    });
+    if(keep && !timeSel.querySelector('option[value="'+keep+'"]:not([disabled])')) { timeSel.value=""; if(fieldTouched.time) validate("time"); }
+    else timeSel.value = keep;
+  }
+  var fieldTouched = {};
+  buildTimes();
+  dateSel.addEventListener("change", buildTimes);
+
+  var notes = document.getElementById("notes"), notesCount = document.getElementById("notes-count");
+  notes.addEventListener("input", function(){ notesCount.textContent = notes.value.length + " / 300"; });
+
+  var RULES = {
+    name: function(v){ v=v.trim(); if(!v) return "Enter your name so we know who to expect."; if(v.length<2) return "Your name needs at least 2 characters."; return ""; },
+    email: function(v){ v=v.trim(); if(!v) return "Enter an email address for your confirmation."; if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "Enter an email in the format name@example.com."; return ""; },
+    party: function(v){ var n=+v; if(!v) return "Choose how many people are coming."; if(n<1||n>8) return "We seat 1 to 8 here; for more, see private dining."; return ""; },
+    date: function(v){ if(!v) return "Choose a date. We serve dinner Wednesday to Sunday."; var w=new Date(v+"T12:00:00").getDay(); if(w===1||w===2) return "We’re closed Mondays and Tuesdays for dinner."; return ""; },
+    time: function(v){ if(!v) return "Choose a seating time between 17:30 and 21:30."; return ""; },
+    notes: function(v){ if(v.length>300) return "Keep notes under 300 characters."; return ""; }
+  };
+  function validate(id){
+    var el=document.getElementById(id), msg=RULES[id](el.value), field=el.closest(".field");
+    field.classList.toggle("invalid", !!msg);
+    field.classList.toggle("valid", !msg && id!=="notes" && el.value!=="");
+    el.setAttribute("aria-invalid", msg ? "true" : "false");
+    document.querySelector("#"+id+"-err span").textContent = msg;
+    return msg;
+  }
+  Object.keys(RULES).forEach(function(id){
+    var el=document.getElementById(id);
+    el.addEventListener("blur", function(){ fieldTouched[id]=true; validate(id); });
+    el.addEventListener(el.tagName==="SELECT"?"change":"input", function(){ if(fieldTouched[id]) validate(id); });
+  });
+
+  var summary=document.getElementById("summary"), sumList=document.getElementById("summary-list");
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var errs=[];
+    Object.keys(RULES).forEach(function(id){ fieldTouched[id]=true; var m=validate(id); if(m) errs.push([id,m]); });
+    if(errs.length){
+      sumList.innerHTML = errs.map(function(x){ return '<li><a href="#'+x[0]+'">'+esc(x[1])+'</a></li>'; }).join("");
+      summary.classList.add("show"); summary.focus();
+      return;
+    }
+    summary.classList.remove("show");
+    var btn=document.getElementById("submit"); btn.setAttribute("aria-busy","true"); btn.disabled=true; btn.textContent="Requesting…";
+    setTimeout(function(){
+      var data = { name:form.name.value.trim(), email:form.email.value.trim(), party:form.party.value, date:dateSel.selectedOptions[0].textContent.replace(/^(Tonight|Tomorrow) · /,""), time:form.time.value, notes:notes.value.trim() };
+      var card=document.getElementById("form-card");
+      card.innerHTML = '<div class="success" role="status" tabindex="-1" id="success">'+
+        '<div class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>'+
+        '<h3>Thank you, '+esc(data.name.split(" ")[0])+'. Your table is requested.</h3>'+
+        '<p>We’ll send a confirmation to <b>'+esc(data.email)+'</b>. If anything changes, just reply to it.</p>'+
+        '<dl><dt>Party</dt><dd>'+data.party+' guest'+(data.party==="1"?"":"s")+'</dd><dt>Date</dt><dd>'+esc(data.date)+'</dd><dt>Time</dt><dd>'+data.time+'</dd>'+(data.notes?'<dt>Notes</dt><dd>'+esc(data.notes)+'</dd>':'')+'</dl>'+
+        '<button class="btn btn-ghost" type="button" id="again">Make another booking</button></div>';
+      var s=document.getElementById("success"); s.focus();
+      document.getElementById("again").addEventListener("click", function(){ location.hash="book"; location.reload(); });
+    }, 700);
+  });
+  summary.addEventListener("click", function(e){
+    var a=e.target.closest("a"); if(!a) return; e.preventDefault();
+    var t=document.getElementById(a.getAttribute("href").slice(1)); t.focus(); t.scrollIntoView({block:"center",behavior:reduce.matches?"auto":"smooth"});
+  });
+
+  /* ---------- FAQ accordion ---------- */
+  var accBtns = document.querySelectorAll(".acc-btn");
+  accBtns.forEach(function(b, i){
+    b.addEventListener("click", function(){
+      var open = b.getAttribute("aria-expanded")==="true";
+      b.setAttribute("aria-expanded", String(!open));
+      document.getElementById(b.getAttribute("aria-controls")).classList.toggle("open", !open);
+    });
+    b.addEventListener("keydown", function(e){
+      var n=null;
+      if(e.key==="ArrowDown") n=accBtns[(i+1)%accBtns.length];
+      else if(e.key==="ArrowUp") n=accBtns[(i-1+accBtns.length)%accBtns.length];
+      else if(e.key==="Home") n=accBtns[0];
+      else if(e.key==="End") n=accBtns[accBtns.length-1];
+      if(n){ e.preventDefault(); n.focus(); }
+    });
+  });
+
+  /* ---------- Reveal on scroll (content visible by default without JS) ---------- */
+  var revs = document.querySelectorAll(".reveal");
+  if(reduce.matches || !("IntersectionObserver" in window)){ revs.forEach(function(r){ r.classList.add("in"); }); }
+  else {
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }); },{rootMargin:"0px 0px -8% 0px",threshold:0.05});
+    revs.forEach(function(r){ io.observe(r); });
+    window.addEventListener("beforeprint", function(){ revs.forEach(function(r){ r.classList.add("in"); }); });
+  }
+})();
+</script>
+</body>
+</html>

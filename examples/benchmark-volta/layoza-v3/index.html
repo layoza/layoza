@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volta One — the 16 kg electric city bike from Bristol</title>
+<meta name="description" content="Volta One: a 16 kg electric city bike with the battery hidden in the frame, a belt drive and an 80 km range. £2,190 in Graphite, Moss or Clay.">
+<meta name="theme-color" content="#C4DCE8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet"></noscript>
+<style>
+@font-face{font-family:"Volta Display Fallback";src:local("Arial Narrow Bold"),local("ArialNarrow-Bold"),local("Arial Bold"),local("Arial-BoldMT");font-weight:700 900;size-adjust:78%;ascent-override:118%;descent-override:30%;line-gap-override:0%}
+@font-face{font-family:"Volta Body Fallback";src:local("Arial"),local("ArialMT");size-adjust:104%;ascent-override:88%;descent-override:22%;line-gap-override:0%}
+:root{
+  --render:#C4DCE8; --render-deep:#A9C9D9;
+  --sherbet:#F4B9C4; --mustard:#E3AA2E; --mint:#ABDCC6;
+  --teal:#1D4C52; --teal-deep:#153A3F;
+  --ink:#172126; --ink-soft:#33434A;
+  --bone:#F6F2EA;
+  --door:#B0231B; --door-hover:#8F1B15;
+  --stone:#8C979B; --stone-deep:#6F7B80;
+  --paint:#56653A; --paint-name:"Moss";
+  --wall:var(--render);
+  --header-h:4.5rem;
+  --gutter:clamp(1rem,4vw,4rem);
+  --display:"Archivo","Volta Display Fallback",sans-serif;
+  --body:"Archivo","Volta Body Fallback",sans-serif;
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+  --r-control:4px; --r-panel:8px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 1rem);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--render);color:var(--ink);font-family:var(--body);font-size:1.125rem;line-height:1.55;font-stretch:100%;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;caret-color:var(--door)}
+::selection{background:var(--ink);color:var(--mustard)}
+html{scrollbar-color:var(--ink-soft) var(--render-deep)}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:.08em}
+:focus-visible{outline:3px solid var(--focus,var(--ink));outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:1rem;top:-4rem;z-index:100;background:var(--ink);color:var(--bone);padding:.75rem 1rem;border-radius:var(--r-control)}
+.skip:focus{top:1rem}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- type ---------- */
+.display,h1,h2{font-family:var(--display);font-stretch:62%;font-weight:850;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(4.5rem,13.4vw,13.25rem);line-height:.86}
+h2{font-size:clamp(3rem,5.4vw,5.5rem);line-height:.94}
+h3{font-family:var(--display);font-stretch:75%;font-weight:750;font-size:1.75rem;line-height:1.1;letter-spacing:-.01em;margin:0}
+p{margin:0;max-width:34em}
+.lede{font-size:clamp(1.125rem,1.4vw,1.3rem);line-height:1.5}
+.small{font-size:.9375rem;line-height:1.5}
+
+/* ---------- buttons: painted door panels ---------- */
+.btn{--bg:var(--door);--fg:#fff;display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:3.25rem;padding:.85rem 1.4rem;border:2px solid var(--bg);border-radius:var(--r-control);background:var(--bg);color:var(--fg);font:inherit;font-stretch:88%;font-weight:700;font-size:1.0625rem;line-height:1.1;text-decoration:none;cursor:pointer;white-space:nowrap;box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px rgb(255 255 255 / .28);transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .12s var(--ease-out)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn--ghost{--bg:transparent;--fg:currentColor;border-color:currentColor;box-shadow:none}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{--bg:var(--door-hover)}
+  .btn--ghost:hover{--bg:var(--ink);--fg:var(--bone);border-color:var(--ink)}
+}
+.btn svg{width:1.1rem;height:1.1rem;flex:none}
+
+/* ---------- header ---------- */
+.site-header{position:sticky;top:0;z-index:50;height:var(--header-h);background:var(--wall);transition:background-color .6s ease;border-bottom:2px solid var(--ink)}
+.site-header__in{height:100%;display:flex;align-items:center;gap:1.5rem;padding:0 var(--gutter)}
+.logo{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;font-family:var(--display);font-stretch:62%;font-weight:900;font-size:2rem;letter-spacing:-.01em;line-height:1}
+.logo svg{width:2.4rem;height:1.6rem}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:.25rem;list-style:none;margin:0;padding:0}
+.nav a{display:inline-flex;align-items:center;min-height:2.75rem;padding:0 .9rem;font-weight:600;font-stretch:90%;text-decoration:none;border-radius:var(--r-control);transition:background-color .18s ease,color .18s ease}
+@media (hover:hover) and (pointer:fine){.nav a:hover{background:var(--ink);color:var(--bone)}}
+.order-btn{position:relative;min-height:2.85rem;padding:.6rem 1.15rem}
+.order-btn .count{display:inline-grid;place-items:center;min-width:1.5rem;height:1.5rem;padding:0 .35rem;border-radius:99px;background:#fff;color:var(--door);font-size:.875rem;font-weight:800;font-variant-numeric:tabular-nums}
+.order-btn .count[hidden]{display:none}
+.order-btn .count.bump{animation:bump .32s var(--ease-out)}
+@keyframes bump{40%{transform:scale(1.35)}}
+.menu-toggle{display:none;align-items:center;justify-content:center;width:2.85rem;height:2.85rem;border:2px solid var(--ink);border-radius:var(--r-control);background:transparent;color:var(--ink);cursor:pointer;transition:background-color .18s ease}
+.menu-toggle svg{width:1.4rem;height:1.4rem}
+.menu-toggle .i-close{display:none}
+.menu-toggle[aria-expanded="true"] .i-open{display:none}
+.menu-toggle[aria-expanded="true"] .i-close{display:block}
+.mobile-nav{display:none}
+@media (max-width:899px){
+  :root{--header-h:4rem}
+  .nav{display:none}
+  .menu-toggle{display:inline-flex;margin-left:auto}
+  .site-header__in{gap:.75rem}
+  .logo{font-size:1.75rem}
+  .mobile-nav{display:block;position:fixed;inset:var(--header-h) 0 auto 0;z-index:49;background:var(--ink);color:var(--bone);border-bottom:2px solid var(--ink);clip-path:inset(0 0 100% 0);visibility:hidden;transition:clip-path .32s cubic-bezier(.32,.72,0,1),visibility 0s linear .32s}
+  .mobile-nav.is-open{clip-path:inset(0 0 0 0);visibility:visible;transition:clip-path .32s cubic-bezier(.32,.72,0,1),visibility 0s}
+  .mobile-nav ul{list-style:none;margin:0;padding:.75rem var(--gutter) 1.5rem}
+  .mobile-nav li+li{border-top:1px solid rgb(246 242 234 / .22)}
+  .mobile-nav a{display:flex;align-items:center;justify-content:space-between;min-height:3.75rem;font-family:var(--display);font-stretch:62%;font-weight:800;font-size:2.25rem;text-decoration:none;--focus:var(--bone)}
+  .mobile-nav a span{font-family:var(--body);font-stretch:100%;font-weight:500;font-size:.9375rem;opacity:.85}
+}
+@media (prefers-reduced-motion:reduce){.mobile-nav,.mobile-nav.is-open{transition:none}}
+
+/* ---------- the street (hero + ride + colours share one stage) ---------- */
+.street{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);background:var(--wall);transition:background-color .7s ease,color .5s ease}
+.street__text{grid-column:1;grid-row:1;padding:0 clamp(1.5rem,3vw,3.5rem) 0 var(--gutter)}
+.street__stage-col{grid-column:2;grid-row:1}
+.stage{position:sticky;top:var(--header-h);height:calc(100svh - var(--header-h));overflow:hidden;--ground:78%;border-left:2px solid var(--ink);background:var(--wall);transition:background-color .7s ease}
+.block{min-height:calc(100svh - var(--header-h));display:flex;flex-direction:column;justify-content:center;gap:1.5rem;padding:clamp(4rem,9vh,7rem) 0}
+.block + .block{border-top:2px solid var(--ink)}
+
+/* facade drawn behind the bike */
+.facade{position:absolute;inset:0;pointer-events:none}
+.facade svg{position:absolute}
+.facade .window{left:7%;top:7%;width:min(26%,190px);height:auto}
+.facade .door{right:-2%;bottom:calc(100% - var(--ground) - 1px);width:min(24%,170px);height:auto}
+.facade .plate-num{font-family:var(--display);font-stretch:62%;font-weight:900;font-size:44px}
+.pavement{position:absolute;left:0;right:0;top:var(--ground);bottom:0;background:var(--stone);border-top:6px solid var(--stone-deep)}
+.pavement::after{content:"";position:absolute;left:0;right:0;top:46%;height:2px;background:var(--stone-deep);opacity:.55}
+.stage__gl,.stage__poster{position:absolute;inset:0}
+.stage__poster{display:flex;align-items:flex-end;justify-content:center;padding:0 6%;bottom:auto;height:calc(var(--ground) + 6px)}
+.poster-bike{width:min(92%,880px);height:auto;transition:opacity .5s ease}
+.stage__gl canvas{width:100%!important;height:100%!important;opacity:0;transition:opacity .6s ease;touch-action:pan-y;cursor:grab}
+.stage__gl canvas:active{cursor:grabbing}
+.stage.is-gl .stage__gl canvas{opacity:1}
+.stage.is-gl .poster-bike{opacity:0}
+.stage__ui{position:absolute;left:clamp(1rem,2.5vw,2rem);right:clamp(1rem,2.5vw,2rem);bottom:clamp(.75rem,2.2vh,1.5rem);display:flex;align-items:center;gap:.6rem;color:var(--ink)}
+.stage__ui .turn{width:2.75rem;height:2.75rem;display:grid;place-items:center;border:2px solid var(--ink);border-radius:var(--r-control);background:var(--bone);color:var(--ink);cursor:pointer;transition:background-color .18s ease,color .18s ease,transform .12s var(--ease-out)}
+.stage__ui .turn:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){.stage__ui .turn:hover{background:var(--ink);color:var(--bone)}}
+.stage__ui .turn svg{width:1.3rem;height:1.3rem}
+.stage__hint{font-size:.9375rem;font-weight:600;background:var(--bone);padding:.35rem .7rem;border-radius:var(--r-control);border:2px solid var(--ink)}
+.stage:not(.is-gl) .turn,.stage:not(.is-gl) .stage__hint{display:none}
+.stage__plate{position:absolute;right:clamp(1rem,2.5vw,2rem);bottom:clamp(.75rem,2.2vh,1.5rem);font-size:.9375rem;font-weight:700;background:var(--ink);color:var(--bone);padding:.4rem .75rem;border-radius:var(--r-control)}
+
+/* poster SVG styling (also used by the spec drawing) */
+.poster-bike .shadow{fill:rgb(23 33 38 / .28)}
+.poster-bike .tyre{fill:none;stroke:#1d1f21;stroke-width:21}
+.poster-bike .tread{fill:none;stroke:#1d1f21;stroke-width:5;stroke-dasharray:3 5}
+.poster-bike .rim{fill:none;stroke:#3a3d40;stroke-width:7}
+.poster-bike .spk{stroke:#5c6266;stroke-width:1.4;fill:none}
+.poster-bike .hub{fill:#2b2e31}
+.poster-bike .axle{fill:#b9bec1}
+.poster-bike .guard{fill:none;stroke:var(--paint);stroke-width:13;stroke-linecap:round;transition:stroke .3s ease}
+.poster-bike .belt{fill:none;stroke:#202224;stroke-width:6}
+.poster-bike .pulley{fill:#c7ccce;stroke:#55595c;stroke-width:3}
+.poster-bike .stay{stroke:var(--paint);stroke-width:12;stroke-linecap:round;fill:none;transition:stroke .3s ease}
+.poster-bike .fork{stroke:var(--paint);stroke-width:15;stroke-linecap:round;fill:none;transition:stroke .3s ease}
+.poster-bike .tube{stroke:var(--paint);stroke-linecap:round;fill:none;transition:stroke .3s ease}
+.poster-bike .st{stroke-width:20}.poster-bike .tt{stroke-width:18}.poster-bike .dt{stroke-width:42}.poster-bike .ht{stroke-width:26}
+.poster-bike .cells{stroke:rgb(255 255 255 / .16);stroke-width:4;stroke-linecap:round;stroke-dasharray:22 8}
+.poster-bike .post{stroke:#2b2e31;stroke-width:13;stroke-linecap:round}
+.poster-bike .saddle{fill:#4a3326}
+.poster-bike .bar{fill:none;stroke:#2b2e31;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+.poster-bike .grip{stroke:#6b4a35;stroke-width:16;stroke-linecap:round}
+.poster-bike .crank{stroke:#2b2e31;stroke-width:12;stroke-linecap:round}
+.poster-bike .pedal{fill:#2b2e31}.poster-bike .bbcap{fill:#55595c}
+.poster-bike .lamp{fill:#2b2e31}.poster-bike .lens{fill:#FFF2C2}.poster-bike .tail{fill:#E0362B}
+.poster-bike .stand{stroke:#2b2e31;stroke-width:7;stroke-linecap:round}
+
+/* text blocks */
+.hero h1{margin-top:-.04em}
+.hero__price{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap}
+.price{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:1.75rem;line-height:1;font-variant-numeric:tabular-nums}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.25rem}
+.plate{display:inline-grid;place-items:center;width:3.4rem;height:3.4rem;border:2px solid currentColor;border-radius:2px;font-family:var(--display);font-stretch:62%;font-weight:900;font-size:2rem;line-height:1}
+.plate-row{display:flex;align-items:center;gap:1rem}
+.plate-row .small{font-weight:600}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem 2rem;margin:0;padding:1rem 0 0;border-top:2px solid currentColor;max-width:30rem}
+.facts div{display:flex;flex-direction:column}
+.facts dt{font-size:.9375rem;font-weight:600}
+.facts dd{margin:0;font-family:var(--display);font-stretch:75%;font-weight:800;font-size:1.75rem;line-height:1.15;font-variant-numeric:tabular-nums}
+
+.street[data-chapter="battery"]{--wall:var(--sherbet)}
+.street[data-chapter="belt"]{--wall:var(--mustard)}
+.street[data-chapter="weight"]{--wall:var(--mint)}
+html[data-chapter="battery"]{--wall:var(--sherbet)}
+html[data-chapter="belt"]{--wall:var(--mustard)}
+html[data-chapter="weight"]{--wall:var(--mint)}
+
+/* colour picker */
+.chips{border:0;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;max-width:30rem}
+.chips legend{font-weight:700;margin-bottom:.75rem;padding:0}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip label{display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:6px;background:var(--bone);overflow:hidden;cursor:pointer;transition:transform .16s var(--ease-out),box-shadow .16s ease}
+.chip .swatch{height:5.25rem;background:var(--c);position:relative;transition:height .2s var(--ease-out)}
+.chip .swatch svg{position:absolute;right:.5rem;top:.5rem;width:1.5rem;height:1.5rem;opacity:0;transform:scale(.8);transition:opacity .16s ease,transform .2s var(--ease-out)}
+.chip .name{padding:.55rem .65rem .6rem;font-weight:700;font-stretch:90%;line-height:1.2}
+.chip .name small{display:block;font-weight:500;font-size:.875rem;color:var(--ink-soft)}
+.chip input:checked + label{box-shadow:0 0 0 3px var(--ink);transform:translateY(-3px)}
+.chip input:checked + label .swatch svg{opacity:1;transform:none}
+.chip input:focus-visible + label{outline:3px solid var(--ink);outline-offset:5px}
+@media (hover:hover) and (pointer:fine){.chip label:hover{transform:translateY(-2px)}}
+.summary{max-width:30rem;border:2px solid var(--ink);border-radius:var(--r-panel);background:var(--bone);padding:1.25rem 1.25rem 1.35rem}
+.summary dl{display:grid;grid-template-columns:auto 1fr;gap:.45rem 0;margin:0 0 1.1rem}
+.summary dd{padding-left:1rem}
+.summary dt{font-size:.9375rem;color:var(--ink-soft);font-weight:600}
+.summary dd{margin:0;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.summary .total{border-top:2px solid var(--ink);padding-top:.6rem;font-size:1.25rem}
+.summary .paint-dot{display:inline-block;width:.9rem;height:.9rem;border-radius:50%;background:var(--paint);vertical-align:-.1rem;margin-right:.4rem;border:1px solid rgb(0 0 0 / .25);transition:background-color .3s ease}
+.summary .btn{width:100%}
+.roll{display:inline-block}
+.roll.is-rolling{animation:roll .3s var(--ease-out)}
+@keyframes roll{0%{transform:translateY(55%);opacity:0}100%{transform:none;opacity:1}}
+.order-note{margin-top:.7rem;font-size:.9375rem;min-height:1.5em}
+
+/* ---------- specs (dark field, geometry drawing) ---------- */
+.section{padding:clamp(5.5rem,12vw,11rem) var(--gutter)}
+.specs{background:var(--teal);color:var(--bone);--focus:var(--bone)}
+.specs__head{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(2rem,5vw,5rem);align-items:end;margin-bottom:clamp(2.5rem,5vw,4.5rem)}
+.specs__head p{color:#DCE6E4}
+.specs__body{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.spec-drawing__bike{width:100%;height:auto}
+.spec-drawing__bike *{transition:none}
+.spec-drawing__bike .shadow{fill:none}
+.spec-drawing__bike .tyre,.spec-drawing__bike .rim,.spec-drawing__bike .tube,.spec-drawing__bike .stay,.spec-drawing__bike .fork,.spec-drawing__bike .guard,.spec-drawing__bike .belt,.spec-drawing__bike .bar,.spec-drawing__bike .post,.spec-drawing__bike .crank,.spec-drawing__bike .stand,.spec-drawing__bike .grip{fill:none;stroke:var(--bone);stroke-width:2.2;stroke-dasharray:none}
+.spec-drawing__bike .tread,.spec-drawing__bike .cells{stroke:var(--bone);stroke-width:1.2;fill:none;opacity:.6}
+.spec-drawing__bike .spk{stroke:var(--bone);stroke-width:.8;opacity:.55}
+.spec-drawing__bike .hub,.spec-drawing__bike .pulley,.spec-drawing__bike .saddle,.spec-drawing__bike .pedal,.spec-drawing__bike .lamp,.spec-drawing__bike .tail,.spec-drawing__bike .bbcap{fill:none;stroke:var(--bone);stroke-width:1.6}
+.spec-drawing__bike .axle,.spec-drawing__bike .lens{fill:var(--bone)}
+.spec-drawing__bike .dim,.spec-drawing__bike .dim-tick{stroke:var(--mustard);stroke-width:1.6;fill:none}
+.spec-drawing__bike .dim-t{fill:var(--mustard);font:700 40px/1 var(--body);font-stretch:85%}
+.spec-drawing figcaption{margin-top:1rem;font-size:.9375rem;color:#DCE6E4}
+.spec-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.spec-table caption{text-align:left;font-weight:700;padding-bottom:.75rem}
+.spec-table th,.spec-table td{text-align:left;vertical-align:baseline;padding:.85rem 0;border-top:1px solid rgb(246 242 234 / .3)}
+.spec-table tr:last-child th,.spec-table tr:last-child td{border-bottom:1px solid rgb(246 242 234 / .3)}
+.spec-table th{font-weight:500;width:40%;padding-right:1rem;color:#DCE6E4}
+.spec-table td{font-weight:700;font-size:1.1875rem}
+
+/* ---------- quotes: three houses stepping down the hill ---------- */
+.quotes{background:var(--render);padding-bottom:0}
+.quotes__head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(1.5rem,3vw,2.5rem)}
+.terrace{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:0}
+.house{--h:var(--sherbet);position:relative;background:var(--h);border:2px solid var(--ink);border-bottom:0;padding:0 clamp(1.25rem,2.4vw,2.25rem) clamp(2rem,4vw,3rem);display:flex;flex-direction:column;gap:1.25rem}
+.house + .house{border-left:0}
+.house:nth-child(1){--h:var(--sherbet)}
+.house:nth-child(2){--h:var(--mustard)}
+.house:nth-child(3){--h:var(--mint)}
+.house:nth-child(2) .house__top{height:11rem}
+.house:nth-child(3) .house__top{height:14.5rem}
+.house__top{display:flex;justify-content:space-between;align-items:flex-end;margin:0 calc(-1 * clamp(1.25rem,2.4vw,2.25rem));padding:0 clamp(1.25rem,2.4vw,2.25rem);border-bottom:2px solid var(--ink);height:7.5rem}
+.house__top svg{height:7rem;width:auto;align-self:flex-end;margin-bottom:-2px}
+.house blockquote{margin:0}
+.house blockquote p{font-family:var(--display);font-stretch:75%;font-weight:700;font-size:1.75rem;line-height:1.18;letter-spacing:-.01em;text-wrap:pretty}
+.house figcaption{font-size:.9375rem;font-weight:600}
+.house .plate{width:2.6rem;height:2.6rem;font-size:1.5rem;margin-top:1.4rem;background:var(--bone)}
+.quotes__note{font-size:.9375rem;padding:1.25rem 0 0}
+.kerb{height:clamp(3rem,6vw,4.5rem);background:var(--stone);border-top:6px solid var(--stone-deep);margin:0 calc(-1 * var(--gutter))}
+
+/* ---------- test ride ---------- */
+.ride-form{background:var(--mustard);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(2.5rem,6vw,6rem);align-items:start}
+.ride-form__intro{display:flex;flex-direction:column;gap:1.5rem;position:sticky;top:calc(var(--header-h) + 3rem)}
+.ride-form__intro ul{margin:0;padding:0;list-style:none;display:grid;gap:.6rem;max-width:28rem}
+.ride-form__intro li{display:flex;gap:.75rem;align-items:baseline;font-weight:600}
+.ride-form__intro li svg{width:1rem;height:1rem;flex:none;transform:translateY(.15rem)}
+.booking{background:var(--bone);border:2px solid var(--ink);border-radius:var(--r-panel);padding:clamp(1.5rem,3vw,2.5rem);position:relative}
+.booking h3{margin-bottom:1.5rem}
+.field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.25rem}
+.field label{font-weight:700}
+.field input,.field select{font:inherit;font-size:max(16px,1.0625rem);color:var(--ink);background:#fff;border:2px solid var(--ink-soft);border-radius:var(--r-control);min-height:3.25rem;padding:.7rem .9rem;width:100%;transition:border-color .18s ease,box-shadow .18s ease}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23172126' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;background-size:1.2rem;padding-right:2.6rem}
+.field input:focus-visible,.field select:focus-visible{outline:3px solid var(--ink);outline-offset:2px;border-color:var(--ink)}
+.field .err{display:none;align-items:center;gap:.4rem;color:#9B1C14;font-weight:600;font-size:.9375rem}
+.field.is-invalid input,.field.is-invalid select{border-color:#9B1C14;box-shadow:0 0 0 1px #9B1C14}
+.field.is-invalid .err{display:flex;animation:nudge .26s var(--ease-out)}
+@keyframes nudge{30%{transform:translateX(-4px)}60%{transform:translateX(3px)}}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.booking .btn{width:100%;margin-top:.5rem}
+.booking .btn[aria-busy="true"]{opacity:.8;cursor:progress}
+.success{display:none;flex-direction:column;gap:1rem;align-items:flex-start}
+.booking.is-done form,.booking.is-done > h3{display:none}
+.booking.is-done .success{display:flex;animation:arrive .4s var(--ease-out)}
+@keyframes arrive{from{opacity:0;transform:translateY(12px)}}
+.bell{width:3.5rem;height:3.5rem;transform-origin:50% 15%}
+.booking.is-done .bell{animation:ring .9s var(--ease-out) .1s}
+@keyframes ring{15%{transform:rotate(16deg)}35%{transform:rotate(-13deg)}55%{transform:rotate(8deg)}75%{transform:rotate(-4deg)}}
+.success .ticket{width:100%;border-top:2px dashed var(--ink);padding-top:1rem;display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem}
+.success .ticket dt{color:var(--ink-soft);font-weight:600;font-size:.9375rem}
+.success .ticket dd{margin:0;font-weight:700}
+.linkish{background:none;border:0;padding:.5rem 0;font:inherit;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:.22em;cursor:pointer;min-height:2.75rem}
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--render)}
+.faq__head{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:1rem 2rem;margin-bottom:clamp(2rem,4vw,3.5rem)}
+.faq__head .lede{max-width:22em}
+.faq__list{border-top:2px solid var(--ink)}
+.faq details{border-bottom:2px solid var(--ink)}
+.faq summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1.5rem;padding:1.4rem 0;cursor:pointer;font-family:var(--display);font-stretch:75%;font-weight:750;font-size:1.75rem;line-height:1.15}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:focus-visible{outline-offset:4px}
+.faq .wheel{flex:none;width:2.4rem;height:2.4rem;transition:transform .32s var(--ease-out)}
+.faq details[open] .wheel{transform:rotate(180deg)}
+.faq details[open] .wheel .plus-v{opacity:0}
+.faq .wheel .plus-v{transition:opacity .2s ease}
+.faq .answer{padding:0 3.5rem 1.8rem 0}
+.faq .answer p{max-width:40em}
+.faq details::details-content{block-size:0;overflow:hidden;transition:block-size .3s var(--ease-out),content-visibility .3s allow-discrete}
+.faq details[open]::details-content{block-size:auto}
+@supports (interpolate-size:allow-keywords){:root{interpolate-size:allow-keywords}}
+@media (hover:hover) and (pointer:fine){.faq summary:hover .wheel{transform:rotate(90deg)}.faq details[open] summary:hover .wheel{transform:rotate(180deg)}}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--teal);color:var(--bone);--focus:var(--bone);position:relative}
+.roofline{display:block;width:100%;height:clamp(84px,10.5vw,150px);background:var(--render)}
+.footer__in{padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem}
+.footer__name{font-family:var(--display);font-stretch:62%;font-weight:900;font-size:clamp(5rem,28.4vw,27rem);line-height:.82;letter-spacing:-.03em;margin:0 0 clamp(2rem,4vw,3.5rem) -.04em;white-space:nowrap}
+.footer__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2rem;border-top:1px solid rgb(246 242 234 / .3);padding-top:2rem}
+.footer__grid h3{font-size:1.25rem;margin-bottom:.75rem;font-stretch:75%}
+.footer__grid address{font-style:normal}
+.footer__grid ul{list-style:none;margin:0;padding:0;display:grid;gap:.15rem}
+.footer__grid a{display:inline-flex;align-items:center;gap:.6rem;min-height:2.75rem;text-decoration:none}
+@media (hover:hover) and (pointer:fine){.footer__grid a:hover{text-decoration:underline}}
+.footer__grid a svg{width:1.25rem;height:1.25rem}
+.footer__base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:2.5rem;font-size:.9375rem;color:#DCE6E4}
+
+/* ---------- responsive ---------- */
+@media (max-width:1099px){
+  .specs__head,.specs__body{grid-template-columns:1fr}
+  .spec-drawing{max-width:42rem}
+  .footer__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:899px){
+  .street{grid-template-columns:1fr}
+  .street__stage-col{grid-column:1;grid-row:1;position:sticky;top:var(--header-h);z-index:5;height:46svh}
+  .stage{position:relative;top:0;height:46svh;border-left:0;border-bottom:2px solid var(--ink)}
+  .street__text{grid-column:1;grid-row:2;padding:0 var(--gutter)}
+  .block{min-height:auto;padding:2rem 0 3.5rem;justify-content:flex-start}
+  .block.hero{padding-top:1.4rem;gap:1rem}
+  .chapter{min-height:calc(54svh - var(--header-h) + 8rem)}
+  h1{font-size:clamp(4rem,19vw,8.5rem);line-height:.9}
+  h2{font-size:clamp(2.75rem,12vw,4.5rem)}
+  .facade .window{width:24%}
+  .stage__ui{bottom:.6rem}
+  .stage__hint{display:none}
+  .stage__plate{bottom:.6rem}
+  .terrace{grid-template-columns:1fr;gap:0}
+  .house{margin-top:0!important}
+  .house + .house{border-left:2px solid var(--ink)}
+  .house:nth-child(2){margin-left:1.25rem!important}
+  .house:nth-child(3){margin-left:2.5rem!important}
+  .ride-form{grid-template-columns:1fr}
+  .ride-form__intro{position:static}
+  .faq summary{gap:.9rem}
+  .house .house__top{height:6rem}
+}
+@media (max-width:899px) and (min-width:600px){
+  .street__stage-col,.stage{height:44svh}
+}
+@media (max-width:560px){
+  .field-row{grid-template-columns:1fr}
+  .chips{gap:.5rem}
+  .chip .swatch{height:4rem}
+  .footer__grid{grid-template-columns:1fr}
+  .house blockquote p{font-size:1.5rem}
+  .faq summary{font-size:1.5rem}
+  .faq .answer{padding-right:0;padding-left:0}
+  .actions .btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__in">
+    <a class="logo" href="#top" aria-label="Volta, home">
+      <svg viewBox="0 0 48 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="21" r="8"/><circle cx="38" cy="21" r="8"/><path d="M10 21 19 8h15l4 13M19 8l5 13h-14M24 21 34 8" /><path d="M16 5h7" /></svg>
+      Volta
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="#ride">Ride</a></li>
+        <li><a href="#specs">Specs</a></li>
+        <li><a href="#colours">Colours</a></li>
+        <li><a href="#test-ride">Test ride</a></li>
+      </ul>
+    </nav>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+      <svg class="i-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      <svg class="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+    <a class="btn order-btn" href="#colours">Order <span class="count" hidden>0</span></a>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+    <ul>
+      <li><a href="#ride">Ride <span>Three houses, three stories</span></a></li>
+      <li><a href="#specs">Specs <span>Fourteen numbers</span></a></li>
+      <li><a href="#colours">Colours <span>Graphite, Moss, Clay</span></a></li>
+      <li><a href="#test-ride">Test ride <span>Bristol, Bath, Cardiff</span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="street" id="top" data-chapter="hero">
+    <div class="street__stage-col">
+      <div class="stage" role="group" aria-label="Volta One in 3D. Drag, or focus and use the left and right arrow keys, to turn the bike." tabindex="0">
+        <div class="facade" aria-hidden="true">
+          <svg class="window" viewBox="0 0 190 300" fill="none">
+            <rect x="4" y="4" width="182" height="20" fill="#F6F2EA" stroke="#172126" stroke-width="3"/>
+            <path d="M80 4h30l-4 20H84z" fill="#F6F2EA" stroke="#172126" stroke-width="3"/>
+            <rect x="18" y="30" width="154" height="246" fill="#2A3A40" stroke="#172126" stroke-width="3"/>
+            <rect x="26" y="38" width="138" height="112" fill="#3E5560" stroke="#F6F2EA" stroke-width="6"/>
+            <rect x="26" y="154" width="138" height="114" fill="#34484F" stroke="#F6F2EA" stroke-width="6"/>
+            <path d="M95 38v112M26 94h138M95 154v114M26 211h138" stroke="#F6F2EA" stroke-width="4"/>
+            <path d="M40 48l26 36M110 164l22 30" stroke="#F6F2EA" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+            <rect x="8" y="276" width="174" height="16" fill="#F6F2EA" stroke="#172126" stroke-width="3"/>
+          </svg>
+          <svg class="door" viewBox="0 0 170 400" fill="none">
+            <rect x="2" y="2" width="166" height="398" fill="#F6F2EA" stroke="#172126" stroke-width="3"/>
+            <path d="M18 92a67 67 0 0 1 134 0z" fill="#3E5560" stroke="#172126" stroke-width="3"/>
+            <path d="M85 92V30M85 92 42 46M85 92l43-46M85 92 26 72M85 92l59-20" stroke="#F6F2EA" stroke-width="3"/>
+            <rect x="18" y="98" width="134" height="302" fill="#22343A" stroke="#172126" stroke-width="3"/>
+            <rect x="32" y="114" width="44" height="110" stroke="#4A6068" stroke-width="3"/>
+            <rect x="94" y="114" width="44" height="110" stroke="#4A6068" stroke-width="3"/>
+            <rect x="32" y="244" width="44" height="130" stroke="#4A6068" stroke-width="3"/>
+            <rect x="94" y="244" width="44" height="130" stroke="#4A6068" stroke-width="3"/>
+            <rect x="60" y="232" width="50" height="8" rx="2" fill="#E3AA2E"/>
+            <rect x="58" y="150" width="54" height="54" rx="4" fill="#F6F2EA" stroke="#172126" stroke-width="3"/>
+            <text class="plate-num" x="85" y="193" text-anchor="middle" fill="#172126" data-door>1</text>
+          </svg>
+        </div>
+        <div class="pavement" aria-hidden="true"></div>
+        <div class="stage__poster"><svg class="poster-bike" viewBox="0 0 900 530" role="img" aria-label="The Volta One electric bike, side view" xmlns="http://www.w3.org/2000/svg"><ellipse class="shadow" cx="452" cy="512" rx="380" ry="12"/><path class="spk" d="M219.8 316.7L340.0 335.0M223.2 346.2L336.2 301.6M208.9 305.6L325.1 269.9M224.7 330.7L307.3 241.5M194.3 300.3L283.5 217.7M219.4 316.1L255.1 199.9M178.8 301.8L223.4 188.8M208.3 305.2L190.0 185.0M165.5 310.0L156.6 188.8M193.5 300.2L124.9 199.9M157.1 323.1L96.5 217.7M178.1 302.1L72.7 241.5M155.2 338.5L54.9 269.9M165.0 310.5L43.8 301.6M160.2 353.3L40.0 335.0M156.8 323.8L43.8 368.4M171.1 364.4L54.9 400.1M155.3 339.3L72.7 428.5M185.7 369.7L96.5 452.3M160.6 353.9L124.9 470.1M201.2 368.2L156.6 481.2M171.7 364.8L190.0 485.0M214.5 360.0L223.4 481.2M186.5 369.8L255.1 470.1M222.9 346.9L283.5 452.3M201.9 367.9L307.3 428.5M224.8 331.5L325.1 400.1M215.0 359.5L336.2 368.4"/><circle class="rim" cx="190.0" cy="335.0" r="155.0"/><circle class="tyre" cx="190.0" cy="335.0" r="167.5"/><circle class="tread" cx="190.0" cy="335.0" r="176.0"/><circle class="hub" cx="190.0" cy="335.0" r="35.0"/><circle class="axle" cx="190.0" cy="335.0" r="6.0"/><path class="spk" d="M727.8 327.2L865.0 335.0M729.2 339.8L861.2 301.6M723.1 322.4L850.1 269.9M729.9 333.2L832.3 241.5M716.8 320.1L808.5 217.7M727.6 326.9L780.1 199.9M710.2 320.8L748.4 188.8M722.8 322.2L715.0 185.0M704.5 324.3L681.6 188.8M716.5 320.1L649.9 199.9M700.9 329.9L621.5 217.7M709.9 320.9L597.7 241.5M700.1 336.5L579.9 269.9M704.3 324.5L568.8 301.6M702.2 342.8L565.0 335.0M700.8 330.2L568.8 368.4M706.9 347.6L579.9 400.1M700.1 336.8L597.7 428.5M713.2 349.9L621.5 452.3M702.4 343.1L649.9 470.1M719.8 349.2L681.6 481.2M707.2 347.8L715.0 485.0M725.5 345.7L748.4 481.2M713.5 349.9L780.1 470.1M729.1 340.1L808.5 452.3M720.1 349.1L832.3 428.5M729.9 333.5L850.1 400.1M725.7 345.5L861.2 368.4"/><circle class="rim" cx="715.0" cy="335.0" r="155.0"/><circle class="tyre" cx="715.0" cy="335.0" r="167.5"/><circle class="tread" cx="715.0" cy="335.0" r="176.0"/><circle class="hub" cx="715.0" cy="335.0" r="15.0"/><circle class="axle" cx="715.0" cy="335.0" r="6.0"/><path class="guard" d="M5.3 302.4A187.5 187.5 0 0 1 366.2 270.9"/><path class="guard" d="M538.8 270.9A187.5 187.5 0 0 1 901.8 351.3"/><path class="belt" d="M397.2 418.3L183.0 361.6A27.5 27.5 0 1 0 191.6 307.5L412.8 320.1A50.0 50.0 0 1 0 397.2 418.3Z"/><circle class="pulley" cx="410.0" cy="370.0" r="50.0"/><circle class="pulley" cx="190.0" cy="335.0" r="27.5"/><path class="stay" d="M410.0 370.0L190.0 335.0M342.5 165.0L190.0 335.0"/><path class="fork" d="M650.0 190.0Q685.0 275.0 715.0 335.0"/><path class="tube st" d="M410.0 370.0L337.5 130.0"/><path class="tube tt" d="M346.0 157.5L631.0 132.5"/><path class="tube dt" d="M410.0 370.0L650.0 190.0"/><path class="cells" d="M440.0 347.5L620.0 212.5"/><path class="tube ht" d="M650.0 190.0L626.0 115.0"/><path class="post" d="M337.5 130.0L313.0 47.5"/><path class="saddle" d="M251.0 41.5C273.0 29.5 323.0 33.5 371.0 43.5L373.0 51.5C333.0 49.5 283.0 57.5 253.0 55.5Z"/><path class="bar" d="M626.0 115.0L622.5 90.0L652.5 77.5C645.0 67.5 610.0 65.0 585.0 67.5"/><path class="grip" d="M585.0 67.5l-26 2"/><path class="crank" d="M410.0 370.0L452.5 443.6"/><rect class="pedal" x="430.5" y="437.6" width="44" height="12" rx="3"/><circle class="bbcap" cx="410.0" cy="370.0" r="13"/><rect class="lamp" x="659.0" y="98.0" width="26" height="22" rx="6"/><rect class="lens" x="679.0" y="102.0" width="6" height="14" rx="2"/><rect class="tail" x="16.0" y="267.0" width="14" height="16" rx="3"/><path class="stand" d="M350.0 360.0L290.0 510.0"/></svg></div>
+        <div class="stage__gl" aria-hidden="true"></div>
+        <div class="stage__ui">
+          <button class="turn" type="button" data-turn="-1" aria-label="Turn the bike left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7 4 12l5 5"/><path d="M4 12h9a7 7 0 0 1 7 7"/></svg></button>
+          <button class="turn" type="button" data-turn="1" aria-label="Turn the bike right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 7 5 5-5 5"/><path d="M20 12h-9a7 7 0 0 0-7 7"/></svg></button>
+          <span class="stage__hint">Drag to turn</span>
+        </div>
+        <p class="stage__plate"><span class="vh">Shown in </span><span data-paint-name>Moss</span></p>
+      </div>
+    </div>
+
+    <div class="street__text">
+      <section class="block hero" data-chapter="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title">Volta One</h1>
+        <p class="lede">A 16&nbsp;kg electric city bike with the battery hidden in the frame, a quiet belt drive and 80&nbsp;km on a charge.</p>
+        <div class="hero__price"><span class="price">£2,190</span><span class="small">In Graphite, Moss or Clay. From a small Bristol company.</span></div>
+        <div class="actions">
+          <a class="btn" href="#test-ride">Book a test ride</a>
+          <a class="btn btn--ghost" href="#colours">Choose your colour</a>
+        </div>
+      </section>
+
+      <div id="ride">
+        <section class="block chapter" data-chapter="battery" aria-labelledby="ch-battery">
+          <div class="plate-row"><span class="plate" aria-hidden="true">3</span><span class="small">The battery</span></div>
+          <h2 id="ch-battery">Battery in the&nbsp;frame.</h2>
+          <p class="lede">The cells sit inside the down tube, so the Volta One looks like a bicycle, not a gadget. Charge it at the port above the pedals; the bike stays in the hall.</p>
+          <dl class="facts"><div><dt>Range</dt><dd>80 km</dd></div><div><dt>Full charge</dt><dd>4 hours</dd></div></dl>
+        </section>
+        <section class="block chapter" data-chapter="belt" aria-labelledby="ch-belt">
+          <div class="plate-row"><span class="plate" aria-hidden="true">5</span><span class="small">The drive</span></div>
+          <h2 id="ch-belt">A belt, not a&nbsp;chain.</h2>
+          <p class="lede">A carbon belt turns the back wheel. No oil on your trousers, no rust after a wet week, and almost no sound, so you hear the street instead of the drivetrain.</p>
+          <dl class="facts"><div><dt>Drive</dt><dd>Carbon belt</dd></div><div><dt>Oil needed</dt><dd>None</dd></div></dl>
+        </section>
+        <section class="block chapter" data-chapter="weight" aria-labelledby="ch-weight">
+          <div class="plate-row"><span class="plate" aria-hidden="true">7</span><span class="small">The weight</span></div>
+          <h2 id="ch-weight">16&nbsp;kg. Up the steps.</h2>
+          <p class="lede">With the battery in, the whole bike weighs 16&nbsp;kg. Lift it by the top tube, carry it up to the front door, and hang it on a hook in the hall.</p>
+          <dl class="facts"><div><dt>Weight, with battery</dt><dd>16 kg</dd></div><div><dt>Frame</dt><dd>Aluminium</dd></div></dl>
+        </section>
+      </div>
+
+      <section class="block colours" id="colours" data-chapter="colours" aria-labelledby="colours-title">
+        <div class="plate-row"><span class="plate" aria-hidden="true">9</span><span class="small">The paint</span></div>
+        <h2 id="colours-title">Choose your&nbsp;paint.</h2>
+        <fieldset class="chips">
+          <legend>Frame colour</legend>
+          <div class="chip"><input type="radio" name="paint" id="paint-graphite" value="Graphite" data-hex="#34383D"><label for="paint-graphite" style="--c:#34383D"><span class="swatch"><svg viewBox="0 0 24 24" fill="none" stroke="#F6F2EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span><span class="name">Graphite<small>Wet slate</small></span></label></div>
+          <div class="chip"><input type="radio" name="paint" id="paint-moss" value="Moss" data-hex="#56653A" checked><label for="paint-moss" style="--c:#56653A"><span class="swatch"><svg viewBox="0 0 24 24" fill="none" stroke="#F6F2EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span><span class="name">Moss<small>Garden wall</small></span></label></div>
+          <div class="chip"><input type="radio" name="paint" id="paint-clay" value="Clay" data-hex="#B5603C"><label for="paint-clay" style="--c:#B5603C"><span class="swatch"><svg viewBox="0 0 24 24" fill="none" stroke="#F6F2EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span><span class="name">Clay<small>Chimney pot</small></span></label></div>
+        </fieldset>
+        <div class="summary">
+          <h3 id="summary-title" class="vh">Your order</h3>
+          <dl>
+            <dt>Bike</dt><dd>Volta One</dd>
+            <dt>Colour</dt><dd><span class="paint-dot" aria-hidden="true"></span><span class="roll" data-paint-name>Moss</span></dd>
+            <dt>Included</dt><dd>Lights, mudguards, stand</dd>
+            <dt class="total">Total</dt><dd class="total">£2,190</dd>
+          </dl>
+          <button class="btn" type="button" id="order-add"><span>Order in <span data-paint-name>Moss</span></span></button>
+          <p class="order-note" id="order-note" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="section specs" id="specs" aria-labelledby="specs-title">
+    <div class="specs__head">
+      <h2 id="specs-title">Every number, plainly.</h2>
+      <p class="lede">One frame, three sizes, nothing to add. If a number matters to how you ride, it is here.</p>
+    </div>
+    <div class="specs__body">
+      <figure class="spec-drawing" style="margin:0"><svg class="spec-drawing__bike" viewBox="-20 0 1110 560" role="img" aria-label="Side elevation of the Volta One with key dimensions" xmlns="http://www.w3.org/2000/svg"><ellipse class="shadow" cx="452" cy="512" rx="380" ry="12"/><path class="spk" d="M219.8 316.7L340.0 335.0M223.2 346.2L336.2 301.6M208.9 305.6L325.1 269.9M224.7 330.7L307.3 241.5M194.3 300.3L283.5 217.7M219.4 316.1L255.1 199.9M178.8 301.8L223.4 188.8M208.3 305.2L190.0 185.0M165.5 310.0L156.6 188.8M193.5 300.2L124.9 199.9M157.1 323.1L96.5 217.7M178.1 302.1L72.7 241.5M155.2 338.5L54.9 269.9M165.0 310.5L43.8 301.6M160.2 353.3L40.0 335.0M156.8 323.8L43.8 368.4M171.1 364.4L54.9 400.1M155.3 339.3L72.7 428.5M185.7 369.7L96.5 452.3M160.6 353.9L124.9 470.1M201.2 368.2L156.6 481.2M171.7 364.8L190.0 485.0M214.5 360.0L223.4 481.2M186.5 369.8L255.1 470.1M222.9 346.9L283.5 452.3M201.9 367.9L307.3 428.5M224.8 331.5L325.1 400.1M215.0 359.5L336.2 368.4"/><circle class="rim" cx="190.0" cy="335.0" r="155.0"/><circle class="tyre" cx="190.0" cy="335.0" r="167.5"/><circle class="tread" cx="190.0" cy="335.0" r="176.0"/><circle class="hub" cx="190.0" cy="335.0" r="35.0"/><circle class="axle" cx="190.0" cy="335.0" r="6.0"/><path class="spk" d="M727.8 327.2L865.0 335.0M729.2 339.8L861.2 301.6M723.1 322.4L850.1 269.9M729.9 333.2L832.3 241.5M716.8 320.1L808.5 217.7M727.6 326.9L780.1 199.9M710.2 320.8L748.4 188.8M722.8 322.2L715.0 185.0M704.5 324.3L681.6 188.8M716.5 320.1L649.9 199.9M700.9 329.9L621.5 217.7M709.9 320.9L597.7 241.5M700.1 336.5L579.9 269.9M704.3 324.5L568.8 301.6M702.2 342.8L565.0 335.0M700.8 330.2L568.8 368.4M706.9 347.6L579.9 400.1M700.1 336.8L597.7 428.5M713.2 349.9L621.5 452.3M702.4 343.1L649.9 470.1M719.8 349.2L681.6 481.2M707.2 347.8L715.0 485.0M725.5 345.7L748.4 481.2M713.5 349.9L780.1 470.1M729.1 340.1L808.5 452.3M720.1 349.1L832.3 428.5M729.9 333.5L850.1 400.1M725.7 345.5L861.2 368.4"/><circle class="rim" cx="715.0" cy="335.0" r="155.0"/><circle class="tyre" cx="715.0" cy="335.0" r="167.5"/><circle class="tread" cx="715.0" cy="335.0" r="176.0"/><circle class="hub" cx="715.0" cy="335.0" r="15.0"/><circle class="axle" cx="715.0" cy="335.0" r="6.0"/><path class="guard" d="M5.3 302.4A187.5 187.5 0 0 1 366.2 270.9"/><path class="guard" d="M538.8 270.9A187.5 187.5 0 0 1 901.8 351.3"/><path class="belt" d="M397.2 418.3L183.0 361.6A27.5 27.5 0 1 0 191.6 307.5L412.8 320.1A50.0 50.0 0 1 0 397.2 418.3Z"/><circle class="pulley" cx="410.0" cy="370.0" r="50.0"/><circle class="pulley" cx="190.0" cy="335.0" r="27.5"/><path class="stay" d="M410.0 370.0L190.0 335.0M342.5 165.0L190.0 335.0"/><path class="fork" d="M650.0 190.0Q685.0 275.0 715.0 335.0"/><path class="tube st" d="M410.0 370.0L337.5 130.0"/><path class="tube tt" d="M346.0 157.5L631.0 132.5"/><path class="tube dt" d="M410.0 370.0L650.0 190.0"/><path class="cells" d="M440.0 347.5L620.0 212.5"/><path class="tube ht" d="M650.0 190.0L626.0 115.0"/><path class="post" d="M337.5 130.0L313.0 47.5"/><path class="saddle" d="M251.0 41.5C273.0 29.5 323.0 33.5 371.0 43.5L373.0 51.5C333.0 49.5 283.0 57.5 253.0 55.5Z"/><path class="bar" d="M626.0 115.0L622.5 90.0L652.5 77.5C645.0 67.5 610.0 65.0 585.0 67.5"/><path class="grip" d="M585.0 67.5l-26 2"/><path class="crank" d="M410.0 370.0L452.5 443.6"/><rect class="pedal" x="430.5" y="437.6" width="44" height="12" rx="3"/><circle class="bbcap" cx="410.0" cy="370.0" r="13"/><rect class="lamp" x="659.0" y="98.0" width="26" height="22" rx="6"/><rect class="lens" x="679.0" y="102.0" width="6" height="14" rx="2"/><rect class="tail" x="16.0" y="267.0" width="14" height="16" rx="3"/><path class="stand" d="M350.0 360.0L290.0 510.0"/><path class="dim" d="M190.0 351.0V532M715.0 351.0V532M190.0 524H715.0"/><path class="dim-tick" d="M184.0 530l12 -12M709.0 530l12 -12"/><text class="dim-t" x="452.5" y="514" text-anchor="middle">Wheelbase 1,050 mm</text><path class="dim" d="M656.0 115.0H930M920 115.0V512M905 512H935"/><text class="dim-t" x="944" y="307.5" text-anchor="start">Stack</text><text class="dim-t" x="944" y="351.5" text-anchor="start">610 mm</text><text class="dim-t" x="190.0" y="40" text-anchor="middle">700c × 35</text><path class="dim" d="M190.0 50V154.0"/></svg><figcaption>Side elevation, size M. Drawn to scale.</figcaption></figure>
+      <table class="spec-table">
+        <caption class="vh">Volta One specifications</caption>
+        <tbody>
+          <tr><th scope="row">Weight</th><td>16 kg with battery</td></tr>
+          <tr><th scope="row">Range</th><td>Up to 80 km per charge</td></tr>
+          <tr><th scope="row">Battery</th><td>360 Wh, inside the down tube</td></tr>
+          <tr><th scope="row">Charging</th><td>About 4 hours, 0 to 100%</td></tr>
+          <tr><th scope="row">Motor</th><td>250 W rear hub</td></tr>
+          <tr><th scope="row">Assist</th><td>Up to 25 km/h, three levels</td></tr>
+          <tr><th scope="row">Drive</th><td>Carbon belt, single speed</td></tr>
+          <tr><th scope="row">Frame</th><td>Aluminium, sizes S, M and L</td></tr>
+          <tr><th scope="row">Wheels and tyres</th><td>700c, 35 mm reflective tyres</td></tr>
+          <tr><th scope="row">Brakes</th><td>Hydraulic disc, front and rear</td></tr>
+          <tr><th scope="row">Lights</th><td>Front and rear, run from the battery</td></tr>
+          <tr><th scope="row">Max. rider + luggage</th><td>120 kg</td></tr>
+          <tr><th scope="row">Colours</th><td>Graphite, Moss, Clay</td></tr>
+          <tr><th scope="row">Price</th><td>£2,190</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section quotes" aria-labelledby="quotes-title">
+    <div class="quotes__head">
+      <h2 id="quotes-title">Heard on the&nbsp;hill.</h2>
+      <p class="lede">Three riders, three front doors.</p>
+    </div>
+    <ul class="terrace">
+      <li class="house">
+        <div class="house__top" aria-hidden="true"><span class="plate">12</span><svg viewBox="0 0 80 110" fill="none"><rect x="4" y="12" width="72" height="92" fill="#2A3A40" stroke="#172126" stroke-width="3"/><path d="M40 12v92M4 58h72" stroke="#F6F2EA" stroke-width="4"/><rect x="0" y="2" width="80" height="10" fill="#F6F2EA" stroke="#172126" stroke-width="3"/></svg></div>
+        <figure style="margin:0">
+          <blockquote><p>“I live at the top of a very steep street. I used to push the last bit. Now I don’t.”</p></blockquote>
+          <figcaption>Priya, rides to work in Bedminster</figcaption>
+        </figure>
+      </li>
+      <li class="house">
+        <div class="house__top" aria-hidden="true"><span class="plate">14</span><svg viewBox="0 0 80 110" fill="none"><rect x="4" y="12" width="72" height="92" fill="#2A3A40" stroke="#172126" stroke-width="3"/><path d="M40 12v92M4 58h72" stroke="#F6F2EA" stroke-width="4"/><rect x="0" y="2" width="80" height="10" fill="#F6F2EA" stroke="#172126" stroke-width="3"/></svg></div>
+        <figure style="margin:0">
+          <blockquote><p>“It lives in our narrow hallway. My partner carries it in and out without asking me to help.”</p></blockquote>
+          <figcaption>Tom, shares it with his partner in Totterdown</figcaption>
+        </figure>
+      </li>
+      <li class="house">
+        <div class="house__top" aria-hidden="true"><span class="plate">16</span><svg viewBox="0 0 80 110" fill="none"><rect x="4" y="12" width="72" height="92" fill="#2A3A40" stroke="#172126" stroke-width="3"/><path d="M40 12v92M4 58h72" stroke="#F6F2EA" stroke-width="4"/><rect x="0" y="2" width="80" height="10" fill="#F6F2EA" stroke="#172126" stroke-width="3"/></svg></div>
+        <figure style="margin:0">
+          <blockquote><p>“Six months of rain and the belt still looks new. I have never once thought about it.”</p></blockquote>
+          <figcaption>Ffion, commutes from Cardiff Bay</figcaption>
+        </figure>
+      </li>
+    </ul>
+    <p class="quotes__note">Rider quotes are illustrative, written for this demo page.</p>
+    <div class="kerb" aria-hidden="true"></div>
+  </section>
+
+  <section class="section ride-form" id="test-ride" aria-labelledby="test-title">
+    <div class="ride-form__intro">
+      <h2 id="test-title">Ride it up a hill first.</h2>
+      <p class="lede">Book forty minutes on a Volta One in Bristol, Bath or Cardiff. Bring nothing but shoes you can pedal in.</p>
+      <ul>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 8 4 4 8-9"/></svg>Free, with no deposit</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 8 4 4 8-9"/></svg>All three colours to try</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 8 4 4 8-9"/></svg>We confirm the time by email</li>
+      </ul>
+    </div>
+    <div class="booking" id="booking">
+      <h3>Book a test ride</h3>
+      <form novalidate>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+          <p class="err" id="e-name"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#9B1C14"/><path d="M8 4v5M8 11.5v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>Tell us your name so we know who to expect.</span></p>
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="e-email">
+          <p class="err" id="e-email"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#9B1C14"/><path d="M8 4v5M8 11.5v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>Enter an email like name@example.com.</span></p>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-city">City</label>
+            <select id="f-city" name="city" required aria-describedby="e-city">
+              <option value="">Choose a city</option>
+              <option>Bristol</option>
+              <option>Bath</option>
+              <option>Cardiff</option>
+            </select>
+            <p class="err" id="e-city"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#9B1C14"/><path d="M8 4v5M8 11.5v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>Pick Bristol, Bath or Cardiff.</span></p>
+          </div>
+          <div class="field">
+            <label for="f-date">Preferred date</label>
+            <input id="f-date" name="date" type="date" required aria-describedby="e-date">
+            <p class="err" id="e-date"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#9B1C14"/><path d="M8 4v5M8 11.5v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>Choose a date from tomorrow on.</span></p>
+          </div>
+        </div>
+        <button class="btn" type="submit">Book my test ride</button>
+      </form>
+      <div class="success" role="status" aria-live="polite" tabindex="-1">
+        <svg class="bell" viewBox="0 0 56 56" fill="none" aria-hidden="true"><path d="M28 6v5" stroke="#172126" stroke-width="3" stroke-linecap="round"/><path d="M12 38c0-14 6-24 16-24s16 10 16 24z" fill="#E3AA2E" stroke="#172126" stroke-width="3" stroke-linejoin="round"/><path d="M8 38h40" stroke="#172126" stroke-width="3" stroke-linecap="round"/><path d="M22 44a6 6 0 0 0 12 0" stroke="#172126" stroke-width="3"/><path d="M20 24c1-4 4-6 7-6" stroke="#F6F2EA" stroke-width="3" stroke-linecap="round"/></svg>
+        <h3>Test ride booked.</h3>
+        <p data-success-msg>We’ll email you to confirm the time.</p>
+        <dl class="ticket"><dt>Rider</dt><dd data-t="name"></dd><dt>City</dt><dd data-t="city"></dd><dt>Date</dt><dd data-t="date"></dd></dl>
+        <button class="linkish" type="button" data-again>Book another ride</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" aria-labelledby="faq-title">
+    <div class="faq__head">
+      <h2 id="faq-title">Questions at the&nbsp;door.</h2>
+      <p class="lede">Ask us anything else when you come for a test ride.</p>
+    </div>
+    <div class="faq__list">
+      <details name="faq" open>
+        <summary><span>How far does it go on one charge?</span><svg class="wheel" viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="17" stroke-width="2.5"/><circle cx="20" cy="20" r="13" stroke-width="1" opacity=".55"/><path d="M11 20h18" stroke-width="3" stroke-linecap="round"/><path class="plus-v" d="M20 11v18" stroke-width="3" stroke-linecap="round"/></svg></summary>
+        <div class="answer"><p>Up to 80 km. Hills, headwinds, a heavy bag and the highest assist level all bring that down, so most riders plan on a charge or two a week.</p></div>
+      </details>
+      <details name="faq">
+        <summary><span>How do I charge a battery I can’t see?</span><svg class="wheel" viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="17" stroke-width="2.5"/><circle cx="20" cy="20" r="13" stroke-width="1" opacity=".55"/><path d="M11 20h18" stroke-width="3" stroke-linecap="round"/><path class="plus-v" d="M20 11v18" stroke-width="3" stroke-linecap="round"/></svg></summary>
+        <div class="answer"><p>Plug the charger into the port on the down tube, just above the pedals. A full charge takes about four hours, so overnight in the hall is plenty.</p></div>
+      </details>
+      <details name="faq">
+        <summary><span>Does the belt need looking after?</span><svg class="wheel" viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="17" stroke-width="2.5"/><circle cx="20" cy="20" r="13" stroke-width="1" opacity=".55"/><path d="M11 20h18" stroke-width="3" stroke-linecap="round"/><path class="plus-v" d="M20 11v18" stroke-width="3" stroke-linecap="round"/></svg></summary>
+        <div class="answer"><p>Very little. It needs no oil. Rinse off grit after a muddy ride and we check its tension at each service.</p></div>
+      </details>
+      <details name="faq">
+        <summary><span>Which size should I ride?</span><svg class="wheel" viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="17" stroke-width="2.5"/><circle cx="20" cy="20" r="13" stroke-width="1" opacity=".55"/><path d="M11 20h18" stroke-width="3" stroke-linecap="round"/><path class="plus-v" d="M20 11v18" stroke-width="3" stroke-linecap="round"/></svg></summary>
+        <div class="answer"><p>The frame comes in S, M and L. Book a test ride and we bring two sizes so you can feel the difference before you choose.</p></div>
+      </details>
+      <details name="faq">
+        <summary><span>Can I ride it in the rain?</span><svg class="wheel" viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="17" stroke-width="2.5"/><circle cx="20" cy="20" r="13" stroke-width="1" opacity=".55"/><path d="M11 20h18" stroke-width="3" stroke-linecap="round"/><path class="plus-v" d="M20 11v18" stroke-width="3" stroke-linecap="round"/></svg></summary>
+        <div class="answer"><p>Yes. The battery is sealed inside the frame, the mudguards come fitted and the belt does not rust. Dry it off when you get in and it is ready for tomorrow.</p></div>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <svg class="roofline" viewBox="0 0 1440 150" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><rect x="138" y="22" width="40" height="32" fill="#1D4C52" stroke="#172126" stroke-width="3"/><rect x="143" y="10" width="10" height="13" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="162" y="12" width="10" height="11" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="0" y="52" width="200" height="98" fill="#F4B9C4" stroke="#172126" stroke-width="3"/><rect x="-2" y="52" width="204" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="30" y="78" width="46" height="68" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M53 78v68M30 112h46" stroke="#F6F2EA" stroke-width="3"/><rect x="124" y="78" width="46" height="68" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M147 78v68M124 112h46" stroke="#F6F2EA" stroke-width="3"/><rect x="200" y="36" width="180" height="114" fill="#E3AA2E" stroke="#172126" stroke-width="3"/><rect x="198" y="36" width="184" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="230" y="62" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M253 62v70M230 97h46" stroke="#F6F2EA" stroke-width="3"/><rect x="304" y="62" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M327 62v70M304 97h46" stroke="#F6F2EA" stroke-width="3"/><rect x="538" y="28" width="40" height="32" fill="#1D4C52" stroke="#172126" stroke-width="3"/><rect x="543" y="16" width="10" height="13" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="562" y="18" width="10" height="11" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="380" y="58" width="220" height="92" fill="#ABDCC6" stroke="#172126" stroke-width="3"/><rect x="378" y="58" width="224" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="410" y="84" width="46" height="62" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M433 84v62M410 115h46" stroke="#F6F2EA" stroke-width="3"/><rect x="524" y="84" width="46" height="62" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M547 84v62M524 115h46" stroke="#F6F2EA" stroke-width="3"/><rect x="600" y="42" width="190" height="108" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="598" y="42" width="194" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="630" y="68" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M653 68v70M630 103h46" stroke="#F6F2EA" stroke-width="3"/><rect x="714" y="68" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M737 68v70M714 103h46" stroke="#F6F2EA" stroke-width="3"/><rect x="938" y="-2" width="40" height="32" fill="#1D4C52" stroke="#172126" stroke-width="3"/><rect x="943" y="-14" width="10" height="13" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="962" y="-12" width="10" height="11" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="790" y="28" width="210" height="122" fill="#B5603C" stroke="#172126" stroke-width="3"/><rect x="788" y="28" width="214" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="820" y="54" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M843 54v70M820 89h46" stroke="#F6F2EA" stroke-width="3"/><rect x="924" y="54" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M947 54v70M924 89h46" stroke="#F6F2EA" stroke-width="3"/><rect x="1000" y="48" width="200" height="102" fill="#56653A" stroke="#172126" stroke-width="3"/><rect x="998" y="48" width="204" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="1030" y="74" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M1053 74v70M1030 109h46" stroke="#F6F2EA" stroke-width="3"/><rect x="1124" y="74" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M1147 74v70M1124 109h46" stroke="#F6F2EA" stroke-width="3"/><rect x="1378" y="8" width="40" height="32" fill="#1D4C52" stroke="#172126" stroke-width="3"/><rect x="1383" y="-4" width="10" height="13" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="1402" y="-2" width="10" height="11" fill="#B5603C" stroke="#172126" stroke-width="2.5"/><rect x="1200" y="38" width="240" height="112" fill="#F4B9C4" stroke="#172126" stroke-width="3"/><rect x="1198" y="38" width="244" height="9" fill="#F6F2EA" stroke="#172126" stroke-width="3"/><rect x="1230" y="64" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M1253 64v70M1230 99h46" stroke="#F6F2EA" stroke-width="3"/><rect x="1364" y="64" width="46" height="70" fill="#2A3A40" stroke="#F6F2EA" stroke-width="4"/><path d="M1387 64v70M1364 99h46" stroke="#F6F2EA" stroke-width="3"/><rect x="0" y="136" width="1440" height="14" fill="#1D4C52"/></svg>
+  <div class="footer__in">
+    <p class="footer__name" aria-hidden="true">Volta One</p>
+    <div class="footer__grid">
+      <div>
+        <h3>Find us</h3>
+        <address>Volta Cycles<br>Unit 3, Ropewalk Yard<br>Bristol BS1 6XX</address>
+      </div>
+      <div>
+        <h3>The bike</h3>
+        <ul><li><a href="#ride">Ride</a></li><li><a href="#specs">Specs</a></li><li><a href="#colours">Colours</a></li><li><a href="#test-ride">Test ride</a></li></ul>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</a></li>
+          <li><a href="https://www.youtube.com/" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor"/></svg>YouTube</a></li>
+          <li><a href="https://www.strava.com/" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 19 9 7l6 12M13 15l3 6 3-6"/></svg>Strava</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Ask</h3>
+        <ul><li><a href="mailto:hello@example.com">hello@example.com</a></li><li><a href="#test-ride">Book a test ride</a></li></ul>
+      </div>
+    </div>
+    <div class="footer__base"><span>Volta One is a fictional bike made for a design demo.</span><span>© Volta Cycles</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, street=document.querySelector('.street');
+  /* mobile nav */
+  var toggle=document.querySelector('.menu-toggle'), mnav=document.getElementById('mobile-nav');
+  function setMenu(open){toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu');mnav.classList.toggle('is-open',open);if(open){var a=mnav.querySelector('a');a&&a.focus();}}
+  toggle.addEventListener('click',function(){setMenu(toggle.getAttribute('aria-expanded')!=='true')});
+  mnav.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){setMenu(false);toggle.focus();}});
+  matchMedia('(min-width:900px)').addEventListener('change',function(m){if(m.matches)setMenu(false)});
+
+  /* chapters: the street changes house as you scroll */
+  var doorNum={hero:'1',battery:'3',belt:'5',weight:'7',colours:'9'};
+  var door=document.querySelector('[data-door]');
+  var current='hero';
+  function setChapter(c){if(c===current)return;current=c;street.dataset.chapter=c;root.dataset.chapter=c;if(door)door.textContent=doorNum[c]||'1';window.voltaChapter=c;window.dispatchEvent(new CustomEvent('volta:chapter',{detail:c}));}
+  window.voltaChapter='hero';
+  var blocks=[].slice.call(document.querySelectorAll('.street [data-chapter]')).filter(function(b){return b!==street});
+  function pick(){
+    var mid=window.innerHeight*(window.innerWidth<900?0.72:0.5), best='hero';
+    var rs=street.getBoundingClientRect();
+    if(rs.bottom<window.innerHeight*0.3){ setChapter('colours'); return; }
+    for(var i=0;i<blocks.length;i++){var r=blocks[i].getBoundingClientRect();if(r.top<=mid)best=blocks[i].dataset.chapter;}
+    setChapter(best);
+  }
+  var ticking=false;
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;pick();});}},{passive:true});
+  window.addEventListener('resize',pick);pick();
+
+  /* paint picker */
+  var radios=document.querySelectorAll('input[name="paint"]');
+  function setPaint(input,announce){
+    root.style.setProperty('--paint',input.dataset.hex);
+    document.querySelectorAll('[data-paint-name]').forEach(function(el){el.textContent=input.value;if(el.classList.contains('roll')){el.classList.remove('is-rolling');void el.offsetWidth;el.classList.add('is-rolling');}});
+    window.voltaPaint=input.dataset.hex;
+    window.dispatchEvent(new CustomEvent('volta:paint',{detail:input.dataset.hex}));
+    if(announce)note.textContent='';
+  }
+  var note=document.getElementById('order-note');
+  radios.forEach(function(r){r.addEventListener('change',function(){setPaint(r,true)});if(r.checked)setPaint(r,false);});
+
+  /* order */
+  var count=0, badge=document.querySelector('.order-btn .count');
+  document.getElementById('order-add').addEventListener('click',function(){
+    count++;badge.hidden=false;badge.textContent=count;badge.classList.remove('bump');void badge.offsetWidth;badge.classList.add('bump');
+    var p=document.querySelector('input[name="paint"]:checked').value;
+    note.textContent='Added a '+p+' Volta One to your order ('+count+' in total). Checkout is not part of this demo.';
+  });
+
+  /* stage turn buttons */
+  document.querySelectorAll('[data-turn]').forEach(function(b){b.addEventListener('click',function(){window.dispatchEvent(new CustomEvent('volta:turn',{detail:+b.dataset.turn}))})});
+
+  /* booking form */
+  var booking=document.getElementById('booking'), form=booking.querySelector('form');
+  var dateIn=document.getElementById('f-date');
+  function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  var tmr=new Date();tmr.setDate(tmr.getDate()+1);dateIn.min=iso(tmr);
+  var rules={
+    name:function(v){return v.trim().length>=2},
+    email:function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())},
+    city:function(v){return ['Bristol','Bath','Cardiff'].indexOf(v)>-1},
+    date:function(v){return !!v && v>=dateIn.min}
+  };
+  function check(el){var ok=rules[el.name](el.value);var f=el.closest('.field');f.classList.toggle('is-invalid',!ok);el.setAttribute('aria-invalid',String(!ok));return ok;}
+  form.querySelectorAll('input,select').forEach(function(el){
+    el.addEventListener('blur',function(){if(el.value||el.dataset.touched)check(el);el.dataset.touched='1';});
+    el.addEventListener('input',function(){if(el.closest('.field').classList.contains('is-invalid'))check(el);});
+    el.addEventListener('change',function(){if(el.dataset.touched)check(el);});
+  });
+  form.addEventListener('submit',function(e){
+    e.preventDefault();var first=null;
+    form.querySelectorAll('input,select').forEach(function(el){if(!check(el)&&!first)first=el;});
+    if(first){first.focus();return;}
+    var btn=form.querySelector('button[type=submit]');btn.setAttribute('aria-busy','true');btn.textContent='Booking…';
+    setTimeout(function(){
+      var d=new Date(dateIn.value+'T12:00:00');
+      booking.querySelector('[data-t=name]').textContent=form.name.value.trim();
+      booking.querySelector('[data-t=city]').textContent=form.city.value;
+      booking.querySelector('[data-t=date]').textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+      booking.querySelector('[data-success-msg]').textContent='We’ll email '+form.email.value.trim()+' to confirm the time and where to meet.';
+      booking.classList.add('is-done');btn.removeAttribute('aria-busy');btn.textContent='Book my test ride';
+      booking.querySelector('.success').focus();
+    },500);
+  });
+  booking.querySelector('[data-again]').addEventListener('click',function(){form.reset();form.querySelectorAll('.field').forEach(function(f){f.classList.remove('is-invalid')});form.querySelectorAll('input,select').forEach(function(el){delete el.dataset.touched;el.removeAttribute('aria-invalid')});booking.classList.remove('is-done');form.querySelector('input').focus();});
+})();
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const stage = document.querySelector('.stage');
+const host = stage.querySelector('.stage__gl');
+const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
+let reduce = reduceMQ.matches;
+reduceMQ.addEventListener('change', e => { reduce = e.matches; });
+
+function init() {
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    if (!renderer.getContext()) throw new Error('no gl');
+  } catch (e) { stage.dataset.gl = 'off'; return; }
+
+  let software = false;
+  try { const gl = renderer.getContext(); const ext = gl.getExtension('WEBGL_debug_renderer_info'); const name = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : ''; software = /swiftshader|llvmpipe|software|basic render/i.test(name); } catch (e) {}
+  renderer.setPixelRatio(software ? 0.75 : Math.min(window.devicePixelRatio || 1, 2));
+  const minFrame = software ? 1000 / 20 : 0; // cap the frame rate on software GL so input stays responsive
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  host.appendChild(renderer.domElement);
+
+  let visible = true, raf = 0, last = performance.now(), t = 0, idleUntil = 0;
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environment = envTex;
+
+  const camera = new THREE.PerspectiveCamera(28, 1, 0.05, 50);
+
+  // lights: key, fill, rim
+  const key = new THREE.DirectionalLight(0xfff4e6, 2.2); key.position.set(-2.5, 4, 3.5); scene.add(key);
+  const fill = new THREE.HemisphereLight(0xdfefff, 0x8c979b, 0.7); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 1.6); rim.position.set(2.5, 2.2, -3.5); scene.add(rim);
+
+  // ---------- materials ----------
+  const paint = new THREE.MeshPhysicalMaterial({ color: new THREE.Color(window.voltaPaint || '#56653A'), roughness: 0.42, metalness: 0.15, clearcoat: 1, clearcoatRoughness: 0.18 });
+  const tubePaint = paint.clone(); // down tube can turn see-through
+  tubePaint.transparent = true;
+  const black = new THREE.MeshStandardMaterial({ color: 0x1d1f21, roughness: 0.55, metalness: 0.2 });
+  const satin = new THREE.MeshStandardMaterial({ color: 0x2b2e31, roughness: 0.38, metalness: 0.6 });
+  const alu = new THREE.MeshStandardMaterial({ color: 0xc9ced1, roughness: 0.28, metalness: 1 });
+  const pulleyMat = new THREE.MeshStandardMaterial({ color: 0xbfc5c9, roughness: 0.32, metalness: 0.55 });
+  const rubber = new THREE.MeshStandardMaterial({ color: 0x18191b, roughness: 0.92, metalness: 0 });
+  const reflect = new THREE.MeshStandardMaterial({ color: 0x9aa0a4, roughness: 0.35, metalness: 0.5 });
+  const leather = new THREE.MeshStandardMaterial({ color: 0x4a3326, roughness: 0.62, metalness: 0 });
+  const thread = new THREE.MeshStandardMaterial({ color: 0xd9c7a5, roughness: 0.8 });
+  const gripMat = new THREE.MeshStandardMaterial({ color: 0x6b4a35, roughness: 0.75 });
+  const lensFront = new THREE.MeshStandardMaterial({ color: 0xfff2c2, emissive: 0xfff2c2, emissiveIntensity: 1.6, roughness: 0.2 });
+  const lensRear = new THREE.MeshStandardMaterial({ color: 0xe0362b, emissive: 0xff2a1a, emissiveIntensity: 1.4, roughness: 0.3 });
+  const cellMat = new THREE.MeshStandardMaterial({ color: 0x2f8f83, emissive: 0x1d6f66, emissiveIntensity: 0.0, roughness: 0.4, metalness: 0.2 });
+
+  const bike = new THREE.Group();
+  scene.add(bike);
+  const V = (x, y, z = 0) => new THREE.Vector3(x, y, z);
+  const UP = V(0, 1, 0);
+
+  function tube(a, b, r0, mat, r1 = r0, sz = 1, seg = 28) {
+    const dir = new THREE.Vector3().subVectors(b, a); const len = dir.length();
+    const g = new THREE.CylinderGeometry(r1, r0, len, seg, 1);
+    const m = new THREE.Mesh(g, mat);
+    m.position.copy(a).addScaledVector(dir, 0.5);
+    m.quaternion.setFromUnitVectors(UP, dir.normalize());
+    m.scale.z = sz;
+    bike.add(m); return m;
+  }
+  function joint(p, r, mat) { const m = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), mat); m.position.copy(p); bike.add(m); return m; }
+  function curveTube(points, r, mat, closed = false, seg = 64) {
+    const c = new THREE.CatmullRomCurve3(points, closed);
+    const m = new THREE.Mesh(new THREE.TubeGeometry(c, seg, r, 12, closed), mat); bike.add(m); return m;
+  }
+
+  // ---------- frame geometry (metres, size M) ----------
+  const RA = V(-0.52, 0.35), FA = V(0.53, 0.35), BB = V(-0.08, 0.28);
+  const ST_TOP = V(-0.225, 0.76), TT_R = V(-0.208, 0.705), HT_T = V(0.352, 0.79), HT_B = V(0.40, 0.64), TT_F = V(0.362, 0.755);
+  const SADDLE = V(-0.274, 0.925);
+
+  // down tube: fat oval that carries the battery
+  const dt = tube(BB, HT_B, 0.047, tubePaint, 0.039, 0.72, 40);
+  dt.renderOrder = 2;
+  tube(BB, ST_TOP, 0.021, paint, 0.018);
+  tube(TT_R, TT_F, 0.019, paint, 0.017);
+  const ht = tube(V(0.405, 0.62), V(0.348, 0.805), 0.029, paint, 0.027);
+  // bottom bracket shell
+  const bbShell = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.085, 28), paint); bbShell.rotation.x = Math.PI / 2; bbShell.position.copy(BB); bike.add(bbShell);
+  joint(BB, 0.038, paint); joint(TT_R, 0.021, paint); joint(TT_F, 0.022, paint);
+  // stays
+  for (const s of [-1, 1]) {
+    tube(V(-0.1, 0.285, 0.035 * s), V(-0.52, 0.35, 0.056 * s), 0.012, paint, 0.009);
+    tube(V(-0.214, 0.69, 0.018 * s), V(-0.52, 0.35, 0.056 * s), 0.0105, paint, 0.008);
+    const drop = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.045, 0.006), paint); drop.position.set(-0.515, 0.345, 0.058 * s); bike.add(drop);
+  }
+  // seat cluster bridge
+  joint(V(-0.214, 0.69), 0.02, paint);
+
+  // fork
+  const crown = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.03, 0.12), paint); crown.position.set(0.408, 0.615, 0); crown.rotation.z = -0.32; bike.add(crown);
+  for (const s of [-1, 1]) curveTube([V(0.41, 0.615, 0.05 * s), V(0.445, 0.53, 0.052 * s), V(0.49, 0.43, 0.052 * s), V(0.53, 0.352, 0.05 * s)], 0.0125, paint, false, 32);
+
+  // seatpost + saddle
+  tube(ST_TOP, SADDLE, 0.0135, satin);
+  const clamp = new THREE.Mesh(new THREE.TorusGeometry(0.019, 0.006, 10, 24), satin); clamp.position.copy(ST_TOP); clamp.rotation.x = Math.PI / 2; bike.add(clamp);
+  {
+    const sh = new THREE.Shape();
+    sh.moveTo(0.135, 0); sh.bezierCurveTo(0.13, 0.026, 0.06, 0.03, 0.0, 0.034);
+    sh.bezierCurveTo(-0.06, 0.05, -0.115, 0.085, -0.13, 0.06); sh.bezierCurveTo(-0.15, 0.03, -0.15, -0.03, -0.13, -0.06);
+    sh.bezierCurveTo(-0.115, -0.085, -0.06, -0.05, 0.0, -0.034); sh.bezierCurveTo(0.06, -0.03, 0.13, -0.026, 0.135, 0);
+    const g = new THREE.ExtrudeGeometry(sh, { depth: 0.022, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.01, bevelSegments: 5, curveSegments: 28 });
+    g.rotateX(-Math.PI / 2);
+    const sad = new THREE.Mesh(g, leather); sad.position.set(SADDLE.x + 0.01, SADDLE.y + 0.004, 0); sad.rotation.z = 0.04; bike.add(sad);
+    const pts = sh.getSpacedPoints(80).map(p => V(p.x * 0.97, 0.035, -p.y * 0.97));
+    const seam = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 120, 0.0016, 6, true), thread);
+    seam.position.copy(sad.position); seam.rotation.copy(sad.rotation); bike.add(seam);
+    const rails = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.012, 0.03), satin); rails.position.set(SADDLE.x + 0.005, SADDLE.y - 0.006, 0); bike.add(rails);
+  }
+
+  // steerer, stem, swept bar, grips, levers
+  tube(V(0.349, 0.80), V(0.342, 0.845), 0.019, satin);
+  tube(V(0.342, 0.84), V(0.41, 0.866), 0.0145, satin);
+  const barPts = s => [V(0.24, 0.882, 0.31 * s), V(0.30, 0.886, 0.27 * s), V(0.37, 0.878, 0.17 * s), V(0.405, 0.868, 0.07 * s), V(0.41, 0.866, 0)];
+  curveTube(barPts(1), 0.0115, satin, false, 40); curveTube(barPts(-1), 0.0115, satin, false, 40);
+  for (const s of [-1, 1]) {
+    curveTube([V(0.235, 0.882, 0.315 * s), V(0.28, 0.885, 0.285 * s), V(0.305, 0.886, 0.265 * s)], 0.017, gripMat, false, 12);
+    const lever = curveTube([V(0.33, 0.885, 0.235 * s), V(0.37, 0.872, 0.26 * s), V(0.40, 0.858, 0.27 * s)], 0.005, satin, false, 12);
+    // cables run from the levers into the down tube
+    curveTube([V(0.335, 0.88, 0.22 * s), V(0.45, 0.82, 0.12 * s), V(0.47, 0.70, 0.03 * s), V(0.42, 0.63, 0.03 * s)], 0.0035, black, false, 32);
+  }
+
+  // ---------- wheels ----------
+  function wheel(center, motor) {
+    const w = new THREE.Group(); w.position.copy(center);
+    const tyre = new THREE.Mesh(new THREE.TorusGeometry(0.335, 0.021, 20, 120), rubber); w.add(tyre);
+    const band = new THREE.Mesh(new THREE.TorusGeometry(0.318, 0.0035, 8, 120), reflect); band.position.z = 0.0175; w.add(band);
+    const band2 = band.clone(); band2.position.z = -0.0175; w.add(band2);
+    // tread blocks
+    const tg = new THREE.BoxGeometry(0.005, 0.0035, 0.022);
+    const tread = new THREE.InstancedMesh(tg, rubber, 150); const m4 = new THREE.Matrix4(); const q = new THREE.Quaternion(); const sc = V(1, 1, 1);
+    for (let i = 0; i < 150; i++) { const a = i / 150 * Math.PI * 2; q.setFromAxisAngle(V(0, 0, 1), a); m4.compose(V(Math.cos(a) * 0.3555, Math.sin(a) * 0.3555, 0), q, sc); tread.setMatrixAt(i, m4); }
+    w.add(tread);
+    const rimM = new THREE.Mesh(new THREE.TorusGeometry(0.308, 0.011, 12, 120), satin); rimM.scale.z = 1.4; w.add(rimM);
+    // hub
+    const hubR = motor ? 0.072 : 0.022;
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(hubR, hubR, motor ? 0.056 : 0.07, 40), motor ? satin : alu); hub.rotation.x = Math.PI / 2; w.add(hub);
+    if (motor) { const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.062, 32), alu); cap.rotation.x = Math.PI / 2; w.add(cap); }
+    const axle = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.15, 12), alu); axle.rotation.x = Math.PI / 2; w.add(axle);
+    // spokes, tangent laced
+    const n = 28, sg = new THREE.CylinderGeometry(0.0011, 0.0011, 1, 5);
+    const sp = new THREE.InstancedMesh(sg, alu, n);
+    const flange = motor ? 0.06 : 0.026, fz = motor ? 0.024 : 0.032;
+    for (let i = 0; i < n; i++) {
+      const a = i / n * Math.PI * 2, side = i % 2 ? 1 : -1, ha = a + side * (motor ? 0.25 : 0.55);
+      const p1 = V(Math.cos(ha) * flange, Math.sin(ha) * flange, fz * side), p2 = V(Math.cos(a) * 0.3, Math.sin(a) * 0.3, 0);
+      const d = new THREE.Vector3().subVectors(p2, p1); const len = d.length();
+      q.setFromUnitVectors(UP, d.clone().normalize());
+      m4.compose(p1.clone().addScaledVector(d, 0.5), q, V(1, len, 1)); sp.setMatrixAt(i, m4);
+    }
+    w.add(sp);
+    // disc rotor (non-drive side)
+    const rotor = new THREE.Mesh(new THREE.RingGeometry(0.052, 0.08, 48), alu); rotor.position.z = -0.05; w.add(rotor);
+    const rotorB = rotor.clone(); rotorB.rotation.y = Math.PI; rotorB.position.z = -0.051; w.add(rotorB);
+    bike.add(w); return w;
+  }
+  const rear = wheel(RA, true), front = wheel(FA, false);
+  // calipers
+  for (const c of [V(-0.47, 0.42, -0.055), V(0.5, 0.42, -0.055)]) { const k = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.03, 0.022), satin); k.position.copy(c); bike.add(k); }
+
+  // ---------- mudguards ----------
+  function guard(center, start, len) {
+    const g = new THREE.CylinderGeometry(0.378, 0.378, 0.058, 64, 1, true, start, len); g.rotateX(Math.PI / 2);
+    const m = new THREE.Mesh(g, paint.clone()); m.material.side = THREE.DoubleSide; m.position.copy(center); bike.add(m);
+    return m;
+  }
+  const deg = d => d * Math.PI / 180;
+  const rg = guard(RA, deg(25 + 90), deg(175)), fg = guard(FA, deg(-12 + 90), deg(170));
+  const guards = [rg, fg];
+  for (const s of [-1, 1]) {
+    curveTube([V(-0.52, 0.35, 0.06 * s), V(-0.88, 0.42, 0.034 * s)], 0.003, satin, false, 4);
+    curveTube([V(0.53, 0.35, 0.056 * s), V(0.90, 0.39, 0.034 * s)], 0.003, satin, false, 4);
+  }
+
+  // ---------- lights ----------
+  {
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.02, 0.05, 28), satin); body.rotation.z = -Math.PI / 2; body.position.set(0.455, 0.70, 0); bike.add(body);
+    const lens = new THREE.Mesh(new THREE.CircleGeometry(0.02, 28), lensFront); lens.rotation.y = Math.PI / 2; lens.position.set(0.481, 0.70, 0); bike.add(lens);
+    tube(V(0.395, 0.69), V(0.44, 0.70), 0.006, satin);
+    const tail = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.034, 0.032), lensRear); tail.position.set(-0.882, 0.45, 0); tail.rotation.z = 0.5; bike.add(tail);
+  }
+
+  // ---------- belt drive (drive side, z+) ----------
+  const DZ = 0.074;
+  const drive = new THREE.Group(); bike.add(drive);
+  function sprocket(c, r, teeth) {
+    const g = new THREE.Group(); g.position.set(c.x, c.y, DZ);
+    const disc = new THREE.Mesh(new THREE.CylinderGeometry(r - 0.004, r - 0.004, 0.016, 64), pulleyMat); disc.rotation.x = Math.PI / 2; g.add(disc);
+    const inner = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.32, r * 0.32, 0.019, 40), satin); inner.rotation.x = Math.PI / 2; g.add(inner);
+    const tg = new THREE.BoxGeometry(0.006, 0.006, 0.016); const tm = new THREE.InstancedMesh(tg, pulleyMat, teeth); const m4 = new THREE.Matrix4(), q = new THREE.Quaternion();
+    for (let i = 0; i < teeth; i++) { const a = i / teeth * Math.PI * 2; q.setFromAxisAngle(V(0, 0, 1), a); m4.compose(V(Math.cos(a) * r, Math.sin(a) * r, 0), q, V(1, 1, 1)); tm.setMatrixAt(i, m4); }
+    g.add(tm); drive.add(g); return g;
+  }
+  const ring = sprocket(BB, 0.1, 46), cog = sprocket(RA, 0.055, 24);
+  // belt: a flat toothed ribbon swept around both pulleys
+  const beltTexCanvas = document.createElement('canvas'); beltTexCanvas.width = 64; beltTexCanvas.height = 8;
+  { const c = beltTexCanvas.getContext('2d'); c.fillStyle = '#222426'; c.fillRect(0, 0, 64, 8); c.fillStyle = '#3a3e42'; for (let x = 0; x < 64; x += 16) c.fillRect(x, 0, 6, 8); }
+  const beltTex = new THREE.CanvasTexture(beltTexCanvas); beltTex.wrapS = THREE.RepeatWrapping; beltTex.colorSpace = THREE.SRGBColorSpace;
+  const beltMat = new THREE.MeshStandardMaterial({ map: beltTex, roughness: 0.6, metalness: 0.1, side: THREE.DoubleSide });
+  {
+    const r1 = 0.104, r2 = 0.059, a1 = V(BB.x, BB.y), a2 = V(RA.x, RA.y);
+    const d = a2.clone().sub(a1); const L = d.length(); const ang = Math.atan2(d.y, d.x); const b = Math.acos((r1 - r2) / L);
+    const path = [];
+    // arc on big pulley from ang-b going the long way to ang+b (around the front)
+    const N1 = 70, N2 = 40;
+    for (let i = 0; i <= N1; i++) { const t = ang + b + (2 * Math.PI - 2 * b) * (i / N1); path.push(V(a1.x + r1 * Math.cos(t), a1.y + r1 * Math.sin(t))); }
+    for (let i = 0; i <= N2; i++) { const t = ang - b + (2 * b) * (i / N2); path.push(V(a2.x + r2 * Math.cos(t), a2.y + r2 * Math.sin(t))); }
+    path.push(path[0].clone());
+    // sweep a 14 mm wide, 5 mm thick band
+    const w = 0.009, th = 0.011; const pos = [], uv = [], idx = [];
+    let acc = 0; const lens = [0];
+    for (let i = 1; i < path.length; i++) { acc += path[i].distanceTo(path[i - 1]); lens.push(acc); }
+    for (let i = 0; i < path.length; i++) {
+      const p = path[i], pn = path[(i + 1) % path.length], pp = path[(i - 1 + path.length) % path.length];
+      const t = new THREE.Vector3().subVectors(pn, pp).normalize(); const n = V(t.y, -t.x, 0); // outward
+      const u = lens[i] / 0.03;
+      const out = p.clone().addScaledVector(n, th), inn = p.clone();
+      // 4 corners: out+, out-, in-, in+
+      [[out, w], [out, -w], [inn, -w], [inn, w]].forEach(([q, z]) => { pos.push(q.x, q.y, DZ + z); uv.push(u, z > 0 ? 1 : 0); });
+    }
+    const S = path.length;
+    for (let i = 0; i < S - 1; i++) {
+      for (let k = 0; k < 4; k++) {
+        const a = i * 4 + k, b2 = i * 4 + (k + 1) % 4, c = (i + 1) * 4 + k, d2 = (i + 1) * 4 + (k + 1) % 4;
+        idx.push(a, c, b2, b2, c, d2);
+      }
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx); g.computeVertexNormals();
+    drive.add(new THREE.Mesh(g, beltMat));
+  }
+  // cranks + pedals
+  const crank = new THREE.Group(); crank.position.set(BB.x, BB.y, 0); bike.add(crank);
+  const pedals = [];
+  for (const s of [-1, 1]) {
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.17, 0.014), satin); arm.position.set(0, -0.085 * s, 0.095 * s); crank.add(arm);
+    const tip = new THREE.Group(); tip.position.set(0, -0.17 * s, 0.13 * s); crank.add(tip);
+    const ped = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.018, 0.075), black); tip.add(ped);
+    const refl = new THREE.Mesh(new THREE.BoxGeometry(0.102, 0.008, 0.02), lensRear); refl.position.z = 0.03 * s; tip.add(refl);
+    pedals.push(tip);
+  }
+  crank.rotation.z = 0.5;
+
+  // kickstand (non-drive side)
+  tube(V(-0.2, 0.31, -0.05), V(-0.33, 0.004, -0.14), 0.008, satin);
+
+  // ---------- battery cells inside the down tube ----------
+  const cells = new THREE.Group(); bike.add(cells);
+  {
+    const a = V(-0.045, 0.31), b = V(0.36, 0.615), d = b.clone().sub(a), len = d.length(), n = 12;
+    const cg = new THREE.CylinderGeometry(0.0155, 0.0155, len / n - 0.004, 20);
+    const q = new THREE.Quaternion().setFromUnitVectors(UP, d.clone().normalize());
+    for (let i = 0; i < n; i++) for (const z of [-0.0135, 0.0135]) {
+      const m = new THREE.Mesh(cg, cellMat.clone()); m.position.copy(a).addScaledVector(d, (i + 0.5) / n); m.position.z = z; m.quaternion.copy(q); m.userData.i = i; cells.add(m);
+    }
+    // charge port
+    const port = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.01, 20), satin); port.position.set(-0.02, 0.33, 0.036); port.rotation.x = Math.PI / 2; bike.add(port);
+  }
+  cells.visible = false;
+
+  // ---------- hanging scale (weight chapter) ----------
+  const hanger = new THREE.Group(); scene.add(hanger);
+  {
+    const rope = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 3, 8), black); rope.position.y = 1.75; hanger.add(rope);
+    const dc = document.createElement('canvas'); dc.width = dc.height = 256; const c = dc.getContext('2d');
+    c.fillStyle = '#F6F2EA'; c.beginPath(); c.arc(128, 128, 124, 0, Math.PI * 2); c.fill();
+    c.strokeStyle = '#172126'; c.lineWidth = 6; c.stroke();
+    c.lineCap = 'round';
+    for (let k = 0; k <= 25; k++) { const a = -Math.PI * 1.25 + (k / 25) * Math.PI * 1.5; const r0 = k % 5 ? 96 : 86; c.lineWidth = k % 5 ? 3 : 5; c.beginPath(); c.moveTo(128 + Math.cos(a) * r0, 128 + Math.sin(a) * r0); c.lineTo(128 + Math.cos(a) * 108, 128 + Math.sin(a) * 108); c.stroke(); }
+    c.fillStyle = '#172126'; c.font = '700 22px Archivo, Arial, sans-serif'; c.textAlign = 'center';
+    for (const k of [0, 5, 10, 15, 20, 25]) { const a = -Math.PI * 1.25 + (k / 25) * Math.PI * 1.5; c.fillText(String(k), 128 + Math.cos(a) * 66, 136 + Math.sin(a) * 66); }
+    c.font = '800 40px Archivo, Arial, sans-serif'; c.fillText('16 kg', 128, 206);
+    const na = -Math.PI * 1.25 + (16 / 25) * Math.PI * 1.5; c.strokeStyle = '#B0231B'; c.lineWidth = 6; c.beginPath(); c.moveTo(128, 128); c.lineTo(128 + Math.cos(na) * 100, 128 + Math.sin(na) * 100); c.stroke();
+    c.fillStyle = '#172126'; c.beginPath(); c.arc(128, 128, 10, 0, Math.PI * 2); c.fill();
+    const tex = new THREE.CanvasTexture(dc); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.05, 56), new THREE.MeshStandardMaterial({ color: 0xE3AA2E, roughness: 0.4, metalness: 0.2 })); body.rotation.x = Math.PI / 2; body.position.y = 0.12; hanger.add(body);
+    const face = new THREE.Mesh(new THREE.CircleGeometry(0.118, 56), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5 })); face.position.set(0, 0.12, 0.026); hanger.add(face);
+    const hook = new THREE.Mesh(new THREE.TorusGeometry(0.03, 0.005, 10, 32, Math.PI * 1.4), satin); hook.position.y = -0.04; hook.rotation.z = Math.PI * 0.8; hanger.add(hook);
+    const strap = new THREE.Mesh(new THREE.TorusGeometry(0.042, 0.009, 8, 32), new THREE.MeshStandardMaterial({ color: 0xB0231B, roughness: 0.8 })); strap.position.y = -0.085; strap.scale.set(0.7, 1, 1); hanger.add(strap);
+  }
+  hanger.visible = false;
+
+  // ---------- contact shadow ----------
+  const shc = document.createElement('canvas'); shc.width = 256; shc.height = 64; { const c = shc.getContext('2d'); const g = c.createRadialGradient(128, 32, 4, 128, 32, 128); g.addColorStop(0, 'rgba(10,16,20,.55)'); g.addColorStop(.55, 'rgba(10,16,20,.18)'); g.addColorStop(1, 'rgba(10,16,20,0)'); c.fillStyle = g; c.fillRect(0, 0, 256, 64); }
+  const shTex = new THREE.CanvasTexture(shc);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 0.62), new THREE.MeshBasicMaterial({ map: shTex, transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.002; scene.add(shadow);
+
+  // ---------- story states ----------
+  const STATES = {
+    hero:    { rot: -0.5,  tx: 0.0,   ty: 0.56, zoom: 1.16,  xray: 0, spin: 0, lift: 0,    hang: 0 },
+    battery: { rot: -0.12, tx: 0.12,  ty: 0.50, zoom: 1.45, xray: 1, spin: 0, lift: 0,    hang: 0 },
+    belt:    { rot: 0.62,  tx: -0.30, ty: 0.36, zoom: 2.1,  xray: 0, spin: 1, lift: 0,    hang: 0 },
+    weight:  { rot: -0.22, tx: 0.04,  ty: 0.80, zoom: 0.86, xray: 0, spin: 0, lift: 0.24, hang: 1 },
+    colours: { rot: -0.62, tx: 0.0,   ty: 0.56, zoom: 1.1, xray: 0, spin: 0, lift: 0,    hang: 0 }
+  };
+  const cur = Object.assign({}, STATES[window.voltaChapter || 'hero']);
+  let target = STATES[window.voltaChapter || 'hero'];
+  window.addEventListener('volta:chapter', e => { target = STATES[e.detail] || STATES.hero; wake(); });
+  const paintTarget = new THREE.Color(window.voltaPaint || '#56653A');
+  window.addEventListener('volta:paint', e => { paintTarget.set(e.detail); wake(); });
+
+  // user rotation (drag, keys, buttons)
+  let userRot = 0, vel = 0, dragging = false, lastX = 0;
+  const cv = renderer.domElement;
+  cv.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; vel = 0; cv.setPointerCapture(e.pointerId); wake(); });
+  cv.addEventListener('pointermove', e => { if (!dragging) return; const dx = e.clientX - lastX; lastX = e.clientX; userRot += dx * 0.009; vel = dx * 0.009; wake(); });
+  const end = () => { dragging = false; };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  stage.addEventListener('keydown', e => { if (e.target !== stage) return; if (e.key === 'ArrowLeft') { userRot -= 0.3; e.preventDefault(); wake(); } if (e.key === 'ArrowRight') { userRot += 0.3; e.preventDefault(); wake(); } });
+  window.addEventListener('volta:turn', e => { userRot += 0.45 * e.detail; wake(); });
+
+  // sizing
+  let W = 1, H = 1;
+  function resize() {
+    const r = host.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height);
+    renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); wake();
+  }
+  new ResizeObserver(resize).observe(host); resize();
+
+  const tmp = new THREE.Vector3(); let lastGround = -1;
+  function frameCamera() {
+    const aspect = W / H, tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    const needH = Math.max(0.62, (1.02 / aspect)) * 1.12;
+    const dist = needH / tanH / cur.zoom;
+    camera.position.set(cur.tx, cur.ty + dist * 0.07, dist);
+    camera.lookAt(cur.tx, cur.ty, 0);
+    // wall base sits behind the bike: line up the CSS pavement with it
+    tmp.set(0, 0, -0.55).project(camera);
+    const gy = Math.round((1 - (tmp.y * 0.5 + 0.5)) * H);
+    const g = Math.min(H - 40, Math.max(H * 0.45, gy));
+    if (Math.abs(g - lastGround) > 0.5) { lastGround = g; stage.style.setProperty('--ground', g + 'px'); }
+  }
+
+  // render loop, paused off-screen
+  function wake() { idleUntil = performance.now() + 2500; if (!raf && visible && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) wake(); }, { threshold: 0 }).observe(stage);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) wake(); });
+
+  let slowFrames = 0, frames = 0, lowered = false;
+  function loop(now) {
+    raf = 0;
+    if (minFrame && now - last < minFrame && now >= 0) { raf = requestAnimationFrame(loop); return; }
+    const dt = Math.min(0.1, (now - last) / 1000); last = now; t += dt;
+    frames++; if (dt > 0.034) slowFrames++;
+    if (!lowered && frames === 90 && slowFrames > 45) { lowered = true; renderer.setPixelRatio(1); resize(); }
+    const k = reduce ? 1 : 1 - Math.exp(-dt * 3.2);
+    for (const p in target) cur[p] += (target[p] - cur[p]) * k;
+    tubePaint.color.lerp(paintTarget, reduce ? 1 : 1 - Math.exp(-dt * 9));
+    paint.color.copy(tubePaint.color); guards.forEach(g => g.material.color.copy(tubePaint.color));
+
+    if (!dragging) { userRot += vel; vel *= reduce ? 0 : 0.92; }
+    const sway = reduce ? 0 : Math.sin(t * 0.35) * 0.07;
+    bike.rotation.y = cur.rot + userRot + sway;
+    bike.position.y = cur.lift + (reduce ? 0 : Math.sin(t * 1.6) * 0.006 * cur.hang);
+    bike.rotation.z = cur.hang * 0.025;
+
+    // battery x-ray
+    const xr = cur.xray;
+    tubePaint.opacity = 1 - xr * 0.8; tubePaint.depthWrite = xr < 0.5;
+    cells.visible = xr > 0.02;
+    cells.children.forEach(m => { const wave = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(t * 3 - m.userData.i * 0.55); m.material.emissiveIntensity = xr * (0.25 + wave * 0.9); });
+
+    // belt + wheels turn
+    const spinRate = reduce ? 0 : cur.spin * 2.2;
+    crank.rotation.z -= spinRate * dt; pedals.forEach(p => p.rotation.z = -crank.rotation.z);
+    ring.rotation.z = crank.rotation.z; cog.rotation.z -= spinRate * dt * (0.1 / 0.055);
+    rear.rotation.z = cog.rotation.z; front.rotation.z = cog.rotation.z;
+    beltTex.offset.x += spinRate * dt * 0.1 / 0.03;
+
+    // hanging scale follows the top tube
+    hanger.visible = cur.hang > 0.02;
+    if (hanger.visible) { const c = Math.cos(bike.rotation.y), s = Math.sin(bike.rotation.y); hanger.position.set(0.08 * c, 0.83 + bike.position.y + (1 - cur.hang) * 1.4, -0.08 * s); hanger.rotation.y = 0; }
+    shadow.material.opacity = 1 - Math.min(0.75, cur.lift * 4);
+    shadow.scale.setScalar(1 + cur.lift * 1.2);
+    shadow.rotation.z = -bike.rotation.y;
+
+    frameCamera();
+    renderer.render(scene, camera);
+    if (!stage.classList.contains('is-gl')) stage.classList.add('is-gl');
+
+    let settled = true; for (const p in target) if (Math.abs(target[p] - cur[p]) > 0.001) settled = false;
+    const animating = !reduce || !settled || Math.abs(vel) > 0.0005 || dragging || now < idleUntil;
+    if (visible && !document.hidden && (animating)) raf = requestAnimationFrame(loop);
+  }
+  wake();
+
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(raf);
+    scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) [].concat(o.material).forEach(m => { if (m.map) m.map.dispose(); m.dispose(); }); });
+    envTex.dispose(); pmrem.dispose(); renderer.dispose();
+  });
+}
+init();
+</script>
+</body>
+</html>

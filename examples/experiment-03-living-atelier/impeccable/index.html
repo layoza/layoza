@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KUNSTHALLE NUMÉRIQUE — The Living Atelier (Impeccable Edition)</title>
+  <meta name="description" content="The Living Atelier built with the Impeccable skill system: Swiss editorial gallery, interactive 3D sculptures, and kinetic digital art." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,400;1,6..96,600&amp;family=Chivo:wght@400;500;600;700&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-parchment: #F8F4EC;
+      --surface-stone: #EFE8DA;
+      --surface-cobalt-drenched: #0035C9;
+      --surface-midnight: #090F22;
+      --ink-primary: #090F22;
+      --ink-secondary: #28314E;
+      --ink-muted: #545F7C;
+      --cobalt-electric: #0044FF;
+      --vermilion-accent: #E83C22;
+      --hairline: rgba(9, 15, 34, 0.14);
+      --font-serif: 'Bodoni Moda', Georgia, serif;
+      --font-sans: 'Chivo', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      --max-w: 1420px;
+      color-scheme: light;
+      scrollbar-color: var(--cobalt-electric) var(--surface-parchment);
+      caret-color: var(--vermilion-accent);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--surface-parchment);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--vermilion-accent);
+      color: #FFFFFF;
+    }
+
+    a, button, input, select, textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--cobalt-electric);
+      outline-offset: 3px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 clamp(1.15rem, 4vw, 3.5rem);
+    }
+
+    /* Architectural Top Rail */
+    .atelier-header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: rgba(248, 244, 236, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .atelier-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 68px;
+    }
+
+    .atelier-wordmark {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .wordmark-prism {
+      width: 11px;
+      height: 11px;
+      background: var(--cobalt-electric);
+      transform: rotate(45deg);
+      box-shadow: 4px -4px 0 var(--vermilion-accent);
+      flex-shrink: 0;
+    }
+
+    .atelier-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .atelier-nav a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      color: var(--ink-secondary);
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .atelier-nav a:hover {
+      color: var(--cobalt-electric);
+      background: rgba(0, 68, 255, 0.07);
+    }
+
+    .atelier-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1.1rem;
+      background: var(--ink-primary);
+      color: var(--surface-parchment);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 44px;
+      border: 1px solid var(--ink-primary);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .atelier-cta:hover {
+      background: var(--cobalt-electric);
+      border-color: var(--cobalt-electric);
+    }
+
+    /* Section 3: HERO — THE LIVING SCULPTURE */
+    .hero-gallery-canvas-room {
+      position: relative;
+      min-height: calc(100vh - 68px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+      border-bottom: 1px solid var(--hairline);
+      overflow: hidden;
+    }
+
+    #impHeroCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-foreground-composition {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: calc(100vh - 10rem);
+      gap: 2.5rem;
+    }
+
+    .hero-display-statement {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: clamp(2.1rem, 7.1vw, 6.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin: auto 0;
+      max-width: 14.5ch;
+      color: var(--ink-primary);
+    }
+
+    .hero-display-statement em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--cobalt-electric);
+    }
+
+    .hero-display-statement .coral-word {
+      color: var(--vermilion-accent);
+      font-style: italic;
+    }
+
+    .hero-footer-ledge {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      background: rgba(248, 244, 236, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--hairline);
+    }
+
+    .material-chord-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .chord-btn {
+      padding: 0.45rem 0.85rem;
+      background: #FFFFFF;
+      border: 1px solid var(--hairline);
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 44px;
+    }
+
+    .chord-btn[aria-pressed="true"] {
+      background: var(--cobalt-electric);
+      color: #FFFFFF;
+      border-color: var(--cobalt-electric);
+    }
+
+    /* Editorial Chapter Layout */
+    .chapter-room {
+      padding: clamp(4.5rem, 8vw, 8rem) 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .chapter-heading-row {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .chapter-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 4.4vw, 4.1rem);
+      line-height: 1.02;
+      margin: 0;
+    }
+
+    .chapter-marginalia {
+      margin: 0;
+      color: var(--ink-secondary);
+      font-size: 0.98rem;
+    }
+
+    /* Section 4: SIX INTERACTIVE ART INSTALLATIONS */
+    .exhibition-rotunda {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      border: 1px solid var(--ink-primary);
+      background: var(--surface-stone);
+    }
+
+    .rotunda-index-list {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--hairline);
+    }
+
+    .rotunda-tab {
+      padding: 1.15rem 1.35rem;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--hairline);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 58px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .rotunda-tab[aria-selected="true"] {
+      background: var(--surface-cobalt-drenched);
+      color: #FFFFFF;
+    }
+
+    .rotunda-stage-view {
+      position: relative;
+      min-height: 500px;
+      background: var(--surface-midnight);
+      color: var(--surface-parchment);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    #impInstallationCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .rotunda-caption-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(9, 15, 34, 0.86);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(248, 244, 236, 0.2);
+      padding: 1.65rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.25rem;
+      align-items: end;
+    }
+
+    /* Section 5: WORK — CINEMATIC PROJECT EXHIBITION */
+    .work-asymmetric-ledger {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    .work-folio {
+      border: 1px solid var(--hairline);
+      background: var(--surface-stone);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .folio-12 { grid-column: span 12; }
+    .folio-7 { grid-column: span 7; }
+    .folio-5 { grid-column: span 5; }
+    .folio-6 { grid-column: span 6; }
+
+    .folio-canvas-frame {
+      height: 330px;
+      overflow: hidden;
+      background: var(--surface-midnight);
+    }
+
+    .folio-12 .folio-canvas-frame {
+      height: 460px;
+    }
+
+    .folio-details {
+      padding: 1.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .folio-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.55rem, 2.8vw, 2.5rem);
+      margin: 0;
+      line-height: 1.06;
+    }
+
+    /* Section 6: MANIFESTO (Cobalt-Drenched Editorial Spread) */
+    .manifesto-cobalt-room {
+      background: var(--surface-cobalt-drenched);
+      color: #FFFFFF;
+      padding: clamp(4.5rem, 8vw, 8rem) 0;
+    }
+
+    .manifesto-title-massive {
+      font-family: var(--font-serif);
+      font-size: clamp(1.95rem, 5.2vw, 4.8rem);
+      line-height: 0.98;
+      margin: 0 0 2rem 0;
+      max-width: 16ch;
+    }
+
+    .manifesto-grid-2col {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    /* Section 7: INTERACTIVE CREATIVE LAB */
+    .imp-lab-frame {
+      border: 1px solid var(--ink-primary);
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      background: var(--surface-midnight);
+      color: var(--surface-parchment);
+      min-height: 460px;
+    }
+
+    .imp-lab-sidebar {
+      padding: 1.65rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #impLabCanvas {
+      width: 100%;
+      height: 100%;
+      min-height: 440px;
+      display: block;
+    }
+
+    /* Section 8: PROCESS — CONTINUOUS 01–05 SCULPTURAL JOURNEY */
+    .imp-journey-track {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border: 1px solid var(--ink-primary);
+      background: var(--surface-stone);
+    }
+
+    .imp-stage-cell {
+      padding: 1.35rem;
+      border-right: 1px solid var(--hairline);
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .imp-stage-cell[aria-current="step"] {
+      background: var(--ink-primary);
+      color: var(--surface-parchment);
+    }
+
+    /* Section 9: THE IMPOSSIBLE MOMENT */
+    .imp-impossible-portal {
+      position: relative;
+      min-height: 78vh;
+      background: #070C1B;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 4rem 1.25rem;
+    }
+
+    #impImpossibleCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .imp-impossible-statement {
+      position: relative;
+      z-index: 2;
+      font-family: var(--font-serif);
+      font-size: clamp(1.85rem, 6vw, 5.5rem);
+      line-height: 0.96;
+      max-width: 15ch;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* Section 10 & 11: CULTURE & CONTACT */
+    .culture-triptych {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .culture-card {
+      padding: 1.85rem;
+      border: 1px solid var(--hairline);
+      background: var(--surface-stone);
+    }
+
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 1024px) {
+      .atelier-nav {
+        display: none;
+      }
+      .hero-footer-ledge,
+      .chapter-heading-row,
+      .exhibition-rotunda,
+      .manifesto-grid-2col,
+      .imp-lab-frame,
+      .imp-journey-track,
+      .culture-triptych,
+      .contact-split,
+      .work-asymmetric-ledger {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .folio-12, .folio-7, .folio-5, .folio-6 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .atelier-wordmark {
+        font-size: 0.78rem;
+        gap: 0.35rem;
+      }
+      .atelier-cta {
+        padding: 0.4rem 0.65rem;
+        font-size: 0.7rem;
+      }
+      .hero-display-statement {
+        font-size: clamp(1.8rem, 8.2vw, 3rem);
+      }
+      .chapter-title,
+      .manifesto-title-massive,
+      .imp-impossible-statement {
+        font-size: clamp(1.5rem, 6.8vw, 2.4rem);
+      }
+      .rotunda-caption-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="atelier-header" role="banner">
+    <div class="wrap atelier-header-inner">
+      <a href="#hero" class="atelier-wordmark">
+        <span class="wordmark-prism" aria-hidden="true"></span>
+        <span>KUNSTHALLE NUMÉRIQUE</span>
+      </a>
+      <nav class="atelier-nav" aria-label="Exhibition Sections">
+        <a href="#installations">Installations</a>
+        <a href="#works">Exhibition Archive</a>
+        <a href="#manifesto">Manifesto</a>
+        <a href="#lab">Interactive Lab</a>
+        <a href="#journey">Journey</a>
+      </nav>
+      <a href="#contact" class="atelier-cta">Commission Piece</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- 3. HERO: THE LIVING SCULPTURE -->
+    <section id="hero" class="hero-gallery-canvas-room" aria-labelledby="imp-hero-h1">
+      <canvas id="impHeroCanvas" aria-hidden="true"></canvas>
+      <div class="wrap hero-foreground-composition">
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; font-family:var(--font-mono); font-size:0.75rem; border-bottom:1px solid var(--hairline); padding-bottom:0.75rem;">
+          <span>EXHIBITION 03 — THE LIVING ATELIER</span>
+          <span id="impSculptureReadout">SURFACE: GLAZED PORCELAIN &amp; COBALT LENS</span>
+        </div>
+
+        <h1 id="imp-hero-h1" class="hero-display-statement">
+          WE DON’T JUST <em>DESIGN.</em> WE MAKE IDEAS FEEL <span class="coral-word">ALIVE.</span>
+        </h1>
+
+        <div class="hero-footer-ledge">
+          <p style="margin:0; color:var(--ink-secondary); font-size:0.96rem;">
+            An experimental digital art gallery where brand identity, interactive 3D architecture, and autonomous intelligence become living sculptures.
+          </p>
+          <div class="material-chord-group" role="group" aria-label="Sculpture Material">
+            <button type="button" class="chord-btn" data-imp-mat="0" aria-pressed="true">Porcelain Vessel</button>
+            <button type="button" class="chord-btn" data-imp-mat="1" aria-pressed="false">Cobalt Prism</button>
+            <button type="button" class="chord-btn" data-imp-mat="2" aria-pressed="false">Vermilion Ribbon</button>
+          </div>
+          <a href="#installations" class="atelier-cta">Explore Gallery</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SERVICES: SIX INTERACTIVE ART INSTALLATIONS -->
+    <section id="installations" class="chapter-room" aria-labelledby="imp-inst-title">
+      <div class="wrap">
+        <div class="chapter-heading-row">
+          <h2 id="imp-inst-title" class="chapter-title">Six Interactive Art Installations</h2>
+          <p class="chapter-marginalia">
+            Select each discipline to reconfigure the gallery chamber’s kinetic geometry, lighting refraction, and curatorial deliverables.
+          </p>
+        </div>
+
+        <div class="exhibition-rotunda">
+          <div class="rotunda-index-list" role="tablist" aria-label="Disciplines">
+            <button type="button" class="rotunda-tab" role="tab" aria-selected="true" data-imp-service="0">
+              <strong>01. Brand Identity</strong><span style="font-family:var(--font-mono); font-size:0.72rem;">MONOLITH</span>
+            </button>
+            <button type="button" class="rotunda-tab" role="tab" aria-selected="false" data-imp-service="1">
+              <strong>02. Digital Experiences</strong><span style="font-family:var(--font-mono); font-size:0.72rem;">OPTIC</span>
+            </button>
+            <button type="button" class="rotunda-tab" role="tab" aria-selected="false" data-imp-service="2">
+              <strong>03. Creative Development</strong><span style="font-family:var(--font-mono); font-size:0.72rem;">SHADER</span>
+            </button>
+            <button type="button" class="rotunda-tab" role="tab" aria-selected="false" data-imp-service="3">
+              <strong>04. Motion &amp; 3D</strong><span style="font-family:var(--font-mono); font-size:0.72rem;">KINETIC</span>
+            </button>
+            <button type="button" class="rotunda-tab" role="tab" aria-selected="false" data-imp-service="4">
+              <strong>05. AI &amp; Intelligent Products</strong><span style="font-family:var(--font-mono); font-size:0.72rem;">SYNAPSE</span>
+            </button>
+            <button type="button" class="rotunda-tab" role="tab" aria-selected="false" data-imp-service="5">
+              <strong>06. Marketing &amp; Growth</strong><span style="font-family:var(--font-mono); font-size:0.72rem;">PULSE</span>
+            </button>
+          </div>
+
+          <div class="rotunda-stage-view" role="tabpanel" aria-live="polite">
+            <canvas id="impInstallationCanvas" aria-hidden="true"></canvas>
+            <div class="rotunda-caption-card">
+              <div>
+                <h3 id="impServiceTitle" style="font-family:var(--font-serif); font-size:1.85rem; margin:0 0 0.45rem;">01. Brand Identity — Tactile Editorial Systems</h3>
+                <p id="impServiceDesc" style="margin:0; color:#CBD5E1; font-size:0.95rem;">
+                  Custom typography, 3D sculptural emblems, and cohesive chromatic grammars designed for cultural longevity.
+                </p>
+              </div>
+              <a href="#contact" class="atelier-cta" style="background:var(--cobalt-electric); border-color:var(--cobalt-electric);">Commission Discipline</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. WORK: CINEMATIC PROJECT EXHIBITION -->
+    <section id="works" class="chapter-room" aria-labelledby="imp-work-title">
+      <div class="wrap">
+        <div class="chapter-heading-row">
+          <h2 id="imp-work-title" class="chapter-title">Cinematic Project Exhibition</h2>
+          <p class="chapter-marginalia">
+            Five Fictional Concept Exhibitions created for The Living Atelier—spanning luxury fashion, futuristic mobility, architecture, audio hardware, and spatial entertainment.
+          </p>
+        </div>
+
+        <div class="work-asymmetric-ledger">
+          <!-- 01. Full-bleed expanding flagship exhibition -->
+          <article class="work-folio folio-12">
+            <div class="folio-canvas-frame">
+              <svg viewBox="0 0 1400 460" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Luxury Fashion Exhibition: Atelier Solenne draped cobalt silk and ceramic sculpture">
+                <rect width="1400" height="460" fill="#090F22"/>
+                <path d="M 0 380 Q 360 60 720 310 T 1400 140 L 1400 460 L 0 460 Z" fill="#0044FF"/>
+                <circle cx="700" cy="215" r="135" fill="#F8F4EC"/>
+                <path d="M 240 420 C 480 120, 920 120, 1160 420" fill="none" stroke="#E83C22" stroke-width="5"/>
+                <text x="70" y="75" fill="#F8F4EC" font-family="Fira Code, monospace" font-size="14">01 // LUXURY FASHION · FICTIONAL CONCEPT EXHIBITION</text>
+              </svg>
+            </div>
+            <div class="folio-details">
+              <h3 class="folio-heading">01. ATELIER SOLENNE — Haute Couture Digital Monograph</h3>
+              <p style="margin:0; color:var(--ink-secondary);">Interactive cloth-simulation lookbook and ceramic silhouette archive for a Parisian couture maison.</p>
+            </div>
+          </article>
+
+          <!-- 02. Futuristic Mobility -->
+          <article class="work-folio folio-7">
+            <div class="folio-canvas-frame">
+              <svg viewBox="0 0 800 330" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Futuristic Mobility: Veloce Aero concept streamliner">
+                <rect width="800" height="330" fill="#0D193B"/>
+                <path d="M 70 220 C 260 95, 540 110, 730 210 L 690 245 L 110 245 Z" fill="#F8F4EC"/>
+                <line x1="40" y1="165" x2="760" y2="165" stroke="#E83C22" stroke-width="3"/>
+              </svg>
+            </div>
+            <div class="folio-details">
+              <h3 class="folio-heading">02. VELOCE AERO — Autonomous Streamliner Telemetry</h3>
+              <p style="margin:0; color:var(--ink-secondary);">Futuristic mobility concept featuring real-time aerodynamic pressure shaders and spatial glass cockpit UI.</p>
+            </div>
+          </article>
+
+          <!-- 03. Architecture & Interiors -->
+          <article class="work-folio folio-5">
+            <div class="folio-canvas-frame">
+              <svg viewBox="0 0 600 330" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Architecture and Interiors: Villa Kaze monolithic courtyard">
+                <rect width="600" height="330" fill="#E8DFCE"/>
+                <rect x="80" y="45" width="190" height="240" fill="#090F22"/>
+                <circle cx="380" cy="155" r="85" fill="#0044FF"/>
+                <circle cx="430" cy="110" r="28" fill="#E83C22"/>
+              </svg>
+            </div>
+            <div class="folio-details">
+              <h3 class="folio-heading">03. VILLA KAZE — Limestone &amp; Daylight Pavilion</h3>
+              <p style="margin:0; color:var(--ink-secondary);">Architectural sun-path simulation and tactile interior material archive.</p>
+            </div>
+          </article>
+
+          <!-- 04. Consumer Technology -->
+          <article class="work-folio folio-6">
+            <div class="folio-canvas-frame">
+              <svg viewBox="0 0 700 330" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Consumer Technology: Acoustic Porcelain Synthesizer">
+                <rect width="700" height="330" fill="#10182E"/>
+                <circle cx="350" cy="165" r="105" fill="#F8F4EC"/>
+                <circle cx="350" cy="165" r="48" fill="#0044FF"/>
+              </svg>
+            </div>
+            <div class="folio-details">
+              <h3 class="folio-heading">04. SONO CERAMICA — Precision Acoustic Instrument</h3>
+              <p style="margin:0; color:var(--ink-secondary);">Consumer technology launch with interactive 3D hardware acoustics and porcelain enclosure inspection.</p>
+            </div>
+          </article>
+
+          <!-- 05. Creative Entertainment -->
+          <article class="work-folio folio-6">
+            <div class="folio-canvas-frame">
+              <svg viewBox="0 0 700 330" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Creative Entertainment: Lumina Symphonic Stage">
+                <rect width="700" height="330" fill="#090F22"/>
+                <path d="M 60 270 Q 250 30 420 250 T 650 85" fill="none" stroke="#E83C22" stroke-width="9"/>
+                <path d="M 60 210 Q 290 290 520 70" fill="none" stroke="#0044FF" stroke-width="12"/>
+              </svg>
+            </div>
+            <div class="folio-details">
+              <h3 class="folio-heading">05. LUMINA OPUS — Reactive Symphonic Scenography</h3>
+              <p style="margin:0; color:var(--ink-secondary);">Creative entertainment experience pairing live orchestral frequency analysis with sculptural stage visuals.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ABOUT: THE MANIFESTO -->
+    <section id="manifesto" class="manifesto-cobalt-room" aria-labelledby="imp-manifesto-h2">
+      <div class="wrap">
+        <h2 id="imp-manifesto-h2" class="manifesto-title-massive">
+          “THE FUTURE ISN’T WAITING TO BE DESIGNED.”
+        </h2>
+        <div class="manifesto-grid-2col">
+          <div style="font-size:1.05rem; line-height:1.68; color:#E2E8F0;">
+            <p>
+              We founded Kunsthalle Numérique on a singular conviction: digital interfaces deserve the permanence, emotional gravity, and physical poetry of museum sculpture.
+            </p>
+            <p>
+              Where conventional agencies assemble predictable dark-mode SaaS grids, we choreograph light across porcelain surfaces, compose typographic architecture with Swiss precision, and write custom shaders that breathe under the visitor’s touch.
+            </p>
+          </div>
+          <div style="background:#F8F4EC; color:#090F22; padding:2rem; border-left:6px solid var(--vermilion-accent);">
+            <p style="font-family:var(--font-serif); font-size:1.45rem; margin:0 0 0.75rem;">
+              The Atelier Standard
+            </p>
+            <p style="margin:0; font-size:0.94rem; color:var(--ink-secondary);">
+              Every commission unites bespoke editorial typography, physically inspired 3D materials, and zero-regression engineering.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. INTERACTIVE CREATIVE LAB -->
+    <section id="lab" class="chapter-room" aria-labelledby="imp-lab-title">
+      <div class="wrap">
+        <div class="chapter-heading-row">
+          <h2 id="imp-lab-title" class="chapter-title">Interactive Creative Lab</h2>
+          <p class="chapter-marginalia">
+            Switch between Experience A (Material Lab), Experience B (Kinetic Type), and Experience C (Motion Composition) and interact directly with the canvas.
+          </p>
+        </div>
+
+        <div class="material-chord-group" role="tablist" style="margin-bottom:1.25rem;">
+          <button type="button" class="chord-btn" role="tab" aria-pressed="true" data-imp-lab="material">Experience A: Material Lab</button>
+          <button type="button" class="chord-btn" role="tab" aria-pressed="false" data-imp-lab="kinetic">Experience B: Kinetic Type</button>
+          <button type="button" class="chord-btn" role="tab" aria-pressed="false" data-imp-lab="composition">Experience C: Motion Composition</button>
+        </div>
+
+        <div class="imp-lab-frame">
+          <div class="imp-lab-sidebar">
+            <h3 id="impLabHeading" style="font-family:var(--font-serif); font-size:1.6rem; margin:0;">Experience A: Material Lab</h3>
+            <p id="impLabCopy" style="font-size:0.88rem; color:#CBD5E1; margin:0;">
+              Modulate the sculpture’s refraction density and harmonic tension below.
+            </p>
+            <label style="font-family:var(--font-mono); font-size:0.75rem;">
+              Refraction Density
+              <input id="impLabRange" type="range" min="15" max="100" value="60" style="width:100%; margin-top:0.4rem;" />
+            </label>
+            <label style="font-family:var(--font-mono); font-size:0.75rem;">
+              Specimen Phrase
+              <input id="impLabInput" type="text" value="LIVING ART" maxlength="18" style="width:100%; margin-top:0.4rem; padding:0.5rem; background:#15203D; border:1px solid rgba(255,255,255,0.25); color:#FFF;" />
+            </label>
+          </div>
+          <div style="position:relative; height:460px; overflow:hidden;">
+            <canvas id="impLabCanvas" style="position:absolute; inset:0; width:100%; height:100%; display:block;" aria-label="Interactive Lab Canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. PROCESS: A CINEMATIC CREATIVE JOURNEY -->
+    <section id="journey" class="chapter-room" aria-labelledby="imp-journey-title">
+      <div class="wrap">
+        <div class="chapter-heading-row">
+          <h2 id="imp-journey-title" class="chapter-title">A Cinematic Creative Journey</h2>
+          <p class="chapter-marginalia">
+            Follow a single sculptural form as it evolves continuously across our five curatorial phases.
+          </p>
+        </div>
+
+        <div style="height:220px; background:var(--surface-midnight); margin-bottom:1.25rem; position:relative;">
+          <canvas id="impJourneyCanvas" style="width:100%; height:100%; display:block;" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="imp-journey-track">
+          <button type="button" class="imp-stage-cell" data-imp-step="0" aria-current="step">
+            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--vermilion-accent);">01. DISCOVER</div>
+            <div style="font-family:var(--font-serif); font-size:1.35rem; margin:0.3rem 0;">Raw Clay Thesis</div>
+            <p style="margin:0; font-size:0.84rem; opacity:0.82;">Uncovering the singular cultural truth behind your brand.</p>
+          </button>
+          <button type="button" class="imp-stage-cell" data-imp-step="1">
+            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--vermilion-accent);">02. EXPLORE</div>
+            <div style="font-family:var(--font-serif); font-size:1.35rem; margin:0.3rem 0;">Structural Wire</div>
+            <p style="margin:0; font-size:0.84rem; opacity:0.82;">Editorial grids, spatial studies, and typographic tension.</p>
+          </button>
+          <button type="button" class="imp-stage-cell" data-imp-step="2">
+            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--vermilion-accent);">03. IMAGINE</div>
+            <div style="font-family:var(--font-serif); font-size:1.35rem; margin:0.3rem 0;">Cobalt Glaze</div>
+            <p style="margin:0; font-size:0.84rem; opacity:0.82;">Custom WebGL shaders, 3D materials, and motion prototypes.</p>
+          </button>
+          <button type="button" class="imp-stage-cell" data-imp-step="3">
+            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--vermilion-accent);">04. CREATE</div>
+            <div style="font-family:var(--font-serif); font-size:1.35rem; margin:0.3rem 0;">Precision Firing</div>
+            <p style="margin:0; font-size:0.84rem; opacity:0.82;">Resilient frontend architecture and multi-viewport verification.</p>
+          </button>
+          <button type="button" class="imp-stage-cell" data-imp-step="4">
+            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--vermilion-accent);">05. LAUNCH</div>
+            <div style="font-family:var(--font-serif); font-size:1.35rem; margin:0.3rem 0;">Living Monument</div>
+            <p style="margin:0; font-size:0.84rem; opacity:0.82;">Global unveiling and sustained cultural momentum.</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. VISUAL BREAK: THE IMPOSSIBLE MOMENT -->
+    <section class="imp-impossible-portal" aria-labelledby="imp-impossible-h2">
+      <canvas id="impImpossibleCanvas" aria-hidden="true"></canvas>
+      <div style="position:relative; z-index:2;">
+        <h2 id="imp-impossible-h2" class="imp-impossible-statement">
+          “ORDINARY IS <em style="color:var(--vermilion-accent);">NOT</em> OUR LANGUAGE.”
+        </h2>
+        <button type="button" class="atelier-cta" id="impFoldTrigger" style="background:var(--cobalt-electric); border-color:var(--cobalt-electric);">Shift Architectural Fold</button>
+      </div>
+    </section>
+
+    <!-- 10. STUDIO CULTURE -->
+    <section class="chapter-room" aria-labelledby="imp-culture-title">
+      <div class="wrap">
+        <div class="chapter-heading-row">
+          <h2 id="imp-culture-title" class="chapter-title">Studio Culture &amp; Fellowship</h2>
+          <p class="chapter-marginalia">
+            Inside our multidisciplinary ateliers where industrial designers, typographers, and graphics engineers collaborate side by side.
+          </p>
+        </div>
+        <div class="culture-triptych">
+          <article class="culture-card">
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem; margin:0 0 0.5rem;">Material Library</h3>
+            <p style="margin:0; color:var(--ink-secondary);">Over 400 physical ceramic, glass, and textile samples inform every shader we write.</p>
+          </article>
+          <article class="culture-card">
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem; margin:0 0 0.5rem;">Principal-Led Craft</h3>
+            <p style="margin:0; color:var(--ink-secondary);">No account layers. You work directly with the artists and engineers building your piece.</p>
+          </article>
+          <article class="culture-card">
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem; margin:0 0 0.5rem;">Enduring Performance</h3>
+            <p style="margin:0; color:var(--ink-secondary);">Every exhibition is engineered for 60fps fluidity, keyboard accessibility, and longevity.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. CONTACT: THE FINAL MASTERPIECE -->
+    <section id="contact" class="chapter-room" aria-labelledby="imp-contact-title">
+      <div class="wrap contact-split">
+        <div>
+          <h2 id="imp-contact-title" class="chapter-title" style="margin-bottom:1rem;">Your Next Big Idea Starts Here.</h2>
+          <p style="color:var(--ink-secondary); margin:0 0 1.5rem;">
+            The living sculpture returns in its completed equilibrium. Initiate a conversation with our curatorial partners below.
+          </p>
+          <div style="height:260px; background:var(--surface-midnight); border:1px solid var(--ink-primary);">
+            <canvas id="impFinaleCanvas" style="width:100%; height:100%; display:block;" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <form id="impContactForm" style="background:var(--surface-stone); padding:2.25rem; border:1px solid var(--ink-primary);" novalidate>
+          <div style="margin-bottom:1.15rem;">
+            <label for="impName" style="display:block; font-family:var(--font-mono); font-size:0.75rem; margin-bottom:0.4rem;">PATRON NAME</label>
+            <input id="impName" type="text" required placeholder="Julian Vance" style="width:100%; padding:0.8rem; border:1px solid var(--hairline); background:#FFF;" />
+          </div>
+          <div style="margin-bottom:1.15rem;">
+            <label for="impEmail" style="display:block; font-family:var(--font-mono); font-size:0.75rem; margin-bottom:0.4rem;">ELECTRONIC MAIL</label>
+            <input id="impEmail" type="email" required placeholder="julian@solenne.paris" style="width:100%; padding:0.8rem; border:1px solid var(--hairline); background:#FFF;" />
+          </div>
+          <div style="margin-bottom:1.15rem;">
+            <label for="impNotes" style="display:block; font-family:var(--font-mono); font-size:0.75rem; margin-bottom:0.4rem;">EXHIBITION BRIEF</label>
+            <textarea id="impNotes" rows="3" required placeholder="Describe your upcoming product, brand, or spatial launch..." style="width:100%; padding:0.8rem; border:1px solid var(--hairline); background:#FFF;"></textarea>
+          </div>
+          <button type="submit" class="atelier-cta" style="width:100%;">Request Private Consultation</button>
+          <div id="impFormFeedback" role="status" aria-live="polite" style="margin-top:0.85rem; font-family:var(--font-mono); font-size:0.78rem; color:var(--cobalt-electric);"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:var(--surface-midnight); color:var(--surface-parchment); padding:2.5rem 0;">
+    <div class="wrap" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; font-size:0.84rem;">
+      <span>© 2026 KUNSTHALLE NUMÉRIQUE — The Living Atelier (Fictional Concept Agency)</span>
+      <span style="font-family:var(--font-mono);">BUILT WITH IMPECCABLE SKILL</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let px = 0.5, py = 0.5;
+      window.addEventListener('pointermove', (e) => {
+        px = e.clientX / Math.max(1, window.innerWidth);
+        py = e.clientY / Math.max(1, window.innerHeight);
+      }, { passive: true });
+
+      function fit(c) {
+        const r = c.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        if (c.width !== Math.floor(r.width * dpr) || c.height !== Math.floor(r.height * dpr)) {
+          c.width = Math.max(1, Math.floor(r.width * dpr));
+          c.height = Math.max(1, Math.floor(r.height * dpr));
+        }
+        return { w: c.width, h: c.height, dpr };
+      }
+
+      let heroMat = 0;
+      const matNames = [
+        'SURFACE: GLAZED PORCELAIN & COBALT LENS',
+        'SURFACE: REFRACTIVE ELECTRIC COBALT PRISM',
+        'SURFACE: VERMILION SILK & CERAMIC MONOLITH'
+      ];
+      document.querySelectorAll('[data-imp-mat]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          heroMat = Number(btn.getAttribute('data-imp-mat')) || 0;
+          document.querySelectorAll('[data-imp-mat]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+          document.getElementById('impSculptureReadout').textContent = matNames[heroMat];
+        });
+      });
+
+      const services = [
+        { t: '01. Brand Identity — Tactile Editorial Systems', d: 'Custom typography, 3D sculptural emblems, and cohesive chromatic grammars designed for cultural longevity.' },
+        { t: '02. Digital Experiences — Flagship Exhibition Platforms', d: 'Immersive web architecture combining Swiss editorial pacing with interactive 3D product storytelling.' },
+        { t: '03. Creative Development — Clean-Room WebGL & Shaders', d: 'Resilient, 60fps hardware-accelerated frontend engineering with strict WCAG AA accessibility.' },
+        { t: '04. Motion & 3D — Physically Inspired Choreography', d: 'Bespoke ceramic, glass, and metallic 3D sculptures animated with natural spring physics.' },
+        { t: '05. AI & Intelligent Products — Spatial Generative Canvases', d: 'Human-centered AI instruments designed as tactile studio tools rather than generic chat windows.' },
+        { t: '06. Marketing & Growth — High-Desire Launch Worlds', d: ' Interactive campaign exhibitions engineered to elevate brand authority and conversion simultaneously.' }
+      ];
+      let curService = 0;
+      document.querySelectorAll('[data-imp-service]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          curService = Number(btn.getAttribute('data-imp-service')) || 0;
+          document.querySelectorAll('[data-imp-service]').forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+          document.getElementById('impServiceTitle').textContent = services[curService].t;
+          document.getElementById('impServiceDesc').textContent = services[curService].d;
+        });
+      });
+
+      let labMode = 'material';
+      let labDensity = 60;
+      let labPhrase = 'LIVING ART';
+      document.querySelectorAll('[data-imp-lab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          labMode = btn.getAttribute('data-imp-lab');
+          document.querySelectorAll('[data-imp-lab]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+          document.getElementById('impLabHeading').textContent = btn.textContent;
+        });
+      });
+      document.getElementById('impLabRange').addEventListener('input', (e) => { labDensity = Number(e.target.value); });
+      document.getElementById('impLabInput').addEventListener('input', (e) => { labPhrase = (e.target.value || 'LIVING ART').toUpperCase(); });
+
+      let journeyStep = 0;
+      document.querySelectorAll('[data-imp-step]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          journeyStep = Number(btn.getAttribute('data-imp-step')) || 0;
+          document.querySelectorAll('[data-imp-step]').forEach((b) => {
+            if (b === btn) b.setAttribute('aria-current', 'step');
+            else b.removeAttribute('aria-current');
+          });
+        });
+      });
+
+      let foldToggle = false;
+      document.getElementById('impFoldTrigger').addEventListener('click', () => { foldToggle = !foldToggle; });
+
+      const heroC = document.getElementById('impHeroCanvas');
+      const instC = document.getElementById('impInstallationCanvas');
+      const labC = document.getElementById('impLabCanvas');
+      const journeyC = document.getElementById('impJourneyCanvas');
+      const impC = document.getElementById('impImpossibleCanvas');
+      const finC = document.getElementById('impFinaleCanvas');
+
+      function draw(now) {
+        const t = reduced ? 1 : now * 0.0009;
+
+        // Hero
+        const h = fit(heroC);
+        const hctx = heroC.getContext('2d');
+        hctx.clearRect(0, 0, h.w, h.h);
+        const cx = h.w * (0.55 + (px - 0.5) * 0.08);
+        const cy = h.h * (0.46 + (py - 0.5) * 0.06);
+        const rad = Math.min(h.w, h.h) * 0.26;
+        for (let i = 0; i < 22; i++) {
+          const f = i / 22;
+          hctx.save();
+          hctx.translate(cx, cy);
+          hctx.rotate(f * Math.PI * 2 + t * 0.7);
+          hctx.beginPath();
+          hctx.ellipse(0, 0, rad * (0.35 + f * 0.65), rad * 0.28, 0, 0, Math.PI * 2);
+          hctx.strokeStyle = heroMat === 1 ? '#0044FF' : heroMat === 2 ? '#E83C22' : (i % 3 === 0 ? '#0044FF' : 'rgba(9,15,34,0.22)');
+          hctx.lineWidth = (i % 4 === 0 ? 2.4 : 1.1) * h.dpr;
+          hctx.stroke();
+          hctx.restore();
+        }
+
+        // Installation
+        const ins = fit(instC);
+        const ictx = instC.getContext('2d');
+        ictx.clearRect(0, 0, ins.w, ins.h);
+        for (let i = 0; i < 14; i++) {
+          const r = Math.min(ins.w, ins.h) * (0.08 + (i / 14) * 0.34);
+          ictx.save();
+          ictx.translate(ins.w * 0.5, ins.h * 0.42);
+          ictx.rotate(t * 0.5 + i * (curService + 1) * 0.22);
+          ictx.strokeStyle = i % 2 === 0 ? '#0044FF' : '#E83C22';
+          ictx.lineWidth = 1.8 * ins.dpr;
+          ictx.strokeRect(-r * 0.6, -r * 0.6, r * 1.2, r * 1.2);
+          ictx.restore();
+        }
+
+        // Lab
+        const lb = fit(labC);
+        const lctx = labC.getContext('2d');
+        lctx.clearRect(0, 0, lb.w, lb.h);
+        if (labMode === 'kinetic') {
+          lctx.textAlign = 'center';
+          lctx.textBaseline = 'middle';
+          for (let r = 0; r < 4; r++) {
+            lctx.font = `italic 700 ${Math.floor(38 * lb.dpr)}px "Bodoni Moda", serif`;
+            lctx.fillStyle = r === 1 ? '#E83C22' : '#F8F4EC';
+            lctx.fillText(labPhrase, lb.w * 0.5 + Math.sin(t * 2 + r) * labDensity * lb.dpr, lb.h * ((r + 1) / 5));
+          }
+        } else {
+          const count = Math.max(5, Math.floor(labDensity / 6));
+          for (let i = 0; i < count; i++) {
+            lctx.beginPath();
+            lctx.arc(lb.w * 0.5, lb.h * 0.5, (i + 1) * 14 * lb.dpr, 0, Math.PI * 2);
+            lctx.strokeStyle = i % 2 === 0 ? '#0044FF' : '#F8F4EC';
+            lctx.lineWidth = 1.6 * lb.dpr;
+            lctx.stroke();
+          }
+        }
+
+        // Journey
+        const jr = fit(journeyC);
+        const jctx = journeyC.getContext('2d');
+        jctx.clearRect(0, 0, jr.w, jr.h);
+        for (let s = 0; s < 5; s++) {
+          const x = jr.w * ((s + 0.5) / 5);
+          const y = jr.h * 0.5;
+          jctx.beginPath();
+          jctx.arc(x, y, (s === journeyStep ? 38 : 24) * jr.dpr, 0, Math.PI * 2);
+          jctx.fillStyle = s === journeyStep ? '#0044FF' : s < journeyStep ? '#F8F4EC' : 'rgba(248,244,236,0.22)';
+          jctx.fill();
+        }
+
+        // Impossible & Finale
+        const im = fit(impC);
+        const imctx = impC.getContext('2d');
+        imctx.clearRect(0, 0, im.w, im.h);
+        for (let i = 0; i < 10; i++) {
+          imctx.beginPath();
+          const y = im.h * (i / 10);
+          imctx.moveTo(0, y);
+          imctx.quadraticCurveTo(im.w * 0.5, y + Math.sin(t + i) * 70 * im.dpr, im.w, y);
+          imctx.strokeStyle = foldToggle ? '#E83C22' : '#0044FF';
+          imctx.lineWidth = 2 * im.dpr;
+          imctx.stroke();
+        }
+
+        const fn = fit(finC);
+        const fnctx = finC.getContext('2d');
+        fnctx.clearRect(0, 0, fn.w, fn.h);
+        for (let i = 0; i < 8; i++) {
+          fnctx.beginPath();
+          fnctx.ellipse(fn.w * 0.5, fn.h * 0.5, (i + 2) * 14 * fn.dpr, (i + 2) * 8 * fn.dpr, i * 0.3 + t, 0, Math.PI * 2);
+          fnctx.strokeStyle = i % 2 === 0 ? '#0044FF' : '#F8F4EC';
+          fnctx.stroke();
+        }
+
+        if (!reduced) requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+
+      document.getElementById('impContactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('impFormFeedback').textContent = 'Commission Dossier Received — Our curatorial team will respond within 24 hours.';
+        e.target.reset();
+      });
+    })();
+  </script>
+</body>
+</html>

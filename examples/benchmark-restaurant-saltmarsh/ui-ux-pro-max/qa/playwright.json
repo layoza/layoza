@@ -1,0 +1,131 @@
+{
+ "1440": {
+  "overflow": false,
+  "arrow": [
+   "tab-dinner",
+   "true",
+   [
+    "panel-dinner"
+   ]
+  ],
+  "end": "tab-drinks",
+  "home": "tab-lunch",
+  "vg": [
+   [
+    "V VG",
+    "V VG GF"
+   ],
+   "2 of 8 dishes shown (VG)."
+  ],
+  "vg_gf": "1 of 8 dishes shown (VG + GF).",
+  "empty_submit": [
+   "booking-summary",
+   "alert",
+   4,
+   "There is a problem | Choose a date | Choose a date, then a time | Enter your full name | Enter your email address"
+  ],
+  "monday_disabled": true,
+  "dates_min": "2026-10-16",
+  "slots8": [
+   11,
+   6
+  ],
+  "slots2": [
+   11,
+   0
+  ],
+  "pax": "1,2,3,4,5,6,7,8",
+  "recap": "Guests 2 Date Thu 22 Oct Time 12:00",
+  "bad_email": [
+   "Enter an email address in the format name@example.com",
+   "booking-summary"
+  ],
+  "confirm": [
+   "done-h",
+   "Guests | 2 | Date | Thursday 22 October | Time | 12:00 | Name | Ada Quill | Reference | SM-H2GYJ"
+  ],
+  "pd_err": [
+   "pd-summary",
+   4
+  ],
+  "pd_ok": "Thank you, Ada. Your enquiry for 12 guests is with our event",
+  "voucher": [
+   "\u00a3120",
+   "\u00a3120 voucher reserved. This is a demo, s"
+  ],
+  "anim": "none",
+  "small_targets": [
+   "01485 555 0192",
+   "tables@saltmarsh.exa"
+  ],
+  "overflow_end": false,
+  "errors": []
+ },
+ "390": {
+  "overflow": false,
+  "nav_open": 7,
+  "nav_esc": [
+   "burger",
+   "hidden"
+  ],
+  "arrow": [
+   "tab-dinner",
+   "true",
+   [
+    "panel-dinner"
+   ]
+  ],
+  "end": "tab-drinks",
+  "home": "tab-lunch",
+  "vg": [
+   [
+    "V VG",
+    "V VG GF"
+   ],
+   "2 of 8 dishes shown (VG)."
+  ],
+  "vg_gf": "1 of 8 dishes shown (VG + GF).",
+  "empty_submit": [
+   "booking-summary",
+   "alert",
+   4,
+   "There is a problem | Choose a date | Choose a date, then a time | Enter your full name | Enter your email address"
+  ],
+  "monday_disabled": true,
+  "dates_min": "2026-10-16",
+  "slots8": [
+   11,
+   6
+  ],
+  "slots2": [
+   11,
+   0
+  ],
+  "pax": "1,2,3,4,5,6,7,8",
+  "recap": "Guests 2 Date Thu 22 Oct Time 12:00",
+  "bad_email": [
+   "Enter an email address in the format name@example.com",
+   "booking-summary"
+  ],
+  "confirm": [
+   "done-h",
+   "Guests | 2 | Date | Thursday 22 October | Time | 12:00 | Name | Ada Quill | Reference | SM-HIXOC"
+  ],
+  "pd_err": [
+   "pd-summary",
+   4
+  ],
+  "pd_ok": "Thank you, Ada. Your enquiry for 12 guests is with our event",
+  "voucher": [
+   "\u00a3120",
+   "\u00a3120 voucher reserved. This is a demo, s"
+  ],
+  "anim": "none",
+  "small_targets": [
+   "01485 555 0192",
+   "tables@saltmarsh.exa"
+  ],
+  "overflow_end": false,
+  "errors": []
+ }
+}

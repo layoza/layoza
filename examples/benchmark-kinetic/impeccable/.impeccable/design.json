@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-16T04:00:00Z",
+  "title": "Design System: Name Studio — Kinetic Signal",
+  "extensions": {
+    "colorMeta": {
+      "obsidian": { "role": "neutral", "displayName": "Obsidian" },
+      "porcelain": { "role": "neutral", "displayName": "Warm Porcelain" },
+      "graphite": { "role": "neutral", "displayName": "Deep Graphite" },
+      "cobalt": { "role": "primary", "displayName": "Electric Cobalt" },
+      "signal-lime": { "role": "secondary", "displayName": "Signal Lime" },
+      "lavender": { "role": "tertiary", "displayName": "Soft Lavender" }
+    },
+    "typographyMeta": {
+      "hero": { "displayName": "Hero", "purpose": "First-viewport headline only." },
+      "display": { "displayName": "Display", "purpose": "Section headings and finale statements." },
+      "label": { "displayName": "Label", "purpose": "Small uppercase metadata (client-requested section labels)." }
+    },
+    "shadows": [
+      { "name": "header-pill", "value": "0 10px 30px -12px rgba(0,0,0,.45)", "purpose": "Compact header over any field." },
+      { "name": "cobalt-glow", "value": "0 40px 80px -40px rgba(72,101,255,.35)", "purpose": "Contact form lift on obsidian." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(.16,1,.3,1)", "purpose": "Arrivals, reveals, button fills (micro 180–450ms, type 600–1000ms)." },
+      { "name": "ease-in-out", "value": "cubic-bezier(.65,0,.35,1)", "purpose": "Menu clip and looping loops." },
+      { "name": "scrub", "value": "GSAP ScrollTrigger scrub, sticky at >=900px only", "purpose": "Services, philosophy, process sequences." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "560px" },
+      { "name": "sequence", "value": "900px" },
+      { "name": "wide", "value": "1100px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Pill with masked label slide and diagonal arrow swap.",
+      "html": "<a class=\"ks-btn\" href=\"#\"><span class=\"t\">Explore Our Work</span><span class=\"arr\">&#8599;</span></a>",
+      "css": ".ks-btn{display:inline-flex;align-items:center;gap:14px;height:54px;padding:0 10px 0 26px;border-radius:999px;background:#F6F5F0;color:#090B11;font:600 1rem Inter,sans-serif;text-decoration:none;transition:background .45s cubic-bezier(.16,1,.3,1),color .3s}.ks-btn .arr{width:36px;height:36px;border-radius:50%;background:#090B11;color:#F6F5F0;display:grid;place-items:center}.ks-btn:hover{background:#4865FF;color:#fff}.ks-btn:hover .arr{background:#D8FF57;color:#090B11}"
+    },
+    {
+      "name": "Field Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Obsidian well on graphite with cobalt focus.",
+      "html": "<input class=\"ks-in\" placeholder=\"you@company.com\">",
+      "css": ".ks-in{height:52px;padding:14px 16px;border-radius:14px;background:#090B11;color:#F6F5F0;border:1px solid #2B303B;font:1rem Inter,sans-serif}.ks-in:focus{outline:none;border-color:#4865FF;box-shadow:0 0 0 3px rgba(72,101,255,.35)}"
+    },
+    {
+      "name": "Selected Chip",
+      "kind": "chip",
+      "refersTo": "chip-selected",
+      "description": "Lime only when selected.",
+      "html": "<span class=\"ks-chip\">Brand</span>",
+      "css": ".ks-chip{display:inline-flex;align-items:center;height:42px;padding:0 16px;border-radius:999px;background:#D8FF57;color:#090B11;font:.9rem Inter,sans-serif}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Kinetic Signal",
+    "overview": "One sculpted ribbon carries the identity: WebGL in the hero, drawn lines through later sections, folds in dividers. Obsidian and porcelain alternate as whole fields with one cobalt turn.",
+    "keyCharacteristics": ["Field-scale colour", "Architectural Space Grotesk display", "Lime as a live-state signal", "One reveal type per section"],
+    "rules": [
+      { "name": "Field, not accent", "body": "A section is one colour field.", "section": "colors" },
+      { "name": "Lime is a signal", "body": "Lime marks live, selected or focused state only.", "section": "colors" }
+    ],
+    "dos": ["Compose display line breaks in markup", "Label demonstration content", "Collapse sticky sequences to native stacks below 900px"],
+    "donts": ["No icon-card grids", "No gradient text or glass", "No ribbon strokes across body text"]
+  }
+}

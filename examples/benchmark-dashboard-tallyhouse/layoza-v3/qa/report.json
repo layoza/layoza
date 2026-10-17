@@ -1,0 +1,309 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-dashboard-tallyhouse/layoza-v3/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; inp_ms is a lab interaction proxy (worst Event Timing duration >= 16ms across scripted Tab/Shift+Tab presses and, when a mobile menu toggle exists, its click), not field INP. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.41,
+      "contrast_failures": 0,
+      "lcp_ms": 1672,
+      "cls": 0.0007,
+      "inp_proxy_ms": 0,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-dashboard-tallyhouse\\layoza-v3\\qa\\screenshots\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.41,
+      "contrast_failures": 0,
+      "lcp_ms": 1608,
+      "cls": 0.0081,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-dashboard-tallyhouse\\layoza-v3\\qa\\screenshots\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [],
+      "console_errors": [],
+      "min_contrast_ratio": 5.78,
+      "contrast_failures": 0,
+      "lcp_ms": 1708,
+      "cls": 0.0008,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-dashboard-tallyhouse\\layoza-v3\\qa\\screenshots\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 5.41,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 343,
+  "contrast_indeterminate_elements": 34,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 21,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1708,
+  "cls": 0.0081,
+  "inp_ms": 16,
+  "inp_metric": "lab_interaction_proxy",
+  "inp_event_entries": 11,
+  "h1_to_body_ratio": 2.13,
+  "max_line_length_ch": null,
+  "font_families": [
+    "ibm plex sans",
+    "fraunces"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Tallyhouse · Today's tally",
+    "lang": "en-GB",
+    "page_background": "#F6F1E8",
+    "text_colors": [
+      {
+        "value": "#66584A",
+        "count": 1320
+      },
+      {
+        "value": "#221A12",
+        "count": 1183
+      },
+      {
+        "value": "#25502E",
+        "count": 399
+      },
+      {
+        "value": "#5A2508",
+        "count": 380
+      },
+      {
+        "value": "#4A3D2F",
+        "count": 314
+      },
+      {
+        "value": "#373260",
+        "count": 294
+      },
+      {
+        "value": "#FFF8F1",
+        "count": 194
+      },
+      {
+        "value": "#2C6638",
+        "count": 94
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#FFFDF9",
+        "count": 3038.6630781250024
+      },
+      {
+        "value": "#FFFBF3",
+        "count": 143.916
+      },
+      {
+        "value": "#E6EEDF",
+        "count": 123.42701806640618
+      },
+      {
+        "value": "#F3D9C3",
+        "count": 117.55023413085932
+      },
+      {
+        "value": "#FBF7F0",
+        "count": 108.93363281250004
+      },
+      {
+        "value": "#FBF0E4",
+        "count": 102.60138281249998
+      },
+      {
+        "value": "#F6F1E8",
+        "count": 93.6
+      },
+      {
+        "value": "#2A2017",
+        "count": 87.108
+      }
+    ],
+    "fonts": [
+      {
+        "value": "IBM Plex Sans",
+        "count": 4331
+      },
+      {
+        "value": "Fraunces",
+        "count": 120
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "32px",
+        "weight": "600",
+        "line_height": "36.8px",
+        "letter_spacing": "-0.32px",
+        "family": "Fraunces"
+      },
+      "h2": {
+        "size": "20px",
+        "weight": "600",
+        "line_height": "23px",
+        "letter_spacing": "-0.2px",
+        "family": "Fraunces"
+      },
+      "p": {
+        "size": "15px",
+        "weight": "400",
+        "line_height": "22.5px",
+        "letter_spacing": "normal",
+        "family": "IBM Plex Sans"
+      },
+      "small": {
+        "size": "12px",
+        "weight": "400",
+        "line_height": "18px",
+        "letter_spacing": "normal",
+        "family": "IBM Plex Sans"
+      }
+    },
+    "radii": [
+      {
+        "value": "5px",
+        "count": 77
+      },
+      {
+        "value": "6px",
+        "count": 30
+      },
+      {
+        "value": "4px",
+        "count": 26
+      },
+      {
+        "value": "999px",
+        "count": 13
+      },
+      {
+        "value": "10px",
+        "count": 8
+      },
+      {
+        "value": "2px",
+        "count": 6
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1440px",
+        "count": 3
+      }
+    ],
+    "css_custom_properties": {
+      "--bg": "#F6F1E8",
+      "--surface": "#FFFDF9",
+      "--surface-2": "#EFE7DA",
+      "--line": "#E0D4C1",
+      "--line-strong": "#C9B89F",
+      "--ink": "#221A12",
+      "--ink-2": "#4A3D2F",
+      "--muted": "#66584A",
+      "--crust": "#9A3D10",
+      "--crust-hover": "#7E300A",
+      "--crust-soft": "#F5E1CF",
+      "--crust-bar": "#C0662F",
+      "--board": "#2A2017",
+      "--board-2": "#3A2D21",
+      "--board-ink": "#F8EDE0",
+      "--board-muted": "#D2C1AC",
+      "--good": "#2C6638",
+      "--good-soft": "#E3EFE1",
+      "--bad": "#A3241A",
+      "--bad-soft": "#F8E0DC",
+      "--warn": "#7A4E00",
+      "--warn-soft": "#F7EAC8",
+      "--focus": "#1F5FBF",
+      "--r": "10px",
+      "--r-sm": "6px",
+      "--row-h": "52px",
+      "--cell-py": "12px",
+      "--f-display": "\"Fraunces\", Georgia, serif",
+      "--f-ui": "\"IBM Plex Sans\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "--f-mono": "\"IBM Plex Mono\", ui-monospace, Consolas, monospace",
+      "--ease-out": "cubic-bezier(.23,1,.32,1)",
+      "--ease-drawer": "cubic-bezier(.32,.72,0,1)",
+      "--topbar-h": "64px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 0
+  },
+  "craft_critique": {},
+  "craft_critique_by_viewport": {
+    "desktop": {},
+    "tablet": {},
+    "mobile": {}
+  },
+  "craft_critique_suppressed": [
+    {
+      "rule": "craft-cream-palette",
+      "allowed_by": "palette:cream",
+      "detail": "cream/beige page background rgb(246, 241, 232)"
+    },
+    {
+      "rule": "craft-hero-metric",
+      "allowed_by": "rule:hero-metric",
+      "detail": "first viewport leads with big-number stats 779, 11; open with the subject's most characteristic thing instead"
+    },
+    {
+      "rule": "craft-hero-art-scale",
+      "allowed_by": "rule:hero-art-scale",
+      "detail": "largest authored visual in the first viewport covers 20% of it (svg); let the world's artwork carry the first screen, not a widget beside the headline"
+    },
+    {
+      "rule": "craft-display-scale",
+      "allowed_by": "rule:display-scale",
+      "detail": "largest text is 52px (3.6vw) at 1440px; let one headline or the name reach about 8vw, or declare the small-type direction on purpose"
+    }
+  ],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [
+    "max_line_length_ch"
+  ],
+  "design_tokens": null,
+  "design_system": null
+}

@@ -1,0 +1,397 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-fold/layoza-v3/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; INP is a proxy from Event Timing during scripted keyboard input. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 153 primitive shapes, ~659x548px, 17 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 60 primitive shapes, ~366x345px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 77 primitive shapes, ~465x354px, 18 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 29 primitive shapes, ~390x295px, 15 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 57 primitive shapes, ~325x226px, 10 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 23 primitive shapes, ~332x264px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 36 primitive shapes, ~356x271px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 153 primitive shapes, ~659x548px, 17 fill colors"
+        },
+        {
+          "rule": "craft-dead-controls",
+          "severity": "critique",
+          "detail": "4 of 7 buttons have no transition and no :active press state (e.g. button); give every control hover, press and state feedback (layoza-animations 2c)"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:w); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 6.01,
+      "contrast_failures": 0,
+      "lcp_ms": 112,
+      "cls": 0.0005,
+      "inp_proxy_ms": 8,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-fold\\layoza-v3\\qa\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 153 primitive shapes, ~659x548px, 17 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 60 primitive shapes, ~366x345px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 77 primitive shapes, ~465x354px, 18 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 29 primitive shapes, ~390x295px, 15 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 57 primitive shapes, ~325x226px, 10 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 23 primitive shapes, ~332x264px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 36 primitive shapes, ~356x271px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 153 primitive shapes, ~659x548px, 17 fill colors"
+        },
+        {
+          "rule": "craft-dead-controls",
+          "severity": "critique",
+          "detail": "4 of 7 buttons have no transition and no :active press state (e.g. button); give every control hover, press and state feedback (layoza-animations 2c)"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:w); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 6.01,
+      "contrast_failures": 0,
+      "lcp_ms": 92,
+      "cls": 0.0494,
+      "inp_proxy_ms": 24,
+      "mobile_menu": null,
+      "screenshot_path": "examples\\benchmark-fold\\layoza-v3\\qa\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 153 primitive shapes, ~659x548px, 17 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 60 primitive shapes, ~366x345px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 77 primitive shapes, ~465x354px, 18 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 29 primitive shapes, ~390x295px, 15 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 57 primitive shapes, ~325x226px, 10 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 23 primitive shapes, ~332x264px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 36 primitive shapes, ~356x271px, 14 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 153 primitive shapes, ~659x548px, 17 fill colors"
+        },
+        {
+          "rule": "craft-dead-controls",
+          "severity": "critique",
+          "detail": "4 of 8 buttons have no transition and no :active press state (e.g. button); give every control hover, press and state feedback (layoza-animations 2c)"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:w); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 6.01,
+      "contrast_failures": 0,
+      "lcp_ms": 96,
+      "cls": 0.0003,
+      "inp_proxy_ms": 16,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 4,
+        "opened": true,
+        "screenshot": "examples\\benchmark-fold\\layoza-v3\\qa\\mobile-menu-open.png"
+      },
+      "screenshot_path": "examples\\benchmark-fold\\layoza-v3\\qa\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 6.01,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 106,
+  "contrast_indeterminate_elements": 1,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 37.5,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 112,
+  "cls": 0.0494,
+  "inp_ms": 24,
+  "inp_event_entries": 13,
+  "h1_to_body_ratio": 5.12,
+  "max_line_length_ch": 52,
+  "font_families": [
+    "schibsted grotesk"
+  ],
+  "font_family_count": 1,
+  "site_dna": {
+    "title": "Fold Architects, Glasgow",
+    "lang": "en-GB",
+    "page_background": "#D4D0C7",
+    "text_colors": [
+      {
+        "value": "#1C1B19",
+        "count": 2666
+      },
+      {
+        "value": "#4A4741",
+        "count": 292
+      },
+      {
+        "value": "#F7F6F2",
+        "count": 46
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#BDB8AD",
+        "count": 822.78
+      },
+      {
+        "value": "#F7F6F2",
+        "count": 467.049037109375
+      },
+      {
+        "value": "#FDFCFA",
+        "count": 161.11038476562499
+      },
+      {
+        "value": "#923620",
+        "count": 16.2400625
+      },
+      {
+        "value": "#1C1B19",
+        "count": 9.77749609375
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Schibsted Grotesk",
+        "count": 3004
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "92.16px",
+        "weight": "700",
+        "line_height": "88.4736px",
+        "letter_spacing": "-3.2256px",
+        "family": "Schibsted Grotesk"
+      },
+      "h2": {
+        "size": "92.16px",
+        "weight": "700",
+        "line_height": "88.4736px",
+        "letter_spacing": "-3.2256px",
+        "family": "Schibsted Grotesk"
+      },
+      "h3": {
+        "size": "24px",
+        "weight": "500",
+        "line_height": "30px",
+        "letter_spacing": "-0.24px",
+        "family": "Schibsted Grotesk"
+      },
+      "p": {
+        "size": "18px",
+        "weight": "400",
+        "line_height": "27.9px",
+        "letter_spacing": "normal",
+        "family": "Schibsted Grotesk"
+      }
+    },
+    "radii": [],
+    "max_widths": [
+      {
+        "value": "1600px",
+        "count": 7
+      },
+      {
+        "value": "418.148px",
+        "count": 6
+      },
+      {
+        "value": "572.203px",
+        "count": 4
+      },
+      {
+        "value": "330.117px",
+        "count": 1
+      },
+      {
+        "value": "275.098px",
+        "count": 1
+      },
+      {
+        "value": "528.188px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--board": "#D4D0C7",
+      "--board-deep": "#BDB8AD",
+      "--card": "#F7F6F2",
+      "--field": "#FDFCFA",
+      "--ink": "#1C1B19",
+      "--ink-2": "#4A4741",
+      "--rule": "#8F8A80",
+      "--red": "#923620",
+      "--red-deep": "#6F2716",
+      "--font": "\"Schibsted Grotesk\", \"Fold Fallback\", sans-serif",
+      "--display": "clamp(2.5rem, 6.4vw, 6.5rem)",
+      "--title": "1.5rem",
+      "--body": "1.125rem",
+      "--meta": "0.9375rem",
+      "--m": "clamp(1rem, 3.6vw, 3.5rem)",
+      "--gap": "clamp(1rem, 2.4vw, 2.5rem)",
+      "--section": "clamp(6rem, 11vw, 10.5rem)"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 0
+  },
+  "craft_critique": {
+    "craft-dead-controls": 1,
+    "craft-shape-assembled-illustration": 8
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-shape-assembled-illustration": 8,
+      "craft-dead-controls": 1
+    },
+    "tablet": {
+      "craft-shape-assembled-illustration": 8,
+      "craft-dead-controls": 1
+    },
+    "mobile": {
+      "craft-shape-assembled-illustration": 8,
+      "craft-dead-controls": 1
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

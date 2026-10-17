@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiln &amp; Clay — Handmade tableware &amp; wheel workshops, Lahore</title>
+<meta name="description" content="Small-batch stoneware tableware thrown and glazed in Lahore, plus weekend wheel-throwing workshops at the Kiln & Clay studio in Gulberg.">
+<meta name="theme-color" content="#1B3A8F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@600&display=swap&text=%D8%A8%DA%BE%D9%B9%DB%8C%D8%A7%D9%88%D8%B1%D9%85%D9%84%DB%81%20">
+<style>
+/* Metric-adjusted fallbacks so the web-font swap does not re-wrap text (CLS) */
+@font-face{font-family:"Bricolage Fallback";src:local("Arial"),local("Helvetica Neue"),local("Liberation Sans");size-adjust:102%;ascent-override:92%;descent-override:26%;line-gap-override:0%}
+@font-face{font-family:"Hanken Fallback";src:local("Arial"),local("Helvetica Neue"),local("Liberation Sans");size-adjust:96%;ascent-override:104%;descent-override:30%;line-gap-override:0%}
+
+:root{
+  --neela:#1B3A8F;        /* Lahori cobalt, kashi kari ground */
+  --neela-deep:#11255E;
+  --neela-ink:#0C1A45;
+  --firozi:#17A2A0;       /* turquoise glaze */
+  --firozi-deep:#0B5F5D;
+  --firozi-pale:#BFE6E2;
+  --haldi:#E2A52B;        /* ochre / turmeric glaze */
+  --haldi-pale:#F6DFA6;
+  --shalimar:#4F8F6A;
+  --silt:#8A7B69;         /* Ravi silt clay body */
+  --biscuit:#D9C4A6;      /* bisque-fired, unglazed */
+  --slip:#EDF1F0;         /* white slip ground, cool lime-plaster white */
+  --slip-raised:#F8FAF9;
+  --slip-2:#E0E6E5;
+  --grout:#CFD8D7;
+  --ink:#141A33;
+  --ink-2:#434A63;
+  --on-neela:#F1F5F4;
+  --on-neela-2:#C9D3F0;
+  --anar:#A3232B;         /* error: pomegranate */
+  --ok:#1E6B47;
+  --focus:#E2A52B;
+  --display:"Bricolage Grotesque","Bricolage Fallback",Arial,sans-serif;
+  --body:"Hanken Grotesk","Hanken Fallback",Arial,sans-serif;
+  --urdu:"Noto Nastaliq Urdu","Urdu Typesetting","Jameel Noori Nastaleeq",serif;
+  --header-h:72px;
+  --wrap:1360px;
+  --gut:clamp(16px,3.2vw,40px);
+  --gap:6px;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --tile-glazed:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F6F5EF'/%3E%3Cg fill='%2317A2A0'%3E%3Ccircle r='19'/%3E%3Ccircle cx='100' r='19'/%3E%3Ccircle cy='100' r='19'/%3E%3Ccircle cx='100' cy='100' r='19'/%3E%3C/g%3E%3Cg fill='%231B3A8F'%3E%3Ccircle r='7'/%3E%3Ccircle cx='100' r='7'/%3E%3Ccircle cy='100' r='7'/%3E%3Ccircle cx='100' cy='100' r='7'/%3E%3Cpolygon points='82.5,50 73,59.5 73,73 59.5,73 50,82.5 40.5,73 27,73 27,59.5 17.5,50 27,40.5 27,27 40.5,27 50,17.5 59.5,27 73,27 73,40.5'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='13' fill='%23F6F5EF'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%2317A2A0'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23E2A52B'/%3E%3Cg fill='%23E2A52B'%3E%3Cpolygon points='50,-9 59,0 50,9 41,0'/%3E%3Cpolygon points='50,91 59,100 50,109 41,100'/%3E%3Cpolygon points='-9,50 0,41 9,50 0,59'/%3E%3Cpolygon points='91,50 100,41 109,50 100,59'/%3E%3C/g%3E%3C/svg%3E");
+  --tile-biscuit:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23DCC8AB'/%3E%3Cg fill='%23CDB591'%3E%3Ccircle r='19'/%3E%3Ccircle cx='100' r='19'/%3E%3Ccircle cy='100' r='19'/%3E%3Ccircle cx='100' cy='100' r='19'/%3E%3Cpolygon points='82.5,50 73,59.5 73,73 59.5,73 50,82.5 40.5,73 27,73 27,59.5 17.5,50 27,40.5 27,27 40.5,27 50,17.5 59.5,27 73,27 73,40.5'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='13' fill='%23DCC8AB'/%3E%3Ccircle cx='50' cy='50' r='9' fill='%23CDB591'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 24px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--slip);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;caret-color:var(--neela)}
+::selection{background:var(--haldi);color:var(--ink)}
+html{scrollbar-color:var(--neela) var(--slip-2)}
+img,svg{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-0.025em;line-height:1.04;margin:0;text-wrap:balance}
+h2{font-size:clamp(2.1rem,4.2vw,3.6rem)}
+h3{font-size:1.35rem;letter-spacing:-0.015em;line-height:1.15;font-weight:700}
+p{margin:0}
+a{color:inherit;text-decoration-thickness:1.5px;text-underline-offset:.22em}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.on-light :focus-visible,.on-light:focus-visible{outline-color:var(--neela)}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--neela);color:var(--on-neela);padding:10px 16px;border-radius:3px;font-weight:600}
+.skip:focus{top:12px}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.ur{font-family:var(--urdu);font-weight:600;direction:rtl;line-height:2.1}
+
+/* ---------- buttons ---------- */
+.btn{--bg:var(--neela);--fg:var(--on-neela);display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:48px;padding:.7em 1.35em;border:2px solid var(--bg);background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:700;font-size:1rem;letter-spacing:.005em;border-radius:3px;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color .15s,border-color .15s,color .15s,transform .15s var(--ease)}
+.btn:hover{--bg:var(--neela-deep)}
+.btn:active{transform:translateY(1px)}
+.btn--haldi{--bg:var(--haldi);--fg:var(--ink)}
+.btn--haldi:hover{--bg:#F0B94A}
+.btn--ghost{background:transparent;color:var(--fg)}
+.btn--ghost-light{--bg:var(--on-neela);--fg:var(--on-neela);background:transparent}
+.btn--ghost-light:hover{background:var(--on-neela);color:var(--neela)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn[data-added="true"]{--bg:var(--ok);--fg:#F3F3EC}
+
+/* ---------- header ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:var(--slip);border-bottom:1px solid var(--grout)}
+.site-header .wrap{display:flex;align-items:center;gap:24px;height:var(--header-h)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);flex:none}
+.brand svg{width:36px;height:36px}
+.brand-name{font-family:var(--display);font-weight:800;font-size:1.45rem;letter-spacing:-0.02em;line-height:1;white-space:nowrap}
+.brand-ur{font-size:.9rem;color:var(--ink-2);line-height:1.6;margin-top:-2px;display:block}
+.brand-text{display:flex;flex-direction:column}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+.nav a{display:block;padding:10px 14px;text-decoration:none;font-weight:600;font-size:1rem;border-radius:3px;white-space:nowrap}
+.nav a:hover{background:var(--slip-2);text-decoration:underline;text-decoration-color:var(--haldi);text-decoration-thickness:3px}
+.header-actions{display:flex;align-items:center;gap:8px;flex:none}
+.cart-btn{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 16px 0 14px;background:var(--neela);color:var(--on-neela);border:0;border-radius:3px;font-weight:700;cursor:pointer;white-space:nowrap}
+.cart-btn:hover{background:var(--neela-deep)}
+.cart-btn svg{width:20px;height:20px}
+.cart-count{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:var(--haldi);color:var(--ink);font-size:.9rem;font-variant-numeric:tabular-nums}
+.cart-count.bump{animation:bump .35s var(--ease)}
+@keyframes bump{40%{transform:scale(1.25)}}
+.menu-btn{display:none;width:46px;height:46px;border:2px solid var(--ink);background:transparent;border-radius:3px;cursor:pointer;place-items:center;color:var(--ink)}
+.menu-btn svg{width:22px;height:22px}
+.menu-btn .i-close{display:none}
+.menu-btn[aria-expanded="true"] .i-open{display:none}
+.menu-btn[aria-expanded="true"] .i-close{display:block}
+
+.cart-panel{position:absolute;right:var(--gut);top:calc(var(--header-h) - 4px);width:min(360px,calc(100vw - 32px));background:var(--slip-raised);border:1px solid var(--grout);border-radius:4px;box-shadow:0 18px 40px -18px rgba(12,26,69,.45);padding:20px;z-index:60}
+.cart-panel[hidden]{display:none}
+.cart-panel h2{font-size:1.3rem;letter-spacing:-0.015em;margin-bottom:12px}
+.cart-panel ul{list-style:none;margin:0 0 14px;padding:0;max-height:240px;overflow:auto}
+.cart-panel li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--grout);font-size:.97rem}
+.cart-empty{color:var(--ink-2)}
+.cart-total{display:flex;justify-content:space-between;font-weight:700;margin-bottom:14px}
+.cart-note{font-size:.88rem;color:var(--ink-2);margin-top:10px}
+
+.drawer{display:none}
+
+/* ---------- hero: one tile wall ---------- */
+.hero{padding:clamp(14px,2vw,24px) 0 clamp(48px,6vw,80px)}
+.wall{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap);background:var(--grout);border:var(--gap) solid var(--grout);border-radius:4px}
+.tile{position:relative;border-radius:2px;overflow:hidden;min-width:0}
+.cartouche{grid-column:1/8;grid-row:1/4;background:var(--neela);color:var(--on-neela);padding:clamp(28px,3.4vw,56px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.cartouche::before{content:"";position:absolute;inset:12px;border:1.5px solid rgba(191,230,226,.55);border-radius:2px;pointer-events:none}
+.cartouche > *{position:relative}
+.inscription{font-size:clamp(1.25rem,1.9vw,1.6rem);color:var(--haldi-pale);text-align:right;line-height:2;margin-top:-8px}
+.cartouche h1{font-size:clamp(2.4rem,4.6vw,4.4rem);line-height:1.02;letter-spacing:-0.03em;max-width:13.5ch}
+.cartouche .lede{font-size:clamp(1.05rem,1.3vw,1.22rem);color:var(--on-neela-2);max-width:46ch;margin-top:20px;line-height:1.55}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.pt{background:var(--slip-2)}
+.pt .biscuit,.pt .glaze{position:absolute;inset:0;background-size:var(--ts,96px) var(--ts,96px);background-position:center}
+.pt .biscuit{background-image:var(--tile-biscuit)}
+.pt .glaze{background-image:var(--tile-glazed)}
+.pt-a{grid-column:11/13;grid-row:1/2}
+.pt-b{grid-column:11/13;grid-row:2/3}
+.feature{grid-column:8/11;grid-row:1/3;background:var(--slip-raised);padding:22px 22px 24px;display:flex;flex-direction:column;gap:14px}
+.feature .plate{width:min(100%,250px);aspect-ratio:1;margin:0 auto}
+.feature h2{font-size:1.45rem;letter-spacing:-0.015em}
+.meta{font-size:.95rem;color:var(--ink-2);line-height:1.5}
+.swatch{display:inline-block;width:.8em;height:.8em;border-radius:50%;vertical-align:-.05em;margin-right:.4em;box-shadow:inset 0 0 0 1px rgba(20,26,51,.25)}
+.buy-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;flex-wrap:wrap}
+.price{font-family:var(--display);font-weight:700;font-size:1.4rem;letter-spacing:-0.01em;font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+.price small{font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--ink-2);letter-spacing:.04em;margin-right:4px}
+.next-session{grid-column:8/13;grid-row:3/4;background:var(--haldi);color:var(--ink);padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:center}
+.date-block{grid-row:1/3;display:flex;flex-direction:column;align-items:center;justify-content:center;width:76px;height:84px;background:var(--slip-raised);border-radius:2px;line-height:1}
+.date-block b{font-family:var(--display);font-size:2.2rem;font-weight:800;letter-spacing:-0.03em}
+.date-block span{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.next-session h2{font-size:1.3rem;letter-spacing:-0.015em}
+.next-session p{font-size:.97rem;color:#2A2410}
+.next-session .btn{grid-column:1/-1;justify-self:start;margin-top:8px}
+.frieze{grid-column:span 1;aspect-ratio:1}
+.frieze.pt{--ts:100%}
+
+/* ---------- section scaffolding ---------- */
+section{position:relative}
+.sec{padding:clamp(72px,9vw,136px) 0}
+.sec-head{display:grid;grid-template-columns:5fr 7fr;gap:24px 56px;align-items:end;margin-bottom:clamp(36px,4vw,56px)}
+.sec-head p{max-width:56ch;color:var(--ink-2);font-size:1.08rem}
+
+/* ---------- collection ---------- */
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);background:var(--grout);border:var(--gap) solid var(--grout);border-radius:4px;list-style:none;margin:0;padding:0}
+.product{background:var(--slip-raised);display:flex;flex-direction:column;border-radius:2px}
+.product .draw{background:var(--slip-2);aspect-ratio:4/3;display:grid;place-items:center;border-bottom:1px solid var(--grout);position:relative}
+.product .draw svg{width:82%;height:auto}
+.dim{position:absolute;left:14px;bottom:10px;font-size:.82rem;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.product .body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:6px;flex:1}
+.product h3{font-size:1.3rem}
+.product .buy-row{padding-top:14px}
+.stock{font-size:.88rem;color:var(--ink-2);font-weight:600}
+.shop-foot{margin-top:22px;color:var(--ink-2);font-size:.97rem}
+
+/* ---------- workshops ---------- */
+.workshops{background:var(--neela);color:var(--on-neela)}
+.workshops .sec-head p{color:var(--on-neela-2)}
+.ws-grid{display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,4vw,64px);align-items:start}
+.sessions{list-style:none;margin:0;padding:0;border-top:1px solid rgba(201,211,240,.35)}
+.session{display:grid;grid-template-columns:84px 1fr auto;gap:8px 24px;align-items:center;padding:24px 0;border-bottom:1px solid rgba(201,211,240,.35)}
+.session .date-block{grid-row:1/3;background:var(--on-neela);color:var(--neela-ink)}
+.session h3{font-size:1.4rem}
+.session .s-meta{color:var(--on-neela-2);font-size:.97rem}
+.seats{display:flex;align-items:center;gap:12px;grid-column:2/3;flex-wrap:wrap}
+.pips{display:flex;gap:4px}
+.pips i{width:14px;height:14px;border-radius:2px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--on-neela-2)}
+.pips i.taken{background:var(--on-neela-2);box-shadow:none;opacity:.45}
+.pips i.free{background:var(--haldi);box-shadow:none}
+.seats-text{font-weight:700;font-size:.97rem}
+.session .btn{grid-column:3/4;grid-row:1/3}
+.session.full .btn{opacity:.6;cursor:not-allowed}
+.ws-note{margin-top:22px;color:var(--on-neela-2);font-size:.97rem;max-width:60ch}
+
+.book{background:var(--slip-raised);color:var(--ink);border-radius:4px;padding:clamp(22px,2.6vw,36px)}
+.book h3{font-size:1.6rem;letter-spacing:-0.02em;margin-bottom:6px}
+.book > p{color:var(--ink-2);margin-bottom:20px;font-size:.97rem}
+.field{margin-bottom:18px}
+.field label,.field legend{display:block;font-weight:700;font-size:.97rem;margin-bottom:6px}
+.field input[type=text],.field input[type=email],.field select{width:100%;min-height:50px;padding:10px 14px;background:var(--slip);border:1.5px solid var(--ink-2);border-radius:3px;font-size:1rem}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 8l5 5 5-5' fill='none' stroke='%23141A33' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.field input:focus-visible,.field select:focus-visible{outline:3px solid var(--neela);outline-offset:2px;border-color:var(--neela)}
+.field [aria-invalid="true"]{border-color:var(--anar);background:#FBF1F0}
+.field fieldset{border:0;margin:0;padding:0;min-width:0}
+.count-pick{display:flex;gap:var(--gap)}
+.count-pick label{flex:1;margin:0;position:relative}
+.count-pick input{position:absolute;opacity:0;width:1px;height:1px}
+.count-pick span{display:grid;place-items:center;min-height:50px;border:1.5px solid var(--ink-2);border-radius:3px;font-family:var(--display);font-weight:700;font-size:1.2rem;cursor:pointer;background:var(--slip);transition:background-color .15s,color .15s}
+.count-pick input:checked + span{background:var(--neela);border-color:var(--neela);color:var(--on-neela)}
+.count-pick input:focus-visible + span{outline:3px solid var(--neela);outline-offset:2px}
+.count-pick.invalid span{border-color:var(--anar)}
+.err{display:block;color:var(--anar);font-size:.92rem;font-weight:600;margin-top:6px;min-height:0}
+.err:empty{display:none}
+.hint{font-size:.88rem;color:var(--ink-2);margin-top:6px}
+.book .btn{width:100%}
+.success{border-radius:3px;background:#E3F0E8;color:#123D29;padding:18px 18px;margin-top:16px;font-weight:500}
+.success[hidden]{display:none}
+.success strong{display:block;font-family:var(--display);font-size:1.15rem;margin-bottom:4px}
+
+/* ---------- story ---------- */
+.story-grid{display:grid;grid-template-columns:6fr 6fr;gap:clamp(32px,5vw,88px);align-items:start}
+.story-copy h2{margin-bottom:28px}
+.story-copy p + p{margin-top:16px}
+.story-copy p{max-width:60ch}
+.ledger{background:var(--slip-raised);border:1px solid var(--grout);border-radius:4px;padding:clamp(20px,2.4vw,32px)}
+.ledger h3{font-size:1.25rem;margin-bottom:4px}
+.ledger > p{color:var(--ink-2);font-size:.95rem;margin-bottom:18px}
+.ledger table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.ledger th,.ledger td{text-align:left;padding:11px 0;border-bottom:1px solid var(--grout);vertical-align:middle;font-size:.97rem}
+.ledger thead th{font-size:.82rem;font-weight:700;color:var(--ink-2);letter-spacing:.05em;text-transform:uppercase;padding-top:0}
+.ledger td.day{width:3.5em;color:var(--ink-2);font-weight:600}
+.ledger td.temp{width:42%}
+.heat{display:flex;align-items:center;gap:10px}
+.heat i{display:block;height:10px;border-radius:2px;background:var(--neela);flex:0 1 auto;min-width:12px}
+.heat i.lo{background:var(--firozi)}
+.heat span{font-weight:700;white-space:nowrap}
+.journal{margin-top:28px;padding-top:22px;border-top:1px solid var(--grout)}
+.journal h3{font-size:1.15rem;margin-bottom:10px}
+.journal ul{list-style:none;margin:0;padding:0}
+.journal li{padding:8px 0}
+.journal a{font-weight:600}
+.journal a:hover{color:var(--neela)}
+.journal small{display:block;color:var(--ink-2);font-size:.88rem}
+
+/* ---------- testimonials ---------- */
+.voices{background:var(--firozi-deep);color:#F1F7F5}
+.voices h2{max-width:16ch;margin-bottom:clamp(36px,4vw,56px)}
+.quotes{display:grid;grid-template-columns:7fr 5fr;gap:var(--gap);background:rgba(191,230,226,.25);border:var(--gap) solid rgba(191,230,226,.25);border-radius:4px}
+.quote{margin:0;padding:clamp(24px,3vw,40px);background:var(--firozi-deep);display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-radius:2px}
+.quote.big{grid-row:1/3}
+.quote blockquote{margin:0;font-size:1.12rem;line-height:1.55}
+.quote.big blockquote{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.2;letter-spacing:-0.02em}
+.quote figcaption{font-size:.95rem;color:#C7E6E2}
+.quote figcaption b{display:block;color:#F1F7F5;font-size:1rem}
+
+/* ---------- faq ---------- */
+.faq-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,88px);align-items:start}
+.faq-grid > div:first-child p{color:var(--ink-2);margin-top:20px;max-width:40ch}
+.faq{border-top:2px solid var(--ink)}
+.faq-item{border-bottom:1px solid var(--grout)}
+.faq-item h3{font-size:1.15rem;font-family:var(--body);font-weight:700;letter-spacing:0}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:20px;width:100%;padding:20px 0;background:none;border:0;text-align:left;cursor:pointer;font-weight:700;font-size:1.12rem;line-height:1.35}
+.faq-q:hover{color:var(--neela)}
+.faq-q .mark{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:2px;background:var(--slip-2);transition:background-color .2s, transform .3s var(--ease)}
+.faq-q .mark svg{width:16px;height:16px}
+.faq-q[aria-expanded="true"] .mark{background:var(--haldi);transform:rotate(45deg)}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+.faq-a > div{overflow:hidden}
+.faq-a p{padding:0 48px 22px 0;color:var(--ink-2);max-width:62ch}
+.faq-a.open{grid-template-rows:1fr}
+
+/* ---------- newsletter ---------- */
+.letter{background:var(--haldi);color:var(--ink);padding:clamp(56px,7vw,96px) 0}
+.letter-grid{display:grid;grid-template-columns:6fr 6fr;gap:24px 56px;align-items:end}
+.letter h2{max-width:14ch}
+.letter p{margin-top:16px;max-width:46ch;color:#2A2410}
+.nl-form{display:flex;gap:var(--gap);flex-wrap:wrap}
+.nl-form .field{flex:1 1 260px;margin:0}
+.nl-form label{font-weight:700;display:block;margin-bottom:6px}
+.nl-form input{width:100%;min-height:52px;padding:10px 14px;border:2px solid var(--ink);border-radius:3px;background:var(--slip-raised);font-size:1rem}
+.nl-form input:focus-visible{outline:3px solid var(--neela);outline-offset:2px}
+.nl-form input[aria-invalid="true"]{border-color:var(--anar)}
+.nl-form .btn{align-self:flex-end;min-height:52px}
+.letter .err{color:#7A1218}
+.nl-ok{margin-top:12px;font-weight:700}
+.nl-ok[hidden]{display:none}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--neela-ink);color:var(--on-neela)}
+.band{height:28px;background:var(--tile-glazed);background-size:28px 28px}
+.foot-grid{display:grid;grid-template-columns:4fr 3fr 3fr 2fr;gap:36px;padding:clamp(48px,6vw,80px) 0 40px}
+.site-footer h2{font-size:1rem;font-family:var(--body);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--haldi-pale);margin-bottom:14px}
+.site-footer address{font-style:normal}
+.site-footer p,.site-footer address,.site-footer li{color:#D3DAF0;font-size:.98rem}
+.site-footer ul{list-style:none;margin:0;padding:0}
+.site-footer li{padding:3px 0}
+.site-footer a{color:var(--on-neela)}
+.site-footer a:hover{color:var(--haldi-pale)}
+.foot-brand .brand-name{font-size:2rem;color:var(--on-neela)}
+.foot-brand .ur{color:var(--haldi-pale);font-size:1.15rem;display:block;text-align:left}
+.foot-brand p{margin-top:12px;max-width:34ch}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}
+.hours dt{font-weight:700;color:var(--on-neela)}
+.hours dd{margin:0;color:#D3DAF0}
+.legal{border-top:1px solid rgba(201,211,240,.25);padding:20px 0 28px;font-size:.88rem;color:#B9C3E3;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.social a{display:inline-flex;align-items:center;gap:10px;min-height:36px;text-decoration:none}
+.social a:hover span{text-decoration:underline}
+.social svg{width:18px;height:18px}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .nav a{padding:10px 9px}
+  .wall{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .cartouche{grid-column:1/-1;grid-row:auto}
+  .feature{grid-column:1/4;grid-row:auto}
+  .pt-a{grid-column:4/7;grid-row:auto;min-height:120px}
+  .pt-b{display:none}
+  .next-session{grid-column:4/7;grid-row:auto}
+  .wall .frieze:nth-of-type(n+10){display:none}
+  .feature{grid-row:span 2}
+  .ws-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  .nav,.header-actions .cart-label{display:none}
+  .menu-btn{display:inline-grid}
+  .brand{margin-right:auto}
+  .drawer{display:block;position:fixed;inset:var(--header-h) 0 auto 0;background:var(--slip);border-bottom:1px solid var(--grout);padding:8px var(--gut) 24px;transform:translateY(-8px);opacity:0;visibility:hidden;transition:transform .25s var(--ease),opacity .2s,visibility 0s .25s;z-index:49;box-shadow:0 24px 40px -24px rgba(12,26,69,.4)}
+  .drawer.open{transform:none;opacity:1;visibility:visible;transition:transform .3s var(--ease),opacity .2s}
+  .drawer ul{list-style:none;margin:0;padding:0}
+  .drawer a{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--grout);font-family:var(--display);font-weight:700;font-size:1.6rem;letter-spacing:-0.02em;text-decoration:none}
+  .drawer a:hover{color:var(--neela)}
+  .drawer .band{margin-top:22px;border-radius:2px}
+  .drawer .d-meta{margin-top:16px;color:var(--ink-2);font-size:.95rem}
+  .sec-head,.story-grid,.faq-grid,.letter-grid,.quotes{grid-template-columns:1fr}
+  .quote.big{grid-row:auto}
+}
+@media (max-width:640px){
+  :root{--header-h:64px}
+  .brand svg{width:30px;height:30px}
+  .brand-name{font-size:1.25rem}
+  .brand-ur{font-size:.8rem}
+  .cart-btn{padding:0 12px}
+  .wall{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cartouche{padding:30px 22px 26px}
+  .cartouche::before{inset:8px}
+  .feature,.next-session{grid-column:1/-1}
+  .pt-a{display:none}
+  .wall .frieze:nth-of-type(n+8){display:none}
+  .products{grid-template-columns:1fr}
+  .session{grid-template-columns:72px 1fr;gap:8px 16px}
+  .session .date-block{width:72px;height:78px}
+  .session .btn{grid-column:1/-1;grid-row:auto;justify-self:stretch}
+  .seats{grid-column:1/-1}
+  .foot-grid{grid-template-columns:1fr}
+  .faq-a p{padding-right:0}
+  .hero-ctas .btn{flex:1 1 100%}
+}
+@media (min-width:641px) and (max-width:1100px){
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important;animation-iteration-count:1 !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="khatam" viewBox="0 0 100 100"><polygon points="82.5,50 73,59.5 73,73 59.5,73 50,82.5 40.5,73 27,73 27,59.5 17.5,50 27,40.5 27,27 40.5,27 50,17.5 59.5,27 73,27 73,40.5"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand on-light" href="#top" aria-label="Kiln and Clay, home">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" fill="#1B3A8F"/><use href="#khatam" fill="#F3F3EC"/><circle cx="50" cy="50" r="11" fill="#E2A52B"/></svg>
+      <span class="brand-text"><span class="brand-name">Kiln &amp; Clay</span><span class="brand-ur ur" lang="ur" aria-hidden="true">بھٹی اور مٹی</span></span>
+    </a>
+    <nav class="nav on-light" aria-label="Main">
+      <ul>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#workshops">Workshops</a></li>
+        <li><a href="#studio">Studio</a></li>
+        <li><a href="#journal">Journal</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-btn" id="cartBtn" type="button" aria-expanded="false" aria-controls="cartPanel">
+        <svg aria-hidden="true"><use href="#i-bag"/></svg>
+        <span class="cart-label">Cart</span>
+        <span class="cart-count" id="cartCount">0</span>
+        <span class="sr-only" id="cartSr">items in cart</span>
+      </button>
+      <button class="menu-btn on-light" id="menuBtn" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+        <svg class="i-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <svg class="i-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="cart-panel on-light" id="cartPanel" role="region" aria-label="Your cart" hidden>
+    <h2>Your cart</h2>
+    <ul id="cartList"><li class="cart-empty">Nothing yet. Batch 07 is below.</li></ul>
+    <div class="cart-total"><span>Subtotal</span><span class="num" id="cartTotal">PKR 0</span></div>
+    <a class="btn" href="#shop" id="cartCheckout">Continue shopping</a>
+    <p class="cart-note">Checkout is not part of this preview. Delivery across Pakistan, packed in rice-straw.</p>
+  </div>
+  <div class="drawer on-light" id="drawer" aria-label="Menu" role="dialog" aria-modal="false">
+    <ul>
+      <li><a href="#shop">Shop <svg width="22" height="22" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#workshops">Workshops <svg width="22" height="22" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#studio">Studio <svg width="22" height="22" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#journal">Journal <svg width="22" height="22" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li><a href="#contact">Contact <svg width="22" height="22" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+    </ul>
+    <p class="d-meta">Studio &amp; shop open Thu–Sun, 11:00–19:00 · Gulberg III, Lahore</p>
+    <div class="band" aria-hidden="true"></div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HERO: one tile wall -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="wall">
+        <div class="tile cartouche">
+          <p class="inscription ur" lang="ur" aria-hidden="true">بھٹی اور مٹی · لاہور</p>
+          <div>
+            <h1 id="hero-title">Tableware thrown in Lahore, glazed in the colours of its walls.</h1>
+            <p class="lede">Small batches of plates, bowls and cups, made on three wheels in our Gulberg studio and fired to stoneware. Take a piece home, or spend a weekend morning at the wheel.</p>
+          </div>
+          <div class="hero-ctas">
+            <a class="btn btn--haldi" href="#shop">Shop batch 07 <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn--ghost-light" href="#workshops">Book a wheel session</a>
+          </div>
+        </div>
+
+        <article class="tile feature on-light" aria-labelledby="f-name">
+          <svg class="plate" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="104" r="92" fill="#141A33" opacity=".08"/>
+            <circle cx="100" cy="100" r="92" fill="#F6F5EF" stroke="#D9DBD0" stroke-width="1"/>
+            <circle cx="100" cy="100" r="82" fill="none" stroke="#1B3A8F" stroke-width="14"/>
+            <circle cx="100" cy="100" r="70" fill="none" stroke="#17A2A0" stroke-width="2.5"/>
+            <g transform="translate(46 46) scale(1.08)"><use href="#khatam" width="100" height="100" fill="#1B3A8F"/></g>
+            <circle cx="100" cy="100" r="15" fill="#F6F5EF"/>
+            <circle cx="100" cy="100" r="10" fill="#17A2A0"/>
+            <circle cx="100" cy="100" r="4.5" fill="#E2A52B"/>
+          </svg>
+          <div>
+            <h2 id="f-name">Thaal dinner plate</h2>
+            <p class="meta"><span class="swatch" style="background:#1B3A8F" aria-hidden="true"></span>Neela: cobalt rim over white slip<br>Ø 27 cm · batch of 18</p>
+          </div>
+          <div class="buy-row">
+            <span class="price"><small>PKR</small>4,200</span>
+            <button class="btn add" type="button" data-id="thaal" data-name="Thaal dinner plate" data-price="4200"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button>
+          </div>
+        </article>
+
+        <div class="tile pt pt-a" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt pt-b" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+
+        <article class="tile next-session on-light" aria-labelledby="ns-title">
+          <div class="date-block" aria-hidden="true"><b>24</b><span>Oct</span></div>
+          <h2 id="ns-title">Next at the wheel: First Clay</h2>
+          <p>Saturday 24 October · Beginner · 10:00–13:00 · <strong class="num" data-seats-for="s1">3 of 8 seats left</strong></p>
+          <a class="btn" href="#book" data-book="s1">Book a seat <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </article>
+
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+        <div class="tile pt frieze" aria-hidden="true"><div class="biscuit"></div><div class="glaze"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION -->
+  <section class="sec on-light" id="shop" aria-labelledby="shop-title" style="padding-top:clamp(32px,4vw,56px)">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="shop-title">Batch 07, out of the kiln</h2>
+        <p>Six pieces from October’s firing. Each one is thrown, trimmed and glazed by hand, so rims and glaze pools vary a little from piece to piece. All food-safe, and fine in the microwave and dishwasher.</p>
+      </div>
+      <ul class="products">
+        <li class="product">
+          <div class="draw">
+            <svg viewBox="0 0 200 150" aria-hidden="true"><ellipse cx="100" cy="80" rx="64" ry="64" fill="#141A33" opacity=".07"/><circle cx="100" cy="76" r="64" fill="#F6F5EF" stroke="#D9DBD0"/><circle cx="100" cy="76" r="57" fill="none" stroke="#1B3A8F" stroke-width="10"/><circle cx="100" cy="76" r="47" fill="none" stroke="#17A2A0" stroke-width="2"/><g transform="translate(73 49) scale(.54)"><use href="#khatam" width="100" height="100" fill="#1B3A8F"/></g><circle cx="100" cy="76" r="5" fill="#E2A52B"/></svg>
+            <span class="dim">Plan · Ø 27 cm</span>
+          </div>
+          <div class="body">
+            <h3>Thaal dinner plate</h3>
+            <p class="meta"><span class="swatch" style="background:#1B3A8F" aria-hidden="true"></span>Neela: cobalt rim over white slip</p>
+            <p class="stock">Batch of 18 · 11 left</p>
+            <div class="buy-row"><span class="price"><small>PKR</small>4,200</span><button class="btn add" type="button" data-id="thaal" data-name="Thaal dinner plate" data-price="4200" aria-label="Add Thaal dinner plate to cart"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button></div>
+          </div>
+        </li>
+        <li class="product">
+          <div class="draw">
+            <svg viewBox="0 0 200 150" aria-hidden="true"><line x1="100" y1="22" x2="100" y2="140" stroke="#434A63" stroke-dasharray="4 4" opacity=".35"/><line x1="20" y1="134" x2="180" y2="134" stroke="#434A63" opacity=".3"/><path d="M38 62 C40 104 66 124 100 124 C134 124 160 104 162 62 Z" fill="#17A2A0"/><path d="M35 57 L165 57 L162 66 L38 66 Z" fill="#0B5F5D"/><path d="M82 124 L118 124 L116 133 L84 133 Z" fill="#D9C4A6"/></svg>
+            <span class="dim">Profile · Ø 15 cm × 7 cm</span>
+          </div>
+          <div class="body">
+            <h3>Katori bowls, pair</h3>
+            <p class="meta"><span class="swatch" style="background:#17A2A0" aria-hidden="true"></span>Firozi: turquoise, breaking dark at the rim</p>
+            <p class="stock">Batch of 24 · 9 pairs left</p>
+            <div class="buy-row"><span class="price"><small>PKR</small>3,600</span><button class="btn add" type="button" data-id="katori" data-name="Katori bowls, pair" data-price="3600" aria-label="Add Katori bowls, pair to cart"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button></div>
+          </div>
+        </li>
+        <li class="product">
+          <div class="draw">
+            <svg viewBox="0 0 200 150" aria-hidden="true"><line x1="100" y1="22" x2="100" y2="140" stroke="#434A63" stroke-dasharray="4 4" opacity=".35"/><line x1="20" y1="134" x2="180" y2="134" stroke="#434A63" opacity=".3"/><path d="M135 60 C168 60 170 106 134 108" fill="none" stroke="#E2A52B" stroke-width="11" stroke-linecap="round"/><path d="M64 40 L136 40 L133 126 C133 130 130 132 126 132 L74 132 C70 132 67 130 67 126 Z" fill="#E2A52B"/><path d="M66.4 110 C85 116 112 104 133.7 112 L133 126 C133 130 130 132 126 132 L74 132 C70 132 67 130 67 126 Z" fill="#D9C4A6"/><path d="M62 37 L138 37 L137 43 L63 43 Z" fill="#B87B12"/></svg>
+            <span class="dim">Profile · 330 ml</span>
+          </div>
+          <div class="body">
+            <h3>Chai mug</h3>
+            <p class="meta"><span class="swatch" style="background:#E2A52B" aria-hidden="true"></span>Haldi: wood-ash ochre, raw clay foot</p>
+            <p class="stock">Batch of 30 · 14 left</p>
+            <div class="buy-row"><span class="price"><small>PKR</small>2,400</span><button class="btn add" type="button" data-id="mug" data-name="Chai mug" data-price="2400" aria-label="Add Chai mug to cart"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button></div>
+          </div>
+        </li>
+        <li class="product">
+          <div class="draw">
+            <svg viewBox="0 0 200 150" aria-hidden="true"><line x1="100" y1="14" x2="100" y2="140" stroke="#434A63" stroke-dasharray="4 4" opacity=".35"/><line x1="20" y1="134" x2="180" y2="134" stroke="#434A63" opacity=".3"/><path d="M72 46 C40 50 38 98 64 106" fill="none" stroke="#4F8F6A" stroke-width="11" stroke-linecap="round"/><path d="M74 26 L124 26 L142 16 L136 34 C154 58 158 98 136 128 C134 131 131 133 127 133 L73 133 C69 133 66 131 64 128 C42 98 46 58 72 34 Z" fill="#4F8F6A"/><path d="M50.5 112 C80 118 116 106 149.5 112 C146 118 141 123 136 128 C134 131 131 133 127 133 L73 133 C69 133 66 131 64 128 C59 123 54 118 50.5 112 Z" fill="#D9C4A6"/></svg>
+            <span class="dim">Profile · 1.2 litres</span>
+          </div>
+          <div class="body">
+            <h3>Lassi jug</h3>
+            <p class="meta"><span class="swatch" style="background:#4F8F6A" aria-hidden="true"></span>Shalimar: garden-green celadon</p>
+            <p class="stock">Batch of 8 · 3 left</p>
+            <div class="buy-row"><span class="price"><small>PKR</small>7,800</span><button class="btn add" type="button" data-id="jug" data-name="Lassi jug" data-price="7800" aria-label="Add Lassi jug to cart"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button></div>
+          </div>
+        </li>
+        <li class="product">
+          <div class="draw">
+            <svg viewBox="0 0 200 150" aria-hidden="true"><line x1="20" y1="134" x2="180" y2="134" stroke="#434A63" opacity=".3"/><g fill="#8A7B69"><path d="M22 84 L54 84 L51 128 C51 131 49 133 46 133 L30 133 C27 133 25 131 25 128 Z"/><path d="M64 84 L96 84 L93 128 C93 131 91 133 88 133 L72 133 C69 133 67 131 67 128 Z"/><path d="M106 84 L138 84 L135 128 C135 131 133 133 130 133 L114 133 C111 133 109 131 109 128 Z"/><path d="M148 84 L180 84 L177 128 C177 131 175 133 172 133 L156 133 C153 133 151 131 151 128 Z"/></g><g fill="#F6F5EF"><rect x="22" y="84" width="32" height="5"/><rect x="64" y="84" width="32" height="5"/><rect x="106" y="84" width="32" height="5"/><rect x="148" y="84" width="32" height="5"/></g></svg>
+            <span class="dim">Profile · 120 ml each</span>
+          </div>
+          <div class="body">
+            <h3>Pyali cups, set of four</h3>
+            <p class="meta"><span class="swatch" style="background:#8A7B69" aria-hidden="true"></span>Ravi silt: unglazed outside, white-slip liner</p>
+            <p class="stock">Batch of 10 sets · 6 left</p>
+            <div class="buy-row"><span class="price"><small>PKR</small>5,600</span><button class="btn add" type="button" data-id="pyali" data-name="Pyali cups, set of four" data-price="5600" aria-label="Add Pyali cups, set of four to cart"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button></div>
+          </div>
+        </li>
+        <li class="product">
+          <div class="draw">
+            <svg viewBox="0 0 200 150" aria-hidden="true"><ellipse cx="100" cy="80" rx="86" ry="56" fill="#141A33" opacity=".07"/><ellipse cx="100" cy="76" rx="86" ry="56" fill="#E2A52B"/><ellipse cx="100" cy="76" rx="78" ry="49" fill="none" stroke="#1B3A8F" stroke-width="9"/><ellipse cx="100" cy="76" rx="66" ry="39" fill="none" stroke="#F6F5EF" stroke-width="2"/><g transform="translate(78 54) scale(.44)"><use href="#khatam" width="100" height="100" fill="#1B3A8F"/></g></svg>
+            <span class="dim">Plan · 38 × 26 cm</span>
+          </div>
+          <div class="body">
+            <h3>Biryani platter</h3>
+            <p class="meta"><span class="swatch" style="background:#E2A52B" aria-hidden="true"></span>Neela over haldi: cobalt band on ochre</p>
+            <p class="stock">Batch of 6 · 2 left</p>
+            <div class="buy-row"><span class="price"><small>PKR</small>11,500</span><button class="btn add" type="button" data-id="platter" data-name="Biryani platter" data-price="11500" aria-label="Add Biryani platter to cart"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>Add to cart</span></button></div>
+          </div>
+        </li>
+      </ul>
+      <p class="shop-foot">Delivery across Pakistan in 3–5 working days, packed in rice-straw. Free in Lahore on orders over PKR 10,000.</p>
+    </div>
+  </section>
+
+  <!-- WORKSHOPS -->
+  <section class="sec workshops" id="workshops" aria-labelledby="ws-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="ws-title">Weekend mornings at the wheel</h2>
+        <p>Three hours, eight wheels at most, clay and glaze included. Your two best pieces are trimmed, glazed and fired by us, ready to collect three weeks later. PKR 9,500 per person.</p>
+      </div>
+      <div class="ws-grid">
+        <div>
+          <ul class="sessions" id="sessions">
+            <li class="session" data-session="s1">
+              <div class="date-block" aria-hidden="true"><b>24</b><span>Oct</span></div>
+              <h3>First Clay</h3>
+              <p class="s-meta">Sat 24 October · 10:00–13:00 · Beginner, no experience needed</p>
+              <div class="seats"><span class="pips" aria-hidden="true"></span><span class="seats-text num"></span></div>
+              <a class="btn btn--haldi" href="#book" data-book="s1">Choose</a>
+            </li>
+            <li class="session" data-session="s2">
+              <div class="date-block" aria-hidden="true"><b>1</b><span>Nov</span></div>
+              <h3>Centring &amp; Pulling Walls</h3>
+              <p class="s-meta">Sun 1 November · 10:00–13:00 · Improver, one class done</p>
+              <div class="seats"><span class="pips" aria-hidden="true"></span><span class="seats-text num"></span></div>
+              <a class="btn btn--haldi" href="#book" data-book="s2">Choose</a>
+            </li>
+            <li class="session" data-session="s3">
+              <div class="date-block" aria-hidden="true"><b>14</b><span>Nov</span></div>
+              <h3>Trimming &amp; Dip-Glazing</h3>
+              <p class="s-meta">Sat 14 November · 09:30–13:30 · Intermediate, can centre alone</p>
+              <div class="seats"><span class="pips" aria-hidden="true"></span><span class="seats-text num"></span></div>
+              <a class="btn btn--haldi" href="#book" data-book="s3">Choose</a>
+            </li>
+          </ul>
+          <p class="ws-note">Wear clothes you don’t mind marking. Aprons, towels and chai are on us. Children 12 and over are welcome with a booked adult.</p>
+        </div>
+
+        <form class="book on-light" id="book" novalidate aria-labelledby="book-title">
+          <h3 id="book-title">Book your seats</h3>
+          <p>We hold seats for 24 hours and confirm by email with payment details.</p>
+          <div class="field">
+            <label for="b-name">Full name</label>
+            <input type="text" id="b-name" name="name" autocomplete="name" aria-describedby="b-name-err" required>
+            <span class="err" id="b-name-err" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="b-email">Email</label>
+            <input type="email" id="b-email" name="email" autocomplete="email" aria-describedby="b-email-err" required>
+            <span class="err" id="b-email-err" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="b-session">Session</label>
+            <select id="b-session" name="session" aria-describedby="b-session-err" required>
+              <option value="">Choose a session</option>
+              <option value="s1">Sat 24 Oct · First Clay (Beginner)</option>
+              <option value="s2">Sun 1 Nov · Centring &amp; Pulling (Improver)</option>
+              <option value="s3">Sat 14 Nov · Trimming &amp; Glazing (Intermediate)</option>
+            </select>
+            <span class="err" id="b-session-err" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <fieldset aria-describedby="b-count-err b-count-hint">
+              <legend>Participants</legend>
+              <div class="count-pick" id="countPick">
+                <label><input type="radio" name="count" value="1" checked><span>1</span></label>
+                <label><input type="radio" name="count" value="2"><span>2</span></label>
+                <label><input type="radio" name="count" value="3"><span>3</span></label>
+                <label><input type="radio" name="count" value="4"><span>4</span></label>
+              </div>
+              <p class="hint" id="b-count-hint">Up to four per booking.</p>
+              <span class="err" id="b-count-err" aria-live="polite"></span>
+            </fieldset>
+          </div>
+          <button class="btn" type="submit">Hold my seats <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <div class="success" id="bookOk" role="status" tabindex="-1" hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDIO STORY -->
+  <section class="sec on-light" id="studio" aria-labelledby="story-title">
+    <div class="wrap story-grid">
+      <div class="story-copy">
+        <h2 id="story-title">Three wheels, one gas kiln, a lane off Main Boulevard</h2>
+        <p>Kiln &amp; Clay began in 2019 in a garage in Gulberg, after our founder Hira Qureshi spent two winters learning from a family of potters in Multan, where blue-and-white is a way of life rather than a trend.</p>
+        <p>We throw a dense stoneware body and dip-glaze in colours we know from home: the cobalt and turquoise of the Wazir Khan tile panels, the ochre of turmeric, the green of Shalimar’s water channels. Every glaze is mixed in the studio and tested on a tile before it touches a plate.</p>
+        <p>We make in small batches, about one firing a fortnight, because a kiln this size rewards patience. When a batch sells out, it’s gone until the next opening.</p>
+      </div>
+      <div>
+        <div class="ledger">
+          <h3>How a batch is made</h3>
+          <p>Ten days from wedged clay to an opened kiln.</p>
+          <table>
+            <thead><tr><th scope="col">Day</th><th scope="col">Stage</th><th scope="col">Heat</th></tr></thead>
+            <tbody>
+              <tr><td class="day">1</td><td>Wedge and throw on the wheel</td><td class="temp"><span class="heat"><span>Room</span></span></td></tr>
+              <tr><td class="day">3</td><td>Trim at leather-hard, pull handles</td><td class="temp"><span class="heat"><span>Room</span></span></td></tr>
+              <tr><td class="day">6</td><td>Bisque firing</td><td class="temp"><span class="heat"><i class="lo" style="width:min(58%,130px)"></i><span>950 °C</span></span></td></tr>
+              <tr><td class="day">8</td><td>Wax the foot, dip-glaze by hand</td><td class="temp"><span class="heat"><span>Room</span></span></td></tr>
+              <tr><td class="day">9</td><td>Glaze firing, stoneware</td><td class="temp"><span class="heat"><i style="width:min(75%,170px)"></i><span>1,240 °C</span></span></td></tr>
+              <tr><td class="day">10</td><td>Cool slowly, open the kiln</td><td class="temp"><span class="heat"><span>Room</span></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="journal" id="journal">
+          <h3>From the journal</h3>
+          <ul>
+            <li><a href="#journal">Testing firozi: forty tiles to find one turquoise</a><small>Glaze notes · 6 min read</small></li>
+            <li><a href="#journal">What Multani potters taught us about slip</a><small>Studio · 8 min read</small></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="sec voices" aria-labelledby="voices-title">
+    <div class="wrap">
+      <h2 id="voices-title">From tables around the city</h2>
+      <div class="quotes">
+        <figure class="quote big">
+          <blockquote><p>The thaal plates came out at Eid lunch and three cousins asked where they were from. The cobalt rim looks even better with saalan on it.</p></blockquote>
+          <figcaption><b>Ayesha M.</b>Bought 8 Thaal plates · Model Town</figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote><p>I came to First Clay never having touched a wheel. By the third hour I had a wobbly bowl I’m prouder of than anything I own.</p></blockquote>
+          <figcaption><b>Bilal R.</b>First Clay workshop · DHA</figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote><p>Packed in straw, arrived in Karachi without a chip. The chai mugs are the right weight in the hand.</p></blockquote>
+          <figcaption><b>Sana K.</b>Ordered online · Karachi</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec on-light" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 id="faq-title">Before you order or book</h2>
+        <p>Anything else, message us on WhatsApp or drop by the studio Thursday to Sunday.</p>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa1" id="fq1">Is the tableware food-safe and dishwasher-safe?<span class="mark" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="faq-a" id="fa1" role="region" aria-labelledby="fq1"><div><p>Yes. Everything is fired to 1,240 °C stoneware with lead-free glazes, so it’s safe for food, microwave and dishwasher. Unglazed feet and the Ravi silt exteriors are best hand-dried so they don’t hold water.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa2" id="fq2">Where do you deliver, and how long does it take?<span class="mark" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="faq-a" id="fa2" role="region" aria-labelledby="fq2"><div><p>Anywhere in Pakistan, usually in 3–5 working days by courier. Lahore orders over PKR 10,000 ship free, and you can always collect from the studio.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa3" id="fq3">What if a piece arrives broken?<span class="mark" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="faq-a" id="fa3" role="region" aria-labelledby="fq3"><div><p>Send us a photo within 48 hours of delivery and we’ll replace it from the same batch, or refund it if that batch has sold out.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa4" id="fq4">Do I take my workshop pieces home the same day?<span class="mark" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="faq-a" id="fa4" role="region" aria-labelledby="fq4"><div><p>Not quite. Wet clay needs to dry, be trimmed and go through two firings. We glaze your two best pieces in a colour you choose, and they’re ready to collect about three weeks later.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="fa5" id="fq5">Can you make a custom set for a wedding or restaurant?<span class="mark" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="faq-a" id="fa5" role="region" aria-labelledby="fq5"><div><p>Yes, from 24 pieces. Commissions take six to eight weeks because they get their own glaze tests and firings. Tell us the date and the dishes you’re serving.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="letter on-light" aria-labelledby="nl-title">
+    <div class="wrap letter-grid">
+      <div>
+        <h2 id="nl-title">Hear when the kiln opens</h2>
+        <p>One short letter each time a batch comes out, with first pick of the pieces and new workshop dates. About once a fortnight, never more.</p>
+      </div>
+      <form class="nl-form" id="nlForm" novalidate>
+        <div class="field">
+          <label for="nl-email">Email address</label>
+          <input type="email" id="nl-email" name="email" autocomplete="email" aria-describedby="nl-err" required>
+          <span class="err" id="nl-err" aria-live="polite"></span>
+        </div>
+        <button class="btn" type="submit">Sign me up</button>
+        <p class="nl-ok" id="nlOk" role="status" hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="contact">
+  <div class="band" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand-name">Kiln &amp; Clay</span>
+        <span class="ur" lang="ur" aria-hidden="true">بھٹی اور مٹی</span>
+        <p>Handmade stoneware tableware and weekend wheel workshops, from a small studio in Lahore.</p>
+      </div>
+      <div>
+        <h2>Visit</h2>
+        <address>22-C, Street 4, Gulberg III<br>Lahore 54660, Pakistan<br><a href="tel:+924235550147">+92 42 3555 0147</a><br><a href="mailto:hello@kilnandclay.pk">hello@kilnandclay.pk</a></address>
+      </div>
+      <div>
+        <h2>Hours</h2>
+        <dl class="hours">
+          <dt>Shop</dt><dd>Thu–Sun, 11:00–19:00</dd>
+          <dt>Workshops</dt><dd>Sat &amp; Sun mornings</dd>
+          <dt>Closed</dt><dd>Mon–Wed, studio days</dd>
+        </dl>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <ul class="social">
+          <li><a href="https://www.instagram.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg><span>Instagram</span></a></li>
+          <li><a href="https://www.facebook.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v7h4v-7h3l1-4h-4V8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Facebook</span></a></li>
+          <li><a href="https://www.youtube.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9.2v5.6l5-2.8z" fill="currentColor"/></svg><span>YouTube</span></a></li>
+          <li><a href="https://wa.me/924235550147"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>WhatsApp</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal"><span>© 2026 Kiln &amp; Clay Studio, Lahore. A fictional studio for a design study.</span><span>Prices in Pakistani rupees, including tax.</span></div>
+  </div>
+</footer>
+
+<div class="sr-only" aria-live="polite" id="announce"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const announce = (msg) => { const a = $('#announce'); a.textContent = ''; requestAnimationFrame(() => { a.textContent = msg; }); };
+  const fmt = (n) => 'PKR ' + n.toLocaleString('en-PK');
+
+  /* ---- signature: tiles dipped in glaze, once ---- */
+  const glazes = $$('.wall .pt .glaze').filter(el => el.offsetParent !== null);
+  const anims = [];
+  if (!reduce.matches && 'animate' in Element.prototype) {
+    glazes.forEach((el, i) => {
+      anims.push(el.animate(
+        [{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+        { duration: 900, delay: 250 + Math.min(i * 70, 900), easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'backwards' }
+      ));
+    });
+  }
+  addEventListener('pagehide', () => anims.forEach(a => a.cancel()), { once: true });
+
+  /* ---- cart ---- */
+  const cart = new Map();
+  const countEl = $('#cartCount'), listEl = $('#cartList'), totalEl = $('#cartTotal');
+  const cartBtn = $('#cartBtn'), panel = $('#cartPanel');
+  function renderCart() {
+    let n = 0, total = 0;
+    listEl.innerHTML = '';
+    cart.forEach((item) => {
+      n += item.qty; total += item.qty * item.price;
+      const li = document.createElement('li');
+      li.innerHTML = `<span></span><span class="num"></span>`;
+      li.firstChild.textContent = `${item.name} × ${item.qty}`;
+      li.lastChild.textContent = fmt(item.qty * item.price);
+      listEl.appendChild(li);
+    });
+    if (!n) listEl.innerHTML = '<li class="cart-empty">Nothing yet. Batch 07 is below.</li>';
+    countEl.textContent = n;
+    $('#cartSr').textContent = n === 1 ? 'item in cart' : 'items in cart';
+    totalEl.textContent = fmt(total);
+    return n;
+  }
+  $$('.add').forEach(btn => {
+    const label = btn.querySelector('span');
+    const icon = btn.querySelector('use');
+    let t;
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const cur = cart.get(id) || { name: btn.dataset.name, price: +btn.dataset.price, qty: 0 };
+      cur.qty += 1; cart.set(id, cur);
+      const n = renderCart();
+      countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump');
+      btn.dataset.added = 'true'; label.textContent = 'Added'; icon.setAttribute('href', '#i-check');
+      clearTimeout(t);
+      t = setTimeout(() => { btn.dataset.added = 'false'; label.textContent = 'Add to cart'; icon.setAttribute('href', '#i-plus'); }, 1600);
+      announce(`${btn.dataset.name} added. ${n} ${n === 1 ? 'item' : 'items'} in cart.`);
+    });
+  });
+  function setCart(open) {
+    panel.hidden = !open; cartBtn.setAttribute('aria-expanded', String(open));
+    if (open) { setMenu(false); }
+  }
+  cartBtn.addEventListener('click', () => setCart(panel.hidden));
+  $('#cartCheckout').addEventListener('click', () => setCart(false));
+  document.addEventListener('click', (e) => { if (!panel.hidden && !panel.contains(e.target) && !cartBtn.contains(e.target)) setCart(false); });
+
+  /* ---- mobile menu ---- */
+  const menuBtn = $('#menuBtn'), drawer = $('#drawer');
+  function setMenu(open, restore) {
+    drawer.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (open) { setCart(false); drawer.querySelector('a').focus(); }
+    else if (restore) menuBtn.focus();
+  }
+  menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  $$('#drawer a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (drawer.classList.contains('open')) setMenu(false, true);
+      if (!panel.hidden) { setCart(false); cartBtn.focus(); }
+    }
+    if (e.key === 'Tab' && drawer.classList.contains('open')) {
+      const f = [menuBtn, ...$$('#drawer a')];
+      const i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  matchMedia('(min-width: 901px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
+
+  /* ---- workshops: seats ---- */
+  const seats = { s1: { left: 3, total: 8 }, s2: { left: 5, total: 8 }, s3: { left: 1, total: 6 } };
+  function renderSeats() {
+    $$('.session').forEach(li => {
+      const s = seats[li.dataset.session];
+      const pips = li.querySelector('.pips');
+      pips.innerHTML = '';
+      for (let i = 0; i < s.total; i++) { const p = document.createElement('i'); p.className = i < s.total - s.left ? 'taken' : 'free'; pips.appendChild(p); }
+      li.querySelector('.seats-text').textContent = s.left === 0 ? 'Fully booked' : `${s.left} of ${s.total} seats left`;
+      li.classList.toggle('full', s.left === 0);
+      const b = li.querySelector('.btn'); b.setAttribute('aria-label', `Choose ${li.querySelector('h3').textContent}, ${li.querySelector('.s-meta').textContent.split('·')[0].trim()}`);
+    });
+    $$('[data-seats-for]').forEach(el => { const s = seats[el.dataset.seatsFor]; el.textContent = s.left ? `${s.left} of ${s.total} seats left` : 'Fully booked'; });
+  }
+  renderSeats();
+  const sel = $('#b-session');
+  $$('[data-book]').forEach(a => a.addEventListener('click', () => {
+    sel.value = a.dataset.book; clearErr(sel, '#b-session-err');
+    setTimeout(() => $('#b-name').focus({ preventScroll: true }), 450);
+  }));
+
+  /* ---- booking form validation ---- */
+  const form = $('#book'), ok = $('#bookOk');
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function setErr(input, sel, msg) { input.setAttribute('aria-invalid', 'true'); $(sel).textContent = msg; }
+  function clearErr(input, sel) { input.removeAttribute('aria-invalid'); $(sel).textContent = ''; }
+  const checks = {
+    name: () => { const i = $('#b-name'); const v = i.value.trim(); if (v.length < 2) { setErr(i, '#b-name-err', 'Please enter your name so we know who to expect.'); return false; } clearErr(i, '#b-name-err'); return true; },
+    email: () => { const i = $('#b-email'); const v = i.value.trim(); if (!v) { setErr(i, '#b-email-err', 'Please enter your email; we send the confirmation there.'); return false; } if (!emailRe.test(v)) { setErr(i, '#b-email-err', 'That email looks incomplete. Check for a typo, like name@example.com.'); return false; } clearErr(i, '#b-email-err'); return true; },
+    session: () => { if (!sel.value) { setErr(sel, '#b-session-err', 'Please choose one of the three sessions.'); return false; } if (seats[sel.value].left === 0) { setErr(sel, '#b-session-err', 'That session is now full. Please pick another date.'); return false; } clearErr(sel, '#b-session-err'); return true; },
+    count: () => {
+      const pick = $('#countPick'); const n = +(form.querySelector('input[name=count]:checked') || {}).value || 0; const err = $('#b-count-err');
+      if (n < 1 || n > 4) { pick.classList.add('invalid'); err.textContent = 'Choose between 1 and 4 participants.'; return false; }
+      if (sel.value && seats[sel.value] && n > seats[sel.value].left) { const l = seats[sel.value].left; pick.classList.add('invalid'); err.textContent = `Only ${l} ${l === 1 ? 'seat is' : 'seats are'} left in that session. Choose ${l === 1 ? '1 participant' : 'up to ' + l} or another date.`; return false; }
+      pick.classList.remove('invalid'); err.textContent = ''; return true;
+    }
+  };
+  $('#b-name').addEventListener('blur', () => { if ($('#b-name').value) checks.name(); });
+  $('#b-email').addEventListener('blur', () => { if ($('#b-email').value) checks.email(); });
+  ['#b-name', '#b-email'].forEach(s => $(s).addEventListener('input', () => { if ($(s).getAttribute('aria-invalid')) checks[s === '#b-name' ? 'name' : 'email'](); }));
+  sel.addEventListener('change', () => { checks.session(); checks.count(); });
+  $$('input[name=count]').forEach(r => r.addEventListener('change', () => checks.count()));
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const results = [checks.name(), checks.email(), checks.session(), checks.count()];
+    if (results.includes(false)) {
+      const first = form.querySelector('[aria-invalid="true"]') || form.querySelector('#countPick input');
+      first.focus(); ok.hidden = true; return;
+    }
+    const n = +form.querySelector('input[name=count]:checked').value;
+    const s = seats[sel.value]; s.left -= n; renderSeats();
+    const label = sel.options[sel.selectedIndex].text;
+    const name = $('#b-name').value.trim().split(' ')[0];
+    ok.innerHTML = '<strong></strong><span></span>';
+    ok.firstChild.textContent = `Seats held, ${name}.`;
+    ok.lastChild.textContent = `${n} ${n === 1 ? 'seat' : 'seats'} for ${label}. Confirmation is on its way to ${$('#b-email').value.trim()}.`;
+    ok.hidden = false; ok.focus();
+    form.reset(); sel.value = '';
+  });
+
+  /* ---- FAQ accordion ---- */
+  $$('.faq-q').forEach(q => q.addEventListener('click', () => {
+    const open = q.getAttribute('aria-expanded') !== 'true';
+    q.setAttribute('aria-expanded', String(open));
+    $('#' + q.getAttribute('aria-controls')).classList.toggle('open', open);
+  }));
+
+  /* ---- newsletter ---- */
+  const nl = $('#nlForm'), nlIn = $('#nl-email'), nlOk = $('#nlOk');
+  nl.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = nlIn.value.trim();
+    if (!v) { setErr(nlIn, '#nl-err', 'Please enter your email address.'); nlIn.focus(); nlOk.hidden = true; return; }
+    if (!emailRe.test(v)) { setErr(nlIn, '#nl-err', 'That email looks incomplete, like name@example.com.'); nlIn.focus(); nlOk.hidden = true; return; }
+    clearErr(nlIn, '#nl-err');
+    nlOk.textContent = `You’re on the list. The next kiln-opening letter goes to ${v}.`;
+    nlOk.hidden = false; nl.reset();
+  });
+})();
+</script>
+</body>
+</html>

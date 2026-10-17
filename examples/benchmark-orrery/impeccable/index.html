@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orrery — live planetarium &amp; night-sky shop, Bristol harbourside</title>
+<meta name="description" content="Presenter-led shows in a 60-seat dome, rooftop telescope nights on clear Fridays, and a shop of star maps, telescopes and kits on Bristol's harbourside.">
+<meta name="theme-color" content="#1F2BB8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stock:#E9ECEF;
+  --stock-2:#DDE2E7;
+  --ink:#1F2BB8;
+  --ink-deep:#141B7C;
+  --ink-text:#10143D;
+  --ink-soft:#3A4176;
+  --on-ink:#F1F3F6;
+  --on-ink-soft:#C3C9F4;
+  --amber:#FFB000;
+  --amber-deep:#C98700;
+  --rule:rgba(31,43,184,.28);
+  --rule-strong:#1F2BB8;
+  --error:#A3201B;
+  --error-on-ink:#FFC9C4;
+  --focus:#1F2BB8;
+  --gutter:clamp(16px,4vw,48px);
+  --max:1320px;
+  --radius:2px;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px;--s9:96px;--s10:128px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:88px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--stock);color:var(--ink-text);
+  font-family:"Archivo",system-ui,sans-serif;font-size:1.0625rem;line-height:1.55;
+  font-weight:420;font-stretch:100%;
+  font-variant-numeric:tabular-nums lining-nums;
+  text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;
+  caret-color:var(--ink);
+}
+::selection{background:var(--amber);color:var(--ink-text)}
+html{scrollbar-color:var(--ink) var(--stock-2)}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--stock-2)}
+::-webkit-scrollbar-thumb{background:var(--ink);border:3px solid var(--stock-2)}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration-thickness:1.5px;text-underline-offset:.2em}
+a:hover{text-decoration-thickness:3px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.on-ink{--focus:var(--amber);background:var(--ink);color:var(--on-ink);caret-color:var(--amber)}
+.on-ink ::selection{background:var(--amber);color:var(--ink-text)}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--gutter);top:-60px;z-index:100;background:var(--amber);color:var(--ink-text);padding:10px 16px;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
+
+/* ---------- type ---------- */
+h1,h2,h3,h4{margin:0;font-weight:800;line-height:.95;text-wrap:balance;color:inherit}
+.display{font-stretch:125%;font-weight:850;letter-spacing:-.02em;font-size:clamp(2.6rem,1rem + 4.7vw,5.25rem);line-height:.92}
+.h2{font-stretch:125%;font-weight:820;letter-spacing:-.015em;font-size:clamp(2.1rem,1rem + 3.4vw,4rem);line-height:.94}
+.h3{font-stretch:118%;font-weight:780;font-size:clamp(1.35rem,1.1rem + .9vw,1.9rem);line-height:1.02;letter-spacing:-.005em}
+.label{font-stretch:82%;font-weight:650;font-size:.8125rem;letter-spacing:.07em;text-transform:uppercase;line-height:1.2}
+.lede{font-size:clamp(1.125rem,1rem + .45vw,1.3125rem);line-height:1.45;max-width:38ch;font-weight:430}
+p{margin:0 0 1em;max-width:68ch}
+.num{font-stretch:125%;font-weight:800;font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- buttons ---------- */
+.btn{
+  --b-bg:var(--ink);--b-fg:var(--on-ink);--b-bd:var(--ink);
+  appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;padding:12px 22px;border:2px solid var(--b-bd);border-radius:var(--radius);
+  background:var(--b-bg);color:var(--b-fg);font:inherit;font-stretch:112%;font-weight:750;font-size:1rem;letter-spacing:.005em;
+  text-decoration:none;cursor:pointer;line-height:1.1;
+  transition:background-color .18s var(--ease-out),color .18s var(--ease-out),transform .18s var(--ease-out),box-shadow .18s var(--ease-out);
+}
+.btn:hover{box-shadow:0 6px 14px -6px rgba(16,20,61,.45);transform:translateY(-1px)}
+.btn:active{transform:translateY(0);box-shadow:none}
+.btn-amber{--b-bg:var(--amber);--b-fg:var(--ink-text);--b-bd:var(--amber)}
+.btn-amber:hover{--b-bg:#FFC233}
+.btn-line{--b-bg:transparent;--b-fg:var(--ink);--b-bd:var(--ink)}
+.btn-line:hover{--b-bg:var(--ink);--b-fg:var(--on-ink)}
+.on-ink .btn-line{--b-fg:var(--on-ink);--b-bd:var(--on-ink)}
+.on-ink .btn-line:hover{--b-bg:var(--on-ink);--b-fg:var(--ink)}
+.btn-sm{min-height:40px;padding:8px 14px;font-size:.9375rem}
+.btn svg{width:18px;height:18px;flex:none}
+.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ---------- header ---------- */
+.site-head{position:sticky;top:0;z-index:40;background:var(--stock);border-bottom:2px solid var(--ink)}
+.head-row{display:flex;align-items:center;gap:var(--s5);min-height:72px}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand svg{width:34px;height:34px}
+.brand b{font-stretch:125%;font-weight:900;font-size:1.5rem;letter-spacing:-.01em;line-height:1}
+.nav{display:flex;gap:var(--s1)}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-stretch:100%;font-weight:620;font-size:.98rem;text-decoration:none;color:var(--ink-text);border-radius:var(--radius)}
+.nav a:hover{background:var(--stock-2);color:var(--ink)}
+.basket-btn{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:6px 8px 6px 14px;border:2px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-stretch:108%;cursor:pointer;border-radius:var(--radius)}
+.basket-btn:hover{background:var(--ink);color:var(--on-ink)}
+.basket-btn svg{width:20px;height:20px}
+.count{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;background:var(--ink);color:var(--on-ink);font-stretch:112%;font-weight:800;font-size:.9375rem;border-radius:var(--radius);transition:background-color .25s var(--ease-out),color .25s}
+.basket-btn:hover .count{background:var(--on-ink);color:var(--ink)}
+.count.has{background:var(--amber);color:var(--ink-text)}
+.count.bump{animation:bump .5s var(--ease-out)}
+@keyframes bump{0%{transform:scale(1)}30%{transform:scale(1.28)}100%{transform:scale(1)}}
+.menu-btn{display:none}
+@media (max-width:980px){
+  .nav{display:none}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px;border:2px solid var(--ink);background:var(--ink);color:var(--on-ink);font:inherit;font-weight:700;font-stretch:108%;cursor:pointer;border-radius:var(--radius)}
+  .menu-btn svg{width:20px;height:20px}
+  .head-row{gap:var(--s3)}
+}
+@media (max-width:560px){.tt li{grid-template-columns:4.4rem minmax(0,1fr) auto;column-gap:10px}.tt .t{font-size:1.3rem}.display{line-height:.98}}
+@media (max-width:420px){.basket-label{display:none}.brand b{font-size:1.3rem}.menu-btn .menu-word{display:none}}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:60;background:var(--ink);color:var(--on-ink);display:flex;flex-direction:column;padding:0 var(--gutter) var(--s7);transform:translateY(-100%);visibility:hidden;transition:transform .4s var(--ease-out),visibility 0s linear .4s}
+.drawer.open{transform:none;visibility:visible;transition:transform .4s var(--ease-out),visibility 0s}
+.drawer-top{display:flex;align-items:center;justify-content:space-between;min-height:72px;border-bottom:2px solid var(--on-ink-soft)}
+.drawer .brand{color:var(--on-ink)}
+.drawer nav{display:flex;flex-direction:column;margin-top:var(--s5)}
+.drawer nav a{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid rgba(195,201,244,.35);text-decoration:none;font-stretch:125%;font-weight:820;font-size:clamp(1.9rem,8vw,2.6rem);line-height:1.05}
+.drawer nav a:hover{color:var(--amber)}
+.drawer .close-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px;background:transparent;border:2px solid var(--on-ink);color:var(--on-ink);font:inherit;font-weight:700;cursor:pointer;border-radius:var(--radius)}
+.drawer .close-btn svg{width:20px;height:20px}
+.drawer-foot{margin-top:auto;padding-top:var(--s6);color:var(--on-ink-soft);font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.drawer,.drawer.open{transition:none}}
+
+/* basket panel */
+.basket-panel{position:absolute;right:var(--gutter);top:calc(100% + 10px);width:min(380px,calc(100vw - 2*var(--gutter)));background:var(--stock);border:2px solid var(--ink);box-shadow:0 18px 40px -18px rgba(16,20,61,.5);padding:var(--s5);z-index:50}
+.basket-panel[hidden]{display:none}
+.basket-panel h2{font-stretch:118%;font-size:1.35rem;margin-bottom:var(--s3)}
+.basket-list{list-style:none;margin:0 0 var(--s4);padding:0;border-top:1px solid var(--rule)}
+.basket-list li{display:grid;grid-template-columns:1fr auto auto;gap:var(--s3);align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);font-size:.95rem}
+.basket-list .qty{color:var(--ink-soft);font-size:.875rem}
+.basket-list button{appearance:none;border:0;background:none;color:var(--ink);font:inherit;font-size:.875rem;font-weight:650;text-decoration:underline;text-underline-offset:.2em;cursor:pointer;min-height:32px;padding:0 4px}
+.basket-total{display:flex;justify-content:space-between;font-weight:750;font-stretch:112%;margin-bottom:var(--s3)}
+.basket-note{font-size:.875rem;color:var(--ink-soft);margin:0}
+.basket-empty{color:var(--ink-soft);margin:0 0 var(--s2)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding-block:clamp(32px,4.5vw,64px) 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--s5);align-items:center}
+.hero-copy{grid-column:1 / span 7;position:relative;z-index:0}
+.hero-copy .display{color:var(--ink);margin-bottom:var(--s5)}
+.hero-copy .display .live{display:inline-flex;align-items:center;gap:.18em}
+.hero-copy .lede{margin-bottom:var(--s6)}
+.cta-row{display:flex;flex-wrap:wrap;gap:var(--s3)}
+.hero-fig{grid-column:8 / span 5;position:relative;margin:0}
+.hero-fig svg{width:100%;height:auto;overflow:visible}
+.dome-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s3);margin-top:var(--s3);color:var(--ink-soft);font-size:.875rem}
+@media (max-width:900px){.hero-copy{grid-column:1 / span 7}.hero-fig{grid-column:8 / span 5}.hero-copy .display{font-size:clamp(2.4rem,1rem + 4.6vw,3.4rem)}}
+@media (max-width:700px){
+  .hero-copy{grid-column:1 / -1}
+  .hero-fig{grid-column:1 / -1;max-width:340px;justify-self:center;width:100%}
+}
+
+/* today timetable */
+.today{margin-top:clamp(32px,4vw,56px);border-top:2px solid var(--ink)}
+.today-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:var(--s2) var(--s5);padding:var(--s4) 0 var(--s3)}
+.today-head h2{font-stretch:118%;font-size:1.25rem;font-weight:800;color:var(--ink)}
+.today-head p{margin:0;color:var(--ink-soft);font-size:.9375rem}
+.tt{list-style:none;margin:0;padding:0}
+.tt li{display:grid;grid-template-columns:7.5rem minmax(0,1fr) 13rem 10rem auto;gap:var(--s4);align-items:center;padding:14px 0;border-top:1px solid var(--rule)}
+.tt li:last-child{border-bottom:1px solid var(--rule)}
+.tt .t{font-stretch:125%;font-weight:850;font-size:2rem;color:var(--ink);line-height:1}
+.tt .show{font-weight:700;font-stretch:108%;font-size:1.0625rem}
+.tt .meta{color:var(--ink-soft);font-size:.9375rem}
+.tt .seats b{font-weight:800;color:var(--ink)}
+.tt .gone{color:var(--ink-soft);text-decoration:line-through}
+@media (max-width:900px){
+  .tt li{grid-template-columns:4.75rem minmax(0,1fr) auto;grid-template-areas:"t show book" "t meta book";row-gap:2px;column-gap:var(--s3)}
+  .tt .t{font-size:1.5rem;grid-area:t}
+  .tt .show{grid-area:show}
+  .tt .meta:not(.seats){grid-area:meta}
+  .tt .seats{display:none}
+  .tt .btn{grid-area:book}
+}
+
+/* ---------- sections ---------- */
+.section{padding-block:clamp(72px,9vw,136px)}
+.section-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--s5);align-items:end;margin-bottom:clamp(32px,4vw,56px)}
+.section-head .h2{grid-column:1 / span 7;color:var(--ink)}
+.section-head p{grid-column:8 / span 5;margin:0;color:var(--ink-soft)}
+.on-ink .section-head .h2{color:var(--on-ink)}
+.on-ink .section-head p{color:var(--on-ink-soft)}
+@media (max-width:900px){.section-head .h2,.section-head p{grid-column:1 / -1}}
+.halftone{background-image:radial-gradient(circle at center,rgba(31,43,184,.16) 1.1px,transparent 1.6px);background-size:7px 7px}
+
+/* shows: programme listing */
+.prog{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.prog > li{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr) minmax(0,3fr);gap:var(--s5);padding:clamp(24px,3vw,36px) 0;border-bottom:1px solid var(--rule);align-items:start}
+.prog .h3{color:var(--ink);font-stretch:70%;font-weight:850;font-size:clamp(1.9rem,1.3rem + 1.8vw,3rem);line-height:.95;letter-spacing:-.005em;text-transform:uppercase}
+.prog .about{margin:0;color:var(--ink-text)}
+.facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:var(--s2) var(--s5);margin:0}
+.facts div{display:flex;flex-direction:column}
+.facts dt{color:var(--ink-soft)}
+.facts dd{margin:0;font-stretch:118%;font-weight:780;font-size:1.25rem;color:var(--ink);line-height:1.2}
+.prog .act{grid-column:3;display:flex;flex-direction:column;gap:var(--s4);align-items:flex-start}
+@media (max-width:900px){
+  .prog > li{grid-template-columns:1fr;gap:var(--s3)}
+  .prog .act{grid-column:1;flex-direction:row;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s6)}
+}
+.schools{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s5);margin-top:clamp(40px,5vw,64px);padding:clamp(24px,3vw,40px);background:var(--stock-2);border:2px solid var(--ink)}
+.schools h3{color:var(--ink)}
+.schools p{margin-bottom:var(--s4)}
+.schools ul{margin:0 0 var(--s5);padding-left:1.1em}
+.schools li{margin-bottom:6px}
+.schools li::marker{color:var(--ink)}
+@media (max-width:760px){.schools{grid-template-columns:1fr}}
+
+/* booking */
+.book-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,80px);align-items:start}
+@media (max-width:900px){.book-grid{grid-template-columns:1fr}}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5) var(--s5)}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field.full{grid-column:1 / -1}
+@media (max-width:560px){.form{grid-template-columns:1fr}}
+.field > label,.field legend{font-stretch:100%;font-weight:680;font-size:.98rem;padding:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.input{width:100%;min-height:52px;padding:12px 14px;border:2px solid var(--on-ink-soft);border-radius:var(--radius);background:var(--ink-deep);color:var(--on-ink);font:inherit;font-size:1.0625rem;transition:border-color .15s}
+.input::placeholder{color:#9FA7E0}
+.input:hover{border-color:var(--on-ink)}
+.input:focus-visible{outline:3px solid var(--amber);outline-offset:1px;border-color:var(--amber)}
+select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23F1F3F6' stroke-width='2.2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:44px}
+select.input option{background:var(--stock);color:var(--ink-text)}
+.input[aria-invalid="true"]{border-color:var(--error-on-ink)}
+.err{min-height:0;color:var(--error-on-ink);font-size:.9375rem;font-weight:600;display:flex;gap:6px;align-items:flex-start}
+.err:empty{display:none}
+.err svg{width:16px;height:16px;flex:none;margin-top:3px}
+.hint{color:var(--on-ink-soft);font-size:.9rem}
+.sessions{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
+.sess{position:relative}
+.sess input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.sess span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:64px;padding:8px 10px;border:2px solid var(--on-ink-soft);border-radius:var(--radius);text-align:center;transition:background-color .18s,border-color .18s,color .18s}
+.sess b{font-stretch:125%;font-weight:850;font-size:1.4rem;line-height:1}
+.sess small{font-size:.8125rem;color:var(--on-ink-soft);margin-top:2px}
+.sess input:hover + span{border-color:var(--on-ink)}
+.sess input:checked + span{background:var(--amber);border-color:var(--amber);color:var(--ink-text)}
+.sess input:checked + span small{color:var(--ink-text)}
+.sess input:focus-visible + span{outline:3px solid var(--amber);outline-offset:3px}
+.sess input:disabled + span{opacity:.45;text-decoration:line-through}
+.stepper{display:flex;align-items:stretch;width:max-content;border:2px solid var(--on-ink-soft);border-radius:var(--radius)}
+.stepper button{appearance:none;width:52px;min-height:52px;border:0;background:transparent;color:var(--on-ink);cursor:pointer;display:grid;place-items:center}
+.stepper button:hover{background:rgba(241,243,246,.12)}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper svg{width:18px;height:18px}
+.stepper input{width:64px;border:0;border-inline:2px solid var(--on-ink-soft);background:var(--ink-deep);color:var(--on-ink);text-align:center;font:inherit;font-stretch:125%;font-weight:850;font-size:1.4rem;-moz-appearance:textfield}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.total-row{grid-column:1 / -1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--s4);padding-top:var(--s5);border-top:1px solid rgba(195,201,244,.4)}
+.total{font-size:1rem;color:var(--on-ink-soft)}
+.total b{display:block;font-stretch:125%;font-weight:850;font-size:2.25rem;color:var(--on-ink);line-height:1}
+.form-status{grid-column:1 / -1}
+.success{display:grid;grid-template-columns:minmax(0,1fr) 9.5rem;background:var(--ink-deep);border:2px solid var(--amber)}
+.success .main{padding:clamp(20px,3vw,32px)}
+.stub{position:relative;background:var(--amber);color:var(--ink-text);padding:20px 16px;display:flex;flex-direction:column;justify-content:center;gap:4px;text-align:center}
+.stub::before{content:"";position:absolute;left:-6px;top:0;bottom:0;width:12px;background:radial-gradient(circle at 6px 6px,var(--ink-deep) 4px,transparent 4.5px) 0 0/12px 14px repeat-y}
+.stub b{font-stretch:125%;font-weight:850;font-size:2rem;line-height:1}
+.stub span{font-size:.8125rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:480px){.success{grid-template-columns:1fr}.stub{flex-direction:row;justify-content:space-between;align-items:center}.stub::before{left:0;right:0;top:-6px;bottom:auto;width:auto;height:12px;background:radial-gradient(circle at 7px 6px,var(--ink-deep) 4px,transparent 4.5px) 0 0/14px 12px repeat-x}}
+.success h3{font-stretch:118%;font-size:1.6rem;margin-bottom:var(--s3);color:var(--amber)}
+.success p{color:var(--on-ink)}
+.success dl{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;margin:0 0 var(--s4)}
+.success dt{color:var(--on-ink-soft)}
+.success dd{margin:0;font-weight:700}
+.plan-fig{margin:0;position:sticky;top:104px}
+.plan-fig svg{width:100%;height:auto}
+.plan-legend{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);margin-top:var(--s4);font-size:.9rem;color:var(--on-ink-soft)}
+.plan-legend span{display:inline-flex;align-items:center;gap:8px}
+.plan-legend i{width:14px;height:14px;border-radius:50%;display:inline-block}
+.seat-left{font-stretch:118%;font-weight:780;font-size:1.25rem;margin-top:var(--s3);color:var(--on-ink)}
+.seat-left b{color:var(--amber)}
+@media (max-width:900px){.plan-fig{position:static;max-width:460px;margin-inline:auto;order:-1}}
+
+/* telescope */
+.tele-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(32px,5vw,80px)}
+@media (max-width:900px){.tele-grid{grid-template-columns:1fr}}
+.steps{list-style:none;counter-reset:s;margin:0;padding:0;border-top:2px solid var(--ink)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:3.25rem 1fr;gap:var(--s4);padding:var(--s5) 0;border-bottom:1px solid var(--rule)}
+.steps li::before{content:counter(s);font-stretch:125%;font-weight:850;font-size:2.4rem;line-height:.9;color:var(--ink)}
+.steps h3{font-stretch:112%;font-size:1.25rem;margin-bottom:6px;color:var(--ink-text);line-height:1.15}
+.steps p{margin:0}
+.cloud{margin-top:var(--s6);padding:clamp(20px,3vw,32px);background:var(--ink);color:var(--on-ink);--focus:var(--amber)}
+.cloud h3{font-stretch:118%;font-size:1.5rem;margin-bottom:var(--s3)}
+.cloud p{margin:0;color:var(--on-ink)}
+.states{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);margin-top:var(--s4);padding:0;list-style:none;font-size:.9rem}
+.states li{display:inline-flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;font-stretch:90%;font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;border-radius:var(--radius);line-height:1.3}
+.chip-go{background:var(--amber);color:var(--ink-text)}
+.chip-watch{border:1.5px solid currentColor}
+.chip-off{background:transparent;border:1.5px dashed currentColor;text-decoration:line-through}
+.nights{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.nights li{display:grid;grid-template-columns:auto 1fr auto;gap:var(--s4) var(--s5);align-items:center;padding:var(--s5) 0;border-bottom:1px solid var(--rule)}
+.date-block{position:relative;display:grid;place-items:center;width:5.25rem;height:5.25rem;background:var(--ink);color:var(--on-ink);text-align:center;line-height:1}
+.date-block::after{content:"";position:absolute;right:-5px;top:0;bottom:0;width:10px;background:radial-gradient(circle at 5px 5px,var(--stock) 3.4px,transparent 3.9px) 0 1px/10px 11px repeat-y}
+.date-block b{font-stretch:125%;font-weight:850;font-size:2rem}
+.date-block span{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:-10px}
+.nights h3{font-stretch:112%;font-size:1.2rem;margin-bottom:6px;line-height:1.15}
+.nights p{margin:0;color:var(--ink-soft);font-size:.9375rem}
+.nights .chip{margin-top:8px;color:var(--ink)}
+@media (max-width:560px){.nights li{grid-template-columns:auto 1fr}.nights .btn{grid-column:1 / -1}}
+
+/* shop: dense ruled modules */
+.shop{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink);border-left:1px solid var(--rule)}
+.item{display:grid;grid-template-rows:auto auto 1fr auto;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:var(--s5);gap:var(--s3);background:var(--stock)}
+.item-art{aspect-ratio:16/10;background:var(--stock-2);display:grid;place-items:center;margin:calc(-1 * var(--s5)) calc(-1 * var(--s5)) var(--s2);border-bottom:1px solid var(--rule)}
+.item-art svg{width:72%;height:80%}
+.item-top{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3)}
+.item h3{font-stretch:112%;font-size:1.25rem;line-height:1.12;color:var(--ink-text)}
+.price{font-stretch:125%;font-weight:850;font-size:1.35rem;color:var(--ink);white-space:nowrap}
+.item p{margin:0;font-size:.98rem;color:var(--ink-soft)}
+.item .btn{justify-self:start}
+.btn.added{--b-bg:var(--amber);--b-fg:var(--ink-text);--b-bd:var(--amber)}
+@media (max-width:980px){.shop{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.shop{grid-template-columns:1fr}.item-art{aspect-ratio:16/7}}
+
+/* membership */
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--on-ink-soft)}
+.tier{display:flex;flex-direction:column;gap:var(--s4);padding:var(--s6) var(--s5) var(--s5);border-right:1px solid rgba(195,201,244,.35)}
+.tier:first-child{padding-left:0}
+.tier:last-child{border-right:0}
+.tier h3{font-stretch:118%;font-size:1.6rem}
+.tier .who{color:var(--on-ink-soft);margin:0;font-size:.95rem}
+.tier .yr{font-stretch:125%;font-weight:850;font-size:clamp(2.6rem,1.8rem + 2vw,3.6rem);line-height:.9;letter-spacing:-.02em}
+.tier .yr small{font-size:1rem;font-weight:600;font-stretch:100%;letter-spacing:0;color:var(--on-ink-soft);margin-left:4px}
+.tier ul{list-style:none;margin:0;padding:0;flex:1}
+.tier li{padding:10px 0;border-top:1px solid rgba(195,201,244,.3);display:grid;grid-template-columns:18px 1fr;gap:10px;font-size:.98rem}
+.tier li svg{width:16px;height:16px;margin-top:4px;color:var(--on-ink-soft)}
+.tier .btn{align-self:flex-start}
+@media (max-width:900px){
+  .tiers{grid-template-columns:1fr}
+  .tier,.tier:first-child{padding:var(--s6) 0;border-right:0;border-bottom:1px solid rgba(195,201,244,.35)}
+}
+
+/* testimonials */
+.quotes{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--s7) var(--s5)}
+.quote{margin:0;grid-column:span 4;border-top:2px solid var(--ink);padding-top:var(--s5)}
+.quote.big{grid-column:1 / span 7}
+.quote.big blockquote{font-size:clamp(1.6rem,1.1rem + 1.6vw,2.4rem);font-stretch:112%;font-weight:700;line-height:1.15;letter-spacing:-.01em}
+.quote.r1{grid-column:9 / span 4}
+.quote.r2{grid-column:4 / span 5}
+.quote blockquote{margin:0 0 var(--s4);font-size:1.25rem;line-height:1.35;font-weight:560;color:var(--ink)}
+.quote figcaption{font-size:.95rem;color:var(--ink-soft)}
+.quote figcaption b{color:var(--ink-text);font-weight:720}
+.quote-note{margin-top:var(--s6);color:var(--ink-soft);font-size:.875rem}
+@media (max-width:900px){.quote,.quote.big,.quote.r1,.quote.r2{grid-column:1 / -1}}
+
+/* faq */
+.faq-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:var(--s5)}
+.faq-grid .h2{color:var(--ink)}
+@media (max-width:900px){.faq-grid{grid-template-columns:1fr;gap:var(--s6)}}
+.acc{border-top:2px solid var(--ink)}
+.acc-item{border-bottom:1px solid var(--rule)}
+.acc-item h3{margin:0}
+.acc-btn{appearance:none;width:100%;display:flex;justify-content:space-between;align-items:center;gap:var(--s4);padding:22px 0;background:none;border:0;color:var(--ink-text);font:inherit;font-stretch:108%;font-weight:720;font-size:clamp(1.0625rem,1rem + .3vw,1.25rem);text-align:left;cursor:pointer;line-height:1.25}
+.acc-btn:hover{color:var(--ink)}
+.acc-ico{flex:none;width:36px;height:36px;display:grid;place-items:center;border:2px solid var(--ink);color:var(--ink);border-radius:50%;transition:background-color .2s,color .2s}
+.acc-ico svg{width:14px;height:14px;transition:transform .3s var(--ease-out)}
+.acc-btn[aria-expanded="true"] .acc-ico{background:var(--ink);color:var(--on-ink)}
+.acc-btn[aria-expanded="true"] .acc-ico svg{transform:rotate(45deg)}
+.acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease-out)}
+.acc-panel > div{overflow:hidden}
+.acc-panel p{padding-bottom:var(--s5);margin:0;max-width:62ch}
+.acc-item.open .acc-panel{grid-template-rows:1fr}
+@media (prefers-reduced-motion:reduce){.acc-panel{transition:none}.acc-ico svg{transition:none}}
+
+/* footer */
+.foot{padding-block:clamp(56px,7vw,96px) var(--s6)}
+.foot .foot-word{font-stretch:125%;font-weight:900;font-size:clamp(4rem,2rem + 10vw,11rem);line-height:.8;letter-spacing:-.03em;color:var(--on-ink);margin:0 0 clamp(32px,4vw,56px);display:flex;align-items:flex-end;gap:.08em}
+.foot-word svg{width:.78em;height:.78em;flex:none;margin-bottom:.02em}
+.foot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s6) var(--s5);border-top:2px solid var(--on-ink-soft);padding-top:var(--s5)}
+.foot h2{font-stretch:112%;font-size:1.0625rem;margin-bottom:var(--s3);color:var(--on-ink)}
+.foot address{font-style:normal}
+.foot p,.foot address,.foot dd,.foot li{color:var(--on-ink-soft);font-size:.98rem}
+.foot dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0}
+.foot dt{color:var(--on-ink);font-weight:620}
+.foot dd{margin:0}
+.foot ul{list-style:none;padding:0;margin:0}
+.foot li{margin-bottom:6px}
+.foot a{color:var(--on-ink);display:inline-flex;align-items:center;gap:8px;min-height:32px}
+.foot a svg{width:18px;height:18px}
+.foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s3);margin-top:var(--s7);padding-top:var(--s4);border-top:1px solid rgba(195,201,244,.3);font-size:.875rem;color:var(--on-ink-soft)}
+@media (max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.foot-grid{grid-template-columns:1fr}}
+
+/* dome svg bits */
+.sky-turn{transform-origin:300px 300px;animation:turn 240s linear infinite}
+@keyframes turn{to{transform:rotate(-360deg)}}
+@media (prefers-reduced-motion:reduce){.sky-turn{animation:none}}
+.seat{transition:fill .35s var(--ease-out),r .35s var(--ease-out)}
+.seat-ovp{mix-blend-mode:multiply;transition:opacity .35s var(--ease-out)}
+.presenter-pulse{animation:pulse 2.4s var(--ease-out) infinite;transform-origin:300px 300px}
+@keyframes pulse{0%{opacity:.7;transform:scale(1)}70%,100%{opacity:0;transform:scale(2.4)}}
+@media (prefers-reduced-motion:reduce){.presenter-pulse{animation:none;opacity:0}}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,calc(100% + 48px));visibility:hidden;background:var(--ink-text);color:var(--on-ink);padding:12px 18px;border-left:0;font-weight:620;z-index:70;transition:transform .35s var(--ease-out);max-width:calc(100vw - 32px);display:flex;gap:10px;align-items:center;box-shadow:0 12px 28px -12px rgba(16,20,61,.6)}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+.toast i{width:10px;height:10px;border-radius:50%;background:var(--amber);flex:none}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="ht-ink" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.25" fill="#1F2BB8"/></pattern>
+    <symbol id="i-mark" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.4"/><ellipse cx="20" cy="20" rx="18" ry="7" fill="none" stroke="currentColor" stroke-width="1.6" transform="rotate(-24 20 20)"/><circle cx="20" cy="20" r="5" fill="currentColor"/><circle cx="35.4" cy="13.2" r="3" fill="currentColor"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2.2" fill="none"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.2" fill="none"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2.6" fill="none"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M4 12h16" stroke="currentColor" stroke-width="2.6" fill="none"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="square"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" fill="none"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 7v6M12 16v1.5" stroke="currentColor" stroke-width="2.4"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-yt" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></symbol>
+    <symbol id="i-masto" viewBox="0 0 24 24"><path d="M20 9.5c0-4-2.6-5.5-8-5.5S4 5.5 4 9.5c0 6 1 9.5 6.5 10.2 2 .3 4-.1 5.2-.6l-.1-1.9s-1.9.6-4 .5c-2.2-.1-2.6-1.6-2.6-2.6 4.6 1.1 11 .9 11-5.6z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-head" id="top">
+  <div class="wrap head-row">
+    <a class="brand" href="#top" aria-label="Orrery, home">
+      <svg aria-hidden="true"><use href="#i-mark"/></svg><b>Orrery</b>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#shows">Shows</a>
+      <a href="#telescope">Telescope nights</a>
+      <a href="#shop">Shop</a>
+      <a href="#schools">Schools</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <button class="basket-btn" type="button" id="basketBtn" aria-expanded="false" aria-controls="basketPanel">
+      <svg aria-hidden="true"><use href="#i-bag"/></svg>
+      <span class="basket-label">Basket</span>
+      <span class="count" id="basketCount" aria-hidden="true">0</span>
+      <span class="sr-only" id="basketSr">, 0 items</span>
+    </button>
+    <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="drawer">
+      <svg aria-hidden="true"><use href="#i-menu"/></svg><span class="menu-word">Menu</span>
+    </button>
+  </div>
+  <div class="wrap" style="position:relative">
+    <div class="basket-panel" id="basketPanel" hidden role="region" aria-labelledby="basketTitle">
+      <h2 id="basketTitle">Your basket</h2>
+      <p class="basket-empty" id="basketEmpty">Nothing in here yet. Star maps, telescopes, telescope-night places and memberships all land here.</p>
+      <ul class="basket-list" id="basketList"></ul>
+      <div class="basket-total" id="basketTotalRow" hidden><span>Total</span><span id="basketTotal">£0.00</span></div>
+      <p class="basket-note">Pay in the shop or at the box office. Online checkout isn't open on this page.</p>
+    </div>
+  </div>
+  <p class="sr-only" aria-live="polite" id="live"></p>
+</header>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-top">
+    <a class="brand" href="#top" data-close><svg aria-hidden="true"><use href="#i-mark"/></svg><b>Orrery</b></a>
+    <button class="close-btn" type="button" id="closeBtn"><svg aria-hidden="true"><use href="#i-close"/></svg>Close</button>
+  </div>
+  <nav aria-label="Main, mobile">
+    <a href="#shows" data-close>Shows</a>
+    <a href="#telescope" data-close>Telescope nights</a>
+    <a href="#shop" data-close>Shop</a>
+    <a href="#schools" data-close>Schools</a>
+    <a href="#visit" data-close>Visit</a>
+  </nav>
+  <div class="drawer-foot">
+    <a class="btn btn-amber" href="#book" data-close>Book a show</a>
+    <p style="margin-top:16px">Open Tuesday to Sunday from 10:00, Fridays until 23:00.</p>
+  </div>
+</div>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1 class="display" id="heroTitle">The night sky, told live under a sixty-seat dome.</h1>
+          <p class="lede">A presenter at the desk, the stars overhead and your questions answered as they come. Shows Tuesday to Sunday on Bristol's harbourside, rooftop telescopes on clear Fridays.</p>
+          <div class="cta-row">
+            <a class="btn btn-amber" href="#book">Book a show <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-line" href="#telescope">Friday telescope nights</a>
+          </div>
+        </div>
+        <figure class="hero-fig">
+          <svg id="heroDome" viewBox="0 0 600 600" role="img" aria-labelledby="heroDomeT"><title id="heroDomeT">Plan of the Orrery dome: sixty seats in three rings around the presenter's desk, under a projected sky.</title></svg>
+          <figcaption class="dome-cap"><span>The dome, seen from below</span><span>60 seats · 1 presenter</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="today" aria-labelledby="todayTitle">
+        <div class="today-head">
+          <h2 id="todayTitle">In the dome <span id="todayLabel">today</span></h2>
+          <p>Seats shown are a live example; the booking form below holds the real count.</p>
+        </div>
+        <ul class="tt" id="todayList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWS -->
+  <section class="section" id="shows" aria-labelledby="showsTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="showsTitle">This season in the dome</h2>
+        <p>Four shows, each run live by one of our presenters. No two performances go quite the same way, because the audience steers the questions.</p>
+      </div>
+      <ul class="prog" id="showList"></ul>
+
+      <div class="schools" id="schools">
+        <div>
+          <h3 class="h3">School sessions</h3>
+        </div>
+        <div>
+          <p>Weekday mornings the dome belongs to schools. A presenter builds the session around your class: day and night, the phases of the Moon, the planets in order, or what a light year actually is.</p>
+          <ul>
+            <li>Up to 60 pupils and staff per session, weekdays at 11:00.</li>
+            <li>Shaped for Key Stage 1 to Key Stage 3; tell us the topic you're teaching.</li>
+            <li>Relaxed sessions with house lights up on request.</li>
+          </ul>
+          <a class="btn btn-line" href="mailto:schools@orrery.example?subject=School%20session%20enquiry"><svg aria-hidden="true"><use href="#i-mail"/></svg>Ask about a school date</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section class="section on-ink" id="book" aria-labelledby="bookTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="bookTitle">Book your seats</h2>
+        <p>Pick a show, a day in the next two weeks and a session. Your seats light up on the plan as you choose.</p>
+      </div>
+      <div class="book-grid">
+        <form class="form" id="bookForm" novalidate>
+          <div class="field">
+            <label for="fName">Your name</label>
+            <input class="input" id="fName" name="name" type="text" autocomplete="name" required aria-describedby="eName">
+            <p class="err" id="eName"></p>
+          </div>
+          <div class="field">
+            <label for="fEmail">Email</label>
+            <input class="input" id="fEmail" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="eEmailH eEmail" placeholder="name@example.com">
+            <span class="hint" id="eEmailH">We send your tickets here.</span>
+            <p class="err" id="eEmail"></p>
+          </div>
+          <div class="field full">
+            <label for="fShow">Show</label>
+            <select class="input" id="fShow" name="show" required aria-describedby="eShow">
+              <option value="">Choose a show</option>
+            </select>
+            <p class="err" id="eShow"></p>
+          </div>
+          <div class="field">
+            <label for="fDate">Date</label>
+            <select class="input" id="fDate" name="date" required aria-describedby="eDate">
+              <option value="">Choose a date</option>
+            </select>
+            <p class="err" id="eDate"></p>
+          </div>
+          <div class="field">
+            <label for="fTickets">Tickets</label>
+            <div class="stepper">
+              <button type="button" id="tMinus" aria-label="One fewer ticket"><svg aria-hidden="true"><use href="#i-minus"/></svg></button>
+              <input id="fTickets" name="tickets" type="number" inputmode="numeric" min="1" max="10" value="2" required aria-describedby="eTickets">
+              <button type="button" id="tPlus" aria-label="One more ticket"><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
+            </div>
+            <p class="err" id="eTickets"></p>
+          </div>
+          <fieldset class="field full" aria-describedby="eSession">
+            <legend>Session</legend>
+            <div class="sessions" id="sessions">
+              <label class="sess"><input type="radio" name="session" value="11:00"><span><b>11:00</b><small>Morning</small></span></label>
+              <label class="sess"><input type="radio" name="session" value="14:00"><span><b>14:00</b><small>Afternoon</small></span></label>
+              <label class="sess"><input type="radio" name="session" value="19:30"><span><b>19:30</b><small>Evening</small></span></label>
+            </div>
+            <p class="err" id="eSession"></p>
+          </fieldset>
+          <div class="total-row">
+            <p class="total" style="margin:0">Total <b id="total">£0.00</b></p>
+            <button class="btn btn-amber" type="submit" id="submitBtn">Book seats <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+          <div class="form-status" id="formStatus" tabindex="-1"></div>
+        </form>
+
+        <figure class="plan-fig" aria-labelledby="planCap">
+          <svg id="planDome" viewBox="0 0 600 600" aria-hidden="true"></svg>
+          <figcaption id="planCap">
+            <p class="seat-left" id="seatLeft" aria-live="polite">Choose a show, date and session to see seats.</p>
+            <div class="plan-legend">
+              <span><i style="background:#F1F3F6"></i>Free</span>
+              <span><i style="background:#4A55C9;box-shadow:inset 0 0 0 2px #7680DA"></i>Taken</span>
+              <span><i style="background:#FFB000"></i>Your seats</span>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELESCOPE -->
+  <section class="section halftone" id="telescope" aria-labelledby="teleTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="teleTitle">Friday nights on the roof</h2>
+        <p>When the sky is clear, the rooftop opens after the last show and our telescopes point wherever the best view is that night.</p>
+      </div>
+      <div class="tele-grid">
+        <div>
+          <ol class="steps">
+            <li><div><h3>Reserve a place</h3><p>Up to 24 people a night, £12 each, members first. Children 8 and over with an adult.</p></div></li>
+            <li><div><h3>We read the sky at 16:00</h3><p>On the day, our presenter checks cloud cover and calls it. You get a text and an email either way.</p></div></li>
+            <li><div><h3>Up to the roof at 20:30</h3><p>Warm layers on. Two hours at the eyepieces with a guide: the Moon, planets, double stars, a galaxy if the night allows.</p></div></li>
+          </ol>
+          <div class="cloud">
+            <h3>If it's cloudy</h3>
+            <p>We call the night off by 16:00, never at the door. Your place moves to the next clear Friday, or we refund you in full. Your choice, no forms.</p>
+            <ul class="states" aria-label="What each night's status means">
+              <li><span class="chip chip-watch">Watching</span>Forecast not called yet</li>
+              <li><span class="chip chip-go">Go</span>Clear enough, roof open</li>
+              <li><span class="chip chip-off">Called off</span>Cloud; moved or refunded</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <h3 class="h3" style="color:var(--ink);margin-bottom:var(--s4)">The next three Fridays</h3>
+          <ul class="nights" id="nights"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="section" id="shop" aria-labelledby="shopTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="shopTitle">The night-sky shop</h2>
+        <p>Things that get you looking up once you're home. Everything here is stocked in the shop by the box office.</p>
+      </div>
+      <div class="shop" id="shopGrid"></div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP -->
+  <section class="section on-ink" id="members" aria-labelledby="memTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="memTitle">Become a member</h2>
+        <p>A year of the dome. Members book first, pay less in the shop and hear about telescope nights before anyone else.</p>
+      </div>
+      <div class="tiers" id="tiers"></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" aria-labelledby="quoteTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="quoteTitle">What visitors tell us</h2>
+      </div>
+      <div class="quotes">
+        <figure class="quote big">
+          <blockquote>“My eight-year-old asked the presenter eleven questions and got eleven proper answers. We walked home finding the Plough.”</blockquote>
+          <figcaption><b>Priya</b>, came with her son on a Saturday</figcaption>
+        </figure>
+        <figure class="quote r1">
+          <blockquote>“Clouded out on our first Friday. They texted at four, moved us a week, and Saturn was worth the wait.”</blockquote>
+          <figcaption><b>Tom</b>, telescope night</figcaption>
+        </figure>
+        <figure class="quote r2">
+          <blockquote>“Thirty Year 5s, sixty seats. Everyone had a proper view and nobody got lost on the way to the toilets.”</blockquote>
+          <figcaption><b>Ms Okafor</b>, primary teacher, school session</figcaption>
+        </figure>
+      </div>
+      <p class="quote-note">Sample visitor notes for this fictional venue.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq" aria-labelledby="faqTitle" style="padding-top:0">
+    <div class="wrap faq-grid">
+      <h2 class="h2" id="faqTitle">Before you come</h2>
+      <div class="acc" id="acc">
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q1" id="q1b">How long are shows, and when should we arrive?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q1" role="region" aria-labelledby="q1b"><div><p>Shows run 30 to 55 minutes. Arrive 15 minutes early: once the dome goes dark we only let latecomers in at a natural pause, so the sky stays dark for everyone.</p></div></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q2" id="q2b">Are shows suitable for young children?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q2" role="region" aria-labelledby="q2b"><div><p>Little Stargazers is made for ages 3 to 7 and keeps a soft glow on all the way through. Each show lists its age guidance; under-12s come with an adult.</p></div></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q3" id="q3b">What happens to a telescope night if it's cloudy?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q3" role="region" aria-labelledby="q3b"><div><p>We decide by 16:00 on the day and message you. Your place moves to the next clear Friday, or you take a full refund.</p></div></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q4" id="q4b">Is the dome accessible?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q4" role="region" aria-labelledby="q4b"><div><p>Entry is step-free from the quay and the dome has wheelchair spaces on the front ring. We run relaxed showings with the lights partly up. Tell us what you need when you book and we'll plan around it.</p></div></div>
+        </div>
+        <div class="acc-item">
+          <h3><button class="acc-btn" type="button" aria-expanded="false" aria-controls="q5" id="q5b">Can I book a school or group session?<span class="acc-ico" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button></h3>
+          <div class="acc-panel" id="q5" role="region" aria-labelledby="q5b"><div><p>Yes. School sessions run on weekdays at 11:00 for up to 60 pupils and staff. Email schools@orrery.example with your preferred dates and topic, and we'll reply within two working days.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="on-ink foot" id="visit">
+  <div class="wrap">
+    <p class="foot-word" aria-hidden="true"><svg><use href="#i-mark"/></svg>Orrery</p>
+    <div class="foot-grid">
+      <div>
+        <h2>Find us</h2>
+        <address>Orrery<br>Unit 4, Lantern Wharf<br>Bristol harbourside<br>BS1 4XX</address>
+      </div>
+      <div>
+        <h2>Opening hours</h2>
+        <dl>
+          <dt>Tue to Thu</dt><dd>10:00 to 21:00</dd>
+          <dt>Fri</dt><dd>10:00 to 23:00</dd>
+          <dt>Sat, Sun</dt><dd>10:00 to 21:00</dd>
+          <dt>Mon</dt><dd>Closed, schools only</dd>
+        </dl>
+      </div>
+      <div>
+        <h2>Call or write</h2>
+        <ul>
+          <li><a href="tel:+441174960123">0117 496 0123</a></li>
+          <li><a href="mailto:hello@orrery.example">hello@orrery.example</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Follow the sky</h2>
+        <ul>
+          <li><a href="#" aria-label="Orrery on Instagram"><svg aria-hidden="true"><use href="#i-insta"/></svg>Instagram</a></li>
+          <li><a href="#" aria-label="Orrery on Mastodon"><svg aria-hidden="true"><use href="#i-masto"/></svg>Mastodon</a></li>
+          <li><a href="#" aria-label="Orrery on YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg>YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Orrery is a fictional venue. This page is a design study; no bookings or payments are taken.</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><i aria-hidden="true"></i><span id="toastText"></span></div>
+
+<script>
+(function(){
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var gbp = function(n){ return "£" + n.toFixed(2); };
+
+  /* ---------- data ---------- */
+  var SHOWS = [
+    {id:"tonight", title:"Tonight's Sky, Live", about:"The presenter flies the dome to whatever is up over Bristol tonight, then sends you home with three things to find from your own doorstep.", mins:55, age:"10+", price:10.5},
+    {id:"andromeda", title:"Harbour Lights to Andromeda", about:"Start at the streetlights on the quay and travel out, past the Moon, the planets and the Milky Way, to the nearest big galaxy.", mins:50, age:"8+", price:9.5},
+    {id:"moon", title:"The Moon, Up Close", about:"Craters, seas and phases, and why the Moon always shows us the same face. Finish by landing on it.", mins:40, age:"5+", price:8},
+    {id:"little", title:"Little Stargazers", about:"A gentle first show with the lights never fully down: find the Plough, count the stars, and watch a sunrise to finish.", mins:30, age:"3 to 7", price:6}
+  ];
+  var SESSIONS = ["11:00","14:00","19:30"];
+  var SHOP = [
+    {id:"plani", name:"Planisphere, 51° North", desc:"A turning star wheel set for Bristol's latitude. Dial the date and hour and the sky lines up.", price:14, art:"plani"},
+    {id:"print", name:"Harbour Sky Print, A2", desc:"The sky over the harbour on a date you choose, printed in two inks on heavy stock.", price:28, art:"print"},
+    {id:"scope", name:"First Telescope, 70 mm", desc:"A light refractor that sets up in minutes. Plenty for the Moon's craters and Saturn's rings.", price:129, art:"scope"},
+    {id:"torch", name:"Red Night Torch", desc:"A dim red light that reads a chart without spoiling your dark-adapted eyes.", price:9, art:"torch"},
+    {id:"rocket", name:"Card Rocket Kit", desc:"Build and launch a stomp rocket from card and straws. Ages 7 and up, adult help for the launcher.", price:16, art:"rocket"},
+    {id:"moonmap", name:"Moon Map", desc:"A folded map of the near side with sixty features to find and tick off with binoculars.", price:7, art:"moonmap"}
+  ];
+  var TIERS = [
+    {id:"stargazer", name:"Stargazer", who:"One adult", yr:30, perks:["Four dome shows across the year","10% off in the shop","The month's sky guide by email"]},
+    {id:"household", name:"Household", who:"Two adults and up to three children", yr:75, perks:["Weekend shows for the whole household, booked free","Members' first pick of telescope-night places","10% off in the shop"]},
+    {id:"patron", name:"Patron", who:"Everything in Household, plus", yr:160, perks:["Two telescope nights a year included","An invitation to each new season's preview show","Your name in the dome's supporters' list"]}
+  ];
+
+  /* ---------- dates ---------- */
+  var DAY = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function startOfDay(d){ var x = new Date(d); x.setHours(0,0,0,0); return x; }
+  function iso(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+  function nice(d){ return DAY[d.getDay()] + " " + d.getDate() + " " + MON[d.getMonth()]; }
+  var now = new Date();
+  var today = startOfDay(now);
+
+  /* deterministic pseudo-random for illustrative availability */
+  function hash(str){ var h = 2166136261; for (var i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed){ var s = seed || 1; return function(){ s = (Math.imul(s ^ (s >>> 15), 2246822507) + 0x9E3779B9) >>> 0; s ^= s >>> 13; return (s >>> 0) / 4294967296; }; }
+  function takenSeats(showId, dateIso, time){
+    var r = rng(hash(showId + "|" + dateIso + "|" + time));
+    var evening = time === "19:30" ? 0.22 : 0;
+    var weekend = [0,6].indexOf(new Date(dateIso + "T12:00").getDay()) > -1 ? 0.18 : 0;
+    var fill = 0.28 + evening + weekend + r() * 0.25;
+    var n = Math.min(58, Math.round(60 * fill));
+    var seats = []; for (var i=0;i<60;i++) seats.push(i);
+    for (var j=59;j>0;j--){ var k = Math.floor(r()*(j+1)); var t = seats[j]; seats[j] = seats[k]; seats[k] = t; }
+    var set = {}; seats.slice(0, n).forEach(function(s){ set[s] = true; }); return set;
+  }
+
+  /* ---------- dome diagram ---------- */
+  function el(name, attrs, parent){ var e = document.createElementNS(NS, name); for (var a in attrs) e.setAttribute(a, attrs[a]); if (parent) parent.appendChild(e); return e; }
+  var RINGS = [{r:200,n:16},{r:230,n:20},{r:260,n:24}];
+  function seatPositions(){
+    var out = [];
+    RINGS.forEach(function(ring, ri){
+      // seats face the presenter; leave an aisle gap at the entrance (bottom)
+      var gap = 0.5; // radians
+      var span = Math.PI*2 - gap;
+      for (var i=0;i<ring.n;i++){
+        var a = Math.PI/2 + gap/2 + span * (i + 0.5) / ring.n;
+        out.push({x:300 + ring.r*Math.cos(a), y:300 + ring.r*Math.sin(a), ring:ri});
+      }
+    });
+    return out;
+  }
+  function buildDome(svg, opts){
+    opts = opts || {};
+    var id = svg.id;
+    var defs = el("defs", {}, svg);
+    var cp = el("clipPath", {id:id+"-sky"}, defs); el("circle", {cx:300, cy:300, r:180}, cp);
+    // halftone ground for sky
+    var pat = el("pattern", {id:id+"-ht", width:7, height:7, patternUnits:"userSpaceOnUse"}, defs);
+    el("circle", {cx:3.5, cy:3.5, r:1.05, fill:"rgba(241,243,246,.13)"}, pat);
+    // outer disc
+    el("circle", {cx:300, cy:300, r:288, fill:"#1F2BB8"}, svg);
+    el("circle", {cx:300, cy:300, r:288, fill:"none", stroke: opts.onInk ? "#C3C9F4" : "#1F2BB8", "stroke-width":2}, svg);
+    el("circle", {cx:300, cy:300, r:180, fill:"#141B7C"}, svg);
+    el("circle", {cx:300, cy:300, r:180, fill:"url(#"+id+"-ht)"}, svg);
+    // projected sky
+    var skyClip = el("g", {"clip-path":"url(#"+id+"-sky)"}, svg);
+    var sky = el("g", {"class":"sky-turn"}, skyClip);
+    var r = rng(hash(id + "sky"));
+    for (var i=0;i<150;i++){
+      var ang = r()*Math.PI*2, rad = Math.sqrt(r())*250;
+      var sz = r() < .08 ? 2.4 : (r() < .3 ? 1.5 : .9);
+      el("circle", {cx:(300 + rad*Math.cos(ang)).toFixed(1), cy:(300 + rad*Math.sin(ang)).toFixed(1), r:sz, fill:"#F1F3F6", opacity:(0.45 + r()*0.55).toFixed(2)}, sky);
+    }
+    // the Plough, drawn as a constellation figure
+    var plough = [[205,215],[240,200],[272,212],[300,236],[312,276],[352,284],[362,248]];
+    var d = "M" + plough.map(function(p){ return p.join(","); }).join(" L") + " L312,276";
+    el("path", {d:d.replace(" L312,276",""), fill:"none", stroke:"#C3C9F4", "stroke-width":1.2, opacity:.85}, sky);
+    el("path", {d:"M362,248 L312,276", fill:"none", stroke:"#C3C9F4", "stroke-width":1.2, opacity:.85}, sky);
+    plough.forEach(function(p){ el("circle", {cx:p[0], cy:p[1], r:3.4, fill:"#F1F3F6"}, sky); });
+    // meridian rings
+    el("circle", {cx:300, cy:300, r:120, fill:"none", stroke:"rgba(195,201,244,.28)", "stroke-width":1, "stroke-dasharray":"2 6"}, svg);
+    el("circle", {cx:300, cy:300, r:60, fill:"none", stroke:"rgba(195,201,244,.28)", "stroke-width":1, "stroke-dasharray":"2 6"}, svg);
+    // seats
+    var seatsG = el("g", {}, svg);
+    var seats = seatPositions().map(function(p, i){
+      var c = el("circle", {"class":"seat", cx:p.x.toFixed(1), cy:p.y.toFixed(1), r:7.5, fill:"#F1F3F6", "data-i":i}, seatsG);
+      // amber overprint ring: shown only on held seats, multiplied into the ultramarine ring
+      c._ovp = el("circle", {"class":"seat-ovp", cx:(p.x + 2).toFixed(1), cy:(p.y + 2).toFixed(1), r:13, fill:"#FFB000", opacity:0}, seatsG);
+      seatsG.insertBefore(c._ovp, c);
+      return c;
+    });
+    // presenter desk
+    if (!reduce) el("circle", {"class":"presenter-pulse", cx:300, cy:300, r:13, fill:"none", stroke:"#FFB000", "stroke-width":2}, svg);
+    el("circle", {cx:300, cy:300, r:13, fill:"#FFB000"}, svg);
+    el("rect", {x:292, y:292, width:16, height:16, fill:"#141B7C", transform:"rotate(45 300 300)"}, svg);
+    // entrance
+    el("path", {d:"M276,580 L276,560 M324,580 L324,560", stroke:"#C3C9F4", "stroke-width":2}, svg);
+    if (opts.labels){
+      var lab = el("g", {"font-family":"Archivo, sans-serif", "font-size":15, "font-weight":700, fill:"#F1F3F6", "aria-hidden":"true"}, svg);
+      var t1 = el("text", {x:316, y:330}, lab); t1.textContent = "Presenter, live";
+      var t2 = el("text", {x:300, y:584, "text-anchor":"middle", "font-size":13, fill:"#C3C9F4"}, lab); t2.textContent = "Way in";
+    }
+    return seats;
+  }
+
+  var heroSeats = buildDome($("#heroDome"), {labels:true});
+  // hero: show today's evening crowd as a quiet illustration
+  (function(){
+    var set = takenSeats("tonight", iso(today), "19:30");
+    heroSeats.forEach(function(s, i){ if (set[i]) s.setAttribute("fill", "#4A55C9"); });
+  })();
+  var planSeats = buildDome($("#planDome"), {labels:true, onInk:true});
+
+  /* ---------- today's timetable ---------- */
+  function showOf(id){ for (var i=0;i<SHOWS.length;i++) if (SHOWS[i].id === id) return SHOWS[i]; return null; }
+  function lineupFor(d){
+    var dow = d.getDay();
+    var weekday = dow >= 1 && dow <= 5;
+    var rot = d.getDate() % 4;
+    var order = SHOWS.map(function(s, i){ return SHOWS[(i + rot) % 4]; });
+    var pool = order.filter(function(s){ return s.id !== "tonight"; });
+    var first = weekday ? showOf("moon") : pool[0];
+    var second = pool.filter(function(s){ return s.id !== first.id; })[weekday ? 0 : 1];
+    return [first, second, showOf("tonight")];
+  }
+  function sessionPassed(dateIso, time){
+    if (dateIso !== iso(today)) return false;
+    var p = time.split(":"); var t = new Date(today); t.setHours(+p[0], +p[1], 0, 0);
+    return new Date() >= t;
+  }
+  (function renderToday(){
+    var day = today;
+    var allPassed = SESSIONS.every(function(t){ return sessionPassed(iso(today), t); }) || today.getDay() === 1;
+    if (allPassed){ day = new Date(today); day.setDate(day.getDate()+1); $("#todayLabel").textContent = "tomorrow, " + nice(day); }
+    else $("#todayLabel").textContent = "today, " + nice(day);
+    var list = $("#todayList"); var lineup = lineupFor(day);
+    SESSIONS.forEach(function(t, i){
+      var s = lineup[i]; var passed = sessionPassed(iso(day), t);
+      var taken = Object.keys(takenSeats(s.id, iso(day), t)).length;
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="t">' + t + '</span>' +
+        '<span class="show' + (passed ? ' gone' : '') + '">' + s.title + '</span>' +
+        '<span class="meta">' + s.mins + ' min · ages ' + s.age + ' · ' + gbp(s.price) + '</span>' +
+        '<span class="meta seats">' + (passed ? 'Started' : '<b>' + (60 - taken) + '</b> of 60 seats left') + '</span>';
+      var btn = document.createElement("a");
+      btn.className = "btn btn-sm " + (passed ? "btn-line" : "btn-line");
+      btn.href = "#book";
+      if (passed){ btn.setAttribute("aria-disabled","true"); btn.textContent = "Started"; btn.style.opacity = ".5"; btn.style.pointerEvents = "none"; btn.tabIndex = -1; }
+      else {
+        btn.innerHTML = 'Book <span class="sr-only">' + s.title + ' at ' + t + '</span>';
+        btn.addEventListener("click", function(){ prefill(s.id, iso(day), t); });
+      }
+      li.appendChild(btn); list.appendChild(li);
+    });
+  })();
+
+  /* ---------- shows list ---------- */
+  (function(){
+    var ul = $("#showList");
+    SHOWS.forEach(function(s){
+      var li = document.createElement("li");
+      li.innerHTML =
+        '<h3 class="h3">' + s.title + '</h3>' +
+        '<p class="about">' + s.about + '</p>' +
+        '<div class="act"><dl class="facts">' +
+          '<div><dt class="label">Runs</dt><dd>' + s.mins + ' min</dd></div>' +
+          '<div><dt class="label">Ages</dt><dd>' + s.age + '</dd></div>' +
+          '<div><dt class="label">Seat</dt><dd>' + gbp(s.price).replace(".00","") + '</dd></div>' +
+        '</dl></div>';
+      var a = document.createElement("a"); a.className = "btn btn-line btn-sm"; a.href = "#book";
+      a.innerHTML = 'Book this show <span class="sr-only">: ' + s.title + '</span>';
+      a.addEventListener("click", function(){ prefill(s.id); });
+      li.querySelector(".act").appendChild(a);
+      ul.appendChild(li);
+    });
+  })();
+
+  /* ---------- basket ---------- */
+  var basket = [];
+  var countEl = $("#basketCount"), srEl = $("#basketSr"), liveEl = $("#live");
+  function basketQty(){ return basket.reduce(function(n, b){ return n + b.qty; }, 0); }
+  function renderBasket(bump){
+    var n = basketQty();
+    countEl.textContent = n; countEl.classList.toggle("has", n > 0);
+    srEl.textContent = ", " + n + (n === 1 ? " item" : " items");
+    if (bump && !reduce){ countEl.classList.remove("bump"); void countEl.offsetWidth; countEl.classList.add("bump"); }
+    var list = $("#basketList"); list.innerHTML = "";
+    $("#basketEmpty").hidden = n > 0; $("#basketTotalRow").hidden = n === 0;
+    var total = 0;
+    basket.forEach(function(b){
+      total += b.price * b.qty;
+      var li = document.createElement("li");
+      li.innerHTML = '<span>' + b.name + ' <span class="qty">× ' + b.qty + '</span></span><span>' + gbp(b.price * b.qty) + '</span>';
+      var rm = document.createElement("button"); rm.type = "button"; rm.textContent = "Remove";
+      rm.setAttribute("aria-label", "Remove " + b.name);
+      rm.addEventListener("click", function(){ removeItem(b.id); });
+      li.appendChild(rm); list.appendChild(li);
+    });
+    $("#basketTotal").textContent = gbp(total);
+    document.querySelectorAll("[data-add]").forEach(function(btn){
+      var inB = basket.some(function(b){ return b.id === btn.getAttribute("data-add"); });
+      btn.classList.toggle("added", inB);
+      var lbl = btn.querySelector(".lbl"); if (lbl) lbl.textContent = inB ? btn.getAttribute("data-added") : btn.getAttribute("data-label");
+    });
+  }
+  function addItem(id, name, price, single){
+    var found = basket.filter(function(b){ return b.id === id; })[0];
+    if (found){ if (!single) found.qty++; } else basket.push({id:id, name:name, price:price, qty:1});
+    renderBasket(true);
+    var msg = name + (found && single ? " is already in your basket" : " added to your basket") + ". Basket: " + basketQty() + (basketQty() === 1 ? " item." : " items.");
+    toast(msg); liveEl.textContent = msg;
+  }
+  function removeItem(id){
+    basket = basket.filter(function(b){ return b.id !== id; }); renderBasket(false);
+    liveEl.textContent = "Removed. Basket: " + basketQty() + " items.";
+    $("#basketBtn").focus();
+  }
+  var toastT;
+  function toast(text){
+    var t = $("#toast"); $("#toastText").textContent = text; t.classList.add("show");
+    clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+  }
+  var basketBtn = $("#basketBtn"), basketPanel = $("#basketPanel");
+  function setBasket(open){ basketPanel.hidden = !open; basketBtn.setAttribute("aria-expanded", String(open)); }
+  basketBtn.addEventListener("click", function(e){ e.stopPropagation(); setBasket(basketPanel.hidden); });
+  document.addEventListener("click", function(e){ if (!basketPanel.hidden && !basketPanel.contains(e.target)) setBasket(false); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !basketPanel.hidden){ setBasket(false); basketBtn.focus(); } });
+
+  /* ---------- shop ---------- */
+  var ART = {
+    plani:'<svg viewBox="0 0 200 125" aria-hidden="true"><rect x="38" y="6" width="124" height="114" fill="#1F2BB8"/><circle cx="100" cy="63" r="48" fill="#E9ECEF"/><ellipse cx="100" cy="60" rx="34" ry="28" fill="#141B7C"/><g fill="#F1F3F6"><circle cx="88" cy="50" r="1.8"/><circle cx="104" cy="46" r="1.4"/><circle cx="114" cy="60" r="1.8"/><circle cx="96" cy="70" r="1.2"/><circle cx="80" cy="64" r="1.4"/><circle cx="110" cy="74" r="1.2"/></g><g stroke="#1F2BB8" stroke-width="1.4">' + ticks() + '</g></svg>',
+    print:'<svg viewBox="0 0 200 125" aria-hidden="true"><rect x="58" y="4" width="84" height="117" fill="#F1F3F6" stroke="#1F2BB8" stroke-width="2"/><circle cx="100" cy="52" r="32" fill="#1F2BB8"/><g fill="#F1F3F6"><circle cx="90" cy="42" r="1.6"/><circle cx="108" cy="48" r="1.3"/><circle cx="98" cy="62" r="1.7"/><circle cx="114" cy="38" r="1.1"/><circle cx="84" cy="58" r="1.1"/></g><rect x="72" y="96" width="56" height="5" fill="#1F2BB8"/><rect x="72" y="105" width="56" height="10" fill="url(#ht-ink)"/></svg>',
+    scope:'<svg viewBox="0 0 200 125" aria-hidden="true"><g transform="rotate(-24 100 60)"><rect x="40" y="46" width="110" height="20" fill="#1F2BB8"/><rect x="150" y="42" width="14" height="28" fill="#141B7C"/><rect x="30" y="50" width="12" height="12" fill="#141B7C"/></g><path d="M100 70 L76 120 M100 70 L100 120 M100 70 L124 120" stroke="#1F2BB8" stroke-width="3.5"/></svg>',
+    torch:'<svg viewBox="0 0 200 125" aria-hidden="true"><rect x="60" y="52" width="70" height="22" rx="3" fill="#1F2BB8"/><path d="M130 50 L148 42 L148 84 L130 76 Z" fill="#141B7C"/><path d="M148 42 L196 22 L196 104 L148 84 Z" fill="url(#ht-ink)"/><circle cx="148" cy="63" r="5" fill="#1F2BB8"/></svg>',
+    rocket:'<svg viewBox="0 0 200 125" aria-hidden="true"><path d="M100 8 C118 26 120 52 116 84 L84 84 C80 52 82 26 100 8Z" fill="#1F2BB8"/><circle cx="100" cy="44" r="8" fill="#E9ECEF"/><path d="M84 66 L66 94 L84 88Z M116 66 L134 94 L116 88Z" fill="#141B7C"/><path d="M88 92 L100 122 L112 92Z" fill="url(#ht-ink)"/></svg>',
+    moonmap:'<svg viewBox="0 0 200 125" aria-hidden="true"><rect x="30" y="14" width="140" height="98" fill="#F1F3F6" stroke="#1F2BB8" stroke-width="2"/><rect x="30" y="14" width="140" height="98" fill="url(#ht-ink)" opacity=".5"/><path d="M100 14 V112 M65 14 V112 M135 14 V112" stroke="#1F2BB8" stroke-width="1.5"/><circle cx="100" cy="63" r="36" fill="#1F2BB8"/><g fill="#141B7C"><circle cx="88" cy="52" r="8"/><circle cx="110" cy="72" r="6"/><circle cx="104" cy="46" r="4"/><circle cx="86" cy="76" r="5"/></g></svg>'
+  };
+  function ticks(){ var s=""; for (var i=0;i<24;i++){ var a=i/24*Math.PI*2, r1=44, r2=i%2?47:50; s += '<line x1="'+(100+r1*Math.cos(a)).toFixed(1)+'" y1="'+(63+r1*Math.sin(a)).toFixed(1)+'" x2="'+(100+r2*Math.cos(a)).toFixed(1)+'" y2="'+(63+r2*Math.sin(a)).toFixed(1)+'"/>'; } return s; }
+  (function(){
+    var g = $("#shopGrid");
+    SHOP.forEach(function(p){
+      var art = ART[p.art];
+      var item = document.createElement("article"); item.className = "item";
+      item.innerHTML = '<div class="item-art">' + art + '</div>' +
+        '<div class="item-top"><h3>' + p.name + '</h3><span class="price">' + gbp(p.price).replace(".00","") + '</span></div>' +
+        '<p>' + p.desc + '</p>';
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn btn-line btn-sm";
+      b.setAttribute("data-add", p.id); b.setAttribute("data-label", "Add to basket"); b.setAttribute("data-added", "Add another");
+      b.innerHTML = '<svg aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Add to basket</span><span class="sr-only">: ' + p.name + '</span>';
+      b.addEventListener("click", function(){ addItem(p.id, p.name, p.price, false); });
+      item.appendChild(b); g.appendChild(item);
+    });
+  })();
+
+  /* ---------- membership ---------- */
+  (function(){
+    var g = $("#tiers");
+    TIERS.forEach(function(t){
+      var d = document.createElement("article"); d.className = "tier";
+      d.innerHTML = '<h3>' + t.name + '</h3><p class="who">' + t.who + '</p>' +
+        '<p class="yr" style="margin:0">£' + t.yr + '<small>a year</small></p>' +
+        '<ul>' + t.perks.map(function(p){ return '<li><svg aria-hidden="true"><use href="#i-check"/></svg><span>' + p + '</span></li>'; }).join("") + '</ul>';
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn " + (t.id === "household" ? "btn-amber" : "btn-line");
+      b.setAttribute("data-add", "mem-" + t.id); b.setAttribute("data-label", "Join " + t.name); b.setAttribute("data-added", "In your basket");
+      b.innerHTML = '<span class="lbl">Join ' + t.name + '</span>';
+      b.addEventListener("click", function(){
+        // only one membership at a time
+        basket = basket.filter(function(x){ return x.id.indexOf("mem-") !== 0 || x.id === "mem-" + t.id; });
+        addItem("mem-" + t.id, t.name + " membership (1 year)", t.yr, true);
+      });
+      d.appendChild(b); g.appendChild(d);
+    });
+  })();
+
+  /* ---------- telescope nights ---------- */
+  (function(){
+    var ul = $("#nights"); var d = new Date(today);
+    var cutoff = new Date(today); cutoff.setHours(20, 30, 0, 0);
+    var add = (5 - d.getDay() + 7) % 7;
+    if (add === 0 && new Date() >= cutoff) add = 7;
+    d.setDate(d.getDate() + add);
+    for (var i=0;i<3;i++){
+      var f = new Date(d); f.setDate(d.getDate() + i*7);
+      var label = "Telescope night, " + nice(f);
+      var li = document.createElement("li");
+      var isToday = iso(f) === iso(today);
+      li.innerHTML = '<div class="date-block" aria-hidden="true"><b>' + f.getDate() + '</b><span>' + MON[f.getMonth()] + '</span></div>' +
+        '<div><h3>' + nice(f) + ', 20:30</h3><p>' + (isToday ? 'Tonight. Sky check at 16:00.' : 'Sky check at 16:00 on the day.') + ' £12 a place.</p>' +
+        '<span class="chip chip-watch">Watching</span></div>';
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn btn-line btn-sm";
+      var id = "tele-" + iso(f);
+      b.setAttribute("data-add", id); b.setAttribute("data-label", "Reserve a place"); b.setAttribute("data-added", "Add another place");
+      b.innerHTML = '<span class="lbl">Reserve a place</span><span class="sr-only">: ' + nice(f) + '</span>';
+      (function(id, label){ b.addEventListener("click", function(){ addItem(id, label, 12, false); }); })(id, label);
+      li.appendChild(b); ul.appendChild(li);
+    }
+  })();
+
+  /* ---------- booking form ---------- */
+  var form = $("#bookForm"), fShow = $("#fShow"), fDate = $("#fDate"), fTickets = $("#fTickets");
+  SHOWS.forEach(function(s){ var o = document.createElement("option"); o.value = s.id; o.textContent = s.title + " · " + gbp(s.price); fShow.appendChild(o); });
+  for (var i=0;i<14;i++){
+    var dd = new Date(today); dd.setDate(today.getDate() + i);
+    if (dd.getDay() === 1) continue; // Mondays: schools only
+    var o = document.createElement("option"); o.value = iso(dd); o.textContent = (i === 0 ? "Today, " : i === 1 ? "Tomorrow, " : "") + nice(dd); fDate.appendChild(o);
+  }
+  function sessionVal(){ var c = form.querySelector('input[name="session"]:checked'); return c ? c.value : ""; }
+  function currentTaken(){
+    if (!fShow.value || !fDate.value || !sessionVal()) return null;
+    return takenSeats(fShow.value, fDate.value, sessionVal());
+  }
+  function seatsFree(){ var t = currentTaken(); return t ? 60 - Object.keys(t).length : 60; }
+  function updateSessions(){
+    form.querySelectorAll('input[name="session"]').forEach(function(r){
+      var passed = fDate.value && sessionPassed(fDate.value, r.value);
+      r.disabled = !!passed; if (passed && r.checked) r.checked = false;
+      var sm = r.parentNode.querySelector("small");
+      sm.textContent = passed ? "Started" : ({"11:00":"Morning","14:00":"Afternoon","19:30":"Evening"})[r.value];
+    });
+  }
+  function updatePlan(){
+    var taken = currentTaken();
+    var n = clampTickets(false);
+    var mine = taken ? pickSeats(taken, n) : {};
+    planSeats.forEach(function(s, i){
+      var fill = "#F1F3F6", rr = 7.5;
+      if (taken && taken[i]) fill = "#4A55C9";
+      else if (mine[i]){ fill = "#FFB000"; rr = 9; }
+      s.setAttribute("fill", fill); s.setAttribute("r", rr);
+      if (s._ovp) s._ovp.setAttribute("opacity", mine[i] && !(taken && taken[i]) ? 1 : 0);
+    });
+    var sl = $("#seatLeft");
+    if (!taken){ sl.textContent = "Choose a show, date and session to see seats."; }
+    else {
+      var free = 60 - Object.keys(taken).length;
+      var held = Math.min(n, free);
+      sl.innerHTML = "<b>" + held + "</b> " + (held === 1 ? "seat" : "seats") + " held for you · " + (free - held) + " more free of 60";
+    }
+    var show = SHOWS.filter(function(s){ return s.id === fShow.value; })[0];
+    $("#total").textContent = gbp(show ? show.price * n : 0);
+    $("#tMinus").disabled = n <= 1; $("#tPlus").disabled = n >= Math.min(10, seatsFree());
+  }
+  // seats sit together: look for n free neighbours in one ring, middle rows first, then fall back to nearest free seats
+  function pickSeats(taken, n){
+    var starts = [0, 16, 36], counts = [16, 20, 24], order = [1, 0, 2], out = {};
+    for (var oi=0; oi<order.length; oi++){
+      var ri = order[oi], st = starts[ri], c = counts[ri];
+      var mid = Math.floor(c/2), best = -1, bestD = 1e9;
+      for (var a=0; a+n<=c; a++){
+        var ok = true; for (var k=0;k<n;k++) if (taken[st+a+k]) { ok = false; break; }
+        if (ok){ var dd = Math.abs(a + n/2 - mid); if (dd < bestD){ bestD = dd; best = a; } }
+      }
+      if (best > -1){ for (var k2=0;k2<n;k2++) out[st+best+k2] = true; return out; }
+    }
+    var pos = seatPositions(), free = [];
+    for (var i=0;i<60;i++) if (!taken[i]) free.push(i);
+    if (!free.length) return out;
+    var front = function(k){ return Math.abs(pos[k].x - 300) + (600 - pos[k].y) * .2; };
+    free.sort(function(a, b){ return front(a) - front(b); });
+    var anchor = free[0];
+    var dist = function(k){ return Math.hypot(pos[k].x - pos[anchor].x, pos[k].y - pos[anchor].y); };
+    free.sort(function(a, b){ return dist(a) - dist(b); });
+    free.slice(0, n).forEach(function(k){ out[k] = true; });
+    return out;
+  }
+  function clampTickets(write){
+    var v = parseInt(fTickets.value, 10); if (isNaN(v)) v = 0;
+    return Math.max(0, Math.min(v, 10));
+  }
+  $("#tMinus").addEventListener("click", function(){ fTickets.value = Math.max(1, clampTickets() - 1); onChange(fTickets); });
+  $("#tPlus").addEventListener("click", function(){ fTickets.value = Math.min(10, seatsFree(), clampTickets() + 1); onChange(fTickets); });
+
+  var touched = {};
+  var ERR_ICON = '<svg aria-hidden="true"><use href="#i-alert"/></svg>';
+  function setErr(input, errId, msg){
+    var e = document.getElementById(errId);
+    e.innerHTML = msg ? ERR_ICON + "<span>" + msg + "</span>" : "";
+    if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
+    return !msg;
+  }
+  var checks = {
+    name: function(){ var v = $("#fName").value.trim(); return setErr($("#fName"), "eName", !v ? "Tell us whose name the booking is under." : v.length < 2 ? "That name looks too short. Use your full name." : ""); },
+    email: function(){ var v = $("#fEmail").value.trim(); return setErr($("#fEmail"), "eEmail", !v ? "Add an email so we can send your tickets." : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? "That email is missing something. Check it looks like name@example.com." : ""); },
+    show: function(){ return setErr(fShow, "eShow", fShow.value ? "" : "Pick one of the four shows."); },
+    date: function(){ return setErr(fDate, "eDate", fDate.value ? "" : "Pick a day in the next two weeks."); },
+    session: function(){
+      var v = sessionVal(); var msg = "";
+      if (!v) msg = "Pick a session time.";
+      else if (fDate.value && sessionPassed(fDate.value, v)) msg = "That session has already started. Pick a later time or another day.";
+      var radios = form.querySelectorAll('input[name="session"]');
+      radios.forEach(function(r){ r.setAttribute("aria-invalid", msg ? "true" : "false"); });
+      return setErr(null, "eSession", msg);
+    },
+    tickets: function(){
+      var raw = fTickets.value.trim(); var v = parseInt(raw, 10); var free = seatsFree(); var msg = "";
+      if (!raw || isNaN(v) || String(v) !== raw) msg = "Enter a whole number of tickets.";
+      else if (v < 1) msg = "Book at least one ticket.";
+      else if (v > 10) msg = "Ten tickets at most online. For bigger groups, email us.";
+      else if (v > free) msg = "Only " + free + " seats are left for this session.";
+      return setErr(fTickets, "eTickets", msg);
+    }
+  };
+  function onChange(target){
+    if (target === fDate) updateSessions();
+    updatePlan();
+    var key = target.name; if (target === fTickets) key = "tickets";
+    touched[key] = true;
+    Object.keys(touched).forEach(function(k){ if (checks[k]) checks[k](); });
+  }
+  ["#fName","#fEmail"].forEach(function(s){
+    var inp = $(s);
+    inp.addEventListener("blur", function(){ if (inp.value.trim()) { touched[inp.name] = true; checks[inp.name](); } });
+    inp.addEventListener("input", function(){ if (touched[inp.name]) checks[inp.name](); });
+  });
+  [fShow, fDate].forEach(function(s){ s.addEventListener("change", function(){ onChange(s); }); });
+  fTickets.addEventListener("input", function(){ onChange(fTickets); });
+  form.querySelectorAll('input[name="session"]').forEach(function(r){ r.addEventListener("change", function(){ onChange(r); }); });
+
+  function prefill(showId, dateIso, time){
+    fShow.value = showId; touched.show = true;
+    if (dateIso){ fDate.value = dateIso; touched.date = true; updateSessions(); }
+    if (time){ var r = form.querySelector('input[name="session"][value="' + time + '"]'); if (r && !r.disabled){ r.checked = true; touched.session = true; } }
+    updatePlan(); Object.keys(touched).forEach(function(k){ checks[k](); });
+    $("#formStatus").innerHTML = "";
+    setTimeout(function(){ $("#fName").focus({preventScroll:true}); }, reduce ? 0 : 450);
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var order = ["name","email","show","date","tickets","session"];
+    var firstBad = null;
+    order.forEach(function(k){ touched[k] = true; var ok = checks[k](); if (!ok && !firstBad) firstBad = k; });
+    var status = $("#formStatus");
+    if (firstBad){
+      var map = {name:"#fName", email:"#fEmail", show:"#fShow", date:"#fDate", tickets:"#fTickets", session:'input[name="session"]:not(:disabled)'};
+      var count = order.filter(function(k){ return document.getElementById("e" + k.charAt(0).toUpperCase() + k.slice(1)).textContent; }).length;
+      status.innerHTML = '<p class="err" role="alert">' + ERR_ICON + '<span>' + count + (count === 1 ? " thing needs" : " things need") + ' fixing before we can hold your seats.</span></p>';
+      $(map[firstBad]).focus();
+      return;
+    }
+    var btn = $("#submitBtn"); btn.disabled = true; btn.firstChild.textContent = "Holding seats… ";
+    setTimeout(function(){
+      var s = SHOWS.filter(function(x){ return x.id === fShow.value; })[0];
+      var n = parseInt(fTickets.value, 10);
+      var d = new Date(fDate.value + "T12:00");
+      var name = $("#fName").value.trim().split(/\s+/)[0];
+      status.innerHTML = '<div class="success" role="status"><div class="main"><h3>You\'re booked, ' + escapeHtml(name) + '.</h3>' +
+        '<dl><dt>Show</dt><dd>' + s.title + '</dd><dt>When</dt><dd>' + nice(d) + ', ' + sessionVal() + '</dd>' +
+        '<dt>Seats</dt><dd>' + n + ' · ' + gbp(s.price * n) + ' to pay at the box office</dd></dl>' +
+        '<p style="margin:0">Your tickets are on their way to ' + escapeHtml($("#fEmail").value.trim()) + '. Doors open 15 minutes before the show.</p></div>' +
+        '<div class="stub" aria-hidden="true"><span>' + DAY[d.getDay()] + ' ' + d.getDate() + ' ' + MON[d.getMonth()] + '</span><b>' + sessionVal() + '</b><span>' + n + (n === 1 ? ' seat' : ' seats') + '</span></div></div>';
+      status.focus();
+      btn.disabled = false; btn.firstChild.textContent = "Book more seats ";
+    }, reduce ? 150 : 700);
+  });
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  updatePlan();
+
+  /* ---------- accordion ---------- */
+  document.querySelectorAll(".acc-btn").forEach(function(b){
+    b.addEventListener("click", function(){
+      var open = b.getAttribute("aria-expanded") === "true";
+      b.setAttribute("aria-expanded", String(!open));
+      b.closest(".acc-item").classList.toggle("open", !open);
+    });
+  });
+
+  /* ---------- mobile drawer ---------- */
+  var drawer = $("#drawer"), menuBtn = $("#menuBtn"), closeBtn = $("#closeBtn");
+  function setDrawer(open){
+    drawer.classList.toggle("open", open);
+    menuBtn.setAttribute("aria-expanded", String(open));
+    document.body.style.overflow = open ? "hidden" : "";
+    if (open){ setTimeout(function(){ closeBtn.focus(); }, 50); } else { menuBtn.focus({preventScroll:true}); }
+  }
+  menuBtn.addEventListener("click", function(){ setDrawer(true); });
+  closeBtn.addEventListener("click", function(){ setDrawer(false); });
+  drawer.querySelectorAll("[data-close]").forEach(function(a){ a.addEventListener("click", function(){ drawer.classList.remove("open"); menuBtn.setAttribute("aria-expanded","false"); document.body.style.overflow = ""; }); });
+  drawer.addEventListener("keydown", function(e){
+    if (e.key === "Escape") setDrawer(false);
+    if (e.key === "Tab"){
+      var f = drawer.querySelectorAll("a,button"); var first = f[0], last = f[f.length-1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  });
+  window.addEventListener("resize", function(){ if (window.innerWidth > 980 && drawer.classList.contains("open")) setDrawer(false); });
+
+  renderBasket(false);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+{
+  "schema_version": "2.0.0",
+  "url": "examples/benchmark-store-loomandleaf/layoza/index.html",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; inp_ms is a lab interaction proxy (worst Event Timing duration >= 16ms across scripted Tab/Shift+Tab presses and, when a mobile menu toggle exists, its click), not field INP. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 29 primitive shapes, ~760x620px, 19 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 7 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 11 primitive shapes, ~320x400px, 4 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 6 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 7 fill colors"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@6); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.53,
+      "contrast_failures": 0,
+      "lcp_ms": 2228,
+      "cls": 0.001,
+      "inp_proxy_ms": 32,
+      "mobile_menu": null,
+      "screenshot_path": ".layoza\\screenshots\\desktop.png"
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "primary-action-below-fold",
+          "severity": "warning",
+          "detail": "No hero call-to-action is fully visible in the first 1024px at 768px wide"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Half apron\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Quick view\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Quick view\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Mill stripe tea towel\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Quick view\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 29 primitive shapes, ~760x620px, 19 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 7 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 11 primitive shapes, ~320x400px, 4 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 6 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 7 fill colors"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@6); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.53,
+      "contrast_failures": 0,
+      "lcp_ms": 2184,
+      "cls": 0.0003,
+      "inp_proxy_ms": 16,
+      "mobile_menu": null,
+      "screenshot_path": ".layoza\\screenshots\\tablet.png"
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "label-wrap",
+          "severity": "warning",
+          "detail": "<button> \"Herringbone tea towel\" wraps onto 2 lines"
+        },
+        {
+          "rule": "label-wrap",
+          "severity": "warning",
+          "detail": "<button> \"Checked cushion cover\" wraps onto 2 lines"
+        },
+        {
+          "rule": "primary-action-below-fold",
+          "severity": "warning",
+          "detail": "No hero call-to-action is fully visible in the first 812px at 375px wide"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<input#email> \"\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Half apron\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Quick view\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Quick view\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "focus-obscured",
+          "severity": "error",
+          "detail": "<button> \"Mill stripe tea towel\" is hidden under the sticky header when focused (add scroll-padding-top)"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 29 primitive shapes, ~760x620px, 19 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 7 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 11 primitive shapes, ~320x400px, 4 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 6 fill colors"
+        },
+        {
+          "rule": "craft-shape-assembled-illustration",
+          "severity": "critique",
+          "detail": "inline <svg> scene: 8 primitive shapes, ~320x400px, 7 fill colors"
+        },
+        {
+          "rule": "render-blocking-fonts",
+          "severity": "warning",
+          "detail": "1 font stylesheet(s) block first paint (https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@6); preconnect, then load with media=\"print\" onload=\"this.media='all'\" plus a <noscript> copy and metric-matched fallbacks"
+        },
+        {
+          "rule": "svg-text-illegible",
+          "severity": "warning",
+          "detail": "6 SVG text label(s) render under 9px at 375px after viewBox scaling: \"warp beam\" 8.0px, \"heddles\" 8.0px, \"reed\" 8.0px; enlarge them, hide them at this width, or move the content into HTML"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 5.53,
+      "contrast_failures": 0,
+      "lcp_ms": 1924,
+      "cls": 0,
+      "inp_proxy_ms": 24,
+      "mobile_menu": null,
+      "screenshot_path": ".layoza\\screenshots\\mobile.png"
+    }
+  ],
+  "min_contrast_ratio": 5.53,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 0,
+  "decorative_contrast_samples": [],
+  "contrast_checked_elements": 108,
+  "contrast_indeterminate_elements": 6,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 21,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 2228,
+  "cls": 0.001,
+  "inp_ms": 32,
+  "inp_metric": "lab_interaction_proxy",
+  "inp_event_entries": 20,
+  "h1_to_body_ratio": 4.97,
+  "max_line_length_ch": 56,
+  "font_families": [
+    "archivo"
+  ],
+  "font_family_count": 1,
+  "site_dna": {
+    "title": "Loom & Leaf — linen woven in a Lancashire shed",
+    "lang": "en-GB",
+    "page_background": "#EEF1F0",
+    "text_colors": [
+      {
+        "value": "#1F1B1A",
+        "count": 936
+      },
+      {
+        "value": "#F6EDE6",
+        "count": 651
+      },
+      {
+        "value": "#464C50",
+        "count": 503
+      },
+      {
+        "value": "#E3EAEE",
+        "count": 251
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 201
+      },
+      {
+        "value": "#B9C8D0",
+        "count": 159
+      },
+      {
+        "value": "#EBCFC4",
+        "count": 124
+      },
+      {
+        "value": "#C9C2BA",
+        "count": 96
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#EEF1F0",
+        "count": 1468.8
+      },
+      {
+        "value": "#E1E7E6",
+        "count": 1432.2149999999995
+      },
+      {
+        "value": "#8F2E1F",
+        "count": 1323.5465219726561
+      },
+      {
+        "value": "#2F4450",
+        "count": 1126.252
+      },
+      {
+        "value": "#1F1B1A",
+        "count": 920.6234455566406
+      },
+      {
+        "value": "#FFFFFF",
+        "count": 381.90668750000003
+      },
+      {
+        "value": "#D9CBB0",
+        "count": 2.3040000000000003
+      },
+      {
+        "value": "#5E6E45",
+        "count": 2.1799999999999997
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Archivo",
+        "count": 3065
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "99.36px",
+        "weight": "800",
+        "line_height": "94.392px",
+        "letter_spacing": "-1.9872px",
+        "family": "Archivo"
+      },
+      "h2": {
+        "size": "84px",
+        "weight": "800",
+        "line_height": "79.8px",
+        "letter_spacing": "-1.68px",
+        "family": "Archivo"
+      },
+      "h3": {
+        "size": "24px",
+        "weight": "800",
+        "line_height": "25.2px",
+        "letter_spacing": "-0.48px",
+        "family": "Archivo"
+      },
+      "p": {
+        "size": "20px",
+        "weight": "400",
+        "line_height": "31px",
+        "letter_spacing": "normal",
+        "family": "Archivo"
+      }
+    },
+    "radii": [
+      {
+        "value": "50%",
+        "count": 36
+      },
+      {
+        "value": "6px",
+        "count": 12
+      },
+      {
+        "value": "3px",
+        "count": 11
+      },
+      {
+        "value": "2px",
+        "count": 3
+      },
+      {
+        "value": "13px",
+        "count": 1
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "536.328px",
+        "count": 2
+      },
+      {
+        "value": "389.64px",
+        "count": 1
+      },
+      {
+        "value": "513.408px",
+        "count": 1
+      },
+      {
+        "value": "453.816px",
+        "count": 1
+      },
+      {
+        "value": "404.8px",
+        "count": 1
+      },
+      {
+        "value": "378.18px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--sky": "#EEF1F0",
+      "--sky-2": "#E1E7E6",
+      "--soot": "#1F1B1A",
+      "--ink-2": "#464C50",
+      "--brick": "#8F2E1F",
+      "--brick-deep": "#6E2116",
+      "--brick-hi": "#B5452F",
+      "--slate": "#2F4450",
+      "--slate-deep": "#22333C",
+      "--on-slate": "#E3EAEE",
+      "--on-slate-2": "#B9C8D0",
+      "--linen": "#E6DCC8",
+      "--linen-2": "#D6C9AF",
+      "--shuttle": "#C68A2E",
+      "--on-brick": "#F6EDE6",
+      "--on-brick-2": "#EBCFC4",
+      "--rule": "#C3CCCB",
+      "--ok": "#2C6B45",
+      "--err": "#A3261B",
+      "--font": "\"Archivo\",\"Archivo Fallback\",system-ui,sans-serif",
+      "--r-s": "3px",
+      "--r-m": "6px",
+      "--ease": "cubic-bezier(.2,.8,.2,1)",
+      "--hdr": "72px"
+    },
+    "framework_hints": [],
+    "motion_libraries": [],
+    "css_keyframes": 3
+  },
+  "craft_critique": {
+    "craft-shape-assembled-illustration": 5
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-shape-assembled-illustration": 5
+    },
+    "tablet": {
+      "craft-shape-assembled-illustration": 5
+    },
+    "mobile": {
+      "craft-shape-assembled-illustration": 5
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

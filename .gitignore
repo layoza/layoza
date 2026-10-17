@@ -1,0 +1,22 @@
+/target/
+node_modules/
+.layoza-tmp/
+.layoza/baselines/
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+
+# Benchmark screenshots stay local (judge/QA evidence, ~80 MB); pages and RESULTS.md are committed
+examples/benchmark-*/**/*.png
+examples/benchmark-*/**/*.jpg
+examples/benchmark-*/**/*.jpeg
+.layoza/hook-state.json
+vendor/
+.claude/skills/
+.agents/skills/
+
+# Local working notes (handoff, task list); never published
+.internal/

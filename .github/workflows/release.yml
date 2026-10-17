@@ -1,0 +1,94 @@
+name: Release
+
+# Push a tag like v0.1.0 to build binaries for every platform, attach them to a
+# GitHub release and publish the npm package with the binaries bundled in vendor/.
+# npm auth: either configure trusted publishing for this workflow on npmjs.com (no secret
+# needed), or add an NPM_TOKEN secret holding a granular write token with 2FA bypass.
+# Trusted publishing can only be set up once the package exists, so the first release
+# usually needs NPM_TOKEN.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, target: x86_64-pc-windows-msvc, npm: win32-x64, exe: layoza.exe }
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu, npm: linux-x64, exe: layoza }
+          - { os: ubuntu-22.04-arm, target: aarch64-unknown-linux-gnu, npm: linux-arm64, exe: layoza }
+          - { os: macos-15, target: aarch64-apple-darwin, npm: darwin-arm64, exe: layoza }
+          - { os: macos-15-intel, target: x86_64-apple-darwin, npm: darwin-x64, exe: layoza }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - run: cargo build --release --locked --bin layoza --target ${{ matrix.target }}
+      - name: Stage binary
+        shell: bash
+        run: |
+          mkdir -p dist/${{ matrix.npm }}
+          cp target/${{ matrix.target }}/release/${{ matrix.exe }} dist/${{ matrix.npm }}/
+          dist/${{ matrix.npm }}/${{ matrix.exe }} --version
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.npm }}
+          path: dist/${{ matrix.npm }}
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bin-*
+          path: artifacts
+      - name: Assemble vendor/ and release archives
+        run: |
+          mkdir -p vendor release
+          for d in artifacts/bin-*; do
+            p=${d#artifacts/bin-}
+            mkdir -p vendor/$p && cp $d/* vendor/$p/
+            chmod +x vendor/$p/* || true
+            tar -czf release/layoza-${GITHUB_REF_NAME}-$p.tar.gz -C vendor/$p .
+          done
+          (cd release && sha256sum * > SHA256SUMS.txt)
+      - name: Check every platform binary is present
+        run: |
+          for p in win32-x64 linux-x64 linux-arm64 darwin-arm64 darwin-x64; do
+            ls vendor/$p/layoza* >/dev/null || { echo "missing vendor/$p"; exit 1; }
+          done
+      - name: Check tag matches package version
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        # Re-runs after a failed npm publish reuse the existing release.
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1             || gh release create "$GITHUB_REF_NAME" release/* --title "$GITHUB_REF_NAME" --notes-file CHANGELOG.md --verify-tag
+      - uses: actions/setup-node@v4
+        with:
+          # npm 11.5+ (Node 24) is needed for trusted publishing
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Smoke-test the packed package without Rust
+        run: |
+          npm pack
+          tgz="$PWD/$(ls layoza-*.tgz)"
+          cd "$(mktemp -d)"
+          PATH="$(dirname "$(command -v node)"):/usr/bin:/bin" npm exec --yes --package="$tgz" -- layoza --version
+          rm "$tgz"
+      - name: Publish to npm
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
