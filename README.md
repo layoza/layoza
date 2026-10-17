@@ -14,9 +14,9 @@
 
 <img src="docs/assets/banner.webp" alt="Four websites built by an AI agent using Layoza from one-line briefs: a kinetic agency site, a linen store, a multi-shop sales dashboard and a seafood restaurant, each shown at desktop and phone width" width="100%">
 
-<a href="docs/assets/video/layoza-showcase-web.mp4"><img src="docs/assets/video-poster.webp" alt="Play the 2½-minute showcase video: Layoza next to Claude frontend-design, impeccable, ui-ux-pro-max, taste-skill and plain Claude on the same four briefs, recorded in a real browser" width="100%"></a>
+<a href="https://github.com/layoza/layoza/raw/main/docs/assets/video/layoza-showcase-web.mp4"><img src="docs/assets/video-preview.webp" alt="Animated preview of the showcase video: Layoza next to Claude frontend-design, impeccable, ui-ux-pro-max, taste-skill and plain Claude on the same brief, recorded live in a real browser" width="100%"></a>
 
-▶ [Watch the 2½-minute showcase](docs/assets/video/layoza-showcase-web.mp4), recorded live in Chromium
+▶ [Download the full 2½-minute showcase (MP4, 17 MB)](https://github.com/layoza/layoza/raw/main/docs/assets/video/layoza-showcase-web.mp4): all four briefs, recorded live in Chromium
 
 </div>
 
