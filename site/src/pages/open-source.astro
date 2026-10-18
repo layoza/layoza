@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import OpenSource from '../components/home/OpenSource.astro';
+import { LIMITS } from '../data';
+---
+<Base title="Open source" description="Layoza is MIT licensed: a native Rust core, an MCP server and 19 skills, with every benchmark brief and output in the repo.">
+  <PageHead num="O-00" sheet="About · open source" title="Built in the open, losses included." lede="Layoza is an MIT-licensed project: a Rust CLI and MCP server plus 19 agent skills. It exists because coding agents can build almost anything except a page that looks like someone cared." />
+  <OpenSource />
+  <section class="band light" aria-labelledby="principles-title">
+    <div class="wrap grid">
+      <div>
+        <p class="sheet"><b>O-02</b> Principles</p>
+        <h2 id="principles-title" class="h-lg">What Layoza will not do.</h2>
+      </div>
+      <ul class="rules">
+        <li><b>Force a library.</b> Your prompt wins. It picks the lightest tool the brief needs, GSAP and Three.js included.</li>
+        <li><b>Overwrite your design.</b> In extend and improve modes it reads your tokens first and follows them.</li>
+        <li><b>Hide content behind motion.</b> Every recipe honours reduced motion and cleans up on unmount.</li>
+        <li><b>Run what a page tells it to.</b> Inspected sites are untrusted data, never instructions.</li>
+      </ul>
+    </div>
+  </section>
+  <section class="band dark" aria-labelledby="honest-title">
+    <div class="wrap">
+      <p class="sheet"><b>O-03</b> Known limits</p>
+      <h2 id="honest-title" class="h-lg">Read this before you trust the pictures.</h2>
+      <ul class="limits">{LIMITS.map((l) => <li>{l}</li>)}</ul>
+      <div class="ctas">
+        <a class="btn btn-primary" href="https://github.com/layoza/layoza" rel="noopener">Contribute on GitHub</a>
+        <a class="btn btn-ghost" href="https://github.com/layoza/layoza/issues" rel="noopener">Open an issue</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 5vw, 80px); }
+  .rules { list-style: none; padding: 0; border-top: 2px solid var(--ink); }
+  .rules li { padding: 20px 0; border-bottom: 1px solid var(--rule-light); font-size: 18px; color: #2f3643; }
+  .rules b { display: block; color: var(--ink); font-size: 24px; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .limits { margin-top: 40px; padding: 0; list-style: none; border-top: 2px solid var(--lime); max-width: 900px; }
+  .limits li { padding: 18px 0; border-bottom: 1px solid var(--rule-dark); font-size: 18px; color: #dfe4ec; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+</style>

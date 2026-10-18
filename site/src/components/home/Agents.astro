@@ -1,0 +1,133 @@
+---
+import { AGENTS } from '../../data';
+
+// An illustrative request per agent, and the Layoza tools the router skill calls for it.
+// Tool names are real MCP tools; the request text is an example, not a recorded session.
+const SAMPLES: Record<string, { ask: string; calls: string[] }> = {
+  'Claude Code': { ask: 'Build the landing page for our open-source CLI.', calls: ['get_design_system', 'deal_mechanics', 'capture_screenshots'] },
+  Cursor: { ask: 'Add a pricing section that matches the rest of the site.', calls: ['inspect_project', 'extract_site_dna', 'audit_accessibility'] },
+  Codex: { ask: 'Redesign the docs home without breaking any links.', calls: ['inspect_project', 'get_design_system', 'verify_functional'] },
+  OpenCode: { ask: 'The hero feels generic. Improve it.', calls: ['inspect_site', 'recommend_layout', 'compare_before_after'] },
+  Windsurf: { ask: 'Animate the case-study page, calmly.', calls: ['deal_mechanics', 'recommend_animation', 'audit_performance'] },
+  Antigravity: { ask: 'Make a booking site for a ceramics studio.', calls: ['get_design_system', 'deal_mechanics', 'capture_screenshots'] },
+};
+const n = AGENTS.length;
+const nodes = AGENTS.map((a, i) => {
+  const ang = (-90 + (360 / n) * i) * (Math.PI / 180);
+  return { ...a, x: 50 + 40 * Math.cos(ang), y: 50 + 40 * Math.sin(ang), ...SAMPLES[a.name] };
+});
+---
+<section class="band light agents" aria-labelledby="agents-title" data-agents>
+  <div class="wrap">
+    <p class="sheet"><b>06</b> Agents</p>
+    <div class="head">
+      <h2 id="agents-title" class="h-lg caps" data-reveal>Your agent. <span class="accent">Better design.</span></h2>
+      <p class="lede" data-reveal="0.1">Layoza is an MCP server plus skills, so it plugs into the agent you already use. Pick one to see how it connects.</p>
+    </div>
+    <div class="grid">
+      <div class="orbit">
+        <svg class="rings" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="40" /><circle cx="50" cy="50" r="27" class="inner" />
+          {nodes.map((nd, i) => (
+            <line x1="50" y1="50" x2={nd.x} y2={nd.y} data-link={i} pathLength="1" />
+          ))}
+        </svg>
+        <div class="hub"><img src="/icon-128.png" alt="" width="64" height="64" loading="lazy" /><span class="mono">layoza-mcp</span></div>
+        <div class="nodes" role="radiogroup" aria-label="Choose an agent">
+          {nodes.map((nd, i) => (
+            <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="node" data-agent={i} style={`left:${nd.x}%;top:${nd.y}%`}>{nd.name}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="panels">
+        {nodes.map((nd, i) => (
+          <article class="panel" data-panel={i} hidden={i !== 0}>
+            <p class="k mono">Connected · {nd.where}</p>
+            <h3>{nd.name}</h3>
+            <div class="block">
+              <p class="lab mono">Setup</p>
+              <code class="code">{nd.cmd}</code>
+            </div>
+            <div class="block">
+              <p class="lab mono">Example request</p>
+              <p class="ask">“{nd.ask}”</p>
+            </div>
+            <div class="block">
+              <p class="lab mono">Layoza tools it reaches for</p>
+              <ol class="calls mono">{nd.calls.map((c) => <li>{c}</li>)}</ol>
+            </div>
+            <p class="fine mono">Illustration of the flow. Not a live session.</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.querySelector<HTMLElement>('[data-agents]');
+    if (!root) return;
+    const btns = [...root.querySelectorAll<HTMLButtonElement>('[data-agent]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const links = [...root.querySelectorAll<SVGLineElement>('[data-link]')];
+    const select = (i: number, focus = false) => {
+      btns.forEach((b, j) => { b.setAttribute('aria-checked', String(i === j)); b.tabIndex = i === j ? 0 : -1; });
+      panels.forEach((p, j) => (p.hidden = i !== j));
+      links.forEach((l, j) => l.classList.toggle('on', i === j));
+      if (focus) btns[i].focus();
+    };
+    btns.forEach((b, i) => {
+      b.onclick = () => select(i);
+      b.onkeydown = (e) => {
+        const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        select((i + d + btns.length) % btns.length, true);
+      };
+    });
+    select(0);
+  })();
+</script>
+
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: center; }
+  .orbit { position: relative; aspect-ratio: 1; width: min(100%, 600px); margin-inline: auto; }
+  .rings { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .rings circle { fill: none; stroke: var(--rule-light); stroke-width: 0.3; }
+  .rings .inner { stroke-dasharray: 1 1.4; stroke: rgba(129, 104, 255, 0.5); }
+  :global(.js-motion) .rings .inner { animation: spin 40s linear infinite; transform-origin: 50% 50%; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .rings line { stroke: var(--uv); stroke-width: 0.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.6s var(--ease); }
+  .rings line.on { stroke-dashoffset: 0; }
+  .hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 8px; background: var(--paper); padding: 14px; }
+  .hub img { width: clamp(52px, 6vw, 76px); height: auto; border-radius: 16px; }
+  .hub span { font-size: 12px; color: var(--mute-light); }
+  .node { position: absolute; transform: translate(-50%, -50%); min-height: 44px; padding: 0 16px; border: 1.5px solid var(--ink); background: var(--white); color: var(--ink); font-weight: 700; font-size: 15px; cursor: pointer; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+  .node:hover { background: var(--silver); }
+  .node[aria-checked='true'] { background: var(--ink); color: var(--lime); }
+
+  .panel { border-top: 2px solid var(--ink); padding-top: 18px; }
+  :global(.js-motion) .panel:not([hidden]) { animation: pin 0.45s var(--ease); }
+  @keyframes pin { from { opacity: 0; transform: translateX(12px); } }
+  .k { font-size: 13px; color: var(--uv); text-transform: uppercase; letter-spacing: 0.06em; }
+  h3 { font-size: clamp(34px, 3.6vw, 56px); letter-spacing: -0.04em; line-height: 1; margin: 8px 0 22px; }
+  .block { margin-bottom: 18px; }
+  .lab { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mute-light); margin-bottom: 6px; }
+  .code { display: block; font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--white); background: var(--ink); padding: 12px 14px; }
+  .ask { font-size: clamp(20px, 1.8vw, 26px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
+  .calls { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; counter-reset: c; font-size: 14px; }
+  .calls li { counter-increment: c; border: 1px solid var(--rule-light); padding: 6px 10px; background: var(--white); }
+  .calls li::before { content: counter(c) ' '; color: var(--uv); }
+  .fine { font-size: 12px; color: var(--mute-light); }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .orbit { width: min(100%, 460px); }
+  }
+  @media (max-width: 520px) {
+    .node { font-size: 12px; padding: 0 8px; }
+    .hub span { display: none; }
+  }
+</style>

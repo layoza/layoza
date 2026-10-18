@@ -18,6 +18,7 @@
     "intensity": "wild",
     "tier": "webgl",
     "headline_interlock": true,
+    "composition": "layered",
     "blueprint": "Full-viewport section, min-height 100svh, padding clamp(4rem, 10vw, 9rem) clamp(1rem, 5vw, 4rem). Headline is an h1 with two block spans: line one top-aligned, line two bottom-aligned, size clamp(3rem, 10vw, 10rem), line-height 0.9. Between them a gap element whose height is a CSS variable --gap, starting at 0.4em and opening to clamp(14rem, 34vw, 30rem). A WebGL canvas (the product: bottle, sneaker, speaker) is absolutely centred in that gap at z-index 1; the headline spans sit at z-index 2 but never overlap the object footprint. Below line two: one-sentence deck at clamp(1rem, 1.4vw, 1.25rem), primary CTA and price chip. States: idle (lines parted, object slowly turning), hover on canvas (object faces cursor up to 12deg), in-view, done (gap fully open, CTA focusable).",
     "motion": "Load: lines start almost touching, then part over 900ms cubic-bezier(.2,.8,.2,1) while the object scales from 0.6 to 1 into the opening. Scroll progress 0-40%: object rotates 0 to 120deg on Y. 40-80%: lines drift a further 6vh apart and the object tilts to show its underside. 80-100%: object settles at three-quarter view, a soft floor shadow sharpens, CTA lifts 8px into place.",
     "still_check": "At 50% both headline lines are fully set and readable above and below a fully lit product, no letters cut by the canvas, CTA visible. 25% shows the object front-on with a tighter gap; 75% shows it tilted with wider spacing.",
@@ -48,6 +49,7 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": true,
+    "composition": "centred",
     "blueprint": "One-line headline at clamp(3.5rem, 12vw, 12rem), weight 800, centred in a 100svh section with padding clamp(4rem, 10vw, 9rem). The real h1 carries the text. Two aria-hidden copies are stacked exactly over it: the top copy in ink A (paper colour on black band) clipped to the upper half with clip-path inset(0 0 50% 0), the bottom copy in ink B (accent on paper) clipped to the lower half. A diagonal ribbon 4px tall, rotated -4deg, runs across the full width along the seam, carrying a tiny marquee of the studio's services at 0.75rem. Background splits in the same two inks. States: idle, hover on headline (seam angle eases to 0deg), in-view, done.",
     "motion": "Load: seam draws across left to right in 700ms ease-out, then the halves separate vertically by 0.08em. Scroll progress 0-50%: seam angle rotates from -4deg to +4deg, re-cutting letters so each moment shows a different split. 50-100%: halves slide horizontally opposite each other by up to 0.3em, then re-register flush at 100%. Ribbon marquee runs at a constant 40s loop.",
     "still_check": "At 50% the headline reads as one word in two inks with the seam level, both halves aligned enough to read. 25% shows a downward-tilted seam, 75% shows the halves offset sideways, both still legible.",
@@ -78,6 +80,7 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": true,
+    "composition": "layered",
     "blueprint": "Section 100svh, padding clamp(4rem, 10vw, 9rem). A real h1 sits in normal flow at the top left, clamp(2.5rem, 6vw, 5.5rem), fully readable. Behind and around it a full-width SVG ribbon: a wide S-curve band 9vw tall in accent colour, carrying the same headline repeated on a textPath at clamp(1.5rem, 4vw, 3.5rem) in the paper colour. The ribbon threads through a central portrait or work image (clamp(16rem, 30vw, 26rem) wide), passing behind it on the left and in front on the right using two path segments at different z-index. Below: name, role line, two links. States: idle, hover on ribbon (letter-spacing widens 0.02em), in-view, done.",
     "motion": "Scroll progress 0-100% moves startOffset of the textPath from 0% to -60%, so the words travel along the curve like a conveyor. 0-30%: ribbon unrolls via stroke-dashoffset from left. 30-70%: travel. 70-100%: travel slows on an ease-out mapping and the ribbon curvature relaxes 15% flatter. Load: image fades up 400ms.",
     "still_check": "At 50% the DOM h1 is fully readable, the ribbon fully drawn, its text mid-travel with whole words visible, the image framed by the ribbon passing behind and in front. 25% shows the ribbon partly unrolled; 75% shows flatter curvature.",
@@ -108,6 +111,7 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": true,
+    "composition": "layered",
     "blueprint": "Section 100svh, overflow hidden. Three stacked layers in one grid cell: back layer is the sky and far ridge photo, middle layer is the h1 at clamp(4rem, 14vw, 14rem), weight 900, letters spanning the width, bottom edge sitting low; front layer is a cut-out PNG or AVIF of the near ridge, peak or landmark with a transparent sky, so the subject stands in front of the lower parts of some letters and behind others are clear. Subhead and CTA sit in a frosted strip at the bottom, padding clamp(1rem, 3vw, 2rem). z-order: back 0, h1 1, cut-out 2, strip 3. States: idle, in-view, done; no hover dependence.",
     "motion": "Scroll progress 0-100% drives depth: back layer moves 4vh, h1 moves 12vh upward, cut-out moves 0. 0-40%: the cut-out covers about 30% of letter height. 40-100%: the h1 rises until letters clear the peaks almost entirely, revealing the full word. Load: h1 letters rise 0.2em with 40ms stagger, 600ms ease-out.",
     "still_check": "At 50% the word is recognisable with the peak overlapping only the lower third of two or three letters, strip readable. 25% shows deeper occlusion; 75% shows letters mostly clear above the ridge.",
@@ -142,6 +146,7 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": true,
+    "composition": "object-wrap",
     "blueprint": "Two-thirds width text column inside a max-width 78rem container, padding clamp(4rem, 10vw, 9rem) clamp(1rem, 5vw, 4rem). A cut-out object image (a ceramic pill bottle, an anatomical model, a seed pod) floats right at clamp(14rem, 32vw, 28rem) with shape-outside: url(object.png) and shape-margin 1.2rem, so the h1 at clamp(2.75rem, 6.5vw, 6rem) and the 2-sentence lede wrap tightly along the object's silhouette. A small caption with a hairline leader points to one detail of the object. CTA pair below. States: idle, in-view (caption leader drawn), hover on caption (object detail outline highlights), done.",
     "motion": "On entering view the object fades from 0 to 1 opacity and rises 12px over 600ms ease-out; the caption hairline draws in 400ms after a 300ms delay. Scroll progress 0-100% rotates the object by only 3deg, never changing the wrap outline enough to reflow text.",
     "still_check": "At 50% the headline lines visibly hug the object contour with no awkward single-word lines, caption and CTA readable. 25% and 75% differ only in a slight object rotation and the caption leader state.",
@@ -172,6 +177,7 @@
     "intensity": "bold",
     "tier": "css",
     "headline_interlock": true,
+    "composition": "poster",
     "blueprint": "Section 100svh with a flat dough-coloured background. The h1, one or two short words at clamp(5rem, 18vw, 18rem), weight 900, tight tracking, is filled with a muted looping video of the trade (bread in the oven, a barber's chair, kiln glow) using background-clip: text on a wrapper, or an SVG mask where video clip is needed. A thin outline stroke keeps letter edges defined. Beneath: opening hours chip, address line, and a Order or Book button. A small aria-hidden caption reads what the video shows. States: idle, hover on h1 (video playback rate 1 to 0.6), in-view, done.",
     "motion": "Scroll progress 0-50%: the mask letters scale from 1.0 to 1.6 from the centre, enlarging the windows onto the footage. 50-80%: the background outside the letters fades to 15% opacity, letting the full video show. 80-100%: it fades back to solid and letters return to 1.15, setting up the next section.",
     "still_check": "At 50% the word is crisply readable as large letters full of moving footage, edges outlined, hours chip visible. 25% shows smaller letters on solid ground; 75% shows the video spilling beyond the letters at low opacity.",
@@ -202,6 +208,7 @@
     "intensity": "wild",
     "tier": "webgl",
     "headline_interlock": true,
+    "composition": "centred",
     "blueprint": "Centred h1 at clamp(3rem, 9vw, 9rem) reading, for example, Built like a [object] for your desk. The bracketed word is a real span with the word in it, but its visible box is an inline canvas sized 1.6em wide by 1.1em tall holding a rotating 3D model of the product, baseline-aligned so the line reads continuously. The span's text is visually hidden yet present for screen readers and selection. Below: deck at clamp(1rem, 1.4vw, 1.25rem), swatch dots that change the model finish, Buy CTA. States: idle (slow spin), hover on object (spins toward cursor), swatch active, in-view, done.",
     "motion": "Load: the word briefly shows as text for 500ms, then the letters fall away 300ms as the model scales into the same slot. Scroll progress 0-60%: the inline model grows from 1.6em to 3.2em wide and the line reflows smoothly around it. 60-100%: model rotates to hero angle and swatch dots stagger in at 60ms each.",
     "still_check": "At 50% the full sentence reads with the model clearly occupying the word slot, other words intact on either side, no overlap. 25% shows a smaller model; 75% shows the larger model at hero angle with swatches visible.",
@@ -225,7 +232,7 @@
       "dashboard",
       "nonprofit",
       "landing",
-      "professional"
+      "devtools"
     ],
     "moods": [
       "trustworthy",
@@ -235,10 +242,11 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": true,
-    "blueprint": "Left-aligned h1 at clamp(2.5rem, 6vw, 5.75rem), max 16ch, inside a 12-column grid, text spanning columns 1-9. The sentence contains a live figure, e.g. We have paid out 41,208,550 to members. The figure is a set of digit windows: each digit is a 1em-tall, overflow-hidden slot with a vertical strip of 0-9 in tabular figures, framed by hairline borders like a mechanical counter, set inline on the baseline. A small source line under the headline states as-of date and source. Right columns 10-12 hold a compact sparkline card. States: idle, in-view (digits roll), done (final value settled).",
+    "composition": "stacked",
+    "blueprint": "Full-width h1 at clamp(2.5rem, 6vw, 5.75rem), max 18ch, on the page grid's left edge with nothing beside it. The sentence contains a live figure, e.g. We have paid out 41,208,550 to members. The figure is a set of digit windows: each digit is a 1em-tall, overflow-hidden slot with a vertical strip of 0-9 in tabular figures, framed by hairline borders like a mechanical counter, set inline on the baseline. A small source line under the headline states as-of date and source. Beneath it a 4rem-tall hairline sparkline strip runs the full container width, plotting the same figure's history with the as-of point marked. States: idle, in-view (digits roll), done (final value settled).",
     "motion": "On first view the digits roll from a lower value to the real figure over 1.4s, least significant digits spinning more turns, ease cubic-bezier(.2,.7,.1,1), settling right to left with 40ms stagger. No scroll-driven motion beyond a 2% opacity shift on the hairlines; after settling it stays still.",
     "still_check": "At 50% the headline shows the final figure fully settled and readable, source line visible, sparkline drawn. 25% and 75% look identical in content; only the hairline tone differs subtly, which is acceptable for a calm hero.",
-    "mobile": "At 375px the figure moves onto its own line at clamp(2.5rem, 12vw, 3.5rem), digit windows keep tabular width, the sparkline card drops beneath the source line at full width.",
+    "mobile": "At 375px the figure moves onto its own line at clamp(2.5rem, 12vw, 3.5rem), digit windows keep tabular width, and the sparkline strip keeps the full width at 3rem tall under the source line.",
     "a11y": "Figure has a visually hidden text span with the final value; the digit strips are aria-hidden. Reduced motion: final digits shown immediately. Source line is real text linked to methodology. Contrast of digits and hairlines meets AA.",
     "avoid": "Screen readers reading every strip digit, rolling to a made-up number, proportional figures that wobble width, re-rolling every time the user scrolls back, values without as-of date.",
     "stack_notes": {
@@ -255,7 +263,8 @@
     "niches": [
       "saas",
       "dashboard",
-      "landing"
+      "landing",
+      "devtools"
     ],
     "moods": [
       "technical",
@@ -265,6 +274,7 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": false,
+    "composition": "split",
     "blueprint": "Split grid 5/7 inside max-width 80rem, padding clamp(4rem, 9vw, 8rem) clamp(1rem, 4vw, 3rem). Left: h1 at clamp(2.5rem, 5.5vw, 5rem), lede, CTA pair, and a one-line hint Try it: type a customer name. Right: a real, working fragment of the product in a framed window: a search input, three filter chips, and an 8-row table of sample records that genuinely filters and sorts. A live counter reads 8 of 8 rows. Window chrome is minimal: title bar with workspace name. States: idle (a ghost cursor types a demo query once), user focus (ghost stops), filtered, empty-result (helpful message), done.",
     "motion": "Load: window rises 16px with 500ms ease-out. After 1.2s idle, a ghost typing demo enters a query at 70ms per character, rows filter with a 180ms height and opacity transition, then clears. User interaction cancels the demo permanently. Scroll progress only tilts the window from 2deg to 0deg over 0-40%.",
     "still_check": "At 50% the headline and the full fragment are visible with all rows legible and controls clearly interactive. 25% shows a slight window tilt; 75% shows it flat, possibly mid-demo with a filtered row set, never empty.",
@@ -296,6 +306,7 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
+    "composition": "full-bleed",
     "blueprint": "Full-bleed art-directed photograph of a styled table or shelf, aspect 16/9 on desktop, with the h1 at clamp(2.25rem, 5vw, 4.5rem) set in a quiet corner of negative space. Five to seven numbered hotspots (28px circles with a 1px ring) sit on real products in the photo, positioned with percentage coordinates. Each opens a small card: thumbnail, name, price, swatch count, Add to bag button. A right-edge index lists the same items in order as a plain list. States: idle (hotspots gently pulse once), hover or focus on hotspot (card opens), active (card pinned), done.",
     "motion": "On view, hotspots appear in numeric order with 80ms stagger and a single 1.2s ring pulse each, then stay still. Cards open with 180ms opacity and 6px translate. Scroll progress 0-100% shifts the photo 3% scale for a gentle settle; nothing else moves.",
     "still_check": "At 50% the photo is sharp, headline readable, all hotspots visible, index list present. 25% and 75% differ only by the slight photo scale; no card should be half-open in a static capture.",
@@ -326,10 +337,11 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
-    "blueprint": "Linen-textured background, section padding clamp(4rem, 10vw, 9rem). Left column: restaurant name as a small wordmark, h1 at clamp(2.5rem, 6vw, 5.5rem) such as Tonight, Thursday 17 October, plus Book a table CTA and walk-in note. Right column: an upright paper menu card clamp(18rem, 32vw, 26rem) wide, rotated 1.5deg, with a soft shadow, set in a serif: five courses with one-line descriptions and prices in a dotted-leader layout, a handwritten-style chef's note line, and a small clipped-on paper slip listing the wine of the night. States: idle, hover on card (rotation eases to 0, shadow lifts), in-view, done.",
+    "composition": "centred",
+    "blueprint": "Linen-textured background, section padding clamp(4rem, 10vw, 9rem). The menu card is the hero, centred: an upright paper card clamp(20rem, 46vw, 34rem) wide, rotated 1.5deg with a soft shadow. Its top line is the h1, set on the card itself at clamp(2.25rem, 5vw, 4.5rem), such as Tonight, Thursday 17 October, under the restaurant name as a small wordmark. Below it, in a serif, five courses with one-line descriptions and prices in a dotted-leader layout, a handwritten-style chef's note line, and a small clipped-on paper slip listing the wine of the night. Under the card, centred, sit the Book a table CTA and the walk-in note. States: idle, hover on card (rotation eases to 0, shadow lifts), in-view, done.",
     "motion": "On view the card slides up 20px and rotates from 3deg to 1.5deg over 700ms ease-out; the clipped slip follows 150ms later. Hover straightens the card over 300ms. Scroll progress 0-100% adds only 8px of parallax between card and slip.",
     "still_check": "At 50% the date headline, every course name and price are readable on the card, slip visible, CTA present. 25% and 75% differ only by the small card-to-slip offset; no blank card.",
-    "mobile": "At 375px the card moves below the headline at 92vw, rotation drops to 0.5deg, the slip tucks under the card bottom edge, and Book becomes a sticky bottom button with the walk-in note.",
+    "mobile": "At 375px the card spans 92vw with rotation 0.5deg, the h1 stays the card's top line at clamp(2rem, 9vw, 2.75rem), the slip tucks under the card bottom edge, and Book becomes a sticky bottom button with the walk-in note.",
     "a11y": "Menu is a real list of courses with prices as text, not an image. Date uses a time element. Reduced motion: card placed at rest without slide. Dotted leaders are decorative and aria-hidden. Serif body meets 4.5:1 on paper.",
     "avoid": "A scanned menu image, stale dates when the menu is not updated (render from data), illegible script fonts for prices, paper texture lowering contrast, card overlapping the CTA.",
     "stack_notes": {
@@ -356,6 +368,7 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
+    "composition": "stacked",
     "blueprint": "Calm signed-in hero inside the app shell, padding clamp(2rem, 5vw, 4rem). Top row: greeting h1 at clamp(1.75rem, 3.5vw, 2.75rem) with the date and one sentence summarising the day (3 things need you, all else on track). Below, a row of three to four meters: a ring for daily goal, a slim bar for budget used, a stepped bar for tasks done, each with a large tabular number, label and delta. Under the meters, one prominent Next up item with a single action button. States: idle, in-view (meters fill), hover on meter (tooltip with breakdown, also visible on focus), done.",
     "motion": "On load meters fill from 0 to their values over 800ms ease-out with 100ms stagger, numbers count with them. Afterwards everything stays still. Live data changes animate only the changed meter over 400ms with the same easing, and its number crossfades. Hover or focus tooltips fade in over 150ms. No scroll-linked motion at all.",
     "still_check": "At 50% scroll the greeting, summary sentence, every meter value and the Next up item are fully visible and filled. 25% and 75% show the same composition; the only allowed difference is a live data update.",
@@ -387,6 +400,7 @@
     "intensity": "bold",
     "tier": "css",
     "headline_interlock": false,
+    "composition": "sticky-stage",
     "blueprint": "Section height 220svh with a sticky 100svh stage. The stage shows a magazine cover at aspect 3/4, height 82svh, centred: masthead across the top, issue number large in the corner (No. 14 at clamp(3rem, 8vw, 7rem)), cover line h1 at clamp(2rem, 4.5vw, 4rem), three secondary cover lines with page numbers, barcode and date. Cover lines are real links to the stories. Around the cover, desk space with the table of contents peeking from the right. States: idle, in-view, zooming, done (zoomed into the lead story's image with its standfirst readable).",
     "motion": "Scroll progress 0-30%: cover sits at full size, cover lines stagger in. 30-80%: the cover scales from 1 to 2.6 with transform-origin on the lead story image, masthead sliding out of frame. 80-100%: the lead image fills the stage and the story standfirst fades in on a scrim; the sticky releases.",
     "still_check": "At 50% the cover is mid-zoom but the cover line h1 and issue number remain inside the frame and legible. 25% shows the full cover; 75% shows the lead image dominant with standfirst appearing, still readable.",
@@ -417,6 +431,7 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": false,
+    "composition": "split",
     "blueprint": "Split grid 5/7, padding clamp(4rem, 9vw, 8rem). Left: address line, h1 at clamp(2.25rem, 5vw, 4.5rem) such as Three bedrooms, west light, a facts row (sqm, beds, baths, price) in tabular figures, and Book a viewing CTA. Right: an SVG floor plan of the actual property at max 44rem wide on a blueprint-paper ground. Walls are strokes, doors are arcs, each room is a labelled path with area. A small north arrow and scale bar. Hovering or focusing a room fills it with a pale tint and shows a photo thumbnail beside the plan. States: idle, in-view (walls draw), room active, done.",
     "motion": "Scroll progress 0-50%: exterior walls draw via stroke-dashoffset, then interior walls. 50-75%: door arcs swing in and room labels fade in by room. 75-100%: a sun-angle wedge sweeps across west-facing rooms showing evening light, then holds. Room hover or focus tint fades in over 160ms ease and the thumbnail crossfades in 200ms.",
     "still_check": "At 50% all walls are drawn, labels starting to appear, headline and facts fully readable. 25% shows exterior walls only with a clear outline; 75% shows labels complete and the light wedge on the west rooms.",
@@ -447,6 +462,7 @@
     "intensity": "wild",
     "tier": "webgl",
     "headline_interlock": false,
+    "composition": "sticky-stage",
     "blueprint": "Section 250svh with a sticky 100svh stage. Background is a WebGL terrain or globe quadrant with muted relief. Overlay at z-index 2: h1 at clamp(2.5rem, 7vw, 6.5rem) top left, trip name and dates; bottom left a stop card (place name, day number, one line, photo thumb). A glowing route line traces the itinerary across the terrain with stop pins. Right edge: a vertical day index of the 7 to 10 stops as links. States: idle, in-view, travelling (camera follows route), stop active, done (whole route visible from above).",
     "motion": "Scroll progress 0-10%: camera high, route undrawn, headline in. 10-85%: route draws to each stop in sequence, camera eases along, the stop card swaps at each pin with 200ms crossfade. 85-100%: camera pulls up to show the entire route lit, Book this trip CTA appears.",
     "still_check": "At 50% the route is drawn to roughly the middle stop, its card readable, headline still present, terrain lit. 25% shows the early stops; 75% shows later stops with different terrain and card.",
@@ -477,6 +493,7 @@
     "intensity": "wild",
     "tier": "webgl",
     "headline_interlock": false,
+    "composition": "sticky-stage",
     "blueprint": "Section 200svh with a sticky 100svh stage. A canvas field fills the stage behind the copy. One real number anchors it: e.g. 12,480 families housed since 2019, stated as the h1 at clamp(2.5rem, 6vw, 5.5rem). Each dot equals one family; the field holds exactly that many dots, 2-3px each, in a warm neutral. Bottom bar: source and as-of date, Donate CTA, and a sentence explaining what one dot is. A single highlighted dot carries a small label with one real family's story excerpt link. States: idle, in-view, filling, done (all dots placed, one highlighted).",
     "motion": "Scroll progress 0-20%: one dot alone, centred, labelled. 20-80%: dots pour in by year, each year a slightly different tone, a small year label ticking 2019 to 2026. 80-100%: dots settle into a dense shape (a house silhouette or map), the highlighted dot stays visible, CTA rises.",
     "still_check": "At 50% the h1 with the real number is fully readable, roughly half the dots placed with a visible year label, the single highlighted dot distinguishable. 25% shows a sparse field; 75% shows the shape forming.",
@@ -507,6 +524,7 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": false,
+    "composition": "centred",
     "blueprint": "Section 100svh, padding clamp(3rem, 8vw, 7rem). Centre: an oversized ticket clamp(20rem, 70vw, 60rem) wide, aspect 2.4/1, with a notched perforation 72% along. Main body: event name as h1 at clamp(2.5rem, 6.5vw, 6rem), date, venue, doors and lineup in a ticket grid. Stub: seat-style admit label, price from, a QR-like decorative pattern, and Get tickets button. Background is a paper-coloured board. States: idle, hover on stub (perforation wiggles 1deg), in-view, torn (stub separates), done.",
     "motion": "Load: ticket feeds up from a slot at the bottom edge over 900ms with a stepped ease mimicking a printer. Scroll progress 0-60%: ticket rests. 60-100%: the stub tears along the perforation, rotating 6deg and sliding 4vw right, revealing the price and CTA in full beside the body. Click on CTA does not depend on tear state.",
     "still_check": "At 50% the whole ticket is printed and still intact with event name, date, venue and the stub's CTA readable. 25% looks the same but newly settled; 75% shows the stub partly torn away with a ragged perforation edge.",
@@ -527,7 +545,8 @@
     "niches": [
       "docs",
       "saas",
-      "education"
+      "education",
+      "devtools"
     ],
     "moods": [
       "calm",
@@ -537,6 +556,7 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
+    "composition": "centred",
     "blueprint": "Compact hero, padding clamp(3rem, 7vw, 6rem) clamp(1rem, 4vw, 3rem), max width 52rem centred. Small h1 at clamp(1.75rem, 3.5vw, 2.75rem) naming the product docs, one line of version and changelog link. Then the star: a wide search field 3.5rem tall with a keyboard shortcut hint, and below it six popular starting points as a 3x2 list (Install, Quickstart, Auth, API reference, Errors, Migrate). Under that, a quiet row of version selector and status. States: idle, focus on search (the rest of the page dims to 40% and results drop below), typing (live results grouped by section), done.",
     "motion": "Focus: surrounding content fades to 40% opacity over 200ms ease-out and the search field expands 4px with a subtle shadow. Results list appears with 120ms fade. Arrow-key movement through results slides the highlight bar in 100ms. Blur or Escape returns everything to full opacity in 160ms. No scroll-linked motion.",
     "still_check": "At 50% the h1, search field with shortcut hint and all six starting points are readable at full opacity. 25% and 75% show the same composition; only an active focus state may differ.",
@@ -546,6 +566,37 @@
     "stack_notes": {
       "css": "body:has(.docs-search input:focus) dims siblings with an opacity transition. Starting points are a grid list. Results area shown with :focus-within and @starting-style for its first appearance.",
       "js": "Hook the existing search index (local JSON or the docs platform API), debounce input 120ms, render grouped results, handle arrow keys and Enter, and register the slash shortcut. Remove key listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-terminal-session-replay",
+    "name": "Terminal Session Replay",
+    "kind": "hero",
+    "role": "hero",
+    "family": "transcript-replay",
+    "niches": [
+      "devtools",
+      "docs",
+      "saas"
+    ],
+    "moods": [
+      "technical",
+      "dark",
+      "minimal"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "blueprint": "One stacked column inside max-width 64rem, padding clamp(4rem, 8vw, 7rem) clamp(1rem, 4vw, 3rem). Top: h1 at clamp(2.4rem, 5vw, 4.6rem), a one-sentence lede and an install command in a 3.25rem copyable pill (npx your-tool init) with a Copy button. Below, at the full container width: a terminal pane in 0.95rem monospace showing a real recorded session as DOM lines: the prompt, the command, 6-10 output lines (resolved config, files written, a pass/fail summary) and the final result the product promises. Lines are grouped into 3 steps; the step rail (01 install, 02 run, 03 result) runs along the pane's title bar. States: replaying, paused by the user, finished (full transcript), copy confirmed.",
+    "motion": "Scroll progress 0-60% of the hero range reveals the transcript one step at a time: step 1 lines are present at 0%, step 2 at 30%, step 3 at 60%; each new line slides 6px and fades in over 160ms with a 40ms stagger. The step rail fills in sync. No typing jitter, no fake cursor delay beyond a 2-frame caret blink.",
+    "still_check": "At 50% the headline, the install pill and at least steps 1 and 2 of the transcript are fully legible as real text; 25% shows step 1 only, 75% shows all three steps with the result line visible. No screenshot shows a half-typed command.",
+    "mobile": "At 375px lines wrap with a hanging indent instead of scrolling sideways, the step rail becomes 3 small labels in the title bar, and the full transcript shows without scroll-linked reveal.",
+    "a11y": "Transcript is a pre/code block in DOM order, so screen readers get the whole session at once; the reveal is visual only. Copy is a real button with a polite live region (Copied). Reduced motion: full transcript shown at once, caret static.",
+    "avoid": "A fake command that does not exist, output nobody can verify, typing animation that hides the install command, a screenshot image of a terminal, horizontal scroll at 375px, and colour-only success or failure markers.",
+    "stack_notes": {
+      "css": "Lines carry data-step; animation-timeline: view() with animation-range drives opacity and translate per step group. Caret is a ::after with steps(2) blink. Copy pill uses user-select: all as a no-JS fallback.",
+      "js": "IntersectionObserver plus a scroll progress read in rAF toggles data-shown on step groups for browsers without scroll timelines. navigator.clipboard.writeText for Copy with a fallback selection. Remove listeners and cancel rAF on unmount."
     }
   },
   {
@@ -829,7 +880,8 @@
       "finance",
       "saas",
       "education",
-      "professional"
+      "professional",
+      "devtools"
     ],
     "moods": [
       "minimal",
@@ -859,7 +911,8 @@
     "niches": [
       "dashboard",
       "saas",
-      "docs"
+      "docs",
+      "devtools"
     ],
     "moods": [
       "technical",
@@ -889,8 +942,7 @@
     "niches": [
       "local-business",
       "real-estate",
-      "health",
-      "professional"
+      "health"
     ],
     "moods": [
       "trustworthy",
@@ -912,6 +964,36 @@
     }
   },
   {
+    "id": "proof-before-after-diff",
+    "name": "Before and after diff",
+    "kind": "section",
+    "role": "proof",
+    "family": "diff-split",
+    "niches": [
+      "devtools",
+      "docs",
+      "saas"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Section max-width 76rem, padding clamp(3.5rem, 7vw, 6rem) clamp(1rem, 4vw, 3rem). A heading names the change in plain words, then a unified diff panel min(70rem, 100%) wide at 0.9rem monospace: file name header, 12-20 real lines with removed lines on a muted red ground and added lines on a muted green ground, each also prefixed with - or + so meaning never rests on colour. To the right a 16rem rail lists 3 measured outcomes of the change (tests 41 to 58 passing, bundle 212 kB to 148 kB, 3 warnings to 0). Tabs above the panel switch between 2-3 example files. States: default file, other file selected, expanded hunk.",
+    "motion": "On entering view the panel draws its hunks top to bottom once: each changed line's background sweeps from 0 to full width over 220ms with a 30ms stagger, then rests. Tab switch crossfades the panel over 180ms. Nothing else moves.",
+    "still_check": "Any screenshot after first view shows the file header, at least 8 diff lines with readable +/- prefixes and all 3 measured outcomes. Mid-sweep, every line's text is already fully visible; only its background tint is animating.",
+    "mobile": "At 375px the outcome rail moves above the panel as a 3-row list, diff lines wrap with the +/- gutter kept fixed, and tabs become a native select.",
+    "a11y": "Diff is a pre block; removed and added lines use del and ins elements so assistive tech announces them. Tabs follow the ARIA tabs pattern with arrow keys. Reduced motion: tints present immediately, no sweep.",
+    "avoid": "A diff of invented code that would not compile, colour-only change markers, tiny 11px code, outcome numbers without a unit or baseline, and a horizontal scrollbar inside the panel on desktop.",
+    "stack_notes": {
+      "css": "Line tint is a background-size transition from 0% 100% to 100% 100% triggered by animation-timeline: view() with animation-range entry; :has() on the tablist radio inputs swaps panels without JS.",
+      "js": "Only for roving tabindex on the tabs and copying a hunk. No runtime syntax highlighter: pre-render tokens at build time. Clean up keyboard listeners on unmount."
+    }
+  },
+  {
     "id": "data-story-annotated-chart-build",
     "name": "Chart that builds with annotated stills",
     "kind": "section",
@@ -920,7 +1002,8 @@
     "niches": [
       "finance",
       "editorial",
-      "nonprofit"
+      "nonprofit",
+      "devtools"
     ],
     "moods": [
       "editorial",
@@ -980,7 +1063,8 @@
     "niches": [
       "saas",
       "docs",
-      "landing"
+      "landing",
+      "devtools"
     ],
     "moods": [
       "minimal",
@@ -1010,7 +1094,8 @@
     "niches": [
       "saas",
       "docs",
-      "kinetic"
+      "kinetic",
+      "devtools"
     ],
     "moods": [
       "playful",
@@ -1073,8 +1158,7 @@
       "events",
       "nonprofit",
       "finance",
-      "editorial",
-      "professional"
+      "editorial"
     ],
     "moods": [
       "bold",
@@ -1105,7 +1189,8 @@
       "finance",
       "real-estate",
       "store",
-      "saas"
+      "saas",
+      "devtools"
     ],
     "moods": [
       "playful",
@@ -1760,7 +1845,8 @@
     "niches": [
       "docs",
       "saas",
-      "dashboard"
+      "dashboard",
+      "devtools"
     ],
     "moods": [
       "technical",
@@ -1982,7 +2068,8 @@
       "finance",
       "dashboard",
       "saas",
-      "store"
+      "store",
+      "devtools"
     ],
     "moods": [
       "technical",
@@ -2014,7 +2101,8 @@
       "docs",
       "saas",
       "dashboard",
-      "education"
+      "education",
+      "devtools"
     ],
     "moods": [
       "technical",
@@ -2176,7 +2264,8 @@
       "health",
       "finance",
       "any",
-      "education"
+      "education",
+      "devtools"
     ],
     "moods": [
       "minimal",
@@ -2196,6 +2285,274 @@
     "stack_notes": {
       "css": "interpolate-size: allow-keywords on :root; transition on block-size and content-visibility with allow-discrete on the ::details-content pseudo-element; plus mark bars rotated via details[open] selectors, with no script and no fixed max-height values needed.",
       "js": "Fallback for engines without interpolate-size: on toggle, measure scrollHeight and run a WAAPI height animation from 0 to the measured value, then clear the inline height. Listeners removed on unmount."
+    }
+  },
+  {
+    "id": "hero-exploded-pipeline-stack",
+    "name": "Exploded Pipeline Stack",
+    "kind": "hero",
+    "role": "hero",
+    "family": "layer-stack",
+    "niches": [
+      "devtools",
+      "saas",
+      "3d"
+    ],
+    "moods": [
+      "technical",
+      "bold",
+      "experimental",
+      "dark"
+    ],
+    "intensity": "wild",
+    "tier": "webgl",
+    "headline_interlock": false,
+    "composition": "layered",
+    "blueprint": "Full-viewport hero, min-height 100svh, padding clamp(4rem, 9vw, 8rem) clamp(1rem, 5vw, 4rem). The tool's own pipeline is the object: 3-5 translucent planes stacked on one axis, one plane per real stage the product runs (input, each pass or check, output). Each plane carries a small DOM label at 0.875rem monospace (stage name plus what it changes) pinned to its edge by projected coordinates. The h1 at clamp(2.75rem, 8vw, 8rem) and a one-line deck sit on a plain text plate the planes never cross; the primary CTA (install or try) and a secondary docs link sit under the deck. A poster image of the assembled stack renders first. States: collapsed (planes touching, reads as one finished artefact), exploded (planes spread, stage labels readable), focused (one plane forward, its label expanded), replayed (Replay button resets to collapsed).",
+    "motion": "Load: planes start collapsed and spread over 1100ms cubic-bezier(.2,.8,.2,1), each delayed 90ms after the one below. Pointer: the stack tilts up to 8deg toward the cursor with a damped spring. Scroll 0-50% of the hero range: the camera moves along the stack axis and each plane in turn comes forward and brightens while its label expands; 50-100%: the planes collapse back into the finished output plane and the CTA settles.",
+    "still_check": "At 50% the headline and CTA are fully readable on their plate, at least three planes are separated with their labels legible, and one plane is clearly in front. 25% shows the first stage forward; 75% shows the stack partly collapsed toward the output.",
+    "mobile": "At 375px the text plate sits above a 70vw-tall canvas, the stack shows 3 planes at most with labels below it as a numbered list, pointer tilt is off and the explode runs once on first view instead of scroll.",
+    "a11y": "Stages exist as a real ordered list in the DOM; the canvas is aria-hidden. The Replay control is a real button. Reduced motion: the stack shows exploded and static with every label visible. Headline contrast is 4.5:1 or better against the plate, never against the canvas.",
+    "avoid": "Stages that are not real steps of the product, labels that exist only inside the canvas, a blank canvas while WebGL starts (poster first), planes passing over the headline, pinning the hero longer than one viewport, generic glowing cubes standing in for the product.",
+    "stack_notes": {
+      "css": "No-WebGL path: the planes are absolutely positioned divs with transform-style: preserve-3d and translateZ per plane; animation-timeline: view() spreads them on scroll; a CSS transition handles the load spread.",
+      "js": "three.js PlaneGeometry per stage with MeshPhysicalMaterial transmission or a cheap alpha material; rAF reads hero progress from getBoundingClientRect. Project label anchors to screen for DOM labels. Pause off-screen, dispose geometries, materials, textures and the renderer on unmount."
+    }
+  },
+  {
+    "id": "process-request-trace-scrub",
+    "name": "Request Trace Scrub",
+    "kind": "section",
+    "role": "process",
+    "family": "trace-path",
+    "niches": [
+      "devtools",
+      "saas",
+      "docs"
+    ],
+    "moods": [
+      "technical",
+      "bold",
+      "dark"
+    ],
+    "intensity": "wild",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 300vh with a sticky 100vh stage inside max-width 80rem. The stage holds the product's real architecture as an SVG diagram (4-7 labelled nodes such as client, agent, server, rules, output, joined by paths at 2px) and under it a log panel 14rem tall in 0.875rem monospace. A single traced request (a dot plus a short payload chip) travels the paths. Section heading at clamp(2rem, 5vw, 4rem) and a one-line explanation sit above the stage. States: idle node at 50% ink, active node at full ink with its log lines appended, visited node keeps a small check, finished (whole path drawn, final output line highlighted).",
+    "motion": "Scroll progress 0..1 maps to distance along the path: the dot moves with stroke-dashoffset drawing the path behind it; reaching a node lights it and appends that node's 2-3 log lines with a 120ms fade. 0-10% shows the diagram at rest, 10-90% runs the trace, 90-100% holds the finished path and output.",
+    "still_check": "At 50% about half the path is drawn, the active node is obvious, and the log panel shows the earlier nodes' lines as readable text. 25% shows the first one or two nodes lit; 75% shows most of the path with only the output node left.",
+    "mobile": "At 375px the diagram turns vertical (nodes stacked, paths straight down) without pinning; each node lights as it enters the viewport and its log lines appear beneath it.",
+    "a11y": "Nodes and log lines are real DOM text in order (an ordered list of steps with their output); the moving dot is decorative and aria-hidden. Reduced motion shows the whole path drawn and every log line visible. Focus on a step scrolls the trace to it.",
+    "avoid": "Invented nodes or log lines the product never prints, a diagram so small labels fall under 0.75rem, a dot that outruns the scroll, colour-only state, and log text that scrolls inside the panel faster than it can be read.",
+    "stack_notes": {
+      "css": "SVG path with stroke-dasharray and stroke-dashoffset bound to animation-timeline: scroll() on the section; nodes and log groups use view() ranges. Sticky stage via position: sticky.",
+      "js": "Read section progress in rAF, use SVGPathElement.getPointAtLength for the dot, toggle data-active on nodes at precomputed lengths. GSAP ScrollTrigger or a plain scroll listener both work; remove listeners and cancel rAF on unmount."
+    }
+  },
+  {
+    "id": "data-story-benchmark-run-replay",
+    "name": "Benchmark Run Replay",
+    "kind": "section",
+    "role": "data-story",
+    "family": "race-bars",
+    "niches": [
+      "devtools",
+      "saas",
+      "dashboard"
+    ],
+    "moods": [
+      "technical",
+      "bold",
+      "experimental"
+    ],
+    "intensity": "wild",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "Section 250vh with a sticky stage inside max-width 76rem. One row per contender or per run (3-6 rows), each a horizontal track 3rem tall with its name at 1rem, a bar that grows, and its measured value in tabular-nums at 1.25rem. Beside the tracks a method card 18rem wide states what was measured, on what input, how many runs and the date, plus a link to the raw results. Heading at clamp(2rem, 5vw, 4rem). States: running (bars growing, values counting), settled (final values, best row marked with a text label not just colour), inspected (hovered or focused row shows its run details).",
+    "motion": "Scroll progress 0-70% replays the runs: each bar grows to its real measured value in proportion to time, values count up with tabular-nums so width never jumps. 70-100% holds the settled result and fades in the method card's footnote. Rows start 80ms apart so the order of finish is readable.",
+    "still_check": "At 50% every row shows a partly grown bar with a readable current value and the method card is visible; 25% shows short bars, 75% shows final values with the best row labelled. Values in any frame are real intermediate or final numbers, never placeholders.",
+    "mobile": "At 375px rows stack full width with values under the names, the method card moves below the rows, and the replay runs once on view instead of scrubbing.",
+    "a11y": "The data is a real table (caption, row headers, values with units) in the DOM; bars are visual only. Reduced motion shows final values at once. Best row is marked in text. Contrast of bar against track is 3:1 or better.",
+    "avoid": "Numbers that were not measured, a missing method, axes that start above zero to exaggerate a gap, rivals named without their real results, and bars whose final width disagrees with the printed value.",
+    "stack_notes": {
+      "css": "Bar width via a registered @property --v animated with animation-timeline: view(); counter() with @property integers can show values without JS where supported.",
+      "js": "Map scroll progress in rAF to each run's recorded timeline and set width plus textContent with Intl.NumberFormat; IntersectionObserver fallback runs it once. Cancel rAF and remove listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-case-caption-headline",
+    "name": "Case Caption as the Headline",
+    "kind": "hero",
+    "role": "hero",
+    "family": "caption-block",
+    "niches": [
+      "legal",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "editorial"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "centred",
+    "blueprint": "Centred column, max 34ch, on a bond-paper ground. The h1 is set like a court caption: a small-caps line above ('In the matter of'), the firm's promise as the case name at clamp(2.5rem, 6vw, 5.5rem), a hairline 'v.' rule, then the client's problem as the opposing party ('a contract that stopped being honoured'). Under the caption, inside the same centred block, a ruled docket box holds real facts: matter types, response time, the office address. Below, the primary action reads as the filing line: 'Book a first consultation' with a labelled date field. States: idle, field focused, date chosen.",
+    "motion": "On load the caption rules draw outward from the centre over 500ms, then the two caption lines settle 6px upward with an 80ms stagger. The docket box fades in last. Nothing moves on scroll.",
+    "still_check": "Any screenshot shows the full caption, docket facts and the consultation action readable. 25%, 50% and 75% are identical after load; only the focus state of the date field changes.",
+    "mobile": "At 375px the docket box is a full-width ruled list; the case name drops to clamp(2.25rem, 10vw, 3rem) and keeps max 14ch per line.",
+    "a11y": "The caption is one h1 with the small-caps lines as spans; the docket box is a dl. Date field has a visible label and a native date input. Reduced motion shows everything settled. Hairlines meet 3:1 non-text contrast.",
+    "avoid": "Scales, gavels or columns as art; Latin mottos; a caption that names a real case or party; navy-and-gold colouring; burying the consultation action below the fold.",
+    "stack_notes": {
+      "css": "Rules are border-top with transform: scaleX from 0 under @media (prefers-reduced-motion: no-preference); caption lines use a one-time animation with animation-delay. Docket is a two-column grid of dt/dd.",
+      "js": "Only the date field needs script: min date today, closed days from the firm's calendar, submit to the booking endpoint."
+    }
+  },
+  {
+    "id": "hero-exhibit-tab-binder",
+    "name": "Exhibit Binder Tabs",
+    "kind": "hero",
+    "role": "hero",
+    "family": "tabbed-stack",
+    "niches": [
+      "legal",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "editorial",
+      "technical"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "sticky-stage",
+    "blueprint": "A pinned first screen holds a binder seen from above: a stack of 4 sheets with lettered exhibit tabs (A, B, C, D) down the right edge. Sheets are min(88vw, 760px) wide with 44px tabs. The h1 sits on the top sheet as the cover page at clamp(2.5rem, 5vw, 4.5rem) ('Every matter, filed in order.'). Each tab names one stage of how the firm handles a matter: Intake, Strategy, Filing, Hearing. Scroll turns the sheets: each shows that stage's one true fact (who you speak to, how long it takes, what you sign) in a ruled exhibit layout. The last sheet carries 'Book a first consultation'.",
+    "motion": "Scroll-scrubbed across 300vh: each sheet lifts from its tab edge and turns left over 25% of the range, revealing the next. Snap to whole sheets. The current sheet's tab stays highlighted. Unpin after the last sheet.",
+    "still_check": "At 25%, 50% and 75% a complete sheet lies flat and readable with its tab highlighted; no sheet rests mid-turn because of snapping.",
+    "mobile": "Below 900px wide or 620px tall: no pin. The 4 sheets stack vertically as ruled cards with their exhibit tab on the top edge.",
+    "a11y": "Sheets are an ordered list; tabs are in-page links to each sheet. Reduced motion: no pin, the stacked layout. Tab colours always carry a letter, never colour alone.",
+    "avoid": "Pinned area taller than the viewport, sheets resting half-turned, fake case numbers, tiny exhibit text, changing scroll speed.",
+    "stack_notes": {
+      "css": "Scroll-driven animation with view-timeline on a 300vh track and a position: sticky stage; rotateY on each sheet with transform-origin left.",
+      "js": "GSAP ScrollTrigger pin with snap: 1 / (sheets - 1), inside gsap.matchMedia with the reduced-motion and size guards; kill on unmount."
+    }
+  },
+  {
+    "id": "services-practice-area-clause-index",
+    "name": "Practice Areas as a Clause Index",
+    "kind": "section",
+    "role": "services",
+    "family": "clause-index",
+    "niches": [
+      "legal",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Practice areas set as numbered clauses of an agreement: '§ 1 Employment', '§ 2 Property', each a row with the clause number in mono, the area at clamp(1.5rem, 3vw, 2.25rem), a two-line plain-language description of who it is for, the fee basis (fixed, hourly, contingency) and the lead lawyer's name. Rows are separated by hairlines; sub-clauses (1.1, 1.2) list matter types as indented lines.",
+    "motion": "Opening a clause expands its sub-clauses with a 200ms height transition; the clause number shifts to the accent colour. Nothing moves on scroll.",
+    "still_check": "Any screenshot shows every clause title, fee basis and lead name readable; open and closed states differ only in sub-clause visibility.",
+    "mobile": "Clause number sits above the title; fee basis and lead name move to one line under the description.",
+    "a11y": "Each clause is a details/summary so it works without JS; summary text includes the clause number. Visible focus ring on paper. Reduced motion: no height transition.",
+    "avoid": "Icon cards for practice areas, jargon in descriptions, hiding fees, more than 8 top-level clauses.",
+    "stack_notes": {
+      "css": "details/summary with ::details-content transition where supported; CSS counters for clause numbers.",
+      "js": "None needed; optional deep link opens the matching clause from the URL hash."
+    }
+  },
+  {
+    "id": "process-matter-docket-timeline",
+    "name": "Matter Docket Timeline",
+    "kind": "section",
+    "role": "process",
+    "family": "docket-rail",
+    "niches": [
+      "legal",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "technical",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "How a matter runs, set as a docket sheet: a ruled table at max 72rem wide, rows at least 56px tall, whose rows are entries in date order: 'Day 1 · First consultation', 'Week 1 · Engagement letter signed', 'Weeks 2–6 · Evidence and filings', 'Hearing'. Columns: entry number (mono), stage, what the client does, what the firm does, typical time. A seal-red rule marks the example current stage.",
+    "motion": "Rows draw their bottom hairline left to right once as they enter view (300ms each, 60ms stagger). No scroll scrubbing.",
+    "still_check": "Any screenshot shows complete rows with every column readable; before and after entry the content is identical, only the rules differ.",
+    "mobile": "The table becomes a list of entries, each with the stage as heading and the two 'who does what' cells as labelled lines.",
+    "a11y": "A real table with th scope=col; on mobile the list keeps the labels as text. Reduced motion: rules shown drawn.",
+    "avoid": "Promising outcomes or durations the firm cannot stand behind, icon-step circles, carousels.",
+    "stack_notes": {
+      "css": "Rule draw via background-size with animation-timeline: view() under the reduced-motion guard; static fallback.",
+      "js": "IntersectionObserver adds a class once per row when scroll timelines are unsupported."
+    }
+  },
+  {
+    "id": "proof-engagement-letter-terms",
+    "name": "Engagement Letter Terms",
+    "kind": "section",
+    "role": "proof",
+    "family": "letter-sheet",
+    "niches": [
+      "legal",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "editorial",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Proof as the firm's own engagement letter: one paper sheet at max 68ch with 3rem padding and a 14rem margin column with letterhead, then the real terms a client gets (who handles the matter, how fees are billed, response time, how to end the engagement), each a numbered paragraph. Margin notes in the accent colour gloss the plain meaning ('You can stop at any time'). A signature line and the bar admissions close the sheet. Client quotes, only if real and permitted, sit as margin notes, never as a carousel.",
+    "motion": "Margin notes slide 8px in from the margin as their paragraph enters view, once. The sheet itself does not move.",
+    "still_check": "Any screenshot shows the full letter text and every margin note readable; motion only shifts notes by 8px before entry.",
+    "mobile": "Margin notes become indented callouts under their paragraph.",
+    "a11y": "The letter is an article with an ordered list of terms; margin notes are aside elements linked by aria-describedby. Accent notes keep at least 4.5:1 contrast.",
+    "avoid": "Invented testimonials, star ratings, award badges without the award, a script signature as the only name.",
+    "stack_notes": {
+      "css": "Grid with a margin column; notes use a one-time animation triggered by a view timeline or a class.",
+      "js": "IntersectionObserver adds a class once per paragraph when scroll timelines are unsupported."
+    }
+  },
+  {
+    "id": "team-bar-roll-register",
+    "name": "Bar Roll Register",
+    "kind": "section",
+    "role": "team",
+    "family": "register-list",
+    "niches": [
+      "legal",
+      "professional"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "The team as a bar-roll register: a ruled list with each lawyer's name at clamp(1.5rem, 3vw, 2.25rem), admission year and jurisdiction in mono, practice areas, languages spoken and a direct line. A small square portrait sits in a fixed slot at the row's left, greyscale until hover or focus. Partners first, then associates, ordered by admission year.",
+    "motion": "Hover or focus lifts the row background one step and restores the portrait's colour over 180ms. No scroll motion.",
+    "still_check": "Any screenshot shows every name, admission, practice area and phone readable; hover changes only background and portrait colour.",
+    "mobile": "Portrait sits left of the name; admission and practice areas wrap to two short lines; the direct line is a tel: link.",
+    "a11y": "A list of articles with names as h3; portraits have alt text with the name; phone links have accessible names. The hover state also applies on :focus-within.",
+    "avoid": "Arms-crossed stock portraits, contact details hidden behind hover, uneven portrait crops.",
+    "stack_notes": {
+      "css": "Grid rows with filter: grayscale(1) on the img and a transition on :hover and :focus-within.",
+      "js": "None."
     }
   }
 ]

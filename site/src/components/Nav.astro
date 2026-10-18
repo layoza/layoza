@@ -1,0 +1,74 @@
+---
+const links = [
+  { href: '/', label: 'Product' },
+  { href: '/features', label: 'Features' },
+  { href: '/showcase', label: 'Showcase' },
+  { href: '/getting-started', label: 'How it works' },
+  { href: '/docs', label: 'Documentation' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand" href="/" aria-label="Layoza home">
+      <img src="/icon-64.png" alt="" width="32" height="32" />
+      <span>Layoza</span>
+    </a>
+    <nav aria-label="Primary" class="links">
+      {links.map((l) => (
+        <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <a href="https://github.com/layoza/layoza" rel="noopener">GitHub</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="/getting-started">Get started</a>
+    <details class="menu">
+      <summary aria-label="Menu"><span></span><span></span></summary>
+      <nav aria-label="Mobile" class="menu-panel">
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+                <a href="https://github.com/layoza/layoza" rel="noopener">GitHub</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Escape or a click outside closes the mobile menu; Escape hands focus back to the toggle.
+  document.addEventListener('keydown', (e) => {
+    const menu = document.querySelector<HTMLDetailsElement>('.menu[open]');
+    if (e.key !== 'Escape' || !menu) return;
+    menu.removeAttribute('open');
+    menu.querySelector('summary')?.focus();
+  });
+  document.addEventListener('click', (e) => {
+    const menu = document.querySelector<HTMLDetailsElement>('.menu[open]');
+    if (menu && !menu.contains(e.target as Node)) menu.removeAttribute('open');
+  });
+</script>
+
+<style>
+  .nav { view-transition-name: nav; position: sticky; top: 0; z-index: 50; background: rgba(8, 11, 19, 0.86); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule-dark); }
+  .nav-row { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+  .links { display: flex; gap: clamp(16px, 2vw, 28px); margin-left: auto; font-size: 15px; }
+  .links a { color: #c9d0db; text-decoration: none; padding: 6px 0; border-bottom: 1.5px solid transparent; }
+  .links a:hover, .links a[aria-current='page'] { color: var(--white); border-color: var(--lime); }
+  .nav-cta { min-height: 42px; padding: 0 18px; font-size: 15px; }
+  .menu { display: none; position: relative; }
+  .menu summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: grid; place-content: center; gap: 6px; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary span { display: block; width: 22px; height: 2px; background: var(--white); transition: transform 0.2s; }
+  .menu[open] summary span:first-child { transform: translateY(4px) rotate(45deg); }
+  .menu[open] summary span:last-child { transform: translateY(-4px) rotate(-45deg); }
+  .menu-panel { position: absolute; right: 0; top: 54px; width: min(280px, calc(100vw - 32px)); background: var(--graphite); border: 1px solid var(--rule-dark); display: grid; padding: 8px; }
+  .menu-panel a { padding: 14px 12px; text-decoration: none; border-bottom: 1px solid var(--rule-dark); }
+  .menu-panel a:last-child { border: 0; }
+  @media (max-width: 1060px) {
+    .links { display: none; }
+    .nav-cta { margin-left: auto; }
+    .menu { display: block; }
+  }
+  @media (max-width: 380px) {
+    .nav-row { gap: 10px; }
+    .nav-cta { padding: 0 12px; font-size: 14px; }
+  }
+</style>

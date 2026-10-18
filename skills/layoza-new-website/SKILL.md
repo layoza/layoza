@@ -9,8 +9,11 @@ description: >-
 
 # Layoza: New Website (Mode A)
 
-1. **The user's prompt wins.** Follow any named framework, style, palette,
-   library or scope exactly.
+1. **The user's prompt wins.** An explicit instruction (framework or stack,
+   style, palette, fonts, layout, motion library, scope) overrides every Layoza
+   default and is followed exactly. Where it leaves the look open, the three
+   directions must differ from `avoid_recent` (MCP `get_design_system`) unless
+   the user asks for the same look.
    **Intake first:** know the site's purpose and primary action, audience,
    whether it is new or extends an existing site, and what must be kept. Ask
    for what the prompt leaves open (art-direction step 0). If the folder holds

@@ -1,0 +1,47 @@
+---
+import { getImage } from 'astro:assets';
+import BeforeAfter from '../islands/BeforeAfter';
+import rb from '../../assets/bench/restaurant-before.png';
+import ra from '../../assets/bench/restaurant-after.png';
+import db from '../../assets/bench/dashboard-before.png';
+import da from '../../assets/bench/dashboard-after.png';
+import sb from '../../assets/bench/store-before.png';
+import sa from '../../assets/bench/store-after.png';
+
+const webp = async (src: ImageMetadata) => (await getImage({ src, format: 'webp', width: 1440, quality: 78 })).src;
+
+const pairs = [
+  { id: 'restaurant', label: 'Restaurant', brief: 'Saltmarsh, a 40-cover seafood restaurant in a Norfolk boathouse.', before: await webp(rb), after: await webp(ra), afterNote: 'Layoza run: layoza-v5. The no-skill page is decent here; the difference is in the details, not a miracle.' },
+  { id: 'dashboard', label: 'Dashboard', brief: 'Tallyhouse, a morning operations dashboard for a four-shop bakery.', before: await webp(db), after: await webp(da), afterNote: 'Layoza run: layoza-v5. All data in both is fictional sample data, as the brief requires.' },
+  { id: 'store', label: 'Store', brief: 'Loom & Leaf, a fictional two-person linen studio selling online.', before: await webp(sb), after: await webp(sa), afterNote: 'Layoza run: layoza-v3. Imagery is drawn in SVG/CSS, as the brief requires.' },
+];
+---
+<section class="band dark compare" aria-labelledby="compare-title">
+  <div class="wrap">
+    <p class="sheet"><b>03</b> Before / after</p>
+    <div class="head">
+      <h2 id="compare-title" class="h-lg caps" data-reveal>Same brief. <span class="accent">Different design intelligence.</span></h2>
+      <p class="lede" data-reveal="0.1">Real screenshots from the repo's benchmark: Claude Opus 5.5 with no skill, then with Layoza. Drag the line, or focus it and use the arrow keys.</p>
+    </div>
+    <BeforeAfter client:visible pairs={pairs} />
+    <p class="fine muted">From <code class="mono">examples/benchmark-*</code>, captured at 1440 × 900. Not every round goes Layoza's way: older rounds were won by other skills, and kinetic was a tie. <a href="/showcase#benchmark">Read the full results</a>.</p>
+  </div>
+</section>
+
+<style>
+  .fine { margin-top: 20px; font-size: 15px; max-width: 80ch; }
+  .fine a { color: var(--lime); }
+  :global(.ba-tabs) { display: flex; gap: 0; border: 1px solid var(--rule-dark); width: fit-content; margin-bottom: 18px; flex-wrap: wrap; }
+  :global(.ba-tabs button) { background: transparent; border: 0; padding: 0 20px; min-height: 46px; cursor: pointer; color: #c9d0db; font-weight: 500; }
+  :global(.ba-tabs button[aria-selected='true']) { background: var(--lime); color: #0b0f05; }
+  :global(.ba-brief) { font-size: 14px; color: var(--cyan); margin-bottom: 14px; }
+  :global(.ba-frame) { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--rule-dark); background: var(--graphite); touch-action: pan-y; cursor: ew-resize; user-select: none; }
+  :global(.ba-frame img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; pointer-events: none; }
+  :global(.ba-before) { position: absolute; inset: 0; }
+  :global(.ba-tag) { position: absolute; top: 14px; font-size: 13px; padding: 6px 10px; background: rgba(8, 11, 19, 0.85); color: var(--white); }
+  :global(.ba-tag-l) { left: 14px; }
+  :global(.ba-tag-r) { right: 14px; background: var(--lime); color: #0b0f05; }
+  :global(.ba-handle) { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--lime); transform: translateX(-1px); }
+  :global(.ba-handle span) { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--lime); color: #0b0f05; font-size: 11px; padding: 12px 10px; white-space: nowrap; }
+  :global(.ba-note) { margin-top: 14px; color: #c9d0db; font-size: 15px; }
+</style>

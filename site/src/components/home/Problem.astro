@@ -1,0 +1,115 @@
+---
+// Five patterns a coding agent reaches for when nobody tells it what the site is for,
+// each with what Layoza does instead. Wireframes are drawn in HTML, not screenshots.
+const plates = [
+  { id: 'centre', n: '01', name: 'The centred hero', bad: 'Centred headline, gradient blob, two buttons. Fits any product, so it says nothing about this one.', fix: 'Layoza reads the brief for its trade and deals a hero mechanic built for it, from 76 in the catalogue.' },
+  { id: 'cards', n: '02', name: 'Three equal cards', bad: 'Every section becomes a row of three boxes with an icon, a title and two lines of copy.', fix: 'Each section takes its form from its content; the art loop flags two sections that share a composition.' },
+  { id: 'fade', n: '03', name: 'Fade-up on everything', bad: 'The same fade on every block, for no reason, and nothing for visitors who ask for reduced motion.', fix: 'Motion is dealt per niche with a still check, and every mechanic ships a reduced-motion path.' },
+  { id: 'purple', n: '04', name: 'The purple gradient', bad: 'Indigo-to-violet buttons, glass cards and a glow, whatever the brand already is.', fix: 'Colour comes from the brief or the site DNA, and text is checked to 4.5:1 contrast.' },
+  { id: 'done', n: '05', name: '“Done” means it compiled', bad: 'The agent never opens the page: overflow at 375px, a CTA below the fold, labels nobody can read.', fix: 'Layoza opens Chromium at 1440, 768 and 375 and hands back every error before “done”.' },
+];
+---
+<section class="band light problem" aria-labelledby="problem-title" data-problem>
+  <div class="pin">
+    <div class="wrap top">
+      <p class="sheet"><b>02</b> The problem</p>
+      <div class="head">
+        <h2 id="problem-title" class="h-lg caps" data-reveal>AI builds fast. <span class="accent">Design still matters.</span></h2>
+        <p class="lede" data-reveal="0.1">Ask any agent for a landing page and you get the average of the web. Five habits, and what Layoza does instead.</p>
+      </div>
+    </div>
+    <div class="viewport">
+      <ol class="track" data-track>
+        {plates.map((p) => (
+          <li class="plate" data-plate>
+            <div class={`wire w-${p.id}`} aria-hidden="true">
+              {p.id === 'centre' && (<><i class="blob"></i><i class="bar b1"></i><i class="bar b2"></i><i class="bar b3"></i><span class="btns"><i></i><i></i></span></>)}
+              {p.id === 'cards' && (<><i class="bar b1"></i><span class="three"><i></i><i></i><i></i></span><span class="three"><i></i><i></i><i></i></span></>)}
+              {p.id === 'fade' && (<><span class="rows"><i></i><i></i><i></i><i></i></span><span class="arrows">↑ ↑ ↑ ↑</span></>)}
+              {p.id === 'purple' && (<><i class="glass"></i><i class="pill"></i><i class="pill p2"></i></>)}
+              {p.id === 'done' && (<><span class="term mono">$ npm run build<br />✓ compiled in 2.1s<br /><b>&gt; done</b></span><i class="overflow"></i></>)}
+              <span class="pin-mark">!</span>
+            </div>
+            <div class="notes">
+              <p class="n mono">{p.n} · generic habit</p>
+              <h3>{p.name}</h3>
+              <p class="bad"><s>{p.bad}</s></p>
+              <p class="fix"><span class="mono">Layoza</span>{p.fix}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="wrap progress mono" aria-hidden="true"><span data-count>01</span> / 05<i><b data-bar></b></i></div>
+  </div>
+</section>
+
+<style>
+  .problem { padding-bottom: 0; }
+  .pin { padding-bottom: clamp(56px, 7vw, 96px); }
+  .viewport { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding-bottom: 8px; }
+  .track { list-style: none; display: flex; gap: clamp(16px, 2vw, 32px); padding: 0 var(--gutter); width: max-content; }
+  .plate { scroll-snap-align: start; width: min(78vw, 860px); display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(18px, 2.4vw, 36px); align-items: stretch; background: var(--white); border: 1.5px solid var(--ink); padding: clamp(14px, 1.6vw, 22px); }
+
+  /* Wireframes: generic layouts drawn as grey boxes */
+  .wire { position: relative; min-height: 300px; background: #eceef2; border: 1px solid var(--rule-light); overflow: hidden; display: grid; place-content: center; justify-items: center; gap: 10px; padding: 24px; }
+  .wire i { display: block; background: #c5cad3; }
+  .bar { height: 14px; border-radius: 3px; }
+  .b1 { width: 220px; height: 22px; } .b2 { width: 260px; } .b3 { width: 180px; }
+  .blob { position: absolute; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, #b9a8ff, #e9e4ff 60%, transparent 70%) !important; top: -60px; right: -40px; filter: blur(8px); }
+  .btns { display: flex; gap: 8px; margin-top: 8px; }
+  .btns i { width: 92px; height: 32px; border-radius: 99px; background: #7c6cf0; }
+  .btns i + i { background: transparent; border: 1.5px solid #7c6cf0; }
+  .three { display: grid; grid-template-columns: repeat(3, 84px); gap: 10px; }
+  .three i { height: 70px; border-radius: 10px; background: #fff; border: 1px solid #d7dbe2; }
+  .rows { display: grid; gap: 12px; }
+  .rows i { width: 280px; height: 34px; border-radius: 6px; opacity: 0.6; }
+  .arrows { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; color: #8a90a0; font-size: 18px; letter-spacing: 0.4em; }
+  .glass { width: 260px; height: 150px; border-radius: 18px; background: linear-gradient(135deg, rgba(129, 104, 255, 0.35), rgba(129, 104, 255, 0.1)) !important; border: 1px solid rgba(129, 104, 255, 0.4); box-shadow: 0 20px 50px rgba(129, 104, 255, 0.35); }
+  .pill { width: 200px; height: 38px; border-radius: 99px; background: linear-gradient(90deg, #6f5cff, #b05cff) !important; }
+  .p2 { width: 140px; opacity: 0.6; }
+  .term { background: var(--ink); color: #b7c0cc; padding: 16px 18px; font-size: 14px; line-height: 1.7; width: 260px; }
+  .term b { color: var(--lime); font-weight: 500; }
+  .overflow { position: absolute; right: -60px; bottom: 40px; width: 190px; height: 40px; background: #e35d4f !important; opacity: 0.85; }
+  .pin-mark { position: absolute; left: 14px; top: 14px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #c2341f; color: var(--white); font: 700 16px var(--sans); }
+
+  .notes { display: grid; align-content: start; gap: 12px; padding: 6px 4px; }
+  .n { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute-light); }
+  h3 { font-size: clamp(28px, 2.6vw, 40px); line-height: 1.02; letter-spacing: -0.035em; }
+  .bad { color: #5a3a35; }
+  .bad s { text-decoration-color: rgba(194, 52, 31, 0.7); text-decoration-thickness: 1.5px; }
+  .fix { border-left: 3px solid var(--uv); padding-left: 14px; font-weight: 500; }
+  .fix span { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--uv); font-weight: 500; margin-bottom: 4px; }
+
+  .progress { display: flex; align-items: center; gap: 12px; margin-top: 24px; font-size: 13px; color: var(--mute-light); }
+  .progress span { color: var(--ink); }
+  .progress i { flex: 1; height: 2px; background: var(--rule-light); max-width: 320px; }
+  .progress b { display: block; height: 100%; width: 20%; background: var(--uv); }
+
+  /* Scripted state: the generic note is struck through and the fix arrives as the plate takes centre */
+  :global(.js-motion) .problem[data-pinned] .bad s { text-decoration-color: transparent; transition: text-decoration-color 0.5s; }
+  :global(.js-motion) .problem[data-pinned] .fix { opacity: 0.55; transition: opacity 0.5s var(--ease); }
+  :global(.js-motion) .problem[data-pinned] .plate.on .bad s { text-decoration-color: rgba(194, 52, 31, 0.7); }
+  :global(.js-motion) .problem[data-pinned] .plate.on .fix { opacity: 1; }
+  :global(.js-motion) .problem[data-pinned] .plate.on .pin-mark { background: var(--uv); }
+  /* Pinned: the whole scene fits one screen under the nav, and the active plate sits in the centre. */
+  .problem[data-pinned] .pin { height: 100vh; height: 100svh; box-sizing: border-box; display: flex; flex-direction: column; padding-top: 84px; padding-bottom: 20px; }
+  .problem[data-pinned] .top h2 { font-size: min(clamp(44px, 6vw, 96px), 8.4vh); }
+  .problem[data-pinned] .top .sheet { margin-bottom: min(28px, 2.4vh); }
+  .problem[data-pinned] .top .head { margin-bottom: 0; }
+  .problem[data-pinned] .viewport { flex: 1; min-height: 0; display: flex; align-items: center; overflow: hidden; scroll-snap-type: none; padding: min(28px, 3vh) 0 0; }
+  .problem[data-pinned] .track { height: 100%; max-height: 480px; padding-inline: calc((100vw - min(78vw, 860px)) / 2); }
+  .problem[data-pinned] .plate { height: 100%; min-height: 0; overflow: hidden; transition: opacity 0.4s var(--ease); }
+  .problem[data-pinned] .plate:not(.on) { opacity: 0.6; }
+  .problem[data-pinned] .wire { min-height: 0; }
+  .problem[data-pinned] .progress { margin-top: 14px; flex: none; }
+  @media (max-height: 760px) { .problem[data-pinned] .pin { padding-top: 76px; } .problem[data-pinned] .notes { gap: 8px; } }
+
+  @media (max-width: 760px) {
+    .plate { grid-template-columns: 1fr; width: 84vw; }
+    .wire { min-height: 220px; transform-origin: top; }
+    .three { grid-template-columns: repeat(3, 60px); }
+    .rows i { width: 200px; }
+    .b2 { width: 200px; }
+  }
+</style>

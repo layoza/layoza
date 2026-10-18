@@ -1,0 +1,127 @@
+---
+import { getImage } from 'astro:assets';
+import shot from '../../assets/bench/restaurant-after.png';
+
+// Every value below is real output of `layoza inspect --write` on
+// examples/benchmark-restaurant-saltmarsh/layoza-v5 (all tagged observed_fact).
+const preview = (await getImage({ src: shot, format: 'webp', width: 1440, quality: 80 })).src;
+const swatches = [
+  ['tar', '#1c1814'], ['plank', '#352b23'], ['salt', '#f4eee3'], ['hemp', '#dcc69e'],
+  ['ember', '#b5361a'], ['marsh', '#45512a'], ['sea', '#2e4157'], ['rule', '#d9cdb8'],
+];
+const space = [4, 8, 16, 32, 64, 96];
+// Highlight boxes on the screenshot, in % of 1440 × 900, one set per extraction step.
+const boxes = [
+  { s: 0, l: 0, t: 0, w: 100, h: 7.6, k: '--tar' },
+  { s: 0, l: 5, t: 54.2, w: 9.9, h: 5.3, k: '--ember' },
+  { s: 1, l: 4.8, t: 26, w: 37.8, h: 11.8, k: 'Gloock 400' },
+  { s: 1, l: 5, t: 40.8, w: 25, h: 9.8, k: 'Archivo 17px' },
+  { s: 1, l: 4.9, t: 79.6, w: 21.2, h: 16.4, k: 'Stardos Stencil' },
+  { s: 2, l: 5, t: 53.6, w: 23.8, h: 11.4, k: 'md 16 · lg 32' },
+  { s: 3, l: 51.4, t: 17.6, w: 3.9, h: 14.2, k: '@flicker' },
+  { s: 3, l: 66, t: 79, w: 12, h: 4.6, k: '@steam' },
+];
+---
+<section class="band silver dna" aria-labelledby="dna-title" data-dna>
+  <div class="wrap">
+    <p class="sheet"><b>04</b> Site DNA</p>
+    <div class="head">
+      <h2 id="dna-title" class="h-lg caps" data-reveal>Your website has a language. <span class="accent">Layoza learns it.</span></h2>
+      <p class="lede" data-reveal="0.1">On an existing site, <code class="mono">layoza inspect</code> reads the code and writes down its colours, type, spacing and motion. Your agent extends that language instead of inventing a new one.</p>
+    </div>
+    <div class="grid">
+      <figure class="site">
+        <div class="shot">
+          <img src={preview} alt="Saltmarsh, a seafood restaurant homepage from the Layoza benchmark, being inspected" width="1440" height="900" loading="lazy" decoding="async" />
+          <span class="scan" aria-hidden="true"></span>
+          {boxes.map((b) => (
+            <span class="box" data-box={b.s} style={`left:${b.l}%;top:${b.t}%;width:${b.w}%;height:${b.h}%`} aria-hidden="true"><em class="mono">{b.k}</em></span>
+          ))}
+        </div>
+        <figcaption class="mono"><span>$ layoza inspect . --write</span><span>Saltmarsh · benchmark output</span></figcaption>
+      </figure>
+
+      <ol class="panel" aria-label="What layoza inspect extracted">
+        <li class="step" data-step="0">
+          <p class="k mono"><b>01</b> Colour · 15 custom properties</p>
+          <ul class="sw">
+            {swatches.map(([n, v]) => <li><i style={`background:${v}`}></i><span class="mono">--{n}<br /><small>{v}</small></span></li>)}
+          </ul>
+        </li>
+        <li class="step" data-step="1">
+          <p class="k mono"><b>02</b> Type · 3 families</p>
+          <dl class="type">
+            <div><dt class="mono">display</dt><dd class="f-display">Gloock 400</dd><dd class="mono v">clamp(76px, 8.6vw, 128px) · lh .9</dd></div>
+            <div><dt class="mono">body</dt><dd>Archivo 17px</dd><dd class="mono v">Helvetica Neue, Arial fallback</dd></div>
+            <div><dt class="mono">accent</dt><dd>Stardos Stencil</dd><dd class="mono v">catch board, tickets</dd></div>
+          </dl>
+        </li>
+        <li class="step" data-step="2">
+          <p class="k mono"><b>03</b> Spacing · 6 steps</p>
+          <ul class="space mono">
+            {space.map((v) => <li><i style={`width:${v * 1.6}px`}></i>{v}px</li>)}
+          </ul>
+        </li>
+        <li class="step" data-step="3">
+          <p class="k mono"><b>04</b> Motion · reduced motion honoured</p>
+          <p class="mono kf">@flicker @glint @nudge @pin @rise @steam @tear</p>
+          <p class="mono v">180 / 320 / 600ms · cubic-bezier(0.22, 1, 0.36, 1)</p>
+        </li>
+        <li class="step" data-step="4">
+          <p class="k mono"><b>05</b> Written to the repo</p>
+          <p class="mono files">DESIGN.md · BRAND.md · MOTION.md · SITE-DNA.json · COMPONENT-INVENTORY.json</p>
+          <p class="v">Each value is tagged <code class="mono">observed_fact</code> (read from the code) or <code class="mono">inferred_rule</code> (a guess it labels as one).</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 3.4vw, 56px); align-items: start; }
+  .site { margin: 0; position: sticky; top: 96px; }
+  .shot { position: relative; aspect-ratio: 16 / 10; border: 1.5px solid var(--ink); overflow: hidden; background: var(--ink); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; }
+  .scan { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--uv); box-shadow: 0 0 18px 4px rgba(129, 104, 255, 0.55); opacity: 0; }
+  .box { position: absolute; border: 2px solid var(--uv); background: rgba(129, 104, 255, 0.12); opacity: 0; transform: scale(0.96); transition: opacity 0.35s var(--ease), transform 0.35s var(--ease); }
+  .box em { position: absolute; left: -2px; bottom: 100%; background: var(--uv); color: var(--white); font-style: normal; font-size: 12px; padding: 3px 6px; white-space: nowrap; }
+  .dna[data-at='0'] [data-box='0'], .dna[data-at='1'] [data-box='1'], .dna[data-at='2'] [data-box='2'], .dna[data-at='3'] [data-box='3'] { opacity: 1; transform: none; }
+  :global(.js-motion) .dna[data-live] .scan { opacity: 1; animation: scan 3.2s linear infinite; }
+  @keyframes scan { from { top: 0; } to { top: 100%; } }
+  figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 10px 0; font-size: 13px; color: var(--mute-light); }
+  figcaption span:first-child { color: var(--ink); }
+
+  .panel { list-style: none; padding: 0; border-top: 2px solid var(--ink); }
+  .step { padding: 22px 0 24px; border-bottom: 1px solid var(--rule-light); transition: opacity 0.4s var(--ease); }
+  :global(.js-motion) .dna[data-live] .step { box-shadow: inset 3px 0 0 transparent; padding-left: 16px; transition: box-shadow 0.4s var(--ease); }
+  :global(.js-motion) .dna[data-live] .step.on { box-shadow: inset 3px 0 0 var(--uv); }
+  .k { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute-light); margin-bottom: 14px; }
+  .k b { color: var(--uv); font-weight: 500; margin-right: 8px; }
+  .sw { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .sw li { display: grid; gap: 6px; font-size: 13px; line-height: 1.3; }
+  .sw i { height: 40px; border: 1px solid var(--rule-light); }
+  .sw small { color: var(--mute-light); }
+  .type { display: grid; gap: 10px; }
+  .type div { display: grid; grid-template-columns: 70px 1fr; column-gap: 14px; align-items: baseline; }
+  .type dt { font-size: 12px; color: var(--mute-light); grid-row: span 2; }
+  .type dd { margin: 0; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; }
+  .type .f-display { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 30px; }
+  .v { font-size: 13px; color: var(--mute-light); }
+  .type dd.v { font-size: 13px; font-weight: 400; letter-spacing: 0; }
+  .space { list-style: none; padding: 0; display: grid; gap: 6px; font-size: 13px; }
+  .space li { display: flex; align-items: center; gap: 12px; }
+  .space i { height: 12px; background: var(--uv); }
+  .kf { font-size: 16px; color: var(--ink); margin-bottom: 6px; }
+  .files { font-size: 14px; margin-bottom: 8px; }
+  .v code { color: var(--ink); }
+  .lede code { color: var(--uv); }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .site { position: relative; top: 0; }
+  }
+  @media (max-width: 520px) {
+    .box em { display: none; }
+    .sw { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

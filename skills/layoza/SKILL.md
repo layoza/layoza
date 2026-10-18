@@ -12,9 +12,9 @@ description: >-
 
 ## 0. Prime directive
 
-1. **The user's prompt always wins.** Follow a named style, library, scope,
-   "minimal" or "no animation" exactly. The defaults below apply only where the
-   prompt leaves the choice open.
+1. **The user's prompt always wins.** An explicit instruction (palette, stack,
+   layout, motion library, scope, "minimal", "no animation") overrides every
+   Layoza default. Defaults apply only where the prompt leaves a choice open.
 2. **Design first.** Act as the best designer in the world on this job. The page
    must be unmistakably about its subject and better than what a top studio
    would ship. QA is the floor, never the goal; a QA-clean page that is plain
@@ -27,7 +27,9 @@ description: >-
 ## 1. Route by mode (load only what the mode needs)
 
 **Intake first:** purpose, audience, new or existing; ask what the prompt
-leaves open. New sites: the user picks a direction before any build.
+leaves open. New sites: the user picks from 3 rendered hero sketches, each
+unlike `avoid_recent`, before any build. Existing sites: no directions; follow
+their DNA exactly.
 
 | Mode | When | First command | Load |
 | :--- | :--- | :--- | :--- |
@@ -46,7 +48,6 @@ marketing home uses art direction for the home and product UI for the app.
 On demand:
 - [`layoza-animations`](../layoza-animations/SKILL.md): motion, deciding what and which tool;
 - [`layoza-threejs-webgl`](../layoza-threejs-webgl/SKILL.md): 3D;
-- [`layoza-product-ui`](../layoza-product-ui/SKILL.md): apps, dashboards, tables, forms, data viz;
 - [`layoza-components`](../layoza-components/SKILL.md): framework output;
 - [`layoza-wordpress`](../layoza-wordpress/SKILL.md): WordPress;
 - [`layoza-design-system`](../layoza-design-system/SKILL.md): `DESIGN.md`;
@@ -83,7 +84,8 @@ layoza qa <html-file-or-url>
 Real Chromium at 1440/768/375, scrolled like a visitor: contrast, overflow,
 clipping, nav, focus, hidden text and lab Core Web Vitals (`null` = unmeasured,
 never a pass). Then open `qa/desktop.png`, `qa/mobile-hero.png` and
-`qa/mobile-menu-open.png` and run the art loop
+`qa/mobile-menu-open.png` (motion settled; text over 3D, canvas or images
+readable) and run the art loop
 (`layoza-art-direction/reference/finish.md`). A page is done when
 `direction.md` logs `PURPOSE:`, `PICKED:`, 3 `ROUND`s and `REVIEWER:`, its design
 scores ≥ 9 (fresh-eyes reviewer agrees), QA of the **final** file shows 0 errors

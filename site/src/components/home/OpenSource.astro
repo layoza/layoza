@@ -1,0 +1,78 @@
+---
+// Blueprint of the repo: real crates and folders, and how they connect.
+const parts = [
+  { id: 'skills', x: 40, y: 60, w: 300, p: 'skills/', d: '19 skills: router + 18 specialists' },
+  { id: 'mcp', x: 395, y: 60, w: 300, p: 'crates/layoza-mcp', d: 'MCP server: 16 tools' },
+  { id: 'cli', x: 750, y: 60, w: 300, p: 'crates/layoza-cli', d: 'the layoza command' },
+  { id: 'core', x: 270, y: 260, w: 550, p: 'crates/layoza-core', d: 'Rust: inspector, site DNA, 76 mechanics, QA gate' },
+  { id: 'npm', x: 40, y: 440, w: 300, p: 'bin/layoza.mjs', d: 'npx layoza init · doctor' },
+  { id: 'ex', x: 750, y: 440, w: 300, p: 'examples/', d: 'every benchmark brief + output' },
+];
+// Wires as orthogonal paths between part edges (viewBox 1090 × 560).
+const wires = [
+  'M190 140 V200 H420 V260',
+  'M545 140 V260',
+  'M900 140 V200 H670 V260',
+  'M190 440 V300 H270',
+  'M545 340 V400 H900 V440',
+];
+---
+<section class="band light oss" aria-labelledby="oss-title">
+  <div class="wrap">
+    <p class="sheet"><b>10</b> Open source</p>
+    <div class="head">
+      <h2 id="oss-title" class="h-lg caps" data-reveal>Open source. <span class="accent">Open possibilities.</span></h2>
+      <p class="lede" data-reveal="0.1">MIT. The core is native Rust, no Python required. The benchmark briefs, outputs and screenshots live in the repo, including the rounds Layoza did not win.</p>
+    </div>
+    <figure class="plan" data-blueprint>
+      <figcaption class="mono"><span>layoza/ · repository plan</span><span>MIT · v0.1.3</span></figcaption>
+      <svg viewBox="0 0 1090 560" role="img" aria-labelledby="oss-plan-t">
+        <title id="oss-plan-t">Layoza repository: skills, MCP server and CLI all sit on the Rust core; the npm wrapper installs it; examples hold the benchmark.</title>
+        <defs>
+          <pattern id="bp-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(129,104,255,0.12)" stroke-width="1" /></pattern>
+        </defs>
+        <rect width="1090" height="560" fill="url(#bp-grid)" />
+        {wires.map((d) => <path class="wire" d={d} pathLength="1" />)}
+        {wires.map((d, i) => <path class="pulse" d={d} pathLength="1" style={`--i:${i}`} />)}
+        {parts.map((p) => (
+          <g class="part">
+            <rect x={p.x} y={p.y} width={p.w} height="80" />
+            <text x={p.x + 16} y={p.y + 32} class="p">{p.p}</text>
+            <text x={p.x + 16} y={p.y + 58} class="d">{p.d}</text>
+          </g>
+        ))}
+      </svg>
+    </figure>
+    <ul class="list mono">
+      {parts.map((p) => <li><b>{p.p}</b> {p.d}</li>)}
+    </ul>
+    <div class="ctas">
+      <a class="btn btn-primary" href="https://github.com/layoza/layoza" rel="noopener">Star on GitHub</a>
+      <a class="btn btn-ghost" href="/open-source">How it is built</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .plan { margin: 0; border: 1.5px solid var(--ink); background: var(--white); }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 10px 16px; border-bottom: 1.5px solid var(--ink); font-size: 13px; color: var(--mute-light); }
+  svg { display: block; width: 100%; height: auto; }
+  .wire { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  :global(.js-motion) .plan:not(.on) .wire { stroke-dashoffset: 1; }
+  :global(.js-motion) .plan .wire { transition: stroke-dashoffset 1.4s var(--ease); }
+  .pulse { fill: none; stroke: var(--uv); stroke-width: 3; stroke-dasharray: 0.08 0.92; stroke-dashoffset: 0; opacity: 0; }
+  :global(.js-motion) .plan.on .pulse { opacity: 1; animation: flow 3.6s linear infinite; animation-delay: calc(var(--i) * 0.5s + 1.4s); }
+  @keyframes flow { to { stroke-dashoffset: -1; } }
+  .part rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .part .p { font: 500 17px var(--mono); fill: var(--ink); }
+  .part .d { font: 400 14px var(--sans); fill: var(--mute-light); }
+  .list { display: none; list-style: none; padding: 0; margin-top: 16px; font-size: 13px; }
+  .list li { padding: 8px 0; border-bottom: 1px solid var(--rule-light); }
+  .list b { color: var(--uv); font-weight: 500; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  /* The plan text is too small to read on phones, so phones get the list instead. */
+  @media (max-width: 700px) {
+    .plan svg .part text { display: none; }
+    .list { display: block; }
+  }
+</style>

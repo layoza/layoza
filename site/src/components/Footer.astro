@@ -1,0 +1,55 @@
+---
+const cols = [
+  { h: 'Product', l: [['Features', '/features'], ['Showcase', '/showcase'], ['Getting started', '/getting-started']] },
+  { h: 'Docs', l: [['Docs index', '/docs'], ['MCP tools', '/docs#mcp-tools'], ['Skills', '/docs#skills']] },
+  { h: 'Project', l: [['Open source', '/open-source'], ['GitHub', 'https://github.com/layoza/layoza'], ['npm', 'https://www.npmjs.com/package/layoza'], ['Issues', 'https://github.com/layoza/layoza/issues']] },
+];
+---
+<footer class="foot dark">
+  <div class="wrap">
+    <div class="grid">
+      <div class="about">
+        <img src="/logo-horizontal-dark.png" alt="Layoza" width="180" height="47" loading="lazy" class="logo" />
+        <p class="muted">Design intelligence for AI coding agents. MCP server and 19 skills. MIT licensed.</p>
+      </div>
+      {cols.map((c) => (
+        <nav aria-label={c.h}>
+          <h2 class="mono">{c.h}</h2>
+          <ul>{c.l.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+    <div class="titleblock mono" aria-label="Colophon">
+      <div><span>Drawing</span>Layoza site</div>
+      <div><span>Revision</span>0.1.3</div>
+      <div><span>Licence</span>MIT</div>
+      <div><span>Built with</span>Astro · React · GSAP · Three.js</div>
+    </div>
+  </div>
+  <div class="colophon" aria-hidden="true"><svg data-colophon viewBox="0 0 1000 250" focusable="false"><text x="500" y="212" text-anchor="middle">Layoza</text></svg></div>
+</footer>
+
+<style>
+  .foot { padding-top: 96px; overflow: hidden; border-top: 1px solid var(--rule-dark); }
+  .grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 40px; }
+  .logo { width: 180px; height: auto; margin-bottom: 16px; }
+  .about p { max-width: 34ch; }
+  h2 { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray); margin-bottom: 14px; }
+  ul { list-style: none; padding: 0; display: grid; gap: 4px; }
+  ul a { text-decoration: none; color: #dfe4ec; display: inline-block; padding: 6px 0; }
+  ul a:hover { color: var(--lime); }
+  .titleblock { margin-top: 72px; display: grid; grid-template-columns: repeat(4, auto); border: 1px solid var(--rule-dark); font-size: 14px; }
+  .titleblock div { padding: 12px 16px; border-right: 1px solid var(--rule-dark); }
+  .titleblock div:last-child { border: 0; }
+  .titleblock span { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
+  /* Decorative wordmark, drawn as SVG so it is plainly a graphic, not low-contrast text. */
+  .colophon { margin-top: 48px; overflow: hidden; }
+  .colophon svg { display: block; width: min(100%, 1600px); height: auto; margin: 0 auto -2%; overflow: visible; }
+  .colophon text { font: 700 280px var(--sans); letter-spacing: -0.07em; fill: var(--graphite); stroke: rgba(200, 255, 97, 0.35); stroke-width: 1px; vector-effect: non-scaling-stroke; }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .about { grid-column: 1 / -1; }
+    .titleblock { grid-template-columns: 1fr 1fr; }
+    .titleblock div { border-bottom: 1px solid var(--rule-dark); }
+  }
+</style>

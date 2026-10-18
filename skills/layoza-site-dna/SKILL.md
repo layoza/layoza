@@ -12,6 +12,10 @@ description: >-
 - Before adding any new page, section, component, or route to an existing website (Mode B).
 - When the user asks to extract a design system or document an existing site's brand and tokens.
 
+The extracted DNA is the design brief for Mode B/C work: follow it exactly
+(tokens, type, spacing, components, motion, framework). Existing sites never
+get new directions or sketches.
+
 ## Step-by-Step Procedure
 
 1. **Check Baseline Freshness**:
@@ -22,7 +26,7 @@ description: >-
    ```bash
    cargo run --quiet --bin layoza -- inspect <project-path> --write
    ```
-   This generates:
+   (MCP: `inspect_project`, then `extract_site_dna` with `write_approved: true`.) This generates:
    - `DESIGN.md` (Google-spec YAML frontmatter + 8 canonical sections)
    - `BRAND.md` (Palette, typography, dials, confidence score, unknowns)
    - `MOTION.md` (Detected libraries, durations, easings, reduced-motion posture)

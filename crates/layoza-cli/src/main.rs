@@ -11,7 +11,7 @@ use layoza_core::{
     hooks::{check_edit, hook_command, hook_status, install_hook, settings_path, uninstall_hook, HookTarget},
     inspector::{inspect_project, is_dna_baseline_fresh, write_dna_artifacts},
     installer::{install_layoza, run_doctor, InstallScope},
-    intelligence::{catalog_industries, recommend_design, OperatingMode},
+    intelligence::{catalog_industries, recommend_design_variant, OperatingMode},
     mechanics::{
         catalogue, deal_mechanics_with, get_mechanic, list_mechanics, DealOptions, ExistingSite, Intensity, Mechanic,
         MechanicKind,
@@ -177,16 +177,24 @@ fn main() {
                 OperatingMode::ExtendExisting | OperatingMode::ImproveExisting => load_site_dna(&cwd).map(|(d, _)| d),
                 _ => None,
             };
-            let rec = recommend_design(&query, mode, existing_dna.as_ref(), dials);
+            let variant = get_flag_value(&args, "--variant").and_then(|s| s.parse::<u64>().ok()).unwrap_or(0);
+            let rec = recommend_design_variant(&query, mode, existing_dna.as_ref(), dials, variant);
+            // New looks only: an existing site follows its own design, so no avoid list.
+            let avoid = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign)
+                .then(layoza_core::history::avoid_recent);
             if json_flag {
-                println!("{}", serde_json::to_string_pretty(&rec).unwrap());
+                let mut out = serde_json::to_value(&rec).unwrap();
+                if let Some(a) = &avoid {
+                    out["avoid_recent"] = a.clone();
+                }
+                println!("{}", serde_json::to_string_pretty(&out).unwrap());
             } else {
                 println!("=== Layoza Design System Recommendation ({:?}) ===", rec.mode);
                 println!("Matched Industry : {} (`{}`)", rec.matched_industry.name, rec.matched_industry.slug);
                 println!("Match Confidence : {} (score {})", rec.match_confidence, rec.match_score);
                 if rec.match_confidence == "none" {
                     println!(
-                        "  FALLBACK: no industry keyword or slug matched the brief; `{}` is a generic default.",
+                        "  FALLBACK: no catalogue industry matched; `{}` was read from the brief's own words. Check it against what the user meant.",
                         rec.matched_industry.slug
                     );
                     let slugs: Vec<String> = catalog_industries().into_iter().map(|i| i.slug).collect();
@@ -199,18 +207,36 @@ fn main() {
                 }
                 println!("Layout Archetype : {}", rec.matched_industry.layout_archetype);
                 println!(
-                    "Typography       : {} / {} (Mono: {})",
+                    "Industry baseline: type {} / {} (Mono: {}); palette {} bg={} fg={} accent={} (WCAG {:.2}:1)",
                     rec.matched_industry.typography_pairing.display_font,
                     rec.matched_industry.typography_pairing.body_font,
-                    rec.matched_industry.typography_pairing.mono_font
-                );
-                println!(
-                    "Palette          : bg={} fg={} accent={} (WCAG {:.1}:1)",
+                    rec.matched_industry.typography_pairing.mono_font,
+                    rec.matched_industry.palette.id,
                     rec.matched_industry.palette.background,
                     rec.matched_industry.palette.foreground,
                     rec.matched_industry.palette.primary_accent,
                     rec.matched_industry.palette.wcag_body_contrast
                 );
+                let letters = ['A', 'B', 'C'];
+                let per: Vec<String> = rec
+                    .directions
+                    .iter()
+                    .enumerate()
+                    .map(|(i, d)| format!("{} {} / {}", letters.get(i).copied().unwrap_or('?'), d.typography.display_font, d.typography.body_font))
+                    .collect();
+                println!("Direction type   : {}", per.join(" | "));
+                if !rec.brief_signals.brief_colors.is_empty() {
+                    println!(
+                        "Brief Colours    : {} (the brief's own palette wins; direction palettes are fallbacks)",
+                        rec.brief_signals.brief_colors.join(", ")
+                    );
+                }
+                if !rec.brief_signals.brief_fonts.is_empty() {
+                    println!(
+                        "Brief Fonts      : {} (the brief's own type wins; direction pairings are fallbacks)",
+                        rec.brief_signals.brief_fonts.join(", ")
+                    );
+                }
                 println!(
                     "Active Dials     : Variance={}/10 | Motion={}/10 | Density={}/10",
                     rec.active_dials.design_variance,
@@ -222,12 +248,44 @@ fn main() {
                     println!("  [{}] {}", dir.index, dir.title);
                     println!("      Layout  : {}", dir.layout_composition);
                     println!("      Identity: {}", dir.visual_identity);
+                    println!(
+                        "      Type    : {} / {} / {} (scale {})",
+                        dir.typography.display_font, dir.typography.body_font, dir.typography.mono_font, dir.typography.scale_ratio
+                    );
+                    println!(
+                        "      Palette : {} bg={} fg={} accent={} (body WCAG {:.2}:1, computed)",
+                        dir.palette.id, dir.palette.background, dir.palette.foreground, dir.palette.primary_accent, dir.palette.wcag_body_contrast
+                    );
+                    println!("      Content : {}", dir.content_treatment);
                     println!("      Motion  : {}", dir.motion_choreography);
                     if !dir.mechanics.is_empty() {
-                        let m: Vec<String> =
-                            dir.mechanics.iter().map(|m| format!("{} ({}, {})", m.id, m.role, m.intensity.as_str())).collect();
+                        let m: Vec<String> = dir
+                            .mechanics
+                            .iter()
+                            .map(|m| {
+                                let comp = if m.composition.is_empty() { String::new() } else { format!(", {}", m.composition) };
+                                format!("{} ({}, {}{})", m.id, m.role, m.intensity.as_str(), comp)
+                            })
+                            .collect();
                         println!("      Mechanics: {}", m.join(" | "));
                     }
+                    if !dir.rationale.is_empty() {
+                        println!("      Why     : {}", dir.rationale);
+                    }
+                }
+                if let Some(a) = avoid.as_ref().filter(|a| a["entries"].as_u64().unwrap_or(0) > 0) {
+                    let list = |k: &str| -> String {
+                        a[k].as_array()
+                            .map(|v| v.iter().filter_map(|x| x.as_str().map(str::to_string)).collect::<Vec<_>>().join(", "))
+                            .unwrap_or_default()
+                    };
+                    println!("\nAvoid recent ({} picks in your design history):", a["entries"]);
+                    for d in a["directions"].as_array().into_iter().flatten() {
+                        println!("  - {} ({})", d["direction"].as_str().unwrap_or(""), d["date"].as_str().unwrap_or(""));
+                    }
+                    println!("  Fonts: {}", list("fonts"));
+                    println!("  Motifs: {}", list("motifs"));
+                    println!("  Make all three directions materially different unless the user asks for the same look.");
                 }
                 println!("\nMechanics: `layoza mechanics show <id>` prints a blueprint; `layoza mechanics deal \"<brief>\"` deals a full page.");
             }
@@ -626,6 +684,9 @@ fn main() {
                         count,
                         seed,
                         existing,
+                        exclude_ids: get_flag_value(&args, "--avoid")
+                            .map(|v| v.split(',').map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect())
+                            .unwrap_or_default(),
                         ..Default::default()
                     });
                     if json_flag {
@@ -661,6 +722,12 @@ fn main() {
                         }
                         if let Some(t) = &deal.transition {
                             println!("\n[TRANSITION] {} - {} ({})", t.id, t.name, t.role);
+                        }
+                        if !deal.fit.is_empty() {
+                            println!("\nFit:");
+                            for f in &deal.fit {
+                                println!("  - {} [{} / {}]: {}", f.id, f.slot, f.fit, f.reason);
+                            }
                         }
                         println!("\nNotes:");
                         for n in deal.notes.iter().chain(&deal.rules) {
@@ -792,7 +859,7 @@ fn get_flag_value(args: &[String], flag: &str) -> Option<String> {
 const VALUE_FLAGS: &[&str] = &[
     "--scope", "--agents", "--mode", "--variance", "--motion", "--density", "--lint", "--intensity", "--recipe",
     "--framework", "--title", "--subtitle", "--cta", "--output", "--file", "--snapshot", "--path", "--top",
-    "--niche", "--kind", "--count", "--seed", "--existing", "--mood",
+    "--niche", "--kind", "--count", "--seed", "--existing", "--mood", "--avoid", "--variant",
 ];
 
 /// All values of a repeatable flag (`--file a --file b`, `--file=a`).
@@ -845,17 +912,17 @@ fn subcommand_usage(cmd: &str) -> Option<&'static str> {
     Some(match cmd {
         "init" => "Usage: layoza init [--scope project|global] [--agents a,b,c] [--json]\n  Install Layoza skills, plugin and MCP configs for the selected agents.",
         "inspect" => "Usage: layoza inspect [<path>|--path <path>] [--write] [--screenshot-only] [--json]\n  Extract Site DNA from a project directory (default `.`); --write writes DESIGN.md, BRAND.md, MOTION.md, SITE-DNA.json, COMPONENT-INVENTORY.json.",
-        "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives.",
+        "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--variant N] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives; --variant N re-deals fonts, palettes and mechanics for the same brief.",
         "animate" => "Usage: layoza animate [<category|id|engine>] [--recipe <id>] [--intensity 0-10] [--json]\n  Recommend animation recipes. Categories: hero_animation, section_animation, scroll_animation, interactive_effect, page_transition, three_experience. --recipe selects one recipe by id.",
         "audit" => "Usage: layoza audit [<path>] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails.",
         "verify" => "Usage: layoza verify [<path>] [--repair] [--json]\n  Verify release gates; --repair applies bounded auto-repairs to a single HTML file.",
-        "qa" => "Usage: layoza qa [<url|file|dir>] [--json]\n  Headless Chromium multi-viewport QA (default index.html). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 180).",
+        "qa" => "Usage: layoza qa [<url|file|dir>] [--json]\n  Headless Chromium multi-viewport QA (default index.html). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
         "doctor" => "Usage: layoza doctor [--json]\n  Validate agent installations, skill frontmatter, runtimes and smoke tests.",
         "generate" => "Usage: layoza generate [--framework <fw>] [--title <t>] [--subtitle <s>] [--cta <c>] [--output <dir>] [--json]\n  Generate a framework-native component from the project's Site DNA.",
         "baseline" => "Usage: layoza baseline create [<id>] [--file <path>]...\n       layoza baseline rollback [<id>]\n       layoza baseline [freshness]\n  create without --file snapshots the project's UI sources (html/css/js/ts/tsx/jsx/vue/svelte/astro/liquid/php, theme JSON, DESIGN.md...), skipping node_modules, .git, target, dist, build, .layoza and hidden dirs (caps: 2000 files, 1 MB/file, 32 MB total); skipped paths are reported. --file is repeatable and errors on paths that cannot be snapshotted. rollback exits 1 if it restores nothing.",
         "benchmark" => "Usage: layoza benchmark [--json]\n  Run the 32 reproducible evaluation briefs.",
         "deal" => "Usage: layoza deal \"<candidate list>\" [--top N] [--json]\n  Deterministically pick one of the top N (default 4) candidates from a stable hash of the list.",
-        "mechanics" => "Usage: layoza mechanics list [--niche X] [--kind hero|section|transition] [--intensity calm|bold|wild] [--json]\n       layoza mechanics deal \"<brief>\" [--count N] [--seed S] [--niche X] [--mood m] [--intensity calm|bold|wild] [--mode extend|improve] [--existing <dir>] [--json]\n       layoza mechanics show <id> [--json]\n  Deal 1 hero + N section mechanics (2 signature + suggestions) + 1 transition, deterministic per seed. New sites follow the brief; --existing <dir> or --mode extend|improve caps the deal to the inspected site's motion intensity and stack (SITE-DNA.json, else a fresh inspect).",
+        "mechanics" => "Usage: layoza mechanics list [--niche X] [--kind hero|section|transition] [--intensity calm|bold|wild] [--json]\n       layoza mechanics deal \"<brief>\" [--count N] [--seed S] [--niche X] [--mood m] [--intensity calm|bold|wild] [--mode extend|improve] [--existing <dir>] [--avoid id1,id2] [--json]\n       layoza mechanics show <id> [--json]\n  Deal 1 hero + N section mechanics (2 signature + suggestions) + 1 transition, deterministic per seed. New sites follow the brief; --existing <dir> or --mode extend|improve caps the deal to the inspected site's motion intensity and stack (SITE-DNA.json, else a fresh inspect). --avoid skips mechanics used recently.",
         "hooks" => "Usage: layoza hooks on|off|status [--scope project|global] [--local] [--json]\n  Manage the Claude Code PostToolUse hook that checks UI files after each edit.",
         "check-edit" => "Usage: layoza check-edit < hook.json\n  Hook entry point: reads PostToolUse JSON on stdin and reports findings; never blocks.",
         "mcp" => "Usage: layoza mcp\n  Start the Layoza MCP stdio server.",

@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Compare from '../components/home/Compare.astro';
+import Showcase from '../components/home/Showcase.astro';
+import { LIMITS } from '../data';
+const setups = [
+  ['Layoza', 'This project'],
+  ['Claude frontend-design', "Anthropic's front-end design skill"],
+  ['impeccable', 'Open-source design skill'],
+  ['ui-ux-pro-max', 'Open-source design skill'],
+  ['taste-skill', 'Open-source design skill'],
+  ['No skill', 'Plain Claude, same prompt'],
+];
+---
+<Base title="Showcase" description="Six setups, the same brief and the same model. Real screenshots from Layoza's benchmark, including the rounds it did not win.">
+  <PageHead num="S-00" sheet="Showcase" title="The pictures, and the fine print." lede="Six setups got the same one-line brief, the same model (Claude Opus 5.5) and one build agent each. None could see the others' output. A fresh blind judge compared scroll stills at 1440 and 375 px." />
+  <Showcase full />
+  <Compare />
+  <section class="band light" aria-labelledby="bench-title" id="benchmark">
+    <div class="wrap grid">
+      <div>
+        <p class="sheet"><b>S-03</b> Method</p>
+        <h2 id="bench-title" class="h-lg">How the rounds ran.</h2>
+        <table>
+          <caption class="sr-only">Benchmark setups</caption>
+          <thead><tr><th scope="col">Setup</th><th scope="col">What it is</th></tr></thead>
+          <tbody>{setups.map(([a, b]) => <tr><th scope="row">{a}</th><td>{b}</td></tr>)}</tbody>
+        </table>
+        <p class="muted small">Rival pages were frozen; only Layoza was rebuilt between rounds.</p>
+      </div>
+      <div class="limits">
+        <h3 class="h-md">Where Layoza does not win</h3>
+        <ul>{LIMITS.map((l) => <li>{l}</li>)}</ul>
+        <a class="btn btn-primary" href="https://github.com/layoza/layoza/tree/main/docs" rel="noopener">Every round and judge note</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: start; }
+  table { width: 100%; border-collapse: collapse; margin-top: 32px; border-top: 2px solid var(--ink); }
+  th, td { text-align: left; padding: 12px 8px 12px 0; border-bottom: 1px solid var(--rule-light); }
+  thead th { font: 500 12px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute-light); }
+  .small { margin-top: 14px; font-size: 15px; }
+  .limits { border: 2px solid var(--ink); padding: clamp(20px, 3vw, 36px); background: var(--white); }
+  .limits ul { margin: 20px 0 28px; padding-left: 20px; display: grid; gap: 12px; color: #2f3643; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+</style>

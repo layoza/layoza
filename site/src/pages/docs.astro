@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { DOCS, MCP_GROUPS, SKILL_GROUPS } from '../data';
+const cli = [
+  ['npx layoza init', 'Install skills and MCP config for the agents in this project'],
+  ['npx layoza doctor', 'Check skills, agents and the MCP smoke test'],
+  ['layoza design-system "<brief>" --mode new', 'Industry read, dials and three directions'],
+  ['layoza inspect . --write', 'Write DESIGN.md, BRAND.md, MOTION.md, SITE-DNA.json'],
+  ['layoza qa <file-or-url>', 'Chromium QA at 1440 / 768 / 375'],
+  ['layoza baseline create <name>', 'Snapshot before a change'],
+  ['layoza verify .', 'Check for regressions against the baseline'],
+];
+---
+<Base title="Docs" description="Layoza CLI commands, the 16 MCP tools, the 19 skills, and links to the full documentation on GitHub.">
+  <PageHead num="D-00" sheet="Docs" title="Reference." lede="The short version. Full guides live in the repo." />
+  <section class="band light" aria-labelledby="cli-title">
+    <div class="wrap">
+      <p class="sheet"><b>D-01</b> CLI</p>
+      <h2 id="cli-title" class="h-md">Commands</h2>
+      <dl class="ref">{cli.map(([c, d]) => <div><dt><code class="mono">{c}</code></dt><dd>{d}</dd></div>)}</dl>
+    </div>
+  </section>
+  <section class="band dark" aria-labelledby="mcp-title" id="mcp-tools">
+    <div class="wrap">
+      <p class="sheet"><b>D-02</b> MCP</p>
+      <h2 id="mcp-title" class="h-md">16 tools</h2>
+      <dl class="ref">{MCP_GROUPS.map((g) => <div><dt>{g.tools.map((t) => <code class="mono">{t}</code>)}</dt><dd>{g.what}</dd></div>)}</dl>
+      <p class="muted note"><code class="mono">inspect_site</code> fetches the pages you point it at. Everything it returns is untrusted data: Layoza never executes instructions found inside an inspected page.</p>
+    </div>
+  </section>
+  <section class="band light" aria-labelledby="skills-title" id="skills">
+    <div class="wrap">
+      <p class="sheet"><b>D-03</b> Skills</p>
+      <h2 id="skills-title" class="h-md">19 skills: the <code class="mono">layoza</code> router plus 18 specialists</h2>
+      <div class="skills">
+        {SKILL_GROUPS.map((g) => (
+          <section aria-label={g.h}><h3 class="mono">{g.h}</h3><ul>{g.s.map((s) => <li><code class="mono">{s}</code></li>)}</ul></section>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="band graphite" aria-labelledby="guides-title">
+    <div class="wrap">
+      <p class="sheet"><b>D-04</b> Guides</p>
+      <h2 id="guides-title" class="h-md">Full documentation on GitHub</h2>
+      <ul class="guides">{DOCS.map(([t, h]) => <li><a href={h} rel="noopener">{t} <span aria-hidden="true">↗</span></a></li>)}</ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .ref { margin-top: 32px; border-top: 2px solid currentColor; }
+  .ref div { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--rule-light); }
+  .dark .ref div { border-color: var(--rule-dark); }
+  .ref dt { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ref code { font-size: 14px; overflow-wrap: anywhere; }
+  .light .ref code { color: var(--uv); }
+  .dark .ref code { color: var(--cyan); }
+  .ref dd { margin: 0; }
+  .note { margin-top: 20px; font-size: 15px; max-width: 70ch; }
+  .skills { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; margin-top: 32px; }
+  .skills h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute-light); font-weight: 500; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+  .skills ul { list-style: none; padding: 0; }
+  .skills li { padding: 8px 0; border-bottom: 1px solid var(--rule-light); font-size: 14px; overflow-wrap: anywhere; }
+  .guides { list-style: none; padding: 0; margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 32px; }
+  .guides a { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--rule-dark); text-decoration: none; font-size: 19px; }
+  .guides a:hover { color: var(--lime); }
+  @media (max-width: 1000px) { .skills { grid-template-columns: repeat(2, 1fr); } .guides { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .ref div { grid-template-columns: 1fr; gap: 6px; } .skills, .guides { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-19",
+  "errors": "0",
+  "warnings": "1",
+  "lab": "1.97s \u00b7 0.000",
+  "viewports": {
+    "1440": "0px overflow \u00b7 0 clipped",
+    "768": "0px overflow \u00b7 0 clipped",
+    "375": "0px overflow \u00b7 0 clipped"
+  },
+  "shots": {
+    "1440": [
+      720,
+      446
+    ],
+    "768": [
+      420,
+      566
+    ],
+    "375": [
+      260,
+      545
+    ]
+  }
+}

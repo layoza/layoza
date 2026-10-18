@@ -11,6 +11,10 @@
  *  - WCAG 2.2 AA: per-text-element contrast against the composited ancestor background,
  *    missing alt text, unlabeled controls, 24px target size (2.5.8), heading hierarchy, landmarks,
  *    `:focus-visible` and `prefers-reduced-motion` rules
+ *  - Text over canvas/video/large images/background images: real-pixel contrast and busyness of what
+ *    is behind the text (captured with the text hidden), and text that something paints over
+ *  - Motion settle: each viewport waits (capped at 5s) for finite animations to finish and the first
+ *    screen to be pixel-stable before it is measured; `motion_unsettled_viewports` lists cap hits
  *  - Laboratory Core Web Vitals: LCP and CLS from PerformanceObserver, and an INP proxy from Event Timing
  *    entries recorded during scripted keyboard interactions. All are labeled LaboratorySynthetic.
  *
@@ -104,6 +108,7 @@ const SCROLL_PASS_SCRIPT = `(async () => {
   // Mid-reveal sampling: a visitor who stops scrolling sees the page ~1s later. Headings in view that are
   // still faded at that moment read as broken frames (2026-10 blind juries). Layoza-original.
   const mid = [];
+  const slow = [];
   const eff = (el) => { let o = 1; for (let c = el; c && c.nodeType === 1; c = c.parentElement) { const st = getComputedStyle(c); if (st.display === "none" || st.visibility === "hidden") return -1; o *= parseFloat(st.opacity); } return o; };
   // Text-on-text overlap at each resting scroll position: line boxes of two different visible text
   // runs that cover each other. Compared only within one scroll layer (same nearest fixed/sticky
@@ -152,6 +157,10 @@ const SCROLL_PASS_SCRIPT = `(async () => {
   const breaks = [];
   const headingFit = (h, y) => {
     if (breaks.length >= 8) return;
+    // A heading whose own box is clipped sideways sits on a carousel card scrolled part-way out of
+    // view; its words are cut by the scroll position, not by the type size, so skip it.
+    const hr = h.getBoundingClientRect(), hv = visibleBox(h, hr);
+    if (Math.min(hv.right, window.innerWidth) < hr.right - 2 || Math.max(hv.left, 0) > hr.left + 2) return;
     const tw = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
     for (let n = tw.nextNode(); n; n = tw.nextNode()) {
       const el = n.parentElement;
@@ -320,8 +329,18 @@ const SCROLL_PASS_SCRIPT = `(async () => {
       let clipped = false;
       for (let c = h; c && c !== document.body; c = c.parentElement) { const cp = getComputedStyle(c).clipPath; if (cp && cp !== "none" && cp.startsWith("inset") && (cp.match(/[0-9.]+%/g) || []).some((v) => parseFloat(v) >= 10)) { clipped = true; break; } }
       const leafShare = leaves.length >= 2 ? faded / leaves.length : 0;
-      if ((o < 0.55 || leafShare >= 0.3 || clipped) && mid.length < 20 && !mid.some((m) => m.startsWith(txt.slice(0, 30) + " @"))) mid.push(txt.slice(0, 30) + " @" + Math.round(y) + "px (" + (o < 0.55 ? "opacity " + o.toFixed(2) : clipped ? "clipped" : Math.round(leafShare * 100) + "% of words faded") + ")");
+      if ((o < 0.55 || leafShare >= 0.3 || clipped) && mid.length + slow.length < 20 && !mid.some((m) => m.startsWith(txt.slice(0, 30) + " @")) && !slow.some((m) => m.label.startsWith(txt.slice(0, 30) + " @"))) slow.push({ h, label: txt.slice(0, 30) + " @" + Math.round(y) + "px (" + (o < 0.55 ? "opacity " + o.toFixed(2) : clipped ? "clipped" : Math.round(leafShare * 100) + "% of words faded") + " at 0.9s" });
     }
+    // Still faded ~0.9s after scrolling stopped is already too slow (text-mid-reveal); keep watching up
+    // to ~3s so the report says whether the reveal lands late or never lands at this position
+    const readable = (h) => { const o = eff(h); if (o < 0) return true; if (o < 0.9) return false; const lv = [...h.querySelectorAll("*")].filter((c) => !c.children.length && (c.textContent || "").trim()); return !lv.some((c) => { const co = eff(c); return co >= 0 && co < 0.9; }); };
+    for (let waited = 900; slow.length && waited < 3000; waited += 300) {
+      await new Promise((r) => setTimeout(r, 300));
+      for (let i = slow.length - 1; i >= 0; i--) {
+        if (readable(slow[i].h)) { mid.push(slow[i].label + "; readable after ~" + ((waited + 300) / 1000).toFixed(1) + "s)"); slow.splice(i, 1); }
+      }
+    }
+    for (const m of slow.splice(0)) mid.push(m.label + "; still faded at 3.0s)");
     textOverlapAt(y);
     coverageAt(y);
   }
@@ -537,6 +556,208 @@ const ART_MAX_DIFFS = 20;
 const ART_COVER_MIN = 0.12; // share of a line box
 const ART_WORD_MIN = 0.3; // share of one visual word's box
 
+// Motion settle (Layoza-original). Before a viewport is measured, wait until finite CSS/WAAPI
+// animations have finished and the first screen is pixel-stable across two frames ~300ms apart,
+// capped at SETTLE_CAP_MS, so half-played intro fades are not scored as resting contrast or layout.
+// Endless loops (infinite iterations, scroll-driven timelines, or more than the cap still to run)
+// are tagged data-layoza-loop and masked in the stability screenshots together with canvas/video,
+// which animate forever by design.
+const SETTLE_CAP_MS = 5000;
+const SETTLE_STEP_MS = 300;
+const SETTLE_STABLE_MAX = 0.003; // share of changed pixels (at 320px wide) still counted as stable
+const SETTLE_MASK_SELECTOR = "canvas, video, iframe, [data-layoza-loop]";
+const SETTLE_PENDING_SCRIPT = `((capMs) => {
+  for (const m of document.querySelectorAll("[data-layoza-loop]")) m.removeAttribute("data-layoza-loop");
+  let list = [];
+  try { list = document.getAnimations ? document.getAnimations() : []; } catch (e) {}
+  let pending = 0, loops = 0;
+  const docTimeline = typeof DocumentTimeline === "undefined" ? null : DocumentTimeline;
+  for (const a of list) {
+    if (a.playState !== "running") continue;
+    const target = a.effect && a.effect.target;
+    let t = null;
+    try { t = a.effect && a.effect.getComputedTiming ? a.effect.getComputedTiming() : null; } catch (e) {}
+    const scrollDriven = docTimeline && a.timeline && !(a.timeline instanceof docTimeline);
+    const remaining = t && isFinite(t.endTime) ? t.endTime - (Number(t.localTime) || 0) : Infinity;
+    if (scrollDriven || !isFinite(remaining) || remaining > capMs) {
+      loops++;
+      if (target && target.nodeType === 1) target.setAttribute("data-layoza-loop", "");
+      continue;
+    }
+    pending++;
+  }
+  return { pending, loops };
+})`;
+
+// text-over-graphic (Layoza-original). DOM contrast cannot see pixels behind text set over a canvas,
+// video, large image or background image, so at the art pass's resting positions the collector
+// screenshots the candidate text boxes twice (text shown, text hidden via visibility) and measures
+// the real pixels behind each text: WCAG contrast of the text colour against every sampled pixel
+// (10th percentile and median), luminance busyness (CIE L* standard deviation), and whether hiding
+// the text changes any pixel at all (if not, something paints over it: occluded).
+const TG_MAX_PER_POSITION = 16;
+const TG_MAX_TOTAL = 48;
+const TG_MAX_POSITIONS = 8;
+const TG_BUSY_LSTD = 18; // L* standard deviation behind the text
+const TG_OCCLUDED_MAX = 0.004; // share of the text box that changes when the text is hidden
+const TG_FIND_SCRIPT = `((max) => {
+  const W = window.innerWidth, H = window.innerHeight;
+  for (const m of document.querySelectorAll("[data-layoza-tg]")) m.removeAttribute("data-layoza-tg");
+  const parse = (str) => { const m = str && str.match(/rgba?\\(([\\d.]+),\\s*([\\d.]+),\\s*([\\d.]+)(?:,\\s*([\\d.]+))?/i); return m ? [Number(m[1]), Number(m[2]), Number(m[3]), m[4] === undefined ? 1 : Number(m[4])] : null; };
+  const vis = (el) => { let o = 1; for (let c = el; c && c.nodeType === 1; c = c.parentElement) { const st = getComputedStyle(c); if (st.display === "none" || st.visibility === "hidden") return 0; o *= parseFloat(st.opacity); } return o; };
+  // Mid-reveal text (script-driven opacity or a running animation on the chain) belongs to text-mid-reveal
+  // (endless ambient loops do not count: they never come to rest)
+  const finite = (a) => { try { return isFinite(a.effect.getComputedTiming().endTime); } catch (e) { return false; } };
+  const moving = (el) => { for (let c = el; c && c.nodeType === 1; c = c.parentElement) { try { if (c.getAnimations && c.getAnimations().some((a) => a.playState === "running" && finite(a))) return true; } catch (e) {} } return false; };
+  const clampR = (r) => ({ l: Math.max(0, r.left), t: Math.max(0, r.top), r: Math.min(W, r.right), b: Math.min(H, r.bottom) });
+  const area = (b) => Math.max(0, b.r - b.l) * Math.max(0, b.b - b.t);
+  const inter = (a, b) => ({ l: Math.max(a.l, b.l), t: Math.max(a.t, b.t), r: Math.min(a.r, b.r), b: Math.min(a.b, b.b) });
+  const name = (e) => e.tagName.toLowerCase() + (e.id ? "#" + e.id : "") + (typeof e.className === "string" && e.className.trim() ? "." + e.className.trim().split(/\\s+/).slice(0, 2).join(".") : "");
+  // Graphics that can sit behind text: canvas/video, large images, large outer SVG, large background images
+  const graphics = [];
+  const addG = (el, kind, minShare) => {
+    const r = el.getBoundingClientRect();
+    const b = clampR(r);
+    if (area(b) < Math.max(120 * 80, W * H * minShare) || vis(el) < 0.05) return;
+    graphics.push({ el, kind, b });
+  };
+  for (const el of document.querySelectorAll("canvas, video")) addG(el, el.tagName.toLowerCase(), 0.02);
+  for (const el of document.querySelectorAll("img, picture > img")) addG(el, "img", 0.04);
+  for (const el of document.querySelectorAll("svg")) { if (!(el.parentElement && el.parentElement.closest("svg"))) addG(el, "svg", 0.15); }
+  const all = document.body ? document.body.getElementsByTagName("*") : [];
+  // Fixed/sticky bars (headers, cookie bars) cover content mid-scroll by design: text under them is skipped
+  const covers = [];
+  for (let i = 0; i < all.length && i < 6000; i++) {
+    const el = all[i];
+    const st = getComputedStyle(el);
+    const bi = st.backgroundImage;
+    if (bi && bi !== "none" && (bi.includes("url(") || bi.includes("gradient("))) addG(el, bi.includes("url(") ? "background-image" : "gradient", 0.04);
+    if ((st.position === "fixed" || st.position === "sticky") && st.display !== "none" && st.visibility !== "hidden") {
+      const b = clampR(el.getBoundingClientRect());
+      if (area(b) > 0) covers.push({ el, b });
+    }
+  }
+  if (!graphics.length) return { graphics: 0, candidates: [], clip: null };
+  // Text owners: elements with their own visible text in the viewport
+  const owners = new Map();
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n = walker.nextNode(); n && owners.size < 400; n = walker.nextNode()) {
+    if (!(n.nodeValue || "").trim()) continue;
+    const el = n.parentElement;
+    if (!el || el.closest("script, style, noscript, template, svg, canvas, video, select, option, [hidden], [aria-hidden='true'], dialog:not([open])")) continue;
+    if (el.closest("details:not([open])") && !el.closest("summary")) continue;
+    const rg = document.createRange();
+    rg.selectNodeContents(n);
+    for (const r of rg.getClientRects()) {
+      if (r.width < 2 || r.height < 4 || r.bottom <= 0 || r.top >= H || r.right <= 0 || r.left >= W) continue;
+      const b = clampR(r);
+      const o = owners.get(el);
+      if (o) { o.l = Math.min(o.l, b.l); o.t = Math.min(o.t, b.t); o.r = Math.max(o.r, b.r); o.b = Math.max(o.b, b.b); o.text += n.nodeValue; }
+      else owners.set(el, { ...b, text: n.nodeValue });
+    }
+  }
+  // A solid plate (alpha >= 0.8) between the text and the graphic means the DOM contrast check already applies
+  const plateBetween = (el, g) => {
+    for (let c = el; c && c !== document.documentElement; c = c.parentElement) {
+      if (c === g.el || c.contains(g.el)) return false;
+      const bg = parse(getComputedStyle(c).backgroundColor);
+      if (bg && bg[3] >= 0.8) return true;
+    }
+    return false;
+  };
+  const out = [];
+  const seen = new Set();
+  for (const [el, box] of owners) {
+    if (out.length >= max) break;
+    if (area(box) < 40) continue;
+    const text = box.text.replace(/\\s+/g, " ").trim();
+    if (text.length < 2 || seen.has(text.slice(0, 40))) continue;
+    const st = getComputedStyle(el);
+    const col = parse(st.color);
+    if (!col || col[3] <= 0.05 || vis(el) < 0.9 || moving(el)) continue;
+    if (covers.some((c) => !c.el.contains(el) && !el.contains(c.el) && area(inter(box, c.b)) > 0)) continue;
+    const hits = graphics.filter((g) => g.el !== el && !el.contains(g.el) && area(inter(box, g.b)) >= area(box) * 0.3);
+    if (!hits.length) continue;
+    const g = hits.find((x) => !plateBetween(el, x));
+    if (!g) continue;
+    seen.add(text.slice(0, 40));
+    const id = String(out.length);
+    el.setAttribute("data-layoza-tg", id);
+    const fs = parseFloat(st.fontSize) || 16, fw = parseInt(st.fontWeight, 10) || 400;
+    out.push({
+      id, text: text.slice(0, 40), el: name(el), graphic: g.kind + " " + name(g.el),
+      l: box.l, t: box.t, r: box.r, b: box.b,
+      color: col, large: fs >= 24 || (fs >= 18.66 && fw >= 700),
+      halo: (st.textShadow && st.textShadow !== "none") || (parseFloat(st.webkitTextStrokeWidth) || 0) > 0,
+    });
+  }
+  let clip = null;
+  if (out.length) {
+    const x0 = Math.floor(Math.min(...out.map((o) => o.l))), y0 = Math.floor(Math.min(...out.map((o) => o.t)));
+    const x1 = Math.ceil(Math.max(...out.map((o) => o.r))), y1 = Math.ceil(Math.max(...out.map((o) => o.b)));
+    clip = { x: Math.max(0, x0), y: Math.max(0, y0), width: Math.max(1, Math.min(W, x1) - Math.max(0, x0)), height: Math.max(1, Math.min(H, y1) - Math.max(0, y0)) };
+  }
+  return { graphics: graphics.length, candidates: out, clip };
+})`;
+const TG_HIDE_SCRIPT = `(() => {
+  for (const m of document.querySelectorAll("[data-layoza-tg]")) {
+    m.setAttribute("data-layoza-tg-vis", m.style.getPropertyValue("visibility") + "|" + m.style.getPropertyPriority("visibility") + "|" + m.style.getPropertyValue("transition") + "|" + m.style.getPropertyPriority("transition"));
+    m.style.setProperty("transition", "none", "important");
+    m.style.setProperty("visibility", "hidden", "important");
+  }
+})()`;
+const TG_RESTORE_SCRIPT = `(() => {
+  for (const m of document.querySelectorAll("[data-layoza-tg]")) {
+    const p = (m.getAttribute("data-layoza-tg-vis") || "|||").split("|");
+    if (p[0]) m.style.setProperty("visibility", p[0], p[1]); else m.style.removeProperty("visibility");
+    if (p[2]) m.style.setProperty("transition", p[2], p[3]); else m.style.removeProperty("transition");
+    m.removeAttribute("data-layoza-tg-vis");
+    m.removeAttribute("data-layoza-tg");
+  }
+})()`;
+// Decodes the text-shown and text-hidden captures and returns per-candidate pixel statistics
+const TG_STATS_SCRIPT = `async (p) => {
+  const load = (src) => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error("screenshot decode failed")); im.src = src; });
+  const px = (im) => { const c = document.createElement("canvas"); c.width = im.naturalWidth; c.height = im.naturalHeight; const x = c.getContext("2d", { willReadFrequently: true }); x.drawImage(im, 0, 0); return x.getImageData(0, 0, c.width, c.height); };
+  const A = px(await load(p.shown)), B = px(await load(p.hidden));
+  const ch = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lum = (r, g, b) => 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+  const lstar = (y) => (y > 216 / 24389 ? 116 * Math.cbrt(y) - 16 : (24389 / 27) * y);
+  const s = B.width / p.clip.width, Wd = B.width, Hd = Math.min(A.height, B.height);
+  return p.candidates.map((c) => {
+    const x0 = Math.max(0, Math.round((c.l - p.clip.x) * s)), x1 = Math.min(Wd, Math.round((c.r - p.clip.x) * s));
+    const y0 = Math.max(0, Math.round((c.t - p.clip.y) * s)), y1 = Math.min(Hd, Math.round((c.b - p.clip.y) * s));
+    const step = Math.max(1, Math.floor(Math.sqrt(((x1 - x0) * (y1 - y0)) / 6000)));
+    const [tr, tg, tb, ta] = c.color;
+    const ratios = [];
+    let n = 0, sum = 0, sum2 = 0, changed = 0, total = 0;
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const i = (y * Wd + x) * 4;
+        total++;
+        if (Math.abs(A.data[i] - B.data[i]) + Math.abs(A.data[i + 1] - B.data[i + 1]) + Math.abs(A.data[i + 2] - B.data[i + 2]) > 60) changed++;
+        if ((y - y0) % step || (x - x0) % step) continue;
+        const r = B.data[i], g = B.data[i + 1], b = B.data[i + 2];
+        const lb = lum(r, g, b);
+        // Semi-transparent text colour composites over the pixel behind it
+        const lt = lum(tr * ta + r * (1 - ta), tg * ta + g * (1 - ta), tb * ta + b * (1 - ta));
+        ratios.push((Math.max(lt, lb) + 0.05) / (Math.min(lt, lb) + 0.05));
+        const L = lstar(lb);
+        n++; sum += L; sum2 += L * L;
+      }
+    }
+    if (!n) return null;
+    ratios.sort((a, b) => a - b);
+    const mean = sum / n;
+    return {
+      p10: Number(ratios[Math.floor(ratios.length * 0.1)].toFixed(2)),
+      median: Number(ratios[Math.floor(ratios.length * 0.5)].toFixed(2)),
+      lstd: Number(Math.sqrt(Math.max(0, sum2 / n - mean * mean)).toFixed(1)),
+      changed: Number((changed / Math.max(1, total)).toFixed(4)),
+    };
+  });
+}`;
+
 const DOM_EVAL_SCRIPT = `(() => {
   function parseColor(str) {
     const m = str && str.match(/rgba?\\(([\\d.]+),\\s*([\\d.]+),\\s*([\\d.]+)(?:,\\s*([\\d.]+))?/i);
@@ -685,6 +906,8 @@ const DOM_EVAL_SCRIPT = `(() => {
   function isVisible(el) {
     const r = el.getBoundingClientRect();
     if (r.width <= 2 || r.height <= 2) return false;
+    // Content of a closed <details> keeps its layout box but is not rendered; only checkVisibility sees that.
+    if (typeof el.checkVisibility === "function" && !el.checkVisibility()) return false;
     let cur = el;
     while (cur && cur.nodeType === 1) {
       const cs = getComputedStyle(cur);
@@ -856,13 +1079,13 @@ const DOM_EVAL_SCRIPT = `(() => {
     const navLinks = Array.from(headerEl.querySelectorAll("nav a[href]"));
     const anyNavVisible = navLinks.some(isVisible);
     const toggles = Array.from(headerEl.querySelectorAll(
-      "button[aria-expanded], button[aria-controls], button[aria-haspopup], button[aria-label*='menu' i], button[aria-label*='navigation' i], .mobile-menu-toggle, [data-mobile-menu-toggle]"
+      "button[aria-expanded], button[aria-controls], button[aria-haspopup], button[aria-label*='menu' i], button[aria-label*='navigation' i], .mobile-menu-toggle, [data-mobile-menu-toggle], details:has(nav a[href]) > summary"
     ));
     // Prefer a control named like a menu (text or aria-label) over other popup buttons such as a cart
     const named = (b) => /menu|navigation|\bnav\b/i.test((b.getAttribute("aria-label") || "") + " " + (b.textContent || ""));
     const visibleToggles = toggles.filter(isVisible);
     // A menu-named control wins; an unnamed popup button only counts when it is the sole way to reach hidden nav
-    const chosen = visibleToggles.find(named) || (!anyNavVisible ? visibleToggles.find((b) => b.hasAttribute("aria-expanded")) : null);
+    const chosen = visibleToggles.find(named) || (!anyNavVisible ? visibleToggles.find((b) => b.hasAttribute("aria-expanded") || b.tagName === "SUMMARY") : null);
     document.querySelectorAll("[data-layoza-menu-toggle]").forEach((b) => b.removeAttribute("data-layoza-menu-toggle"));
     if (chosen) chosen.setAttribute("data-layoza-menu-toggle", "");
     menuToggleVisible = Boolean(chosen);
@@ -1144,6 +1367,16 @@ const DOM_EVAL_SCRIPT = `(() => {
     if (emptyPanels >= 6 || !isVisible(el)) continue;
     const r = el.getBoundingClientRect();
     if (r.width < 200 || r.height < 160 || r.width * r.height < vArea * 0.06) continue;
+    // A panel cut sideways by the viewport or a clipping ancestor is a carousel slide scrolled part-way out:
+    // its content is hidden by the scroll position, so only the sliver in view would be measured. Skip it.
+    let clipL = 0, clipR = window.innerWidth;
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      if (getComputedStyle(a).overflowX === "visible") continue;
+      const ar = a.getBoundingClientRect();
+      clipL = Math.max(clipL, ar.left);
+      clipR = Math.min(clipR, ar.right);
+    }
+    if (Math.max(clipL, r.left) > r.left + 2 || Math.min(clipR, r.right) < r.right - 2) continue;
     const cs = getComputedStyle(el);
     if (cs.backgroundImage !== "none") continue;
     // Navigation sidebars are short lists in a tall rail by design
@@ -1153,9 +1386,30 @@ const DOM_EVAL_SCRIPT = `(() => {
     const tinted = bgAlpha > 0.5 && cs.backgroundColor !== panelBodyBg;
     const bordered = parseFloat(cs.borderTopWidth) > 0 && parseFloat(cs.borderLeftWidth) > 0;
     if (!tinted && !bordered) continue;
+    if (el.matches(".pin-spacer, .scrollmagic-pin-spacer")) continue;
     let filled = 0;
     const box = r;
     const spans = [];
+    // Scroll-pinning room is scroll distance, not empty layout: a GSAP/ScrollMagic pin spacer pads itself by
+    // the pinned scroll length, and a tall parent of a sticky child exists to give the child room to stick.
+    // Those stretches are covered for the void-run check and removed from the area the share is measured on.
+    let pinRoom = 0;
+    for (const sp of Array.from(el.querySelectorAll(".pin-spacer, .scrollmagic-pin-spacer"))) {
+      const outer = sp.parentElement && sp.parentElement.closest(".pin-spacer, .scrollmagic-pin-spacer");
+      if (outer && el.contains(outer)) continue; // count nested spacers once, via the outermost
+      const sr = sp.getBoundingClientRect();
+      const scs = getComputedStyle(sp);
+      spans.push([Math.max(sr.top, box.top), Math.min(sr.bottom, box.bottom)]);
+      pinRoom += (parseFloat(scs.paddingTop) + parseFloat(scs.paddingBottom)) * Math.min(sr.width, box.width);
+    }
+    for (const st of Array.from(el.querySelectorAll("*")).slice(0, 300)) {
+      if (getComputedStyle(st).position !== "sticky" || !st.parentElement || !el.contains(st.parentElement)) continue;
+      const pr = st.parentElement.getBoundingClientRect();
+      const sh = st.getBoundingClientRect().height;
+      if (pr.height < sh * 1.5) continue;
+      spans.push([Math.max(pr.top, box.top), Math.min(pr.bottom, box.bottom)]);
+      pinRoom += (pr.height - sh) * Math.min(pr.width, box.width);
+    }
     const addRect = (q) => {
       const w = Math.min(q.right, box.right) - Math.max(q.left, box.left);
       const h = Math.min(q.bottom, box.bottom) - Math.max(q.top, box.top);
@@ -1177,12 +1431,27 @@ const DOM_EVAL_SCRIPT = `(() => {
       if (m.parentElement && m.parentElement.closest("svg")) continue;
       if (isVisible(m)) addRect(m.getBoundingClientRect());
     }
-    // Descendants with their own background/mask art also count as filled
+    // Descendants that paint something count as filled: background art/gradients, and drawn marks (a tinted
+    // fill or a visible border) such as a CSS wireframe built from <i>/<span> shapes. A painted box covering
+    // most of the panel is an inner wrapper, not a mark, so it does not count.
+    const alphaOf = (c) => {
+      if (!c || c === "transparent") return 0;
+      const parts = c.replace(/rgba?\(|\)/g, "").split(",");
+      return parts.length === 4 ? parseFloat(parts[3]) : 1;
+    };
     for (const c of Array.from(el.querySelectorAll("*")).slice(0, 300)) {
       const ccs = getComputedStyle(c);
-      if (ccs.backgroundImage !== "none" && isVisible(c)) addRect(c.getBoundingClientRect());
+      let painted = ccs.backgroundImage !== "none";
+      if (!painted) {
+        const cr = c.getBoundingClientRect();
+        if (cr.width * cr.height > r.width * r.height * 0.5) continue;
+        const fill = alphaOf(ccs.backgroundColor) > 0.5 && ccs.backgroundColor !== cs.backgroundColor;
+        const edge = ["Top", "Right", "Bottom", "Left"].some((s) => parseFloat(ccs["border" + s + "Width"]) > 0 && ccs["border" + s + "Style"] !== "none" && ccs["border" + s + "Style"] !== "hidden" && alphaOf(ccs["border" + s + "Color"]) > 0.3);
+        painted = fill || edge;
+      }
+      if (painted && isVisible(c)) addRect(c.getBoundingClientRect());
     }
-    const share = filled / (r.width * r.height);
+    const share = filled / Math.max(1, r.width * r.height - pinRoom);
     // Largest run of the panel's height with nothing in it (content bunched at the top of a tall box)
     spans.sort((a, b) => a[0] - b[0]);
     let cursor = r.top;
@@ -1206,7 +1475,11 @@ const DOM_EVAL_SCRIPT = `(() => {
     if (raggedRows >= 4 || !isVisible(row)) continue;
     const rcs = getComputedStyle(row);
     if (!rcs.display.includes("flex") || rcs.flexWrap !== "wrap" || rcs.flexDirection.startsWith("column")) continue;
-    const kids = Array.from(row.children).filter(isVisible);
+    // Absolutely/fixed positioned children are out of flow (orbit, scatter, stacked layers): they never wrap,
+    // so a row whose controls are placed that way is not a wrapping row.
+    const visKids = Array.from(row.children).filter(isVisible);
+    if (visKids.some((k) => ["absolute", "fixed"].includes(getComputedStyle(k).position))) continue;
+    const kids = visKids;
     if (kids.length < 3 || kids.length > 16) continue;
     const isChip = (k) => {
       const kc = getComputedStyle(k);
@@ -4967,9 +5240,73 @@ const artStep = (vp) => (vp.width < 768 ? 700 : 760);
  * art-over-text pass: at the first screen and each scroll step, diffs the viewport with canvas/video
  * art shown vs hidden inside the text line boxes that the art overlaps. Returns hits + errors.
  */
+/** Folds one position's text-over-graphic statistics into the running result (shared by both runners). */
+function addTextGraphicHits(tg, found, stats, at) {
+  found.candidates.forEach((c, i) => {
+    const st = stats[i];
+    if (!st) return;
+    tg.sampled++;
+    const required = c.large ? 3 : 4.5;
+    const occluded = st.changed <= TG_OCCLUDED_MAX;
+    const lowContrast = !occluded && st.p10 < required;
+    const busy = !occluded && st.lstd >= TG_BUSY_LSTD;
+    if (!occluded && !lowContrast && !busy) return;
+    if (tg.hits.some((h) => h.text === c.text)) return;
+    tg.hits.push({ text: c.text, el: c.el, graphic: c.graphic, y: at, required, contrast_p10: st.p10, contrast_median: st.median, l_std: st.lstd, changed_when_hidden: st.changed, occluded, low_contrast: lowContrast, busy, halo: Boolean(c.halo) });
+  });
+}
+
+/** text-over-graphic at the current scroll position (Node runner). */
+async function textOverGraphicNode(page, tg) {
+  if (tg.positions >= TG_MAX_POSITIONS || tg.sampled >= TG_MAX_TOTAL) return;
+  const found = await page.evaluate(TG_FIND_SCRIPT + "(" + Math.min(TG_MAX_PER_POSITION, TG_MAX_TOTAL - tg.sampled) + ")");
+  if (!found.candidates.length) return;
+  tg.positions++;
+  let hidden;
+  const shown = await page.screenshot({ clip: found.clip });
+  await page.evaluate(TG_HIDE_SCRIPT);
+  try {
+    await page.waitForTimeout(60);
+    hidden = await page.screenshot({ clip: found.clip });
+  } finally {
+    await page.evaluate(TG_RESTORE_SCRIPT);
+  }
+  const stats = await page.evaluate(TG_STATS_SCRIPT, {
+    shown: "data:image/png;base64," + shown.toString("base64"),
+    hidden: "data:image/png;base64," + hidden.toString("base64"),
+    clip: found.clip,
+    candidates: found.candidates,
+  });
+  addTextGraphicHits(tg, found, stats, Math.round(await page.evaluate("window.scrollY")));
+}
+
+/**
+ * Waits (up to capMs) until finite animations are done and the first screen is pixel-stable across
+ * two frames SETTLE_STEP_MS apart, with canvas/video/endless loops masked. Returns how it ended.
+ */
+async function settleNode(page, capMs) {
+  const t0 = Date.now();
+  let prev = null;
+  let last = { pending: 0, loops: 0 };
+  for (;;) {
+    last = await page.evaluate(SETTLE_PENDING_SCRIPT + "(" + SETTLE_CAP_MS + ")");
+    let shot = null;
+    if (last.pending === 0) {
+      shot = "data:image/png;base64," + (await page.screenshot({ mask: [page.locator(SETTLE_MASK_SELECTOR)] })).toString("base64");
+      if (prev && (await page.evaluate(PIN_DIFF_SCRIPT, [prev, shot])) <= SETTLE_STABLE_MAX) {
+        return { settled: true, ms: Date.now() - t0, pending_animations: 0, endless_loops: last.loops };
+      }
+    }
+    prev = shot;
+    if (Date.now() - t0 >= capMs) return { settled: false, ms: Date.now() - t0, pending_animations: last.pending, endless_loops: last.loops };
+    await page.waitForTimeout(SETTLE_STEP_MS);
+  }
+}
+
 async function artOverTextNode(page, vp) {
   const hits = [];
   const errors = [];
+  const tg = { positions: 0, sampled: 0, hits: [], errors: [] };
   let positions = 0;
   let diffs = 0;
   const t0 = Date.now();
@@ -4980,6 +5317,12 @@ async function artOverTextNode(page, vp) {
       scrollH = await page.evaluate(ART_SCROLL_SCRIPT, Math.min(y, Math.max(0, scrollH - vh)));
       positions++;
       await page.waitForTimeout(400);
+      try {
+        await textOverGraphicNode(page, tg);
+      } catch (e) {
+        if (tg.errors.length < 3) tg.errors.push(String(e.message || e).split(/\r?\n/)[0]);
+        await page.evaluate(TG_RESTORE_SCRIPT).catch(() => {});
+      }
       const found = await page.evaluate(ART_LINES_SCRIPT);
       if (!found.lines.length) continue;
       diffs++;
@@ -5020,7 +5363,7 @@ async function artOverTextNode(page, vp) {
   } catch (e) {
     errors.push(String(e.message || e).split("\n")[0]);
   }
-  return { hits, positions, diffs, ms: Date.now() - t0, errors };
+  return { hits, positions, diffs, ms: Date.now() - t0, errors, tg };
 }
 
 // motion-too-sparse + pinned-stage-static (Layoza-original). Desktop only, on a fresh load after the
@@ -5195,15 +5538,23 @@ async function collectWithNode(pw, args, shotDir) {
         (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => new Promise((r) => setTimeout(r, 1000)))
       );
 
+      // Intro animations finish before anything is measured (capped; reported when they never rest)
+      const settleLoad = await settleNode(page, SETTLE_CAP_MS);
       // Read load-phase LCP/CLS before screenshots: full-page capture resizes the viewport and
       // would otherwise add late LCP candidates and layout shifts that real users never see.
       const loadPerf = await page.evaluate(PERF_READ_SCRIPT);
       await page.evaluate(SCROLL_PASS_SCRIPT);
+      // Back at the top after the scroll pass: let reveals that re-ran come to rest (shares the cap)
+      const settleTop = await settleNode(page, Math.max(SETTLE_STEP_MS * 3, SETTLE_CAP_MS - settleLoad.ms));
+      const settle = { settled: settleLoad.settled && settleTop.settled, ms: settleLoad.ms + settleTop.ms, load: settleLoad, after_scroll: settleTop };
       const screenshot = path.join(shotDir, `${vp.label}.png`);
-      await page.screenshot({ path: screenshot, fullPage: true });
+      let heroShot = null;
       if (vp.label === "mobile") {
-        await page.screenshot({ path: path.join(shotDir, "mobile-hero.png"), fullPage: false });
+        // 1:1 first phone screen, captured before the full-page capture resizes the viewport
+        heroShot = path.join(shotDir, "mobile-hero.png");
+        await page.screenshot({ path: heroShot, fullPage: false });
       }
+      await page.screenshot({ path: screenshot, fullPage: true });
       const dom = await page.evaluate(DOM_EVAL_SCRIPT);
       let craft;
       try {
@@ -5276,7 +5627,7 @@ async function collectWithNode(pw, args, shotDir) {
       const perf = loadPerf && inputPerf ? { ...loadPerf, inp_proxy_ms: inputPerf.inp_proxy_ms, event_entries: inputPerf.event_entries } : null;
       // Motion density + pinned stages last, on a fresh load, so nothing above is disturbed
       const motion = vp.label === "desktop" ? await motionPassNode(page, args.url) : null;
-      raw.push({ ...vp, dom, craft, design, ui, perf, menu, art, motion, consoleErrors, screenshot });
+      raw.push({ ...vp, dom, craft, design, ui, perf, menu, art, motion, consoleErrors, screenshot, heroShot, settle });
       await context.close();
     }
   } finally {
@@ -5293,6 +5644,47 @@ from playwright.sync_api import sync_playwright
 
 url, raw_out, shot_dir, cfg_path = sys.argv[1:5]
 cfg = json.load(open(cfg_path, encoding="utf-8"))
+
+def settle(page, cap_ms):
+    # Mirrors settleNode: finite animations done + first screen stable across two masked frames
+    t0 = time.time()
+    prev = None
+    while True:
+        last = page.evaluate(cfg["settle_pending"] + "(" + str(cfg["settle_cap"]) + ")")
+        shot = None
+        if last["pending"] == 0:
+            shot = "data:image/png;base64," + base64.b64encode(page.screenshot(mask=[page.locator(cfg["settle_mask"])])).decode("ascii")
+            if prev and page.evaluate(cfg["pin_diff"], [prev, shot]) <= cfg["settle_stable_max"]:
+                return {"settled": True, "ms": round((time.time() - t0) * 1000), "pending_animations": 0, "endless_loops": last["loops"]}
+        prev = shot
+        elapsed = round((time.time() - t0) * 1000)
+        if elapsed >= cap_ms:
+            return {"settled": False, "ms": elapsed, "pending_animations": last["pending"], "endless_loops": last["loops"]}
+        page.wait_for_timeout(cfg["settle_step"])
+
+def text_over_graphic(page, tg):
+    # Mirrors textOverGraphicNode; hits are folded in by the Node side (addTextGraphicHits)
+    if tg["positions"] >= cfg["tg_max_positions"] or tg["sampled"] >= cfg["tg_max_total"]:
+        return
+    found = page.evaluate(cfg["tg_find"] + "(" + str(min(cfg["tg_max_per_position"], cfg["tg_max_total"] - tg["sampled"])) + ")")
+    if not found["candidates"]:
+        return
+    tg["positions"] += 1
+    shown = page.screenshot(clip=found["clip"])
+    page.evaluate(cfg["tg_hide"])
+    try:
+        page.wait_for_timeout(60)
+        hidden = page.screenshot(clip=found["clip"])
+    finally:
+        page.evaluate(cfg["tg_restore"])
+    stats = page.evaluate(cfg["tg_stats"], {
+        "shown": "data:image/png;base64," + base64.b64encode(shown).decode("ascii"),
+        "hidden": "data:image/png;base64," + base64.b64encode(hidden).decode("ascii"),
+        "clip": found["clip"],
+        "candidates": found["candidates"],
+    })
+    tg["sampled"] += len([x for x in stats if x])
+    tg["raw"].append({"found": found, "stats": stats, "at": round(page.evaluate("window.scrollY"))})
 
 raw = []
 with sync_playwright() as p:
@@ -5322,12 +5714,17 @@ with sync_playwright() as p:
         page.goto(url, wait_until="load", timeout=30000)
         page.evaluate("() => (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => new Promise(r => setTimeout(r, 1000)))")
 
+        settle_load = settle(page, cfg["settle_cap"])
         load_perf = page.evaluate(cfg["perf_read"])
         page.evaluate(cfg["scroll_pass"])
+        settle_top = settle(page, max(cfg["settle_step"] * 3, cfg["settle_cap"] - settle_load["ms"]))
+        settle_info = {"settled": settle_load["settled"] and settle_top["settled"], "ms": settle_load["ms"] + settle_top["ms"], "load": settle_load, "after_scroll": settle_top}
         shot = os.path.join(shot_dir, f"{vp['label']}.png")
-        page.screenshot(path=shot, full_page=True)
+        hero_shot = None
         if vp["label"] == "mobile":
-            page.screenshot(path=os.path.join(shot_dir, "mobile-hero.png"), full_page=False)
+            hero_shot = os.path.join(shot_dir, "mobile-hero.png")
+            page.screenshot(path=hero_shot, full_page=False)
+        page.screenshot(path=shot, full_page=True)
         dom = page.evaluate(cfg["dom_eval"])
         try:
             craft = page.evaluate(cfg["craft_eval"])
@@ -5351,7 +5748,7 @@ with sync_playwright() as p:
             except Exception as e:
                 design = {"issues": [], "errors": ["design-system evaluation failed: " + str(e).splitlines()[0]]}
 
-        art = {"hits": [], "positions": 0, "diffs": 0, "errors": []}
+        art = {"hits": [], "positions": 0, "diffs": 0, "errors": [], "tg": {"positions": 0, "sampled": 0, "raw": [], "errors": []}}
         art_t0 = time.time()
         try:
             step = 700 if vp["width"] < 768 else 760
@@ -5363,6 +5760,15 @@ with sync_playwright() as p:
                 y += step
                 art["positions"] += 1
                 page.wait_for_timeout(400)
+                try:
+                    text_over_graphic(page, art["tg"])
+                except Exception as e:
+                    if len(art["tg"]["errors"]) < 3:
+                        art["tg"]["errors"].append(str(e).splitlines()[0])
+                    try:
+                        page.evaluate(cfg["tg_restore"])
+                    except Exception:
+                        pass
                 found = page.evaluate(cfg["art_lines"])
                 if not found["lines"]:
                     continue
@@ -5453,7 +5859,7 @@ with sync_playwright() as p:
                 page.evaluate(cfg["art_scroll"], 0)
             except Exception as e:
                 motion["errors"].append(str(e).splitlines()[0])
-        raw.append({**vp, "dom": dom, "craft": craft, "design": design, "ui": ui, "perf": perf, "menu": menu, "art": art, "motion": motion, "consoleErrors": console_errors, "screenshot": shot})
+        raw.append({**vp, "dom": dom, "craft": craft, "design": design, "ui": ui, "perf": perf, "menu": menu, "art": art, "motion": motion, "consoleErrors": console_errors, "screenshot": shot, "heroShot": hero_shot, "settle": settle_info})
         ctx.close()
     browser.close()
 
@@ -5492,6 +5898,18 @@ with open(raw_out, "w", encoding="utf-8") as f:
       pin_clip: PIN_CLIP_SCRIPT,
       pin_diff: PIN_DIFF_SCRIPT,
       pin_fractions: PIN_FRACTIONS,
+      settle_pending: SETTLE_PENDING_SCRIPT,
+      settle_cap: SETTLE_CAP_MS,
+      settle_step: SETTLE_STEP_MS,
+      settle_stable_max: SETTLE_STABLE_MAX,
+      settle_mask: SETTLE_MASK_SELECTOR,
+      tg_find: TG_FIND_SCRIPT,
+      tg_hide: TG_HIDE_SCRIPT,
+      tg_restore: TG_RESTORE_SCRIPT,
+      tg_stats: TG_STATS_SCRIPT,
+      tg_max_per_position: TG_MAX_PER_POSITION,
+      tg_max_total: TG_MAX_TOTAL,
+      tg_max_positions: TG_MAX_POSITIONS,
     }),
     "utf8"
   );
@@ -5503,7 +5921,16 @@ with open(raw_out, "w", encoding="utf-8") as f:
           "or Python Playwright (`pip install playwright && playwright install chromium`)."
       );
     }
-    return JSON.parse(fs.readFileSync(rawPath, "utf8"));
+    const raw = JSON.parse(fs.readFileSync(rawPath, "utf8"));
+    // Fold the Python runner's raw text-over-graphic samples with the same rules as the Node runner
+    for (const v of raw) {
+      const t = v.art && v.art.tg;
+      if (!t || !t.raw) continue;
+      const tg = { positions: t.positions, sampled: 0, hits: [], errors: t.errors || [] };
+      for (const r of t.raw) addTextGraphicHits(tg, r.found, r.stats, r.at);
+      v.art.tg = tg;
+    }
+    return raw;
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -5648,6 +6075,35 @@ function assembleReport(url, engine, raw, tokens) {
         detail: `${artHits.length} text line(s) have canvas/video art painted across them at a resting scroll position: ${list}; give the text its own zone or a solid plate and keep the art beside or behind it, never through it`,
       });
     }
+    const tg = (v.art && v.art.tg) || null;
+    const tgHits = (tg && tg.hits) || [];
+    const tgList = (xs, f) => xs.slice(0, 4).map(f).join("; ");
+    const occluded = tgHits.filter((h) => h.occluded);
+    if (occluded.length) {
+      issues.push({
+        rule: "text-occluded",
+        severity: "warning",
+        detail: `${occluded.length} text label(s) over a graphic are painted over by something above them (hiding the text changes no pixel): ${tgList(occluded, (h) => `"${h.text}" ${h.el} over ${h.graphic} @${h.y}px`)}; move the text clear of the covering layer or raise it above (z-index / DOM order)`,
+      });
+    }
+    const lowC = tgHits.filter((h) => h.low_contrast);
+    const hardFail = lowC.filter((h) => h.contrast_median < h.required && !h.halo);
+    for (const [list, severity] of [[hardFail, "error"], [lowC.filter((h) => !hardFail.includes(h)), "warning"]]) {
+      if (!list.length) continue;
+      issues.push({
+        rule: "text-over-graphic-contrast",
+        severity,
+        detail: `${list.length} text element(s) over canvas/video/image art measure below ${list[0].required}:1 against the real pixels behind them${severity === "error" ? " (median pixel fails)" : " (10% of the pixels behind fail)"}: ${tgList(list, (h) => `"${h.text}" ${h.el} over ${h.graphic} @${h.y}px p10 ${h.contrast_p10}:1, median ${h.contrast_median}:1 (needs ${h.required}:1)`)}; put the text on a scrim/plate, move it to a calm part of the art, or change its colour`,
+      });
+    }
+    const busy = tgHits.filter((h) => h.busy && !h.low_contrast);
+    if (busy.length) {
+      issues.push({
+        rule: "text-over-busy-graphic",
+        severity: "warning",
+        detail: `${busy.length} text element(s) sit on a busy graphic (luminance L* std >= ${TG_BUSY_LSTD} behind the glyphs): ${tgList(busy, (h) => `"${h.text}" over ${h.graphic} @${h.y}px L* std ${h.l_std}`)}; calm the area behind the text (scrim, blur plate, or place the label beside the art)`,
+      });
+    }
     const motion = motionVerdict(v.motion);
     if (motion && motion.sparse) {
       issues.push({
@@ -5691,8 +6147,12 @@ function assembleReport(url, engine, raw, tokens) {
       art_over_text: v.art
         ? { positions: v.art.positions, diffs: v.art.diffs, ms: v.art.ms, hits: v.art.hits.map((h) => ({ ...h, cover: Number(h.cover.toFixed(2)), word: Number(h.word.toFixed(2)) })), errors: v.art.errors }
         : null,
+      text_over_graphic: tg ? { positions: tg.positions, sampled: tg.sampled, hits: tgHits, errors: tg.errors } : null,
       motion: motion,
+      // How long the page took to come to rest before measuring; settled false = hit the cap
+      motion_settle: v.settle || null,
       screenshot_path: v.screenshot,
+      hero_screenshot_path: v.heroShot || null,
     };
   });
 
@@ -5740,6 +6200,9 @@ function assembleReport(url, engine, raw, tokens) {
   // Motion density + pinned-stage verdict from the desktop pass (not part of `unmeasured`)
   const motionVp = viewports.find((v) => v.motion);
   report.motion_summary = motionVp ? motionVp.motion : null;
+  // Viewports whose animations or first screen were still moving when the settle cap ran out:
+  // their screenshots and checks may show mid-animation frames ("motion did not settle")
+  report.motion_unsettled_viewports = raw.filter((v) => v.settle && !v.settle.settled).map((v) => v.label);
   Object.assign(report, craftSummary(raw));
   report.unmeasured = Object.entries(report)
     .filter(([, v]) => v === null)

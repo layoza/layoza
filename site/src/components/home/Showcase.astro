@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import vsr from '../../assets/vs-restaurant.webp';
+import vsd from '../../assets/vs-dashboard.webp';
+import vss from '../../assets/vs-store.webp';
+import vsk from '../../assets/vs-kinetic.webp';
+import poster from '../../assets/video-poster.webp';
+
+interface Props { full?: boolean }
+const { full = false } = Astro.props;
+
+const frames = [
+  { src: vsr, t: 'Restaurant', brief: 'A seafood restaurant on a harbour.', note: "Layoza's sheet shows an illustrated boathouse at dusk and a crate of the day's catch; the others centre a headline over a stock-style photo slot.", verdict: 'Layoza ahead', alt: "Six restaurant homepages from the same brief: Layoza, Claude frontend-design, impeccable, ui-ux-pro-max, taste-skill and No skill. Layoza's shows an illustrated boathouse at dusk and a crate of the day's catch." },
+  { src: vsd, t: 'Dashboard', brief: 'Sales dashboard for a bakery chain.', note: 'A till-roll ledger and hourly bars instead of the usual grid of KPI cards.', verdict: 'Layoza ahead', alt: "Six bakery-chain sales dashboards from the same brief. Layoza's uses a till-roll ledger and hourly bars." },
+  { src: vss, t: 'Store', brief: 'An online store for a linen maker.', note: 'Tea towels pegged on a washing line, so the product is the hero.', verdict: 'Layoza ahead', alt: "Six linen-store homepages from the same brief. Layoza's shows tea towels pegged on a washing line." },
+  { src: vsk, t: 'Kinetic agency', brief: 'A motion-led creative agency.', note: 'Most setups reached for a 3D ribbon, Layoza included. No clear winner.', verdict: 'Tie', alt: 'Six kinetic agency hero sections from the same brief, most with a 3D ribbon. This round was a tie.' },
+];
+---
+<section class="band dark showcase" aria-labelledby="show-title">
+  <div class="wrap">
+    <p class="sheet"><b>09</b> Showcase</p>
+    <div class="head">
+      <h2 id="show-title" class="h-lg caps" data-reveal>Not just theory. <span class="accent">See the work.</span></h2>
+      <p class="lede" data-reveal="0.1">One brief, six setups: Layoza, Claude frontend-design, impeccable, ui-ux-pro-max, taste-skill and no skill. Same model, Claude Opus 5.5. Every output is in the repo, including the round that tied.</p>
+    </div>
+    <ol class="rows">
+      {frames.map((f, i) => (
+        <li class={`row ${i % 2 ? 'flip' : ''}`}>
+          <figure class="frame" data-loupe data-reveal>
+            <Image src={f.src} alt={f.alt} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 66vw" loading="lazy" />
+            <span class="lens" aria-hidden="true"></span>
+          </figure>
+          <div class="cap" data-reveal="0.1">
+            <p class="n mono">{String(i + 1).padStart(2, '0')} · {f.t}</p>
+            <p class="brief">“{f.brief}”</p>
+            <p class="note">{f.note}</p>
+            <p class={`verdict mono ${f.verdict === 'Tie' ? 'tie' : ''}`}>{f.verdict}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <figure class="video">
+      <!-- Poster is attached as the video nears the screen, so it never competes with the hero. -->
+      <video controls preload="none" playsinline data-poster={poster.src} width="1600" height="900">
+        <source src="/video/layoza-showcase-web.mp4" type="video/mp4" />
+      </video>
+      <figcaption class="mono">2½-minute showcase, recorded live in Chromium: all four briefs, six setups each.</figcaption>
+    </figure>
+    {!full && <p class="more"><a class="btn btn-primary" href="/showcase">Benchmark details</a></p>}
+  </div>
+</section>
+
+<script>
+  (() => {
+    const vids = document.querySelectorAll<HTMLVideoElement>('video[data-poster]');
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const v = e.target as HTMLVideoElement;
+      v.poster = v.dataset.poster!;
+      io.unobserve(v);
+    }), { rootMargin: '800px 0px' });
+    vids.forEach((v) => io.observe(v));
+  })();
+  (() => {
+    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll<HTMLElement>('[data-loupe]').forEach((fig) => {
+      const img = fig.querySelector('img')!;
+      const lens = fig.querySelector<HTMLElement>('.lens')!;
+      fig.onpointerenter = () => { lens.style.backgroundImage = `url("${img.currentSrc || img.src}")`; lens.style.opacity = '1'; };
+      fig.onpointerleave = () => (lens.style.opacity = '0');
+      fig.onpointermove = (e) => {
+        const r = img.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const z = 2.6;
+        lens.style.transform = `translate(${x - 90}px, ${y - 90}px)`;
+        lens.style.backgroundSize = `${r.width * z}px ${r.height * z}px`;
+        lens.style.backgroundPosition = `${-x * z + 90}px ${-y * z + 90}px`;
+      };
+    });
+  })();
+</script>
+
+<style>
+  .rows { list-style: none; padding: 0; display: grid; gap: clamp(48px, 7vw, 112px); }
+  .row { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); align-items: end; }
+  .row.flip { grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr); }
+  .row.flip .frame { order: 2; }
+  .frame { position: relative; margin: 0; border: 1px solid var(--rule-dark); background: var(--graphite); padding: 8px; overflow: hidden; }
+  .frame img { width: 100%; height: auto; display: block; }
+  .lens { position: absolute; left: 8px; top: 8px; width: 180px; height: 180px; border-radius: 50%; border: 2px solid var(--lime); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); background-repeat: no-repeat; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .cap { border-top: 1px solid var(--rule-dark); padding-top: 16px; display: grid; gap: 10px; }
+  .n { font-size: 13px; color: var(--lime); text-transform: uppercase; letter-spacing: 0.06em; }
+  .brief { font-size: clamp(24px, 2.2vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+  .note { color: #c9d0db; }
+  .verdict { justify-self: start; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--lime); color: var(--ink); padding: 4px 10px; }
+  .verdict.tie { background: transparent; color: var(--cyan); border: 1px solid var(--cyan); }
+  .video { margin: clamp(56px, 7vw, 96px) 0 0; }
+  .video video { width: 100%; height: auto; background: var(--graphite); border: 1px solid var(--rule-dark); }
+  .video figcaption { padding: 12px 0; font-size: 13px; color: var(--gray); }
+  .more { margin-top: 32px; }
+  @media (max-width: 900px) {
+    .row, .row.flip { grid-template-columns: 1fr; }
+    .row.flip .frame { order: 0; }
+  }
+</style>

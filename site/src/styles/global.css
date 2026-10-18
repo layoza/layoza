@@ -1,0 +1,129 @@
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+:root {
+  --navy: #080b13;
+  --graphite: #10151f;
+  --paper: #f5f5f0;
+  --silver: #e7eaf0;
+  --white: #f8fafc;
+  --gray: #9ca5b4;
+  --ink: #141922;
+  --lime: #c8ff61;
+  --cyan: #6addf0;
+  --uv: #8168ff;
+  --uv-bright: #8168ff;
+  --rule-dark: rgba(156, 165, 180, 0.22);
+  --rule-light: rgba(20, 25, 34, 0.16);
+  --mute-light: #4a5261;
+
+  --sans: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1440px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font: 400 17px/1.55 var(--sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+img, video, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--lime); color: var(--ink); }
+
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 2px; }
+.light :focus-visible { outline-color: var(--uv); }
+
+.skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--lime); color: var(--ink); padding: 10px 16px; font-weight: 700; }
+.skip:focus { top: 12px; }
+
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.mono { font-family: var(--mono); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Section grounds: dark drawing sheet / light print plate */
+.band { position: relative; padding-block: clamp(80px, 11vw, 160px); }
+.dark { background: var(--navy); color: var(--white); }
+.graphite { background: var(--graphite); color: var(--white); }
+.light { background: var(--paper); color: var(--ink); color-scheme: light; }
+.silver { background: var(--silver); color: var(--ink); color-scheme: light; }
+
+/* Sheet label: the drawing-number tab that heads a section */
+.sheet {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  font: 500 13px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 28px;
+}
+.sheet b { color: var(--lime); font-weight: 500; }
+.light .sheet, .silver .sheet { color: var(--mute-light); }
+.light .sheet b, .silver .sheet b { color: var(--uv); }
+.sheet::after { content: ''; flex: 1 1 80px; height: 1px; background: currentColor; opacity: 0.35; align-self: center; }
+
+.h-xl { font-weight: 700; font-size: clamp(52px, 9.6vw, 150px); line-height: 0.95; letter-spacing: -0.05em; text-wrap: balance; }
+.h-lg { font-weight: 700; font-size: clamp(40px, 6.2vw, 96px); line-height: 0.98; letter-spacing: -0.045em; text-wrap: balance; }
+/* Display caps: the brief sets every section claim in capitals */
+.caps { text-transform: uppercase; letter-spacing: -0.035em; }
+.accent { color: var(--lime); }
+/* Small violet text needs 4.5:1 on paper and silver, so light grounds use a deeper violet.
+   Display accents are large text and keep the brand violet (3.25:1+, above the 3:1 large-text bar). */
+.light, .silver { --uv: #5f45e6; }
+.light .accent, .silver .accent { color: var(--uv-bright); }
+.h-md { font-weight: 700; font-size: clamp(30px, 3.6vw, 52px); line-height: 1.05; letter-spacing: -0.035em; text-wrap: balance; }
+.lede { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.5; max-width: 44ch; color: #c9d0db; }
+.light .lede, .silver .lede { color: #2f3643; }
+.muted { color: var(--gray); }
+.light .muted, .silver .muted { color: var(--mute-light); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 24px; font-weight: 700; font-size: 16px;
+  text-decoration: none; border: 1.5px solid currentColor; background: transparent; cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--lime); border-color: var(--lime); color: #0b0f05; }
+.btn-primary:hover { background: #d8ff8a; }
+.light .btn-primary, .silver .btn-primary { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+.btn-ghost:hover { background: var(--white); color: var(--ink); }
+.light .btn-ghost:hover, .silver .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+.chip { display: inline-block; font: 500 13px/1 var(--mono); padding: 7px 10px; border: 1px solid var(--rule-dark); color: #c9d0db; }
+.light .chip { border-color: var(--rule-light); color: var(--ink); }
+
+.code {
+  font: 400 14px/1.6 var(--mono); background: #05070c; color: var(--white);
+  border: 1px solid var(--rule-dark); padding: 14px 16px; overflow-x: auto; white-space: pre;
+}
+.light .code { background: var(--ink); }
+
+/* Reveal: content is visible by default. Only under html.js-motion does it start lowered,
+   and reveal.ts adds .in as it nears the viewport (with a timed failsafe). */
+.js-motion [data-reveal]:not(.in) { opacity: 0; transform: translateY(24px); }
+.js-motion [data-reveal] { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: var(--rd, 0s); }
+
+/* Section heads: claim left, short lede right, on one baseline */
+.head { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 64px); align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
+.head .lede { padding-bottom: 6px; }
+@media (max-width: 900px) { .head { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .js-motion [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* Page-to-page crossfade with the browser's own view transitions: no router JS. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.28s; }
+}

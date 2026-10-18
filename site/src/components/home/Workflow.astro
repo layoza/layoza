@@ -1,0 +1,83 @@
+---
+const steps = [
+  { n: '01', h: 'Purpose', p: 'Before any pixel, the agent states who the page is for and what it must make them do.', tool: 'layoza skill · purpose line' },
+  { n: '02', h: 'Inspect', p: 'Existing project? It reads the framework, tokens and motion and writes the site DNA down.', tool: 'inspect_project · extract_site_dna' },
+  { n: '03', h: 'Direct', p: 'New site: three directions that differ in layout, type and motion. You pick one. Nothing is built before that.', tool: 'get_design_system' },
+  { n: '04', h: 'Deal mechanics', p: 'Motion mechanics are dealt from the catalogue to fit the trade, with a still fallback for each.', tool: 'deal_mechanics · get_mechanic' },
+  { n: '05', h: 'Build', p: 'Code in your framework: React, Astro, WordPress, Shopify Liquid or plain HTML.', tool: 'recommend_layout · recommend_animation' },
+  { n: '06', h: 'Verify', p: 'Chromium at three widths, then an art loop: fix what it finds, log each round, repeat.', tool: 'capture_screenshots · audit_accessibility' },
+];
+const modes = [
+  ['A', 'New website'], ['B', 'Extend existing'], ['C', 'Improve existing'], ['D', 'Full redesign'],
+];
+---
+<section class="band dark workflow" aria-labelledby="flow-title" id="workflow">
+  <div class="wrap">
+    <p class="sheet"><b>07</b> Workflow</p>
+    <div class="head">
+      <h2 id="flow-title" class="h-lg caps" data-reveal>From brief <span class="accent">to brilliant.</span></h2>
+      <p class="lede" data-reveal="0.1">Six stages, in order. The router skill keeps your agent on the path, so the design is decided before the code is written.</p>
+    </div>
+    <div class="flow" data-flow>
+      <svg class="path" aria-hidden="true"><path class="base" data-flow-base /><path class="ink" data-flow-line /></svg>
+      <ol>
+        {steps.map((s, i) => (
+          <li class={i % 2 ? 'r' : 'l'} data-step>
+            <span class="dot" data-dot aria-hidden="true"></span>
+            <div class="txt">
+              <span class="n mono">{s.n}</span>
+              <h3>{s.h}</h3>
+              <p>{s.p}</p>
+              <code class="mono">{s.tool}</code>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="modes">
+      <p class="mono label">Four operating modes</p>
+      <ul>
+        {modes.map(([k, v]) => <li><b class="mono">{k}</b>{v}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .flow { position: relative; margin-top: clamp(40px, 5vw, 72px); }
+  /* Fallback spine: a straight centre line. JS replaces it with a serpentine path through the dots. */
+  .flow::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--rule-dark); }
+  .flow.drawn::before { display: none; }
+  .path { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .path path { fill: none; stroke-width: 2; }
+  .path .base { stroke: var(--rule-dark); }
+  .path .ink { stroke: var(--lime); stroke-width: 3; }
+  ol { list-style: none; padding: 0; position: relative; display: grid; gap: clamp(36px, 5vw, 72px); }
+  .flow li { position: relative; display: grid; grid-template-columns: 1fr 1fr; }
+  .dot { position: absolute; top: 6px; width: 18px; height: 18px; border-radius: 50%; background: var(--navy); border: 2px solid var(--gray); transform: translateX(-50%); transition: background 0.3s, border-color 0.3s, box-shadow 0.3s; }
+  li.l .dot { left: 50%; }
+  li.r .dot { left: 50%; }
+  li.lit .dot { background: var(--lime); border-color: var(--lime); box-shadow: 0 0 0 6px rgba(200, 255, 97, 0.18); }
+  .txt { max-width: 460px; }
+  li.l .txt { grid-column: 1; justify-self: end; text-align: right; padding-right: clamp(56px, 9vw, 150px); }
+  li.r .txt { grid-column: 2; padding-left: clamp(56px, 9vw, 150px); }
+  .n { font-size: 14px; color: var(--lime); }
+  h3 { font-size: clamp(30px, 3.4vw, 52px); letter-spacing: -0.04em; line-height: 1; margin: 6px 0 12px; }
+  .txt p { color: #c9d0db; }
+  .txt code { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--cyan); }
+  :global(.js-motion) .flow.drawn li .txt { opacity: 0.6; transition: opacity 0.4s var(--ease); }
+  :global(.js-motion) .flow.drawn li.lit .txt { opacity: 1; }
+
+  .modes { margin-top: clamp(56px, 7vw, 96px); border-top: 1px solid var(--rule-dark); padding-top: 22px; display: flex; gap: 32px; align-items: baseline; flex-wrap: wrap; }
+  .label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); }
+  .modes ul { list-style: none; padding: 0; display: flex; gap: 28px; flex-wrap: wrap; font-size: 20px; font-weight: 500; }
+  .modes li { display: flex; align-items: center; }
+  .modes b { display: inline-grid; flex: none; place-items: center; width: 30px; height: 30px; background: var(--lime); color: var(--ink); margin-right: 10px; font-size: 14px; }
+
+  @media (max-width: 760px) {
+    .flow::before { left: 9px; }
+    .flow li { grid-template-columns: 1fr; }
+    li.l .dot, li.r .dot { left: 9px; }
+    li.l .txt, li.r .txt { grid-column: 1; justify-self: start; text-align: left; padding: 0 0 0 44px; }
+  }
+</style>

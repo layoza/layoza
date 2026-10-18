@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sketch A — Exploded page</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0D10;--sf:#13171D;--fg:#ECEFF4;--mu:#8B95A5;--am:#F59E0B;--em:#10B981}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.55 'IBM Plex Sans',sans-serif;overflow-x:hidden}
+.grid{position:fixed;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(8.333% - 1px),rgba(139,149,165,.12) calc(8.333% - 1px) 8.333%);pointer-events:none}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px clamp(16px,4vw,48px);font:500 14px 'JetBrains Mono'}
+nav b{font:700 20px 'Space Grotesk';letter-spacing:-.02em}
+nav a{color:var(--fg);text-decoration:none;margin-left:24px}
+.hero{display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,64px);padding:clamp(24px,5vw,72px) clamp(16px,4vw,48px)}
+h1{font:700 clamp(46px,8.4vw,150px)/.92 'Space Grotesk';letter-spacing:-.045em}
+h1 em{font-style:normal;color:var(--am)}
+.lede{max-width:34ch;margin-top:28px;color:#c7cdd7;font-size:clamp(17px,1.4vw,21px)}
+.cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{background:var(--am);color:#0B0D10;font:500 15px 'JetBrains Mono';padding:16px 22px;text-decoration:none}
+.btn.g{background:none;color:var(--fg);border:1px solid #39404b}
+.ex{position:relative;height:clamp(380px,40vw,620px)}
+.part{position:absolute;border:1px solid #39404b;background:var(--sf);font:500 12px 'JetBrains Mono';color:var(--mu);padding:8px}
+.part i{position:absolute;right:-10px;top:-10px;width:20px;height:20px;border-radius:50%;background:var(--am);color:#0B0D10;font:700 11px/20px 'JetBrains Mono';text-align:center;font-style:normal}
+.p1{left:0;top:0;width:78%;height:16%}
+.p2{left:8%;top:22%;width:84%;height:32%;background:linear-gradient(135deg,#1b2230,#13171D)}
+.p3{left:0;top:60%;width:40%;height:26%}.p4{left:46%;top:60%;width:40%;height:26%}
+.sw{position:absolute;right:0;top:4%;display:grid;gap:6px}
+.sw span{display:block;width:54px;height:30px}
+.tag{position:absolute;left:0;bottom:-8px;font:500 13px 'JetBrains Mono';color:var(--am)}
+</style></head><body><div class="grid"></div>
+<nav><b>Layoza</b><div><a href="#">Features</a><a href="#">Docs</a><a href="#">GitHub</a></div></nav>
+<section class="hero"><div>
+<h1>Your AI can code. <em>Now make it design.</em></h1>
+<p class="lede">An MCP server and 19 skills that give your coding agent a direction, your site's DNA, motion fit to the brief and a real Chromium check.</p>
+<div class="cta"><a class="btn" href="#">npx layoza init</a><a class="btn g" href="#">Explore GitHub</a></div></div>
+<div class="ex">
+<div class="part p1">nav · generic <i>1</i></div>
+<div class="part p2">hero · gradient blob <i>2</i></div>
+<div class="part p3">3 feature cards <i>3</i></div>
+<div class="part p4">testimonial <i>4</i></div>
+<div class="sw"><span style="background:#F4EFE6"></span><span style="background:#1d6f8a"></span><span style="background:#e2552b"></span><span style="background:#0f1b2d"></span></div>
+<p class="tag">scroll → the generic page comes apart into parts, DNA, motion, verdict</p>
+</div></section></body></html>

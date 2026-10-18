@@ -90,6 +90,17 @@ Judge the screenshots before re-reading code. Each round, run these passes:
     world, or does the page turn into a template after the hero?
 15. **Anchor lines:** count the left edges in each screenshot. More than 3
     reads as unaligned.
+16. **Reading order:** on each screen, write what the eye lands on 1st, 2nd
+    and 3rd. Does that match the HIERARCHY line in `direction.md`? A CTA or
+    a decoration winning over the claim is a hierarchy fix, not a colour fix.
+17. **States:** for every interactive part (buttons, links, tabs, inputs,
+    copy buttons, toggles, players), are hover, focus-visible, active,
+    disabled, loading, empty, error and success designed in the world's
+    vocabulary, or left as browser defaults? Trigger them and screenshot the
+    ones that exist.
+18. **Cliché swap:** name the three most generic choices left on the page
+    (the move a hundred sites in this category make). Replace at least one
+    each round with something only this subject could carry.
 
 **Score** each round from 0 to 10: 0.4 × design + 0.3 × usability + 0.2 ×
 creativity + 0.1 × content. Caps (they override the arithmetic):
@@ -172,7 +183,7 @@ composition → usability → type → art → colour → detail → motion.
 
 **Fresh-eyes reviewer:** when subagents are available, spawn one with no build
 context. Give it the brief, `direction.md` and the screenshots, and have it run
-passes 1–15 and return `ship`, `fix` (ordered fixes) or `rebuild` (what to
+passes 1–18 and return `ship`, `fix` (ordered fixes) or `rebuild` (what to
 re-derive). A `rebuild` on MATERIAL or the subject test outranks every polish fix.
 
 Brief the reviewer as a **blind juror at a top studio**:

@@ -1,0 +1,170 @@
+---
+const agents = ['Claude Code', 'Codex', 'Cursor', 'OpenCode', 'Windsurf', 'Antigravity'];
+const layers = [
+  { n: 4, name: 'Verified', note: 'Chromium · 1440 / 768 / 375' },
+  { n: 3, name: 'Motion', note: '76 mechanics, dealt to the brief' },
+  { n: 2, name: 'Design intelligence', note: 'grid · tokens · type' },
+  { n: 1, name: 'Generic', note: 'what the agent wrote alone' },
+];
+---
+<section class="hero dark" aria-labelledby="hero-title">
+  <svg class="frame-lines" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 100 100">
+    <path pathLength="1" d="M0 30 H100" /><path pathLength="1" d="M0 78 H100" />
+    <path pathLength="1" d="M8 0 V100" /><path pathLength="1" d="M50 0 V100" /><path pathLength="1" d="M92 0 V100" />
+  </svg>
+  <div class="wrap">
+    <p class="kicker mono"><span class="dot"></span>Design intelligence for coding agents · MCP server + 19 skills · MIT</p>
+    <h1 id="hero-title" class="h-xl caps"><span class="ln">Your AI can code.</span> <span class="ln accent">Now make it design.</span></h1>
+    <div class="hero-grid">
+      <div class="copy">
+        <p class="lede">Layoza gives your coding agents design intelligence, site DNA, contextual motion, and browser-verified quality.</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="/getting-started">Get started free</a>
+          <a class="btn btn-ghost" href="https://github.com/layoza/layoza" rel="noopener">Explore GitHub</a>
+        </div>
+        <div class="cmd mono"><code><span aria-hidden="true">$ </span>npx layoza init</code><button type="button" data-copy="npx layoza init" aria-label="Copy install command">Copy</button></div>
+        <p class="works mono">Works with</p>
+        <ul class="agents" aria-label="Agents Layoza installs into">
+          {agents.map((a) => <li class="chip"><i aria-hidden="true"></i>{a}</li>)}
+        </ul>
+      </div>
+
+      <div class="stage" data-engine>
+        <figure class="stack-wrap" aria-label="Four layers Layoza adds to a page: generic output, design intelligence, motion, browser verification">
+          <!-- CSS 3D fallback. Always rendered; hidden only once WebGL draws a frame. -->
+          <div class="stack" aria-hidden="true">
+            <div class="pl l1"><img src="/hero/before.webp" alt="" width="960" height="600" /></div>
+            <div class="pl l2">
+              <i class="col" style="--c:1"></i><i class="col" style="--c:2"></i><i class="col" style="--c:3"></i><i class="col" style="--c:4"></i><i class="col" style="--c:5"></i>
+              <span class="tok mono">--ground #F4EFE6<br />--display 700 / 96<br />--grid 12 · 24px</span>
+            </div>
+            <div class="pl l3">
+              <svg viewBox="0 0 400 250" preserveAspectRatio="none"><path d="M10 230 C 140 230 150 30 390 22" /><circle cx="390" cy="22" r="5" /></svg>
+            </div>
+            <div class="pl l4"><img src="/hero/after.webp" alt="" width="960" height="600" fetchpriority="high" /></div>
+          </div>
+          <canvas class="gl" aria-hidden="true"></canvas>
+          <figcaption class="callouts mono">
+            {layers.map((l) => (
+              <span class={`co co${l.n}`} data-layer={l.n}><b>{l.n}</b><strong>{l.name}</strong><span class="note">{l.note}</span></span>
+            ))}
+          </figcaption>
+        </figure>
+        <div class="stamp mono" aria-hidden="true"><span class="tick">✓</span> Verified<small>QA · 3 widths</small></div>
+        <button class="replay mono" type="button" data-replay hidden>↻ Replay</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mountEngine } from '../../scripts/engine-loader';
+  (() => {
+    mountEngine();
+    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
+      b.onclick = async () => {
+        try { await navigator.clipboard.writeText(b.dataset.copy!); b.textContent = 'Copied'; }
+        catch { b.textContent = 'Select & copy'; }
+        setTimeout(() => (b.textContent = 'Copy'), 1600);
+      };
+    });
+  })();
+</script>
+
+<style>
+  .hero { position: relative; padding: clamp(28px, 4vw, 64px) 0 clamp(48px, 6vw, 88px); overflow: hidden; }
+  .frame-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .frame-lines path { fill: none; stroke: rgba(106, 221, 240, 0.12); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  :global(.js-motion) .frame-lines path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.4s var(--ease) forwards; }
+  :global(.js-motion) .frame-lines path:nth-child(n + 3) { animation-delay: 0.25s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .wrap { position: relative; }
+  .kicker { display: flex; align-items: center; gap: 10px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cyan); margin-bottom: clamp(18px, 2vw, 28px); }
+  .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 4px rgba(200, 255, 97, 0.18); }
+  h1 { font-size: clamp(31px, min(7.4vw, 112px), 150px); line-height: 0.92; letter-spacing: -0.045em; }
+  h1 .ln { display: block; white-space: nowrap; }
+  :global(.js-motion) h1 .ln { animation: rise 0.9s var(--ease) both; }
+  :global(.js-motion) h1 .ln + .ln { animation-delay: 0.12s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(0.35em); } }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(24px, 3vw, 56px); align-items: start; margin-top: clamp(20px, 2.4vw, 40px); }
+  .lede { font-size: clamp(18px, 1.45vw, 22px); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .cmd { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; max-width: 440px; border: 1px solid var(--rule-dark); background: #05070c; padding: 6px 6px 6px 16px; font-size: 15px; }
+  .cmd code { font: inherit; color: var(--white); }
+  .cmd code span { color: var(--lime); }
+  .cmd button { background: transparent; color: var(--lime); border: 1px solid var(--lime); padding: 0 14px; min-height: 40px; font: 500 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  .cmd button:hover { background: var(--lime); color: #0b0f05; }
+  .works { margin-top: 28px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
+  /* Even rows (3 + 3, or 2 + 2 + 2 on phones): no lone chip on the last line. */
+  .agents { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, max-content); gap: 8px; margin-top: 10px; }
+  @media (max-width: 400px) { .agents { grid-template-columns: repeat(2, max-content); } }
+  .agents .chip { display: inline-flex; align-items: center; gap: 8px; }
+  .agents i { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+
+  .stage { position: relative; height: clamp(400px, 38vw, 620px); margin-top: -40px; }
+  .stack-wrap { position: absolute; inset: 0; margin: 0; perspective: 2400px; }
+  .stack {
+    position: absolute; left: 50%; top: 50%; width: min(76%, 600px); aspect-ratio: 16 / 10;
+    transform-style: preserve-3d; transform: translate(-50%, -46%) rotateX(56deg) rotateZ(-34deg);
+    transition: opacity 0.6s var(--ease);
+  }
+  .pl { position: absolute; inset: 0; transform-style: preserve-3d; border: 1px solid rgba(106, 221, 240, 0.7); }
+  .pl img { width: 100%; height: 100%; object-fit: cover; }
+  .l1 { transform: translateZ(0); filter: saturate(0.55) brightness(0.8); }
+  .l2 { transform: translateZ(var(--gap, 110px)); background: rgba(16, 21, 31, 0.5); }
+  .l3 { transform: translateZ(calc(var(--gap, 110px) * 2)); background: rgba(8, 11, 19, 0.18); border-style: dashed; }
+  .l4 { transform: translateZ(calc(var(--gap, 110px) * 3)); border-color: var(--lime); box-shadow: 0 0 0 1px var(--lime), 0 50px 90px rgba(0, 0, 0, 0.55); }
+  .col { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(106, 221, 240, 0.55); left: calc(var(--c) * 16.66%); }
+  .tok { position: absolute; left: 6%; bottom: 8%; font-size: 13px; line-height: 1.5; color: var(--cyan); background: rgba(8, 11, 19, 0.8); padding: 6px 8px; }
+  .l3 svg { width: 100%; height: 100%; }
+  .l3 path { fill: none; stroke: var(--lime); stroke-width: 2.5; stroke-dasharray: 8 7; }
+  .l3 circle { fill: var(--lime); }
+  .gl { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.6s var(--ease); }
+  .stage.gl-on .gl { opacity: 1; }
+  .stage.gl-on .stack { opacity: 0; }
+
+  .callouts { position: absolute; inset: 0; pointer-events: none; }
+  .co { position: absolute; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #c9d0db; white-space: nowrap; }
+  .co b { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--cyan); border-radius: 50%; color: var(--cyan); font-weight: 500; font-size: 12px; }
+  .co strong { color: var(--white); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .co4 { left: 2%; top: 6%; } .co4 b { border-color: var(--lime); color: var(--lime); }
+  .co3 { left: 0; top: 30%; }
+  .co2 { right: 0; top: 64%; }
+  .co1 { right: 4%; top: 86%; }
+  .stage.gl-on .co { left: 0; top: 0; right: auto; display: grid; grid-template-columns: 24px 1fr; column-gap: 10px; row-gap: 2px; width: 196px; white-space: normal; }
+  .stage.gl-on .co b { grid-row: span 2; align-self: start; }
+  .stage.gl-on .co .note { font-size: 12px; line-height: 1.35; color: #aeb7c4; }
+  .stage.gl-on .co::before { content: ''; position: absolute; right: 100%; top: 12px; width: min(var(--lead, 0px), 64px); border-top: 1px dashed rgba(106, 221, 240, 0.55); margin-right: 4px; }
+
+  .stamp { position: absolute; left: 0; bottom: 6px; display: grid; grid-template-columns: auto auto; column-gap: 8px; align-items: center; border: 1.5px solid var(--lime); color: var(--lime); padding: 8px 14px; font-size: 14px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(8, 11, 19, 0.7); }
+  .stamp .tick { grid-row: span 2; font-size: 20px; }
+  .stamp small { font-size: 11px; letter-spacing: 0.08em; opacity: 0.85; }
+  :global(.js-motion) .stamp { animation: stamp 0.5s 2.6s cubic-bezier(.2, 1.4, .4, 1) both; }
+  @keyframes stamp { from { opacity: 0; transform: scale(1.3) rotate(-6deg); } }
+  .replay { position: absolute; right: 0; bottom: 0; background: transparent; border: 1px solid var(--rule-dark); padding: 10px 14px; min-height: 44px; cursor: pointer; font-size: 13px; color: #c9d0db; }
+  .replay:hover { color: var(--lime); border-color: var(--lime); }
+
+  @media (max-width: 1100px) {
+    .co { font-size: 12px; }
+    .co .note { display: none; }
+    .stage.gl-on .co { width: auto; align-items: center; }
+  }
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .stage { height: clamp(320px, 80vw, 520px); --gap: 70px; margin-top: 0; }
+    .stack { width: min(74%, 440px); }
+  }
+  @media (max-width: 520px) {
+    h1 { font-size: clamp(28px, 9.2vw, 46px); }
+    h1 .ln { white-space: normal; }
+    .kicker { font-size: 11px; }
+    .ctas { margin-top: 20px; }
+    .ctas .btn { flex: 1 1 140px; padding: 0 14px; }
+    .stage { --gap: 52px; }
+    .co { font-size: 11px; }
+    .stamp { font-size: 11px; padding: 6px 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .frame-lines path, h1 .ln, .stamp { animation: none !important; stroke-dashoffset: 0; }
+  }
+</style>

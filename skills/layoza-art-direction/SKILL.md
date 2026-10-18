@@ -30,14 +30,16 @@ page. Passing `layoza qa` is the floor. The goal is the design.
 
 ## 0. Authority (decide first)
 
-1. **The user's prompt wins.** A named style, palette, font, library, "minimal",
-   or "no animation" is followed exactly; a pinned world pins the world, not its
-   softest rendition. Everything below governs only what the prompt leaves open.
+1. **The user's prompt wins.** An explicit instruction (style, palette, font,
+   stack, layout, motion library, "minimal", "no animation") overrides every
+   Layoza default, ban, deal and `avoid_recent` entry, and is followed exactly;
+   a pinned world pins the world, not its softest rendition. Everything below
+   governs only what the prompt leaves open.
 2. **Mode A** (new): this whole skill. **Mode D** (redesign): keep product truth,
    content, routes, functions and explicit brand commitments; replace the
    visual world. **Mode B** (extend): inherit `SITE-DNA.json` / `DESIGN.md` /
    `MOTION.md`; use steps 6–8 only. **Mode C** (improve): steps 6–8 only, inside
-   the incumbent world.
+   the incumbent world. In B/C never offer directions, sketches or a pick.
 3. Bans here apply to new work. A brand's own DNA (Inter, cream, numbered
    sections) is kept in B/C, and in D unless the user drops it.
 4. **Intake: know what the site is for before any look.** Fill these from the
@@ -62,7 +64,17 @@ layoza design-system "<brief>" --mode new --json
 
 Treat the engine output as raw material, not answers: `distinctiveness` (place
 and material cues, category clichés), `match_confidence`, and three structural
-directions. Its palettes and fonts are a fallback register only. Then write:
+directions. Its palettes and fonts are a fallback register only.
+
+**Avoid your own recent work.** MCP `get_design_system` returns `avoid_recent`:
+the directions, palettes, type families, motifs and mechanics of the last 8
+picks across the user's projects (CLI: the last 8 lines of
+`~/.layoza/history.jsonl`, or `$LAYOZA_HOME`). All three directions must differ
+from them in palette family, type families and motifs. Reuse a recent look only
+when the user asks for it, and record `REPEAT-OK: <the user's words>` in
+`direction.md`; otherwise `layoza audit` warns `DESIGN-REPEATS-RECENT`.
+
+Then write:
 
 - **Subject facts:** 8–12 concrete facts from the brief (who, where, what is
   sold or done, prices, people, hours, what makes it different).
@@ -120,11 +132,23 @@ world fails truth, clarity or this fit-check. Detail and a worked example:
 
 ### 3b. The user picks (hard stop)
 
+**Existing site (Mode B/C)? Skip directions and sketches:** use
+[layoza-extend-website](../layoza-extend-website/SKILL.md) or
+[layoza-refine](../layoza-refine/SKILL.md) and follow the site's own design.
+
 Shape the dealt world and the two strongest challengers into **three directions
-that differ in layout, identity, type, content treatment and motion**. For each,
-show the user a hero sketch (ASCII wireframe or a quick screenshot), the idea
-sentence, palette and the motion idea. **Stop and wait for the user's choice.**
-Do not build a look the user has not chosen. Record it in `direction.md` as
+that differ in layout, identity, type, content treatment and motion**. Show
+each as a **rendered sketch, never ASCII or a text wireframe**:
+
+1. Write one small static hero per direction, e.g.
+   `.layoza/sketches/a/index.html` (b, c): real fonts, palette and copy, the
+   subject art roughed in; no motion needed.
+2. Screenshot each at 1440 (and 375 if cheap): MCP `capture_screenshots` with
+   `sketch: true` (paths only, cheap), or `layoza qa <file>`.
+3. Show the user the images with the idea sentence, palette, motion idea and
+   one plain line of strength and weakness each, then your recommendation.
+
+**Stop and wait for the user's choice.** Do not build a look the user has not chosen. Record it in `direction.md` as
 `PICKED: <direction> (chosen by the user)`. In an unattended run with nobody to
 ask, record `PICKED: unattended — <why nobody could be asked>` and choose by
 the fit-check. `layoza audit` / `qa` fail with `DESIGN-NO-DIRECTION-PICK` until
@@ -147,6 +171,15 @@ this line exists.
 - **Sibling test:** would you write this exact plan for a neighbouring
   business in the same category? Every block that matches is a default: revise
   it and note what changed.
+- **Hero composition is yours to decide.** Layoza assigns none. Agents drift to
+  headline-left / visual-right, so choose the first screen from the subject:
+  what must be seen first, how big, what the visitor does there. Shapes to
+  think past the reflex (examples, not a menu): type as the image, the object
+  filling the screen, the headline broken around the object, stacked bands,
+  an index or spec sheet, a full-bleed scene with a text plate. The three
+  directions use three different first screens. A split is fine when you can
+  say why it beats the others for this subject. Record it as `HERO:` with
+  that reason in `.layoza/direction.md`.
 
 ## 5. Contract and copy (before code)
 
@@ -155,15 +188,23 @@ Write `.layoza/direction.md`, a dev-only file that is never served:
 - **PURPOSE:** the intake from step 0: purpose and primary action, audience,
   new or existing, must-keep. `layoza audit` fails with `DESIGN-NO-PURPOSE`
   until this line exists.
-- **PICKED:** the user's choice from step 3b.
-- **THESIS:** the idea sentence and the category arrangement it refuses.
+- **PICKED:** the user's choice from step 3b (Mode B/C, if this file is kept:
+  `PICKED: existing — <the site design being followed>`).
+- **THESIS:** the idea sentence and the category arrangement it refuses. Name
+  the trade's objects (the catch board, the lens, the ticket), not style words:
+  `PURPOSE`/`PICKED`/`THESIS` made only of "modern, clean, bold" fail with
+  `DESIGN-GENERIC-DIRECTION`.
 - **OWN-WORLD:** palette roles, materials and component language, recognisable
   with all content removed.
 - **TOKENS:** 4–6 named hex values, 1–2 families with roles, a 5-step type
-  scale, the alignment rule.
-- **FIRST VIEWPORT:** an ASCII wireframe for desktop and for phone. Mark where
+  scale, the alignment rule. `layoza audit` records the pick's hexes, families,
+  motifs and mechanic ids (never copy or paths) in the history ledger that
+  feeds `avoid_recent`; Mode B/C picks (`existing`) are not recorded.
+- **FIRST VIEWPORT:** the picked sketch's screenshots (desktop and phone). Note where
   the subject art sits (the dominant mass, about 40% or more) and where the real
   action works (buy, book, try; compact, never a second focal panel).
+- **HIERARCHY:** before any layout, what the visitor must take in 1st, 2nd and
+  3rd on the first screen and on each section; layout serves this order.
 - **SECTIONS:** one line each: claim, proof, and the composition that fits its
   content (a wall of objects, a ticket, a diagram, a map, a single quote at
   scale). No two consecutive sections share a composition.
@@ -258,11 +299,16 @@ animate only `transform`/`opacity`, reserve its box, or mark decorative layers
 Load [reference/finish.md](reference/finish.md).
 
 1. **Screenshots:** `layoza qa <file>` captures 1440/768/375. Also capture
-   the first screen and a mid-scroll frame of the signature.
+   the first screen and a mid-scroll frame of the signature. Judge the design
+   by the screenshots, taken after motion settles (entrances finished, canvas
+   drawn), not by the report. Check by eye that every label or headline over
+   3D, canvas, video or images is readable at each width; never rely on the
+   automated contrast checks alone there.
 2. **Art loop (at least 3 rounds; art has no two-round cap):**
    1. Critique like the harshest art director: subject test, the one-second
-      test, squint test, cover-the-logo, sameness, the phone composition, and
-      the TYPE / MATERIAL / GROUND checks.
+      test, squint test, cover-the-logo, sameness, the phone composition,
+      reading order, states, the cliché swap and the TYPE / MATERIAL / GROUND
+      checks.
    2. Score it as 0.4 design + 0.3 usability + 0.2 creativity + 0.1 content.
    3. Fix the top 3 problems in order: idea → hierarchy → composition → type →
       art → colour → detail → motion.

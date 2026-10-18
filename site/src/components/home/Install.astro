@@ -1,0 +1,20 @@
+---
+import InstallTerminal from '../islands/InstallTerminal';
+---
+<section class="band dark install" aria-labelledby="install-title" id="install">
+  <div class="wrap grid">
+    <div>
+      <p class="sheet"><b>11</b> Install</p>
+      <h2 id="install-title" class="h-lg caps" data-reveal>One install. <span class="accent">Better design instinct.</span></h2>
+      <p class="lede" data-reveal="0.1">Run it in your project root. Then ask your agent for a page the way you normally would. Layoza's router skill takes it from there.</p>
+      <p class="needs muted">Needs Node.js. Browser QA needs Playwright's Chromium.</p>
+    </div>
+    <InstallTerminal client:visible />
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .needs { margin-top: 20px; font-size: 15px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+</style>

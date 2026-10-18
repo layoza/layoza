@@ -1,0 +1,17 @@
+---
+interface Props { sheet: string; num: string; title: string; lede: string }
+const { sheet, num, title, lede } = Astro.props;
+---
+<section class="band dark pagehead" aria-labelledby="page-title">
+  <div class="wrap">
+    <p class="sheet"><b>{num}</b> {sheet}</p>
+    <h1 id="page-title" class="h-xl">{title}</h1>
+    <p class="lede">{lede}</p>
+    <slot />
+  </div>
+</section>
+<style>
+  .pagehead { padding-block: clamp(64px, 9vw, 128px) clamp(56px, 7vw, 96px); border-bottom: 1px solid var(--rule-dark); }
+  h1 { max-width: 14ch; }
+  .lede { margin-top: 28px; }
+</style>

@@ -260,6 +260,11 @@ pub fn audit_project(
 
     let failed = objective_error_count > 0 || cwv_failed;
     let passed_release_gate = !failed && measured;
+    if passed_release_gate {
+        if let Some(ledger) = crate::history::ledger_path() {
+            record_verified_direction(project_root, &ledger, &mut findings);
+        }
+    }
     let verification_status = if failed {
         "failed"
     } else if measured {
@@ -358,15 +363,28 @@ pub const MIN_ART_LOOP_ROUNDS: usize = 3;
 /// exists, the gate also requires:
 /// - a `PURPOSE:` line: what the site is for, its audience, new or existing;
 /// - a `PICKED:` line naming the direction the user chose (or `PICKED: unattended`
-///   with a reason, for runs with nobody to ask);
+///   with a reason, for runs with nobody to ask). An existing-site (Mode B/C) flow
+///   that keeps this file records `PICKED: existing — <design followed>`;
+///   it never offers new directions;
 /// - at least [`MIN_ART_LOOP_ROUNDS`] `ROUND <n>:` lines and a `REVIEWER:` line.
 ///
-/// Projects without a direction file (Mode B/C) are not affected.
+/// Projects without a direction file (usually Mode B/C) are not affected.
+///
+/// For a new direction it also checks that the record names the trade's objects
+/// ([`audit_direction_subject`]) and, with the user-level history ledger, warns when
+/// the pick closely repeats a recent project's; a verified pick is recorded
+/// ([`audit_direction_history`]).
 fn audit_design_process(base_dir: &Path, findings: &mut Vec<AuditFinding>) {
+    audit_design_process_with(base_dir, crate::history::ledger_path().as_deref(), findings);
+}
+
+fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &mut Vec<AuditFinding>) {
     let rel = ".layoza/direction.md";
-    let Ok(text) = fs::read_to_string(base_dir.join(rel)) else {
+    let Ok(raw) = fs::read_to_string(base_dir.join(rel)) else {
         return;
     };
+    // Windows editors and PowerShell 5.1 `Set-Content -Encoding utf8` prepend a BOM, which would hide the first line.
+    let text = raw.strip_prefix('\u{feff}').unwrap_or(&raw).to_string();
     let lines: Vec<String> = text
         .lines()
         .map(|l| {
@@ -398,8 +416,8 @@ fn audit_design_process(base_dir: &Path, findings: &mut Vec<AuditFinding>) {
             Severity::Error,
             "design-process",
             rel,
-            "No direction pick is recorded, so the look was chosen without the user. Show the user three distinct directions (hero sketch or screenshot each) and wait for their choice before building.".into(),
-            "Add `PICKED: <direction> (chosen by the user)` to .layoza/direction.md, or `PICKED: unattended — <why nobody could be asked>`.",
+            "No direction pick is recorded, so the look was chosen without the user. Show the user three distinct directions (a rendered hero sketch screenshot each, not ASCII) and wait for their choice before building.".into(),
+            "Add `PICKED: <direction> (chosen by the user)` to .layoza/direction.md, `PICKED: unattended — <why nobody could be asked>`, or for an existing site `PICKED: existing — <design followed>`.",
         )),
         _ => {}
     }
@@ -427,6 +445,179 @@ fn audit_design_process(base_dir: &Path, findings: &mut Vec<AuditFinding>) {
                 if reviewer { "" } else { ", no fresh-eyes reviewer verdict" }
             ),
             "Each round: critique the screenshots, score (0.4 design + 0.3 usability + 0.2 creativity + 0.1 content), fix the top 3, then log `ROUND <n>: <score> — <what changed>`. Finish with `REVIEWER: <ship|fix|rebuild> <score>` from a reviewer with no build context.",
+        ));
+    }
+    // An existing site follows its own design: no subject or repeat checks for its look.
+    if pick.as_deref().is_some_and(|p| p.starts_with("EXISTING")) {
+        return;
+    }
+    let blocks = crate::history::parse_direction(&text);
+    audit_direction_subject(&blocks, rel, findings);
+    if let Some(ledger) = ledger {
+        audit_direction_history(base_dir, &text, &blocks, ledger, rel, findings);
+    }
+}
+
+/// Adjectives that describe a style rather than the subject ("modern, clean, bold").
+const STYLE_WORDS: &[&str] = &[
+    "modern", "clean", "bold", "minimal", "minimalist", "minimalistic", "sleek", "elegant", "premium", "luxury",
+    "luxurious", "luxe", "simple", "fresh", "vibrant", "playful", "professional", "trustworthy", "friendly",
+    "warm", "cool", "dark", "light", "bright", "calm", "soft", "sharp", "striking", "stunning", "beautiful",
+    "creative", "unique", "innovative", "dynamic", "contemporary", "timeless", "classic", "sophisticated",
+    "refined", "polished", "crisp", "airy", "spacious", "subtle", "rich", "edgy", "futuristic", "organic",
+    "natural", "earthy", "vintage", "retro", "colorful", "colourful", "vivid", "punchy", "confident",
+    "approachable", "inviting", "engaging", "immersive", "cinematic", "expressive", "quiet", "loud", "high-end",
+    "upscale", "chic", "stylish", "trendy", "techy", "corporate", "whimsical", "nostalgic", "moody", "energetic",
+    "serene", "delightful", "amazing", "great", "nice", "good", "best", "impactful", "memorable", "distinctive",
+    "standout", "fun", "cozy", "cosy", "flat", "geometric", "abstract", "gradient", "glassy",
+];
+
+/// Words that are neither the subject nor a style: design vocabulary, process labels,
+/// colour names, common verbs and English stop words.
+const NEUTRAL_WORDS: &[&str] = &[
+    "design", "style", "look", "looks", "feel", "feels", "aesthetic", "vibe", "palette", "colour", "color",
+    "colors", "colours", "font", "fonts", "type", "typography", "serif", "sans", "mono", "accent", "hero",
+    "section", "sections", "page", "pages", "website", "site", "landing", "homepage", "cta", "button", "buttons",
+    "grid", "card", "cards", "motion", "animation", "animations", "layout", "whitespace", "space", "spacing",
+    "visual", "visuals", "image", "images", "photo", "photos", "imagery", "text", "copy", "headline", "headlines",
+    "brand", "branding", "identity", "theme", "interface", "experience", "direction", "directions", "option",
+    "version", "purpose", "audience", "new", "existing", "keep", "must", "user", "users", "visitor", "visitors",
+    "people", "customers", "clients", "chosen", "picked", "pick", "unattended", "primary", "action", "goal",
+    "business", "company", "product", "products", "service", "services", "online", "web", "mobile", "desktop",
+    "first", "viewport", "screen", "scroll", "thesis", "world", "own", "tokens", "black", "white", "grey", "gray",
+    "red", "blue", "green", "yellow", "orange", "purple", "pink", "navy", "cream", "beige", "gold", "silver",
+    "teal", "ink", "the", "and", "for", "with", "that", "this", "from", "into", "our", "their", "your", "its",
+    "are", "was", "were", "will", "can", "has", "have", "not", "but", "all", "any", "each", "more", "most",
+    "very", "just", "only", "also", "than", "then", "when", "where", "who", "what", "how", "why", "which",
+    "while", "about", "over", "under", "out", "off", "one", "two", "three", "via", "per", "like", "becomes",
+    "become", "made", "make", "makes", "use", "used", "using", "show", "shows", "sell", "sells", "selling", "buy",
+    "book", "get", "see", "help", "find", "learn", "sign", "join", "contact", "start", "try", "drive",
+    "increase", "grow", "convert", "follow", "follows", "following", "improve", "add", "run", "runs", "build",
+    "built", "create", "give", "gives", "let", "lets", "want", "need", "needs", "should", "would", "could",
+    "every", "other", "some", "many", "much", "really", "choice", "lots", "big", "large", "small", "full",
+    "high", "low", "top", "side", "left", "right", "center", "centre", "main", "plus",
+];
+
+/// Subject-bearing words in `text`: alphabetic words of 3+ letters that are neither
+/// style nor neutral words. Returns (distinct concrete words, style-word count).
+fn subject_words(text: &str) -> (Vec<String>, usize) {
+    let mut concrete: Vec<String> = Vec::new();
+    let mut style = 0;
+    for w in text.split(|c: char| !(c.is_alphabetic() || c == '-')) {
+        let w = w.trim_matches('-').to_lowercase();
+        if w.chars().count() < 3 {
+            continue;
+        }
+        if STYLE_WORDS.contains(&w.as_str()) {
+            style += 1;
+        } else if !NEUTRAL_WORDS.contains(&w.as_str()) && !concrete.contains(&w) {
+            concrete.push(w);
+        }
+    }
+    (concrete, style)
+}
+
+/// Subject-first check: the purpose and the picked direction must name the trade's own
+/// objects (catch board, harbour chart, lens), not only style words. A record made of
+/// nothing but style words is an error; a thin or style-only direction is a warning.
+fn audit_direction_subject(
+    blocks: &std::collections::BTreeMap<String, String>,
+    rel: &str,
+    findings: &mut Vec<AuditFinding>,
+) {
+    let join = |keys: &[&str]| keys.iter().filter_map(|k| blocks.get(*k)).cloned().collect::<Vec<_>>().join(" ");
+    let direction_keys = ["PICKED", "THESIS", "OWN-WORLD", "FIRST VIEWPORT", "SECTIONS", "ART PLAN"];
+    let (all_nouns, all_style) = subject_words(&format!("{} {}", join(&["PURPOSE"]), join(&direction_keys)));
+    let (dir_nouns, dir_style) = subject_words(&join(&direction_keys));
+    let remediation = "Name the trade's concrete objects in PURPOSE and the direction (THESIS, OWN-WORLD, ART PLAN): the dish, tool, room, garment or document a stranger would recognise, e.g. `THESIS: the daily catch board becomes a tide chart`. Style words (modern, clean, bold) do not count.";
+    if all_nouns.is_empty() {
+        let generic = all_style >= 2;
+        findings.push(browser_finding(
+            if generic { "DESIGN-GENERIC-DIRECTION" } else { "DESIGN-NO-SUBJECT" },
+            if generic { Severity::Error } else { Severity::Warning },
+            "design-process",
+            rel,
+            if generic {
+                "The purpose and direction use only style words and name nothing from the trade, so the design cannot be about its subject.".into()
+            } else {
+                "The purpose and direction name no concrete object from the trade, so nothing anchors the design to its subject.".into()
+            },
+            remediation,
+        ));
+    } else if dir_nouns.is_empty() && dir_style >= 1 {
+        findings.push(browser_finding(
+            "DESIGN-GENERIC-DIRECTION",
+            Severity::Warning,
+            "design-process",
+            rel,
+            "The picked direction is described only in style words; it names none of the trade's objects, so a neighbouring business could use it unchanged.".into(),
+            remediation,
+        ));
+    }
+}
+
+/// Anti-repeat memory: warns when this pick closely repeats one of the last
+/// [`crate::history::RECENT_WINDOW`] picks from other projects (palette, type families,
+/// motifs, mechanics). A pick is recorded by [`record_verified_direction`] once the release gate passes. `REPEAT-OK: <the user's
+/// words>` in direction.md marks a repeat the user asked for.
+fn audit_direction_history(
+    base_dir: &Path,
+    text: &str,
+    blocks: &std::collections::BTreeMap<String, String>,
+    ledger: &Path,
+    rel: &str,
+    findings: &mut Vec<AuditFinding>,
+) {
+    use crate::history;
+    let Some(entry) = history::entry_from_direction(base_dir, text) else {
+        return;
+    };
+    if !blocks.contains_key("REPEAT-OK") {
+        let past = history::recent(ledger, history::RECENT_WINDOW, Some(&entry.project));
+        if let Some((p, signals)) = past
+            .iter()
+            .rev()
+            .map(|p| (p, history::repeat_signals(&entry, p)))
+            .find(|(_, s)| !s.is_empty())
+        {
+            findings.push(browser_finding(
+                "DESIGN-REPEATS-RECENT",
+                Severity::Warning,
+                "design-process",
+                rel,
+                format!(
+                    "The picked direction closely repeats `{}` from another project ({}): same {}. Designs drift toward the same look across projects.",
+                    p.direction,
+                    p.date,
+                    signals.join("; ")
+                ),
+                "Change the palette family, type families and motifs so the direction is materially different (see `avoid_recent` in `get_design_system`). If the user asked for this same look, add `REPEAT-OK: <the user's words>` to .layoza/direction.md.",
+            ));
+        }
+    }
+}
+
+/// Adds a new-direction pick to the design history ledger. Called only once the
+/// release gate passes, so the ledger holds verified designs, not every draft an
+/// audit sees. Existing-site flows are never recorded (see `entry_from_direction`).
+fn record_verified_direction(base_dir: &Path, ledger: &Path, findings: &mut Vec<AuditFinding>) {
+    use crate::history;
+    let rel = ".layoza/direction.md";
+    let Ok(raw) = fs::read_to_string(base_dir.join(rel)) else {
+        return;
+    };
+    let text = raw.strip_prefix('\u{feff}').unwrap_or(&raw);
+    let Some(entry) = history::entry_from_direction(base_dir, text) else {
+        return;
+    };
+    if let Err(e) = history::record(ledger, &entry) {
+        findings.push(browser_finding(
+            "DESIGN-HISTORY-UNWRITABLE",
+            Severity::Info,
+            "design-process",
+            rel,
+            format!("The direction pick could not be added to the design history ledger: {}.", e),
+            "Set LAYOZA_HOME to a writable directory, or LAYOZA_NO_HISTORY=1 to turn the ledger off.",
         ));
     }
 }
@@ -591,6 +782,9 @@ fn browser_rule(rule: &str) -> (&'static str, &'static str, &'static str) {
         "menu-escape-broken" => ("UI-MENU-ESCAPE","accessibility","Escape does not close the open mobile menu when focus is on its toggle: handle Escape on the document while the menu is open, close it and return focus to the toggle."),
         "menu-close-slow" => ("UI-MENU-CLOSE-SLOW","motion","The mobile menu takes longer than about 800ms to leave the screen after Escape: shorten its exit animation to about 200-300ms so closing feels instant."),
         "art-over-text" => ("UI-ART-OVER-TEXT","visual","Canvas, WebGL or video art is painted across a headline, CTA or body text at a resting scroll position: give the text its own zone or a solid plate, and keep the art beside or behind it, never through it."),
+        "text-over-graphic-contrast" => ("UI-TEXT-OVER-ART-CONTRAST","accessibility","Text sitting on an image, canvas or gradient falls below 4.5:1 against the pixels behind it: put the text on a solid or scrimmed plate, move it off the art, or darken/lighten the art under it."),
+        "text-over-busy-graphic" => ("UI-TEXT-OVER-BUSY-ART","visual","Text runs across a busy, high-detail part of an image or canvas, so letters fight the picture: give the text a quiet zone or a plate, or crop the art so the busy area sits beside the text."),
+        "text-occluded" => ("UI-TEXT-OCCLUDED","visual","Another element is painted on top of visible text at a resting scroll position: fix the stacking or layout so the text is never covered."),
         "motion-too-sparse" => ("UI-MOTION-SPARSE","motion","Fewer distinct elements move, transition or follow scroll than the page's declared motion level expects: give each mid-page section its own dealt mechanic (`layoza mechanics deal`), or declare <meta name=\"layoza-motion\" content=\"calm\"> (or `none`) if a quiet page is intended."),
         "pinned-stage-static" => ("UI-PINNED-STATIC","motion","A sticky or pinned stage looks the same at 25%, 50% and 75% of its scroll range: map a visible change to scroll progress across the range (or shorten the pin), so every still is a different, complete composition."),
         "floating-control-covers-text" => ("UI-FLOAT-COVER","visual","A floating button or pill sits on top of body text while scrolling: dock it in a solid header, keep a matching gutter clear in the text column, or move it where text never runs."),
@@ -1379,7 +1573,7 @@ components:
             std::fs::write(root.join(".layoza/direction.md"), d).unwrap();
         }
         let mut findings = Vec::new();
-        audit_design_process(&root, &mut findings);
+        audit_design_process_with(&root, None, &mut findings);
         let _ = std::fs::remove_dir_all(&root);
         findings.into_iter().map(|f| f.rule_id).collect()
     }
@@ -1399,7 +1593,13 @@ components:
         let rules = process_rules(Some(
             "PURPOSE: sell\nPICKED: B (user)\nROUND 1: 6.5\nROUND 2: 7.8\n",
         ));
-        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string()]);
+        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
+
+        // A UTF-8 BOM (PowerShell 5.1 Set-Content) must not hide the first line.
+        let rules = process_rules(Some(
+            "\u{feff}PURPOSE: sell\nPICKED: B (user)\nROUND 1: 6.5\nROUND 2: 7.8\n",
+        ));
+        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
 
         // An empty pick does not count; "round" prose does not count as a round;
         // markdown bold around a key is accepted.
@@ -1411,5 +1611,72 @@ components:
             "PURPOSE: book tables; audience: locals; new\nPICKED: unattended — benchmark run\nROUND 1: 7\nROUND 2: 8.2\nROUND 3: 9.0\nREVIEWER: ship 9.0\n"
         ))
         .is_empty());
+
+        // An existing site (Mode B/C) that keeps a direction file follows its own design:
+        // `PICKED: existing — ...` satisfies the pick without three new directions.
+        let rules = process_rules(Some(
+            "PURPOSE: add a pricing section; audience: current visitors; existing\nPICKED: existing — follows SITE-DNA.json\n",
+        ));
+        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string()]);
+        assert!(process_rules(Some(
+            "PURPOSE: improve contrast; existing\n**PICKED:** existing — incumbent design\nROUND 1: 7\nROUND 2: 8\nROUND 3: 9\nREVIEWER: ship 9\n"
+        ))
+        .is_empty());
+    }
+
+    const LOOP: &str = "ROUND 1: 7\nROUND 2: 8\nROUND 3: 9\nREVIEWER: ship 9\n";
+
+    #[test]
+    fn direction_must_name_the_trades_objects() {
+        // Only style words: clearly generic, an error.
+        let rules = process_rules(Some(&format!("PURPOSE: a modern clean site; new\nPICKED: A bold minimal\n{}", LOOP)));
+        assert_eq!(rules, vec!["DESIGN-GENERIC-DIRECTION".to_string()]);
+        // The purpose names the trade but the direction is only style: a warning.
+        let mut findings = Vec::new();
+        let blocks = crate::history::parse_direction(
+            "PURPOSE: book tables at a seafood bar\nPICKED: A (user)\nTHESIS: bold, modern and clean\n",
+        );
+        audit_direction_subject(&blocks, "d", &mut findings);
+        assert_eq!(findings.len(), 1);
+        assert_eq!(findings[0].rule_id, "DESIGN-GENERIC-DIRECTION");
+        assert_eq!(findings[0].severity, Severity::Warning);
+        // A direction that names the trade's objects passes.
+        assert!(process_rules(Some(&format!(
+            "PURPOSE: book tables at a seafood bar; new\nPICKED: B harbour chart (user)\nTHESIS: the daily catch board becomes a tide chart\n{}",
+            LOOP
+        )))
+        .is_empty());
+    }
+
+    #[test]
+    fn repeated_direction_warns_and_is_recorded_once() {
+        let base = std::env::temp_dir().join(format!("layoza-repeat-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&base);
+        let ledger = base.join("home/history.jsonl");
+        let run = |name: &str, direction: &str| -> Vec<String> {
+            let root = base.join(name);
+            std::fs::create_dir_all(root.join(".layoza")).unwrap();
+            std::fs::write(root.join(".layoza/direction.md"), direction).unwrap();
+            let mut findings = Vec::new();
+            audit_design_process_with(&root, Some(&ledger), &mut findings);
+            // Each run stands in for a passed gate, which is when a pick is recorded.
+            record_verified_direction(&root, &ledger, &mut findings);
+            findings.into_iter().map(|f| f.rule_id).collect()
+        };
+        let first = format!(
+            "PURPOSE: book tables at a harbour bar; new\nPICKED: B harbour chart (user)\nTHESIS: catch board as tide chart\nOWN-WORLD: blueprint paper, ticket stubs\nTOKENS: #0f1b2d #1d6f8a #f4efe6 #e2552b; Fraunces display, Inter body\n{}",
+            LOOP
+        );
+        assert!(run("a", &first).is_empty());
+        assert!(run("a", &first).is_empty(), "re-auditing a project must not warn on itself");
+        assert_eq!(crate::history::read_all(&ledger).len(), 1);
+        let second = first.replace("harbour bar", "river cafe").replace("harbour chart", "river map");
+        assert_eq!(run("b", &second), vec!["DESIGN-REPEATS-RECENT".to_string()]);
+        // The user asked for the same look: no warning.
+        assert!(run("c", &format!("{}REPEAT-OK: client wants the sister-site look\n", second)).is_empty());
+        // Existing sites are never recorded.
+        run("d", "PURPOSE: add pricing; existing\nPICKED: existing — SITE-DNA.json\n");
+        assert_eq!(crate::history::read_all(&ledger).len(), 3);
+        let _ = std::fs::remove_dir_all(&base);
     }
 }

@@ -120,6 +120,11 @@ pub struct Mechanic {
     pub tier: Tier,
     /// Hero only: the headline and an art/3D object physically interlock.
     pub headline_interlock: bool,
+    /// Hero only: the first-screen composition (`split`, `stacked`, `centred`, `layered`,
+    /// `full-bleed`, `sticky-stage`, `object-wrap`, `poster`). Left/right splits are kept a
+    /// minority of the catalogue and are never preferred by the deal.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub composition: String,
     pub blueprint: String,
     /// What moves, mapped to scroll progress (never velocity).
     pub motion: String,
@@ -138,7 +143,7 @@ pub struct Mechanic {
 pub const NICHES: &[&str] = &[
     "store", "restaurant", "local-business", "saas", "dashboard", "agency", "kinetic", "3d", "editorial",
     "portfolio", "finance", "health", "education", "events", "real-estate", "travel", "nonprofit", "docs",
-    "landing", "professional", "any",
+    "landing", "professional", "legal", "devtools", "any",
 ];
 
 /// The parsed catalogue (embedded at compile time; parsed once).
@@ -178,13 +183,15 @@ pub fn normalize_niche(raw: &str) -> String {
         "magazine" | "blog" | "journal" => "editorial".into(),
         "fintech" | "bank" => "finance".into(),
         "clinic" | "wellness" | "medical" => "health".into(),
-        "legal" | "law" | "law-firm" | "corporate" | "consulting" | "consultancy" | "accountancy" | "services" => "professional".into(),
+        "legal" | "law" | "law-firm" | "lawyer" | "attorney" => "legal".into(),
+        "corporate" | "consulting" | "consultancy" | "accountancy" | "services" => "professional".into(),
         "school" | "course" | "learning" => "education".into(),
         "event" | "festival" | "conference" => "events".into(),
         "property" | "realestate" => "real-estate".into(),
         "hotel" | "tourism" => "travel".into(),
         "charity" | "non-profit" | "ngo" => "nonprofit".into(),
         "documentation" => "docs".into(),
+        "devtool" | "dev-tools" | "developer-tools" | "ai-devtools" | "cli" | "mcp" | "open-source" | "oss" => "devtools".into(),
         _ => s,
     }
 }
@@ -209,7 +216,13 @@ const NICHE_WORDS: &[(&str, &str)] = &[
     ("neighborhood", "local-business"), ("local", "local-business"), ("tailor", "local-business"),
     ("repair", "local-business"), ("pottery", "local-business"), ("bookshop", "local-business"),
     ("saas", "saas"), ("software", "saas"), ("platform", "saas"), ("startup", "saas"), ("api", "saas"),
-    ("b2b", "saas"), ("integration", "saas"), ("devtool", "saas"),
+    ("b2b", "saas"), ("integration", "saas"),
+    ("devtool", "devtools"), ("devtools", "devtools"), ("dev tools", "devtools"), ("developer tools", "devtools"),
+    ("developer tool", "devtools"), ("developer platform", "devtools"), ("cli", "devtools"), ("command line", "devtools"),
+    ("command-line", "devtools"), ("mcp", "devtools"), ("mcp server", "devtools"), ("open source", "devtools"),
+    ("open-source", "devtools"), ("coding agent", "devtools"), ("ai agent", "devtools"), ("agent skills", "devtools"),
+    ("llm", "devtools"), ("compiler", "devtools"), ("npm", "devtools"), ("github", "devtools"),
+    ("sdk", "devtools"), ("language server", "devtools"),
     ("dashboard", "dashboard"), ("admin", "dashboard"), ("analytics", "dashboard"), ("console", "dashboard"),
     ("internal tool", "dashboard"), ("crm", "dashboard"), ("back office", "dashboard"), ("monitoring", "dashboard"),
     ("agency", "agency"), ("studio", "agency"), ("branding", "agency"),
@@ -244,9 +257,9 @@ const NICHE_WORDS: &[(&str, &str)] = &[
     ("foundation", "nonprofit"), ("donate", "nonprofit"), ("volunteer", "nonprofit"),
     ("docs", "docs"), ("documentation", "docs"), ("developer docs", "docs"), ("api reference", "docs"),
     ("knowledge base", "docs"), ("changelog", "docs"), ("sdk", "docs"),
-    ("law firm", "professional"), ("law", "professional"), ("lawyer", "professional"), ("legal", "professional"),
-    ("attorney", "professional"), ("solicitor", "professional"), ("barrister", "professional"),
-    ("notary", "professional"), ("accountant", "professional"), ("accountancy", "professional"),
+    ("law firm", "legal"), ("law", "legal"), ("lawyer", "legal"), ("legal", "legal"),
+    ("attorney", "legal"), ("solicitor", "legal"), ("barrister", "legal"),
+    ("notary", "legal"), ("accountant", "professional"), ("accountancy", "professional"),
     ("bookkeeping", "professional"), ("consultancy", "professional"), ("consulting", "professional"),
     ("consultant", "professional"), ("advisory", "professional"), ("advisor", "professional"),
     ("corporate", "professional"), ("firm", "professional"), ("recruitment", "professional"),
@@ -285,7 +298,8 @@ const CALM_WORDS: &[&str] = &[
 ];
 const WILD_WORDS: &[&str] = &[
     "wild", "immersive", "experimental", "kinetic", "webgl", "3d", "three.js", "threejs", "showpiece", "maximal",
-    "avant-garde", "motion design",
+    "avant-garde", "motion design", "highly animated", "heavily animated", "very animated", "fully animated",
+    "cinematic", "motion-rich", "scrollytelling", "lots of animation", "lots of motion",
 ];
 const BOLD_WORDS: &[&str] = &["bold", "dynamic", "animated", "energetic", "lively", "scroll-driven", "playful"];
 
@@ -313,22 +327,68 @@ fn first_hit(toks: &[String], phrase: &str) -> Option<usize> {
     }
 }
 
-/// Niches named in the brief, in the order the brief names them (the first named niche leads).
+/// Niches that name a technique or a page type, not a trade: "Three.js", "kinetic", "landing page"
+/// say how the site is built, not what it is for, so they never lead when a trade is named.
+const TECHNIQUE_NICHES: &[&str] = &["3d", "kinetic", "landing"];
+
+/// A brief this long is a spec, not a one-liner: it mentions trades in passing (showcase examples,
+/// "not a dashboard"), so niches are ranked by how often the brief returns to them.
+const LONG_BRIEF_TOKENS: usize = 120;
+
+/// Niches named in the brief. A short brief keeps the order the brief names them (the first named
+/// niche leads); a long brief ranks them by how many times they come up and drops passing mentions.
+/// Either way a trade niche leads a technique niche.
 pub fn detect_niches(brief: &str) -> Vec<String> {
     let toks = tokens(brief);
-    let mut found: Vec<(usize, usize, &str)> = NICHE_WORDS
-        .iter()
-        .enumerate()
-        .filter_map(|(rank, (w, n))| first_hit(&toks, w).map(|pos| (pos, rank, *n)))
-        .collect();
-    found.sort();
-    let mut out: Vec<String> = Vec::new();
-    for (_, _, n) in found {
-        if !out.iter().any(|x| x == n) {
-            out.push(n.to_string());
+    // niche -> (mentions, first position)
+    let mut seen: Vec<(&str, usize, usize)> = Vec::new();
+    for (w, n) in NICHE_WORDS {
+        let parts = tokens(w);
+        if parts.is_empty() {
+            continue;
+        }
+        let positions: Vec<usize> = toks
+            .windows(parts.len())
+            .enumerate()
+            .filter(|(_, win)| {
+                win.iter().zip(&parts).all(|(a, b)| a == b || (parts.len() == 1 && b.len() > 3 && *a == format!("{}s", b)))
+            })
+            .map(|(i, _)| i)
+            // A simile ("design like a studio") names a quality, not the site's trade.
+            .filter(|i| !is_simile(&toks, *i))
+            .collect();
+        let Some(&first) = positions.first() else { continue };
+        match seen.iter_mut().find(|(x, _, _)| x == n) {
+            Some(e) => {
+                e.1 += positions.len();
+                e.2 = e.2.min(first);
+            }
+            None => seen.push((n, positions.len(), first)),
         }
     }
+    let long = toks.len() > LONG_BRIEF_TOKENS;
+    if long {
+        let top = seen.iter().map(|e| e.1).max().unwrap_or(0);
+        let floor = 2.max(top / 4);
+        seen.retain(|e| e.1 >= floor);
+    }
+    let has_trade = seen.iter().any(|e| !TECHNIQUE_NICHES.contains(&e.0));
+    seen.sort_by_key(|&(n, count, first)| {
+        let technique = has_trade && TECHNIQUE_NICHES.contains(&n);
+        (technique, if long { usize::MAX - count } else { 0 }, first)
+    });
+    let mut out: Vec<String> = seen.into_iter().map(|e| e.0.to_string()).collect();
+    if long {
+        out.truncate(4);
+    }
     out
+}
+
+/// True when the word at `pos` follows `like` / `as` (optionally with an article): a comparison.
+fn is_simile(toks: &[String], pos: usize) -> bool {
+    let prev = |back: usize| pos.checked_sub(back).and_then(|i| toks.get(i)).map(String::as_str);
+    let cmp = |t: Option<&str>| matches!(t, Some("like" | "as"));
+    cmp(prev(1)) || (matches!(prev(1), Some("a" | "an" | "the")) && cmp(prev(2)))
 }
 
 pub fn detect_moods(brief: &str) -> Vec<String> {
@@ -345,6 +405,15 @@ pub fn detect_moods(brief: &str) -> Vec<String> {
 /// Intensity the brief asks for in so many words, if any. Restraint wins over ambition.
 pub fn brief_intensity(brief: &str) -> Option<Intensity> {
     let toks = tokens(brief);
+    // An explicit heavy-motion ask outranks a stray calm word elsewhere ("a minimal footer").
+    const HEAVY: &[&str] = &[
+        "highly animated", "heavily animated", "very animated", "fully animated", "cinematic", "motion-rich",
+        "scrollytelling", "lots of animation", "lots of motion",
+    ];
+    let no_motion = ["no animation", "no motion", "without animation", "static site"].iter().any(|p| brief.to_lowercase().contains(p));
+    if !no_motion && HEAVY.iter().any(|w| hit(&toks, w)) {
+        return Some(Intensity::Wild);
+    }
     if CALM_WORDS.iter().any(|w| hit(&toks, w)) {
         Some(Intensity::Calm)
     } else if WILD_WORDS.iter().any(|w| hit(&toks, w)) {
@@ -359,7 +428,7 @@ pub fn brief_intensity(brief: &str) -> Option<Intensity> {
 /// Default intensity for a niche when the brief names none: task surfaces calm, showcases wild.
 fn niche_default_intensity(niches: &[String]) -> Intensity {
     match niches.first().map(String::as_str) {
-        Some("dashboard" | "docs" | "health" | "finance" | "professional") => Intensity::Calm,
+        Some("dashboard" | "docs" | "health" | "finance" | "professional" | "legal") => Intensity::Calm,
         Some("kinetic" | "3d") => Intensity::Wild,
         _ => Intensity::Bold,
     }
@@ -387,12 +456,88 @@ fn trade_roles(niche: &str) -> &'static [&'static str] {
         "docs" => &["docs-nav", "features", "faq"],
         "landing" => &["features", "proof", "pricing", "cta"],
         "professional" => &["services", "team", "proof", "process", "timeline"],
+        "legal" => &["services", "team", "proof", "process"],
+        "devtools" => &["features", "proof", "process", "docs-nav", "data-story", "comparison"],
         _ => &[],
     }
 }
 
 /// Niches whose mechanics depict that trade's own object; foreign to any other brief.
-const NARROW_TRADES: &[&str] = &["store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel"];
+const NARROW_TRADES: &[&str] = &["store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel", "devtools", "legal"];
+
+/// Niches close enough that one's mechanics read naturally on the other's site. Used only when a
+/// niche has too few in-niche entries at the asked intensity, before anything unrelated is dealt.
+fn related_niches(niche: &str) -> &'static [&'static str] {
+    match niche {
+        "devtools" => &["saas", "docs", "dashboard", "landing"],
+        "saas" => &["landing", "dashboard", "docs", "devtools"],
+        "docs" => &["devtools", "saas", "education"],
+        "dashboard" => &["saas", "finance", "devtools"],
+        "landing" => &["saas", "store", "events"],
+        "store" => &["local-business", "landing"],
+        "restaurant" => &["local-business", "events"],
+        "local-business" => &["restaurant", "store", "professional"],
+        "agency" => &["portfolio", "kinetic", "editorial"],
+        "kinetic" => &["agency", "3d", "portfolio"],
+        "3d" => &["kinetic", "agency"],
+        "editorial" => &["portfolio", "nonprofit"],
+        "portfolio" => &["agency", "editorial"],
+        "finance" => &["professional", "dashboard", "saas"],
+        "health" => &["professional", "local-business"],
+        "education" => &["nonprofit", "docs"],
+        "events" => &["travel", "restaurant"],
+        "real-estate" => &["professional", "local-business"],
+        "travel" => &["events", "editorial"],
+        "nonprofit" => &["education", "editorial"],
+        "professional" => &["finance", "health"],
+        "legal" => &["professional", "finance", "editorial"],
+        _ => &[],
+    }
+}
+
+/// How a dealt mechanic fits the brief, strongest first.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+enum FitClass {
+    /// Tagged with a niche the brief names.
+    InNiche,
+    /// Tagged `any`.
+    Universal,
+    /// Tagged with a niche next to the brief's (`related_niches`).
+    Related,
+    /// No niche named, or tagged only with broad niches: neither the brief's trade nor another's.
+    Neutral,
+    /// Built around another narrow trade's own object (a menu, a floor plan, a shop shelf).
+    Foreign,
+}
+
+fn fit_class(m: &Mechanic, niches: &[String]) -> (FitClass, Option<String>) {
+    if let Some(n) = m.niches.iter().find(|n| niches.contains(n)) {
+        return (FitClass::InNiche, Some(n.clone()));
+    }
+    if m.niches.iter().any(|n| n == "any") {
+        return (FitClass::Universal, None);
+    }
+    for brief_niche in niches {
+        if let Some(n) = m.niches.iter().find(|n| related_niches(brief_niche).contains(&n.as_str())) {
+            return (FitClass::Related, Some(format!("{} (next to {})", n, brief_niche)));
+        }
+    }
+    match m.niches.first() {
+        Some(primary) if NARROW_TRADES.contains(&primary.as_str()) => (FitClass::Foreign, Some(primary.clone())),
+        _ => (FitClass::Neutral, None),
+    }
+}
+
+/// Why one dealt mechanic was picked, so the agent can judge the deal instead of trusting it.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MechanicFit {
+    pub id: String,
+    /// `hero`, `signature`, `suggestion` or `transition`.
+    pub slot: String,
+    /// `in-niche`, `universal`, `related`, `neutral` or `outside-trade`.
+    pub fit: String,
+    pub reason: String,
+}
 
 /// Roles that sit at the page edges; they are suggested but never dealt as a signature.
 const EDGE_ROLES: &[&str] = &["footer", "faq", "cta", "contact"];
@@ -457,7 +602,16 @@ pub struct DealOptions {
     pub existing: Option<ExistingSite>,
     /// Families / ids to skip (used to keep the 3 design directions apart).
     pub exclude_families: Vec<String>,
+    /// Ids never dealt: recently used mechanics (MCP `avoid`), or picks held by another direction.
+    /// Matched case-insensitively.
     pub exclude_ids: Vec<String>,
+    /// Hero compositions already used by another direction; skipped while any other hero fits.
+    pub exclude_compositions: Vec<String>,
+    /// Hero composition the caller's direction is built around; a matching hero scores higher.
+    pub prefer_composition: Option<String>,
+    /// Re-deal offset for the hero: 0 takes the best fit, n > 0 takes a different near-best fit,
+    /// so asking for another variant changes the first screen too.
+    pub hero_offset: usize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -484,6 +638,9 @@ pub struct MechanicDeal {
     /// Ideas for the remaining sections; use, adapt or replace with the content's own shape.
     pub suggestions: Vec<Mechanic>,
     pub transition: Option<Mechanic>,
+    /// One entry per dealt mechanic: how it fits the brief's niche, role, mood and intensity.
+    #[serde(default)]
+    pub fit: Vec<MechanicFit>,
     pub notes: Vec<String>,
     pub rules: Vec<String>,
 }
@@ -505,7 +662,9 @@ pub fn deal_mechanics(brief: &str, niche: Option<&str>, mood: Option<&str>, coun
 }
 
 pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
-    let brief = opts.brief.trim();
+    // What the brief rules out ("avoid dashboard mockups") must not pick the niche.
+    let affirmed = crate::intelligence::affirmed_brief(opts.brief.trim());
+    let brief = if affirmed.trim().is_empty() { opts.brief.trim() } else { affirmed.as_str() };
     let mut notes = Vec::new();
 
     // Niches: the brief's own words first, then the hint; the hint never displaces the brief.
@@ -602,10 +761,18 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         let fits_intensity = if intensity == Intensity::Calm { m.intensity == Intensity::Calm } else { m.intensity <= intensity };
         fits_intensity
             && m.tier <= max_tier
-            && !opts.exclude_ids.iter().any(|x| x == &m.id)
+            && !opts.exclude_ids.iter().any(|x| x.trim().eq_ignore_ascii_case(&m.id))
             && !opts.exclude_families.iter().any(|x| x == &m.family)
     };
-    let niche_match = |m: &Mechanic| niches.is_empty() || m.niches.iter().any(|n| n == "any" || niches.contains(n));
+    let avoided: Vec<&str> = opts
+        .exclude_ids
+        .iter()
+        .map(|x| x.trim())
+        .filter(|x| get_mechanic(x).is_some())
+        .collect();
+    if !avoided.is_empty() {
+        notes.push(format!("Skipped {} excluded / recently used mechanic(s): {}.", avoided.len(), avoided.join(", ")));
+    }
     let score = |m: &Mechanic| -> i64 {
         let mut s: i64 = 0;
         for (rank, n) in niches.iter().enumerate() {
@@ -629,6 +796,15 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             1 => 1,
             _ => 0,
         };
+        if m.kind == MechanicKind::Hero {
+            if opts.prefer_composition.as_deref().is_some_and(|c| !c.is_empty() && c == m.composition) {
+                s += 5;
+            }
+            // Headline-left / visual-right is the generic default; it must win on fit, not by habit
+            if m.composition == "split" {
+                s -= 2;
+            }
+        }
         if m.kind == MechanicKind::Section {
             if let Some(first) = niches.first() {
                 if trade_roles(first).contains(&m.role.as_str()) {
@@ -642,15 +818,35 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         // Seeded jitter (0-3) so one seed is reproducible and another seed explores close candidates
         s + (fnv1a(&format!("{}:{}", seed, m.id)) % 4) as i64
     };
-    let ranked = |kind: MechanicKind| -> Vec<&'static Mechanic> {
-        let pool: Vec<&Mechanic> = catalogue().iter().filter(|m| m.kind == kind && allowed(m)).collect();
-        let matched: Vec<&Mechanic> = pool.iter().copied().filter(|m| niche_match(m)).collect();
-        // Too few in-niche entries at this intensity: fall back to the whole allowed pool (scored, so
-        // in-niche entries still lead)
+    // Pool by fit: in-niche and universal entries first; widen to related niches, then to broad
+    // entries, only when too few fit at this intensity. Mechanics built around another trade's own
+    // object are dealt only when nothing else is left. Returns (pool, wider tail for suggestions).
+    let ranked = |kind: MechanicKind| -> (Vec<&'static Mechanic>, Vec<&'static Mechanic>) {
+        let pool: Vec<&'static Mechanic> = catalogue().iter().filter(|m| m.kind == kind && allowed(m)).collect();
+        let class = |m: &Mechanic| fit_class(m, &niches).0;
+        let limits: &[FitClass] = if niches.is_empty() {
+            &[FitClass::Neutral]
+        } else {
+            &[FitClass::Universal, FitClass::Related, FitClass::Neutral]
+        };
         let enough = if kind == MechanicKind::Section { 2 } else { 1 };
-        let mut v = if matched.len() >= enough { matched } else { pool };
-        v.sort_by(|a, b| score(b).cmp(&score(a)).then_with(|| a.id.cmp(&b.id)));
-        v
+        let sort = |v: &mut Vec<&'static Mechanic>| v.sort_by(|a, b| score(b).cmp(&score(a)).then_with(|| a.id.cmp(&b.id)));
+        let mut main = pool.clone();
+        for lim in limits {
+            let tier: Vec<&'static Mechanic> = pool.iter().copied().filter(|m| class(m) <= *lim).collect();
+            if tier.len() >= enough {
+                main = tier;
+                break;
+            }
+        }
+        sort(&mut main);
+        let mut tail: Vec<&'static Mechanic> = pool
+            .iter()
+            .copied()
+            .filter(|m| class(m) < FitClass::Foreign && !main.iter().any(|x| x.id == m.id))
+            .collect();
+        tail.sort_by(|a, b| class(a).cmp(&class(b)).then_with(|| score(b).cmp(&score(a))).then_with(|| a.id.cmp(&b.id)));
+        (main, tail)
     };
 
     let mut used_families: BTreeSet<String> = BTreeSet::new();
@@ -661,8 +857,32 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         Some((*m).clone())
     };
 
-    let heroes = ranked(MechanicKind::Hero);
-    let hero = take(&heroes, &mut used_families, &|_| true);
+    let (heroes, _) = ranked(MechanicKind::Hero);
+    let free_comp = |m: &Mechanic| !opts.exclude_compositions.iter().any(|c| c == &m.composition);
+    let hero = {
+        // Near-best candidates (within 6 points of the best fit, at most 4) in a fresh composition;
+        // the offset walks them so a re-deal shows a different first screen.
+        let fresh: Vec<&'static Mechanic> = heroes.iter().copied().filter(|m| free_comp(m)).collect();
+        let list: Vec<&'static Mechanic> = if fresh.is_empty() { heroes.clone() } else { fresh };
+        let best = list.first().map(|m| score(m)).unwrap_or(0);
+        // The caller's composition is a promise made to the reader (the direction says "centred"),
+        // so a fitting hero of that composition wins outright when it is within 10 points of the
+        // best; only when none is that close does the window fall back to any composition.
+        let wanted = |m: &&'static Mechanic| opts.prefer_composition.as_deref().is_some_and(|c| c == m.composition);
+        let matching: Vec<&'static Mechanic> = list.iter().copied().filter(wanted).collect();
+        let window = |v: &[&'static Mechanic], slack: i64| -> Vec<&'static Mechanic> {
+            let top = v.first().map(|m| score(m)).unwrap_or(0);
+            v.iter().copied().filter(|m| score(m) + slack >= top).take(4).collect()
+        };
+        let near: Vec<&'static Mechanic> = match matching.first() {
+            Some(m) if score(m) + 10 >= best => window(&matching, 6),
+            _ => window(&list, 6),
+        };
+        let pick = if near.len() > 1 && opts.hero_offset > 0 { 1 + (opts.hero_offset - 1) % (near.len() - 1) } else { 0 };
+        let chosen = near.get(pick).copied();
+        let ordered: Vec<&'static Mechanic> = chosen.into_iter().chain(list.iter().copied()).collect();
+        take(&ordered, &mut used_families, &|_| true)
+    };
     match &hero {
         None => notes.push("No hero mechanic fits these constraints.".into()),
         Some(h) if !niches.is_empty() && !h.niches.iter().any(|n| n == "any" || niches.contains(n)) => notes.push(
@@ -671,12 +891,13 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         _ => {}
     }
 
-    let sections = ranked(MechanicKind::Section);
+    let (sections, wider) = ranked(MechanicKind::Section);
     let mut signature = Vec::new();
     for _ in 0..2 {
         let pick = {
             let roles = used_roles.clone();
-            take(&sections, &mut used_families, &|m| !EDGE_ROLES.contains(&m.role.as_str()) && !roles.contains(&m.role))
+            let ok = |m: &Mechanic| !EDGE_ROLES.contains(&m.role.as_str()) && !roles.contains(&m.role);
+            take(&sections, &mut used_families, &ok).or_else(|| take(&wider, &mut used_families, &ok))
         };
         if let Some(m) = pick {
             used_roles.insert(m.role.clone());
@@ -686,8 +907,11 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let mut suggestions = Vec::new();
     while signature.len() + suggestions.len() < count {
         let roles = used_roles.clone();
-        let pick = take(&sections, &mut used_families, &|m| !roles.contains(&m.role))
-            .or_else(|| take(&sections, &mut used_families, &|_| true));
+        let new_role = |m: &Mechanic| !roles.contains(&m.role);
+        let pick = take(&sections, &mut used_families, &new_role)
+            .or_else(|| take(&sections, &mut used_families, &|_| true))
+            .or_else(|| take(&wider, &mut used_families, &new_role))
+            .or_else(|| take(&wider, &mut used_families, &|_| true));
         match pick {
             Some(m) => {
                 used_roles.insert(m.role.clone());
@@ -703,8 +927,54 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             count
         ));
     }
-    let transitions = ranked(MechanicKind::Transition);
+    let (transitions, _) = ranked(MechanicKind::Transition);
     let transition = take(&transitions, &mut used_families, &|_| true);
+
+    // Fit reasons, one per dealt mechanic
+    let fit_reason = |m: &Mechanic, slot: &str| -> MechanicFit {
+        let (class, detail) = fit_class(m, &niches);
+        let detail = detail.unwrap_or_default();
+        let (label, mut parts) = match class {
+            FitClass::InNiche => ("in-niche", vec![format!("tagged {}, a niche the brief names", detail)]),
+            FitClass::Universal => ("universal", vec!["tagged `any`: fits every trade".to_string()]),
+            FitClass::Related => ("related", vec![format!("related niche {}; too few in-niche entries fit", detail)]),
+            FitClass::Neutral if niches.is_empty() => {
+                ("neutral", vec!["no niche named; broad mechanic, not another trade's own object".to_string()])
+            }
+            FitClass::Neutral => (
+                "neutral",
+                vec![format!("not tagged {}; broad mechanic dealt because closer entries ran out", niches.join("/"))],
+            ),
+            FitClass::Foreign => (
+                "outside-trade",
+                vec![format!("built for {}; dealt only because nothing closer fits; rebuild it around this trade's object", detail)],
+            ),
+        };
+        if m.kind == MechanicKind::Section {
+            match niches.iter().find(|n| trade_roles(n).contains(&m.role.as_str())) {
+                Some(n) => parts.push(format!("role `{}` is a {} trade role", m.role, n)),
+                None => parts.push(format!("role `{}`", m.role)),
+            }
+        }
+        let shared: Vec<&str> = m.moods.iter().filter(|x| moods.contains(x)).map(String::as_str).collect();
+        if !shared.is_empty() {
+            parts.push(format!("mood {}", shared.join(", ")));
+        }
+        parts.push(format!("{} / {} within the deal's {} / {}", m.intensity.as_str(), m.tier.as_str(), intensity.as_str(), max_tier.as_str()));
+        MechanicFit { id: m.id.clone(), slot: slot.into(), fit: label.into(), reason: parts.join("; ") }
+    };
+    let mut fit: Vec<MechanicFit> = Vec::new();
+    fit.extend(hero.iter().map(|m| fit_reason(m, "hero")));
+    fit.extend(signature.iter().map(|m| fit_reason(m, "signature")));
+    fit.extend(suggestions.iter().map(|m| fit_reason(m, "suggestion")));
+    fit.extend(transition.iter().map(|m| fit_reason(m, "transition")));
+    let outside: Vec<&str> = fit.iter().filter(|f| f.fit == "outside-trade").map(|f| f.id.as_str()).collect();
+    if !outside.is_empty() {
+        notes.push(format!(
+            "Dealt from outside the trade because nothing closer fits these constraints: {}. Rebuild each around this trade's own object or replace it.",
+            outside.join(", ")
+        ));
+    }
 
     let rules = vec![
         "Build the two `signature` mechanics verbatim in spirit: keep the mechanism and its still_check; adapt colour, type, copy and objects to the brand and the trade.".into(),
@@ -731,6 +1001,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         signature,
         suggestions,
         transition,
+        fit,
         notes,
         rules,
     }
@@ -746,6 +1017,9 @@ pub struct MechanicRef {
     pub family: String,
     pub intensity: Intensity,
     pub still_check: String,
+    /// Hero only: its first-screen composition.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub composition: String,
 }
 
 impl From<&Mechanic> for MechanicRef {
@@ -758,14 +1032,74 @@ impl From<&Mechanic> for MechanicRef {
             family: m.family.clone(),
             intensity: m.intensity,
             still_check: m.still_check.clone(),
+            composition: m.composition.clone(),
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn similes_are_not_niches_and_heavy_motion_is_wild() {
+        let b = "open-source MCP server that makes coding agents design like a studio; highly animated";
+        let n = detect_niches(b);
+        assert!(n.contains(&"devtools".to_string()), "{:?}", n);
+        assert!(!n.contains(&"agency".to_string()), "{:?}", n);
+        assert_eq!(detect_niches("brand studio portfolio"), vec!["agency".to_string(), "portfolio".to_string()]);
+        assert_eq!(brief_intensity(b), Some(Intensity::Wild));
+        assert_eq!(brief_intensity("cinematic, but no animation"), Some(Intensity::Calm));
+        assert_eq!(brief_intensity("highly animated site with a minimal, subtle footer"), Some(Intensity::Wild));
+    }
+
+    #[test]
+    fn long_brief_ranks_niches_by_weight_and_trade_leads_technique() {
+        // A technique word named first does not lead a trade
+        assert_eq!(detect_niches("three.js hero for an open-source cli").first().map(String::as_str), Some("devtools"));
+        // A long spec that keeps returning to its trade, with passing mentions of others
+        let mut b = String::from("Three.js hero, kinetic scroll, showcase a restaurant demo and a store demo. ");
+        for _ in 0..6 {
+            b.push_str("The MCP server gives coding agents design skills; install the CLI from npm and read the docs on GitHub. ");
+        }
+        let n = detect_niches(&b);
+        assert_eq!(n.first().map(String::as_str), Some("devtools"), "{n:?}");
+        assert!(!n.contains(&"restaurant".to_string()) && !n.contains(&"store".to_string()), "{n:?}");
+        let d = deal_mechanics(&format!("{b} highly animated"), None, None, 5, 3);
+        assert!(d.hero.as_ref().is_some_and(|h| h.niches.contains(&"devtools".to_string())), "{:?}", d.hero.map(|h| h.id));
+        for m in all(&d) {
+            assert!(!["travel", "store", "real-estate", "events"].contains(&m.niches[0].as_str()), "{}", m.id);
+        }
+    }
+
     use super::*;
     use std::collections::{BTreeMap, HashSet};
+
+    #[test]
+    fn heroes_declare_compositions_and_splits_are_a_minority() {
+        let heroes: Vec<&Mechanic> = catalogue().iter().filter(|m| m.kind == MechanicKind::Hero).collect();
+        let known = ["layered", "centred", "object-wrap", "poster", "stacked", "split", "full-bleed", "sticky-stage"];
+        for h in &heroes {
+            assert!(known.contains(&h.composition.as_str()), "{} composition {:?}", h.id, h.composition);
+        }
+        let splits = heroes.iter().filter(|h| h.composition == "split").count();
+        assert!(splits * 5 <= heroes.len(), "{splits} of {} heroes are splits", heroes.len());
+        let kinds: HashSet<&str> = heroes.iter().map(|h| h.composition.as_str()).collect();
+        assert!(kinds.len() >= 6, "{kinds:?}");
+    }
+
+    #[test]
+    fn composition_preference_and_exclusion_steer_the_hero() {
+        let base = DealOptions { brief: "seafood restaurant on the harbour".into(), count: 2, seed: Some(7), ..Default::default() };
+        let h0 = deal_mechanics_with(&base).hero.expect("hero");
+        let excluded = deal_mechanics_with(&DealOptions { exclude_compositions: vec![h0.composition.clone()], ..base.clone() }).hero.expect("hero");
+        assert_ne!(excluded.composition, h0.composition);
+        // A preference is soft: it keeps a fitting hero of that composition, never forces an off-niche one.
+        let kept = deal_mechanics_with(&DealOptions { prefer_composition: Some(h0.composition.clone()), ..base.clone() }).hero.expect("hero");
+        assert_eq!(kept.composition, h0.composition);
+        // Across many briefs, a split hero is never the majority pick
+        let briefs = ["seafood restaurant", "linen store", "bakery dashboard", "open-source cli", "architecture studio", "hotel in Porto", "kids museum", "law firm"];
+        let splits = briefs.iter().filter(|b| deal_mechanics_with(&DealOptions { brief: b.to_string(), count: 2, ..Default::default() }).hero.is_some_and(|h| h.composition == "split")).count();
+        assert!(splits * 2 < briefs.len(), "{splits} split heroes of {}", briefs.len());
+    }
 
     fn ids(d: &MechanicDeal) -> Vec<String> {
         d.hero.iter().chain(&d.signature).chain(&d.suggestions).chain(&d.transition).map(|m| m.id.clone()).collect()
@@ -1004,10 +1338,13 @@ mod tests {
     fn law_firm_gets_no_other_trades_objects() {
         for seed in 0..12 {
             let d = deal_mechanics("corporate law firm", None, None, 4, seed);
-            assert_eq!(d.context.niches.first().map(String::as_str), Some("professional"));
+            assert!(d.context.niches.iter().any(|n| n == "legal"), "{:?}", d.context.niches);
             for m in picks(&d) {
                 let primary = m.niches.first().map(String::as_str).unwrap_or("");
-                assert!(!NARROW_TRADES.contains(&primary), "seed {seed}: law firm dealt {} ({primary})", m.id);
+                assert!(primary == "legal" || !NARROW_TRADES.contains(&primary), "seed {seed}: law firm dealt {} ({primary})", m.id);
+                for trade_object in ["timeline-tape-measure-track", "proof-before-after-measured", "hero-odometer-in-headline"] {
+                    assert_ne!(m.id, trade_object, "seed {seed}");
+                }
             }
         }
     }
@@ -1047,6 +1384,88 @@ mod tests {
         for m in picks(&d) {
             assert_eq!(m.intensity, Intensity::Calm, "{}", m.id);
             assert_ne!(m.niches.first().map(String::as_str), Some("store"), "{}", m.id);
+        }
+    }
+
+    const DEV_BRIEF: &str = "marketing site for an open-source MCP server and AI agent skills that make coding agents design better";
+
+    #[test]
+    fn devtools_brief_gets_devtools_fits_and_no_foreign_trades() {
+        assert_eq!(detect_niches(DEV_BRIEF).first().map(String::as_str), Some("devtools"));
+        for seed in 0..16 {
+            let d = deal_mechanics(DEV_BRIEF, None, None, 6, seed);
+            assert!(d.hero.is_some(), "seed {seed}: no hero");
+            for m in all(&d) {
+                let primary = m.niches.first().map(String::as_str).unwrap_or("");
+                assert!(
+                    !["restaurant", "store", "real-estate", "travel", "events", "local-business"].contains(&primary),
+                    "seed {seed}: dev brief dealt {} ({primary})",
+                    m.id
+                );
+                assert!(!["menu", "location", "curriculum", "itinerary", "listing", "catalogue"].contains(&m.role.as_str()), "seed {seed}: {}", m.id);
+            }
+            // Every dealt mechanic carries a fit reason, in deal order
+            let dealt = ids(&d);
+            assert_eq!(d.fit.iter().map(|f| f.id.clone()).collect::<Vec<_>>(), dealt, "seed {seed}");
+            for f in &d.fit {
+                assert!(!f.reason.trim().is_empty() && f.fit != "outside-trade", "seed {seed}: {:?}", f);
+            }
+            let h = d.fit.first().unwrap();
+            assert_eq!((h.slot.as_str(), h.fit.as_str()), ("hero", "in-niche"), "seed {seed}");
+        }
+        // Every niche can still be named: devtools has heroes and sections of its own
+        assert!(list_mechanics(Some("cli"), Some(MechanicKind::Hero), None).iter().any(|m| m.id == "hero-terminal-session-replay"));
+    }
+
+    #[test]
+    fn devtools_words_do_not_steal_other_niches() {
+        for (brief, lead) in [
+            ("seafood restaurant with a daily menu", "restaurant"),
+            ("developer documentation for an SDK", "docs"),
+            ("analytics dashboard", "dashboard"),
+            ("estate agent in Leeds", "real-estate"),
+            ("travel agent for walking holidays", "travel"),
+        ] {
+            let n = detect_niches(brief);
+            assert_eq!(n.first().map(String::as_str), Some(lead), "{brief}: {n:?}");
+        }
+        assert!(!detect_niches("travel agent for walking holidays").contains(&"devtools".to_string()));
+        // A restaurant deal never gets the terminal replay or the diff
+        for seed in 0..8 {
+            let d = deal_mechanics("seafood restaurant with a daily menu", None, None, 6, seed);
+            assert!(ids(&d).iter().all(|i| i != "hero-terminal-session-replay" && i != "proof-before-after-diff"), "seed {seed}");
+        }
+    }
+
+    #[test]
+    fn avoid_list_is_never_dealt_and_stays_deterministic() {
+        let first = deal_mechanics(DEV_BRIEF, None, None, 5, 3);
+        let avoid = ids(&first);
+        let opts = DealOptions {
+            brief: DEV_BRIEF.into(),
+            count: 5,
+            seed: Some(3),
+            exclude_ids: avoid.iter().map(|i| i.to_uppercase()).collect(),
+            ..Default::default()
+        };
+        let a = deal_mechanics_with(&opts);
+        let b = deal_mechanics_with(&opts);
+        assert_eq!(serde_json::to_string(&a).unwrap(), serde_json::to_string(&b).unwrap());
+        for i in ids(&a) {
+            assert!(!avoid.contains(&i), "avoided {i} was dealt again");
+        }
+        assert!(a.hero.is_some(), "avoid list must not empty the hero pool");
+        assert!(a.notes.iter().any(|n| n.contains("recently used")));
+        assert_eq!(a.fit.len(), ids(&a).len());
+    }
+
+    #[test]
+    fn generic_brief_excludes_narrow_trade_objects() {
+        for seed in 0..12 {
+            let d = deal_mechanics("a website for my project", None, None, 6, seed);
+            for f in &d.fit {
+                assert_ne!(f.fit, "outside-trade", "seed {seed}: {:?}", f);
+            }
         }
     }
 }

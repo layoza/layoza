@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import InstallTerminal from '../components/islands/InstallTerminal';
+import { AGENTS } from '../data';
+const prompts = [
+  'Build a homepage for a seasonal seafood restaurant in a Norfolk boathouse.',
+  'Add a pricing page that matches the rest of the site.',
+  'Our landing page fails accessibility. Fix it without changing the brand.',
+];
+---
+<Base title="Getting started" description="Install Layoza with npx layoza init, check it with npx layoza doctor, add Chromium for browser QA, then ask your agent for a page.">
+  <PageHead num="G-00" sheet="Getting started" title="Install. Check. Ask." lede="Three commands, then talk to your agent the way you already do.">
+    <div class="term-wrap"><InstallTerminal client:load /></div>
+  </PageHead>
+  <section class="band light" aria-labelledby="ask-title">
+    <div class="wrap">
+      <p class="sheet"><b>G-01</b> Then ask</p>
+      <h2 id="ask-title" class="h-lg">No special syntax.</h2>
+      <p class="lede">The <code class="mono">layoza</code> router skill reads your prompt and picks the mode. Try one of these:</p>
+      <ol class="prompts">{prompts.map((p) => <li><q>{p}</q></li>)}</ol>
+    </div>
+  </section>
+  <section class="band dark" aria-labelledby="manual-title">
+    <div class="wrap">
+      <p class="sheet"><b>G-02</b> Manual setup</p>
+      <h2 id="manual-title" class="h-lg">Prefer to wire it by hand?</h2>
+      <div class="manual">
+        {AGENTS.map((a) => (
+          <section class="agent" aria-label={a.name}>
+            <h3>{a.name}</h3>
+            <p class="mono where">{a.where}</p>
+            <pre class="code">{a.cmd}</pre>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .term-wrap { margin-top: 48px; max-width: 900px; }
+  .prompts { list-style: none; padding: 0; margin-top: 40px; border-top: 2px solid var(--ink); counter-reset: p; }
+  .prompts li { padding: 22px 0 22px 64px; border-bottom: 1px solid var(--rule-light); font-size: clamp(20px, 2vw, 28px); letter-spacing: -0.02em; font-weight: 500; position: relative; counter-increment: p; }
+  .prompts li::before { content: counter(p, decimal-leading-zero); position: absolute; left: 0; top: 26px; font: 500 15px var(--mono); color: var(--uv); }
+  .manual { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .agent { border: 1px solid var(--rule-dark); padding: 20px; min-width: 0; }
+  .agent h3 { font-size: 24px; letter-spacing: -0.02em; }
+  .where { color: var(--cyan); font-size: 13px; margin: 6px 0 14px; }
+  .agent .code { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+  @media (max-width: 860px) { .manual { grid-template-columns: 1fr; } }
+</style>

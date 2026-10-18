@@ -462,6 +462,7 @@ pub fn run_benchmark_suite() -> BenchmarkSuiteReport {
                     line_height: "1.1".into(),
                     letter_spacing: "-0.02em".into(),
                     tier: KnowledgeTier::ObservedFact,
+                    source: "benchmark".into(),
                 },
                 TypographyToken {
                     role: "body".into(),
@@ -471,6 +472,7 @@ pub fn run_benchmark_suite() -> BenchmarkSuiteReport {
                     line_height: "1.6".into(),
                     letter_spacing: "0em".into(),
                     tier: KnowledgeTier::ObservedFact,
+                    source: "benchmark".into(),
                 },
             ],
             spacing_scale: BTreeMap::from([("sm".into(), "8px".into()), ("md".into(), "16px".into())]),

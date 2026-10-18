@@ -1,0 +1,1061 @@
+{
+  "schema_version": "2.0.0",
+  "url": "http://localhost:4321/",
+  "engine": "python-playwright",
+  "methodology": "laboratory_synthetic",
+  "methodology_disclosure": "Single headless Chromium load per viewport on this machine. LCP/CLS come from PerformanceObserver; inp_ms is a lab interaction proxy (worst Event Timing duration >= 16ms across scripted Tab/Shift+Tab presses and, when a mobile menu toggle exists, its click), not field INP. These are lab diagnostics, not CrUX field data.",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 900,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"The problem\" above h2 \"AI builds fast. Design still matters.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Site DNA\" above h2 \"Your website has a language. Layoza learns it.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Motion\" above h2 \"Motion with intention. Not motion for attention.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Agents\" above h2 \"Your agent. Better design.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Workflow\" above h2 \"From brief to brilliant.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Browser QA\" above h2 \"Good design isn't a guess.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Showcase\" above h2 \"Not just theory. See the work.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Open source\" above h2 \"Open source. Open possibilities.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Install\" above h2 \"One install. Better design instinct.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Sign-off\" above h2 \"Stop shipping generic. Start designing differently.\""
+        },
+        {
+          "rule": "craft-bounce-easing",
+          "severity": "critique",
+          "detail": "cubic-bezier(0.2, 1.4, 0.4, 1) div.stamp.mono"
+        },
+        {
+          "rule": "craft-radial-halo",
+          "severity": "critique",
+          "detail": "radial-gradient halo (#b9a8ff → transparent) on dark page"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Purple/violet gradient background i.pill"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Purple/violet gradient background i.pill.p2"
+        },
+        {
+          "rule": "craft-repeating-stripes-gradient",
+          "severity": "critique",
+          "detail": "repeating-gradient decorative stripes div.frames"
+        },
+        {
+          "rule": "craft-line-length",
+          "severity": "critique",
+          "detail": "~103 chars on 2 of 2 rendered lines (aim for <80) <p.fine> \"Report: a real run on this build. Pins o\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.kicker.mono> \"Design intelligence for coding agents · \""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.ba-brief.mono> \"Brief: Saltmarsh, a 40-cover seafood res\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"layoza skill · purpose line\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"inspect_project · extract_site_dna\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"get_design_system\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"deal_mechanics · get_mechanic\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"recommend_layout · recommend_animation\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"capture_screenshots · audit_accessibilit\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.verdict.mono.tie> \"Tie\""
+        },
+        {
+          "rule": "craft-repeated-container-text",
+          "severity": "critique",
+          "detail": "\"0px overflow · 0 clipped\" rendered 3× in distinct spots inside div.browser"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Same brief. Different design intelligence.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Your website has a language. Layoza learns it.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Motion with intention. Not motion for attention.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Your agent. Better design.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"From brief to brilliant.\" has 28px above vs 72px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Good design isn't a guess.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Not just theory. See the work.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Open source. Open possibilities.\" has 28px above vs 64px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-heading-rhythm",
+          "severity": "critique",
+          "detail": "h2 \"Stop shipping generic. Start designing differently.\" has 28px above vs 48px below; it reads as bound to the block above (9 headings on page)"
+        },
+        {
+          "rule": "craft-middot-meta",
+          "severity": "critique",
+          "detail": "16 meta strings joined with middle dots, e.g. \"Design intelligence for coding agents · MCP server + 19 skills · MIT\", \"grid · tokens · type\""
+        },
+        {
+          "rule": "craft-headline-accent-word",
+          "severity": "critique",
+          "detail": "h2 \"Your website has a language. Layoza learns it.\" accents only \"Layoza learns it.\" (colour)"
+        },
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "64 small labels set in a monospace face outside code, e.g. \"Works with\", \"Claude Code\", \"Chromium · 1440 / 768 / 375\""
+        },
+        {
+          "rule": "craft-scattered-reveal",
+          "severity": "critique",
+          "detail": "fade/slide entrance repeated across 12 sections; one orchestrated moment lands better"
+        },
+        {
+          "rule": "craft-dead-controls",
+          "severity": "critique",
+          "detail": "17 of 31 buttons have no transition and no :active press state (e.g. a.skip); give every control hover, press and state feedback (layoza-animations 2c)"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 2.71,
+      "contrast_failures": 0,
+      "lcp_ms": 1972,
+      "cls": 0,
+      "inp_proxy_ms": 48,
+      "mobile_menu": null,
+      "art_over_text": {
+        "positions": 30,
+        "diffs": 5,
+        "ms": 17675,
+        "hits": [],
+        "errors": []
+      },
+      "text_over_graphic": {
+        "positions": 7,
+        "sampled": 48,
+        "hits": [],
+        "errors": []
+      },
+      "motion": {
+        "level": "bold",
+        "level_source": "default",
+        "declared": null,
+        "skipped": null,
+        "groups": 25,
+        "threshold": 6,
+        "sparse": false,
+        "changed_elements": 53,
+        "animated_elements": 19,
+        "scroll_linked": 0,
+        "examples": [
+          "span.ln",
+          "span.ln.accent",
+          "div.stack",
+          "canvas.gl",
+          "span.co.co4",
+          "span.co.co3",
+          "span.co.co2",
+          "span.co.co1"
+        ],
+        "pinned_stages": [
+          {
+            "id": 0,
+            "el": "div.pin",
+            "start": 1157,
+            "end": 4712,
+            "max_change": 0.6013
+          },
+          {
+            "id": 1,
+            "el": "figure.site",
+            "start": 7770,
+            "end": 8351,
+            "max_change": 0.0906
+          }
+        ],
+        "static_pins": [],
+        "errors": []
+      },
+      "motion_settle": {
+        "settled": true,
+        "ms": 3787,
+        "load": {
+          "settled": true,
+          "ms": 3063,
+          "pending_animations": 0,
+          "endless_loops": 2
+        },
+        "after_scroll": {
+          "settled": true,
+          "ms": 724,
+          "pending_animations": 0,
+          "endless_loops": 7
+        }
+      },
+      "screenshot_path": "C:\\Users\\ajjma\\Desktop\\sharethrone\\site\\.layoza\\screenshots\\desktop.png",
+      "hero_screenshot_path": null
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"The problem\" above h2 \"AI builds fast. Design still matters.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Site DNA\" above h2 \"Your website has a language. Layoza learns it.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Motion\" above h2 \"Motion with intention. Not motion for attention.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Agents\" above h2 \"Your agent. Better design.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Workflow\" above h2 \"From brief to brilliant.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Browser QA\" above h2 \"Good design isn't a guess.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Showcase\" above h2 \"Not just theory. See the work.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Open source\" above h2 \"Open source. Open possibilities.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Install\" above h2 \"One install. Better design instinct.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Sign-off\" above h2 \"Stop shipping generic. Start designing differently.\""
+        },
+        {
+          "rule": "craft-bounce-easing",
+          "severity": "critique",
+          "detail": "cubic-bezier(0.2, 1.4, 0.4, 1) div.stamp.mono"
+        },
+        {
+          "rule": "craft-radial-halo",
+          "severity": "critique",
+          "detail": "radial-gradient halo (#b9a8ff → transparent) on dark page"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Purple/violet gradient background i.pill"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Purple/violet gradient background i.pill.p2"
+        },
+        {
+          "rule": "craft-repeating-stripes-gradient",
+          "severity": "critique",
+          "detail": "repeating-gradient decorative stripes div.frames"
+        },
+        {
+          "rule": "craft-line-length",
+          "severity": "critique",
+          "detail": "~103 chars on 2 of 2 rendered lines (aim for <80) <p.fine> \"Report: a real run on this build. Pins o\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.kicker.mono> \"Design intelligence for coding agents · \""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <span.tok.mono> \"--ground #F4EFE6--display 700 / 96--grid\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.ba-brief.mono> \"Brief: Saltmarsh, a 40-cover seafood res\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"layoza skill · purpose line\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"inspect_project · extract_site_dna\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"get_design_system\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"deal_mechanics · get_mechanic\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"recommend_layout · recommend_animation\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"capture_screenshots · audit_accessibilit\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.verdict.mono.tie> \"Tie\""
+        },
+        {
+          "rule": "craft-repeated-container-text",
+          "severity": "critique",
+          "detail": "\"0px overflow · 0 clipped\" rendered 3× in distinct spots inside div.browser"
+        },
+        {
+          "rule": "craft-middot-meta",
+          "severity": "critique",
+          "detail": "15 meta strings joined with middle dots, e.g. \"Design intelligence for coding agents · MCP server + 19 skills · MIT\", \"--tar--emberGloock 400Archivo 17pxStardos Stencilmd 16 · lg 32@flicker@steam$ layoza inspect . --writeSaltmarsh · benchmark output\""
+        },
+        {
+          "rule": "craft-headline-accent-word",
+          "severity": "critique",
+          "detail": "h2 \"Your website has a language. Layoza learns it.\" accents only \"Layoza learns it.\" (colour)"
+        },
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "59 small labels set in a monospace face outside code, e.g. \"Works with\", \"Claude Code\", \"Design intelligence\""
+        },
+        {
+          "rule": "craft-scattered-reveal",
+          "severity": "critique",
+          "detail": "fade/slide entrance repeated across 12 sections; one orchestrated moment lands better"
+        },
+        {
+          "rule": "craft-dead-controls",
+          "severity": "critique",
+          "detail": "16 of 30 buttons have no transition and no :active press state (e.g. a.skip); give every control hover, press and state feedback (layoza-animations 2c)"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 3.25,
+      "contrast_failures": 0,
+      "lcp_ms": 296,
+      "cls": 0,
+      "inp_proxy_ms": 32,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 6,
+        "opened": true,
+        "screenshot": "C:\\Users\\ajjma\\Desktop\\sharethrone\\site\\.layoza\\screenshots\\tablet-menu-open.png",
+        "escape_closes": true,
+        "escape_close_ms": 100
+      },
+      "art_over_text": {
+        "positions": 25,
+        "diffs": 5,
+        "ms": 14892,
+        "hits": [],
+        "errors": []
+      },
+      "text_over_graphic": {
+        "positions": 5,
+        "sampled": 26,
+        "hits": [],
+        "errors": []
+      },
+      "motion": null,
+      "motion_settle": {
+        "settled": true,
+        "ms": 3312,
+        "load": {
+          "settled": true,
+          "ms": 2773,
+          "pending_animations": 0,
+          "endless_loops": 2
+        },
+        "after_scroll": {
+          "settled": true,
+          "ms": 539,
+          "pending_animations": 0,
+          "endless_loops": 7
+        }
+      },
+      "screenshot_path": "C:\\Users\\ajjma\\Desktop\\sharethrone\\site\\.layoza\\screenshots\\tablet.png",
+      "hero_screenshot_path": null
+    },
+    {
+      "label": "mobile",
+      "width": 375,
+      "height": 812,
+      "horizontal_overflow_px": 0,
+      "clipped_text_nodes": 0,
+      "overlapping_interactive_elements": 0,
+      "broken_images": 0,
+      "issues": [
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"The problem\" above h2 \"AI builds fast. Design still matters.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Site DNA\" above h2 \"Your website has a language. Layoza learns it.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Motion\" above h2 \"Motion with intention. Not motion for attention.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Agents\" above h2 \"Your agent. Better design.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Workflow\" above h2 \"From brief to brilliant.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Browser QA\" above h2 \"Good design isn't a guess.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Showcase\" above h2 \"Not just theory. See the work.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Open source\" above h2 \"Open source. Open possibilities.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Install\" above h2 \"One install. Better design instinct.\""
+        },
+        {
+          "rule": "craft-kicker-above-heading",
+          "severity": "critique",
+          "detail": "kicker \"Sign-off\" above h2 \"Stop shipping generic. Start designing differently.\""
+        },
+        {
+          "rule": "craft-bounce-easing",
+          "severity": "critique",
+          "detail": "cubic-bezier(0.2, 1.4, 0.4, 1) div.stamp.mono"
+        },
+        {
+          "rule": "craft-radial-halo",
+          "severity": "critique",
+          "detail": "radial-gradient halo (#b9a8ff → transparent) on dark page"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Purple/violet gradient background i.pill"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Purple/violet gradient background i.pill.p2"
+        },
+        {
+          "rule": "craft-repeating-stripes-gradient",
+          "severity": "critique",
+          "detail": "repeating-gradient decorative stripes div.frames"
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.kicker.mono> \"Design intelligence for coding agents · \""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <span.tok.mono> \"--ground #F4EFE6--display 700 / 96--grid\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.ba-brief.mono> \"Brief: Saltmarsh, a 40-cover seafood res\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"layoza skill · purpose line\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"inspect_project · extract_site_dna\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"get_design_system\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"deal_mechanics · get_mechanic\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"recommend_layout · recommend_animation\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <code.mono> \"capture_screenshots · audit_accessibilit\""
+        },
+        {
+          "rule": "craft-ai-color-palette",
+          "severity": "critique",
+          "detail": "Cyan neon text on dark background <p.verdict.mono.tie> \"Tie\""
+        },
+        {
+          "rule": "craft-repeated-container-text",
+          "severity": "critique",
+          "detail": "\"0px overflow · 0 clipped\" rendered 3× in distinct spots inside div.browser"
+        },
+        {
+          "rule": "craft-middot-meta",
+          "severity": "critique",
+          "detail": "15 meta strings joined with middle dots, e.g. \"Design intelligence for coding agents · MCP server + 19 skills · MIT\", \"--tar--emberGloock 400Archivo 17pxStardos Stencilmd 16 · lg 32@flicker@steam$ layoza inspect . --writeSaltmarsh · benchmark output\""
+        },
+        {
+          "rule": "craft-headline-accent-word",
+          "severity": "critique",
+          "detail": "h2 \"Your website has a language. Layoza learns it.\" accents only \"Layoza learns it.\" (colour)"
+        },
+        {
+          "rule": "craft-mono-meta-labels",
+          "severity": "critique",
+          "detail": "65 small labels set in a monospace face outside code, e.g. \"Works with\", \"Claude Code\", \"Design intelligence\""
+        },
+        {
+          "rule": "craft-scattered-reveal",
+          "severity": "critique",
+          "detail": "fade/slide entrance repeated across 12 sections; one orchestrated moment lands better"
+        },
+        {
+          "rule": "craft-dead-controls",
+          "severity": "critique",
+          "detail": "16 of 30 buttons have no transition and no :active press state (e.g. a.skip); give every control hover, press and state feedback (layoza-animations 2c)"
+        }
+      ],
+      "console_errors": [],
+      "min_contrast_ratio": 3.25,
+      "contrast_failures": 0,
+      "lcp_ms": 140,
+      "cls": 0,
+      "inp_proxy_ms": 24,
+      "mobile_menu": {
+        "links_before": 0,
+        "links_after": 6,
+        "opened": true,
+        "screenshot": "C:\\Users\\ajjma\\Desktop\\sharethrone\\site\\.layoza\\screenshots\\mobile-menu-open.png",
+        "escape_closes": true,
+        "escape_close_ms": 100
+      },
+      "art_over_text": {
+        "positions": 28,
+        "diffs": 5,
+        "ms": 15307,
+        "hits": [],
+        "errors": []
+      },
+      "text_over_graphic": {
+        "positions": 4,
+        "sampled": 25,
+        "hits": [],
+        "errors": []
+      },
+      "motion": null,
+      "motion_settle": {
+        "settled": true,
+        "ms": 3136,
+        "load": {
+          "settled": true,
+          "ms": 2670,
+          "pending_animations": 0,
+          "endless_loops": 2
+        },
+        "after_scroll": {
+          "settled": true,
+          "ms": 466,
+          "pending_animations": 0,
+          "endless_loops": 7
+        }
+      },
+      "screenshot_path": "C:\\Users\\ajjma\\Desktop\\sharethrone\\site\\.layoza\\screenshots\\mobile.png",
+      "hero_screenshot_path": "C:\\Users\\ajjma\\Desktop\\sharethrone\\site\\.layoza\\screenshots\\mobile-hero.png"
+    }
+  ],
+  "min_contrast_ratio": 2.71,
+  "contrast_failures": 0,
+  "contrast_failure_samples": [],
+  "decorative_contrast_failures": 1,
+  "decorative_contrast_samples": [
+    "<span> \"!\" 2.71:1 (aria-hidden)"
+  ],
+  "contrast_checked_elements": 290,
+  "contrast_indeterminate_elements": 73,
+  "missing_alt_count": 0,
+  "unlabeled_controls": 0,
+  "undersized_targets": 0,
+  "min_touch_target_px": 16,
+  "heading_hierarchy_valid": true,
+  "heading_problems": [],
+  "landmarks_present": true,
+  "focus_visible_styled": true,
+  "reduced_motion_respected": true,
+  "lcp_ms": 1972,
+  "cls": 0,
+  "inp_ms": 48,
+  "inp_metric": "lab_interaction_proxy",
+  "inp_event_entries": 54,
+  "h1_to_body_ratio": 8.2,
+  "max_line_length_ch": 80,
+  "font_families": [
+    "space grotesk variable",
+    "ibm plex mono"
+  ],
+  "font_family_count": 2,
+  "site_dna": {
+    "title": "Layoza — design intelligence for AI coding agents",
+    "lang": "en",
+    "page_background": "#080B13",
+    "text_colors": [
+      {
+        "value": "#C9D0DB",
+        "count": 2052
+      },
+      {
+        "value": "#141922",
+        "count": 1612
+      },
+      {
+        "value": "#2F3643",
+        "count": 1176
+      },
+      {
+        "value": "#4A5261",
+        "count": 1099
+      },
+      {
+        "value": "#F8FAFC",
+        "count": 820
+      },
+      {
+        "value": "#9CA5B4",
+        "count": 543
+      },
+      {
+        "value": "#C8FF61",
+        "count": 336
+      },
+      {
+        "value": "#6ADDF0",
+        "count": 331
+      }
+    ],
+    "background_colors": [
+      {
+        "value": "#080B13",
+        "count": 8234.174845947267
+      },
+      {
+        "value": "#F5F5F0",
+        "count": 6151.3415859375
+      },
+      {
+        "value": "#10151F",
+        "count": 4984.106962402344
+      },
+      {
+        "value": "#F8FAFC",
+        "count": 2655.919041015625
+      },
+      {
+        "value": "#E7EAF0",
+        "count": 2592
+      },
+      {
+        "value": "#141922",
+        "count": 392.6705532226562
+      },
+      {
+        "value": "#ECEEF2",
+        "count": 341.8435302734375
+      },
+      {
+        "value": "#05070C",
+        "count": 246.12993749999998
+      }
+    ],
+    "fonts": [
+      {
+        "value": "Space Grotesk Variable",
+        "count": 5703
+      },
+      {
+        "value": "IBM Plex Mono",
+        "count": 3142
+      },
+      {
+        "value": "Georgia",
+        "count": 10
+      }
+    ],
+    "type_scale": {
+      "h1": {
+        "size": "106.56px",
+        "weight": "700",
+        "line_height": "98.0352px",
+        "letter_spacing": "-4.7952px",
+        "family": "Space Grotesk Variable"
+      },
+      "h2": {
+        "size": "75.6px",
+        "weight": "700",
+        "line_height": "74.088px",
+        "letter_spacing": "-2.646px",
+        "family": "Space Grotesk Variable"
+      },
+      "h3": {
+        "size": "37.44px",
+        "weight": "700",
+        "line_height": "38.1888px",
+        "letter_spacing": "-1.3104px",
+        "family": "Space Grotesk Variable"
+      },
+      "p": {
+        "size": "13px",
+        "weight": "400",
+        "line_height": "20.15px",
+        "letter_spacing": "0.78px",
+        "family": "IBM Plex Mono"
+      },
+      "small": {
+        "size": "11px",
+        "weight": "500",
+        "line_height": "17.05px",
+        "letter_spacing": "0.88px",
+        "family": "IBM Plex Mono"
+      }
+    },
+    "radii": [
+      {
+        "value": "50%",
+        "count": 23
+      },
+      {
+        "value": "3px",
+        "count": 4
+      },
+      {
+        "value": "10px",
+        "count": 4
+      },
+      {
+        "value": "99px",
+        "count": 2
+      },
+      {
+        "value": "16px",
+        "count": 1
+      }
+    ],
+    "max_widths": [
+      {
+        "value": "1440px",
+        "count": 16
+      },
+      {
+        "value": "609.206px",
+        "count": 11
+      },
+      {
+        "value": "460px",
+        "count": 6
+      },
+      {
+        "value": "588.899px",
+        "count": 1
+      },
+      {
+        "value": "440px",
+        "count": 1
+      },
+      {
+        "value": "769.2px",
+        "count": 1
+      }
+    ],
+    "css_custom_properties": {
+      "--navy": "#080b13",
+      "--graphite": "#10151f",
+      "--paper": "#f5f5f0",
+      "--silver": "#e7eaf0",
+      "--white": "#f8fafc",
+      "--gray": "#9ca5b4",
+      "--ink": "#141922",
+      "--lime": "#c8ff61",
+      "--cyan": "#6addf0",
+      "--uv": "#8168ff",
+      "--uv-bright": "#8168ff",
+      "--rule-dark": "#9ca5b438",
+      "--rule-light": "#14192229",
+      "--mute-light": "#4a5261",
+      "--sans": "\"Space Grotesk Variable\", \"Space Grotesk\", system-ui, sans-serif",
+      "--mono": "\"IBM Plex Mono\", ui-monospace, \"Cascadia Mono\", monospace",
+      "--gutter": "clamp(16px, 4vw, 56px)",
+      "--max": "1440px",
+      "--ease": "cubic-bezier(.22, 1, .36, 1)"
+    },
+    "framework_hints": [
+      "astro"
+    ],
+    "motion_libraries": [],
+    "css_keyframes": 14
+  },
+  "motion_summary": {
+    "level": "bold",
+    "level_source": "default",
+    "declared": null,
+    "skipped": null,
+    "groups": 25,
+    "threshold": 6,
+    "sparse": false,
+    "changed_elements": 53,
+    "animated_elements": 19,
+    "scroll_linked": 0,
+    "examples": [
+      "span.ln",
+      "span.ln.accent",
+      "div.stack",
+      "canvas.gl",
+      "span.co.co4",
+      "span.co.co3",
+      "span.co.co2",
+      "span.co.co1"
+    ],
+    "pinned_stages": [
+      {
+        "id": 0,
+        "el": "div.pin",
+        "start": 1157,
+        "end": 4712,
+        "max_change": 0.6013
+      },
+      {
+        "id": 1,
+        "el": "figure.site",
+        "start": 7770,
+        "end": 8351,
+        "max_change": 0.0906
+      }
+    ],
+    "static_pins": [],
+    "errors": []
+  },
+  "motion_unsettled_viewports": [],
+  "craft_critique": {
+    "craft-ai-color-palette": 12,
+    "craft-bounce-easing": 1,
+    "craft-dead-controls": 1,
+    "craft-heading-rhythm": 9,
+    "craft-headline-accent-word": 1,
+    "craft-kicker-above-heading": 10,
+    "craft-line-length": 1,
+    "craft-middot-meta": 1,
+    "craft-mono-meta-labels": 1,
+    "craft-radial-halo": 1,
+    "craft-repeated-container-text": 1,
+    "craft-repeating-stripes-gradient": 1,
+    "craft-scattered-reveal": 1
+  },
+  "craft_critique_by_viewport": {
+    "desktop": {
+      "craft-kicker-above-heading": 10,
+      "craft-bounce-easing": 1,
+      "craft-radial-halo": 1,
+      "craft-ai-color-palette": 11,
+      "craft-repeating-stripes-gradient": 1,
+      "craft-line-length": 1,
+      "craft-repeated-container-text": 1,
+      "craft-heading-rhythm": 9,
+      "craft-middot-meta": 1,
+      "craft-headline-accent-word": 1,
+      "craft-mono-meta-labels": 1,
+      "craft-scattered-reveal": 1,
+      "craft-dead-controls": 1
+    },
+    "tablet": {
+      "craft-kicker-above-heading": 10,
+      "craft-bounce-easing": 1,
+      "craft-radial-halo": 1,
+      "craft-ai-color-palette": 12,
+      "craft-repeating-stripes-gradient": 1,
+      "craft-line-length": 1,
+      "craft-repeated-container-text": 1,
+      "craft-middot-meta": 1,
+      "craft-headline-accent-word": 1,
+      "craft-mono-meta-labels": 1,
+      "craft-scattered-reveal": 1,
+      "craft-dead-controls": 1
+    },
+    "mobile": {
+      "craft-kicker-above-heading": 10,
+      "craft-bounce-easing": 1,
+      "craft-radial-halo": 1,
+      "craft-ai-color-palette": 12,
+      "craft-repeating-stripes-gradient": 1,
+      "craft-repeated-container-text": 1,
+      "craft-middot-meta": 1,
+      "craft-headline-accent-word": 1,
+      "craft-mono-meta-labels": 1,
+      "craft-scattered-reveal": 1,
+      "craft-dead-controls": 1
+    }
+  },
+  "craft_critique_suppressed": [],
+  "craft_critique_errors": [],
+  "craft_critique_attribution": "Design critique rules ported from pbakaus/impeccable (Apache-2.0), commit 2f98774, plus Layoza-original generic-default tells (ideas: anthropics/skills frontend-design, Apache-2.0); non-blocking (severity \"critique\").",
+  "unmeasured": [],
+  "design_tokens": null,
+  "design_system": null
+}

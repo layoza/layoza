@@ -12,6 +12,11 @@ description: >-
 - **Mode C**: The user asks to improve, polish, modernize, or fix usability/accessibility problems on an existing website without discarding its identity.
 - **Mode D**: The user explicitly requests a completely new visual design or full creative overhaul.
 
+## Authority
+- **The user's prompt wins.** An explicit instruction (palette, fonts, stack, layout, motion library, scope) overrides every Layoza default, here and in the skills this one loads.
+- **Mode C follows the existing design:** no new directions, sketches or pick; the incumbent `SITE-DNA.json` / `DESIGN.md` is the direction. A fix that needs a new palette or fonts is Mode D: say so and ask.
+- **Mode D only** offers 3 new directions, each materially different from the site's old look and from `avoid_recent` (MCP `get_design_system` with `mode: full_redesign`) unless the user asks to keep that look.
+
 ## Step-by-Step Procedure
 
 1. **Create a Reversible Baseline Snapshot First**:

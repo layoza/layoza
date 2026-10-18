@@ -1,0 +1,14 @@
+/* Install terminal island. Imported by the component, so every page that uses it gets it. */
+.term { border: 1px solid var(--rule-dark); background: #05070c; min-width: 0; }
+.term-bar { display: flex; border-bottom: 1px solid var(--rule-dark); overflow-x: auto; }
+.term-bar button { background: transparent; border: 0; border-right: 1px solid var(--rule-dark); padding: 0 18px; min-height: 48px; cursor: pointer; color: #c9d0db; white-space: nowrap; }
+.term-bar button[aria-selected='true'] { color: var(--ink); background: var(--lime); }
+.term-body { padding: 20px; font-size: 14px; min-height: 280px; }
+.term-cmd { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px dashed var(--rule-dark); }
+.term-cmd code { font: 500 16px/1.4 var(--mono); color: var(--white); overflow-wrap: anywhere; }
+.term-cmd .p { color: var(--lime); }
+.term-cmd button { flex: none; background: transparent; border: 1.5px solid var(--lime); color: var(--lime); min-height: 40px; padding: 0 14px; cursor: pointer; font: 500 13px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+.term-cmd button:hover { background: var(--lime); color: var(--ink); }
+.term-body pre { margin-top: 14px; color: #b7c0cc; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.7; }
+.term-body pre span { display: block; }
+.term-body pre span[data-wait] { visibility: hidden; }

@@ -22,6 +22,8 @@ before/after number is a suggestion, not a result.
    missing or `layoza baseline` (freshness) says it is stale. Tokens recorded
    in `SITE-DNA.json` / `DESIGN.md` (colours, fonts, radii, spacing, motion)
    **win over every taste ban** in this skill and in `layoza-art-direction`.
+   An explicit user instruction (palette, stack, layout, motion library, scope)
+   overrides both the brand DNA and every Layoza default.
    A `craft-*` finding on a recorded brand token is not a defect: declare it in
    the page head, e.g. `<meta name="layoza-brand-allow" content="font:Inter, palette:cream">`
    (suppressed findings stay listed in `craft_critique_suppressed`). Only
@@ -38,6 +40,9 @@ before/after number is a suggestion, not a result.
 4. **Scope is sovereign.** Touch only the named target. A command that needs a
    new identity (new palette, new fonts) has become a Mode D redesign: stop and
    say so.
+5. **No new directions.** Never offer three directions, hero sketches or a pick
+   for an existing site; the incumbent design is the direction. If you log the
+   loop in `.layoza/direction.md`, record `PICKED: existing — <design followed>`.
 
 ## 1. The measured loop (every command)
 

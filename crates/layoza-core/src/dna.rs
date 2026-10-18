@@ -43,6 +43,9 @@ pub struct TypographyToken {
     pub line_height: String,
     pub letter_spacing: String,
     pub tier: KnowledgeTier,
+    /// Where the font was found (file + evidence), or why it was inferred.
+    #[serde(default)]
+    pub source: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -187,18 +190,19 @@ impl SiteDna {
         }
 
         out.push_str("\n## 3. Typography & Voice\n\n");
-        out.push_str("| Role | Font Family | Size | Weight | Line Height | Letter Spacing | Provenance |\n");
-        out.push_str("| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n");
+        out.push_str("| Role | Font Family | Size | Weight | Line Height | Letter Spacing | Provenance | Source |\n");
+        out.push_str("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n");
         for t in &self.typography {
             out.push_str(&format!(
-                "| `{}` | `{}` | `{}` | `{}` | `{}` | `{}` | `{:?}` |\n",
+                "| `{}` | `{}` | `{}` | `{}` | `{}` | `{}` | `{:?}` | {} |\n",
                 t.role,
                 t.font_family,
                 t.font_size,
                 t.font_weight,
                 t.line_height,
                 t.letter_spacing,
-                t.tier
+                t.tier,
+                t.source.replace('|', "/")
             ));
         }
 

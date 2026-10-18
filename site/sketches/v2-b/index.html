@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sketch B — Session replay</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0F0C;--sf:#111915;--fg:#E8F1EA;--mu:#93A89A;--gr:#4ADE80;--am:#FBBF24}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.55 Geist,sans-serif;overflow-x:hidden}
+nav{display:flex;justify-content:space-between;padding:20px clamp(16px,4vw,48px);font:500 14px 'Geist Mono'}
+nav b{font:700 19px Geist}
+.hero{display:grid;grid-template-columns:5fr 7fr;gap:clamp(24px,4vw,56px);padding:clamp(24px,4vw,56px) clamp(16px,4vw,48px);align-items:center}
+h1{font:700 clamp(44px,6.4vw,112px)/.95 Geist;letter-spacing:-.05em}
+.lede{margin-top:24px;color:#c3d2c8;max-width:36ch}
+.pill{display:flex;justify-content:space-between;align-items:center;margin-top:28px;border:1px solid #2a3a30;background:var(--sf);font:500 16px 'Geist Mono';padding:6px 6px 6px 16px;max-width:380px}
+.pill button{background:var(--gr);border:0;font:500 14px 'Geist Mono';padding:12px 16px;color:#06200f}
+.term{background:var(--sf);border:1px solid #233128;font:400 14px/1.7 'Geist Mono';padding:18px 20px;position:relative}
+.term .u{color:var(--fg)}.term .t{color:var(--mu)}.term .ok{color:var(--gr)}.term .w{color:var(--am)}
+.frame{margin-top:14px;border:1px solid #233128;background:#0e1511;padding:8px}
+.frame img{display:block;width:100%;height:180px;object-fit:cover;object-position:top}
+.rail{display:flex;gap:6px;margin-top:10px;font:500 12px 'Geist Mono';color:var(--mu)}
+.rail span{flex:1;border-top:2px solid #2a3a30;padding-top:6px}.rail .on{border-color:var(--gr);color:var(--fg)}
+</style></head><body>
+<nav><b>Layoza</b><span>Docs · GitHub</span></nav>
+<section class="hero"><div>
+<h1>Watch your agent design.</h1>
+<p class="lede">Layoza is an MCP server and 19 skills. Your agent picks a direction, reads your site's DNA, deals motion that fits, and checks the result in Chromium.</p>
+<div class="pill"><code>$ npx layoza init</code><button>Copy</button></div></div>
+<div><div class="term">
+<div class="u">&gt; build a site for a harbour seafood bar</div>
+<div class="t">● layoza.get_design_system — restaurant · strong · 3 directions</div>
+<div class="t">● layoza.deal_mechanics — hero-catch-board · menu-chalkboard</div>
+<div class="t">● writing index.html, styles.css</div>
+<div class="w">● capture_screenshots — 2 warnings at 375px · fixing</div>
+<div class="ok">✓ release gate passed · 1440 / 768 / 375</div>
+</div>
+<div class="frame"><img src="../../src/assets/bench/restaurant-after.png" alt=""></div>
+<div class="rail"><span class="on">1 brief</span><span class="on">2 direction</span><span class="on">3 build</span><span>4 verify</span></div>
+</div></section></body></html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sketch A — Drawing Set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#080B13;--graph:#10151F;--ink:#F8FAFC;--mute:#9CA5B4;--lime:#C8FF61;--cyan:#6ADDF0;--line:rgba(106,221,240,.22)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--navy);color:var(--ink);font:16px/1.5 "Space Grotesk",system-ui,sans-serif;overflow-x:hidden}
+.sheet{position:relative;min-height:100vh;padding:28px 40px 40px;
+ background:
+  linear-gradient(var(--line) 1px,transparent 1px) 0 0/96px 96px,
+  linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/96px 96px,
+  linear-gradient(rgba(106,221,240,.07) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,rgba(106,221,240,.07) 1px,transparent 1px) 0 0/24px 24px,
+  var(--navy);
+ border:1px solid rgba(106,221,240,.35);outline:1px solid rgba(106,221,240,.35);outline-offset:-14px}
+.mono{font-family:"IBM Plex Mono",monospace}
+nav{display:flex;align-items:center;gap:32px;position:relative;z-index:3}
+nav img{width:30px;height:30px}
+nav b{font-size:20px;letter-spacing:-.02em}
+nav .links{display:flex;gap:28px;margin-left:auto;font-size:14px;color:var(--mute)}
+nav .cta{background:var(--lime);color:#0b0f05;padding:10px 18px;font-weight:700;font-size:14px}
+.sheetno{position:absolute;top:30px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--cyan);letter-spacing:.2em}
+.hero{display:grid;grid-template-columns:1.02fr 1fr;gap:20px;align-items:center;min-height:calc(100vh - 120px)}
+h1{font-size:clamp(56px,8.4vw,138px);line-height:.88;letter-spacing:-.055em;font-weight:700}
+h1 em{font-style:normal;color:var(--lime)}
+.dim{display:flex;align-items:center;gap:10px;margin:22px 0 26px;color:var(--cyan);font-size:11px}
+.dim i{flex:1;height:1px;background:var(--cyan);position:relative}
+.dim i:before,.dim i:after{content:"";position:absolute;top:-5px;width:1px;height:11px;background:var(--cyan)}
+.dim i:after{right:0}
+p.lede{font-size:20px;max-width:30ch;color:#C9D0DB}
+.ctas{display:flex;gap:14px;margin:30px 0 22px}
+.btn{padding:15px 24px;font-weight:700;font-size:16px;border:1px solid var(--ink)}
+.btn.p{background:var(--lime);border-color:var(--lime);color:#0b0f05}
+.agents{font-size:12px;color:var(--mute);letter-spacing:.04em}
+.agents span{border:1px solid rgba(156,165,180,.4);padding:4px 8px;margin-right:6px;display:inline-block;margin-bottom:6px}
+/* exploded axonometric */
+.stage{position:relative;height:640px;perspective:2200px}
+.stack{position:absolute;left:50%;top:52%;width:440px;height:300px;transform-style:preserve-3d;
+ transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-38deg)}
+.pl{position:absolute;inset:0;border:1px solid var(--cyan);transform-style:preserve-3d}
+.l1{transform:translateZ(0);background:#1a1f2a}
+.l2{transform:translateZ(120px);background:rgba(16,21,31,.55);
+ background-image:linear-gradient(90deg,rgba(106,221,240,.5) 1px,transparent 1px);background-size:36.6px 100%}
+.l3{transform:translateZ(240px);background:rgba(8,11,19,.25);border-style:dashed}
+.l4{transform:translateZ(360px);background:#F5F5F0;border-color:var(--lime);box-shadow:0 0 0 1px var(--lime),0 40px 80px rgba(0,0,0,.5)}
+/* L1 generic */
+.l1 .g{position:absolute;background:#2c3342}
+/* L4 final mini page */
+.l4 .k{position:absolute;left:22px;top:22px;font:700 44px/.85 "Space Grotesk";letter-spacing:-.05em;color:#141922;width:240px}
+.l4 .im{position:absolute;right:18px;top:18px;width:150px;height:190px;background:#141922;overflow:hidden}
+.l4 .im:after{content:"";position:absolute;inset:30px 24px;border:2px solid var(--lime);border-radius:50%}
+.l4 .bt{position:absolute;left:22px;bottom:24px;width:120px;height:26px;background:#141922}
+.l4 .bt2{position:absolute;left:150px;bottom:24px;width:70px;height:26px;border:2px solid #141922}
+/* callouts (flat overlay) */
+.co{position:absolute;font-size:11px;color:var(--cyan);letter-spacing:.08em;white-space:nowrap}
+.co b{color:var(--ink);font-weight:500}
+.co:before{content:"";position:absolute;top:50%;height:1px;background:var(--cyan);width:var(--w,70px);right:100%;margin-right:8px}
+.co.r:before{left:100%;right:auto;margin-left:8px}
+.co .n{display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid var(--cyan);border-radius:50%;margin-right:6px}
+.stamp{position:absolute;right:20px;top:48px;border:2px solid var(--lime);color:var(--lime);padding:8px 14px;transform:rotate(-8deg);font:500 13px "IBM Plex Mono";letter-spacing:.2em}
+.stamp small{display:block;font-size:9px;letter-spacing:.1em;opacity:.8}
+.tb{position:absolute;right:40px;bottom:40px;display:grid;grid-template-columns:auto auto;border:1px solid rgba(106,221,240,.6);background:var(--navy);font-size:11px}
+.tb div{padding:8px 12px;border-right:1px solid rgba(106,221,240,.35);border-bottom:1px solid rgba(106,221,240,.35)}
+.tb .cmd{grid-column:1/-1;font-size:15px;color:var(--ink);display:flex;gap:24px;justify-content:space-between}
+.tb .cmd u{color:var(--lime);text-decoration:none}
+.tb label{display:block;color:var(--cyan);font-size:9px;letter-spacing:.15em}
+svg.paths{position:absolute;inset:0;overflow:visible}
+@media(max-width:820px){
+ .sheet{padding:20px 18px 24px;outline-offset:-8px}
+ nav .links{display:none}.sheetno{display:none}
+ .hero{grid-template-columns:1fr;min-height:auto;padding-top:28px}
+ h1{font-size:15.2vw}
+ p.lede{font-size:17px}
+ .stage{height:380px;order:-1;margin:0 -18px}
+ .stack{width:270px;height:184px;top:50%}
+ .l2{transform:translateZ(70px)}.l3{transform:translateZ(140px)}.l4{transform:translateZ(210px)}
+ .l4 .k{font-size:27px;width:150px;left:14px;top:14px}.l4 .im{width:90px;height:116px}
+ .co{display:none}.stamp{right:12px;top:8px}
+ .tb{position:static;margin-top:24px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+ <nav><img src="../icon.png" alt=""><b>Layoza</b><span class="sheetno mono">SHEET A-01 · GENERAL ARRANGEMENT</span>
+  <div class="links"><span>Product</span><span>Features</span><span>Showcase</span><span>How it works</span><span>Docs</span><span>GitHub</span></div><span class="cta">Get Started</span></nav>
+ <section class="hero">
+  <div>
+   <h1>Your AI can code.<br>Now make it <em>design.</em></h1>
+   <div class="dim mono"><i></i><span>DESIGN INTELLIGENCE · MCP + 19 SKILLS</span><i></i></div>
+   <p class="lede">Layoza gives your coding agent design direction, your site's DNA, motion that fits the brief, and a real Chromium check before it says "done".</p>
+   <div class="ctas"><span class="btn p">Get Started Free</span><span class="btn">Explore GitHub</span></div>
+   <div class="agents mono"><span>Claude Code</span><span>Cursor</span><span>Codex</span><span>OpenCode</span><span>Windsurf</span><span>Antigravity</span></div>
+  </div>
+  <div class="stage" aria-hidden="true">
+   <div class="stack">
+    <div class="pl l1"><i class="g" style="left:30%;top:14%;width:40%;height:22px"></i><i class="g" style="left:22%;top:28%;width:56%;height:10px"></i><i class="g" style="left:40%;top:40%;width:20%;height:18px;background:#6b5bd6"></i><i class="g" style="left:8%;top:60%;width:26%;height:30%"></i><i class="g" style="left:37%;top:60%;width:26%;height:30%"></i><i class="g" style="left:66%;top:60%;width:26%;height:30%"></i></div>
+    <div class="pl l2"></div>
+    <div class="pl l3"><svg class="paths" viewBox="0 0 440 300"><path d="M20 260 C 140 260, 140 60, 300 60 S 420 120, 420 40" fill="none" stroke="#C8FF61" stroke-width="2" stroke-dasharray="6 6"/><circle cx="420" cy="40" r="6" fill="#C8FF61"/><path d="M60 40 h120" stroke="#6ADDF0" stroke-width="2"/><path d="M60 70 h80" stroke="#6ADDF0" stroke-width="2"/></svg></div>
+    <div class="pl l4"><div class="k">Fresh catch, daily.</div><div class="im"></div><i class="bt"></i><i class="bt2"></i></div>
+   </div>
+   <span class="co r mono" style="left:4%;top:12%;--w:90px"><span class="n">4</span><b>VERIFIED</b> · 1440/768/375</span>
+   <span class="co r mono" style="left:0;top:33%;--w:120px"><span class="n">3</span><b>MOTION</b> · 71 MECHANICS</span>
+   <span class="co mono" style="right:2%;top:58%;--w:110px"><span class="n">2</span><b>SITE DNA</b> · TOKENS · GRID</span>
+   <span class="co mono" style="right:8%;top:80%;--w:90px"><span class="n">1</span><b>GENERIC</b> · AS GENERATED</span>
+   <div class="stamp">APPROVED<small>QA 0 ERR · LAB CLS 0.02</small></div>
+  </div>
+ </section>
+ <div class="tb mono">
+  <div class="cmd"><span>$ npx layoza init</span><u>COPY</u></div>
+  <div><label>REV</label>0.1.3</div><div><label>LICENCE</label>MIT · OPEN SOURCE</div>
+ </div>
+</div>
+</body>
+</html>

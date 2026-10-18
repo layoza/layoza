@@ -1,0 +1,37 @@
+---
+---
+<section class="band light final" aria-labelledby="final-title" data-final>
+  <div class="wrap">
+    <p class="sheet"><b>12</b> Sign-off</p>
+    <div class="stage">
+      <h2 id="final-title" class="h-xl caps">Stop shipping generic. <span class="accent">Start designing differently.</span></h2>
+      <!-- The Layoza mark in four pieces: three layers and the wave. They start scattered and converge on scroll. -->
+      <svg class="mark" viewBox="0 0 120 120" aria-hidden="true">
+        <rect data-frag="0" x="22" y="14" width="76" height="22" rx="7" fill="#6addf0" />
+        <rect data-frag="1" x="22" y="42" width="76" height="22" rx="7" fill="#8168ff" />
+        <rect data-frag="2" x="22" y="70" width="76" height="22" rx="7" fill="#141922" />
+        <path data-frag="3" d="M14 104 C30 94 44 114 60 104 S90 94 106 104" fill="none" stroke="#8168ff" stroke-width="6" stroke-linecap="round" />
+      </svg>
+    </div>
+    <div class="row">
+      <p class="lede">Free, MIT, and it works with the agent you already use.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="/getting-started">Get started free</a>
+        <a class="btn btn-ghost" href="https://github.com/layoza/layoza" rel="noopener">Star on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final { border-bottom: 1px solid var(--rule-light); overflow: hidden; }
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(20px, 4vw, 64px); align-items: end; }
+  h2 { max-width: 13ch; font-size: clamp(44px, 9.4vw, 150px); line-height: 1; }
+  .mark { width: clamp(120px, 18vw, 260px); height: auto; overflow: visible; }
+  .row { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; margin-top: 48px; padding-top: 28px; border-top: 2px solid var(--ink); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  @media (max-width: 700px) {
+    .stage { grid-template-columns: 1fr; }
+    .mark { width: 120px; }
+  }
+</style>

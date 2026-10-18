@@ -84,6 +84,10 @@ pub struct CreativeDirection {
     pub content_treatment: String,
     pub motion_choreography: String,
     pub dials: DesignDials,
+    /// Why this direction was dealt for this brief: structure, type, palette and hero composition,
+    /// and the other structures that fit the same slot.
+    #[serde(default)]
+    pub rationale: String,
     /// Dealt mechanics for this direction: 1 hero + 2 signature sections (`layoza mechanics show <id>`).
     #[serde(default)]
     pub mechanics: Vec<crate::mechanics::MechanicRef>,
@@ -124,7 +128,7 @@ pub struct DistinctivenessBrief {
 
 /// Lower-cased word tokens (letters, digits, `.`) for whole-word keyword matching. `-` and `_` split
 /// words, so slugs like `saas-startup` and hyphenated keywords match as phrases ("saas startup").
-fn tokenize(text: &str) -> Vec<String> {
+pub(crate) fn tokenize(text: &str) -> Vec<String> {
     text.to_lowercase()
         .split(|c: char| !(c.is_alphanumeric() || c == '.'))
         .map(|t| t.trim_matches('.').to_string())
@@ -132,8 +136,57 @@ fn tokenize(text: &str) -> Vec<String> {
         .collect()
 }
 
+/// The brief with its negated parts removed, so "avoid dashboard mockups" or "do not use
+/// gradient blobs" never count as asking for a dashboard or a blob. A segment (line, sentence or
+/// bullet) is dropped when it contains a negation word; bullets under a header that ends in
+/// "avoid:" / "never:" / "don't:" are dropped until the next non-bullet segment.
+pub fn affirmed_brief(query: &str) -> String {
+    const NEG: &[&str] = &["avoid", "never", "no", "not", "don't", "dont", "without", "nor", "instead of", "rather than"];
+    let mut kept: Vec<&str> = Vec::new();
+    let mut in_negative_list = false;
+    for line in query.lines() {
+        // Bullets flattened onto one line ("Avoid: * a * b") still split into segments.
+        let segs = line
+            .split(['.', ';', '!', '?'])
+            .flat_map(|s| s.split(" * ").enumerate().flat_map(|(i, b)| b.split(" - ").enumerate().map(move |(j, x)| (i > 0 || j > 0, x))));
+        for (split_bullet, seg) in segs {
+            let t = seg.trim();
+            if t.is_empty() {
+                continue;
+            }
+            let bullet = split_bullet || t.starts_with(['*', '-', '•']) || line.trim_start().starts_with(['*', '-', '•']);
+            let lower = t.to_lowercase();
+            let toks = tokenize(&lower.replace('\u{2019}', "'"));
+            let negated = NEG.iter().any(|n| {
+                let parts = tokenize(n);
+                if parts.len() == 1 && !n.contains('\'') {
+                    toks.iter().any(|w| w == n)
+                } else {
+                    lower.contains(n)
+                }
+            });
+            let header = lower.trim_end().ends_with(':');
+            if header {
+                in_negative_list = negated;
+                if !negated {
+                    kept.push(t);
+                }
+                continue;
+            }
+            if !bullet {
+                in_negative_list = false;
+            }
+            if negated || (bullet && in_negative_list) {
+                continue;
+            }
+            kept.push(t);
+        }
+    }
+    kept.join(". ")
+}
+
 /// Whole-word (or whole-phrase) match, so `ai` no longer matches "detail" and `art` no longer matches "start".
-fn keyword_hit(tokens: &[String], keyword: &str) -> bool {
+pub(crate) fn keyword_hit(tokens: &[String], keyword: &str) -> bool {
     let parts = tokenize(keyword);
     match parts.len() {
         0 => false,
@@ -180,15 +233,16 @@ pub fn wcag_contrast(fg: &str, bg: &str) -> Option<f64> {
 /// Replaces the hand-written contrast figure with the computed one and flags accents that are unsafe for text.
 /// Deals each direction its own hero + 2 signature mechanics, at the direction's motion dial and with
 /// no mechanism family shared between directions. Existing sites (Mode B/C) are capped by their DNA.
-fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, mode: OperatingMode, existing_dna: Option<&SiteDna>) {
+fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, mode: OperatingMode, existing_dna: Option<&SiteDna>, variant: u64, compositions: &[&str]) {
     use crate::mechanics::{deal_mechanics_with, DealOptions, ExistingSite, Intensity, MechanicRef};
     let existing = match mode {
         OperatingMode::ExtendExisting | OperatingMode::ImproveExisting => existing_dna.map(|d| ExistingSite::from_dna(d, "SITE-DNA")),
         _ => None,
     };
-    let base = fnv1a(&query.to_lowercase());
+    let base = fnv1a(&query.to_lowercase()) ^ variant.wrapping_mul(0x9E37_79B9_7F4A_7C15);
     let mut used_families: Vec<String> = Vec::new();
-    for d in directions.iter_mut() {
+    let mut used_compositions: Vec<String> = Vec::new();
+    for (i, d) in directions.iter_mut().enumerate() {
         let deal = deal_mechanics_with(&DealOptions {
             brief: query.to_string(),
             intensity: Some(Intensity::from_dial(d.dials.motion_intensity)),
@@ -196,14 +250,20 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, mode: Ope
             seed: Some(base.wrapping_add(d.index as u64)),
             existing: existing.clone(),
             exclude_families: used_families.clone(),
+            // The direction's archetype suggests a composition; heroes already used by another
+            // direction are skipped, so the three first screens differ.
+            prefer_composition: compositions.get(i).map(|c| c.to_string()),
+            exclude_compositions: used_compositions.clone(),
+            hero_offset: variant as usize,
             ..Default::default()
         });
         d.mechanics = deal.hero.iter().chain(&deal.signature).map(MechanicRef::from).collect();
         used_families.extend(d.mechanics.iter().map(|m| m.family.clone()));
+        used_compositions.extend(deal.hero.iter().map(|h| h.composition.clone()).filter(|c| !c.is_empty()));
     }
 }
 
-fn verify_palette(p: &mut PaletteRecommendation) {
+pub(crate) fn verify_palette(p: &mut PaletteRecommendation) {
     if let Some(ratio) = wcag_contrast(&p.foreground, &p.background) {
         p.wcag_body_contrast = (ratio * 100.0).round() / 100.0;
     }
@@ -217,11 +277,11 @@ fn verify_palette(p: &mut PaletteRecommendation) {
     }
 }
 
-fn fnv1a(text: &str) -> u64 {
+pub(crate) fn fnv1a(text: &str) -> u64 {
     text.bytes().fold(0xcbf29ce484222325u64, |h, b| (h ^ b as u64).wrapping_mul(0x100000001b3))
 }
 
-fn pairing(id: &str, display: &str, body: &str, mono: &str, mood: &str, ratio: &str, url: &str) -> TypographyPairing {
+pub(crate) fn pairing(id: &str, display: &str, body: &str, mono: &str, mood: &str, ratio: &str, url: &str) -> TypographyPairing {
     TypographyPairing {
         id: id.into(),
         display_font: display.into(),
@@ -234,7 +294,7 @@ fn pairing(id: &str, display: &str, body: &str, mono: &str, mood: &str, ratio: &
 }
 
 #[allow(clippy::too_many_arguments)]
-fn palette(id: &str, bg: &str, surface: &str, fg: &str, muted: &str, primary: &str, secondary: &str, contrast: f64, notes: &str) -> PaletteRecommendation {
+pub(crate) fn palette(id: &str, bg: &str, surface: &str, fg: &str, muted: &str, primary: &str, secondary: &str, contrast: f64, notes: &str) -> PaletteRecommendation {
     PaletteRecommendation {
         id: id.into(),
         background: bg.into(),
@@ -262,6 +322,9 @@ pub enum Surface {
     Showcase,
     /// Magazines, journals, blogs: reading comes first.
     Editorial,
+    /// Developer tools, CLIs, SDKs, MCP servers, AI-agent infrastructure: the tool working on real
+    /// input, and the install command, lead.
+    DevTool,
     General,
 }
 
@@ -279,6 +342,75 @@ pub struct BriefSignals {
     pub motion_bias: i8,
     /// Hard ceiling on motion intensity for every direction, when a constraint or surface demands one.
     pub motion_cap: Option<u8>,
+    /// Hex colours written in the brief, in order. When present they are the palette; the
+    /// directions' palettes are only fallbacks.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub brief_colors: Vec<String>,
+    /// Font families the brief names, in order. When present they are the type system; the
+    /// directions' pairings are only fallbacks.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub brief_fonts: Vec<String>,
+}
+
+/// Families recognised when a brief names its own type. Longer names first so "Geist Mono" wins
+/// over "Geist" and "IBM Plex Mono" over "IBM Plex Sans".
+const KNOWN_FONTS: &[&str] = &[
+    "Atkinson Hyperlegible", "Barlow Condensed", "Bricolage Grotesque", "Cabinet Grotesk", "Clash Display",
+    "Cormorant Garamond", "DM Serif Display", "EB Garamond", "General Sans", "Hanken Grotesk", "IBM Plex Mono",
+    "IBM Plex Sans", "IBM Plex Serif", "Instrument Sans", "Instrument Serif", "JetBrains Mono", "Libre Franklin",
+    "Neue Montreal", "Playfair Display", "Plus Jakarta Sans", "Public Sans", "Roboto Mono", "Source Sans 3",
+    "Space Grotesk", "Space Mono", "Work Sans", "Fira Code", "Fira Sans", "Geist Mono", "DM Sans", "DM Mono",
+    "Archivo", "Barlow", "Fraunces", "Geist", "Inter", "Karla", "Lexend", "Lora", "Manrope", "Montserrat",
+    "Newsreader", "Outfit", "Poppins", "Roboto", "Satoshi", "Sora", "Syne", "Urbanist",
+];
+
+/// Font families named in the brief, in first-mention order.
+fn brief_font_names(query: &str) -> Vec<String> {
+    let lower = query.to_lowercase();
+    let bytes = lower.as_bytes();
+    let boundary = |i: usize| i >= bytes.len() || !bytes[i].is_ascii_alphanumeric();
+    let mut found: Vec<(usize, &str)> = Vec::new();
+    let mut taken: Vec<(usize, usize)> = Vec::new();
+    for name in KNOWN_FONTS {
+        let n = name.to_lowercase();
+        let mut from = 0;
+        while let Some(off) = lower[from..].find(&n) {
+            let i = from + off;
+            let end = i + n.len();
+            let free = !taken.iter().any(|&(a, b)| i < b && end > a);
+            if (i == 0 || boundary(i - 1)) && boundary(end) && free {
+                taken.push((i, end));
+                if !found.iter().any(|(_, f)| f == name) {
+                    found.push((i, name));
+                }
+            }
+            from = end;
+        }
+    }
+    found.sort();
+    found.into_iter().map(|(_, f)| f.to_string()).collect()
+}
+
+/// `#RRGGBB` / `#RGB` colours in the brief, upper-cased, first occurrence order.
+fn brief_hex_colors(query: &str) -> Vec<String> {
+    let b = query.as_bytes();
+    let mut out: Vec<String> = Vec::new();
+    let mut i = 0;
+    while i < b.len() {
+        if b[i] == b'#' {
+            let n = b[i + 1..].iter().take_while(|c| c.is_ascii_hexdigit()).count();
+            if n == 6 || n == 3 {
+                let hex = format!("#{}", &query[i + 1..i + 1 + n]).to_uppercase();
+                if !out.contains(&hex) {
+                    out.push(hex);
+                }
+            }
+            i += 1 + n;
+        } else {
+            i += 1;
+        }
+    }
+    out
 }
 
 /// Subject word -> palette/subject family.
@@ -303,152 +435,24 @@ const NICHE_LEXICON: &[(&str, &str)] = &[
     ("bar", "night"), ("club", "night"), ("cocktail", "night"), ("nightlife", "night"), ("cinema", "night"),
     ("wine", "earth"), ("vineyard", "earth"), ("clay", "earth"), ("ceramics", "earth"), ("pottery", "earth"),
     ("terracotta", "earth"), ("leather", "earth"),
+    ("devtools", "code"), ("devtool", "code"), ("developer", "code"), ("developers", "code"), ("cli", "code"),
+    ("sdk", "code"), ("api", "code"), ("mcp", "code"), ("compiler", "code"), ("terminal", "code"), ("github", "code"),
+    ("npm", "code"), ("llm", "code"), ("coding", "code"), ("open source", "code"), ("command line", "code"),
+    ("dev tool", "code"), ("dev tools", "code"),
+    ("law", "legal"), ("lawyer", "legal"), ("lawyers", "legal"), ("attorney", "legal"), ("attorneys", "legal"),
+    ("solicitor", "legal"), ("solicitors", "legal"), ("legal", "legal"), ("barrister", "legal"), ("barristers", "legal"),
+    ("notary", "legal"), ("litigation", "legal"),
+    ("kids", "play"), ("children", "play"), ("child", "play"), ("toddler", "play"), ("toddlers", "play"), ("toy", "play"),
+    ("toys", "play"), ("playground", "play"), ("nursery", "play"),
+    ("clinic", "care"), ("dental", "care"), ("dentist", "care"), ("doctor", "care"), ("physio", "care"),
+    ("physiotherapy", "care"), ("therapy", "care"), ("therapist", "care"), ("health", "care"), ("medical", "care"),
+    ("wellness", "care"), ("yoga", "care"), ("pilates", "care"), ("vet", "care"), ("veterinary", "care"), ("pharmacy", "care"),
+    ("museum", "civic"), ("library", "civic"), ("archive", "civic"), ("heritage", "civic"), ("council", "civic"),
+    ("charity", "civic"), ("nonprofit", "civic"), ("foundation", "civic"), ("school", "civic"), ("university", "civic"),
+    ("exhibition", "civic"),
+    ("luxury", "luxe"), ("watch", "luxe"), ("watches", "luxe"), ("jewellery", "luxe"), ("jewelry", "luxe"),
+    ("perfume", "luxe"), ("couture", "luxe"),
 ];
-
-/// Expressive, high-contrast stage options for Direction B, tagged by niche family.
-fn expressive_pool() -> Vec<(TypographyPairing, PaletteRecommendation, &'static [&'static str])> {
-    vec![
-        (
-            pairing("syne-plus-jakarta-kinetic", "Syne", "Plus Jakarta Sans", "JetBrains Mono", "Kinetic, bold, flagship launch", "1.333 (Perfect Fourth)",
-                "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap"),
-            palette("stage-obsidian-coral", "#0E1014", "#181B22", "#F5F4F0", "#94A3B8", "#F97316", "#38BDF8", 16.4, "Deep obsidian stage with coral and sky accents"),
-            &["kinetic", "night"],
-        ),
-        (
-            pairing("unbounded-onest", "Unbounded", "Onest", "JetBrains Mono", "Wide, loud, poster-like", "1.414 (Augmented Fourth)",
-                "https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@600;800&family=JetBrains+Mono:wght@400&display=swap"),
-            palette("cobalt-saturated-field", "#1B2FA8", "#2238C4", "#F7F7F2", "#C9CFF2", "#FFC83D", "#4FE3C1", 9.8, "Saturated cobalt colour field with sun-yellow and mint"),
-            &["kinetic", "bold"],
-        ),
-        (
-            pairing("dela-gothic-figtree", "Dela Gothic One", "Figtree", "Space Mono", "Heavy, graphic, street-poster energy", "1.333 (Perfect Fourth)",
-                "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Figtree:wght@400;500;600&family=Space+Mono&display=swap"),
-            palette("oxblood-bone", "#3A0D12", "#4A141A", "#F4EBDD", "#D9BFA8", "#FF6A3D", "#E9C46A", 13.9, "Oxblood stage with bone type and ember accents"),
-            &["night", "earth", "bold"],
-        ),
-        (
-            pairing("instrument-serif-inter-tight", "Instrument Serif", "Inter Tight", "IBM Plex Mono", "Cinematic, editorial contrast", "1.5 (Perfect Fifth)",
-                "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=IBM+Plex+Mono&display=swap"),
-            palette("forest-night-chartreuse", "#0F1F17", "#16291F", "#EEF3EC", "#9FB5A6", "#C7F25C", "#7FD1FF", 15.1, "Night-forest stage with chartreuse signal colour"),
-            &["botanical", "night"],
-        ),
-        (
-            pairing("dm-serif-work-sans", "DM Serif Display", "Work Sans", "DM Mono", "Salt-weathered, confident, maritime signage", "1.333 (Perfect Fourth)",
-                "https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Serif+Display&family=Work+Sans:wght@400;500;600&display=swap"),
-            palette("deep-harbour-buoy", "#0B2230", "#12303F", "#EEF4F2", "#9DB8C0", "#FF7A59", "#7FD6C2", 14.9, "Deep harbour water with buoy-orange and sea-glass accents"),
-            &["marine", "night"],
-        ),
-        (
-            pairing("young-serif-instrument-sans", "Young Serif", "Instrument Sans", "Space Mono", "Warm, hand-made, oven-lit", "1.250 (Major Third)",
-                "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Space+Mono&family=Young+Serif&display=swap"),
-            palette("oven-crust-night", "#2A1A10", "#3A2617", "#F6EBDD", "#CDB8A0", "#F2A541", "#E86A4A", 14.6, "Dark oven interior with crust-gold and ember accents"),
-            &["warm-grain", "earth"],
-        ),
-        (
-            pairing("bodoni-moda-jost", "Bodoni Moda", "Jost", "DM Mono", "High-fashion, editorial, tailored", "1.5 (Perfect Fifth)",
-                "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700;1,500&family=DM+Mono&family=Jost:wght@400;500&display=swap"),
-            palette("indigo-loom", "#1C2340", "#252D52", "#F3EFE6", "#B9BCD3", "#E8B04B", "#E4826B", 13.6, "Indigo-dyed cloth with saffron thread and madder accents"),
-            &["textile"],
-        ),
-        (
-            pairing("barlow-condensed-plex", "Barlow Condensed", "IBM Plex Sans", "IBM Plex Mono", "Control-room, legible at a glance", "1.200 (Minor Third)",
-                "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"),
-            palette("ops-console-night", "#0D1117", "#161B22", "#E6EDF3", "#9DA7B3", "#3FB950", "#F0883E", 15.8, "Night console where state colour (ok / late / short) is the only decoration"),
-            &["data", "industrial", "night"],
-        ),
-    ]
-}
-
-/// Utility-first, light, interaction-led options for Direction C, tagged by niche family.
-fn utility_pool() -> Vec<(TypographyPairing, PaletteRecommendation, &'static [&'static str])> {
-    vec![
-        (
-            pairing("bricolage-ibm-plex", "Bricolage Grotesque", "IBM Plex Sans", "IBM Plex Mono", "Engineered, interactive, utility-first", "1.250 (Major Third)",
-                "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"),
-            palette("workbench-mineral", "#F4F5F3", "#FFFFFF", "#111615", "#4A5552", "#0D9488", "#2563EB", 16.8, "Mineral neutral with teal and cobalt interactive states"),
-            &["data"],
-        ),
-        (
-            pairing("archivo-atkinson", "Archivo", "Atkinson Hyperlegible", "JetBrains Mono", "Plain-spoken, legible, practical", "1.200 (Minor Third)",
-                "https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono&display=swap"),
-            palette("paper-signal-red", "#FBFAF7", "#FFFFFF", "#141414", "#555555", "#D7261E", "#1F5FBF", 18.1, "Paper white with signal red and ink blue"),
-            &["industrial", "data", "bold"],
-        ),
-        (
-            pairing("manrope-dm-mono", "Manrope", "Manrope", "DM Mono", "Calm, precise, product-like", "1.250 (Major Third)",
-                "https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;700;800&display=swap"),
-            palette("sage-graphite", "#EEF2EE", "#FFFFFF", "#1A1F1B", "#4D5A50", "#2F6B4F", "#B4542B", 15.4, "Sage daylight with graphite text and rust accents"),
-            &["botanical", "calm"],
-        ),
-        (
-            pairing("space-grotesk-public-sans", "Space Grotesk", "Public Sans", "Space Mono", "Technical, friendly, modular", "1.250 (Major Third)",
-                "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Space+Mono&display=swap"),
-            palette("lilac-ink", "#F3F1FA", "#FFFFFF", "#17142B", "#4E4A66", "#5B3FD9", "#E0751F", 16.0, "Cool lilac paper with violet controls and orange highlights"),
-            &["kinetic", "bold"],
-        ),
-        (
-            pairing("libre-franklin-source-sans", "Libre Franklin", "Source Sans 3", "Source Code Pro", "Clear, nautical-chart precise", "1.250 (Major Third)",
-                "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;800&family=Source+Code+Pro&family=Source+Sans+3:wght@400;500;600&display=swap"),
-            palette("tide-chart-paper", "#F2F6F7", "#FFFFFF", "#0E2430", "#44606B", "#0B6E8A", "#D9572B", 15.6, "Tide-chart paper with deep-channel blue and signal-flag orange"),
-            &["marine"],
-        ),
-        (
-            pairing("zilla-slab-source-sans", "Zilla Slab", "Source Sans 3", "Source Code Pro", "Sturdy, ledger-like, kitchen-board", "1.200 (Minor Third)",
-                "https://fonts.googleapis.com/css2?family=Source+Code+Pro&family=Source+Sans+3:wght@400;500;600&family=Zilla+Slab:wght@600;700&display=swap"),
-            palette("rye-ledger", "#EFEFEA", "#FFFFFF", "#1E1A16", "#57504A", "#A0461C", "#3D6B4F", 16.2, "Flour-dusted grey ledger with rye-crust and herb-green accents"),
-            &["warm-grain", "data", "earth"],
-        ),
-        (
-            pairing("cormorant-hanken", "Cormorant Garamond", "Hanken Grotesk", "DM Mono", "Quiet, tactile, swatch-book", "1.333 (Perfect Fourth)",
-                "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=DM+Mono&family=Hanken+Grotesk:wght@400;500;600&display=swap"),
-            palette("raw-linen-ink", "#E9E9E4", "#F7F7F4", "#191919", "#504E4B", "#8C3B2E", "#2F4A6D", 15.1, "Undyed linen grey with madder-red and indigo swatches"),
-            &["textile", "calm"],
-        ),
-    ]
-}
-
-/// Picks the pool entry whose tags best match the brief; ties resolve by a stable per-brief hash.
-/// Never reuses a display font or palette already chosen for another direction.
-fn pick_from_pool(
-    pool: Vec<(TypographyPairing, PaletteRecommendation, &'static [&'static str])>,
-    signals: &BriefSignals,
-    query: &str,
-    salt: &str,
-    taken_fonts: &[String],
-    taken_palettes: &[String],
-) -> (TypographyPairing, PaletteRecommendation) {
-    let start = (fnv1a(&format!("{}{}", salt, query.to_lowercase())) % pool.len() as u64) as usize;
-    let score = |tags: &[&str]| -> usize {
-        tags.iter()
-            .map(|t| {
-                if *t == "data" && signals.surface == Surface::ProductUi {
-                    // A task UI needs a data-legible palette before a niche-flavoured one
-                    5
-                } else if signals.niche_tags.iter().any(|n| n == t) {
-                    3
-                } else if signals.moods.iter().any(|m| m == t) {
-                    1
-                } else {
-                    0
-                }
-            })
-            .sum()
-    };
-    let mut best: Option<(usize, usize)> = None; // (score, index)
-    for i in 0..pool.len() {
-        let idx = (start + i) % pool.len();
-        let (t, p, tags) = &pool[idx];
-        if taken_fonts.contains(&t.display_font) || taken_palettes.contains(&p.id) {
-            continue;
-        }
-        let s = score(tags);
-        if best.map(|(bs, _)| s > bs).unwrap_or(true) {
-            best = Some((s, idx));
-        }
-    }
-    let idx = best.map(|(_, i)| i).unwrap_or(start);
-    (pool[idx].0.clone(), pool[idx].1.clone())
-}
 
 /// Reads surface, niche families, moods and named constraints from the brief.
 pub fn brief_signals(query: &str) -> BriefSignals {
@@ -456,18 +460,29 @@ pub fn brief_signals(query: &str) -> BriefSignals {
     let has = |w: &str| keyword_hit(&tokens, w);
     let any = |ws: &[&str]| ws.iter().any(|w| has(w));
 
-    let surface = if any(&["dashboard", "admin", "console", "portal", "backoffice", "back-office", "crm", "erp", "internal tool", "ops", "analytics"]) {
-        Surface::ProductUi
-    } else if any(&["store", "shop", "ecommerce", "e-commerce", "boutique", "catalog", "catalogue", "selling", "sells", "webshop"]) {
-        Surface::Commerce
-    } else if any(&["restaurant", "cafe", "bistro", "bar", "hotel", "menu", "reservations", "booking", "bakery", "venue", "brasserie", "diner"]) {
-        Surface::Venue
-    } else if any(&["portfolio", "studio", "agency", "showreel", "reel", "artist", "photographer", "designer"]) {
-        Surface::Showcase
-    } else if any(&["magazine", "journal", "blog", "publication", "newsletter", "news"]) {
-        Surface::Editorial
-    } else {
+    // The surface with the most distinct hits wins (ties keep this order), so a long brief that
+    // mentions a dashboard once as an example is still read as the dev tool it describes.
+    let count = |ws: &[&str]| ws.iter().filter(|w| has(w)).count();
+    let surfaces: [(Surface, usize); 6] = [
+        (Surface::ProductUi, count(&["dashboard", "admin", "console", "portal", "backoffice", "back-office", "crm", "erp", "internal tool", "ops", "analytics"])),
+        (
+            Surface::DevTool,
+            count(&[
+                "devtools", "devtool", "dev tool", "dev tools", "developer tools", "developer tool", "developer platform", "cli", "command line", "sdk", "mcp",
+                "open source", "open-source", "compiler", "coding agent", "coding agents", "ai agent", "ai agents", "agent skills", "llm",
+                "llms", "npm", "github", "api reference",
+            ]),
+        ),
+        (Surface::Commerce, count(&["store", "shop", "ecommerce", "e-commerce", "boutique", "catalog", "catalogue", "selling", "sells", "webshop"])),
+        (Surface::Venue, count(&["restaurant", "cafe", "bistro", "bar", "hotel", "menu", "reservations", "booking", "bakery", "venue", "brasserie", "diner", "museum"])),
+        (Surface::Showcase, count(&["portfolio", "studio", "agency", "showreel", "reel", "artist", "photographer", "designer"])),
+        (Surface::Editorial, count(&["magazine", "journal", "blog", "publication", "newsletter", "news"])),
+    ];
+    let best = surfaces.iter().map(|(_, c)| *c).max().unwrap_or(0);
+    let surface = if best == 0 {
         Surface::General
+    } else {
+        surfaces.iter().find(|(_, c)| *c == best).map(|(s, _)| *s).unwrap_or(Surface::General)
     };
 
     let mut niche_tags: Vec<String> = Vec::new();
@@ -492,126 +507,66 @@ pub fn brief_signals(query: &str) -> BriefSignals {
     }
 
     let lower = query.to_lowercase();
+    // The user's own motion words win over the industry default: "highly animated" must not
+    // come back as a mid motion dial.
+    let heavy_motion = [
+        "highly animated", "heavily animated", "very animated", "fully animated", "lots of animation", "lots of motion",
+        "motion-rich", "motion rich", "animation-heavy", "cinematic", "immersive", "scrollytelling", "scroll storytelling",
+        "scroll-driven", "scroll driven", "wow factor", "awwwards",
+    ];
+    let heavy = heavy_motion.iter().any(|p| lower.contains(p));
+    if heavy {
+        if !moods.iter().any(|m| m == "bold") {
+            moods.push("bold".into());
+        }
+        motion_bias += 4;
+    } else if any(&["animated", "animations", "animation", "dynamic", "lively"]) && !lower.contains("no animation") {
+        motion_bias += 2;
+    }
     let mut constraints: Vec<String> = Vec::new();
     let mut motion_cap: Option<u8> = None;
     let mut cap = |c: u8| motion_cap = Some(motion_cap.map_or(c, |m: u8| m.min(c)));
-    if ["no animation", "no motion", "without animation", "reduced motion", "reduced-motion", "static site"].iter().any(|p| lower.contains(p)) {
+    if ["no animation", "no motion", "without animation", "static site"].iter().any(|p| lower.contains(p)) {
         constraints.push("reduced-motion".into());
         cap(1);
+    } else if ["reduced motion", "reduced-motion", "reduce motion"].iter().any(|p| lower.contains(p)) {
+        // "Respect prefers-reduced-motion" next to "highly animated" asks for a fallback, not stillness.
+        if heavy {
+            constraints.push("reduced-motion fallback".into());
+        } else {
+            constraints.push("reduced-motion".into());
+            cap(1);
+        }
     }
+    // Accessibility and performance asks are guardrails (reduced-motion fallback, transform-only
+    // animation, budgets). When the same brief explicitly asks for heavy motion they must not
+    // silently cut it to a mid dial; elderly/senior audiences and low-bandwidth still cap.
     if any(&["accessible", "accessibility", "wcag", "elderly", "seniors"]) {
         constraints.push("accessibility-first".into());
-        cap(5);
+        if !heavy || any(&["elderly", "seniors"]) {
+            cap(5);
+        }
     }
     if any(&["fast", "lightweight", "performance", "low-bandwidth", "offline"]) {
         constraints.push("performance-budget".into());
-        cap(5);
+        if !heavy || any(&["low-bandwidth", "offline"]) {
+            cap(5);
+        }
     }
     if surface == Surface::ProductUi {
         constraints.push("task-ui (no scroll choreography)".into());
         cap(4);
     }
 
-    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap }
+    let brief_colors = brief_hex_colors(query);
+    let brief_fonts = brief_font_names(query);
+    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_fonts }
 }
 
 /// Applies the brief's motion bias and ceiling to a direction's motion dial.
 fn tune_motion(base: u8, signals: &BriefSignals) -> u8 {
     let biased = (base as i16 + signals.motion_bias as i16).clamp(0, 10) as u8;
     signals.motion_cap.map_or(biased, |c| biased.min(c))
-}
-
-struct DirectionCopy {
-    name: &'static str,
-    style_family: &'static str,
-    layout: &'static str,
-    identity: &'static str,
-    content: &'static str,
-    motion: &'static str,
-}
-
-/// Direction B per surface: the high-contrast, narrative option.
-fn direction_b_copy(surface: Surface) -> DirectionCopy {
-    match surface {
-        Surface::ProductUi => DirectionCopy {
-            name: "Live Operations Wall",
-            style_family: "high-density-workbench",
-            layout: "Full-width live status wall: today's timeline (batches, shifts, orders) as the hero on a horizontal time axis, an exceptions rail pinned right, drill-down drawers instead of page changes",
-            identity: "Dark control-room surface where state colour (on track / late / short / wasted) is the only decoration; condensed numerals, tabular figures, no illustration",
-            content: "Exceptions first: what is late, short or wasted right now and who owns it, then the plan, then history",
-            motion: "Data-driven only: 150-200ms value tweens on update and FLIP row insert/remove; no scroll-triggered choreography; reduced-motion swaps tweens for instant updates",
-        },
-        Surface::Commerce => DirectionCopy {
-            name: "Lookbook Stage",
-            style_family: "kinetic-editorial",
-            layout: "Full-bleed lookbook: one hero product at scale with scroll-scrubbed detail crops (material, stitching, label), then a shoppable story sequence with a sticky size-and-add-to-bag rail",
-            identity: "Product photography and the material itself carry the page; display type set like a printed lookbook caption, colour taken from the collection",
-            content: "Story-led: the piece, how it is made, how it wears, then the buy decision with fit, fabric and care facts beside the button",
-            motion: "Scroll-scrubbed image crops (ScrollTrigger or CSS scroll-driven animations) and a sticky purchase rail; reduced-motion shows static crops",
-        },
-        Surface::Venue => DirectionCopy {
-            name: "Arrival Sequence",
-            style_family: "kinetic-editorial",
-            layout: "Cinematic arrival: the signature dish or room at full bleed, then today's menu revealed as a scrolling board/ticket strip, with the booking bar docked and usable at every scroll position",
-            identity: "Atmosphere drawn from the place itself (water, light, the counter, the board), hand-set menu typography, prices in the menu not hidden in PDFs",
-            content: "Place first, then what is on today (with prices and sold-out states), then book; opening hours and location as a ruled table",
-            motion: "Slow 600-900ms reveals keyed to the menu sequence; the booking bar never animates away; reduced-motion keeps fades only",
-        },
-        Surface::Showcase | Surface::Editorial | Surface::General => DirectionCopy {
-            name: "Kinetic Narrative & Choreographed Stage",
-            style_family: "kinetic-editorial",
-            layout: "Full-bleed choreographed stage with pinned ScrollTrigger narrative sequence, staggered asymmetric showcase, and magnetic CTA rail",
-            identity: "High-drama contrast stage with expressive display typography, tactile depth planes, and bespoke SVG/3D focal points",
-            content: "Story-driven sequential progression: Problem tension -> Interactive live artifact -> Quantified proof",
-            motion: "GSAP timeline entrance + ScrollTrigger pinned sequence + pointer parallax with `gsap.matchMedia()` reduced-motion guard",
-        },
-    }
-}
-
-/// Direction C per surface: the interaction-led, utility option.
-fn direction_c_copy(surface: Surface) -> DirectionCopy {
-    match surface {
-        Surface::ProductUi => DirectionCopy {
-            name: "Task Workbench",
-            style_family: "crisp-product-workbench",
-            layout: "Split workbench: the editable planning table (keyboard navigable cells, bulk actions) on the left, a live consequence panel (yield, waste, cost, capacity) on the right, filters as a command bar",
-            identity: "Light, quiet surface with one accent for actions and semantic colours for state; every control sized for repeated daily use",
-            content: "Interactive proof: change a quantity or date and watch the plan and its consequences recalculate in place",
-            motion: "120-180ms state transitions only; zero decorative motion",
-        },
-        Surface::Commerce => DirectionCopy {
-            name: "Product Configurator",
-            style_family: "crisp-product-workbench",
-            layout: "Configurator hero: pick size, colour or material and see price, stock and delivery date update in place; then a filterable catalogue whose cards carry real product facts (material, fit, care)",
-            identity: "Swatch-book vocabulary: real material swatches as controls, honest product photography, no generic pill buttons",
-            content: "Decision support first: comparison, sizing help and returns policy beside the add-to-bag action",
-            motion: "FLIP re-layout when filters change and 180ms swatch transitions; nothing moves on scroll",
-        },
-        Surface::Venue => DirectionCopy {
-            name: "Booking-First Board",
-            style_family: "crisp-product-workbench",
-            layout: "Booking-first hero: date, party size and time slots working above the fold beside today's board (dishes, catch or bakes with prices), then location, hours and access as a ruled table",
-            identity: "The venue's own board, ticket or label as the visual system; large legible type for phones at the door",
-            content: "Utility first: can I get a table or order, what is on today, how do I get there",
-            motion: "Slot-selection micro-interactions only (160ms); reduced-motion removes them",
-        },
-        Surface::Showcase => DirectionCopy {
-            name: "Interactive Case Index",
-            style_family: "crisp-product-workbench",
-            layout: "Case-study index as an interactive table: filter by discipline, client and year; hover or focus previews a loop of the work; each case opens with process artefacts before the hero shot",
-            identity: "Archive vocabulary: catalogue numbers, ruled rows, the work as the only colour",
-            content: "Proof by browsing: let visitors sort the work themselves, then show process and credits",
-            motion: "Preview loops on hover/focus (paused under reduced motion) and FLIP filter re-layout",
-        },
-        Surface::Editorial | Surface::General => DirectionCopy {
-            name: "Tactile Product Workbench & Interactive Proof",
-            style_family: "crisp-product-workbench",
-            layout: "Interactive hero where the visitor operates the subject itself (try a frame, fit a part, set a date) immediately above the fold, then sections built from real product structure",
-            identity: "Tactile, rebuilt controls in the world's own material (dials, tickets, swatches), one depth strategy, every atom (buttons, inputs, focus) redrawn in that vocabulary",
-            content: "Interactive proof-first: let the user manipulate live tabs, filters, or calculators right inside the hero",
-            motion: "State-driven spring transitions (180ms–280ms) and FLIP layout morphs on user interaction",
-        },
-    }
 }
 
 const MATERIAL_LEXICON: &[&str] = &[
@@ -719,7 +674,18 @@ fn category_cliches(slug: &str) -> Vec<String> {
     list.iter().map(|s| s.to_string()).collect()
 }
 
-fn distinctiveness_for(query: &str, slug: &str) -> DistinctivenessBrief {
+/// Category clichés; for a slug the catalogue does not list (incl. `brief-derived`), they are read
+/// from the brief's surface and niche words instead of a fixed generic list.
+fn category_cliches_for(slug: &str, signals: &BriefSignals) -> Vec<String> {
+    let known = ["artisan-craft", "local-business", "saas-startup", "ai-devtools", "luxury-premium", "creative-portfolio", "hospitality-travel", "ecommerce-catalog"];
+    if known.contains(&slug) {
+        category_cliches(slug)
+    } else {
+        crate::directions::derived_cliches(signals)
+    }
+}
+
+fn distinctiveness_for(query: &str, slug: &str, signals: &BriefSignals) -> DistinctivenessBrief {
     let (place_cues, material_cues) = extract_cues(query);
     let mut instruction = String::from(
         "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. ",
@@ -737,7 +703,7 @@ fn distinctiveness_for(query: &str, slug: &str) -> DistinctivenessBrief {
     DistinctivenessBrief {
         place_cues,
         material_cues,
-        category_cliches: category_cliches(slug),
+        category_cliches: category_cliches_for(slug, signals),
         instruction,
     }
 }
@@ -887,10 +853,18 @@ fn raw_industries() -> Vec<IndustryRule> {
         },
         IndustryRule {
             slug: "ai-devtools".into(),
-            name: "AI Systems & Developer Tools".into(),
-            keywords: vec!["ai".into(), "devtools".into(), "cli".into(), "sdk".into(), "compiler".into(), "api".into(), "infrastructure".into(), "rust".into(), "agent".into()],
+            name: "AI Systems, Developer Tools & Open-Source CLIs".into(),
+            // Multi-word agent phrases instead of a bare `agent`, which used to claim "travel agent" / "estate agent" briefs
+            keywords: [
+                "ai", "devtools", "devtool", "dev tool", "dev tools", "developer tools", "developer tool", "developer platform", "cli", "command line", "sdk",
+                "compiler", "api", "infrastructure", "rust", "mcp", "mcp server", "open source", "ai agent", "ai agents", "coding agent",
+                "coding agents", "agent skills", "agentic", "llm", "llms", "npm", "github", "coding assistant", "language server",
+            ]
+            .iter()
+            .map(|k| k.to_string())
+            .collect(),
             recommended_styles: vec!["precision-terminal-craft".into(), "crisp-product-workbench".into()],
-            layout_archetype: "Split Command/Code Proof Hero + Benchmark Telemetry Ledger".into(),
+            layout_archetype: "Command/Code Proof Hero + Benchmark Telemetry Ledger".into(),
             first_viewport_priority: "Copyable install command (`cargo install` / `npx`), live architecture/code telemetry, benchmark latency proof".into(),
             typography_pairing: TypographyPairing {
                 id: "space-grotesk-jetbrains".into(),
@@ -912,7 +886,12 @@ fn raw_industries() -> Vec<IndustryRule> {
                 wcag_body_contrast: 15.9,
                 notes: "Low-glare carbon slate with amber hardware telemetry and emerald pass indicators".into(),
             },
-            conversion_trust_elements: vec!["One-click CLI install snippet".into(), "Reproducible p99 benchmark table".into(), "Live interactive API/MCP inspector".into()],
+            conversion_trust_elements: vec![
+                "One-click CLI install snippet".into(),
+                "Reproducible p99 benchmark table".into(),
+                "Live interactive API/MCP inspector".into(),
+                "Open-source proof: licence, release cadence, changelog and a real before/after of the tool's output".into(),
+            ],
             motion_language: "Deterministic step-by-step terminal trace playback, SVG data-path pulses, zero decorative bloat".into(),
             anti_patterns: vec!["Cliché purple sci-fi brain illustrations".into(), "Unreadable low-contrast dark-gray code comments".into()],
             default_dials: DesignDials::clamped(5, 5, 7),
@@ -1517,11 +1496,26 @@ pub fn catalog_styles() -> Vec<StyleFamily> {
 /// Generates a complete `DesignRecommendation` (including 3 materially distinct creative directions
 /// for Mode A and Mode D, or strict DNA-preserving guidance for Mode B and Mode C).
 pub fn recommend_design(
-    query: &str,
+    raw_query: &str,
     mode: OperatingMode,
     existing_dna: Option<&SiteDna>,
     override_dials: Option<DesignDials>,
 ) -> DesignRecommendation {
+    recommend_design_variant(raw_query, mode, existing_dna, override_dials, 0)
+}
+
+/// Same as [`recommend_design`], but `variant` > 0 re-deals the directions' hero compositions,
+/// fonts and palettes for the same brief, so asking again gives a different set of looks.
+pub fn recommend_design_variant(
+    raw_query: &str,
+    mode: OperatingMode,
+    existing_dna: Option<&SiteDna>,
+    override_dials: Option<DesignDials>,
+    variant: u64,
+) -> DesignRecommendation {
+    // Match on what the brief asks for, not on what it rules out.
+    let affirmed = affirmed_brief(raw_query);
+    let query: &str = if affirmed.trim().is_empty() { raw_query } else { &affirmed };
     let q_lower = query.to_ascii_lowercase();
     let industries = catalog_industries();
     let styles = catalog_styles();
@@ -1529,14 +1523,15 @@ pub fn recommend_design(
     // Whole-word keyword scoring; no silent fallback (confidence is reported to the agent)
     let ranked = rank_industries(query, &industries);
     let match_score = ranked[0].0;
+    let signals = brief_signals(query);
+    let subject = crate::directions::read_subject(query, &signals);
     let mut best_industry = if match_score > 0 {
         ranked[0].1.clone()
     } else {
-        industries
-            .iter()
-            .find(|i| i.slug == "local-business")
-            .cloned()
-            .unwrap_or_else(|| industries[0].clone())
+        // No catalogue industry matched: build the profile from the brief's own words instead of
+        // handing back a canned local-business default. Type and palette are the best pool fit.
+        let first = crate::directions::deal(&signals, query, 0, None);
+        crate::directions::brief_industry(query, &signals, &subject, first[0].typography.clone(), first[0].palette.clone())
     };
     let match_confidence = match match_score {
         0 => "none",
@@ -1556,10 +1551,8 @@ pub fn recommend_design(
     // When a brief explicitly requests warm ivory / porcelain / digital art gallery / living atelier
     // or specific signature accents (electric cobalt, coral vermilion), adapt the matched industry's
     // palette and typography pairing so the recommendation matches the brief's exact visual polarity.
-    let wants_light_gallery = q_lower.contains("ivory")
-        || q_lower.contains("porcelain")
-        || q_lower.contains("gallery")
-        || q_lower.contains("museum");
+    // ("museum" alone no longer triggers it: a kids' museum is not a porcelain gallery.)
+    let wants_light_gallery = q_lower.contains("ivory") || q_lower.contains("porcelain") || q_lower.contains("gallery");
     if wants_light_gallery {
         best_industry.palette = PaletteRecommendation {
             id: "porcelain-cobalt-vermilion".into(),
@@ -1623,107 +1616,98 @@ pub fn recommend_design(
         best_industry.default_dials
     };
 
-    let signals = brief_signals(query);
     // Explicit dial overrides and preservation modes keep the caller's / site's motion level untouched
     let tune_brief_motion = override_dials.is_none() && !preservation_enforced;
     let tune = |m: u8| if tune_brief_motion { tune_motion(m, &signals) } else { m };
-    let a_type = best_industry.typography_pairing.clone();
-    let a_pal = best_industry.palette.clone();
-    let (b_type, b_pal) =
-        pick_from_pool(
-            expressive_pool(),
-            &signals,
-            query,
-            "B",
-            std::slice::from_ref(&a_type.display_font),
-            std::slice::from_ref(&a_pal.id),
-        );
-    let (c_type, c_pal) = pick_from_pool(
-        utility_pool(),
-        &signals,
-        query,
-        "C",
-        &[a_type.display_font.clone(), b_type.display_font.clone()],
-        &[a_pal.id.clone(), b_pal.id.clone()],
-    );
-    let b_copy = direction_b_copy(signals.surface);
-    let c_copy = direction_c_copy(signals.surface);
+    let heavy = tune_brief_motion && signals.motion_bias >= 4 && signals.motion_cap.is_none_or(|c| c >= 7);
 
-    // Build 3 materially different directions (differing in layout composition, visual identity,
-    // typography, content treatment, and motion choreography—never just color swaps!).
-    // B and C follow the brief's surface (dashboard, store, venue, showcase) and niche palette family.
-    let directions = vec![
-        CreativeDirection {
-            index: 1,
-            title: format!("Direction A — {} (Editorial & Structural Clarity)", best_industry.name),
-            style_family: "swiss-editorial-grid".into(),
-            layout_composition: format!(
-                "{} on an exposed structural grid where type and the subject's object share one asymmetric 7:5 composition, generous section rhythm (clamp(5.5rem, 9vw, 9rem)), and each section shaped by its content",
-                best_industry.layout_archetype
-            ),
-            visual_identity: "Type as image: display set large enough to become architecture, ruled structure drawn from the subject's own notation (charts, labels, tickets), no floating card clutter".into(),
-            typography: best_industry.typography_pairing.clone(),
-            palette: best_industry.palette.clone(),
-            content_treatment: "Lead with the subject's most characteristic object at scale and the real action (buy, book) working in the first viewport; specifics as scannable tables, never big-number stat blocks".into(),
-            motion_choreography: "Decide per content: a typographic load sequence, content-shaped section entrances, crisp 160-240ms ease-out interactions; reduced-motion keeps fades only".into(),
-            dials: DesignDials::clamped(
-                active_dials.design_variance,
-                tune(active_dials.motion_intensity.min(5)),
-                active_dials.visual_density,
-            ),
+    // Deal three directions: each is an archetype (layout composition + palette tone + type voice +
+    // hero composition) with type and palette chosen for it from decoupled pools. A variant > 0
+    // re-deals every slot away from variant 0's picks.
+    let industry_look = (match_score > 0).then_some((&best_industry.typography_pairing, &best_industry.palette));
+    let dealt = crate::directions::deal(&signals, query, variant, industry_look);
+    let (place_cues, material_cues) = extract_cues(query);
+    let ctx = crate::directions::Ctx {
+        subject: &subject,
+        place: place_cues.first().map(String::as_str),
+        material: material_cues.first().map(String::as_str),
+        surface: signals.surface,
+    };
+    let mut directions: Vec<CreativeDirection> = Vec::new();
+    for (i, d) in dealt.iter().enumerate() {
+        let v = active_dials.design_variance;
+        let m = active_dials.motion_intensity;
+        let dn = active_dials.visual_density;
+        let mut dials = match i {
+            0 => DesignDials::clamped(v, tune(m.min(5)), dn),
+            1 => DesignDials::clamped((v + 3).min(10), tune((m + 3).min(10)), dn.saturating_sub(1)),
+            _ => DesignDials::clamped(v, tune(m), (dn + 2).min(10)),
+        };
+        if heavy {
+            dials.motion_intensity = dials.motion_intensity.max(8);
+        }
+        let text = crate::directions::write(d, &ctx, dials.motion_intensity);
+        let mut motion = text.motion;
+        if heavy {
+            // A quiet direction's "nothing moves on scroll" would contradict the brief.
+            for quiet in ["; nothing moves on scroll", "; zero decorative motion", "; no scroll-triggered choreography"] {
+                motion = motion.replace(quiet, "");
+            }
+            motion.push_str(
+                ". The brief asks for heavy motion: keep this direction's character but make the page move with scroll (pinned, scrubbed sequences that show the subject's own objects working, hand-offs between sections); every still frame stays readable and reduced-motion shows the complete content",
+            );
+        }
+        let letter = ['A', 'B', 'C'][i];
+        directions.push(CreativeDirection {
+            index: i as u8 + 1,
+            title: format!("Direction {letter} — {} ({})", best_industry.name, d.arch.name),
+            style_family: d.arch.style_family.into(),
+            layout_composition: text.layout,
+            visual_identity: text.identity,
+            typography: d.typography.clone(),
+            palette: d.palette.clone(),
+            content_treatment: text.content,
+            motion_choreography: motion,
+            dials,
+            rationale: crate::directions::rationale(d, &signals, &subject, &best_industry.name),
             mechanics: Vec::new(),
-        },
-        CreativeDirection {
-            index: 2,
-            title: format!("Direction B — {} ({})", best_industry.name, b_copy.name),
-            style_family: b_copy.style_family.into(),
-            layout_composition: b_copy.layout.into(),
-            visual_identity: b_copy.identity.into(),
-            typography: b_type,
-            palette: b_pal,
-            content_treatment: b_copy.content.into(),
-            motion_choreography: b_copy.motion.into(),
-            dials: DesignDials::clamped(
-                (active_dials.design_variance + 3).min(10),
-                tune((active_dials.motion_intensity + 3).min(10)),
-                active_dials.visual_density.saturating_sub(1),
-            ),
-            mechanics: Vec::new(),
-        },
-        CreativeDirection {
-            index: 3,
-            title: format!("Direction C — {} ({})", best_industry.name, c_copy.name),
-            style_family: c_copy.style_family.into(),
-            layout_composition: c_copy.layout.into(),
-            visual_identity: c_copy.identity.into(),
-            typography: c_type,
-            palette: c_pal,
-            content_treatment: c_copy.content.into(),
-            motion_choreography: c_copy.motion.into(),
-            dials: DesignDials::clamped(
-                active_dials.design_variance,
-                tune(active_dials.motion_intensity),
-                (active_dials.visual_density + 2).min(10),
-            ),
-            mechanics: Vec::new(),
-        },
-    ];
+        });
+    }
     let mut active_dials = active_dials;
     active_dials.motion_intensity = tune(active_dials.motion_intensity);
+    let compositions: Vec<&str> = dealt.iter().map(|d| d.arch.composition).collect();
 
-    let mut directions = directions;
     for d in &mut directions {
         verify_palette(&mut d.palette);
     }
-    attach_mechanics(&mut directions, query, mode, existing_dna);
+    attach_mechanics(&mut directions, query, mode, existing_dna, variant, &compositions);
+    // The direction and its hero must describe the same first screen. When no fitting hero of the
+    // suggested composition exists, the direction takes the dealt hero's composition instead of
+    // promising one layout and handing over another.
+    let mut compositions: Vec<String> = compositions.iter().map(|c| c.to_string()).collect();
+    for (d, comp) in directions.iter_mut().zip(compositions.iter_mut()) {
+        let Some(h) = d.mechanics.first() else { continue };
+        if h.composition.is_empty() || h.composition == *comp {
+            continue;
+        }
+        let said = format!("First screen: {} composition", comp);
+        let said_split = format!("{} (a split, chosen only because two views must be read side by side)", said);
+        let now = format!(
+            "First screen: {} composition (no fitting {} hero for this trade, so the direction follows the dealt hero {})",
+            h.composition, comp, h.id
+        );
+        d.rationale = if d.rationale.contains(&said_split) { d.rationale.replacen(&said_split, &now, 1) } else { d.rationale.replacen(&said, &now, 1) };
+        *comp = h.composition.clone();
+    }
     verify_palette(&mut best_industry.palette);
 
-    let workflow_guidance = match mode {
+    let mut workflow_guidance: Vec<String> = match mode {
         OperatingMode::NewWebsite => vec![
             "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.".into(),
             "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.".into(),
             "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.".into(),
             "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.".into(),
+            format!("HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest {} (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.", compositions.join(" / ")),
             "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.".into(),
             "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.".into(),
             "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error.".into(),
@@ -1746,10 +1730,28 @@ pub fn recommend_design(
         ],
     };
 
+    if !signals.brief_colors.is_empty() && matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign) {
+        workflow_guidance.insert(
+            0,
+            format!(
+                "BRIEF COLOURS: the brief names its own colours ({}). Use them as the palette in every direction (check WCAG pairs); the direction palettes below are fallbacks only.",
+                signals.brief_colors.join(", ")
+            ),
+        );
+    }
+    if !signals.brief_fonts.is_empty() && matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign) {
+        workflow_guidance.insert(
+            0,
+            format!(
+                "BRIEF FONTS: the brief names its own type ({}). Build every direction's type system from these (pick the display, body and mono roles among them); the direction pairings below are fallbacks only.",
+                signals.brief_fonts.join(", ")
+            ),
+        );
+    }
     DesignRecommendation {
         mode,
-        query: query.to_string(),
-        distinctiveness: distinctiveness_for(query, &best_industry.slug),
+        query: raw_query.to_string(),
+        distinctiveness: distinctiveness_for(query, &best_industry.slug, &signals),
         brief_signals: signals,
         matched_industry: best_industry,
         match_score,
@@ -1812,12 +1814,14 @@ mod tests {
             }
         }
 
-        // Niche drives the palette family
-        assert_eq!(sea.directions[1].palette.id, "deep-harbour-buoy");
-        assert_eq!(sea.directions[2].palette.id, "tide-chart-paper");
-        assert_eq!(fashion.directions[1].palette.id, "indigo-loom");
-        assert_eq!(dash.directions[1].palette.id, "ops-console-night");
-        assert_eq!(dash.directions[2].palette.id, "rye-ledger");
+        // Niche drives the palette family (B and C are dealt from the brief's niche tags)
+        let pool = crate::directions::palette_pool();
+        let tagged = |id: &str, tag: &str| pool.iter().any(|e| e.palette.id == id && e.tags.contains(&tag));
+        for k in 1..3 {
+            assert!(tagged(&sea.directions[k].palette.id, "marine"), "{}", sea.directions[k].palette.id);
+            assert!(tagged(&fashion.directions[k].palette.id, "textile"), "{}", fashion.directions[k].palette.id);
+            assert!(tagged(&dash.directions[k].palette.id, "data"), "{}", dash.directions[k].palette.id);
+        }
 
         // A task UI never gets scroll choreography or high motion; a kinetic studio keeps it
         for d in &dash.directions {
@@ -1825,6 +1829,70 @@ mod tests {
             assert!(!d.motion_choreography.contains("ScrollTrigger"), "{}", d.title);
         }
         assert!(kinetic.directions[1].dials.motion_intensity >= 9);
+    }
+
+    #[test]
+    fn no_fixed_hero_and_variant_redeals() {
+        let q = "open source mcp server site for coding agents";
+        let r0 = rec(q);
+        assert!(r0.directions.iter().all(|d| !d.layout_composition.contains("7:5")));
+        assert!(r0.workflow_guidance.iter().any(|g| g.starts_with("HERO:")));
+        let looks = |r: &DesignRecommendation| r.directions.iter().map(|d| (d.palette.id.clone(), d.typography.display_font.clone())).collect::<Vec<_>>();
+        assert_eq!(looks(&rec(q)), looks(&r0));
+        let differs = (1..6u64).filter(|v| looks(&recommend_design_variant(q, OperatingMode::NewWebsite, None, None, *v)) != looks(&r0)).count();
+        assert!(differs >= 3, "{differs}");
+    }
+
+    #[test]
+    fn negated_parts_do_not_steer_the_match() {
+        let b = "Highly animated marketing site for an open-source MCP server for coding agents on GitHub and npm.\nAbsolutely avoid:\n* Overused dashboard mockups\n* Generic gradient blobs\nDo not use a static generic dashboard image.\nRespect prefers-reduced-motion.";
+        let a = affirmed_brief(b);
+        assert!(!a.contains("dashboard"), "{a}");
+        assert!(a.contains("MCP server"), "{a}");
+        let r = rec(b);
+        assert_eq!(r.brief_signals.surface, Surface::DevTool);
+        assert!(r.directions.iter().all(|d| d.dials.motion_intensity >= 8), "{:?}", r.brief_signals);
+        assert!(r.brief_signals.constraints.iter().any(|c| c == "reduced-motion fallback"));
+        // a plain "reduced motion" ask without heavy motion still calms the page
+        assert!(rec("bakery site, reduced motion please").directions.iter().all(|d| d.dials.motion_intensity <= 1));
+        // flattened bullets
+        assert!(!affirmed_brief("Avoid: * dashboard mockups * neon").contains("dashboard"));
+    }
+
+    #[test]
+    fn brief_fonts_are_read_and_negated_fonts_are_not() {
+        let r = rec("open-source cli site. Fonts: Space Grotesk, Geist Mono and IBM Plex Mono. Avoid Inter.");
+        assert_eq!(r.brief_signals.brief_fonts, vec!["Space Grotesk", "Geist Mono", "IBM Plex Mono"]);
+        assert!(r.workflow_guidance.iter().any(|g| g.starts_with("BRIEF FONTS:")));
+        assert!(rec("a calm bakery site").brief_signals.brief_fonts.is_empty());
+        // Font names inside ordinary words are not fonts
+        assert!(rec("international interiors studio").brief_signals.brief_fonts.is_empty());
+    }
+
+    #[test]
+    fn brief_colors_and_soft_caps() {
+        let r = rec("highly animated open source mcp site, accessibility and performance matter; navy #080B13, lime #c8ff61, #080b13 again");
+        assert_eq!(r.brief_signals.brief_colors, vec!["#080B13".to_string(), "#C8FF61".to_string()]);
+        assert!(r.workflow_guidance[0].contains("#C8FF61"));
+        assert!(r.directions.iter().all(|d| d.dials.motion_intensity >= 8));
+        let seniors = rec("highly animated site for seniors");
+        assert!(seniors.directions.iter().all(|d| d.dials.motion_intensity <= 5));
+    }
+
+    #[test]
+    fn heavy_motion_words_raise_every_direction() {
+        let r = rec("open-source mcp server site, highly animated and cinematic");
+        assert!(r.active_dials.motion_intensity >= 8, "{}", r.active_dials.motion_intensity);
+        for d in &r.directions {
+            assert!(d.dials.motion_intensity >= 8, "{}: {}", d.title, d.dials.motion_intensity);
+            assert!(d.motion_choreography.contains("heavy motion"), "{}", d.title);
+            assert!(!d.motion_choreography.contains("nothing moves on scroll"), "{}", d.title);
+        }
+        // "no animation" still wins, and a task UI keeps its cap.
+        let calm = rec("open-source mcp server site, cinematic but no animation please");
+        assert!(calm.directions.iter().all(|d| d.dials.motion_intensity <= 1));
+        let dash = rec("immersive analytics dashboard");
+        assert!(dash.directions.iter().all(|d| d.dials.motion_intensity <= 4));
     }
 
     #[test]
@@ -1844,11 +1912,128 @@ mod tests {
     }
 
     #[test]
-    fn pool_palettes_meet_aa() {
-        for (_, p, _) in expressive_pool().into_iter().chain(utility_pool()) {
-            let body = wcag_contrast(&p.foreground, &p.background).unwrap();
-            let muted = wcag_contrast(&p.muted, &p.background).unwrap();
-            assert!(body >= 4.5 && muted >= 4.5, "{} fails AA: body {:.2}, muted {:.2}", p.id, body, muted);
+    fn devtool_briefs_route_to_ai_devtools_with_devtool_directions() {
+        for q in [
+            "marketing site for an open-source MCP server and AI agent skills that make coding agents design better",
+            "landing page for a Rust CLI that lints Terraform",
+            "docs and homepage for a TypeScript SDK for our payments API",
+            "developer tools startup homepage for an LLM observability library",
+        ] {
+            let r = rec(q);
+            assert_eq!(r.matched_industry.slug, "ai-devtools", "{q}");
+            assert_eq!(r.brief_signals.surface, Surface::DevTool, "{q}");
+            assert!(r.brief_signals.niche_tags.iter().any(|t| t == "code"), "{q}: {:?}", r.brief_signals.niche_tags);
+            assert!(!r.directions[2].layout_composition.contains("try a frame"), "{q}: generic Direction C copy");
         }
+        let r = rec("marketing site for an open-source MCP server and AI agent skills that make coding agents design better");
+        let ranked = rank_industries(&r.query, &catalog_industries());
+        assert!(ranked[0].0 >= ranked[1].0 + 9, "weak lead: {:?}", ranked.iter().take(3).map(|(s, i)| (*s, i.slug.clone())).collect::<Vec<_>>());
+    }
+
+    #[test]
+    fn devtools_keywords_do_not_steal_other_industries() {
+        for (q, not) in [
+            ("independent travel agent booking honeymoon trips", "ai-devtools"),
+            ("estate agent listings for family homes in Leeds", "ai-devtools"),
+            ("seafood restaurant on the harbour with a daily catch menu", "ai-devtools"),
+            ("creative agency portfolio for a branding studio", "ai-devtools"),
+        ] {
+            let r = rec(q);
+            assert_ne!(r.matched_industry.slug, not, "{q}");
+            assert_ne!(r.brief_signals.surface, Surface::DevTool, "{q}");
+        }
+        assert_eq!(rec("bakery operations dashboard for production planning").brief_signals.surface, Surface::ProductUi);
+    }
+
+    #[test]
+    fn every_variant_redeals_all_three_directions() {
+        for q in [
+            "seafood restaurant on the harbour with a daily catch menu",
+            "bakery sales dashboard",
+            "linen store",
+            "kinetic creative agency",
+            "SaaS dev tool",
+            "law firm",
+            "kids' museum",
+        ] {
+            let at = |v: u64| recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v);
+            let key = |d: &CreativeDirection| (d.title.clone(), d.typography.display_font.clone(), d.palette.id.clone());
+            let r0 = at(0);
+            let mut prev = r0.directions.iter().map(key).collect::<Vec<_>>();
+            for v in 1..=6 {
+                let r = at(v);
+                let now = r.directions.iter().map(key).collect::<Vec<_>>();
+                for slot in 0..3 {
+                    let (a, b) = (&r0.directions[slot], &r.directions[slot]);
+                    assert_ne!(a.typography.display_font, b.typography.display_font, "{q} v{v} slot {slot} font");
+                    assert_ne!(a.palette.id, b.palette.id, "{q} v{v} slot {slot} palette");
+                    assert_ne!(a.layout_composition, b.layout_composition, "{q} v{v} slot {slot} layout");
+                }
+                assert_ne!(now, prev, "{q} v{v} repeats v{}", v - 1);
+                prev = now;
+                // Within a set: three different first-screen compositions, fonts and palettes.
+                let comps: std::collections::HashSet<_> = r.directions.iter().map(|d| d.mechanics[0].composition.clone()).collect();
+                let fonts: std::collections::HashSet<_> = r.directions.iter().map(|d| d.typography.display_font.clone()).collect();
+                let pals: std::collections::HashSet<_> = r.directions.iter().map(|d| d.palette.id.clone()).collect();
+                assert_eq!((fonts.len(), pals.len()), (3, 3), "{q} v{v}");
+                assert!(comps.len() >= 2, "{q} v{v} hero compositions {comps:?}");
+            }
+        }
+    }
+
+    #[test]
+    fn each_direction_states_its_dealt_hero_s_composition() {
+        for q in ["law firm in Boston", "kids museum with hands-on exhibits", "seafood restaurant by the harbour", "linen store", "open-source cli"] {
+            for v in 0..6 {
+                let r = recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v);
+                for d in &r.directions {
+                    let Some(h) = d.mechanics.first() else { continue };
+                    let said = format!("First screen: {} composition", h.composition);
+                    assert!(d.rationale.contains(&said), "{q} v{v} {}: hero {} is {} but rationale says: {}", d.title, h.id, h.composition, d.rationale);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn copy_and_rationale_come_from_the_brief() {
+        let law = rec("law firm");
+        let museum = rec("kids' museum");
+        for (r, word) in [(&law, "law firm"), (&museum, "kids")] {
+            for d in &r.directions {
+                assert!(d.rationale.contains(word), "{}: {}", d.title, d.rationale);
+                assert!(d.layout_composition.to_lowercase().contains(word) || d.content_treatment.to_lowercase().contains(word), "{}: {}", d.title, d.layout_composition);
+                assert!(d.rationale.contains(&d.typography.display_font) && d.rationale.contains(&d.palette.id), "{}", d.rationale);
+            }
+        }
+        for k in 0..3 {
+            assert_ne!(law.directions[k].layout_composition, museum.directions[k].layout_composition);
+            assert_ne!(law.directions[k].rationale, museum.directions[k].rationale);
+        }
+    }
+
+    #[test]
+    fn unmatched_briefs_are_read_from_their_own_words() {
+        let r = rec("law firm");
+        assert_eq!(r.match_confidence, "none");
+        assert_eq!(r.matched_industry.slug, "brief-derived");
+        assert!(r.matched_industry.name.starts_with("Law firm"), "{}", r.matched_industry.name);
+        assert!(r.matched_industry.layout_archetype.contains("case file"), "{}", r.matched_industry.layout_archetype);
+        let cl = r.distinctiveness.category_cliches.join(" | ");
+        assert!(cl.contains("gavel"), "{cl}");
+        let kids = rec("kids' museum");
+        let kcl = kids.distinctiveness.category_cliches.join(" | ");
+        assert!(kcl.contains("mascot"), "{kcl}");
+        assert_ne!(cl, kcl);
+        // A museum brief no longer forces Playfair
+        assert!(kids.directions.iter().all(|d| d.typography.display_font != "Playfair Display"));
+    }
+
+    #[test]
+    fn directions_print_their_own_type_not_the_industry_pairing() {
+        let r = rec("seafood restaurant on the harbour with a daily catch menu");
+        assert_eq!(r.directions[0].typography.id, r.matched_industry.typography_pairing.id);
+        assert_ne!(r.directions[1].typography.id, r.matched_industry.typography_pairing.id);
+        assert_ne!(r.directions[2].typography.id, r.matched_industry.typography_pairing.id);
     }
 }

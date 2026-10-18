@@ -242,7 +242,7 @@ Pick the one that fits your work.
 | :--- | :--- | :--- | :--- | :--- |
 | Form | Rust CLI + MCP server + 19 skills | One skill file | Skill + style rules or data | Plain agent |
 | Reads an existing site first | Yes, writes `SITE-DNA.json` | No | Sometimes | No |
-| Motion guidance | 71 mechanics dealt per niche | Guidelines | Guidelines | None |
+| Motion guidance | 76 mechanics dealt per niche | Guidelines | Guidelines | None |
 | Browser verification | Chromium at 3 widths, measured | No | Checklist or rule scan | No |
 | Baseline + rollback | Yes | No | No | No |
 | Setup | `npx`, prebuilt binary | Copy one file | `npx` or Python | Nothing |

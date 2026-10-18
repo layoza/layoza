@@ -17,6 +17,14 @@ Output: `qa/browser-qa-report.json`, `qa/desktop.png`, `qa/tablet.png`,
 `qa/mobile.png`, `qa/mobile-hero.png` and `qa/*-menu-open.png`. Open the
 screenshots and look at them; the report alone never proves a design.
 
+- **Judge after motion settles.** Entrances, reveals, canvas and WebGL must
+  have finished before a frame counts; a frame caught mid-animation or before
+  the scene draws proves nothing. Re-capture if it looks unfinished.
+- **Labels over 3D, canvas, video or images** are checked by eye at every
+  width: the text must stay readable over the actual pixels behind it. Do not
+  rely on the automated contrast checks alone there; add a scrim, plate or
+  position change when it is not.
+
 ## What is measured
 
 | Severity | Rules (examples) | Meaning |

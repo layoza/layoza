@@ -6,7 +6,9 @@ pub mod animation;
 pub mod baseline;
 pub mod benchmark;
 pub mod design_md;
+pub mod directions;
 pub mod dna;
+pub mod history;
 pub mod hooks;
 pub mod installer;
 pub mod inspector;
@@ -60,7 +62,7 @@ mod tests {
         assert!(dna
             .typography
             .iter()
-            .any(|t| t.role == "font-display" && t.font_family.starts_with("Space Grotesk")));
+            .any(|t| t.role == "display" && t.font_family.starts_with("Space Grotesk")));
         let _ = fs::remove_dir_all(&temp_dir);
     }
 

@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Dna from '../components/home/Dna.astro';
+import Motion from '../components/home/Motion.astro';
+import Workflow from '../components/home/Workflow.astro';
+import BrowserQA from '../components/home/BrowserQA.astro';
+import { MCP_GROUPS, MODES, STACKS } from '../data';
+---
+<Base title="Features" description="What Layoza adds to your coding agent: Site DNA, three directions, 76 motion mechanics, Chromium QA at three widths, baselines and rollback.">
+  <PageHead num="F-00" sheet="Features" title="Five jobs your agent could not do alone." lede="Read a site, direct a design, choose motion that fits, check the page in a browser, and roll back safely." />
+  <section class="band light" aria-labelledby="modes-title">
+    <div class="wrap">
+      <p class="sheet"><b>F-01</b> Four modes</p>
+      <h2 id="modes-title" class="h-lg">The router picks the mode from your prompt.</h2>
+      <ol class="modes">
+        {MODES.map((m) => (
+          <li>
+            <span class="k mono">{m.k}</span>
+            <h3 class="h-md">{m.h}</h3>
+            <p class="when">{m.when}</p>
+            <p class="note">{m.note}</p>
+            <code class="mono">{m.cmd}</code>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <Dna />
+  <Motion />
+  <Workflow />
+  <BrowserQA />
+  <section class="band graphite" aria-labelledby="tools-title" id="mcp-tools">
+    <div class="wrap">
+      <p class="sheet"><b>F-06</b> MCP tools</p>
+      <h2 id="tools-title" class="h-lg">Sixteen tools your agent can call.</h2>
+      <dl class="tools">
+        {MCP_GROUPS.map((g) => (
+          <div><dt>{g.tools.map((t) => <code class="mono">{t}</code>)}</dt><dd>{g.what}</dd></div>
+        ))}
+      </dl>
+      <h3 class="stacks-h mono">Writes in your stack</h3>
+      <ul class="stacks">{STACKS.map((s) => <li class="chip">{s}</li>)}</ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .modes { list-style: none; padding: 0; margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--ink); }
+  .modes li { padding: 24px 24px 24px 0; border-right: 1px solid var(--rule-light); }
+  .modes li + li { padding-left: 24px; }
+  .modes li:last-child { border: 0; }
+  .k { display: inline-grid; place-items: center; width: 40px; height: 40px; background: var(--ink); color: var(--lime); font-size: 18px; margin-bottom: 18px; }
+  .when { font-weight: 500; margin: 10px 0 6px; }
+  .note { color: #2f3643; }
+  .modes code { display: block; margin-top: 14px; font-size: 13px; color: var(--uv); overflow-wrap: anywhere; }
+  .tools { margin-top: 40px; border-top: 2px solid var(--lime); }
+  .tools div { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--rule-dark); }
+  .tools dt { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools code { font-size: 14px; color: var(--cyan); border: 1px solid rgba(106, 221, 240, 0.35); padding: 4px 8px; }
+  .tools dd { margin: 0; color: #dfe4ec; }
+  .stacks-h { margin-top: 56px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); font-weight: 500; }
+  .stacks { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  @media (max-width: 900px) {
+    .modes { grid-template-columns: 1fr 1fr; }
+    .modes li, .modes li + li { padding: 24px 16px 24px 0; border-right: 0; border-bottom: 1px solid var(--rule-light); }
+    .tools div { grid-template-columns: 1fr; gap: 10px; }
+  }
+  @media (max-width: 520px) { .modes { grid-template-columns: 1fr; } }
+</style>
