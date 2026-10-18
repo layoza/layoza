@@ -532,8 +532,13 @@ pub(crate) fn navy_gold(p: &PaletteRecommendation) -> bool {
 
 /// `has` should also accept the tags the surface itself wants (data, code), so a dashboard
 /// palette that happens to be tagged industrial is still on-brief.
+/// The first subject tag names what a pick was made for, so a pick led by another trade's subject
+/// (a court-paper palette that also suits civic buildings) still reads as borrowed.
 fn foreign(tags: &[&str], has: &dyn Fn(&str) -> bool) -> bool {
-    tags.iter().any(|t| SUBJECT_TAGS.contains(t)) && !tags.iter().any(|t| has(t))
+    let lead = tags.iter().find(|t| SUBJECT_TAGS.contains(t));
+    // A surface tag the brief wants (data for a dashboard, code for a dev tool) outranks the lead.
+    let surface = tags.iter().any(|t| matches!(*t, "data" | "code") && has(t));
+    lead.is_some_and(|t| !has(t)) && !surface
 }
 
 fn rotate(variant: u64, n: usize) -> usize {
@@ -629,7 +634,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     s += 2;
                 }
                 if foreign(e.tags, &wants) {
-                    s -= 4;
+                    s -= 7;
                 }
                 (s, i)
             })
@@ -657,7 +662,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     s += 2;
                 }
                 if foreign(e.tags, &wants) {
-                    s -= 4;
+                    s -= 7;
                 }
                 // Law and money briefs list navy-and-gold as their reflex palette: never deal it.
                 if (has("legal") || has("finance")) && navy_gold(&e.palette) {

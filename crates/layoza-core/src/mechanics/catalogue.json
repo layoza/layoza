@@ -1404,8 +1404,7 @@
     "role": "catalogue",
     "niches": [
       "store",
-      "local-business",
-      "restaurant"
+      "local-business"
     ],
     "moods": [
       "warm",
@@ -1845,7 +1844,6 @@
     "niches": [
       "docs",
       "saas",
-      "dashboard",
       "devtools"
     ],
     "moods": [
@@ -2553,6 +2551,310 @@
     "stack_notes": {
       "css": "Grid rows with filter: grayscale(1) on the img and a transition on :hover and :focus-within.",
       "js": "None."
+    }
+  },
+  {
+    "id": "hero-floor-plan-you-are-here",
+    "name": "Floor Plan, You Are Here",
+    "kind": "hero",
+    "role": "hero",
+    "family": "floor-plan-wayfind",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "trustworthy",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "layered",
+    "blueprint": "The first screen is the museum's own floor plan at min(92vw, 1200px), drawn as flat coloured rooms with real gallery names. A 'You are here' pin sits at the entrance; the h1 at clamp(2.5rem, 6vw, 5rem) is printed inside the largest room like a wall sign ('Touch everything in Gallery 2.'). Each room shows today's hands-on station as a small label; the open hours and 'Buy tickets' sit in the ticket-desk room by the entrance. Rooms are links to their gallery section.",
+    "motion": "On load the pin drops 12px and settles; hovering or focusing a room lifts it 4px and shows its station label at full strength. Nothing moves on scroll.",
+    "still_check": "Any screenshot shows every room name, the headline, the hours and the ticket action readable; hover only lifts one room by 4px.",
+    "mobile": "At 375px the plan becomes a vertical strip of rooms in walking order with the entrance and ticket desk first; the headline sits above the strip at clamp(2.25rem, 10vw, 3rem).",
+    "a11y": "The plan is a nav with a list of room links; the pin is decorative (aria-hidden). Room colours carry a text name, never colour alone; text on rooms meets 4.5:1. Reduced motion: no pin drop.",
+    "avoid": "A generic stock floor plan, invented rooms, tiny room labels, hiding the hours and tickets behind the map, a mascot pointing at the pin.",
+    "stack_notes": {
+      "css": "CSS grid areas for the rooms; one-time keyframe for the pin under prefers-reduced-motion: no-preference; :hover and :focus-visible lift with transform.",
+      "js": "None needed; optional: highlight the room whose station is running now from the day's programme."
+    }
+  },
+  {
+    "id": "hero-pull-out-specimen-drawer",
+    "name": "Pull-Out Specimen Drawer",
+    "kind": "hero",
+    "role": "hero",
+    "family": "drawer-pull",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "editorial",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": true,
+    "composition": "object-wrap",
+    "blueprint": "A shallow wooden specimen drawer fills the first screen at min(90vw, 1100px), half pulled out. The headline at clamp(2.75rem, 7vw, 6rem) wraps around one real object from the collection lying in the drawer (a fossil, a gear, a shell) shot from above. A card label beside it gives the object's name and 'Find it in Gallery 3'. Dragging or pressing the drawer handle pulls it fully open to show 3 more objects, each with a label and a 'try it' station number. 'Plan your visit' sits under the drawer.",
+    "motion": "Drag or press the handle: the drawer slides out up to 240px with a short ease-out and objects settle 4px. Keyboard: Enter on the handle toggles open and closed.",
+    "still_check": "Closed and open states both show the headline, the first object label and 'Plan your visit' readable; the open state only adds 3 labelled objects.",
+    "mobile": "At 375px the drawer is shown fully open as a 2-column grid of objects with labels; no drag.",
+    "a11y": "The handle is a button with aria-expanded; objects are figures with figcaption labels; photos have alt text naming the object. Reduced motion: toggle without slide.",
+    "avoid": "Clip-art fossils, dinosaur cartoons standing in for the real collection, drag as the only way to see objects, headline covered by the drawer.",
+    "stack_notes": {
+      "css": "Drawer translateY driven by a CSS variable; text wrap via shape-outside on the hero object; transition under the reduced-motion guard.",
+      "js": "Pointer events set the drawer offset with a clamp and snap to open or closed on release; remove listeners on unmount."
+    }
+  },
+  {
+    "id": "schedule-today-at-the-museum",
+    "name": "Today at the Museum",
+    "kind": "section",
+    "role": "schedule",
+    "family": "day-programme",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "trustworthy",
+      "technical"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Today's programme as one horizontal day rail at max 72rem: hours from opening to closing across the top, each demo, workshop or show a coloured block at its real time with its room, age band ('4–7', '8+') and whether it needs booking. A vertical 'now' line marks the current time. Under the rail, the next 3 starting events repeat as large cards at clamp(1.25rem, 2.5vw, 1.75rem) so families can decide fast.",
+    "motion": "The 'now' line moves once a minute; blocks that have ended fade to the muted colour. No scroll motion.",
+    "still_check": "Any screenshot shows every block's title, time, room and age band readable; only the 'now' line position and ended-block colour change over time.",
+    "mobile": "Below 700px the rail becomes a vertical list in time order with the next event pinned first.",
+    "a11y": "The rail is an ordered list with times as time elements; age bands are text. The 'now' line is aria-hidden with the current time stated in text. Reduced motion: line jumps, no animation.",
+    "avoid": "Invented events, a carousel of today's events, age bands shown only as colours, hiding which events need booking.",
+    "stack_notes": {
+      "css": "Grid columns per 15 minutes with grid-column spans; ended blocks get a class from the server or script.",
+      "js": "A one-minute interval updates the 'now' line and ended state; clear it on unmount."
+    }
+  },
+  {
+    "id": "pricing-wristband-tickets",
+    "name": "Wristband Tickets",
+    "kind": "section",
+    "role": "pricing",
+    "family": "wristband-tier",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "trustworthy",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Ticket types set as coloured paper wristbands laid flat, each a long band at min(100%, 44rem) with the ticket name, age band, price in tabular figures at clamp(1.5rem, 3vw, 2.25rem) and what it includes (galleries, planetarium show, workshop). A family-bundle band shows the real saving in money, not percent. A counter beside each band (−/+) builds the order and a running total sits in the last band with 'Book tickets'.",
+    "motion": "Changing a count bumps the total figure 4px and back over 160ms. No scroll motion.",
+    "still_check": "Any screenshot shows every ticket name, age band, price, inclusion and the total readable; counters change numbers only.",
+    "mobile": "Bands stack full width; counters move under the price; the total band sticks to the bottom of the section while it is in view.",
+    "a11y": "Each band is a fieldset with a legend; counters are labelled buttons around a number input; the total is aria-live polite. Reduced motion: no bump.",
+    "avoid": "Fake 'limited tickets' urgency, hidden booking fees, prices only in a PDF, wristband colours as the only difference between tickets.",
+    "stack_notes": {
+      "css": "Bands are flex rows with a notched end via clip-path; tabular-nums for prices.",
+      "js": "Counters update the total; submit goes to the real ticketing endpoint."
+    }
+  },
+  {
+    "id": "gallery-wall-label-index",
+    "name": "Exhibit Wall Labels",
+    "kind": "section",
+    "role": "gallery",
+    "family": "wall-label",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "editorial",
+      "minimal"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Exhibits shown as museum wall labels: each card is a white label at least 18rem wide with the exhibit title at clamp(1.25rem, 2.5vw, 1.75rem), a one-line 'what you can do here' ('Build a bridge that holds you'), the age band, the gallery room and a 'hands-on' or 'look only' mark, next to one real photo of a child at the exhibit. A filter row above sorts by age band and by gallery.",
+    "motion": "Filtering re-flows the labels with a short 180ms fade; nothing moves on scroll.",
+    "still_check": "Any screenshot shows every visible label's title, age band and room readable; filtering only changes which labels show.",
+    "mobile": "Labels become a single column with the photo above the text.",
+    "a11y": "Filters are a radio group per facet with visible labels; the result count is aria-live. Photos have alt text. Reduced motion: no fade.",
+    "avoid": "Stock photos of children unrelated to the museum, cartoon icons instead of the exhibits, unlabelled age colours, a slideshow of exhibits.",
+    "stack_notes": {
+      "css": "CSS grid with auto-fill minmax(18rem, 1fr); :has() filtering where supported.",
+      "js": "Small script filters by data attributes when :has() is unsupported and announces the count."
+    }
+  },
+  {
+    "id": "hero-ops-wall-board",
+    "name": "Operations Wall Board",
+    "kind": "hero",
+    "role": "hero",
+    "family": "wall-board",
+    "niches": [
+      "dashboard",
+      "saas"
+    ],
+    "moods": [
+      "technical",
+      "dark",
+      "bold"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "full-bleed",
+    "blueprint": "The first screen is the wall-mounted board the team would actually keep open, edge to edge: 4 to 6 live tiles in a 12-column grid at full viewport width, each tile one real number for this business today (orders due, items short, late deliveries) at clamp(2.5rem, 6vw, 5rem) with its unit and the time it last changed. The h1 at clamp(1.5rem, 3vw, 2.5rem) is the board's title bar ('Tuesday, 6:40 am — 3 orders need you'). One tile is flagged in the accent colour with its action ('Reassign driver'). The sign-up or 'Open the board' action sits in the title bar.",
+    "motion": "When a value updates, the tile's number rolls to the new value over 300ms and its 'changed' time refreshes. No scroll motion.",
+    "still_check": "Any screenshot shows every tile's label, value, unit and the flagged action readable; updates only change numbers.",
+    "mobile": "At 375px tiles stack in priority order with the flagged tile first; numbers drop to clamp(2rem, 9vw, 2.75rem).",
+    "a11y": "Tiles are a list of articles with headings; values are text, not canvas; the flagged state has a text label too. Updates use aria-live polite on the title bar only. Reduced motion: numbers swap without rolling.",
+    "avoid": "Four generic KPI cards over a line chart, made-up growth percentages, sparklines in every tile, neon glow.",
+    "stack_notes": {
+      "css": "CSS grid with grid-template-columns: repeat(12, 1fr); tabular-nums; the roll is a translateY on a digit column under the reduced-motion guard.",
+      "js": "Optional polling or SSE updates values; clear timers on unmount."
+    }
+  },
+  {
+    "id": "hero-day-scrub-timeline",
+    "name": "Scrub the Day",
+    "kind": "hero",
+    "role": "hero",
+    "family": "time-scrub",
+    "niches": [
+      "dashboard",
+      "saas"
+    ],
+    "moods": [
+      "technical",
+      "calm",
+      "minimal"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "sticky-stage",
+    "blueprint": "A pinned first screen holds one horizontal timeline of the business's day at min(94vw, 1280px): opening to closing across, with real events as blocks (batches, deliveries, shifts). The h1 at clamp(2.25rem, 5vw, 4rem) sits above it ('See your whole day before it starts'). Scrolling moves a playhead across the day; the panel under the timeline shows what the product shows at that moment: the queue, the stock level, who is on shift. 4 snap points: open, morning rush, midday, close.",
+    "motion": "Scroll-scrubbed across 260vh: the playhead moves left to right and the panel crossfades between 4 states, snapped to whole states. Unpin after close.",
+    "still_check": "At 25%, 50% and 75% the playhead rests on a snap point and the panel shows one complete readable state.",
+    "mobile": "Below 900px wide or 620px tall: no pin; the 4 states show as a vertical list of time-stamped panels.",
+    "a11y": "States are an ordered list with time headings; the timeline is decorative for screen readers with each state's time in text. Reduced motion: no pin, the stacked list.",
+    "avoid": "A playhead resting between states, fake activity data, more than 5 states, scroll-jacked speed.",
+    "stack_notes": {
+      "css": "position: sticky stage on a 260vh track; scroll-driven animation (view-timeline) for the playhead with a static fallback.",
+      "js": "GSAP ScrollTrigger pin with snap: 1 / 3 inside gsap.matchMedia with reduced-motion and size guards; kill on unmount."
+    }
+  },
+  {
+    "id": "hero-command-bar-first",
+    "name": "Command Bar First",
+    "kind": "hero",
+    "role": "hero",
+    "family": "command-bar",
+    "niches": [
+      "dashboard",
+      "saas"
+    ],
+    "moods": [
+      "technical",
+      "minimal",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "centred",
+    "blueprint": "A centred column at max 46rem: the h1 at clamp(2.25rem, 5vw, 4rem) states the job ('Ask your shop anything'), and right under it a real command bar at 56px tall, focused on load, with 3 example commands from this business as chips ('Reorder rye flour', 'Who is on Saturday?', 'Late orders'). Choosing a chip shows its result card below the bar from sample data (the bar itself is a real search form): a small table or one action button. 'Start free' sits under the result.",
+    "motion": "Choosing a chip fades its result card up 8px over 200ms. Nothing moves on scroll.",
+    "still_check": "Any screenshot shows the headline, command bar, chips and either the empty prompt or one complete result readable.",
+    "mobile": "At 375px chips wrap to two lines; the result card is full width; the bar stays 56px tall.",
+    "a11y": "The bar is a labelled search input in a form; chips are a radio group with visible labels; the result region is aria-live polite. Reduced motion: the result appears without the fade.",
+    "avoid": "A fake terminal, an AI sparkle icon as the only idea, results that do not match the command, autofocus that steals focus on later pages.",
+    "stack_notes": {
+      "css": "Chips are radio inputs; :has(#chip-n:checked) shows the matching pre-rendered result card. Centred grid, max-width in rem, visible focus rings.",
+      "js": "Optional: submit the bar to the product's real search; the chip results need no script."
+    }
+  },
+  {
+    "id": "hero-question-of-the-day",
+    "name": "Question of the Day",
+    "kind": "hero",
+    "role": "hero",
+    "family": "question-card",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "calm",
+      "editorial"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "centred",
+    "blueprint": "A centred column at max 40rem: the h1 is one real question the museum answers inside, at clamp(2.5rem, 6vw, 5rem) ('How heavy is a blue whale's heart?'). Under it, a large answer card that flips open on press to give the answer in one line and where to see it ('As heavy as a piano. See it life-size in Gallery 4.'). Below the card: today's hours, the next free entry slot and 'Plan your visit'. A small 'another question' link swaps to the next of 5 real questions.",
+    "motion": "Pressing the card rotates it 180deg on Y over 400ms to the answer side. Nothing moves on scroll.",
+    "still_check": "Any screenshot shows the question, the card (either side complete), the hours and the visit action readable.",
+    "mobile": "At 375px the question drops to clamp(2rem, 9vw, 2.75rem) and keeps max 16ch per line; the card stays full width.",
+    "a11y": "The card is a button with aria-expanded controlling the answer, which is in the DOM as text. Reduced motion: answer replaces the question without rotation.",
+    "avoid": "Trivia that is not in the collection, cartoon mascots, the answer hidden from screen readers, quiz scores or timers.",
+    "stack_notes": {
+      "css": "transform-style: preserve-3d with backface-visibility on both faces under the reduced-motion guard.",
+      "js": "Toggles aria-expanded and rotates the next question from a short list; no network."
+    }
+  },
+  {
+    "id": "hero-age-path-stack",
+    "name": "Pick Your Age, Get Your Path",
+    "kind": "hero",
+    "role": "hero",
+    "family": "age-path",
+    "niches": [
+      "museum",
+      "events",
+      "education"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "trustworthy"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "blueprint": "A stacked first screen: the h1 at clamp(2.75rem, 7vw, 6rem) across the full measure ('Bring them. We know where to start.'), then a full-width row of age bands as large tabs (Under 4, 4–7, 8–11, 12+). Choosing a band fills the band below with that age's path through the museum: 3 numbered stops with room names, a photo of the exhibit and how long it takes, ending in 'Book a time slot'. One band is open by default from the most visited age.",
+    "motion": "Switching bands slides the path 12px and fades it over 220ms. Nothing moves on scroll.",
+    "still_check": "Any screenshot shows the headline, all age tabs and one complete 3-stop path readable.",
+    "mobile": "At 375px tabs become a 2x2 grid; the path stops stack vertically with photos above text.",
+    "a11y": "Tabs follow the ARIA tabs pattern with arrow-key support; each path is a tabpanel with an ordered list. Reduced motion: no slide.",
+    "avoid": "Generic 'fun for all ages' copy, stock photos, age bands only as colours, paths that list exhibits not in the museum.",
+    "stack_notes": {
+      "css": "Tabs as a grid of buttons; panels toggled with the hidden attribute; transition under the reduced-motion guard.",
+      "js": "Small tabs script with roving tabindex; remember the last band in the URL hash."
     }
   }
 ]

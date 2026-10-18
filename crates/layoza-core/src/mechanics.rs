@@ -143,7 +143,7 @@ pub struct Mechanic {
 pub const NICHES: &[&str] = &[
     "store", "restaurant", "local-business", "saas", "dashboard", "agency", "kinetic", "3d", "editorial",
     "portfolio", "finance", "health", "education", "events", "real-estate", "travel", "nonprofit", "docs",
-    "landing", "professional", "legal", "devtools", "any",
+    "landing", "professional", "legal", "museum", "devtools", "any",
 ];
 
 /// The parsed catalogue (embedded at compile time; parsed once).
@@ -184,6 +184,7 @@ pub fn normalize_niche(raw: &str) -> String {
         "fintech" | "bank" => "finance".into(),
         "clinic" | "wellness" | "medical" => "health".into(),
         "legal" | "law" | "law-firm" | "lawyer" | "attorney" => "legal".into(),
+        "museum" | "science-centre" | "science-center" | "planetarium" | "aquarium" | "zoo" => "museum".into(),
         "corporate" | "consulting" | "consultancy" | "accountancy" | "services" => "professional".into(),
         "school" | "course" | "learning" => "education".into(),
         "event" | "festival" | "conference" => "events".into(),
@@ -246,6 +247,8 @@ const NICHE_WORDS: &[(&str, &str)] = &[
     ("curriculum", "education"), ("workshop", "education"),
     ("festival", "events"), ("conference", "events"), ("event", "events"), ("concert", "events"),
     ("summit", "events"), ("meetup", "events"), ("tickets", "events"), ("gig", "events"), ("wedding", "events"),
+    ("museum", "museum"), ("science centre", "museum"), ("science center", "museum"), ("planetarium", "museum"),
+    ("aquarium", "museum"), ("zoo", "museum"), ("exhibit", "museum"), ("hands-on", "museum"),
     ("exhibition", "events"),
     ("real estate", "real-estate"), ("property", "real-estate"), ("apartment", "real-estate"),
     ("homes", "real-estate"), ("realtor", "real-estate"), ("estate agent", "real-estate"), ("rental", "real-estate"),
@@ -331,6 +334,9 @@ fn first_hit(toks: &[String], phrase: &str) -> Option<usize> {
 /// say how the site is built, not what it is for, so they never lead when a trade is named.
 const TECHNIQUE_NICHES: &[&str] = &["3d", "kinetic", "landing"];
 
+/// Niches that name what is being built (a tool) rather than whose site it is.
+const SURFACE_NICHES: &[&str] = &["dashboard", "devtools", "docs"];
+
 /// A brief this long is a spec, not a one-liner: it mentions trades in passing (showcase examples,
 /// "not a dashboard"), so niches are ranked by how often the brief returns to them.
 const LONG_BRIEF_TOKENS: usize = 120;
@@ -375,7 +381,10 @@ pub fn detect_niches(brief: &str) -> Vec<String> {
     let has_trade = seen.iter().any(|e| !TECHNIQUE_NICHES.contains(&e.0));
     seen.sort_by_key(|&(n, count, first)| {
         let technique = has_trade && TECHNIQUE_NICHES.contains(&n);
-        (technique, if long { usize::MAX - count } else { 0 }, first)
+        // In a short brief the product surface leads the trade: a "bakery dashboard" is a
+        // dashboard about a bakery, so its first screen is the tool, not the shop window.
+        let trade_first = long || !SURFACE_NICHES.contains(&n);
+        (technique, trade_first, if long { usize::MAX - count } else { 0 }, first)
     });
     let mut out: Vec<String> = seen.into_iter().map(|e| e.0.to_string()).collect();
     if long {
@@ -457,13 +466,14 @@ fn trade_roles(niche: &str) -> &'static [&'static str] {
         "landing" => &["features", "proof", "pricing", "cta"],
         "professional" => &["services", "team", "proof", "process", "timeline"],
         "legal" => &["services", "team", "proof", "process"],
+        "museum" => &["schedule", "pricing", "gallery", "location"],
         "devtools" => &["features", "proof", "process", "docs-nav", "data-story", "comparison"],
         _ => &[],
     }
 }
 
 /// Niches whose mechanics depict that trade's own object; foreign to any other brief.
-const NARROW_TRADES: &[&str] = &["store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel", "devtools", "legal"];
+const NARROW_TRADES: &[&str] = &["store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel", "devtools", "legal", "museum"];
 
 /// Niches close enough that one's mechanics read naturally on the other's site. Used only when a
 /// niche has too few in-niche entries at the asked intensity, before anything unrelated is dealt.
@@ -491,6 +501,7 @@ fn related_niches(niche: &str) -> &'static [&'static str] {
         "nonprofit" => &["education", "editorial"],
         "professional" => &["finance", "health"],
         "legal" => &["professional", "finance", "editorial"],
+        "museum" => &["events", "education", "nonprofit", "travel"],
         _ => &[],
     }
 }
@@ -511,6 +522,15 @@ enum FitClass {
 }
 
 fn fit_class(m: &Mechanic, niches: &[String]) -> (FitClass, Option<String>) {
+    // Built around another narrow trade's object: foreign even when a secondary tag sits next to
+    // the brief (a menu card tagged `events` is still a restaurant's menu on a museum site).
+    if let Some(primary) = m.niches.first().filter(|p| NARROW_TRADES.contains(&p.as_str()) && !niches.contains(p)) {
+        // Tagged for one of the brief's own narrow trades too: shared on purpose, not borrowed.
+        let shared = m.niches.iter().any(|n| NARROW_TRADES.contains(&n.as_str()) && niches.contains(n));
+        if !niches.is_empty() && !shared {
+            return (FitClass::Foreign, Some(primary.clone()));
+        }
+    }
     if let Some(n) = m.niches.iter().find(|n| niches.contains(n)) {
         return (FitClass::InNiche, Some(n.clone()));
     }
@@ -669,6 +689,14 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
 
     // Niches: the brief's own words first, then the hint; the hint never displaces the brief.
     let mut niches = detect_niches(brief);
+    // A tool brief ("bakery dashboard"): the trade is the tool's content, not its storefront.
+    if niches.first().is_some_and(|n| SURFACE_NICHES.contains(&n.as_str())) {
+        let before = niches.len();
+        niches.retain(|n| SURFACE_NICHES.contains(&n.as_str()) || !NARROW_TRADES.contains(&n.as_str()));
+        if niches.len() < before {
+            notes.push("Tool brief: the trade is the product's content, so mechanics built on its storefront (menus, shelves) are left out; show the trade's real data inside the tool.".into());
+        }
+    }
     if let Some(n) = opts.niche.as_deref().filter(|n| !n.trim().is_empty()) {
         let n = normalize_niche(n);
         if NICHES.contains(&n.as_str()) {
@@ -797,6 +825,13 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             _ => 0,
         };
         if m.kind == MechanicKind::Hero {
+            // A tool brief ("bakery dashboard") opens on the tool: a hero built around the trade's
+            // shop window or menu belongs to that trade's own site, not to its software.
+            if let (Some(lead), Some(primary)) = (niches.first(), m.niches.first()) {
+                if SURFACE_NICHES.contains(&lead.as_str()) && primary != lead && NARROW_TRADES.contains(&primary.as_str()) && !SURFACE_NICHES.contains(&primary.as_str()) {
+                    s -= 10;
+                }
+            }
             if opts.prefer_composition.as_deref().is_some_and(|c| !c.is_empty() && c == m.composition) {
                 s += 5;
             }
@@ -869,7 +904,15 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         // so a fitting hero of that composition wins outright when it is within 10 points of the
         // best; only when none is that close does the window fall back to any composition.
         let wanted = |m: &&'static Mechanic| opts.prefer_composition.as_deref().is_some_and(|c| c == m.composition);
-        let matching: Vec<&'static Mechanic> = list.iter().copied().filter(wanted).collect();
+        // Never keep the promise with a borrowed hero: another trade's own object, or a trade's shop
+        // window on a tool brief. Then the direction follows the fitting hero instead.
+        let borrowed = |m: &Mechanic| {
+            let lead = niches.first().map(String::as_str).unwrap_or("");
+            let primary = m.niches.first().map(String::as_str).unwrap_or("");
+            fit_class(m, &niches).0 == FitClass::Foreign
+                || (SURFACE_NICHES.contains(&lead) && primary != lead && NARROW_TRADES.contains(&primary) && !SURFACE_NICHES.contains(&primary))
+        };
+        let matching: Vec<&'static Mechanic> = list.iter().copied().filter(wanted).filter(|m| !borrowed(m)).collect();
         let window = |v: &[&'static Mechanic], slack: i64| -> Vec<&'static Mechanic> {
             let top = v.first().map(|m| score(m)).unwrap_or(0);
             v.iter().copied().filter(|m| score(m) + slack >= top).take(4).collect()
@@ -1332,6 +1375,22 @@ mod tests {
 
     fn picks(d: &MechanicDeal) -> Vec<Mechanic> {
         d.hero.iter().chain(d.signature.iter()).cloned().collect()
+    }
+
+    #[test]
+    fn kids_museum_and_bakery_dashboard_get_their_own_objects() {
+        assert_eq!(detect_niches("kids museum with hands-on exhibits").first().map(String::as_str), Some("museum"));
+        assert_eq!(detect_niches("bakery dashboard").first().map(String::as_str), Some("dashboard"));
+        for seed in 0..12 {
+            let d = deal_mechanics("kids museum with hands-on exhibits", None, None, 2, seed);
+            for m in picks(&d) {
+                let primary = m.niches.first().map(String::as_str).unwrap_or("");
+                assert!(primary == "museum" || !NARROW_TRADES.contains(&primary), "seed {seed}: museum dealt {} ({primary})", m.id);
+            }
+            let hero = deal_mechanics("bakery dashboard", None, None, 2, seed).hero.expect("hero");
+            let primary = hero.niches.first().map(String::as_str).unwrap_or("");
+            assert!(!["restaurant", "store", "local-business"].contains(&primary), "seed {seed}: bakery dashboard hero {}", hero.id);
+        }
     }
 
     #[test]

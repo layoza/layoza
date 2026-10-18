@@ -60,6 +60,20 @@ All notable changes to Layoza are listed here. The format follows
   art-direction skill explains how (examples, not a menu).
 
 ### Fixed
+- Museums, science centres, aquariums and zoos get their own `museum` niche and mechanics
+  (floor-plan wayfinding, specimen drawer, question of the day, age paths, today's
+  programme, wristband tickets, wall-label gallery) instead of borrowing law-firm or
+  restaurant pieces.
+- Tool briefs ("bakery dashboard") now lead with the tool: dashboard, devtools and docs
+  outrank the trade in short briefs, the trade's storefront mechanics (menus, shelves) are
+  left out, and three dashboard heroes (ops wall board, day scrub, command bar) were added.
+  The command-bar hero is now CSS-only so calm directions can use it.
+- A mechanic built around another narrow trade's object is foreign even when a secondary tag
+  matches the brief, unless it is also tagged for one of the brief's own narrow trades.
+  Across 6 test briefs x 4 variants, picks borrowed from another trade fell from 24 of 212
+  (0.1.3) to 0 of 216.
+- Palettes and type pairings led by another trade's subject tag score lower (-7, was -4),
+  except when the brief wants the pairing's surface tag (data, code).
 - Law-firm briefs read as their own `legal` niche and get six legal mechanics (case-caption hero,
   exhibit-binder hero, practice-area clause index, matter docket timeline, engagement-letter terms,
   bar-roll register) instead of the tape-measure timeline, measured before/after and odometer hero,
