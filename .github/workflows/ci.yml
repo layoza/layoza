@@ -27,3 +27,7 @@ jobs:
         run: node bin/layoza.mjs --version
       - name: npm package contents
         run: npm pack --dry-run
+      - name: MCP Registry manifest (server.json, versions, mcpName, launch command)
+        run: node scripts/check-mcp-registry.mjs
+      - name: MCP stdio handshake
+        run: node scripts/mcp-smoke.mjs -- node bin/layoza.mjs mcp

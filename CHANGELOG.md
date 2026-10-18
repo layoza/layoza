@@ -6,6 +6,22 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-18
+
+### Added
+- MCP Registry metadata. `package.json` carries `"mcpName": "io.github.layoza/layoza"`
+  and the new root `server.json` describes the local stdio server, launched with
+  `npx layoza@0.1.2 mcp`. Nothing is published to the Registry by this release on its own;
+  see [docs/MCP-REGISTRY-RELEASE.md](docs/MCP-REGISTRY-RELEASE.md).
+- `scripts/check-mcp-registry.mjs` checks `server.json` against the 2025-12-11 schema
+  rules it uses, that every version matches, the exact `mcpName`, the launch command and
+  (with `--tarball`) the packed npm archive.
+- `scripts/mcp-smoke.mjs`, a dependency-free MCP stdio client that runs `initialize`,
+  `tools/list`, a read-only tool call, bad-input and unknown-tool calls and `ping`, checks
+  that stdout carries only JSON-RPC and that the server exits when stdin closes. CI runs
+  both scripts, and the release workflow runs them against the packed tarball.
+- Official app icon (`docs/assets/icon-256.png`) and an updated README logo.
+
 ### Fixed
 - `layoza init` no longer replaces an existing `.mcp.json`, `.cursor/mcp.json` or
   `opencode.json` with `{}` when the file is not valid JSON. It now leaves the file
@@ -56,5 +72,7 @@ First public release.
 - **Blind benchmarks** across four kinds of site with screenshots, in `examples/` and
   `docs/CROSS-TYPE-BENCHMARK-2026-10.md`.
 
+[Unreleased]: https://github.com/layoza/layoza/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/layoza/layoza/releases/tag/v0.1.2
 [0.1.1]: https://github.com/layoza/layoza/releases/tag/v0.1.1
 [0.1.0]: https://github.com/layoza/layoza/releases/tag/v0.1.0

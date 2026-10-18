@@ -29,4 +29,4 @@ The suite has 32 briefs, defined in [`crates/layoza-core/src/benchmark.rs`](../c
 
 ## Last run
 
-On 2026-10-17 (v0.1.1 plus the fixes in the next release), 32 of 32 briefs passed these checks. A pass means Layoza's rules are internally consistent. It says nothing about how good the generated pages look.
+On 2026-10-17 (the v0.1.2 code), 32 of 32 briefs passed these checks. A pass means Layoza's rules are internally consistent. It says nothing about how good the generated pages look.

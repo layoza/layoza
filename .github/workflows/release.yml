@@ -85,8 +85,12 @@ jobs:
         run: |
           npm pack
           tgz="$PWD/$(ls layoza-*.tgz)"
+          node scripts/check-mcp-registry.mjs --tarball "$tgz"
+          smoke="$PWD/scripts/mcp-smoke.mjs"
           cd "$(mktemp -d)"
           PATH="$(dirname "$(command -v node)"):/usr/bin:/bin" npm exec --yes --package="$tgz" -- layoza --version
+          # The exact command the MCP Registry entry advertises, against the packed artifact
+          PATH="$(dirname "$(command -v node)"):/usr/bin:/bin" node "$smoke" -- npm exec --yes --package="$tgz" -- layoza mcp
           rm "$tgz"
       - name: Check npm keeps the bin entries
         run: |
