@@ -6,6 +6,8 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-18
+
 ### Added
 - The audit (and so `layoza qa`, `verify` and every MCP tool that reports the gate) now
   checks the recorded design process whenever `.layoza/direction.md` exists:
@@ -94,7 +96,8 @@ First public release.
 - **Blind benchmarks** across four kinds of site with screenshots, in `examples/` and
   `docs/CROSS-TYPE-BENCHMARK-2026-10.md`.
 
-[Unreleased]: https://github.com/layoza/layoza/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/layoza/layoza/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/layoza/layoza/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/layoza/layoza/releases/tag/v0.1.2
 [0.1.1]: https://github.com/layoza/layoza/releases/tag/v0.1.1
 [0.1.0]: https://github.com/layoza/layoza/releases/tag/v0.1.0

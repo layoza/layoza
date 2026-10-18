@@ -26,11 +26,8 @@ description: >-
 
 ## 1. Route by mode (load only what the mode needs)
 
-**Intake before routing.** Know what the site is for (purpose and primary
-action), who it is for, and whether it is new or an existing site/repo; ask the
-user for whatever the prompt leaves open. An existing project in the folder is
-never Mode A. For new sites, the user picks one of three directions before any
-build (`layoza-art-direction` step 3b).
+**Intake first:** purpose, audience, new or existing; ask what the prompt
+leaves open. New sites: the user picks a direction before any build.
 
 | Mode | When | First command | Load |
 | :--- | :--- | :--- | :--- |
@@ -88,8 +85,7 @@ clipping, nav, focus, hidden text and lab Core Web Vitals (`null` = unmeasured,
 never a pass). Then open `qa/desktop.png`, `qa/mobile-hero.png` and
 `qa/mobile-menu-open.png` and run the art loop
 (`layoza-art-direction/reference/finish.md`). A page is done when
-`.layoza/direction.md` records `PURPOSE:`, the user's `PICKED:` direction, 3+
-`ROUND` lines and a `REVIEWER:` verdict (the audit enforces this), its design
+`direction.md` logs `PURPOSE:`, `PICKED:`, 3 `ROUND`s and `REVIEWER:`, its design
 scores ≥ 9 (fresh-eyes reviewer agrees), QA of the **final** file shows 0 errors
 and 0 warnings, and every `what-wins.md` item is ticked.
 

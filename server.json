@@ -9,20 +9,20 @@
   },
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/layoza/layoza/v0.1.2/docs/assets/icon-256.png",
+      "src": "https://raw.githubusercontent.com/layoza/layoza/v0.1.3/docs/assets/icon-256.png",
       "mimeType": "image/png",
       "sizes": [
         "256x256"
       ]
     }
   ],
-  "version": "0.1.2",
+  "version": "0.1.3",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "layoza",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
