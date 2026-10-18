@@ -11,6 +11,10 @@ description: >-
 
 1. **The user's prompt wins.** Follow any named framework, style, palette,
    library or scope exactly.
+   **Intake first:** know the site's purpose and primary action, audience,
+   whether it is new or extends an existing site, and what must be kept. Ask
+   for what the prompt leaves open (art-direction step 0). If the folder holds
+   an existing site, this is Mode B/C/D, not A.
 2. **Design method:** follow [`layoza-art-direction`](../layoza-art-direction/SKILL.md)
    end to end: subject inventory, rut, seven worlds plus `layoza deal`, fusion,
    contract and copy, build, motion, art loop, then the QA floor.
@@ -34,8 +38,10 @@ description: >-
    `layoza-wordpress`).
 5. **Motion and 3D** are decided per design: [`layoza-animations`](../layoza-animations/SKILL.md)
    and [`layoza-threejs-webgl`](../layoza-threejs-webgl/SKILL.md).
-6. **Done means:** the art loop scores ≥ 9 (reviewer agrees) and `layoza qa <file-or-url>`
-   reports 0 errors, with screenshots reviewed.
+6. **Done means:** `.layoza/direction.md` records `PURPOSE:`, the user's
+   `PICKED:` direction, at least 3 `ROUND` lines and a `REVIEWER:` verdict; the
+   art loop scores ≥ 9 (reviewer agrees); and `layoza qa <file-or-url>`
+   reports 0 errors, with screenshots reviewed. A passing gate alone is not done.
    **For apps and dashboards:** every view renders its state matrix, `layoza qa`
    reports 0 errors, tables work at 375px, and the main task passes a
    keyboard-only walk-through. No art-loop score; motion uses the tool

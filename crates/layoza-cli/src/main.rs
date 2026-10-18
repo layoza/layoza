@@ -998,7 +998,7 @@ mod tests {
 /// Human-readable release gate status.
 fn gate_label(report: &layoza_core::verifier::AuditReport) -> String {
     match report.verification_status.as_str() {
-        "passed" => "PASSED".to_string(),
+        "passed" => "PASSED (defects only; this gate cannot judge whether the design is good)".to_string(),
         "unverified" => "UNVERIFIED (no objective errors, but Core Web Vitals were not measured; run `layoza qa` first)".to_string(),
         _ => "FAILED".to_string(),
     }

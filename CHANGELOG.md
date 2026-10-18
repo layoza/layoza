@@ -6,6 +6,27 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+### Added
+- The audit (and so `layoza qa`, `verify` and every MCP tool that reports the gate) now
+  checks the recorded design process whenever `.layoza/direction.md` exists:
+  `DESIGN-NO-PURPOSE` (no `PURPOSE:` line: what the site is for, audience, new or existing),
+  `DESIGN-NO-DIRECTION-PICK` (no `PICKED:` line naming the direction the user chose, or
+  `PICKED: unattended — <reason>`) and `DESIGN-ART-LOOP-INCOMPLETE` (fewer than 3
+  `ROUND <n>:` lines or no `REVIEWER:` verdict). All three are errors. Projects without a
+  direction file (Mode B/C) are unaffected.
+- `gate_scope` in the audit report states that the gate covers defects only.
+- Skills: an intake step (purpose, audience, new or existing, must-keep; ask for what the
+  prompt leaves open), a fit-check on the dealt world, a hard stop where the user picks one
+  of three directions, round and reviewer logging in `direction.md`, a subject rule for
+  software, developer-tool and MCP products (show the product working), and "never cut
+  motion to pass QA".
+
+### Changed
+- A passing gate now prints `PASSED (defects only; this gate cannot judge whether the design
+  is good)`.
+- The benchmark pages under `examples/` were built before these checks; re-auditing them now
+  reports the process errors, since their direction files carry no purpose, pick or round log.
+
 ## [0.1.2] - 2026-10-18
 
 ### Added

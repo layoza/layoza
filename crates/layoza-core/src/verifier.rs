@@ -85,6 +85,9 @@ pub struct AuditReport {
     /// Vitals were not measured, so the gate could not be confirmed).
     #[serde(default)]
     pub verification_status: String,
+    /// What the gate covers. It measures defects; it never judges whether the design is good.
+    #[serde(default)]
+    pub gate_scope: String,
     pub objective_error_count: usize,
     pub objective_warning_count: usize,
     pub subjective_critique_notes: usize,
@@ -200,6 +203,8 @@ pub fn audit_project(
         break;
     }
 
+    audit_design_process(base_dir, &mut findings);
+
     // Caller-supplied lab numbers take precedence over the browser report. Nothing is invented.
     let lcp = lab_lcp_ms.or(browser_cwv.0);
     let inp = lab_inp_ms.or(browser_cwv.1);
@@ -268,6 +273,7 @@ pub fn audit_project(
         target_path: project_root.to_string_lossy().replace('\\', "/"),
         passed_release_gate,
         verification_status,
+        gate_scope: GATE_SCOPE.to_string(),
         objective_error_count,
         objective_warning_count,
         subjective_critique_notes,
@@ -336,6 +342,92 @@ fn browser_finding(
         message,
         remediation: remediation.into(),
         auto_repairable: false,
+    }
+}
+
+/// Plain statement of what a passing gate means, carried in every report.
+pub const GATE_SCOPE: &str = "Defects only: accessibility, layout, performance and the recorded design process. Passing does not mean the design is good; that is judged by the art loop, a fresh-eyes reviewer and the user.";
+
+/// Minimum logged art-loop rounds before a Mode A/D build can pass the gate.
+pub const MIN_ART_LOOP_ROUNDS: usize = 3;
+
+/// Checks the design process recorded in `.layoza/direction.md` (written in Mode A/D).
+///
+/// Defect checks cannot judge taste, so a page could pass the gate while the
+/// direction pick and the art loop were silently skipped. When a direction file
+/// exists, the gate also requires:
+/// - a `PURPOSE:` line: what the site is for, its audience, new or existing;
+/// - a `PICKED:` line naming the direction the user chose (or `PICKED: unattended`
+///   with a reason, for runs with nobody to ask);
+/// - at least [`MIN_ART_LOOP_ROUNDS`] `ROUND <n>:` lines and a `REVIEWER:` line.
+///
+/// Projects without a direction file (Mode B/C) are not affected.
+fn audit_design_process(base_dir: &Path, findings: &mut Vec<AuditFinding>) {
+    let rel = ".layoza/direction.md";
+    let Ok(text) = fs::read_to_string(base_dir.join(rel)) else {
+        return;
+    };
+    let lines: Vec<String> = text
+        .lines()
+        .map(|l| {
+            l.replace('*', "")
+                .trim()
+                .trim_start_matches(['-', '#', ' '])
+                .to_ascii_uppercase()
+        })
+        .collect();
+    let purpose = lines
+        .iter()
+        .find_map(|l| l.strip_prefix("PURPOSE:").map(|v| v.trim().to_string()));
+    if purpose.as_deref().unwrap_or("").is_empty() {
+        findings.push(browser_finding(
+            "DESIGN-NO-PURPOSE",
+            Severity::Error,
+            "design-process",
+            rel,
+            "No purpose is recorded, so the design was started without knowing what the site is for. Record the purpose and primary action, the audience, whether the site is new or extends an existing one, and what must be kept; ask the user for anything the prompt leaves open.".into(),
+            "Add `PURPOSE: <goal and primary action>; audience: <who>; new|existing; keep: <must-keep>` to .layoza/direction.md.",
+        ));
+    }
+    let pick = lines
+        .iter()
+        .find_map(|l| l.strip_prefix("PICKED:").map(|v| v.trim().to_string()));
+    match pick.as_deref() {
+        None | Some("") => findings.push(browser_finding(
+            "DESIGN-NO-DIRECTION-PICK",
+            Severity::Error,
+            "design-process",
+            rel,
+            "No direction pick is recorded, so the look was chosen without the user. Show the user three distinct directions (hero sketch or screenshot each) and wait for their choice before building.".into(),
+            "Add `PICKED: <direction> (chosen by the user)` to .layoza/direction.md, or `PICKED: unattended — <why nobody could be asked>`.",
+        )),
+        _ => {}
+    }
+    let rounds = lines
+        .iter()
+        .filter(|l| {
+            l.strip_prefix("ROUND ")
+                .and_then(|r| r.split(':').next())
+                .is_some_and(|n| {
+                    !n.trim().is_empty() && n.trim().chars().all(|c| c.is_ascii_digit())
+                })
+        })
+        .count();
+    let reviewer = lines.iter().any(|l| l.starts_with("REVIEWER:"));
+    if rounds < MIN_ART_LOOP_ROUNDS || !reviewer {
+        findings.push(browser_finding(
+            "DESIGN-ART-LOOP-INCOMPLETE",
+            Severity::Error,
+            "design-process",
+            rel,
+            format!(
+                "Art loop incomplete: {} of {} rounds logged{}. Passing defect checks does not mean the design is good.",
+                rounds,
+                MIN_ART_LOOP_ROUNDS,
+                if reviewer { "" } else { ", no fresh-eyes reviewer verdict" }
+            ),
+            "Each round: critique the screenshots, score (0.4 design + 0.3 usability + 0.2 creativity + 0.1 content), fix the top 3, then log `ROUND <n>: <score> — <what changed>`. Finish with `REVIEWER: <ship|fix|rebuild> <score>` from a reviewer with no build context.",
+        ));
     }
 }
 
@@ -1273,5 +1365,51 @@ components:
         assert!(near["source"].as_str().unwrap().ends_with("site/DESIGN.md"), "{}", near["source"]);
         assert_eq!(near["colors"][0]["value"], "#fafafa");
         let _ = std::fs::remove_dir_all(&root);
+    }
+
+    fn process_rules(direction: Option<&str>) -> Vec<String> {
+        let root = std::env::temp_dir().join(format!(
+            "layoza-process-{}-{}",
+            std::process::id(),
+            direction.map(|d| d.len()).unwrap_or(0)
+        ));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(root.join(".layoza")).unwrap();
+        if let Some(d) = direction {
+            std::fs::write(root.join(".layoza/direction.md"), d).unwrap();
+        }
+        let mut findings = Vec::new();
+        audit_design_process(&root, &mut findings);
+        let _ = std::fs::remove_dir_all(&root);
+        findings.into_iter().map(|f| f.rule_id).collect()
+    }
+
+    #[test]
+    fn design_process_is_required_only_when_a_direction_exists() {
+        // Mode B/C projects have no direction file and are untouched.
+        assert!(process_rules(None).is_empty());
+
+        // A direction with no pick and no art loop fails both checks.
+        let rules = process_rules(Some("THESIS: x\n"));
+        assert!(rules.contains(&"DESIGN-NO-PURPOSE".to_string()));
+        assert!(rules.contains(&"DESIGN-NO-DIRECTION-PICK".to_string()));
+        assert!(rules.contains(&"DESIGN-ART-LOOP-INCOMPLETE".to_string()));
+
+        // Two rounds and no reviewer is still incomplete.
+        let rules = process_rules(Some(
+            "PURPOSE: sell\nPICKED: B (user)\nROUND 1: 6.5\nROUND 2: 7.8\n",
+        ));
+        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string()]);
+
+        // An empty pick does not count; "round" prose does not count as a round;
+        // markdown bold around a key is accepted.
+        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nROUND one: x\n- Round 1: 7\n- Round 2: 8\n- Round 3: 9\nReviewer: ship 9\n"));
+        assert_eq!(rules, vec!["DESIGN-NO-DIRECTION-PICK".to_string()]);
+
+        // A complete record passes, including an explicit unattended pick.
+        assert!(process_rules(Some(
+            "PURPOSE: book tables; audience: locals; new\nPICKED: unattended — benchmark run\nROUND 1: 7\nROUND 2: 8.2\nROUND 3: 9.0\nREVIEWER: ship 9.0\n"
+        ))
+        .is_empty());
     }
 }

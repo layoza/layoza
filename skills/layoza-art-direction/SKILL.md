@@ -40,6 +40,19 @@ page. Passing `layoza qa` is the floor. The goal is the design.
    the incumbent world.
 3. Bans here apply to new work. A brand's own DNA (Inter, cream, numbered
    sections) is kept in B/C, and in D unless the user drops it.
+4. **Intake: know what the site is for before any look.** Fill these from the
+   prompt; ask the user, in one short message, only for what it leaves open:
+   - **Purpose:** what the site must achieve (sell, book, sign up, install,
+     explain, recruit) and the one primary action.
+   - **Audience:** who arrives, from where, knowing what.
+   - **New or existing:** a new site (Mode A), or an existing site, repo or
+     brand to extend, improve or redesign (B/C/D). Check the folder too: an
+     existing project means `layoza inspect . --write` first.
+   - **Must-keep:** real content, proof, brand assets, platform.
+   Never invent a purpose the prompt doesn't support. If nobody can be asked
+   (unattended run), write the assumption and why.
+5. **Re-read `.layoza/direction.md` first** whenever context was compacted or a
+   session resumes; it is the memory of every decision below.
 
 ## 1. Inventory the subject (before any look)
 
@@ -59,6 +72,14 @@ directions. Its palettes and fonts are a fallback register only. Then write:
   cut; the order follows the argument, not a stock template.
 - **Scene:** who uses it, where, under what light. This decides light or dark,
   never the category.
+
+**Software, developer tools, APIs, MCP servers and AI products:** the subject
+objects are the product *working*: the terminal session, the agent's tool
+calls, the editor or IDE, the before/after output, the config snippet, the
+diff. Draw those at scale and let the visitor run one. A metaphor world (a
+casino, a kitchen, a cockpit) may dress the page, but the hero must still show
+the real tool doing the real job, and the subject test applies with no
+exceptions.
 
 ## 2. Name the rut (treatments, both ends)
 
@@ -89,9 +110,25 @@ one signature). Order them by resonance, then let the dealer pick from your top 
 layoza deal "<the seven candidates, one per line>" --top 4
 ```
 
-Build the dealt world. The deal exists because a model's first pick converges
-on the category; overrule it only when the dealt world fails truth or clarity,
-and say why. Detail and a worked example: [reference/world.md](reference/world.md).
+**Fit-check the dealt world** before using it: (1) does the audience already
+know this world by heart, (2) can it carry the argument section by section,
+(3) does it make the product clearer, not just prettier? Two "no" answers mean
+re-deal or take the next candidate, and say why. The deal exists because a
+model's first pick converges on the category; overrule it only when the dealt
+world fails truth, clarity or this fit-check. Detail and a worked example:
+[reference/world.md](reference/world.md).
+
+### 3b. The user picks (hard stop)
+
+Shape the dealt world and the two strongest challengers into **three directions
+that differ in layout, identity, type, content treatment and motion**. For each,
+show the user a hero sketch (ASCII wireframe or a quick screenshot), the idea
+sentence, palette and the motion idea. **Stop and wait for the user's choice.**
+Do not build a look the user has not chosen. Record it in `direction.md` as
+`PICKED: <direction> (chosen by the user)`. In an unattended run with nobody to
+ask, record `PICKED: unattended — <why nobody could be asked>` and choose by
+the fit-check. `layoza audit` / `qa` fail with `DESIGN-NO-DIRECTION-PICK` until
+this line exists.
 
 ## 4. Fuse: world from far, subject up close
 
@@ -115,6 +152,10 @@ and say why. Detail and a worked example: [reference/world.md](reference/world.m
 
 Write `.layoza/direction.md`, a dev-only file that is never served:
 
+- **PURPOSE:** the intake from step 0: purpose and primary action, audience,
+  new or existing, must-keep. `layoza audit` fails with `DESIGN-NO-PURPOSE`
+  until this line exists.
+- **PICKED:** the user's choice from step 3b.
 - **THESIS:** the idea sentence and the category arrangement it refuses.
 - **OWN-WORLD:** palette roles, materials and component language, recognisable
   with all content removed.
@@ -207,6 +248,11 @@ does it well. Values, tools and guardrails:
 [layoza-animations](../layoza-animations/SKILL.md). Never one identical fade-up
 on every section; content is visible without JS; reduced motion is honoured.
 
+**Never cut motion to pass QA.** When a QA rule fires on an animation (CLS,
+overlap, hidden text, LCP), fix the cause: sequence it after first paint,
+animate only `transform`/`opacity`, reserve its box, or mark decorative layers
+`aria-hidden`. A timid page that passes is a failed design, not a safe one.
+
 ## 8. Art loop, then the floor
 
 Load [reference/finish.md](reference/finish.md).
@@ -224,11 +270,16 @@ Load [reference/finish.md](reference/finish.md).
       (`reference/ceiling.md`) once the score reaches 8.
    5. Stop when the score is ≥ 9 and the fresh-eyes reviewer agrees, or after
       6 rounds; report the reviewer's score.
+   6. **Log every round** in `direction.md` as
+      `ROUND <n>: <score> — <what changed>`, and the reviewer's verdict as
+      `REVIEWER: <ship|fix|rebuild> <score>`. `layoza audit` / `qa` fail with
+      `DESIGN-ART-LOOP-INCOMPLETE` until 3 rounds and a verdict are logged.
 3. **Fresh-eyes reviewer:** when subagents are available, spawn one with no
    build context. Give it the screenshots, the brief and `direction.md`. It
    returns ship / fix / rebuild using the finish.md checklist.
 4. **QA floor:** fix every `layoza qa` error at the cause; never game a
-   checker. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
+   checker. The gate measures defects only: **PASSED never means the design is
+   good.** Only the art loop, the reviewer and the user decide that. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
 5. **Report honestly:** the score, QA errors (0 or a list), metrics with nulls
    named, what is still open, and anything the user should confirm.
 

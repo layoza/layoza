@@ -26,6 +26,12 @@ description: >-
 
 ## 1. Route by mode (load only what the mode needs)
 
+**Intake before routing.** Know what the site is for (purpose and primary
+action), who it is for, and whether it is new or an existing site/repo; ask the
+user for whatever the prompt leaves open. An existing project in the folder is
+never Mode A. For new sites, the user picks one of three directions before any
+build (`layoza-art-direction` step 3b).
+
 | Mode | When | First command | Load |
 | :--- | :--- | :--- | :--- |
 | **A: New** | New site, page, app or dashboard | `layoza design-system "<brief>" --mode new --json` | [`layoza-art-direction`](../layoza-art-direction/SKILL.md) (+ [`layoza-new-website`](../layoza-new-website/SKILL.md) for stack) |
@@ -81,7 +87,9 @@ Real Chromium at 1440/768/375, scrolled like a visitor: contrast, overflow,
 clipping, nav, focus, hidden text and lab Core Web Vitals (`null` = unmeasured,
 never a pass). Then open `qa/desktop.png`, `qa/mobile-hero.png` and
 `qa/mobile-menu-open.png` and run the art loop
-(`layoza-art-direction/reference/finish.md`). A page is done when its design
+(`layoza-art-direction/reference/finish.md`). A page is done when
+`.layoza/direction.md` records `PURPOSE:`, the user's `PICKED:` direction, 3+
+`ROUND` lines and a `REVIEWER:` verdict (the audit enforces this), its design
 scores ≥ 9 (fresh-eyes reviewer agrees), QA of the **final** file shows 0 errors
 and 0 warnings, and every `what-wins.md` item is ticked.
 
