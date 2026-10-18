@@ -20,7 +20,8 @@ All notable changes to Layoza are listed here. The format follows
   `tools/list`, a read-only tool call, bad-input and unknown-tool calls and `ping`, checks
   that stdout carries only JSON-RPC and that the server exits when stdin closes. CI runs
   both scripts, and the release workflow runs them against the packed tarball.
-- Official app icon (`docs/assets/icon-256.png`) and an updated README logo.
+- New brand assets: app icon (`docs/assets/icon-256.png`, also the Registry icon), light and
+  dark horizontal logos in the README header, org avatar and repository social preview.
 
 ### Fixed
 - `layoza init` no longer replaces an existing `.mcp.json`, `.cursor/mcp.json` or

@@ -1,6 +1,9 @@
 <div align="center">
 
-<img src="docs/assets/logo.png" alt="Layoza logo" width="88">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-horizontal-dark.png">
+  <img src="docs/assets/logo-horizontal-light.png" alt="Layoza" width="320">
+</picture>
 
 # Layoza — design engineering for AI agents
 
