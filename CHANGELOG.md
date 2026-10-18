@@ -6,6 +6,8 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-10-19
+
 ### Added
 - MCP `capture_screenshots` takes an optional `sketch: true` that returns only the
   screenshot paths per viewport plus error and warning counts, skipping findings, metrics,
@@ -227,7 +229,8 @@ First public release.
 - **Blind benchmarks** across four kinds of site with screenshots, in `examples/` and
   `docs/CROSS-TYPE-BENCHMARK-2026-10.md`.
 
-[Unreleased]: https://github.com/layoza/layoza/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/layoza/layoza/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/layoza/layoza/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/layoza/layoza/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/layoza/layoza/releases/tag/v0.1.2
 [0.1.1]: https://github.com/layoza/layoza/releases/tag/v0.1.1

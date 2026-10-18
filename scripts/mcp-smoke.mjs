@@ -3,7 +3,7 @@
 // Minimal MCP stdio client used to check a release before it is published. No dependencies.
 //
 //   node scripts/mcp-smoke.mjs [--cwd <dir>] -- <command> [args...]
-//   node scripts/mcp-smoke.mjs --cwd /tmp/empty -- npx --yes layoza@0.1.3 mcp
+//   node scripts/mcp-smoke.mjs --cwd /tmp/empty -- npx --yes layoza@0.1.4 mcp
 //
 // It runs initialize, notifications/initialized, tools/list, one read-only tools/call and ping,
 // checks that every stdout line is a JSON-RPC message, then closes stdin and waits for the
