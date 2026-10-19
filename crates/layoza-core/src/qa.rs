@@ -151,10 +151,68 @@ fn output_with_timeout(cmd: &mut Command, timeout: Duration) -> Result<Output, S
     Ok(Output { status, stdout: out_t.join().unwrap_or_default(), stderr: err_t.join().unwrap_or_default() })
 }
 
+/// Options for [`run_browser_qa_with`].
+#[derive(Debug, Clone, Default)]
+pub struct QaOptions {
+    /// Rule ids or style groups to allow (`pill`, `glow`, `same-section-twice`, `rule:<id>`,
+    /// `style:<group>`). Merged with the groups the project's DESIGN.md / BRAND.md ask for.
+    pub allow: Vec<String>,
+    /// Full mode (`--full`): adds the throttled perf pass and runs the full rule sweep at every
+    /// width. The default fast mode runs the full sweep at 1440 only.
+    pub full: bool,
+}
+
+/// True for a file name the 0.1.x releases left in `%TEMP%\layoza`: `browser-qa-0.1.<anything>.mjs`.
+fn is_old_temp_script(name: &str) -> bool {
+    name.len() > "browser-qa-0.1.".len() + ".mjs".len()
+        && name.starts_with("browser-qa-0.1.")
+        && name.ends_with(".mjs")
+        && !name.contains(['/', '\\'])
+}
+
+/// Deletes the shared-path QA scripts written by 0.1.x releases (`%TEMP%\layoza\browser-qa-0.1.*.mjs`).
+/// Only plain files directly in that folder whose name matches that exact pattern; nothing else.
+/// Runs once per process.
+fn remove_old_temp_scripts() {
+    static ONCE: std::sync::Once = std::sync::Once::new();
+    ONCE.call_once(|| {
+        remove_old_temp_scripts_in(&std::env::temp_dir().join("layoza"));
+    });
+}
+
+fn remove_old_temp_scripts_in(dir: &Path) -> usize {
+    let Ok(entries) = fs::read_dir(dir) else { return 0 };
+    let mut removed = 0;
+    for entry in entries.flatten() {
+        let Ok(kind) = entry.file_type() else { continue };
+        if !kind.is_file() {
+            continue;
+        }
+        let name = entry.file_name();
+        if name.to_str().is_some_and(is_old_temp_script) && fs::remove_file(entry.path()).is_ok() {
+            removed += 1;
+        }
+    }
+    removed
+}
+
 /// Runs headless Chromium QA on `target` (an http(s) URL or a local HTML file path) and returns
-/// the parsed report. Any runner failure is returned as an error, never as an empty pass.
+/// the parsed report, in fast mode with the brief's own allow list. Any runner failure is returned
+/// as an error, never as an empty pass.
 pub fn run_browser_qa(project_root: &Path, target: &str, out_json: &Path, screenshot_dir: &Path) -> Result<Value, String> {
+    run_browser_qa_with(project_root, target, out_json, screenshot_dir, &QaOptions::default())
+}
+
+/// [`run_browser_qa`] with options: an extra allow list (rule ids or style groups) and full mode.
+pub fn run_browser_qa_with(
+    project_root: &Path,
+    target: &str,
+    out_json: &Path,
+    screenshot_dir: &Path,
+    opts: &QaOptions,
+) -> Result<Value, String> {
     let started = Instant::now();
+    remove_old_temp_scripts();
     let run_dir = RunDir::new()?;
     let script = qa_script_path(project_root, run_dir.path())?;
     let is_url = target.starts_with("http://") || target.starts_with("https://");
@@ -177,9 +235,12 @@ pub fn run_browser_qa(project_root: &Path, target: &str, out_json: &Path, screen
         cmd.arg("--design-tokens").arg(path);
     }
     // Styles the brief asks for (DESIGN.md / BRAND.md) silence the matching brief-aware rules
-    let allow = discover_style_allow(project_root);
+    let allow = merge_allow(&discover_style_allow(project_root), &opts.allow);
     if !allow.is_empty() {
         cmd.arg("--allow").arg(allow.join(","));
+    }
+    if opts.full {
+        cmd.arg("--full");
     }
     cmd.env("PYTHONIOENCODING", "utf-8").env("PYTHONUTF8", "1");
     let output = output_with_timeout(&mut cmd, qa_timeout());
@@ -246,6 +307,20 @@ pub fn discover_style_allow(project_root: &Path) -> Vec<String> {
             if !out.contains(&groups) {
                 out.push(groups);
             }
+        }
+    }
+    out
+}
+
+/// Brief allows plus caller allows, de-duplicated (case-insensitive), with `rule:` / `style:`
+/// prefixes removed and anything that is not a plain id or group name dropped.
+fn merge_allow(brief: &[String], extra: &[String]) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for item in brief.iter().chain(extra.iter()) {
+        let v = item.trim().to_ascii_lowercase();
+        let v = v.trim_start_matches("rule:").trim_start_matches("style:").trim().to_string();
+        if !v.is_empty() && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '-') && !out.contains(&v) {
+            out.push(v);
         }
     }
     out
@@ -365,17 +440,131 @@ pub fn record_look(project_root: &Path, target: &str, report: &Value) -> Option<
         "layout_vector": { "cols": layout.get("cols"), "rows": layout.get("rows"), "text": layout.get("text"), "media": layout.get("media") },
         "fonts": report.get("font_families").cloned().unwrap_or(Value::Null),
         "hero": layout.get("hero").cloned().unwrap_or(Value::Null),
+        "sections": layout.get("sections").cloned().unwrap_or(Value::Null),
     });
     let dir = project_root.join(".layoza");
     let path = dir.join("looks.jsonl");
     let earlier = fs::read(&path).map(|b| String::from_utf8_lossy(&b).into_owned()).unwrap_or_default();
     let (compared, flagged) = compare_with_ledger(&entry, &earlier);
+    let section_matches = compare_sections_with_ledger(&entry, &earlier);
     fs::create_dir_all(&dir).ok()?;
     let mut line = serde_json::to_string(&entry).ok()?;
     line.push('\n');
     use std::io::Write;
     fs::OpenOptions::new().create(true).append(true).open(&path).ok()?.write_all(line.as_bytes()).ok()?;
-    Some(json!({ "path": ".layoza/looks.jsonl", "entries_compared": compared, "flagged": flagged }))
+    Some(json!({ "path": ".layoza/looks.jsonl", "entries_compared": compared, "flagged": flagged, "section_matches": section_matches }))
+}
+
+/// A section is matched against earlier sections of the same role at structure similarity >= this
+/// (nav and footer, which share a shape on most sites, need the higher value).
+pub const SECTION_STRUCTURE_SAME: f64 = 0.90;
+pub const SECTION_STRUCTURE_SAME_CHROME: f64 = 0.95;
+
+fn nums(v: Option<&Value>) -> Vec<f64> {
+    v.and_then(|a| a.as_array()).map(|a| a.iter().map(|x| x.as_f64().unwrap_or(0.0)).collect()).unwrap_or_default()
+}
+
+/// Structure similarity of two section prints (0..1): text+media grid cosine, shaded by aspect,
+/// column count and whether both carry media. Same formula as the in-page `sectionStructureSim`.
+pub fn section_structure_similarity(a: &Value, b: &Value) -> Option<f64> {
+    let (sa, sb) = (a.get("structure")?, b.get("structure")?);
+    let mut va = nums(sa.get("text"));
+    va.extend(nums(sa.get("media")));
+    let mut vb = nums(sb.get("text"));
+    vb.extend(nums(sb.get("media")));
+    if va.is_empty() || vb.is_empty() {
+        return None;
+    }
+    let (mut dot, mut na, mut nb) = (0.0, 0.0, 0.0);
+    for i in 0..va.len().min(vb.len()) {
+        dot += va[i] * vb[i];
+        na += va[i] * va[i];
+        nb += vb[i] * vb[i];
+    }
+    let cos = if na > 0.0 && nb > 0.0 { dot / (na.sqrt() * nb.sqrt()) } else { 0.0 };
+    let f = |s: &Value, k: &str| s.get(k).and_then(|x| x.as_f64()).unwrap_or(0.0);
+    let (aa, ab) = (f(sa, "aspect"), f(sb, "aspect"));
+    let aspect = if aa > 0.0 && ab > 0.0 { aa.min(ab) / aa.max(ab) } else { 0.0 };
+    let cols = if f(sa, "columns") == f(sb, "columns") { 1.0 } else { 0.7 };
+    let media = if (f(sa, "media_count") > 0.0) == (f(sb, "media_count") > 0.0) { 1.0 } else { 0.8 };
+    Some(cos * (0.75 + 0.25 * aspect) * cols * media)
+}
+
+/// Mean OKLab distance of a section's background, text and accent colours (accent only when both have one).
+fn section_palette_distance(a: &Value, b: &Value) -> Option<f64> {
+    let (pa, pb) = (a.get("palette")?, b.get("palette")?);
+    let mut sum = 0.0;
+    let mut n = 0.0;
+    for k in ["bg", "text", "accent"] {
+        let (ca, cb) = (nums(pa.get(k)), nums(pb.get(k)));
+        if ca.len() == 3 && cb.len() == 3 {
+            sum += ((ca[0] - cb[0]).powi(2) + (ca[1] - cb[1]).powi(2) + (ca[2] - cb[2]).powi(2)).sqrt();
+            n += 1.0;
+        }
+    }
+    (n > 0.0).then(|| sum / n)
+}
+
+fn section_text_cells(s: &Value) -> f64 {
+    nums(s.get("structure").and_then(|x| x.get("text"))).iter().sum()
+}
+
+/// QA-SECTION-RESKIN candidates: each section of `entry` whose structure matches a same-role section
+/// of an earlier ledger entry for another target. One match (the best) per section and earlier target.
+fn compare_sections_with_ledger(entry: &Value, ledger: &str) -> Vec<Value> {
+    let target = entry.get("target").and_then(|t| t.as_str()).unwrap_or("");
+    let Some(mine) = entry.get("sections").and_then(|s| s.as_array()) else { return Vec::new() };
+    let round = |x: f64, d: i32| (x * 10f64.powi(d)).round() / 10f64.powi(d);
+    let mut best: BTreeMap<(usize, String), Value> = BTreeMap::new();
+    for line in ledger.lines().filter(|l| !l.trim().is_empty()) {
+        let Ok(prev) = serde_json::from_str::<Value>(line) else { continue };
+        let prev_target = prev.get("target").and_then(|t| t.as_str()).unwrap_or("").to_string();
+        if prev_target == target {
+            continue;
+        }
+        let Some(theirs) = prev.get("sections").and_then(|s| s.as_array()) else { continue };
+        for (i, s) in mine.iter().enumerate() {
+            let role = s.get("role").and_then(|r| r.as_str()).unwrap_or("section");
+            if section_text_cells(s) < 3.0 {
+                continue;
+            }
+            let need = if role == "nav" || role == "footer" { SECTION_STRUCTURE_SAME_CHROME } else { SECTION_STRUCTURE_SAME };
+            for t in theirs {
+                if t.get("role").and_then(|r| r.as_str()).unwrap_or("section") != role || section_text_cells(t) < 3.0 {
+                    continue;
+                }
+                let Some(sim) = section_structure_similarity(s, t) else { continue };
+                if sim < need {
+                    continue;
+                }
+                let key = (i, prev_target.clone());
+                if best.get(&key).and_then(|v| v["similarity"].as_f64()).is_some_and(|old| old >= sim) {
+                    continue;
+                }
+                let type_same = ["heading_family", "body_family"]
+                    .iter()
+                    .all(|k| s.get("type").and_then(|x| x.get(*k)) == t.get("type").and_then(|x| x.get(*k)));
+                best.insert(
+                    key,
+                    json!({
+                        "rule": "QA-SECTION-RESKIN",
+                        "role": role,
+                        "section_index": i,
+                        "section_label": s.get("label"),
+                        "matched_target": prev_target,
+                        "matched_ts": prev.get("ts"),
+                        "matched_index": t.get("index"),
+                        "matched_label": t.get("label"),
+                        "similarity": round(sim, 3),
+                        "palette_distance": section_palette_distance(s, t).map(|d| round(d, 4)),
+                        "same_type": type_same,
+                        "threshold": need,
+                    }),
+                );
+            }
+        }
+    }
+    best.into_values().collect()
 }
 
 /// Compares a ledger entry with each earlier JSONL line for a different target; returns how many were
@@ -840,6 +1029,62 @@ pub fn motion_unsettled_note(report: &Value) -> Option<String> {
 #[cfg(test)]
 mod look_and_allow_tests {
     use super::*;
+
+    fn sec(role: &str, text: &[f64], bg: [f64; 3]) -> Value {
+        json!({ "index": 0, "role": role, "label": role,
+            "structure": { "text": text, "media": [0.0, 0.0, 0.0, 0.0], "aspect": 0.5, "columns": 3, "media_count": 0 },
+            "palette": { "bg": bg, "text": [0.2, 0.0, 0.0], "accent": null },
+            "type": { "heading_family": "serif", "body_family": "sans" } })
+    }
+
+    #[test]
+    fn old_temp_script_pattern_is_exact() {
+        for ok in ["browser-qa-0.1.0.mjs", "browser-qa-0.1.4.mjs", "browser-qa-0.1.12-rc1.mjs"] {
+            assert!(is_old_temp_script(ok), "{ok}");
+        }
+        for no in ["browser-qa-0.1..mjs", "browser-qa-0.2.0.mjs", "browser-qa-0.1.4.js", "browser-qa-0.1.4.mjs.bak",
+            "xbrowser-qa-0.1.4.mjs", "browser-qa-1.0.1.mjs", "looks.jsonl", "run-1-2-3"] {
+            assert!(!is_old_temp_script(no), "{no}");
+        }
+    }
+
+    #[test]
+    fn old_temp_cleanup_removes_only_matching_files() {
+        let dir = RunDir::new().unwrap();
+        let p = dir.path();
+        for n in ["browser-qa-0.1.3.mjs", "browser-qa-0.1.4.mjs", "browser-qa-0.2.0.mjs", "other.mjs"] {
+            fs::write(p.join(n), "x").unwrap();
+        }
+        fs::create_dir_all(p.join("browser-qa-0.1.9.mjs")).unwrap();
+        assert_eq!(remove_old_temp_scripts_in(p), 2);
+        assert!(!p.join("browser-qa-0.1.3.mjs").exists() && !p.join("browser-qa-0.1.4.mjs").exists());
+        assert!(p.join("browser-qa-0.2.0.mjs").exists() && p.join("other.mjs").exists() && p.join("browser-qa-0.1.9.mjs").is_dir());
+    }
+
+    #[test]
+    fn caller_allow_merges_with_brief_groups() {
+        let m = merge_allow(&["glow".into()], &["style:Pill".into(), "rule:hero-eyebrow-chip".into(), "glow".into(), "bad id!".into()]);
+        assert_eq!(m, vec!["glow", "pill", "hero-eyebrow-chip"]);
+    }
+
+    #[test]
+    fn section_reskin_flags_same_role_same_structure_for_other_targets() {
+        let grid = [1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0];
+        let other = [0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0];
+        let prev = json!({ "ts": 1, "target": "a.html", "sections": [sec("hero", &grid, [0.9, 0.0, 0.0]), sec("section", &other, [0.9, 0.0, 0.0])] });
+        let same_target = json!({ "ts": 2, "target": "b.html", "sections": [sec("hero", &grid, [0.1, 0.0, 0.0])] });
+        let ledger = format!("{}
+{}
+", prev, same_target);
+        let entry = json!({ "target": "b.html", "sections": [sec("hero", &grid, [0.3, 0.1, 0.0]), sec("section", &grid, [0.3, 0.1, 0.0])] });
+        let m = compare_sections_with_ledger(&entry, &ledger);
+        assert_eq!(m.len(), 1, "{m:#?}");
+        assert_eq!(m[0]["rule"], "QA-SECTION-RESKIN");
+        assert_eq!(m[0]["role"], "hero");
+        assert_eq!(m[0]["matched_target"], "a.html");
+        assert!(m[0]["similarity"].as_f64().unwrap() >= SECTION_STRUCTURE_SAME);
+        assert!(m[0]["palette_distance"].as_f64().unwrap() > 0.1);
+    }
 
     fn fp(text: &[f64], oklab: [f64; 3]) -> Value {
         json!({ "layout": { "text": text, "media": [0.0, 0.0] }, "palette": [{ "oklab": oklab, "share": 1.0 }] })

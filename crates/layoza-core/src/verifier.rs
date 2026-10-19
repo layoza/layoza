@@ -124,6 +124,14 @@ pub struct AutoRepairResult {
     pub modified: bool,
 }
 
+/// Options for [`audit_project_with`].
+#[derive(Debug, Clone, Default)]
+pub struct AuditOptions {
+    /// Strict release gate: gate-file warnings (a new site with no recorded user approval of its
+    /// direction) become errors.
+    pub strict: bool,
+}
+
 /// Audits a project directory or HTML/CSS/Component file using Layoza's deterministic detector rules
 /// and context-aware critique rules.
 pub fn audit_project(
@@ -132,6 +140,18 @@ pub fn audit_project(
     lab_lcp_ms: Option<f64>,
     lab_inp_ms: Option<f64>,
     lab_cls: Option<f64>,
+) -> Result<AuditReport, String> {
+    audit_project_with(project_root, existing_dna, lab_lcp_ms, lab_inp_ms, lab_cls, &AuditOptions::default())
+}
+
+/// [`audit_project`] with options (`strict`).
+pub fn audit_project_with(
+    project_root: &Path,
+    existing_dna: Option<&SiteDna>,
+    lab_lcp_ms: Option<f64>,
+    lab_inp_ms: Option<f64>,
+    lab_cls: Option<f64>,
+    opts: &AuditOptions,
 ) -> Result<AuditReport, String> {
     if !project_root.exists() {
         return Err(format!(
@@ -171,6 +191,9 @@ pub fn audit_project(
     };
     let mut browser_cwv: (Option<f64>, Option<f64>, Option<f64>) = (None, None, None);
     let mut browser_cwv_source = String::new();
+    // Passes the ingested browser report says it skipped (fast mode), and its mode
+    let mut browser_skipped: Vec<String> = Vec::new();
+    let mut browser_mode = String::new();
     for candidate_rel in ["qa/browser-qa-report.json", "qa-report.json", ".layoza/qa-snapshot.json"] {
         let qa_path = base_dir.join(candidate_rel);
         let Ok(raw_json) = fs::read_to_string(&qa_path) else {
@@ -216,6 +239,15 @@ pub fn audit_project(
             break;
         }
         ingest_browser_report(&val, candidate_rel, &mut findings);
+        ingest_section_reskins(&val, candidate_rel, &mut findings);
+        browser_skipped = val
+            .get("skipped_passes")
+            .and_then(|s| s.as_array())
+            .into_iter()
+            .flatten()
+            .filter_map(|s| s.as_str().map(|s| format!("Skipped by the browser report: {}", s)))
+            .collect();
+        browser_mode = val.get("mode").and_then(|m| m.as_str()).unwrap_or("").to_string();
         browser_cwv = (
             val.get("lcp_ms").and_then(|n| n.as_f64()),
             val.get("inp_ms").and_then(|n| n.as_f64()),
@@ -226,6 +258,7 @@ pub fn audit_project(
     }
 
     audit_design_process(base_dir, &mut findings);
+    audit_direction_approval(base_dir, opts.strict, &mut findings);
 
     // Caller-supplied lab numbers take precedence over the browser report. Nothing is invented.
     let lcp = lab_lcp_ms.or(browser_cwv.0);
@@ -312,12 +345,13 @@ pub fn audit_project(
             evidence_basis: if browser_cwv_source.is_empty() {
                 "static checks only: no fresh browser QA report, so the automated WCAG 2.2 AA result is not a pass".to_string()
             } else {
-                format!("browser report ({}) + static checks", browser_cwv_source)
+                let mode = if browser_mode.is_empty() { String::new() } else { format!(", {} mode", browser_mode) };
+                format!("browser report ({}{}) + static checks", browser_cwv_source, mode)
             },
             needs_browser: if browser_cwv_source.is_empty() {
                 NEEDS_BROWSER.iter().map(|s| s.to_string()).collect()
             } else {
-                Vec::new()
+                browser_skipped
             },
             manual_review_required: vec![
                 "Verify keyboard Tab/Shift+Tab focus order matches visual reading sequence across 375px, 768px, and 1280px viewports (WCAG 2.4.3).".to_string(),
@@ -409,6 +443,78 @@ pub const MIN_ART_LOOP_ROUNDS: usize = 3;
 /// ([`audit_direction_history`]).
 fn audit_design_process(base_dir: &Path, findings: &mut Vec<AuditFinding>) {
     audit_design_process_with(base_dir, crate::history::ledger_path().as_deref(), findings);
+}
+
+/// Gate file for a new-site build: the user's approval of the direction is recorded in
+/// `.layoza/direction-approved.md`. A new site (`.layoza/direction.md` exists and neither its
+/// PICKED nor its PURPOSE line says `existing`) without that file gets a WARN, or a FAIL under
+/// `strict`. Without `.layoza/direction.md` the build kind is unknown and nothing is reported here
+/// (the design-process checks cover that file).
+fn audit_direction_approval(base_dir: &Path, strict: bool, findings: &mut Vec<AuditFinding>) {
+    let Ok(raw) = fs::read_to_string(base_dir.join(".layoza/direction.md")) else {
+        return;
+    };
+    let upper = raw.strip_prefix('\u{feff}').unwrap_or(&raw).to_ascii_uppercase();
+    let line_says_existing = |key: &str| {
+        upper.lines().any(|l| {
+            let l = l.replace('*', "");
+            let l = l.trim().trim_start_matches(['-', '#', ' ']);
+            l.strip_prefix(key).is_some_and(|v| {
+                v.split(|c: char| !c.is_ascii_alphanumeric()).any(|w| w == "EXISTING")
+                    && !v.split(|c: char| !c.is_ascii_alphanumeric()).any(|w| w == "NEW")
+            })
+        })
+    };
+    if line_says_existing("PICKED:") || line_says_existing("PURPOSE:") {
+        return;
+    }
+    let rel = ".layoza/direction-approved.md";
+    let approved = fs::read_to_string(base_dir.join(rel)).is_ok_and(|t| !t.trim_start_matches('\u{feff}').trim().is_empty());
+    if approved {
+        return;
+    }
+    findings.push(browser_finding(
+        "DESIGN-DIRECTION-NOT-APPROVED",
+        if strict { Severity::Error } else { Severity::Warning },
+        "design-process",
+        rel,
+        format!(
+            "This is a new-site build and `{}` is missing or empty, so there is no record that the user approved the direction before the build.{}",
+            rel,
+            if strict { " The strict gate fails on this." } else { " Under --strict this fails the gate." }
+        ),
+        "After the user picks a direction, write .layoza/direction-approved.md with the direction, who approved it and when.",
+    ));
+}
+
+/// Section re-skins from the look ledger (`look_ledger.section_matches` in the browser report): a
+/// nav, hero, section or footer whose structure matches a same-role section of another target.
+fn ingest_section_reskins(val: &serde_json::Value, source: &str, findings: &mut Vec<AuditFinding>) {
+    let matches = val.pointer("/look_ledger/section_matches").and_then(|m| m.as_array());
+    for m in matches.into_iter().flatten().take(12) {
+        let s = |k: &str| m.get(k).map(|v| v.as_str().map(String::from).unwrap_or_else(|| v.to_string())).unwrap_or_default();
+        let sim = m.get("similarity").and_then(|x| x.as_f64()).unwrap_or(0.0);
+        let palette = m
+            .get("palette_distance")
+            .and_then(|x| x.as_f64())
+            .map(|d| format!(", palette distance {:.3}", d))
+            .unwrap_or_default();
+        let same_type = m.get("same_type").and_then(|x| x.as_bool()) == Some(true);
+        let ty = if same_type { ", same type" } else { ", different type" };
+        let copy = same_type && m.get("palette_distance").and_then(|x| x.as_f64()).is_some_and(|d| d < 0.03);
+        let verdict = if copy { "a copy of that section" } else { "the same section with new paint" };
+        findings.push(browser_finding(
+            "QA-SECTION-RESKIN",
+            Severity::Warning,
+            "design-quality",
+            &format!("{} ({} #{})", source, s("role"), s("section_index")),
+            format!(
+                "The {} \"{}\" has the structure of the {} \"{}\" on {} (similarity {:.3}{}{}): {}.",
+                s("role"), s("section_label"), s("role"), s("matched_label"), s("matched_target"), sim, palette, ty, verdict
+            ),
+            "Recompose this section for this site (column count, media placement, reading order), not only its colours and type.",
+        ));
+    }
 }
 
 fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &mut Vec<AuditFinding>) {
@@ -2431,5 +2537,100 @@ components:
         run("d", "PURPOSE: add pricing; existing\nPICKED: existing — SITE-DNA.json\n");
         assert_eq!(crate::history::read_all(&ledger).len(), 3);
         let _ = std::fs::remove_dir_all(&base);
+    }
+}
+
+#[cfg(test)]
+mod gate_file_tests {
+    use super::*;
+    use serde_json::json;
+
+    fn site(tag: &str, direction: Option<&str>, approved: Option<&str>) -> std::path::PathBuf {
+        let dir = std::env::temp_dir().join(format!("layoza-gate-{}-{}", tag, std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(dir.join(".layoza")).unwrap();
+        if let Some(d) = direction {
+            fs::write(dir.join(".layoza/direction.md"), d).unwrap();
+        }
+        if let Some(a) = approved {
+            fs::write(dir.join(".layoza/direction-approved.md"), a).unwrap();
+        }
+        dir
+    }
+
+    fn gate(dir: &Path, strict: bool) -> Vec<AuditFinding> {
+        let mut f = Vec::new();
+        audit_direction_approval(dir, strict, &mut f);
+        f
+    }
+
+    #[test]
+    fn new_site_without_approval_warns_and_fails_under_strict() {
+        let dir = site("new", Some("PURPOSE: book tables; audience: diners; new; keep: menu\nPICKED: B (chosen by the user)\n"), None);
+        let f = gate(&dir, false);
+        assert_eq!(f.len(), 1);
+        assert_eq!(f[0].rule_id, "DESIGN-DIRECTION-NOT-APPROVED");
+        assert_eq!(f[0].severity, Severity::Warning);
+        assert_eq!(gate(&dir, true)[0].severity, Severity::Error);
+        let strict = audit_project_with(&dir, None, Some(900.0), Some(40.0), Some(0.01), &AuditOptions { strict: true }).unwrap();
+        assert!(!strict.passed_release_gate);
+        assert!(strict.findings.iter().any(|x| x.rule_id == "DESIGN-DIRECTION-NOT-APPROVED" && x.severity == Severity::Error));
+        fs::write(dir.join(".layoza/direction-approved.md"), "B, approved by the user 2026-10-19").unwrap();
+        assert!(gate(&dir, true).is_empty());
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn existing_site_or_unknown_kind_has_no_gate_file_finding() {
+        let dir = site("existing", Some("PURPOSE: sell shoes; audience: runners; existing; keep: cart\nPICKED: existing - follow the shop\n"), None);
+        assert!(gate(&dir, true).is_empty());
+        let none = site("unknown", None, None);
+        assert!(gate(&none, true).is_empty());
+        let empty = site("empty", Some("PURPOSE: x; new\nPICKED: A\n"), Some("  \n"));
+        assert_eq!(gate(&empty, false).len(), 1);
+        for d in [dir, none, empty] {
+            let _ = fs::remove_dir_all(&d);
+        }
+    }
+
+    #[test]
+    fn section_reskins_are_ingested_with_their_score() {
+        let report = json!({ "look_ledger": { "section_matches": [
+            { "rule": "QA-SECTION-RESKIN", "role": "hero", "section_index": 1, "section_label": "Book a table",
+              "matched_target": "old/index.html", "matched_label": "Plan a trip", "similarity": 0.962, "palette_distance": 0.31, "same_type": false }
+        ] } });
+        let mut f = Vec::new();
+        ingest_section_reskins(&report, "qa/browser-qa-report.json", &mut f);
+        assert_eq!(f.len(), 1);
+        assert_eq!(f[0].rule_id, "QA-SECTION-RESKIN");
+        assert_eq!(f[0].severity, Severity::Warning);
+        assert!(f[0].message.contains("similarity 0.962") && f[0].message.contains("old/index.html"), "{}", f[0].message);
+    }
+
+    #[test]
+    fn same_section_twice_issue_maps_to_its_own_rule_id() {
+        let report = json!({ "viewports": [{ "label": "desktop", "issues": [{
+            "rule": "same-section-twice", "severity": "warning", "category": "design-quality", "selector": "section #2 / #4",
+            "detail": "d", "measured": "structure similarity 0.97 (flag at >= 0.93)", "why": "w", "fix": "f" }] }] });
+        let mut f = Vec::new();
+        ingest_browser_report(&report, "qa/browser-qa-report.json", &mut f);
+        assert!(
+            f.iter().any(|x| x.rule_id == "QA-SAME-SECTION-TWICE" && x.severity == Severity::Warning),
+            "{:?}",
+            f.iter().map(|x| &x.rule_id).collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn skipped_passes_are_listed_as_needing_the_browser() {
+        let dir = site("skipped", None, None);
+        fs::create_dir_all(dir.join("qa")).unwrap();
+        let report = json!({ "schema_version": "2.0", "mode": "fast", "lcp_ms": 900.0, "inp_ms": 40.0, "cls": 0.01,
+            "skipped_passes": ["throttled-perf@375 (fast mode; run with --full)"], "viewports": [] });
+        fs::write(dir.join("qa/browser-qa-report.json"), report.to_string()).unwrap();
+        let r = audit_project(&dir, None, None, None, None).unwrap();
+        assert!(r.accessibility.needs_browser.iter().any(|s| s.contains("throttled-perf@375")), "{:?}", r.accessibility.needs_browser);
+        assert!(r.accessibility.evidence_basis.contains("fast mode"), "{}", r.accessibility.evidence_basis);
+        let _ = fs::remove_dir_all(&dir);
     }
 }
