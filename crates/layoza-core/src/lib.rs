@@ -18,6 +18,7 @@ pub mod mechanics;
 pub mod process;
 pub mod conformance;
 pub mod qa;
+pub mod register;
 pub mod uniqueness;
 pub mod verifier;
 
