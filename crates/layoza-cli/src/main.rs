@@ -11,14 +11,15 @@ use layoza_core::{
     hooks::{check_edit, hook_command, hook_status, install_hook, settings_path, uninstall_hook, HookTarget},
     inspector::{inspect_project, is_dna_baseline_fresh, write_dna_artifacts},
     installer::{install_layoza, run_doctor, InstallScope},
-    baseline::{new_run_id, record_looks, RECENT_LOOK_RUNS},
+    baseline::{new_run_id, record_looks},
     intelligence::{catalog_industries, looks_of, recommend_design_avoiding, OperatingMode},
     mechanics::{
         catalogue, deal_mechanics_with, get_mechanic, list_mechanics, DealOptions, ExistingSite, Intensity, Mechanic,
         MechanicKind,
     },
-    qa::{compare_look_fingerprints, run_browser_qa},
-    verifier::{audit_project, auto_repair_html_file, browser_report_findings, Severity},
+    qa::{compare_look_fingerprints, run_browser_qa_with, QaOptions},
+    uniqueness,
+    verifier::{audit_project_with, auto_repair_html_file, browser_report_findings, AuditOptions, Severity},
 };
 use std::env;
 use std::fs;
@@ -200,16 +201,17 @@ fn main() {
             // Look ledger: only for new looks, only inside a project, and not with --no-ledger.
             let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
             let ledger_root = (new_look && !args.iter().any(|a| a == "--no-ledger") && looks_like_project(&cwd)).then(|| cwd.clone());
-            let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, RECENT_LOOK_RUNS)).unwrap_or_default();
+            let window = uniqueness::window(num_flag::<u64>(&args, "--window", 1, layoza_core::baseline::MAX_UNIQUENESS_WINDOW as u64, json_flag));
+            let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, window)).unwrap_or_default();
             // Asked for the same look again: keep it and change the knobs instead of rotating away.
             let steer: &[layoza_core::baseline::Look] = if layoza_core::process::same_look_requested(&query) { &[] } else { &recent };
             let mut rec = recommend_design_avoiding(&query, mode, existing_dna.as_ref(), dials, variant, steer);
             layoza_core::process::apply_project_memory(&mut rec, ledger_root.as_deref(), &recent);
-            if let Some(root) = &ledger_root {
-                if let Err(e) = record_looks(root, &looks_of(&rec, &new_run_id(&query))) {
-                    eprintln!("Warning: look ledger not updated: {}", e);
-                }
-            }
+            let looks = looks_of(&rec, &new_run_id(&query));
+            rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, ledger_root.is_some()));
+            let written = ledger_root.as_ref().map(|root| record_looks(root, &looks));
+            let off_reason = if !new_look { "an existing site keeps its own look" } else if args.iter().any(|a| a == "--no-ledger") { "--no-ledger" } else { "not inside a project" };
+            let ledger = uniqueness::ledger_status(ledger_root.as_deref(), written.as_ref(), off_reason);
             // New looks only: an existing site follows its own design, so no avoid list.
             let avoid = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign)
                 .then(layoza_core::history::avoid_recent);
@@ -218,8 +220,10 @@ fn main() {
                 if let Some(a) = &avoid {
                     out["avoid_recent"] = a.clone();
                 }
+                out["ledger"] = serde_json::json!(ledger);
                 println!("{}", serde_json::to_string_pretty(&out).unwrap());
             } else {
+                println!("{}", layoza_core::intelligence::PURPOSE_LINE);
                 println!("=== Layoza Design System Recommendation ({:?}) ===", rec.mode);
                 println!("Matched Industry : {} (`{}`)", rec.matched_industry.name, rec.matched_industry.slug);
                 println!("Match Confidence : {} (score {})", rec.match_confidence, rec.match_score);
@@ -287,6 +291,19 @@ fn main() {
                         "      Palette : {} bg={} fg={} accent={} (body WCAG {:.2}:1, computed)",
                         dir.palette.id, dir.palette.background, dir.palette.foreground, dir.palette.primary_accent, dir.palette.wcag_body_contrast
                     );
+                    if let Some(u) = &dir.extra_font_url {
+                        println!("      Fonts+  : {} (load next to the pairing's font_url)", u);
+                    }
+                    let tt = |k: &str| dir.type_tokens.get(k).cloned().unwrap_or_default();
+                    println!("      Sizes   : label {} | body {} | h2 {} | h1 {} | display {}", tt("label"), tt("body"), tt("h2"), tt("h1"), tt("display"));
+                    println!(
+                        "      Shape   : archetype {} | radius {} | hero material {}",
+                        if dir.archetype.is_empty() { "-" } else { &dir.archetype },
+                        if dir.radius.is_empty() { "-" } else { &dir.radius },
+                        if dir.hero_material.is_empty() { "-" } else { &dir.hero_material }
+                    );
+                    let furn = |m: &Option<layoza_core::mechanics::MechanicRef>| m.as_ref().map(|m| m.id.clone()).unwrap_or_else(|| "-".into());
+                    println!("      Furniture: nav {} | footer {}", furn(&dir.nav), furn(&dir.footer));
                     println!("      Content : {}", dir.content_treatment);
                     println!("      Motion  : {}", dir.motion_choreography);
                     if !dir.mechanics.is_empty() {
@@ -318,6 +335,13 @@ fn main() {
                     println!("  Motifs: {}", list("motifs"));
                     println!("  Make all three directions materially different unless the user asks for the same look.");
                 }
+                if let Some(u) = &rec.uniqueness {
+                    println!();
+                    for l in u.lines() {
+                        println!("{}", l);
+                    }
+                }
+                println!("Ledger: {}", ledger);
                 println!("\nMechanics: `layoza mechanics show <id>` prints a blueprint; `layoza mechanics deal \"<brief>\"` deals a full page.");
             }
         }
@@ -341,7 +365,8 @@ fn main() {
         "audit" => {
             let target_arg = positional_arg(&args, 1).unwrap_or_else(|| ".".to_string());
             let target_path = cwd.join(&target_arg);
-            match audit_project(&target_path, None, None, None, None) {
+            let strict = AuditOptions { strict: args.iter().any(|a| a == "--strict") };
+            match audit_project_with(&target_path, None, None, None, None, &strict) {
                 Ok(report) => {
                     if json_flag {
                         println!("{}", serde_json::to_string_pretty(&report).unwrap());
@@ -386,8 +411,13 @@ fn main() {
             }
             let gate_root = if target_path.is_file() { target_path.parent().unwrap_or(&cwd).to_path_buf() } else { target_path.clone() };
             let gates = layoza_core::process::check_gates(&gate_root);
-            match audit_project(&target_path, None, None, None, None) {
-                Ok(report) => {
+            let strict = AuditOptions { strict: args.iter().any(|a| a == "--strict") };
+            match audit_project_with(&target_path, None, None, None, None, &strict) {
+                Ok(mut report) => {
+                    // One missing approval file, one finding: the process gate already names it.
+                    if gates.iter().any(|g| g.rule == "GATE-DIRECTION-NOT-APPROVED") {
+                        report.findings.retain(|f| f.rule_id != "DESIGN-DIRECTION-NOT-APPROVED");
+                    }
                     if json_flag {
                         let out = serde_json::json!({
                             "verified": report.passed_release_gate && gates.is_empty(),
@@ -468,10 +498,17 @@ fn main() {
             } else {
                 target_path.to_string_lossy().to_string()
             };
-            let live = match run_browser_qa(&cwd, &run_target, &out_json, &qa_dir) {
+            let qa_opts = QaOptions {
+                allow: get_flag_value(&args, "--allow")
+                    .map(|v| v.split(',').map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect())
+                    .unwrap_or_default(),
+                full: args.iter().any(|a| a == "--full"),
+            };
+            let live = match run_browser_qa_with(&cwd, &run_target, &out_json, &qa_dir, &qa_opts) {
                 Ok(v) => v,
                 Err(e) => exit_err(&e, json_flag),
             };
+            let mode_lines = qa_mode_lines(&live);
             if is_url {
                 let findings = browser_report_findings(&live, &target_arg);
                 let errors = findings.iter().filter(|f| f.severity == Severity::Error).count();
@@ -480,6 +517,9 @@ fn main() {
                 } else {
                     println!("=== Layoza Live Chromium QA: {} ===", target_arg);
                     println!("Screenshots Saved      : {}", qa_dir.display());
+                    for l in &mode_lines {
+                        println!("{}", l);
+                    }
                     println!(
                         "Lab Core Web Vitals    : LCP={} INP~{} CLS={}",
                         live["lcp_ms"], live["inp_ms"], live["cls"]
@@ -500,14 +540,21 @@ fn main() {
             } else {
                 target_path.clone()
             };
-            match audit_project(&audit_target, None, None, None, None) {
+            match audit_project_with(&audit_target, None, None, None, None, &AuditOptions::default()) {
                 Ok(report) => {
                     if json_flag {
-                        println!("{}", serde_json::to_string_pretty(&report).unwrap());
+                        let mut v = serde_json::to_value(&report).unwrap();
+                        for k in ["mode", "passes", "skipped_passes"] {
+                            v[k] = live.get(k).cloned().unwrap_or(serde_json::Value::Null);
+                        }
+                        println!("{}", serde_json::to_string_pretty(&v).unwrap());
                     } else {
                         println!("=== Layoza Closed-Loop Chromium Visual & DOM QA ===");
                         println!("Target                 : {}", report.target_path);
                         println!("Screenshots Saved      : {}", qa_dir.display());
+                        for l in &mode_lines {
+                            println!("{}", l);
+                        }
                         println!("  - desktop.png          (1440×900)");
                         println!("  - tablet.png           (768×1024)");
                         println!("  - mobile.png           (375×812 full-page)");
@@ -763,12 +810,14 @@ fn main() {
                     };
                     // Look ledger: new looks inside a project steer away from recent heroes (not with --no-ledger).
                     let ledger_root = (!existing_mode && !args.iter().any(|a| a == "--no-ledger") && looks_like_project(&cwd)).then(|| cwd.clone());
-                    let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, RECENT_LOOK_RUNS)).unwrap_or_default();
+                    let window = uniqueness::window(num_flag::<u64>(&args, "--window", 1, layoza_core::baseline::MAX_UNIQUENESS_WINDOW as u64, json_flag));
+                    let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, window)).unwrap_or_default();
                     let same_look = layoza_core::process::same_look_requested(&brief);
-                    let recent_ids: Vec<String> = if same_look { Vec::new() } else { recent.iter().flat_map(|l| l.hero.iter().chain(l.mechanics.iter()).cloned()).collect() };
+                    let steer: &[layoza_core::baseline::Look] = if same_look { &[] } else { &recent };
                     let run_brief = brief.clone();
                     let deal = deal_mechanics_with(&DealOptions {
-                        recent_ids,
+                        recent_ids: uniqueness::recent_mechanic_ids(steer),
+                        recent_by_entry: uniqueness::recent_by_entry(steer),
                         brief,
                         niche: get_flag_value(&args, "--niche"),
                         mood: get_flag_value(&args, "--mood"),
@@ -785,25 +834,21 @@ fn main() {
                         let picking: Vec<String> = deal.hero.iter().map(|h| h.id.clone()).collect();
                         layoza_core::process::rotation_statement(&recent, &picking, same_look)
                     });
-                    if let Some(root) = &ledger_root {
-                        let look = layoza_core::baseline::Look {
-                            run: new_run_id(&run_brief),
-                            source: "deal".into(),
-                            hero: deal.hero.as_ref().map(|h| h.id.clone()),
-                            mechanics: deal.signature.iter().map(|m| m.id.clone()).collect(),
-                            ..Default::default()
-                        };
-                        if let Err(e) = record_looks(root, &[look]) {
-                            eprintln!("Warning: look ledger not updated: {}", e);
-                        }
-                    }
+                    let look = uniqueness::deal_look(&deal, &new_run_id(&run_brief));
+                    let report = uniqueness::check(std::slice::from_ref(&look), &recent, window, ledger_root.is_some());
+                    let written = ledger_root.as_ref().map(|root| record_looks(root, &[look]));
+                    let off_reason = if existing_mode { "an existing site keeps its own look" } else if args.iter().any(|a| a == "--no-ledger") { "--no-ledger" } else { "not inside a project" };
+                    let ledger = uniqueness::ledger_status(ledger_root.as_deref(), written.as_ref(), off_reason);
                     if json_flag {
                         let mut v = serde_json::to_value(&deal).unwrap();
                         if let Some(r) = &rotation {
                             v["rotation"] = serde_json::json!(r);
                         }
+                        v["uniqueness"] = serde_json::to_value(&report).unwrap();
+                        v["ledger"] = serde_json::json!(ledger);
                         println!("{}", serde_json::to_string_pretty(&v).unwrap());
                     } else {
+                        println!("{}", layoza_core::intelligence::PURPOSE_LINE);
                         if let Some(r) = &rotation {
                             println!("Rotation: {}", r);
                         }
@@ -819,6 +864,9 @@ fn main() {
                             c.max_tier.as_str(),
                             c.seed
                         );
+                        if let Some(n) = &deal.nav {
+                            println!("\n[NAV] {} - {} ({})", n.id, n.name, if n.look_family.is_empty() { "-" } else { &n.look_family });
+                        }
                         if let Some(h) = &deal.hero {
                             print_mechanic(h, "HERO");
                         }
@@ -835,6 +883,9 @@ fn main() {
                                 m.still_check
                             );
                         }
+                        if let Some(f) = &deal.footer {
+                            println!("\n[FOOTER] {} - {} ({})", f.id, f.name, if f.look_family.is_empty() { "-" } else { &f.look_family });
+                        }
                         if let Some(t) = &deal.transition {
                             println!("\n[TRANSITION] {} - {} ({})", t.id, t.name, t.role);
                         }
@@ -848,9 +899,59 @@ fn main() {
                         for n in deal.notes.iter().chain(&deal.rules) {
                             println!("  - {}", n);
                         }
+                        println!();
+                        for l in report.lines() {
+                            println!("{}", l);
+                        }
+                        println!("Ledger: {}", ledger);
                     }
                 }
                 other => exit_err(&format!("Unknown mechanics action `{}` (list|deal|show).", other), json_flag),
+            }
+        }
+        "guidelines" => {
+            let action = positional_arg(&args, 1).unwrap_or_else(|| exit_err("Usage: layoza guidelines search \"<query>\" | get <id>", json_flag));
+            match action.as_str() {
+                "search" => {
+                    let q = positional_arg(&args, 2).filter(|q| !q.trim().is_empty()).unwrap_or_else(|| exit_err("Usage: layoza guidelines search \"<query>\" [--stack s] [--platform p] [--limit N]", json_flag));
+                    if q.chars().count() > MAX_BRIEF_CHARS {
+                        exit_err(&format!("The query is limited to {} characters.", MAX_BRIEF_CHARS), json_flag);
+                    }
+                    let limit = num_flag::<usize>(&args, "--limit", 1, 50, json_flag).unwrap_or(10);
+                    let hits = layoza_core::guidelines::search(&q, get_flag_value(&args, "--stack").as_deref(), get_flag_value(&args, "--platform").as_deref(), limit);
+                    if json_flag {
+                        println!("{}", serde_json::to_string_pretty(&hits).unwrap());
+                    } else {
+                        println!("{} hit(s) for \"{}\"", hits.len(), q);
+                        for h in &hits {
+                            println!("  {:<9} {:<14} {}", h.kind, h.id, h.title);
+                        }
+                        println!("`layoza guidelines get <id>` prints one in full.");
+                    }
+                }
+                "get" => {
+                    let id = positional_arg(&args, 2).unwrap_or_else(|| exit_err("Usage: layoza guidelines get <id>", json_flag));
+                    let v = layoza_core::guidelines::get(&id).unwrap_or_else(|| exit_err(&format!("Unknown guideline, chart or stack `{}`. Try `layoza guidelines search`.", id), json_flag));
+                    println!("{}", serde_json::to_string_pretty(&v).unwrap());
+                }
+                other => exit_err(&format!("Unknown guidelines action `{}` (search|get).", other), json_flag),
+            }
+        }
+        "chart" => {
+            let shape = positional_arg(&args, 1).filter(|s| !s.trim().is_empty()).unwrap_or_else(|| exit_err("Usage: layoza chart <data shape> [--task t]", json_flag));
+            let charts = layoza_core::guidelines::chart_for(&shape, get_flag_value(&args, "--task").as_deref());
+            let charts: Vec<_> = charts.into_iter().take(3).collect();
+            if json_flag {
+                println!("{}", serde_json::to_string_pretty(&charts).unwrap());
+            } else if charts.is_empty() {
+                println!("No chart fits `{}`. Shapes: time series, categories, part-to-whole, distribution, correlation, flow, hierarchy, geographic.", shape);
+            } else {
+                for c in &charts {
+                    println!("[{}] {}: {}", c.id, c.best, c.situation);
+                    println!("  Encoding : {}", c.encoding);
+                    println!("  Avoid    : {}", c.avoid_when);
+                    println!("  Fallback : {} | {}", c.fallback.table, c.fallback.aria_summary);
+                }
             }
         }
         "hooks" => {
@@ -981,6 +1082,16 @@ fn wcag_line(a: &layoza_core::verifier::AccessibilityReport) -> String {
     }
 }
 
+/// QA run mode lines: fast (default) or full, the passes that ran and the ones fast mode skipped.
+fn qa_mode_lines(live: &serde_json::Value) -> Vec<String> {
+    let list = |k: &str| live[k].as_array().map(|a| a.iter().filter_map(|x| x.as_str()).map(str::to_string).collect::<Vec<_>>()).unwrap_or_default();
+    let mut out = vec![format!("QA Mode                : {} (passes: {})", live["mode"].as_str().unwrap_or("unknown"), list("passes").join(", "))];
+    for s in list("skipped_passes") {
+        out.push(format!("  Skipped: {}", s));
+    }
+    out
+}
+
 /// Reads two saved QA reports (or bare look fingerprints) and compares their looks.
 fn compare_qa_reports(a: &Path, b: &Path) -> Result<serde_json::Value, String> {
     let read = |p: &Path| -> Result<serde_json::Value, String> {
@@ -994,7 +1105,8 @@ fn compare_qa_reports(a: &Path, b: &Path) -> Result<serde_json::Value, String> {
 const VALUE_FLAGS: &[&str] = &[
     "--scope", "--agents", "--mode", "--variance", "--motion", "--density", "--lint", "--intensity", "--recipe",
     "--framework", "--title", "--subtitle", "--cta", "--output", "--file", "--snapshot", "--path", "--top",
-    "--niche", "--kind", "--count", "--seed", "--existing", "--mood", "--avoid", "--variant",
+    "--niche", "--kind", "--count", "--seed", "--existing", "--mood", "--avoid", "--variant", "--window", "--allow",
+    "--stack", "--platform", "--limit", "--task",
 ];
 
 /// Longest brief accepted by the CLI and the MCP server (characters).
@@ -1005,14 +1117,18 @@ fn allowed_flags(args: &[String]) -> &'static [&'static str] {
     match args[0].as_str() {
         "init" => &["--scope", "--agents"],
         "inspect" => &["--path", "--write", "-w", "--write-artifacts", "--screenshot-only", "--export-skill"],
-        "design-system" => &["--lint", "--diff", "--mode", "--variance", "--motion", "--density", "--variant", "--no-ledger"],
+        "design-system" => &["--lint", "--diff", "--mode", "--variance", "--motion", "--density", "--variant", "--no-ledger", "--window"],
         "animate" => &["--recipe", "--intensity"],
-        "verify" => &["--repair", "--fix"],
+        "verify" => &["--repair", "--fix", "--strict"],
+        "audit" => &["--strict"],
+        "qa" => &["--allow", "--full", "--compare"],
+        "guidelines" => &["--stack", "--platform", "--limit"],
+        "chart" => &["--task"],
         "generate" => &["--framework", "--title", "--subtitle", "--cta", "--output"],
         "baseline" => &["--file"],
         "deal" => &["--top"],
         "mechanics" => match positional_arg(args, 1).as_deref() {
-            Some("deal") => &["--count", "--seed", "--niche", "--mood", "--intensity", "--mode", "--existing", "--avoid", "--no-ledger"],
+            Some("deal") => &["--count", "--seed", "--niche", "--mood", "--intensity", "--mode", "--existing", "--avoid", "--no-ledger", "--window"],
             Some("show") => &[],
             _ => &["--niche", "--kind", "--intensity"],
         },
@@ -1109,17 +1225,19 @@ fn subcommand_usage(cmd: &str) -> Option<&'static str> {
     Some(match cmd {
         "init" => "Usage: layoza init [--scope project|global] [--agents a,b,c] [--json]\n  Install Layoza skills, plugin and MCP configs for the selected agents.",
         "inspect" => "Usage: layoza inspect [<path>|--path <path>] [--write [--export-skill]] [--screenshot-only] [--json]\n  Extract Site DNA from a project directory (default `.`); --write writes DESIGN.md (the nine standard sections, then motion, variants, brand and decisions), BRAND.md, MOTION.md, SITE-DNA.json, COMPONENT-INVENTORY.json; --export-skill also writes .claude/skills/<project>-look/SKILL.md so later sessions load this look.",
-        "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--variant N] [--no-ledger] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives; --variant N re-deals fonts, palettes and mechanics for the same brief. In a project (package.json, index.html, .git, .layoza...), new/redesign runs record their looks in .layoza/looks.jsonl and steer away from the last 5 runs; --no-ledger skips both.",
+        "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--variant N] [--window N] [--no-ledger] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives; --variant N re-deals fonts, palettes and mechanics for the same brief. In a project (package.json, index.html, .git, .layoza...), new/redesign runs record every slot (palette, type, nav, hero, sections, footer, motion) in .layoza/looks.jsonl and steer away from the last 20 entries (--window N, 1-200); output carries a uniqueness verdict and a `ledger:` line; --no-ledger skips both.",
         "animate" => "Usage: layoza animate [<category|id|engine>] [--recipe <id>] [--intensity 0-10] [--json]\n  Recommend animation recipes. Categories: hero_animation, section_animation, scroll_animation, interactive_effect, page_transition, three_experience. --recipe selects one recipe by id.",
-        "audit" => "Usage: layoza audit [<path>] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails.",
-        "verify" => "Usage: layoza verify [<path>] [--repair] [--json]\n  Verify release gates and the process gate files in .layoza/ (direction-approved.md, brand-spec.md, product-facts.md, self-critique stamp); exits 1 when any fails. --repair applies bounded auto-repairs to a single HTML file.",
-        "qa" => "Usage: layoza qa [<url|file|dir>] [--json] | layoza qa --compare <a.json> <b.json>\n  Headless Chromium multi-viewport QA (default index.html). --compare reads two saved browser-qa-report.json files and exits 2 on a re-skin (same skeleton, new colours). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
+        "audit" => "Usage: layoza audit [<path>] [--strict] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails. --strict turns process warnings (such as an unapproved direction) into errors.",
+        "verify" => "Usage: layoza verify [<path>] [--repair] [--strict] [--json]\n  Verify release gates and the process gate files in .layoza/ (direction-approved.md, brand-spec.md, product-facts.md, self-critique stamp); exits 1 when any fails. --repair applies bounded auto-repairs to a single HTML file. --strict turns process warnings into errors.",
+        "qa" => "Usage: layoza qa [<url|file|dir>] [--full] [--allow rule1,rule2] [--json] | layoza qa --compare <a.json> <b.json>\n  Headless Chromium multi-viewport QA (default index.html). Fast mode is the default; --full adds the slower passes, and the report lists mode, passes and skipped_passes. --allow suppresses named findings you have accepted. Env: LAYOZA_PLAYWRIGHT_DIR points at a Playwright install; LAYOZA_QA_ENGINE=python uses the Python engine. --compare reads two saved browser-qa-report.json files and exits 2 on a re-skin (same skeleton, new colours). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
         "doctor" => "Usage: layoza doctor [--json]\n  Validate agent installations, skill frontmatter, runtimes and smoke tests.",
         "generate" => "Usage: layoza generate [--framework <fw>] [--title <t>] [--subtitle <s>] [--cta <c>] [--output <dir>] [--json]\n  Generate a framework-native component from the project's Site DNA.",
         "baseline" => "Usage: layoza baseline create [<id>] [--file <path>]...\n       layoza baseline rollback [<id>]\n       layoza baseline structure [<id>]\n       layoza baseline [freshness]\n  structure compares each page's skeleton with the baseline and exits 1 when a redesign kept it.\n  create without --file snapshots the project's UI sources (html/css/js/ts/tsx/jsx/vue/svelte/astro/liquid/php, theme JSON, DESIGN.md...), skipping node_modules, .git, target, dist, build, .layoza and hidden dirs (caps: 2000 files, 1 MB/file, 32 MB total); skipped paths are reported. --file is repeatable and errors on paths that cannot be snapshotted. rollback exits 1 if it restores nothing.",
         "benchmark" => "Usage: layoza benchmark [--json]\n  Run 32 pipeline regression checks (no browser; not a design-quality score).",
         "deal" => "Usage: layoza deal \"<candidate list>\" [--top N] [--json]\n  Deterministically pick one of the top N (default 4) candidates from a stable hash of the list.",
-        "mechanics" => "Usage: layoza mechanics list [--niche X] [--kind hero|section|transition] [--intensity calm|bold|wild] [--json]\n       layoza mechanics deal \"<brief>\" [--count N] [--seed S] [--niche X] [--mood m] [--intensity calm|bold|wild] [--mode extend|improve] [--existing <dir>] [--avoid id1,id2] [--no-ledger] [--json]\n       layoza mechanics show <id> [--json]\n  Deal 1 hero + N section mechanics (2 signature + suggestions) + 1 transition, deterministic per seed. New sites follow the brief; --existing <dir> or --mode extend|improve caps the deal to the inspected site's motion intensity and stack (SITE-DNA.json, else a fresh inspect). --avoid skips mechanics used recently.",
+        "mechanics" => "Usage: layoza mechanics list [--niche X] [--kind hero|section|transition] [--intensity calm|bold|wild] [--json]\n       layoza mechanics deal \"<brief>\" [--count N] [--seed S] [--niche X] [--mood m] [--intensity calm|bold|wild] [--mode extend|improve] [--existing <dir>] [--avoid id1,id2] [--window N] [--no-ledger] [--json]\n       layoza mechanics show <id> [--json]\n  Deal 1 hero + N section mechanics (2 signature + suggestions) + 1 transition, deterministic per seed. New sites follow the brief; --existing <dir> or --mode extend|improve caps the deal to the inspected site's motion intensity and stack (SITE-DNA.json, else a fresh inspect). --avoid skips mechanics used recently. In a project every slot is recorded in .layoza/looks.jsonl and the last 20 entries (--window N, 1-200) are steered away from; output carries a uniqueness verdict and a `ledger:` line.",
+        "guidelines" => "Usage: layoza guidelines search \"<query>\" [--stack s] [--platform web|ios|android] [--limit N] [--json]\n       layoza guidelines get <id>\n  Search the bundled UX guidelines, chart notes and stack notes; `get` prints one entry (or `icons`).",
+        "chart" => "Usage: layoza chart \"<data shape>\" [--task t] [--json]\n  Recommend up to 3 chart types for a data shape, with encoding, when to avoid and an accessible fallback.",
         "hooks" => "Usage: layoza hooks on|off|status [--scope project|global] [--local] [--json]\n  Manage the Claude Code PostToolUse hook that checks UI files after each edit.",
         "check-edit" => "Usage: layoza check-edit < hook.json\n  Hook entry point: reads PostToolUse JSON on stdin and reports findings; never blocks.",
         "mcp" => "Usage: layoza mcp\n  Start the Layoza MCP stdio server.",
@@ -1192,9 +1310,12 @@ COMMANDS:
   inspect         Inspect a project directory or site and extract Site DNA (--write, --json)
   design-system   Recommend design systems, 3 directions, or lint/diff DESIGN.md (--mode, --lint, --diff)
   animate         Recommend GSAP, Motion, WAAPI, Three.js/R3F, or Lenis recipes (--intensity 0-10, --recipe <id>)
-  audit           Run deterministic accessibility, layout, motion, and Core Web Vitals checks
-  verify          Verify release gates and optionally apply bounded auto-repairs (--repair)
+  audit           Run deterministic accessibility, layout, motion, and Core Web Vitals checks (--strict)
+  verify          Verify release gates and optionally apply bounded auto-repairs (--repair, --strict)
   qa              Run closed-loop headless Chromium multi-viewport screenshots, mobile menu test & verify
+                  (fast by default; --full, --allow <rules>)
+  guidelines      Search UX guidelines and stack notes: guidelines search "<q>" | get <id>
+  chart           Recommend a chart for a data shape: chart "<shape>" [--task t]
   doctor          Validate agent installations, skill frontmatter, runtimes, and smoke tests
   generate        Generate framework-native components/themes (--framework, --output)
   baseline        Manage reversible baselines (create, rollback, freshness)
@@ -1207,6 +1328,11 @@ COMMANDS:
   check-edit      Hook entry point: reads the hook JSON on stdin, statically audits the edited
                   UI file (brand-aware, rate-limited, never blocks) and reports to the agent
   mcp             Start the Layoza Model Context Protocol (MCP) stdio server
+
+Uniqueness: in a project, design-system and mechanics deal record every slot in
+.layoza/looks.jsonl and avoid the last 20 entries (--window N, 1-200).
+
+Environment: LAYOZA_QA_TIMEOUT_SECS, LAYOZA_PLAYWRIGHT_DIR, LAYOZA_QA_ENGINE=python
 
 Run `layoza <COMMAND> --help` for that command's options.
 "#,
@@ -1292,7 +1418,7 @@ mod tests {
     fn every_command_has_usage() {
         for cmd in [
             "init", "inspect", "design-system", "animate", "audit", "verify", "qa", "doctor", "generate", "baseline",
-            "benchmark", "deal", "mechanics", "hooks", "check-edit", "mcp",
+            "benchmark", "deal", "mechanics", "hooks", "check-edit", "mcp", "guidelines", "chart",
         ] {
             assert!(subcommand_usage(cmd).is_some(), "{}", cmd);
         }

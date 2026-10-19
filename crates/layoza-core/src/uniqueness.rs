@@ -141,6 +141,37 @@ pub fn check(looks: &[Look], recent: &[Look], window: usize, ledger_on: bool) ->
     Uniqueness { ledger: if ledger_on { "on" } else { "off" }.into(), window, entries_compared: recent.len(), slots, fresh, repeats, score, verdict }
 }
 
+impl Uniqueness {
+    /// Compact text for terminals: one header line, the verdict, then only the repeated slots.
+    pub fn lines(&self) -> Vec<String> {
+        let mut out = vec![format!(
+            "Uniqueness: {}/100 ({} fresh, {} repeat(s); ledger {}, {} of the last {} entries compared)",
+            self.score, self.fresh, self.repeats, self.ledger, self.entries_compared, self.window
+        )];
+        out.push(format!("  {}", self.verdict));
+        for s in self.slots.iter().filter(|s| !s.status.starts_with("fresh")) {
+            out.push(format!("  - {} {}: {}", s.slot, s.id, s.status));
+        }
+        out
+    }
+}
+
+/// The ledger window to use: `requested` clamped to 1..=MAX_UNIQUENESS_WINDOW, default
+/// UNIQUENESS_WINDOW.
+pub fn window(requested: Option<u64>) -> usize {
+    requested.map(|n| (n as usize).clamp(1, crate::baseline::MAX_UNIQUENESS_WINDOW)).unwrap_or(crate::baseline::UNIQUENESS_WINDOW)
+}
+
+/// One explicit line about the ledger write: `written <path>`, `not written (<error>)` or
+/// `off (<why>)`.
+pub fn ledger_status<T>(root: Option<&std::path::Path>, written: Option<&Result<T, String>>, off_reason: &str) -> String {
+    match (root, written) {
+        (Some(r), Some(Ok(_))) => format!("written {}", r.join(crate::baseline::LOOK_LEDGER).display()),
+        (Some(_), Some(Err(e))) => format!("not written ({e})"),
+        _ => format!("off ({off_reason})"),
+    }
+}
+
 /// The ledger entry for a bare mechanics deal: every slot it filled.
 pub fn deal_look(deal: &MechanicDeal, run: &str) -> Look {
     let id = |m: &Option<crate::mechanics::Mechanic>| m.as_ref().map(|m| m.id.clone());

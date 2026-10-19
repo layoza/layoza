@@ -112,6 +112,37 @@ pub struct CreativeDirection {
     /// below 1rem (16px), labels and captions never below 0.75rem (12px).
     #[serde(default)]
     pub type_tokens: std::collections::BTreeMap<String, String>,
+    /// Second stylesheet link for this direction's mono / data face (free fonts only), when the
+    /// pairing's own `font_url` does not already carry it. Load it next to `typography.font_url`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub extra_font_url: Option<String>,
+}
+
+/// One-line reminder printed above deal and design-system text output.
+pub const PURPOSE_LINE: &str = "Layoza: build a page that belongs to this brief alone. No copies, no re-skins, no repeats of the ledger.";
+
+/// Why Layoza exists, in one paragraph. Shared by the MCP instructions, prompts, README and skills.
+pub const PURPOSE: &str = "Layoza exists so AI-built sites stop looking like slop. Make every design unique: never a copy, a re-skin or a repeat, from the nav through the hero and every section to the footer. Build it modern and subject-first, for this brief and no other. Reusing a look from the ledger, a template layout or another tool's house style counts as a failure, even when the page passes QA.";
+
+/// Five checks to run before shipping; each slot must differ from the ledger and fit the brief.
+pub const PURPOSE_CHECKLIST: [&str; 5] = [
+    "Nav: a pattern the ledger has not shown recently, sized to this site's real routes.",
+    "Hero: shows the trade's own objects or work, not a stock split or a gradient blob.",
+    "Sections: each one earns its place with this brief's content; no filler grid repeated from a past run.",
+    "Footer: built for what visitors of this trade need last, not the default four columns.",
+    "Motion: one choreography chosen for this subject, reduced-motion safe, not the last run's reveal.",
+];
+
+/// Purpose paragraph plus checklist as Markdown.
+pub fn purpose_markdown() -> String {
+    let mut s = String::from(PURPOSE);
+    s.push_str("\n\nBefore you ship, check each slot is unique against the ledger and on-brief:\n");
+    for c in PURPOSE_CHECKLIST {
+        s.push_str("- ");
+        s.push_str(c);
+        s.push('\n');
+    }
+    s
 }
 
 /// Smallest body size, in rem (16px at the default root size).
@@ -449,6 +480,8 @@ pub struct BriefSignals {
 
 /// Families recognised when a brief names its own type. Longer names first so "Geist Mono" wins
 /// over "Geist" and "IBM Plex Mono" over "IBM Plex Sans".
+// Recognition only: a brief that names one of these is read as naming its brand type. Commercial
+// faces in this list (Neue Montreal, ...) are never put in a CDN link; directions only link free fonts.
 const KNOWN_FONTS: &[&str] = &[
     "Atkinson Hyperlegible", "Barlow Condensed", "Bricolage Grotesque", "Cabinet Grotesk", "Clash Display",
     "Cormorant Garamond", "DM Serif Display", "EB Garamond", "General Sans", "Hanken Grotesk", "IBM Plex Mono",
@@ -1899,6 +1932,7 @@ pub fn recommend_design_steered(
         directions.push(CreativeDirection {
             hero_material: String::new(),
             radius: d.radius.to_string(),
+            extra_font_url: d.extra_font_url.clone(),
             archetype: d.arch.key.to_string(),
             nav: None,
             footer: None,
