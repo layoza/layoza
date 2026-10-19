@@ -541,7 +541,8 @@ pub fn run_benchmark_suite() -> BenchmarkSuiteReport {
         };
 
         // Measured, not assumed: the entry skill an agent loads first (~4 chars per token)
-        let context_tokens_used = ENTRY_SKILL.len().div_ceil(4);
+        // (line endings counted as LF, so a CRLF checkout measures the same as the repository).
+        let context_tokens_used = ENTRY_SKILL.replace("\r\n", "\n").len().div_ceil(4);
         let within_budget = context_tokens_used <= brief.max_context_tokens;
 
         let passed = lint.valid

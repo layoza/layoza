@@ -932,6 +932,60 @@ mod tests {
         }
     }
 
+    #[test]
+    fn the_same_brief_asked_again_is_a_new_design() {
+        // The ledger steers archetype, palette, type and furniture, so one brief asked run after
+        // run is a new structure and colour each time; a Latin brief never gets a CJK or Hebrew face.
+        let q = "neighbourhood sourdough bakery";
+        let non_latin = |font: &str| {
+            super::super::type_pool().iter().any(|e| e.pairing.display_font == font && e.scripts.iter().any(|s| super::super::NON_LATIN.contains(s)))
+        };
+        let mut recent: Vec<crate::baseline::Look> = Vec::new();
+        let (mut archs, mut pals) = (Vec::new(), Vec::new());
+        let mut prev_nav: Option<String> = None;
+        let (mut pale, mut total) = (0, 0);
+        for i in 0..6 {
+            let r = recommend_design_avoiding(q, OperatingMode::NewWebsite, None, None, 0, &recent);
+            let a = &r.directions[0];
+            archs.push(a.archetype.clone());
+            pals.push(a.palette.id.clone());
+            let nav = a.nav.as_ref().map(|m| m.id.clone());
+            assert!(prev_nav.is_none() || nav != prev_nav, "run {i}: nav {nav:?} repeats the last run");
+            prev_nav = nav;
+            for d in &r.directions {
+                assert!(!non_latin(&d.typography.display_font), "run {i}: {}", d.typography.display_font);
+                pale += (super::super::Tone::of(&d.palette) == super::super::Tone::Light) as usize;
+                total += 1;
+            }
+            // The real reader keeps the last RECENT_LOOK_RUNS runs, oldest first.
+            recent.extend(looks_of(&r, &format!("run-{i}")));
+            let keep = crate::baseline::RECENT_LOOK_RUNS * r.directions.len();
+            if recent.len() > keep {
+                recent.drain(..recent.len() - keep);
+            }
+        }
+        archs.sort();
+        archs.dedup();
+        pals.sort();
+        pals.dedup();
+        assert!(archs.len() >= 5 && pals.len() >= 5, "archetypes {archs:?}, palettes {pals:?}");
+        assert!(pale * 3 <= total * 2, "{pale} of {total} grounds pale");
+        // Freshness never outranks niche fit: a phone store asked again and again stays a shop.
+        let q = "online store selling smartphones and phone accessories";
+        let mut recent: Vec<crate::baseline::Look> = Vec::new();
+        for i in 0..6 {
+            let r = recommend_design_avoiding(q, OperatingMode::NewWebsite, None, None, 0, &recent);
+            for d in &r.directions {
+                assert!(!["blueprint-sheet", "price-board", "status-board", "almanac"].contains(&d.archetype.as_str()), "run {i}: {}", d.archetype);
+            }
+            recent.extend(looks_of(&r, &format!("store-{i}")));
+            let keep = crate::baseline::RECENT_LOOK_RUNS * r.directions.len();
+            if recent.len() > keep {
+                recent.drain(..recent.len() - keep);
+            }
+        }
+    }
+
     const WILD: &[&str] = &["kinetic-type", "webgl-scene", "cursor-field", "marquee-physics", "smooth-depth"];
 
     #[test]

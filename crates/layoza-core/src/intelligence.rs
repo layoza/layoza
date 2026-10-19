@@ -1764,10 +1764,15 @@ pub fn recommend_design_avoiding(
         recent_display.push(d.to_string());
         recent_body.push(b.to_string());
     }
+    // Recent archetypes and palettes (newest first) steer the structure and colour deal.
+    let recent_archs: Vec<String> = recent.iter().rev().filter_map(|l| l.archetype.clone()).collect();
+    let recent_pals: Vec<String> = recent.iter().rev().filter_map(|l| l.palette.clone()).collect();
     let mut best: Option<(usize, DesignRecommendation)> = None;
     for v in variant..variant + 6 {
         let rec = crate::directions::with_recent_faces(recent_display.clone(), recent_body.clone(), || {
-            crate::directions::page_shape::with_recent_shapes(recent.to_vec(), || recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids))
+            crate::directions::with_recent_picks(recent_archs.clone(), recent_pals.clone(), || {
+                crate::directions::page_shape::with_recent_shapes(recent.to_vec(), || recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids))
+            })
         });
         let o = overlap(&rec);
         if best.as_ref().is_none_or(|(b, _)| o < *b) {

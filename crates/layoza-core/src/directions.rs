@@ -918,6 +918,34 @@ pub(crate) fn with_recent_faces<T>(display: Vec<String>, body: Vec<String>, f: i
 }
 
 thread_local! {
+    /// Archetype and palette ids from the look ledger, newest first, set by [`with_recent_picks`].
+    static RECENT_PICKS: std::cell::RefCell<(Vec<String>, Vec<String>)> = const { std::cell::RefCell::new((Vec::new(), Vec::new())) };
+}
+
+/// Runs `f` with the ledger's recent archetypes and palettes (newest first) down-ranking those
+/// picks, so the same brief asked again is dealt a different structure and colour. Niche fit
+/// still gates the pool: a recent pick is only out-scored by the next-best fitting one.
+pub(crate) fn with_recent_picks<T>(archetypes: Vec<String>, palettes: Vec<String>, f: impl FnOnce() -> T) -> T {
+    RECENT_PICKS.with(|r| *r.borrow_mut() = (archetypes, palettes));
+    let out = f();
+    RECENT_PICKS.with(|r| *r.borrow_mut() = (Vec::new(), Vec::new()));
+    out
+}
+
+/// Fit points below the best that still compete on freshness when the ledger steers a deal.
+const FIT_BAND: i32 = 9;
+
+/// Score cost of reusing `id` given ledger ids `newest_first`: the last run's picks cost most.
+fn recency_cost(newest_first: &[String], id: &str) -> i32 {
+    match newest_first.iter().position(|x| x == id) {
+        Some(d) if d < 6 => 5,
+        Some(d) if d < 15 => 3,
+        Some(_) => 1,
+        None => 0,
+    }
+}
+
+thread_local! {
     /// True while dealing for a niche whose page shape moves at the heavy tier, set by [`with_heavy_tier`].
     static HEAVY_TIER: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
 }
@@ -1089,6 +1117,12 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let (recent_display, recent_body) = RECENT_FACES.with(|r| r.borrow().clone());
     used_fonts.extend(recent_display.iter().cloned());
     used_bodies.extend(recent_body.iter().cloned());
+    let (recent_archs, recent_pals) = RECENT_PICKS.with(|r| r.borrow().clone());
+    // The ledger's last looks were mostly pale grounds: lean this deal toward dark and colour fields.
+    let pale_run = {
+        let last: Vec<Tone> = recent_pals.iter().take(6).filter_map(|id| pals.iter().find(|e| &e.palette.id == id)).map(|e| e.tone).collect();
+        last.len() >= 3 && last.iter().filter(|t| **t == Tone::Light).count() * 3 >= last.len() * 2
+    };
     if let Some((t, p)) = industry {
         // B and C never reuse the industry's own display face or palette, even when A re-deals.
         used_fonts.push(family(&t.display_font));
@@ -1172,6 +1206,21 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 (s, a)
             })
             .collect();
+        // Niche fit gates first: with a ledger, only archetypes near the best fit compete on
+        // freshness, so a recent pick yields to another fitting one, never to a foreign trade's.
+        if !recent_archs.is_empty() {
+            let top = ranked.iter().map(|x| x.0).max().unwrap_or(0);
+            ranked.retain(|x| x.0 >= top - FIT_BAND);
+            // A tagged layout written for other trades only (an almanac for a phone shop) stays out
+            // while any layout that fits remains.
+            let own = |a: &Archetype| a.tags.is_empty() || a.tags.iter().any(|t| wants(t));
+            if ranked.iter().any(|x| own(x.1)) {
+                ranked.retain(|x| own(x.1));
+            }
+            for x in ranked.iter_mut() {
+                x.0 -= recency_cost(&recent_archs, x.1.key);
+            }
+        }
         ranked.sort_by(|x, y| y.0.cmp(&x.0).then_with(|| h(x.1.key).cmp(&h(y.1.key))));
         let mut cands = window(&ranked, margin, min);
         if let Some(p) = prev {
@@ -1196,7 +1245,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
 
         // Type and palette: A at variant 0 keeps the matched industry's own.
         if slot == 0 && variant == 0 {
-            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p)) {
+            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p) && recency_cost(&recent_pals, &p.id) < 3) {
                 let tone = Tone::of(p);
                 used_tones.push(tone);
                 let te = types.iter().find(|e| e.pairing.id == t.id || e.pairing.display_font == t.display_font);
@@ -1208,6 +1257,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                         let best = types
                             .iter()
                             .filter(|e| needs.is_none_or(|sc| e.scripts.contains(&sc)) && !used_fonts.contains(&family(&e.pairing.display_font)))
+                            .filter(|e| script.is_some() || !e.scripts.iter().any(|x| NON_LATIN.contains(x)))
                             .max_by_key(|e| {
                             let mut s: i32 = e.tags.iter().map(|x| w(x)).sum();
                             s += if e.voice == arch.voice { 4 } else { 0 } + if e.look_family == arch.look_family { 2 } else { 0 };
@@ -1247,6 +1297,9 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             .iter()
             .enumerate()
             .filter(|(_, e)| !used_fonts.contains(&family(&e.pairing.display_font)) && display_capable(&e.pairing.display_font, &e.pairing.body_font))
+            // Faces drawn for a non-Latin script (Hahmlet, M PLUS, Suez One) never set a brief written
+            // for Latin text, even once the ledger has used up the Latin faces that fit.
+            .filter(|(_, e)| script.is_some() || !e.scripts.iter().any(|x| NON_LATIN.contains(x)))
             .map(|(i, e)| {
                 let mut s = if e.voice == arch.voice { 4 } else { 0 };
                 s += e.tags.iter().map(|t| if *t == "data" && signals.surface == S::ProductUi { 4 } else { w(t) }).sum::<i32>();
@@ -1261,8 +1314,6 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 }
                 match script {
                     Some(sc) if e.scripts.contains(&sc) => s += 12,
-                    // Faces drawn for a non-Latin script (Hahmlet, M PLUS) only lead when the brief asks.
-                    None if e.scripts.iter().any(|x| NON_LATIN.contains(x)) => s -= 6,
                     _ => {}
                 }
                 if e.overused {
@@ -1312,7 +1363,11 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             .map(|(i, e)| {
                 let mut s = if e.tone == arch.tone { 4 } else { 0 };
                 if used_tones.contains(&e.tone) {
-                    s -= 3;
+                    // Most archetypes are written light, so a second pale ground costs more.
+                    s -= if e.tone == Tone::Light { 5 } else { 3 };
+                }
+                if e.tone == Tone::Light && pale_run {
+                    s -= 4;
                 }
                 s += e.tags.iter().map(|t| if *t == "data" && signals.surface == S::ProductUi { 4 } else { w(t) }).sum::<i32>();
                 if signals.surface == S::DevTool && e.tags.contains(&"code") {
@@ -1352,6 +1407,13 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 (s, i)
             })
             .collect();
+        if !recent_pals.is_empty() {
+            let top = pr.iter().map(|x| x.0).max().unwrap_or(0);
+            pr.retain(|x| x.0 >= top - FIT_BAND);
+            for x in pr.iter_mut() {
+                x.0 -= recency_cost(&recent_pals, &pals[x.1].palette.id);
+            }
+        }
         pr.sort_by(|x, y| y.0.cmp(&x.0).then_with(|| h(&pals[x.1].palette.id).cmp(&h(&pals[y.1].palette.id))));
         let mut pc = window(&pr, margin, min.max(3));
         if let Some(p) = prev {

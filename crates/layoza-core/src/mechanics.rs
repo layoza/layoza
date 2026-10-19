@@ -1229,9 +1229,20 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         let mut cands = if other_look.is_empty() { all } else { other_look };
         let top = cands.iter().map(|m| fit_score(m)).max()?;
         let is_recent = |m: &Mechanic| opts.recent_ids.iter().chain(opts.recent_by_entry.iter().flatten()).any(|x| x.eq_ignore_ascii_case(&m.id));
-        let window = if cands.iter().any(|m| fit_score(m) == top && is_recent(m)) { 0 } else { FURNITURE_WINDOW };
-        // Only fresh picks rotate; with the pool used up, the least recently used one is dealt.
-        cands.retain(|m| fit_score(m) + window >= top && (window == 0 || !is_recent(m)));
+        if cands.iter().any(|m| fit_score(m) == top && is_recent(m)) {
+            // Pool used up: of the near-best fits, the least recently used one is dealt, so a
+            // strong fit cannot win every run just because its lead beats the recency grade.
+            let age = |m: &Mechanic| opts.recent_ids.iter().position(|x| x.eq_ignore_ascii_case(&m.id)).unwrap_or(usize::MAX);
+            let m = cands
+                .iter()
+                .copied()
+                .filter(|m| fit_score(m) + RECENT_PENALTY + RECENCY_GRADE + FURNITURE_WINDOW >= top)
+                .max_by(|a, b| age(a).cmp(&age(b)).then_with(|| fit_score(a).cmp(&fit_score(b))))?;
+            fam.insert(m.family.clone());
+            return Some(m.clone());
+        }
+        // Only fresh picks rotate.
+        cands.retain(|m| fit_score(m) + FURNITURE_WINDOW >= top && !is_recent(m));
         cands.sort_by(|a, b| fit_score(b).cmp(&fit_score(a)).then_with(|| a.id.cmp(&b.id)));
         cands.truncate(6);
         let i = (seed.wrapping_add(fnv1a(salt)) % cands.len() as u64) as usize;
