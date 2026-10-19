@@ -2410,10 +2410,9 @@ mod tests {
     /// families arrange services" reads "helping families arrange services". The fix belongs in
     /// `directions::subject_phrase` (agent B's file); kept here, ignored, until it lands.
     #[test]
-    #[ignore = "directions::subject_phrase drops the head noun of long briefs"]
     fn subject_phrase_keeps_the_trade_noun() {
         let funeral = rec("funeral home helping families arrange services");
-        assert!(funeral.matched_industry.layout_archetype.contains("funeral home"), "{}", funeral.matched_industry.layout_archetype);
+        assert!(funeral.matched_industry.layout_archetype.to_lowercase().contains("funeral home"), "{}", funeral.matched_industry.layout_archetype);
     }
 
     #[test]

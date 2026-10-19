@@ -166,7 +166,7 @@ pub fn window(requested: Option<u64>) -> usize {
 /// `off (<why>)`.
 pub fn ledger_status<T>(root: Option<&std::path::Path>, written: Option<&Result<T, String>>, off_reason: &str) -> String {
     match (root, written) {
-        (Some(r), Some(Ok(_))) => format!("written {}", r.join(crate::baseline::LOOK_LEDGER).display()),
+        (Some(r), Some(Ok(_))) => format!("written {}", r.join(".layoza").join("looks.jsonl").display()),
         (Some(_), Some(Err(e))) => format!("not written ({e})"),
         _ => format!("off ({off_reason})"),
     }

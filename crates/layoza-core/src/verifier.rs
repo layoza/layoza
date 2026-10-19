@@ -180,7 +180,7 @@ pub fn audit_project_with(
             .unwrap_or(file_path)
             .to_string_lossy()
             .replace('\\', "/");
-        audit_file_content(&label, &content, existing_dna, &mut findings);
+        audit_file_content(&label, content, existing_dna, &mut findings);
     }
 
     // 7. Ingest the live Chromium QA report written by `scripts/browser-qa.mjs`, if present
@@ -1500,9 +1500,9 @@ fn attr_value<'a>(tag: &'a str, name: &str) -> Option<&'a str> {
     while let Some(p) = tag[i..].find(name) {
         let s = i + p;
         i = s + name.len();
-        let before_ok = tag[..s].chars().last().map_or(false, |c| c.is_whitespace() || c == ':');
+        let before_ok = tag[..s].chars().last().is_some_and(|c| c.is_whitespace() || c == ':');
         let rest = &tag[s + name.len()..];
-        let after_ok = rest.chars().next().map_or(true, |c| c.is_whitespace() || c == '=' || c == '>' || c == '/');
+        let after_ok = rest.chars().next().is_none_or(|c| c.is_whitespace() || c == '=' || c == '>' || c == '/');
         if !before_ok || !after_ok {
             continue;
         }
@@ -1617,12 +1617,12 @@ fn audit_static_markup(file: &str, lower: &str, findings: &mut Vec<AuditFinding>
     for tag in &tags {
         let name = tag_name(tag);
         if let Some(v) = attr_value(tag, "tabindex") {
-            if v.trim().parse::<i32>().map_or(false, |n| n > 0) {
+            if v.trim().parse::<i32>().is_ok_and(|n| n > 0) {
                 positive_tab += 1;
             }
         }
         if let Some(id) = attr_value(tag, "id") {
-            let literal = !id.is_empty() && !id.contains(|c: char| matches!(c, '{' | '$' | '<' | '%' | '`' | '+'));
+            let literal = !id.is_empty() && !id.contains(['{', '$', '<', '%', '`', '+']);
             if literal {
                 if ids.contains(&id) {
                     if !dup_ids.contains(&id) {
@@ -1659,7 +1659,7 @@ fn audit_static_markup(file: &str, lower: &str, findings: &mut Vec<AuditFinding>
                     .split(',')
                     .find_map(|p| p.strip_prefix("maximum-scale="))
                     .and_then(|v| v.parse::<f64>().ok());
-                zoom_blocked = c.contains("user-scalable=no") || c.contains("user-scalable=0") || max_scale.map_or(false, |m| m < 2.0);
+                zoom_blocked = c.contains("user-scalable=no") || c.contains("user-scalable=0") || max_scale.is_some_and(|m| m < 2.0);
             }
             _ => {}
         }
@@ -1755,7 +1755,7 @@ fn parse_decls(body: &str) -> Vec<(String, String)> {
             let (k, v) = d.split_once(':')?;
             let k = k.trim();
             let v = v.trim().trim_end_matches("!important").trim();
-            (!k.is_empty() && !k.contains(|c: char| c == '{' || c == '}')).then(|| (k.to_string(), v.to_string()))
+            (!k.is_empty() && !k.contains(['{', '}'])).then(|| (k.to_string(), v.to_string()))
         })
         .collect()
 }
@@ -1769,7 +1769,7 @@ fn parse_css(css: &str, media: &str, rules: &mut Vec<CssRule>, keyframes: &mut V
     let mut i = 0;
     let b = css.as_bytes();
     while i < b.len() {
-        let Some(rel) = css[i..].find(|c| c == '{' || c == ';' || c == '}') else { break };
+        let Some(rel) = css[i..].find(['{', ';', '}']) else { break };
         let at = i + rel;
         if b[at] != b'{' {
             i = at + 1;

@@ -457,7 +457,7 @@ fn validate_tool_args(name: &str, args: &Value) -> Result<(), String> {
         }
     }
     for r in def["inputSchema"]["required"].as_array().into_iter().flatten().filter_map(|r| r.as_str()) {
-        if obj.get(r).map_or(true, |v| v.is_null()) {
+        if obj.get(r).is_none_or(|v| v.is_null()) {
             return Err(format!("Missing required argument `{}` for `{}`.", r, name));
         }
     }

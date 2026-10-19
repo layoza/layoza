@@ -16,9 +16,8 @@ description: >-
    layout, motion library, scope, "minimal", "no animation") overrides every
    Layoza default. Defaults apply only where the prompt leaves a choice open.
 2. **Design first.** Act as the best designer in the world on this job. The page
-   must be unmistakably about its subject and better than what a top studio
-   would ship. QA is the floor, never the goal; a QA-clean page that is plain
-   or off-subject has failed.
+   must be unmistakably about its subject. QA is the floor, never the goal; a
+   QA-clean page that is plain or off-subject has failed.
 3. **Nothing is hard-coded.** Art, type, motion, 3D and the tools behind them
    (CSS, WAAPI, GSAP, Motion, WebGL, SVG) are chosen per brief.
 4. **Never cut ambition to clear a warning.** Fix the cause and keep the idea.
@@ -84,7 +83,7 @@ Deal hero and section mechanics with `layoza mechanics deal "<brief>"` (MCP `dea
 ```bash
 layoza qa <html-file-or-url>
 ```
-Real Chromium at 1440/768/375, scrolled like a visitor: contrast, overflow,
+Real Chromium at 1440/768/375: contrast, overflow,
 clipping, nav, focus, hidden text and lab Core Web Vitals (`null` = unmeasured,
 never a pass). Then open `qa/desktop.png`, `qa/mobile-hero.png` and
 `qa/mobile-menu-open.png` (motion settled; text over 3D, canvas or images

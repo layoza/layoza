@@ -562,6 +562,21 @@ const BREAKS: &[&str] = &[
     "of", "about", "like",
 ];
 
+/// Words ending in "-ing" that name a trade or thing rather than open a clause.
+const ING_NOUNS: &[&str] = &[
+    "wedding", "building", "clothing", "catering", "planning", "printing", "roofing", "flooring", "plumbing",
+    "coding", "banking", "accounting", "marketing", "consulting", "engineering", "housing", "landscaping",
+    "cleaning", "training", "parking", "lighting", "packaging", "shipping", "hosting", "recruiting", "tutoring",
+    "dining", "gaming", "ticketing", "invoicing", "publishing", "painting", "piercing", "boxing", "climbing",
+    "sailing", "fishing", "farming", "mining", "manufacturing", "nursing", "dancing", "learning", "wellbeing",
+    "staffing", "coaching", "branding", "bowling", "skating", "surfing", "diving", "cycling", "running",
+    "swimming", "riding", "camping", "glamping", "brewing", "baking", "roasting", "tailoring", "framing",
+    "welding", "fencing", "decking", "tiling", "glazing", "heating", "cooling", "computing", "billing",
+    "booking", "lending", "trading", "investing", "funding", "advertising", "networking", "streaming",
+    "messaging", "monitoring", "testing", "logging", "mapping", "tracking", "scheduling", "routing", "storing",
+    "spring", "evening", "morning", "king", "ring", "thing", "something", "nothing", "everything",
+];
+
 fn subject_phrase(query: &str) -> String {
     let first_line = query.lines().find(|l| !l.trim().is_empty()).unwrap_or("");
     let sentence = first_line.split(['.', ';', ':', '!', '?', ',', '\n']).next().unwrap_or("");
@@ -572,7 +587,14 @@ fn subject_phrase(query: &str) -> String {
         .collect();
     let mut segments: Vec<Vec<String>> = vec![Vec::new()];
     for w in words {
-        if BREAKS.contains(&w.to_lowercase().as_str()) {
+        let lw = w.to_lowercase();
+        // A participle after the subject opens a clause ("funeral home helping families ..."):
+        // the subject ends there, so its head noun is kept.
+        let participle = lw.len() > 4
+            && lw.ends_with("ing")
+            && !ING_NOUNS.contains(&lw.as_str())
+            && segments.last().is_some_and(|s| !s.is_empty());
+        if BREAKS.contains(&lw.as_str()) || participle {
             segments.push(Vec::new());
         } else if let Some(last) = segments.last_mut() {
             last.push(w);
