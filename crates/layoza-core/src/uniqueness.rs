@@ -165,15 +165,28 @@ pub fn deal_look(deal: &MechanicDeal, run: &str) -> Look {
     }
 }
 
-/// Every mechanic id in `recent`, for the deal's recent-use penalty.
+/// Every mechanic id in `recent` (oldest first), most recently used first and without duplicates,
+/// for the deal's graded recent-use penalty.
 pub fn recent_mechanic_ids(recent: &[Look]) -> Vec<String> {
-    let mut ids: Vec<String> = recent
-        .iter()
-        .flat_map(|l| l.hero.iter().chain(&l.nav).chain(&l.footer).chain(&l.transition).chain(&l.sections).chain(&l.mechanics).cloned())
-        .collect();
-    ids.sort();
-    ids.dedup();
+    let mut ids: Vec<String> = Vec::new();
+    for l in recent.iter().rev() {
+        for id in l.hero.iter().chain(&l.nav).chain(&l.footer).chain(&l.transition).chain(&l.sections).chain(&l.mechanics) {
+            if !ids.iter().any(|x| x.eq_ignore_ascii_case(id)) {
+                ids.push(id.clone());
+            }
+        }
+    }
     ids
+}
+
+/// The mechanic ids of each entry in `recent` (oldest first), most recent entry first, for the
+/// deal's per-entry graded penalty (`DealOptions::recent_by_entry`).
+pub fn recent_by_entry(recent: &[Look]) -> Vec<Vec<String>> {
+    recent
+        .iter()
+        .rev()
+        .map(|l| l.hero.iter().chain(&l.nav).chain(&l.footer).chain(&l.transition).chain(&l.sections).chain(&l.mechanics).cloned().collect())
+        .collect()
 }
 
 #[cfg(test)]
@@ -200,8 +213,10 @@ mod tests {
         assert!(u.slots.iter().any(|s| s.slot == "B.nav" && s.status.contains("direction A")));
     }
 
-    /// Ten deals in a row for one brief, each recorded in the ledger: no two have the same slot set,
-    /// and no slot repeats in more than 30% of the deals.
+    /// Ten deals in a row for one brief, each recorded in the ledger: no two have the same slot set;
+    /// per slot, fewer than 30% of the deals repeat, unless that slot's on-brief pool is smaller than
+    /// the run, in which case every pick stays fresh until the pool is used up, a repeat never comes
+    /// back within 3 deals (oldest first), and each repeat is named in the verdict.
     fn ten_in_a_row(brief: &str) -> (Vec<Vec<(String, String)>>, Vec<Uniqueness>) {
         let mut ledger: Vec<Look> = Vec::new();
         let mut sets = Vec::new();
@@ -213,6 +228,7 @@ mod tests {
                 count: 2,
                 seed: Some(seed * 7919 + 1),
                 recent_ids: recent_mechanic_ids(&recent),
+                recent_by_entry: recent_by_entry(&recent),
                 ..Default::default()
             });
             let l = deal_look(&deal, &format!("run-{seed}"));
@@ -233,10 +249,29 @@ mod tests {
                     assert_ne!(sets[i], sets[j], "{brief}: deals {j} and {i} have the same slot set");
                 }
             }
-            for slot in ["nav", "hero", "section-1", "section-2", "footer", "transition"] {
-                let repeats = reports.iter().filter(|u| u.slots.iter().any(|s| s.slot == slot && s.status.starts_with("repeat"))).count();
-                assert!(repeats * 100 < 30 * reports.len(),"{brief}: slot {slot} repeated in {repeats}/10 deals");
+            for slot in ["nav", "hero", "footer", "transition"] {
+                let picks: Vec<&str> = sets.iter().map(|s| s.iter().find(|(k, _)| k == slot).map(|(_, v)| v.as_str()).unwrap_or("")).collect();
+                let flags: Vec<bool> = reports.iter().map(|u| u.slots.iter().any(|s| s.slot == slot && s.status.starts_with("repeat"))).collect();
+                let repeats = flags.iter().filter(|r| **r).count();
+                for (u, r) in reports.iter().zip(&flags) {
+                    let id = u.slots.iter().find(|s| s.slot == slot).map(|s| s.id.clone()).unwrap_or_default();
+                    assert!(!r || u.verdict.contains(&id), "{brief}: repeat {slot} {id} not named: {}", u.verdict);
+                }
+                if repeats * 100 < 30 * reports.len() {
+                    continue;
+                }
+                let first = flags.iter().position(|r| *r).unwrap_or(picks.len());
+                let distinct: std::collections::BTreeSet<&str> = picks.iter().copied().collect();
+                assert!(first >= distinct.len() && distinct.len() >= 4, "{brief}: {slot} repeated before its pool ran out: {picks:?}");
+                for i in 0..picks.len() {
+                    for j in i.saturating_sub(3)..i {
+                        assert_ne!(picks[i], picks[j], "{brief}: {slot} came back within 3 deals: {picks:?}");
+                    }
+                }
             }
+            // Sections draw from a wider pool: the page as a whole keeps changing.
+            let sections: std::collections::BTreeSet<String> = sets.iter().flat_map(|s| s.iter().filter(|(k, _)| k.starts_with("section-")).map(|(_, v)| v.clone())).collect();
+            assert!(sections.len() >= 10, "{brief}: only {} distinct sections in 10 deals", sections.len());
         }
     }
 }

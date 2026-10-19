@@ -2381,7 +2381,7 @@ mod tests {
             assert_eq!(r.matched_industry.slug, "brief-derived");
             assert!(!r.matched_industry.layout_archetype.contains("make first contact"), "{}", r.matched_industry.layout_archetype);
         }
-        assert!(funeral.matched_industry.layout_archetype.contains("funeral home"));
+        assert!(funeral.matched_industry.layout_archetype.contains("funeral home"), "{}", funeral.matched_industry.layout_archetype);
         assert!(funeral.matched_industry.first_viewport_priority.contains("arrange services"));
         assert!(water.matched_industry.first_viewport_priority.contains("report leaks"));
         // No verb in the brief: no guessed booking, the agent is told to ask.

@@ -874,9 +874,14 @@ pub struct DealOptions {
     /// The shared niche signal, already read from the brief (`intelligence::brief_signals`): used
     /// verbatim so `design-system` and `deal` never disagree about the trade. `None` reads the brief.
     pub niches: Option<Vec<String>>,
-    /// Mechanic ids dealt in this project's recent runs (`.layoza/looks.jsonl`): still allowed, but
-    /// scored down so a new deal steers away from them while anything comparable fits.
+    /// Mechanic ids dealt in this project's recent runs (`.layoza/looks.jsonl`), every slot: still
+    /// allowed, but scored down by more than any fit bonus, so a fresh fitting pick always wins and a
+    /// repeat is dealt only when nothing fresh fits that slot. Ordered most recent first: the more
+    /// recent the use, the bigger the penalty, so an exhausted slot cycles to its oldest pick.
     pub recent_ids: Vec<String>,
+    /// Optional: the same ids grouped per ledger entry, most recent entry first. When set, the
+    /// penalty is graded by entry distance (sharper than the flat list's position).
+    pub recent_by_entry: Vec<Vec<String>>,
     /// Hero look families already used by another direction; skipped while any other hero fits.
     pub exclude_look_families: Vec<String>,
     /// Skip `giant-type` heroes while any other hero fits (set when every earlier direction is pure type).
@@ -951,6 +956,18 @@ pub struct MechanicDeal {
     pub notes: Vec<String>,
     pub rules: Vec<String>,
 }
+
+/// Score taken off a mechanic used in the project's recent ledger entries: larger than any fit bonus
+/// (niche 8 + trade role 5 + intensity 4 + moods), so a fresh fitting pick always outranks it.
+const RECENT_PENALTY: i64 = 24;
+/// Extra penalty for the most recent use, falling to 0 for the oldest, so repeats cycle oldest first.
+const RECENCY_GRADE: i64 = 16;
+/// Per-entry step of the graded penalty when ids come grouped by ledger entry.
+const ENTRY_GRADE: i64 = 8;
+/// Fit points below the best in-niche hero that still join the seed rotation.
+const HERO_ROTATION_WINDOW: i64 = 10;
+/// Fit points below the best furniture pick that still join the seed rotation.
+const FURNITURE_WINDOW: i64 = 6;
 
 fn fnv1a(text: &str) -> u64 {
     text.bytes().fold(0xcbf29ce484222325u64, |h, b| (h ^ b as u64).wrapping_mul(0x100000001b3))
@@ -1098,7 +1115,9 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     if !avoided.is_empty() {
         notes.push(format!("Skipped {} excluded / recently used mechanic(s): {}.", avoided.len(), avoided.join(", ")));
     }
-    let score = |m: &Mechanic| -> i64 {
+    // Fit score without the seeded jitter: seed-independent, so rotation windows hold the same
+    // candidates for every seed and the seed only picks among them.
+    let fit_score = |m: &Mechanic| -> i64 {
         let mut s: i64 = 0;
         for (rank, n) in niches.iter().enumerate() {
             if m.niches.contains(n) {
@@ -1147,13 +1166,19 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
                 s += 2;
             }
         }
-        if opts.recent_ids.iter().any(|x| x.eq_ignore_ascii_case(&m.id)) {
-            s -= 8;
+        if let Some(a) = opts.recent_by_entry.iter().position(|e| e.iter().any(|x| x.eq_ignore_ascii_case(&m.id))) {
+            s -= RECENT_PENALTY + ENTRY_GRADE * (opts.recent_by_entry.len() - a) as i64;
+        } else if let Some(i) = opts.recent_ids.iter().position(|x| x.eq_ignore_ascii_case(&m.id)) {
+            let n = opts.recent_ids.len() as i64;
+            s -= RECENT_PENALTY + RECENCY_GRADE * (n - i as i64) / n;
         }
-        // Seeded jitter (0-3) so one seed is reproducible and another seed explores close candidates
-        // With no niche the fit scores barely differ, so a wider jitter lets the whole brief decide.
+        s
+    };
+    // Seeded jitter (0-3) so one seed is reproducible and another seed explores close candidates
+    // With no niche the fit scores barely differ, so a wider jitter lets the whole brief decide.
+    let score = |m: &Mechanic| -> i64 {
         let spread = if niches.is_empty() { 12 } else { 4 };
-        s + (fnv1a(&format!("{}:{}", seed, m.id)) % spread) as i64
+        fit_score(m) + (fnv1a(&format!("{}:{}", seed, m.id)) % spread) as i64
     };
     // Pool by fit: in-niche and universal entries first; widen to related niches, then to broad
     // entries, only when too few fit at this intensity. Mechanics built around another trade's own
@@ -1192,6 +1217,27 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         let m = list.iter().find(|m| !fam.contains(&m.family) && extra(m))?;
         fam.insert(m.family.clone());
         Some((*m).clone())
+    };
+    // Seeded rotation for furniture (nav, footer, section head): the candidates within
+    // FURNITURE_WINDOW fit points of the best (seed-independent, at most 6, look families other
+    // directions hold skipped while others fit) are ordered by fit then id, and the seed walks
+    // them, so consecutive seeds give different picks.
+    let take_rotated = |list: &[&'static Mechanic], fam: &mut BTreeSet<String>, extra: &dyn Fn(&Mechanic) -> bool, salt: &str| -> Option<Mechanic> {
+        let all: Vec<&'static Mechanic> = list.iter().copied().filter(|m| !fam.contains(&m.family) && extra(m)).collect();
+        let other_look: Vec<&'static Mechanic> =
+            all.iter().copied().filter(|m| m.look_family.is_empty() || !opts.exclude_look_families.iter().any(|f| f == &m.look_family)).collect();
+        let mut cands = if other_look.is_empty() { all } else { other_look };
+        let top = cands.iter().map(|m| fit_score(m)).max()?;
+        let is_recent = |m: &Mechanic| opts.recent_ids.iter().chain(opts.recent_by_entry.iter().flatten()).any(|x| x.eq_ignore_ascii_case(&m.id));
+        let window = if cands.iter().any(|m| fit_score(m) == top && is_recent(m)) { 0 } else { FURNITURE_WINDOW };
+        // Only fresh picks rotate; with the pool used up, the least recently used one is dealt.
+        cands.retain(|m| fit_score(m) + window >= top && (window == 0 || !is_recent(m)));
+        cands.sort_by(|a, b| fit_score(b).cmp(&fit_score(a)).then_with(|| a.id.cmp(&b.id)));
+        cands.truncate(6);
+        let i = (seed.wrapping_add(fnv1a(salt)) % cands.len() as u64) as usize;
+        let m = cands[i];
+        fam.insert(m.family.clone());
+        Some(m.clone())
     };
 
     let (heroes, _) = ranked(MechanicKind::Hero);
@@ -1244,10 +1290,20 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         // Seed rotation: with an explicit seed, rotate among the qualifying in-niche heroes (within
         // 10 points of the best, at most 5) so different seeds open on different first screens; the
         // in-niche bonus alone would otherwise win on every seed.
+        // The window is built from the seed-independent fit score and ordered by fit then id, and the
+        // seed walks it (seed mod len), so consecutive seeds always open on different heroes.
         let rotation: Vec<&'static Mechanic> = if opts.seed.is_some() && !niches.is_empty() && opts.hero_offset == 0 {
             let base: &[&'static Mechanic] = if matching.first().is_some_and(|m| score(m) + 10 >= best) { &matching } else { &list };
-            let top = base.first().map(|m| score(m)).unwrap_or(0);
-            base.iter().copied().filter(|m| fit_class(m, &niches).0 == FitClass::InNiche && score(m) + 10 >= top).take(5).collect()
+            let mut r: Vec<&'static Mechanic> = base.iter().copied().filter(|m| fit_class(m, &niches).0 == FitClass::InNiche).collect();
+            let top = r.iter().map(|m| fit_score(m)).max().unwrap_or(0);
+            let is_recent = |m: &Mechanic| opts.recent_ids.iter().chain(opts.recent_by_entry.iter().flatten()).any(|x| x.eq_ignore_ascii_case(&m.id));
+            // Only fresh heroes rotate; once the best one is itself a repeat, no rotation (the
+            // graded penalty then deals the least recently used hero).
+            let top_fresh = r.iter().any(|m| fit_score(m) == top && !is_recent(m));
+            r.retain(|m| fit_score(m) + HERO_ROTATION_WINDOW >= top && top_fresh && !is_recent(m));
+            r.sort_by(|a, b| fit_score(b).cmp(&fit_score(a)).then_with(|| a.id.cmp(&b.id)));
+            r.truncate(6);
+            r
         } else {
             Vec::new()
         };
@@ -1256,7 +1312,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         let pick = if niches.is_empty() && !near.is_empty() {
             ((fnv1a(&format!("{}:hero", brief.to_lowercase())) ^ seed) as usize).wrapping_add(opts.hero_offset) % near.len()
         } else if rotating {
-            (fnv1a(&format!("{}:hero-rotate", seed)) % near.len() as u64) as usize
+            (seed % near.len() as u64) as usize
         } else if near.len() > 1 && opts.hero_offset > 0 {
             1 + (opts.hero_offset - 1) % (near.len() - 1)
         } else {
@@ -1292,10 +1348,21 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         let roles = used_roles.clone();
         let new_role = |m: &Mechanic| !roles.contains(&m.role) && !SLOT_ROLES.contains(&m.role.as_str());
         let not_slot = |m: &Mechanic| !SLOT_ROLES.contains(&m.role.as_str());
-        let pick = take(&sections, &mut used_families, &new_role)
+        let mut pick = take(&sections, &mut used_families, &new_role)
             .or_else(|| take(&sections, &mut used_families, &not_slot))
             .or_else(|| take(&wider, &mut used_families, &new_role))
             .or_else(|| take(&wider, &mut used_families, &not_slot));
+        // A section head is furniture too: rotate it by seed instead of always the top fit.
+        if let Some(m) = pick.clone().filter(|m| m.role == "section-head") {
+            used_families.remove(&m.family);
+            let is_head = |x: &Mechanic| x.role == "section-head";
+            pick = take_rotated(&sections, &mut used_families, &is_head, "section-head")
+                .or_else(|| take_rotated(&wider, &mut used_families, &is_head, "section-head"))
+                .or(Some(m.clone()));
+            if let Some(p) = &pick {
+                used_families.insert(p.family.clone());
+            }
+        }
         match pick {
             Some(m) => {
                 used_roles.insert(m.role.clone());
@@ -1317,7 +1384,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let (nav, footer) = if opts.existing.is_none() {
         let mut slot = |role: &str| {
             let is_role = |m: &Mechanic| m.role == role;
-            take(&sections, &mut used_families, &is_role).or_else(|| take(&wider, &mut used_families, &is_role))
+            take_rotated(&sections, &mut used_families, &is_role, role).or_else(|| take_rotated(&wider, &mut used_families, &is_role, role))
         };
         (slot("nav"), slot("footer"))
     } else {
@@ -1424,9 +1491,13 @@ pub struct MechanicRef {
     /// Hero only: what the first screen is made of (`real-photo`, `giant-type`, ...).
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub hero_material: String,
-    /// Hero only: its visual look family; no two directions share one.
+    /// Visual look family (heroes and furniture: nav, footer, section head); no two directions
+    /// share a hero look family.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub look_family: String,
+    /// Conditional mechanics: the brief words that made it eligible (any one). Empty = always.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub requires_signal: Vec<String>,
 }
 
 impl From<&Mechanic> for MechanicRef {
@@ -1442,6 +1513,7 @@ impl From<&Mechanic> for MechanicRef {
             composition: m.composition.clone(),
             hero_material: m.hero_material.clone(),
             look_family: m.look_family.clone(),
+            requires_signal: m.requires_signal.clone(),
         }
     }
 }
