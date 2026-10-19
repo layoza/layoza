@@ -268,6 +268,41 @@ pub fn recent_looks_or_stamps(root: &Path, entries: usize) -> Vec<Look> {
         .collect()
 }
 
+/// Folder whose `.layoza/looks.jsonl` is the user-level look ledger (`~/.layoza/user`). Every
+/// project mirrors its looks there, and a new site started outside any project uses it alone, so
+/// two projects of one user are not dealt the same palette, type or page shape. `None` when
+/// `LAYOZA_NO_HISTORY=1`.
+pub fn user_look_root() -> Option<std::path::PathBuf> {
+    crate::history::layoza_home().map(|h| h.join("user"))
+}
+
+/// Recent looks to steer away from: the project's own (or its stamps), then other projects' runs
+/// from the user ledger, newest last, at most `entries` lines in all.
+pub fn recent_looks_all(project: Option<&Path>, user: Option<&Path>, entries: usize) -> Vec<Look> {
+    let own = project.map(|p| recent_looks_or_stamps(p, entries)).unwrap_or_default();
+    let seen: HashSet<&str> = own.iter().map(|l| l.run.as_str()).collect();
+    let mut other: Vec<Look> = match user {
+        Some(u) if Some(u) != project => crate::baseline::recent_entries(u, entries).into_iter().filter(|l| !seen.contains(l.run.as_str())).collect(),
+        _ => Vec::new(),
+    };
+    // The project's own runs win the window; other projects fill what is left.
+    let room = entries.saturating_sub(own.len());
+    let start = other.len().saturating_sub(room);
+    let mut out: Vec<Look> = other.drain(start..).collect();
+    out.extend(own);
+    out
+}
+
+/// Records looks in the project ledger and mirrors them to the user ledger. Returns the folder
+/// whose ledger is reported and its result (the project's when there is one).
+pub fn record_looks_all(project: Option<&Path>, user: Option<&Path>, looks: &[Look]) -> Option<(std::path::PathBuf, Result<std::path::PathBuf, String>)> {
+    let mirrored = user.filter(|u| Some(*u) != project).map(|u| (u.to_path_buf(), crate::baseline::record_looks(u, looks)));
+    match project {
+        Some(p) => Some((p.to_path_buf(), crate::baseline::record_looks(p, looks))),
+        None => mirrored,
+    }
+}
+
 // ---------------------------------------------------------------------------------------------
 // Rotation statement
 
@@ -595,5 +630,26 @@ mod tests {
         let c = structural_fingerprint("<main><figure><img></figure><article><h1></h1><dl></dl><table></table></article><aside><form></form></aside></main>");
         assert!(skeleton_similarity(&a, &b) >= REDESIGN_MAX_SIMILARITY);
         assert!(skeleton_similarity(&a, &c) < 0.3);
+    }
+
+    #[test]
+    fn user_ledger_steers_new_sites_outside_a_project_and_mirrors_project_runs() {
+        let base = std::env::temp_dir().join(format!("layoza-user-ledger-{}", std::process::id()));
+        let (proj, user) = (base.join("proj"), base.join("user"));
+        let _ = fs::remove_dir_all(&base);
+        fs::create_dir_all(&proj).unwrap();
+        let look = |run: &str| Look { run: run.into(), source: "test".into(), palette: Some(format!("p-{run}")), ..Default::default() };
+        // Outside a project: the user ledger alone is written and read back.
+        let (root, res) = record_looks_all(None, Some(&user), &[look("a")]).unwrap();
+        assert_eq!(root, user);
+        assert!(res.is_ok());
+        // Inside a project: written to both, and the other project's run is still steered from.
+        record_looks_all(Some(&proj), Some(&user), &[look("b")]).unwrap().1.unwrap();
+        let runs: Vec<String> = recent_looks_all(Some(&proj), Some(&user), 20).into_iter().map(|l| l.run).collect();
+        assert_eq!(runs, ["a", "b"]);
+        // The project's own runs win a tight window.
+        let runs: Vec<String> = recent_looks_all(Some(&proj), Some(&user), 1).into_iter().map(|l| l.run).collect();
+        assert_eq!(runs, ["b"]);
+        let _ = fs::remove_dir_all(&base);
     }
 }

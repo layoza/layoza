@@ -9,7 +9,7 @@ use layoza_core::{
     adapters::generate_framework_artifact,
     animation::{recommend_animations, select_animations, MotionCategory},
     baseline::{
-        create_baseline, new_run_id, record_looks, redact_credentials, rollback_baseline, sanitize_id,
+        create_baseline, new_run_id, redact_credentials, rollback_baseline, sanitize_id,
         sanitize_untrusted_content, untrusted_field, validate_safe_project_path, Look, MAX_UNIQUENESS_WINDOW,
     },
     benchmark::{catalog_benchmark_briefs, run_benchmark_suite},
@@ -18,7 +18,7 @@ use layoza_core::{
     inspector::{inspect_project, write_dna_artifacts, BrowserDomSnapshot},
     intelligence::{catalog_industries, catalog_styles, looks_of, recommend_design, recommend_design_avoiding, OperatingMode},
     mechanics::{deal_mechanics_with, get_mechanic, seed_serde, DealOptions, ExistingSite, Intensity, NICHES},
-    process::{apply_project_memory, check_gates, recent_looks_or_stamps, redesign_structure_check, rotation_statement, same_look_requested},
+    process::{apply_project_memory, check_gates, recent_looks_all, record_looks_all, user_look_root, redesign_structure_check, rotation_statement, same_look_requested},
     qa::{compact_qa_summary, compare_look_fingerprints, motion_unsettled_note, run_browser_qa_with, QaOptions},
     uniqueness,
     verifier::{
@@ -504,13 +504,18 @@ fn ledger_off_reason(new_look: bool, args: &Value, root: &Path) -> &'static str 
     } else if args.get("ledger").and_then(|b| b.as_bool()) == Some(false) {
         "`ledger: false`"
     } else if !looks_like_project(root) {
-        "not inside a project"
+        "not inside a project and no user ledger"
     } else {
         "off"
     }
 }
 
 /// Same markers as the CLI: the ledger is only kept inside something that looks like a project.
+/// The user-level look ledger folder, off with `ledger: false` and in this crate's tests.
+fn user_ledger_root(on: bool) -> Option<std::path::PathBuf> {
+    (on && !cfg!(test)).then(user_look_root).flatten()
+}
+
 fn looks_like_project(dir: &Path) -> bool {
     [".layoza", "package.json", "index.html", ".git", "Cargo.toml", "composer.json", "theme.json"].iter().any(|m| dir.join(m).exists())
 }
@@ -1032,19 +1037,20 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                     let variant = args.get("variant").and_then(|v| v.as_u64()).unwrap_or(0).min(1000);
                     // Look ledger: new looks inside a project steer away from recent runs and are recorded.
                     let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
-                    let ledger_root = (new_look && args.get("ledger").and_then(|b| b.as_bool()) != Some(false) && looks_like_project(approved_root))
-                        .then_some(approved_root);
+                    let ledger_on = new_look && args.get("ledger").and_then(|b| b.as_bool()) != Some(false);
+                    let ledger_root = (ledger_on && looks_like_project(approved_root)).then_some(approved_root);
+                    let user_root = user_ledger_root(ledger_on);
                     let window = window_arg(args);
-                    let recent = ledger_root.map(|r| recent_looks_or_stamps(r, window)).unwrap_or_default();
+                    let recent = recent_looks_all(ledger_root, user_root.as_deref(), window);
                     let steer: &[Look] = if same_look_requested(query) { &[] } else { &recent };
                     let mut rec = recommend_design_avoiding(query, mode, None, None, variant, steer);
                     apply_project_memory(&mut rec, ledger_root, &recent);
                     let looks = looks_of(&rec, &new_run_id(query));
-                    rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, ledger_root.is_some()));
-                    let written = ledger_root.map(|r| record_looks(r, &looks));
+                    let written = record_looks_all(ledger_root, user_root.as_deref(), &looks);
+                    rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, written.is_some()));
                     let off = ledger_off_reason(new_look, args, approved_root);
                     let mut out = serde_json::to_value(&rec).unwrap();
-                    out["ledger"] = json!(uniqueness::ledger_status(ledger_root, written.as_ref(), off));
+                    out["ledger"] = json!(uniqueness::ledger_status(written.as_ref().map(|w| w.0.as_path()), written.as_ref().map(|w| &w.1), off));
                     if args.get("detail").and_then(|d| d.as_str()) != Some("full") {
                         if let Some(o) = out.as_object_mut() {
                             o.remove("matched_styles");
@@ -1442,10 +1448,11 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                 Some(_) => return Err("`avoid` must be an array of at most 50 mechanic ids.".into()),
             };
             // Look ledger: as in `get_design_system`, only for new looks inside a project.
-            let ledger_root = (existing.is_none() && args.get("ledger").and_then(|b| b.as_bool()) != Some(false) && looks_like_project(approved_root))
-                .then_some(approved_root);
+            let ledger_on = existing.is_none() && args.get("ledger").and_then(|b| b.as_bool()) != Some(false);
+            let ledger_root = (ledger_on && looks_like_project(approved_root)).then_some(approved_root);
+            let user_root = user_ledger_root(ledger_on);
             let window = window_arg(args);
-            let recent = ledger_root.map(|r| recent_looks_or_stamps(r, window)).unwrap_or_default();
+            let recent = recent_looks_all(ledger_root, user_root.as_deref(), window);
             let same_look = same_look_requested(brief);
             let steer: &[Look] = if same_look { &[] } else { &recent };
             let deal = deal_mechanics_with(&DealOptions {
@@ -1463,14 +1470,14 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
             });
             let mut out = serde_json::to_value(&deal).unwrap();
             let look = uniqueness::deal_look(&deal, &new_run_id(brief));
-            out["uniqueness"] = serde_json::to_value(uniqueness::check(std::slice::from_ref(&look), &recent, window, ledger_root.is_some())).unwrap();
-            if ledger_root.is_some() {
+            let written = record_looks_all(ledger_root, user_root.as_deref(), std::slice::from_ref(&look));
+            out["uniqueness"] = serde_json::to_value(uniqueness::check(std::slice::from_ref(&look), &recent, window, written.is_some())).unwrap();
+            if written.is_some() {
                 let picking: Vec<String> = deal.hero.iter().map(|h| h.id.clone()).collect();
                 out["rotation"] = json!(rotation_statement(&recent, &picking, same_look));
             }
-            let written = ledger_root.map(|root| record_looks(root, &[look]));
             let off = ledger_off_reason(existing.is_none(), args, approved_root);
-            out["ledger"] = json!(uniqueness::ledger_status(ledger_root, written.as_ref(), off));
+            out["ledger"] = json!(uniqueness::ledger_status(written.as_ref().map(|w| w.0.as_path()), written.as_ref().map(|w| &w.1), off));
             Ok(out)
         }
         "search_guidelines" => {

@@ -31,6 +31,10 @@ All notable changes to Layoza are listed here. The format follows
 - Agencies, SaaS and other showcase niches default to heavy motion (GSAP, Three.js / R3F,
   Motion, Lenis, view transitions, CSS scroll timelines, chosen per direction); solemn and task
   UIs stay calmer.
+- User-level look ledger (`~/.layoza/user/.layoza/looks.jsonl`, under `$LAYOZA_HOME` when set):
+  every project mirrors its looks there, and a new site started outside a project uses it, so two
+  projects are not dealt the same palette, type or page shape. Previously the ledger was off
+  outside a project and separate sites could repeat a look.
 - The direction gate accepts `PICKED: auto — <direction>, <why it fits the niche>`.
 
 ### Changed

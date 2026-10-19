@@ -11,7 +11,7 @@ use layoza_core::{
     hooks::{check_edit, hook_command, hook_status, install_hook, settings_path, uninstall_hook, HookTarget},
     inspector::{inspect_project, is_dna_baseline_fresh, write_dna_artifacts},
     installer::{install_layoza, run_doctor, InstallScope},
-    baseline::{new_run_id, record_looks},
+    baseline::new_run_id,
     intelligence::{catalog_industries, looks_of, recommend_design_avoiding, OperatingMode},
     mechanics::{
         catalogue, deal_mechanics_with, get_mechanic, list_mechanics, DealOptions, ExistingSite, Intensity, Mechanic,
@@ -200,18 +200,21 @@ fn main() {
             let variant = num_flag::<u64>(&args, "--variant", 0, 1000, json_flag).unwrap_or(0);
             // Look ledger: only for new looks, only inside a project, and not with --no-ledger.
             let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
-            let ledger_root = (new_look && !args.iter().any(|a| a == "--no-ledger") && looks_like_project(&cwd)).then(|| cwd.clone());
+            let ledger_on = new_look && !args.iter().any(|a| a == "--no-ledger");
+            let ledger_root = (ledger_on && looks_like_project(&cwd)).then(|| cwd.clone());
+            // The user-level ledger keeps new sites outside a project, and other projects, apart.
+            let user_root = user_ledger_root(ledger_on);
             let window = uniqueness::window(num_flag::<u64>(&args, "--window", 1, layoza_core::baseline::MAX_UNIQUENESS_WINDOW as u64, json_flag));
-            let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, window)).unwrap_or_default();
+            let recent = layoza_core::process::recent_looks_all(ledger_root.as_deref(), user_root.as_deref(), window);
             // Asked for the same look again: keep it and change the knobs instead of rotating away.
             let steer: &[layoza_core::baseline::Look] = if layoza_core::process::same_look_requested(&query) { &[] } else { &recent };
             let mut rec = recommend_design_avoiding(&query, mode, existing_dna.as_ref(), dials, variant, steer);
             layoza_core::process::apply_project_memory(&mut rec, ledger_root.as_deref(), &recent);
             let looks = looks_of(&rec, &new_run_id(&query));
-            rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, ledger_root.is_some()));
-            let written = ledger_root.as_ref().map(|root| record_looks(root, &looks));
-            let off_reason = if !new_look { "an existing site keeps its own look" } else if args.iter().any(|a| a == "--no-ledger") { "--no-ledger" } else { "not inside a project" };
-            let ledger = uniqueness::ledger_status(ledger_root.as_deref(), written.as_ref(), off_reason);
+            let written = layoza_core::process::record_looks_all(ledger_root.as_deref(), user_root.as_deref(), &looks);
+            rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, written.is_some()));
+            let off_reason = if !new_look { "an existing site keeps its own look" } else if !ledger_on { "--no-ledger" } else { "not inside a project and no user ledger" };
+            let ledger = uniqueness::ledger_status(written.as_ref().map(|w| w.0.as_path()), written.as_ref().map(|w| &w.1), off_reason);
             // New looks only: an existing site follows its own design, so no avoid list.
             let avoid = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign)
                 .then(layoza_core::history::avoid_recent);
@@ -821,9 +824,11 @@ fn main() {
                         None => None,
                     };
                     // Look ledger: new looks inside a project steer away from recent heroes (not with --no-ledger).
-                    let ledger_root = (!existing_mode && !args.iter().any(|a| a == "--no-ledger") && looks_like_project(&cwd)).then(|| cwd.clone());
+                    let ledger_on = !existing_mode && !args.iter().any(|a| a == "--no-ledger");
+                    let ledger_root = (ledger_on && looks_like_project(&cwd)).then(|| cwd.clone());
+                    let user_root = user_ledger_root(ledger_on);
                     let window = uniqueness::window(num_flag::<u64>(&args, "--window", 1, layoza_core::baseline::MAX_UNIQUENESS_WINDOW as u64, json_flag));
-                    let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, window)).unwrap_or_default();
+                    let recent = layoza_core::process::recent_looks_all(ledger_root.as_deref(), user_root.as_deref(), window);
                     let same_look = layoza_core::process::same_look_requested(&brief);
                     let steer: &[layoza_core::baseline::Look] = if same_look { &[] } else { &recent };
                     let run_brief = brief.clone();
@@ -842,15 +847,15 @@ fn main() {
                             .unwrap_or_default(),
                         ..Default::default()
                     });
-                    let rotation = ledger_root.as_ref().map(|_| {
+                    let rotation = (ledger_root.is_some() || user_root.is_some()).then(|| {
                         let picking: Vec<String> = deal.hero.iter().map(|h| h.id.clone()).collect();
                         layoza_core::process::rotation_statement(&recent, &picking, same_look)
                     });
                     let look = uniqueness::deal_look(&deal, &new_run_id(&run_brief));
-                    let report = uniqueness::check(std::slice::from_ref(&look), &recent, window, ledger_root.is_some());
-                    let written = ledger_root.as_ref().map(|root| record_looks(root, &[look]));
-                    let off_reason = if existing_mode { "an existing site keeps its own look" } else if args.iter().any(|a| a == "--no-ledger") { "--no-ledger" } else { "not inside a project" };
-                    let ledger = uniqueness::ledger_status(ledger_root.as_deref(), written.as_ref(), off_reason);
+                    let written = layoza_core::process::record_looks_all(ledger_root.as_deref(), user_root.as_deref(), std::slice::from_ref(&look));
+                    let report = uniqueness::check(std::slice::from_ref(&look), &recent, window, written.is_some());
+                    let off_reason = if existing_mode { "an existing site keeps its own look" } else if !ledger_on { "--no-ledger" } else { "not inside a project and no user ledger" };
+                    let ledger = uniqueness::ledger_status(written.as_ref().map(|w| w.0.as_path()), written.as_ref().map(|w| &w.1), off_reason);
                     if json_flag {
                         let mut v = serde_json::to_value(&deal).unwrap();
                         if let Some(r) = &rotation {
@@ -1183,6 +1188,11 @@ fn num_flag<T: std::str::FromStr + PartialOrd + std::fmt::Display + Copy>(args: 
 }
 
 /// True when `dir` looks like a project (so the look ledger may be written there).
+/// The user-level look ledger folder, off with `--no-ledger` and in this crate's tests.
+fn user_ledger_root(on: bool) -> Option<std::path::PathBuf> {
+    (on && !cfg!(test)).then(layoza_core::process::user_look_root).flatten()
+}
+
 fn looks_like_project(dir: &Path) -> bool {
     [".layoza", "package.json", "index.html", ".git", "Cargo.toml", "composer.json", "theme.json"].iter().any(|m| dir.join(m).exists())
 }
