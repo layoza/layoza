@@ -17,7 +17,7 @@ use layoza_core::{
         catalogue, deal_mechanics_with, get_mechanic, list_mechanics, DealOptions, ExistingSite, Intensity, Mechanic,
         MechanicKind,
     },
-    qa::{compare_look_fingerprints, run_browser_qa_with, QaOptions},
+    qa::{compare_look_fingerprints, run_browser_qa_with, run_render_facts, QaOptions, RunDir},
     uniqueness,
     verifier::{audit_project_with, auto_repair_html_file, browser_report_findings, AuditOptions, Severity},
 };
@@ -244,11 +244,13 @@ fn main() {
                     println!("Alternatives     : {}", alts.join(", "));
                 }
                 println!("Layout Archetype : {}", rec.matched_industry.layout_archetype);
+                let mono_ok = rec.directions.iter().any(|d| d.page_shape.as_ref().is_none_or(|p| !p.restraint.iter().any(|r| r.starts_with("No monospace"))));
+                let mono = if mono_ok { rec.matched_industry.typography_pairing.mono_font.clone() } else { "none, see restraint".into() };
                 println!(
                     "Industry baseline: type {} / {} (Mono: {}); palette {} bg={} fg={} accent={} (WCAG {:.2}:1)",
                     rec.matched_industry.typography_pairing.display_font,
                     rec.matched_industry.typography_pairing.body_font,
-                    rec.matched_industry.typography_pairing.mono_font,
+                    mono,
                     rec.matched_industry.palette.id,
                     rec.matched_industry.palette.background,
                     rec.matched_industry.palette.foreground,
@@ -292,10 +294,15 @@ fn main() {
                     println!("  [{}] {}", dir.index, dir.title);
                     println!("      Layout  : {}", dir.layout_composition);
                     println!("      Identity: {}", dir.visual_identity);
-                    println!(
-                        "      Type    : {} / {} / {} (scale {})",
-                        dir.typography.display_font, dir.typography.body_font, dir.typography.mono_font, dir.typography.scale_ratio
-                    );
+                    let no_mono = dir.page_shape.as_ref().is_some_and(|p| p.restraint.iter().any(|r| r.starts_with("No monospace")));
+                    if no_mono {
+                        println!("      Type    : {} / {} (scale {})", dir.typography.display_font, dir.typography.body_font, dir.typography.scale_ratio);
+                    } else {
+                        println!(
+                            "      Type    : {} / {} / {} (scale {})",
+                            dir.typography.display_font, dir.typography.body_font, dir.typography.mono_font, dir.typography.scale_ratio
+                        );
+                    }
                     println!(
                         "      Palette : {} bg={} fg={} accent={} (body WCAG {:.2}:1, computed)",
                         dir.palette.id, dir.palette.background, dir.palette.foreground, dir.palette.primary_accent, dir.palette.wcag_body_contrast
@@ -331,7 +338,9 @@ fn main() {
                     }
                     if let Some(p) = &dir.page_shape {
                         println!("      Page shape (binding):");
-                        for l in p.lines() {
+                        let shared = rec.directions.first().and_then(|d| d.page_shape.as_ref()).is_some_and(|f| f.restraint == p.restraint);
+                        let lines = if shared && dir.index != rec.directions.first().map_or(0, |d| d.index) { p.lines_without_restraint() } else { p.lines() };
+                        for l in lines {
                             println!("        {}", l);
                         }
                     }
@@ -466,6 +475,43 @@ fn main() {
                     exit_for_gate(&report);
                 }
                 Err(e) => exit_err(&e, json_flag),
+            }
+        }
+        "conform" => {
+            let Some(target_arg) = positional_arg(&args, 1) else {
+                exit_err("Usage: layoza conform <url|file|dir> --deal <deal.json> [--direction N] [--json]", json_flag)
+            };
+            let deal_arg = get_flag_value(&args, "--deal").unwrap_or_else(|| exit_err("`conform` needs --deal <design-system --json output>", json_flag));
+            let direction = num_flag(&args, "--direction", 1usize, 9, json_flag).unwrap_or(1);
+            let deal_raw = fs::read_to_string(cwd.join(&deal_arg)).unwrap_or_else(|e| exit_err(&format!("Cannot read deal `{}`: {}", deal_arg, e), json_flag));
+            let deal: serde_json::Value = serde_json::from_str(deal_raw.trim_start_matches('\u{feff}'))
+                .unwrap_or_else(|e| exit_err(&format!("Deal `{}` is not valid JSON: {}", deal_arg, e), json_flag));
+            let shape = layoza_core::conformance::page_shape_from_deal(&deal, direction).unwrap_or_else(|e| exit_err(&e, json_flag));
+            let is_url = target_arg.starts_with("http://") || target_arg.starts_with("https://");
+            let target_path = cwd.join(&target_arg);
+            let run_target = if is_url {
+                target_arg.clone()
+            } else if target_path.is_dir() {
+                target_path.join("index.html").to_string_lossy().to_string()
+            } else {
+                target_path.to_string_lossy().to_string()
+            };
+            // Facts go to a private temp dir: the page under test is never written to
+            let tmp = RunDir::new().unwrap_or_else(|e| exit_err(&e, json_flag));
+            let facts = run_render_facts(&cwd, &run_target, &tmp.path().join("render-facts.json")).unwrap_or_else(|e| exit_err(&e, json_flag));
+            let result = layoza_core::conformance::check(&shape, &facts);
+            if json_flag {
+                let out = serde_json::json!({ "target": target_arg, "direction": direction, "conformance": result, "facts": facts });
+                println!("{}", serde_json::to_string_pretty(&out).unwrap());
+            } else {
+                println!("=== Layoza Deal Conformance: {} (direction {}) ===", target_arg, direction);
+                for l in layoza_core::conformance::report_lines(&result) {
+                    println!("{}", l);
+                }
+            }
+            if result.failed > 0 {
+                drop(tmp);
+                process::exit(2);
             }
         }
         "qa" => {
@@ -1123,7 +1169,7 @@ const VALUE_FLAGS: &[&str] = &[
     "--scope", "--agents", "--mode", "--variance", "--motion", "--density", "--lint", "--intensity", "--recipe",
     "--framework", "--title", "--subtitle", "--cta", "--output", "--file", "--snapshot", "--path", "--top",
     "--niche", "--kind", "--count", "--seed", "--existing", "--mood", "--avoid", "--variant", "--window", "--allow",
-    "--stack", "--platform", "--limit", "--task",
+    "--stack", "--platform", "--limit", "--task", "--deal", "--direction",
 ];
 
 /// Longest brief accepted by the CLI and the MCP server (characters).
@@ -1142,6 +1188,7 @@ fn allowed_flags(args: &[String]) -> &'static [&'static str] {
         "verify" => &["--repair", "--fix", "--strict"],
         "audit" => &["--strict"],
         "qa" => &["--allow", "--full", "--compare"],
+        "conform" => &["--deal", "--direction"],
         "guidelines" => &["--stack", "--platform", "--limit"],
         "chart" => &["--task"],
         "generate" => &["--framework", "--title", "--subtitle", "--cta", "--output"],
@@ -1252,6 +1299,7 @@ fn subcommand_usage(cmd: &str) -> Option<&'static str> {
         "inspect" => "Usage: layoza inspect [<path>|--path <path>] [--write [--export-skill]] [--screenshot-only] [--json]\n  Extract Site DNA from a project directory (default `.`); --write writes DESIGN.md (the nine standard sections, then motion, variants, brand and decisions), BRAND.md, MOTION.md, SITE-DNA.json, COMPONENT-INVENTORY.json; --export-skill also writes .claude/skills/<project>-look/SKILL.md so later sessions load this look.",
         "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--variant N] [--window N] [--no-ledger] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives; --variant N re-deals fonts, palettes and mechanics for the same brief. In a project (package.json, index.html, .git, .layoza...), new/redesign runs record every slot (palette, type, nav, hero, sections, footer, motion) in .layoza/looks.jsonl and steer away from the last 20 entries (--window N, 1-200); output carries a uniqueness verdict and a `ledger:` line; --no-ledger skips both.",
         "animate" => "Usage: layoza animate [<category|id|engine>] [--recipe <id>] [--intensity 0-10] [--json]\n  Recommend animation recipes. Categories: hero_animation, section_animation, scroll_animation, interactive_effect, page_transition, three_experience. --recipe selects one recipe by id.",
+        "conform" => "Usage: layoza conform <url|file|dir> --deal <deal.json> [--direction N] [--json]\n  Check a built page against the page shape it was dealt: --deal takes `design-system --json` output (or one direction, or a bare page_shape); --direction picks the direction (1-based, default 1). Measures render facts in headless Chromium at 1440px and 390px (read-only: scrolled, never clicked) and checks each restraint rule, the dealt button shape and the motif. Prints PASS/FAIL/unknown with evidence and a 0-100 score; exits 2 when any check fails.",
         "audit" => "Usage: layoza audit [<path>] [--strict] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails. --strict turns process warnings (such as an unapproved direction) into errors.",
         "verify" => "Usage: layoza verify [<path>] [--repair] [--strict] [--json]\n  Verify release gates and the process gate files in .layoza/ (direction-approved.md, brand-spec.md, product-facts.md, self-critique stamp); exits 1 when any fails. --repair applies bounded auto-repairs to a single HTML file. --strict turns process warnings into errors.",
         "qa" => "Usage: layoza qa [<url|file|dir>] [--full] [--allow rule1,rule2] [--json] | layoza qa --compare <a.json> <b.json>\n  Headless Chromium multi-viewport QA (default index.html). Fast mode is the default; --full adds the slower passes, and the report lists mode, passes and skipped_passes. --allow suppresses named findings you have accepted. Env: LAYOZA_PLAYWRIGHT_DIR points at a Playwright install; LAYOZA_QA_ENGINE=python uses the Python engine. --compare reads two saved browser-qa-report.json files and exits 2 on a re-skin (same skeleton, new colours). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
@@ -1339,6 +1387,7 @@ COMMANDS:
   verify          Verify release gates and optionally apply bounded auto-repairs (--repair, --strict)
   qa              Run closed-loop headless Chromium multi-viewport screenshots, mobile menu test & verify
                   (fast by default; --full, --allow <rules>)
+  conform         Check a built page follows its dealt page shape: conform <page> --deal <deal.json> [--direction N]
   guidelines      Search UX guidelines and stack notes: guidelines search "<q>" | get <id>
   chart           Recommend a chart for a data shape: chart "<shape>" [--task t]
   doctor          Validate agent installations, skill frontmatter, runtimes, and smoke tests
@@ -1461,7 +1510,7 @@ mod tests {
     fn every_command_has_usage() {
         for cmd in [
             "init", "inspect", "design-system", "animate", "audit", "verify", "qa", "doctor", "generate", "baseline",
-            "benchmark", "deal", "mechanics", "hooks", "check-edit", "mcp", "guidelines", "chart",
+            "benchmark", "deal", "mechanics", "hooks", "check-edit", "mcp", "guidelines", "chart", "conform",
         ] {
             assert!(subcommand_usage(cmd).is_some(), "{}", cmd);
         }

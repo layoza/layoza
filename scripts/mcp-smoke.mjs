@@ -123,7 +123,7 @@ try {
   else console.log(`tools/call      ok  deal_mechanics returned ${text.length} chars`);
   if (text && !(/"uniqueness"/.test(text) && /"ledger"/.test(text))) fail("deal_mechanics: response lacks the uniqueness block or the ledger line");
   else if (text) console.log("uniqueness      ok  deal_mechanics carries uniqueness and ledger");
-  if (Array.isArray(tools) && tools.length !== 20) fail(`tools/list: expected 20 tools, got ${tools.length}`);
+  if (Array.isArray(tools) && tools.length !== 21) fail(`tools/list: expected 21 tools, got ${tools.length}`);
 
   // Guideline tools: read-only lookups into the bundled data
   for (const [name, args, want] of [

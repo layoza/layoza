@@ -270,6 +270,59 @@ pub fn run_browser_qa_with(
     Ok(report)
 }
 
+const EMBEDDED_FACTS_SCRIPT: &str = include_str!("../../../scripts/render-facts.mjs");
+
+/// Finds the render-facts script the way [`qa_script_path`] finds the QA script
+/// (`LAYOZA_FACTS_SCRIPT`, the repo-local copy in the Layoza repo, else the embedded copy).
+fn facts_script_path(project_root: &Path, run_dir: &Path) -> Result<PathBuf, String> {
+    if let Some(p) = std::env::var("LAYOZA_FACTS_SCRIPT").ok().map(PathBuf::from).filter(|p| p.is_file()) {
+        return Ok(p);
+    }
+    let local = project_root.join("scripts/render-facts.mjs");
+    if is_layoza_repo(project_root) && local.is_file() {
+        return Ok(local);
+    }
+    let path = run_dir.join(format!("render-facts-{}.mjs", env!("CARGO_PKG_VERSION")));
+    fs::write(&path, EMBEDDED_FACTS_SCRIPT.as_bytes())
+        .map_err(|e| format!("Cannot write embedded render-facts script to `{}`: {}", path.display(), e))?;
+    Ok(path)
+}
+
+/// Measures the render facts a deal is checked against (fonts, labels, effects, buttons, motif
+/// hints and more at 1440px and 390px) by loading `target` in headless Chromium. Read-only: the
+/// page is scrolled, never clicked, and no request leaves the page's own load.
+pub fn run_render_facts(project_root: &Path, target: &str, out_json: &Path) -> Result<Value, String> {
+    let run_dir = RunDir::new()?;
+    let script = facts_script_path(project_root, run_dir.path())?;
+    let is_url = target.starts_with("http://") || target.starts_with("https://");
+    if !is_url && !Path::new(target).is_file() {
+        return Err(format!("Target `{}` is neither an http(s) URL nor an existing HTML file.", target));
+    }
+    let mut cmd = Command::new("node");
+    cmd.arg(&script)
+        .arg(if is_url { "--url" } else { "--file" })
+        .arg(target)
+        .arg("--out")
+        .arg(out_json)
+        .current_dir(project_root)
+        .env("PYTHONIOENCODING", "utf-8")
+        .env("PYTHONUTF8", "1");
+    let output = output_with_timeout(&mut cmd, qa_timeout());
+    drop(run_dir);
+    let output = output?;
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let tail: Vec<&str> = stderr.lines().rev().take(8).collect();
+        return Err(format!(
+            "Render-facts runner failed ({}): {}",
+            output.status,
+            tail.into_iter().rev().collect::<Vec<_>>().join(" | ")
+        ));
+    }
+    let raw = fs::read_to_string(out_json).map_err(|e| format!("Render facts at `{}` are unreadable: {}", out_json.display(), e))?;
+    serde_json::from_str(raw.trim_start_matches('\u{feff}')).map_err(|e| format!("Render facts are not valid JSON: {}", e))
+}
+
 // ---------------------------------------------------------------------------------------------
 // Brief-aware style allow list
 // ---------------------------------------------------------------------------------------------

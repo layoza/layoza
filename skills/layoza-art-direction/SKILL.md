@@ -340,6 +340,7 @@ Load [reference/finish.md](reference/finish.md).
 4. **QA floor:** fix every `layoza qa` error at the cause; never game a
    checker. The gate measures defects only: **PASSED never means the design is
    good.** Only the art loop, the reviewer and the user decide that. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
+   The built page should also pass `layoza conform <file> --deal <deal.json> --direction N` (restraints, button, motif as dealt).
 5. **Report honestly:** the score, QA errors (0 or a list), metrics with nulls
    named, what is still open, and anything the user should confirm.
 

@@ -63,9 +63,9 @@ also take `strict` (gate warnings, such as an unapproved direction, become error
 `LAYOZA_PLAYWRIGHT_DIR` and `LAYOZA_QA_ENGINE=python`. Live URLs must resolve to a public address;
 private, link-local and metadata ranges are refused, while `localhost` stays allowed.
 
-## Tools (20 listed) and prompts (7)
+## Tools (21 listed) and prompts (7)
 
-`tools/list` returns 20 tools. `recommend_layout` is deprecated and no longer listed, but still answers
+`tools/list` returns 21 tools. `recommend_layout` is deprecated and no longer listed, but still answers
 `tools/call` for older clients; use `get_design_system` instead. Every call is checked against the tool's
 schema first: unknown arguments, wrong types, out-of-range numbers, empty briefs and over-long strings
 are rejected with a clear error. `prompts/list` returns seven workflow prompts: `art-direct`, `critique`,
@@ -97,6 +97,7 @@ directions never share a hero look family.
 | [`deal_mechanics`](#deal_mechanics) | No | Deals specific, buildable page mechanics from Layoza's catalogue: 1 hero + `count` section mechanics (2 `signature` to build verbatim in spirit, the rest `suggestions`) + 1 transition, never two of one mechanism family, deterministic per `seed`. |
 | [`get_mechanic`](#get_mechanic) | No | Returns one mechanic from Layoza's catalogue by id (from `deal_mechanics` or `layoza mechanics list`) with its full blueprint, motion, still_check, mobile, a11y, avoid and CSS/JS stack notes. |
 | [`safe_rollback`](#safe_rollback) | Only with `write_approved: true` | Creates or restores a reversible project baseline snapshot (requires write_approved=true). |
+| [`check_deal_conformance`](#check_deal_conformance) | No | Loads a built page at 1440px and 390px and checks it follows its dealt page shape (restraint rules, button shape, motif); returns a 0-100 score and checks with evidence. |
 | `search_guidelines` | No | Searches bundled UX guidelines, chart notes and stack notes by keyword (synonyms and stems included); `get_guideline` returns one in full. |
 | `get_guideline` | No | Returns one guideline, chart or stack note by id, or `icons` for the icon guidance. |
 | `recommend_chart` | No | Recommends chart types for a data shape with encoding, when to avoid each, volume limits and an accessible fallback. |
@@ -283,3 +284,14 @@ Creates or restores a reversible project baseline snapshot (requires write_appro
 - `layoza://design-system/styles`: UI style families with characteristics and provenance.
 - `layoza://motion/recipes`: GSAP, WAAPI, Motion, Three.js and conditional Lenis recipes.
 - `layoza://benchmarks/briefs`: the reproducible evaluation briefs.
+
+### `check_deal_conformance`
+
+Read-only. Loads a built page in headless Chromium at 1440px and 390px (scrolled, never clicked) and checks it follows its dealt page shape: each restraint rule, the dealt button shape and the motif. Returns `score` (0-100 over measured checks), `passed` / `failed` / `unknown` and `checks` with evidence. Render facts are written to a scratch directory outside the project (`render_facts`).
+
+| Input | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `target` | string | yes | http(s) URL, or an HTML file / directory (uses its index.html) inside the project. |
+| `deal` | string or object | yes | Path to saved `get_design_system` / `design-system --json` output inside the project, or an inline direction or `page_shape` object. |
+| `direction` | integer | no | Direction to check, 1-based (default 1). |
+| `allow_private_network` | boolean | no | Allow a private-network host. localhost is always allowed. |

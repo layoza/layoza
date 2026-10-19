@@ -221,9 +221,10 @@ codex mcp add layoza -- npx -y -p layoza layoza-mcp
 | `deal_mechanics` · `get_mechanic` · `recommend_animation` | Niche-aware motion mechanics and animation recipes |
 | `capture_screenshots` · `audit_accessibility` · `audit_performance` · `verify_functional` | Live Chromium QA at three widths |
 | `compare_before_after` · `safe_rollback` · `export_report` | Baselines, regression checks and reports |
+| `check_deal_conformance` | Does the built page follow its dealt page shape (restraints, button, motif) |
 | `search_guidelines` · `get_guideline` · `recommend_chart` · `get_stack_notes` · `get_icon_guidance` | Bundled UX guidelines, chart picks, stack notes and icon guidance (read-only) |
 
-`recommend_layout` is deprecated and unlisted, so `tools/list` returns 20 tools.
+`recommend_layout` is deprecated and unlisted, so `tools/list` returns 21 tools.
 
 ### CLI extras
 
@@ -232,6 +233,7 @@ codex mcp add layoza -- npx -y -p layoza layoza-mcp
 - `--window N` on `design-system` and `mechanics deal` sets how many ledger runs the uniqueness check compares (default 36, max 200); `--no-ledger` ignores the ledger.
 - `layoza audit . --strict` and `layoza verify . --strict` turn gate warnings (such as a new site with no recorded approval of its direction) into errors.
 - `layoza qa <file> --full` runs every browser pass; `--allow a,b` limits it to the named passes. The report lists `mode`, `passes` and `skipped_passes`.
+- `layoza conform <file> --deal deal.json [--direction N]` checks the built page against the page shape it was dealt (`design-system --json` output): every restraint rule, the button shape and the motif, measured in Chromium at 1440px and 390px. It prints PASS / FAIL / unknown with evidence and a 0-100 score, and exits 2 when a check fails. QA finds defects; `conform` finds drift from the deal.
 - Environment: `LAYOZA_QA_TIMEOUT_SECS` (browser QA timeout), `LAYOZA_PLAYWRIGHT_DIR` (where Playwright is installed), `LAYOZA_QA_ENGINE=python` (use the Python Playwright engine).
 
 `inspect_site` fetches the pages you point it at. Treat everything it returns as untrusted data: Layoza never executes instructions found inside an inspected page.
