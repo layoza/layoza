@@ -562,7 +562,35 @@ const ART_WORD_MIN = 0.3; // share of one visual word's box
 // are tagged data-layoza-loop and masked in the stability screenshots together with canvas/video,
 // which animate forever by design.
 const SETTLE_CAP_MS = 5000;
-const SETTLE_STEP_MS = 300;
+const SETTLE_STEP_MS = 200;
+// Run modes. fast (default): one browser, viewports and side passes in parallel contexts, the full
+// rule sweep at 1440 only (768/375 run layout, overflow and touch rules), one cheap reduced-motion
+// pass, no throttled perf pass. full (--full): throttled perf pass and the full sweep at every width.
+// Waits are event waits (load, fonts.ready, network idle with a cap, a pixel settle with a cap);
+// the short fixed waits left are animation-time allowances after a scroll or key press.
+const MODE_CAPS = {
+  fast: { settle_ms: 2500, netidle_ms: 1500 },
+  full: { settle_ms: SETTLE_CAP_MS, netidle_ms: 3000 },
+};
+const WAIT = { art_step: 250, art_first: 400, key: 150, scroll_anim: 300, pin: 300, reduced: 400 };
+// Resolves after two animation frames (layout and paint have caught up with a resize or scroll)
+const FRAMES_SCRIPT = "new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(true))))";
+// Node Playwright evaluates a string as a plain expression and never calls it, so a script written
+// as "(arg) => ..." returned the function itself (serialised as undefined) and every settle, diff,
+// scroll and clip check that took an argument silently read undefined. Python Playwright guesses
+// and calls it. ev() calls function-shaped strings with their argument inlined as JSON (a CDP
+// expression, so page CSP does not apply), matching the Python runner.
+const FN_SOURCE_RE = /^\s*(async\s+)?(function\b|\([^()]*\)\s*=>|[A-Za-z_$][\w$]*\s*=>)/;
+function ev(page, expr, arg) {
+  if (typeof expr === "string" && FN_SOURCE_RE.test(expr)) {
+    return page.evaluate("(" + expr + ")(" + (arg === undefined ? "" : JSON.stringify(arg)) + ")");
+  }
+  return arg === undefined ? page.evaluate(expr) : page.evaluate(expr, arg);
+}
+// document.fonts.ready, capped
+const FONTS_READY_SCRIPT = "(cap) => Promise.race([document.fonts ? document.fonts.ready.then(() => true) : Promise.resolve(true), new Promise((r) => setTimeout(() => r(false), cap))])";
+// Quality-sweep rule groups that depend on the viewport width (fast mode at 768 and 375)
+const LAYOUT_ONLY_RULES = ["sidebar-vanishes", "cta-competition", "row-heights-ragged", "scroller-hidden", "text-below-floor", "sticky-under-header"];
 const SETTLE_STABLE_MAX = 0.003; // share of changed pixels (at 320px wide) still counted as stable
 const SETTLE_MASK_SELECTOR = "canvas, video, iframe, [data-layoza-loop]";
 const SETTLE_PENDING_SCRIPT = `((capMs) => {
@@ -5085,7 +5113,9 @@ function layozaQualitySweep(opts) {
       detail: (sel + ": " + (detail || measured) + ". " + r[4]).replace(/\s+/g, " ").slice(0, 320),
     });
   };
+  const only = Array.isArray(opts.only) ? new Set(opts.only) : null;
   const run = (id, fn) => {
+    if (only && !only.has(id)) return;
     try {
       fn();
     } catch (e) {
@@ -5950,7 +5980,7 @@ function layozaQualitySweep(opts) {
     if (bad.length) emit("graphic-unhidden", bad[0], bad.length + " canvas/svg graphic(s) with neither aria-hidden nor a label");
   });
 
-  return { issues, suppressed, errors, allow: Array.from(allowSet), rule_count: Object.keys(RULES).length };
+  return { issues, suppressed, errors, allow: Array.from(allowSet), rule_count: Object.keys(RULES).length, subset: only ? Array.from(only) : null };
 }
 
 const QUALITY_EVAL = (opts) =>
@@ -6073,9 +6103,148 @@ function layozaLayoutVector() {
     headline_px: h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize) || 0) : null,
     media_share: Number((mediaCells / (firstRows * cols)).toFixed(3)),
   };
-  return { cols, rows, height_px: Math.round(H), text, media, hero };
+  return { cols, rows, height_px: Math.round(H), text, media, hero, sections: layozaSectionPrints() };
+
+  /*
+   * Per-section prints: nav, hero, each top-level section and the footer, in page order. Each one
+   * carries structure (an 8x6 text/media occupancy grid of the section's own box, its aspect, and
+   * counts of headings, media, controls and columns), palette (rendered background, text and accent
+   * colour in OKLab) and type (heading and body family and px).
+   */
+  function layozaSectionPrints() {
+    const sy = window.scrollY;
+    const visible = (el) => {
+      const cs = getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden") return null;
+      const r = el.getBoundingClientRect();
+      return r.width >= 160 && r.height >= 40 ? r : null;
+    };
+    const pick = new Set();
+    const add = (el) => { if (el && el !== document.body && el !== document.documentElement && visible(el)) pick.add(el); };
+    document.querySelectorAll("body > header, body > nav, [role='banner'], body > footer, [role='contentinfo'], body > section, main > *, body > main > section, body > div > section, body > div > header, body > div > footer, body > div > main > *").forEach(add);
+    // Keep the outermost of nested picks, then order by page position
+    let blocks = [...pick].filter((el) => ![...pick].some((o) => o !== el && o.contains(el)));
+    if (blocks.length <= 1) blocks = [...(blocks[0] || document.body).children].filter((el) => visible(el));
+    blocks = blocks
+      .map((el) => ({ el, r: el.getBoundingClientRect() }))
+      .sort((a, b) => a.r.top - b.r.top)
+      .slice(0, 24);
+    const toLin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+    const oklab = (rgb) => {
+      const [r, g, b] = rgb.map(toLin);
+      const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+      const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+      const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+      return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s].map((v) => Number(v.toFixed(4)));
+    };
+    const rgbOf = (str) => {
+      const m = String(str || "").match(/rgba?\(([^)]+)\)/);
+      if (!m) return null;
+      const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number);
+      if (p.length > 3 && p[3] < 0.5) return null;
+      return p.slice(0, 3);
+    };
+    const bgOf = (el) => {
+      for (let e = el; e; e = e.parentElement) {
+        const c = rgbOf(getComputedStyle(e).backgroundColor);
+        if (c) return c;
+      }
+      return [255, 255, 255];
+    };
+    const fam = (el) => (el ? getComputedStyle(el).fontFamily.split(",")[0].replace(/["']/g, "").trim().toLowerCase() : null);
+    const px = (el) => (el ? Math.round(parseFloat(getComputedStyle(el).fontSize) || 0) : null);
+    const h1 = document.querySelector("h1");
+    let heroTaken = false;
+    return blocks.map(({ el, r }, i) => {
+      const tag = el.tagName.toLowerCase(), roleAttr = el.getAttribute("role") || "";
+      let role = "section";
+      if (tag === "footer" || roleAttr === "contentinfo") role = "footer";
+      else if ((tag === "nav" || tag === "header" || roleAttr === "banner") && r.height < 220 && !(h1 && el.contains(h1))) role = "nav";
+      else if (!heroTaken && ((h1 && el.contains(h1)) || r.top + sy < (window.innerHeight || 900))) { role = "hero"; heroTaken = true; }
+      const gc = 8, gr = 6, top = r.top, W = Math.max(1, r.width), Hs = Math.max(1, r.height);
+      const text = new Array(gc * gr).fill(0), media = new Array(gc * gr).fill(0);
+      const mark = (grid, b) => {
+        if (b.bottom <= top || b.top >= top + Hs || b.right <= r.left || b.left >= r.right) return;
+        const x0 = Math.max(0, Math.floor(((b.left - r.left) / W) * gc)), x1 = Math.min(gc - 1, Math.floor(((b.right - r.left - 1) / W) * gc));
+        const y0 = Math.max(0, Math.floor(((b.top - top) / Hs) * gr)), y1 = Math.min(gr - 1, Math.floor(((b.bottom - top - 1) / Hs) * gr));
+        for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) grid[y * gc + x] = 1;
+      };
+      const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let n = 0, bodyEl = null;
+      for (let t = tw.nextNode(); t && n < 600; t = tw.nextNode()) {
+        if (!(t.nodeValue || "").trim()) continue;
+        const pe = t.parentElement;
+        if (!pe || pe.closest("script, style, noscript, template, [hidden], [aria-hidden='true']")) continue;
+        if (!bodyEl && pe.closest("p, li, dd, td")) bodyEl = pe;
+        const range = document.createRange();
+        range.selectNodeContents(t);
+        for (const b of range.getClientRects()) if (b.width > 2 && b.height > 2) { mark(text, b); n++; }
+      }
+      const mediaEls = [...el.querySelectorAll("img, picture, video, canvas, svg, iframe")].filter((m) => !(m.parentElement && m.parentElement.closest("svg")));
+      for (const m of mediaEls) { const b = m.getBoundingClientRect(); if (b.width >= 24 && b.height >= 24) mark(media, b); }
+      // Columns: the most children of one descendant sharing a top edge
+      let columns = 1;
+      for (const box of [el, ...el.querySelectorAll("*")].slice(0, 400)) {
+        const kids = [...box.children].map((k) => k.getBoundingClientRect()).filter((b) => b.width >= 60 && b.height >= 20);
+        if (kids.length < 2) continue;
+        const tops = {};
+        for (const b of kids) { const k = Math.round(b.top / 8); tops[k] = (tops[k] || 0) + 1; }
+        columns = Math.max(columns, ...Object.values(tops));
+      }
+      const heading = el.querySelector("h1, h2, h3");
+      const textEl = bodyEl || heading || el;
+      const accentEl = el.querySelector("a.button, .btn, button, [class*='button'], [class*='btn']");
+      const accent = accentEl ? rgbOf(getComputedStyle(accentEl).backgroundColor) || rgbOf(getComputedStyle(accentEl).color) : null;
+      const bg = bgOf(el);
+      return {
+        index: i,
+        role,
+        tag,
+        label: (heading ? (heading.textContent || "").replace(/\s+/g, " ").trim() : (el.id || tag)).slice(0, 60),
+        structure: {
+          text,
+          media,
+          aspect: Number((Hs / W).toFixed(3)),
+          headings: el.querySelectorAll("h1, h2, h3, h4").length,
+          media_count: mediaEls.length,
+          controls: el.querySelectorAll("a[href], button, input, select, textarea").length,
+          columns: Math.min(columns, 12),
+        },
+        palette: { bg: oklab(bg), text: oklab(rgbOf(getComputedStyle(textEl).color) || [0, 0, 0]), accent: accent ? oklab(accent) : null },
+        type: { heading_family: fam(heading), heading_px: px(heading), body_family: fam(textEl), body_px: px(textEl) },
+      };
+    });
+  }
 }
 const LAYOUT_VECTOR_SCRIPT = "(" + layozaLayoutVector.toString() + ")()";
+
+/** Structure similarity of two section prints (0..1): grid cosine, shaded by aspect and column match. */
+function sectionStructureSim(a, b) {
+  const va = a.structure.text.concat(a.structure.media), vb = b.structure.text.concat(b.structure.media);
+  let dot = 0, na = 0, nb = 0;
+  for (let i = 0; i < Math.min(va.length, vb.length); i++) { dot += va[i] * vb[i]; na += va[i] * va[i]; nb += vb[i] * vb[i]; }
+  const cos = na && nb ? dot / Math.sqrt(na * nb) : 0;
+  const aspect = Math.min(a.structure.aspect, b.structure.aspect) / Math.max(1e-6, Math.max(a.structure.aspect, b.structure.aspect));
+  const colsSame = a.structure.columns === b.structure.columns ? 1 : 0.7;
+  const mediaSame = (a.structure.media_count > 0) === (b.structure.media_count > 0) ? 1 : 0.8;
+  return cos * (0.75 + 0.25 * aspect) * colsSame * mediaSame;
+}
+
+/**
+ * QA-SAME-SECTION-TWICE: content sections (not nav or footer) of one page whose structure repeats.
+ * A section counts when it has at least 4 text cells; a pair matches at structure >= 0.93.
+ */
+function sameSectionTwice(sections) {
+  const list = (sections || []).filter((s) => s.role === "section" && s.structure.text.reduce((x, y) => x + y, 0) >= 4);
+  const out = [];
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      const sim = sectionStructureSim(list[i], list[j]);
+      if (sim >= 0.93) out.push({ a: list[i], b: list[j], sim: Number(sim.toFixed(3)) });
+    }
+  }
+  return out;
+}
 
 /**
  * Look fingerprint, part 2 (in page, on a screenshot): dominant palette as OKLab k-means clusters
@@ -6164,10 +6333,12 @@ async function throttledPerfNode(browser, url) {
     const t0 = Date.now();
     await page.goto(url, { waitUntil: "load", timeout: 60000 });
     const loadMs = Date.now() - t0;
-    await page.waitForTimeout(2500);
+    await page.waitForLoadState("networkidle", { timeout: 4000 }).catch(() => {});
+    await fontsReadyNode(page, 3000);
+    await settleNode(page, 3000);
     for (let i = 0; i < 3; i++) await page.keyboard.press("Tab");
-    await page.waitForTimeout(300);
-    return { ...(await page.evaluate(PERF_READ_SCRIPT)), load_event_ms: loadMs };
+    await page.waitForTimeout(WAIT.key);
+    return { ...(await ev(page, PERF_READ_SCRIPT)), load_event_ms: loadMs };
   } catch (e) {
     return { error: String(e.message || e).split("\n")[0] };
   } finally {
@@ -6176,20 +6347,22 @@ async function throttledPerfNode(browser, url) {
 }
 
 /** Reduced-motion hidden-text run on the desktop viewport (Node runner). */
-async function reducedMotionNode(browser, url) {
+async function reducedMotionNode(browser, url, caps) {
   const vp = VIEWPORTS[0];
   const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, reducedMotion: "reduce" });
   try {
     const page = await ctx.newPage();
     await page.goto(url, { waitUntil: "load", timeout: 30000 });
-    await page.waitForTimeout(1200);
-    const hidden = await page.evaluate(HIDDEN_TEXT_PROBE);
-    const running = await page.evaluate(RUNNING_MOTION_PROBE).catch(() => []);
+    await page.waitForLoadState("networkidle", { timeout: caps.netidle_ms }).catch(() => {});
+    await fontsReadyNode(page, 2000);
+    await page.waitForTimeout(WAIT.reduced);
+    const hidden = await ev(page, HIDDEN_TEXT_PROBE);
+    const running = await ev(page, RUNNING_MOTION_PROBE).catch(() => []);
     const widths = [];
     for (const w of EXTRA_WIDTHS) {
       await page.setViewportSize({ width: w, height: 900 });
-      await page.waitForTimeout(300);
-      widths.push({ width: w, overflow_px: await page.evaluate(OVERFLOW_PROBE) });
+      await ev(page, FRAMES_SCRIPT);
+      widths.push({ width: w, overflow_px: await ev(page, OVERFLOW_PROBE) });
     }
     return { hidden, running, widths };
   } catch (e) {
@@ -6202,9 +6375,9 @@ async function reducedMotionNode(browser, url) {
 /** Palette + layout fingerprint of the current page (Node runner, desktop). */
 async function fingerprintNode(page, vp) {
   try {
-    const layout = await page.evaluate(LAYOUT_VECTOR_SCRIPT);
+    const layout = await ev(page, LAYOUT_VECTOR_SCRIPT);
     const shot = await page.screenshot({ fullPage: true, clip: { x: 0, y: 0, width: vp.width, height: Math.max(1, layout.height_px) } });
-    const palette = await page.evaluate("(" + PALETTE_SCRIPT + ")(" + JSON.stringify("data:image/png;base64," + shot.toString("base64")) + ")");
+    const palette = await ev(page, "(" + PALETTE_SCRIPT + ")(" + JSON.stringify("data:image/png;base64," + shot.toString("base64")) + ")");
     return { palette, layout };
   } catch (e) {
     return { error: String(e.message || e).split("\n")[0] };
@@ -6515,6 +6688,7 @@ function parseArgs(argv) {
     designTokens: null,
     allow: [],
     compare: null,
+    full: false,
   };
   let outGiven = false;
   for (let i = 2; i < argv.length; i++) {
@@ -6526,6 +6700,7 @@ function parseArgs(argv) {
     else if (k === "--design-tokens" && argv[i + 1]) args.designTokens = argv[++i];
     else if (k === "--allow" && argv[i + 1]) args.allow.push(...argv[++i].split(",").map((s) => s.trim()).filter(Boolean));
     else if (k === "--compare" && argv[i + 1] && argv[i + 2]) args.compare = [argv[++i], argv[++i]];
+    else if (k === "--full") args.full = true;
     else if (k.startsWith("--")) console.error(`Unknown flag ignored: ${k}`);
   }
   args.outGiven = outGiven;
@@ -6569,41 +6744,46 @@ function addTextGraphicHits(tg, found, stats, at) {
 /** text-over-graphic at the current scroll position (Node runner). */
 async function textOverGraphicNode(page, tg) {
   if (tg.positions >= TG_MAX_POSITIONS || tg.sampled >= TG_MAX_TOTAL) return;
-  const found = await page.evaluate(TG_FIND_SCRIPT + "(" + Math.min(TG_MAX_PER_POSITION, TG_MAX_TOTAL - tg.sampled) + ")");
+  const found = await ev(page, TG_FIND_SCRIPT + "(" + Math.min(TG_MAX_PER_POSITION, TG_MAX_TOTAL - tg.sampled) + ")");
   if (!found.candidates.length) return;
   tg.positions++;
   let hidden;
   const shown = await page.screenshot({ clip: found.clip });
-  await page.evaluate(TG_HIDE_SCRIPT);
+  await ev(page, TG_HIDE_SCRIPT);
   try {
     await page.waitForTimeout(60);
     hidden = await page.screenshot({ clip: found.clip });
   } finally {
-    await page.evaluate(TG_RESTORE_SCRIPT);
+    await ev(page, TG_RESTORE_SCRIPT);
   }
-  const stats = await page.evaluate(TG_STATS_SCRIPT, {
+  const stats = await ev(page, TG_STATS_SCRIPT, {
     shown: "data:image/png;base64," + shown.toString("base64"),
     hidden: "data:image/png;base64," + hidden.toString("base64"),
     clip: found.clip,
     candidates: found.candidates,
   });
-  addTextGraphicHits(tg, found, stats, Math.round(await page.evaluate("window.scrollY")));
+  addTextGraphicHits(tg, found, stats, Math.round(await ev(page, "window.scrollY")));
 }
 
 /**
  * Waits (up to capMs) until finite animations are done and the first screen is pixel-stable across
  * two frames SETTLE_STEP_MS apart, with canvas/video/endless loops masked. Returns how it ended.
  */
+/** fonts.ready, capped so a font that never resolves cannot hang the run. */
+async function fontsReadyNode(page, capMs) {
+  await ev(page, FONTS_READY_SCRIPT, capMs).catch(() => {});
+}
+
 async function settleNode(page, capMs) {
   const t0 = Date.now();
   let prev = null;
   let last = { pending: 0, loops: 0 };
   for (;;) {
-    last = await page.evaluate(SETTLE_PENDING_SCRIPT + "(" + SETTLE_CAP_MS + ")");
+    last = await ev(page, SETTLE_PENDING_SCRIPT + "(" + SETTLE_CAP_MS + ")");
     let shot = null;
     if (last.pending === 0) {
       shot = "data:image/png;base64," + (await page.screenshot({ mask: [page.locator(SETTLE_MASK_SELECTOR)] })).toString("base64");
-      if (prev && (await page.evaluate(PIN_DIFF_SCRIPT, [prev, shot])) <= SETTLE_STABLE_MAX) {
+      if (prev && (await ev(page, PIN_DIFF_SCRIPT, [prev, shot])) <= SETTLE_STABLE_MAX) {
         return { settled: true, ms: Date.now() - t0, pending_animations: 0, endless_loops: last.loops };
       }
     }
@@ -6621,42 +6801,42 @@ async function artOverTextNode(page, vp) {
   let diffs = 0;
   const t0 = Date.now();
   try {
-    let scrollH = await page.evaluate(ART_SCROLL_SCRIPT, 0);
+    let scrollH = await ev(page, ART_SCROLL_SCRIPT, 0);
     const vh = vp.height;
     for (let y = 0; positions < ART_MAX_SCANS && diffs < ART_MAX_DIFFS && y < Math.max(1, scrollH - vh + artStep(vp)); y += artStep(vp)) {
-      scrollH = await page.evaluate(ART_SCROLL_SCRIPT, Math.min(y, Math.max(0, scrollH - vh)));
+      scrollH = await ev(page, ART_SCROLL_SCRIPT, Math.min(y, Math.max(0, scrollH - vh)));
       positions++;
-      await page.waitForTimeout(400);
+      await page.waitForTimeout(WAIT.art_step);
       try {
         await textOverGraphicNode(page, tg);
       } catch (e) {
         if (tg.errors.length < 3) tg.errors.push(String(e.message || e).split(/\r?\n/)[0]);
-        await page.evaluate(TG_RESTORE_SCRIPT).catch(() => {});
+        await ev(page, TG_RESTORE_SCRIPT).catch(() => {});
       }
-      const found = await page.evaluate(ART_LINES_SCRIPT);
+      const found = await ev(page, ART_LINES_SCRIPT);
       if (!found.lines.length) continue;
       diffs++;
       // The first screen is where visitors rest longest: sample moving art three times there
       const shown = [await page.screenshot({ clip: found.clip })];
       for (let k = 1; k < (positions === 1 ? 3 : 1); k++) {
-        await page.waitForTimeout(600);
+        await page.waitForTimeout(WAIT.art_first);
         shown.push(await page.screenshot({ clip: found.clip }));
       }
-      await page.evaluate(ART_HIDE_SCRIPT);
+      await ev(page, ART_HIDE_SCRIPT);
       let hidden;
       try {
         await page.waitForTimeout(60);
         hidden = await page.screenshot({ clip: found.clip });
       } finally {
-        await page.evaluate(ART_RESTORE_SCRIPT);
+        await ev(page, ART_RESTORE_SCRIPT);
       }
-      const cover = await page.evaluate(ART_DIFF_SCRIPT, {
+      const cover = await ev(page, ART_DIFF_SCRIPT, {
         shown: shown.map((b) => "data:image/png;base64," + b.toString("base64")),
         b: "data:image/png;base64," + hidden.toString("base64"),
         lines: found.lines,
         clip: found.clip,
       });
-      const at = Math.round(await page.evaluate("window.scrollY"));
+      const at = Math.round(await ev(page, "window.scrollY"));
       found.lines.forEach((l, i) => {
         const c = cover[i];
         if (c.line < ART_COVER_MIN && c.word < ART_WORD_MIN) return;
@@ -6668,8 +6848,8 @@ async function artOverTextNode(page, vp) {
         }
       });
     }
-    await page.evaluate(ART_SCROLL_SCRIPT, 0);
-    await page.waitForTimeout(300);
+    await ev(page, ART_SCROLL_SCRIPT, 0);
+    await ev(page, FRAMES_SCRIPT);
   } catch (e) {
     errors.push(String(e.message || e).split("\n")[0]);
   }
@@ -6703,7 +6883,7 @@ const MOTION_PROBE_SCRIPT = `(async () => {
   const moved = new Set();
   for (const f of [0.25, 0.5, 0.75, 1, 0]) {
     go(Math.round(maxY * f));
-    await wait(450);
+    await wait(300);
     for (const e of els) if (!moved.has(e) && sig(e) !== base.get(e)) moved.add(e);
   }
   out.changed = moved.size;
@@ -6800,41 +6980,38 @@ const PIN_STATIC_MAX = 0.02; // a stage whose stills differ in under 2% of pixel
 const PIN_FRACTIONS = [0.25, 0.5, 0.75];
 
 /** Desktop motion pass on a fresh load: density probe, then pinned-stage stills. */
-async function motionPassNode(page, url) {
+async function motionPassNode(page, url, caps) {
   const res = { density: null, pins: [], errors: [] };
   try {
     await page.goto(url, { waitUntil: "load", timeout: 30000 });
-    await page.evaluate(() =>
-      (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => new Promise((r) => setTimeout(r, 800)))
-    );
-    res.density = await page.evaluate(MOTION_PROBE_SCRIPT);
-    const pins = await page.evaluate(PIN_FIND_SCRIPT);
+    await page.waitForLoadState("networkidle", { timeout: caps.netidle_ms }).catch(() => {});
+    await fontsReadyNode(page, 2000);
+    await page.waitForTimeout(WAIT.scroll_anim);
+    res.density = await ev(page, MOTION_PROBE_SCRIPT);
+    const pins = await ev(page, PIN_FIND_SCRIPT);
     for (const pin of pins) {
       const shots = [];
       let clip = null;
       for (const f of PIN_FRACTIONS) {
-        await page.evaluate(ART_SCROLL_SCRIPT, Math.round(pin.start + (pin.end - pin.start) * f));
-        await page.waitForTimeout(450);
-        clip = clip || (await page.evaluate(PIN_CLIP_SCRIPT, pin.id));
+        await ev(page, ART_SCROLL_SCRIPT, Math.round(pin.start + (pin.end - pin.start) * f));
+        await page.waitForTimeout(WAIT.pin);
+        clip = clip || (await ev(page, PIN_CLIP_SCRIPT, pin.id));
         if (!clip) break;
         shots.push("data:image/png;base64," + (await page.screenshot({ clip })).toString("base64"));
       }
-      if (shots.length === PIN_FRACTIONS.length) res.pins.push({ ...pin, max_change: await page.evaluate(PIN_DIFF_SCRIPT, shots) });
+      if (shots.length === PIN_FRACTIONS.length) res.pins.push({ ...pin, max_change: await ev(page, PIN_DIFF_SCRIPT, shots) });
     }
-    await page.evaluate(ART_SCROLL_SCRIPT, 0);
+    await ev(page, ART_SCROLL_SCRIPT, 0);
   } catch (e) {
     res.errors.push(String(e.message || e).split("\n")[0]);
   }
   return res;
 }
 
-/** Collects raw per-viewport measurements with the Node `playwright` package. */
-async function collectWithNode(pw, args, shotDir) {
-  const browser = await pw.chromium.launch({ headless: true });
-  const raw = [];
-  try {
-    for (const vp of VIEWPORTS) {
+/** One viewport pass (Node runner). wide = every check; otherwise layout, overflow and touch only. */
+async function viewportPassNode(browser, vp, args, shotDir, caps, wide) {
       const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+      try {
       await context.addInitScript(PERF_INIT_SCRIPT);
       const page = await context.newPage();
       const consoleErrors = [];
@@ -6844,18 +7021,17 @@ async function collectWithNode(pw, args, shotDir) {
       });
 
       await page.goto(args.url, { waitUntil: "load", timeout: 30000 });
-      await page.evaluate(() =>
-        (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => new Promise((r) => setTimeout(r, 1000)))
-      );
+      await page.waitForLoadState("networkidle", { timeout: caps.netidle_ms }).catch(() => {});
+      await fontsReadyNode(page, 3000);
 
       // Intro animations finish before anything is measured (capped; reported when they never rest)
-      const settleLoad = await settleNode(page, SETTLE_CAP_MS);
+      const settleLoad = await settleNode(page, caps.settle_ms);
       // Read load-phase LCP/CLS before screenshots: full-page capture resizes the viewport and
       // would otherwise add late LCP candidates and layout shifts that real users never see.
-      const loadPerf = await page.evaluate(PERF_READ_SCRIPT);
-      await page.evaluate(SCROLL_PASS_SCRIPT);
+      const loadPerf = await ev(page, PERF_READ_SCRIPT);
+      await ev(page, SCROLL_PASS_SCRIPT);
       // Back at the top after the scroll pass: let reveals that re-ran come to rest (shares the cap)
-      const settleTop = await settleNode(page, Math.max(SETTLE_STEP_MS * 3, SETTLE_CAP_MS - settleLoad.ms));
+      const settleTop = await settleNode(page, Math.max(SETTLE_STEP_MS * 3, caps.settle_ms - settleLoad.ms));
       const settle = { settled: settleLoad.settled && settleTop.settled, ms: settleLoad.ms + settleTop.ms, load: settleLoad, after_scroll: settleTop };
       const screenshot = path.join(shotDir, `${vp.label}.png`);
       let heroShot = null;
@@ -6865,60 +7041,65 @@ async function collectWithNode(pw, args, shotDir) {
         await page.screenshot({ path: heroShot, fullPage: false });
       }
       await page.screenshot({ path: screenshot, fullPage: true });
-      const dom = await page.evaluate(DOM_EVAL_SCRIPT);
-      let craft;
-      try {
-        craft = await page.evaluate(CRAFT_EVAL_SCRIPT);
+      const dom = await ev(page, DOM_EVAL_SCRIPT);
+      let craft = null;
+      if (wide) try {
+        craft = await ev(page, CRAFT_EVAL_SCRIPT);
       } catch (e) {
         craft = { issues: [], suppressed: [], errors: [`craft evaluation failed: ${e.message || e}`] };
       }
       // Layoza-original generic-default tells join the craft critique (same severity and opt-out)
-      try {
-        const tells = await page.evaluate(TELLS_EVAL_SCRIPT);
+      if (wide) try {
+        const tells = await ev(page, TELLS_EVAL_SCRIPT);
         craft.issues.push(...tells.issues);
         craft.suppressed = (craft.suppressed || []).concat(tells.suppressed);
         craft.errors = (craft.errors || []).concat(tells.errors);
       } catch (e) {
         craft.errors = (craft.errors || []).concat([`tells evaluation failed: ${e.message || e}`]);
       }
-      let ui;
-      try {
-        ui = await page.evaluate(INTERFACE_EVAL_SCRIPT);
+      let ui = null;
+      if (wide) try {
+        ui = await ev(page, INTERFACE_EVAL_SCRIPT);
       } catch (e) {
         ui = { issues: [], errors: [`interface evaluation failed: ${e.message || e}`] };
       }
       let quality;
       try {
-        quality = await page.evaluate(QUALITY_EVAL({ allow: args.allow, skipFocus: vp.label !== "desktop" }));
+        quality = await ev(page, QUALITY_EVAL({ allow: args.allow, skipFocus: vp.label !== "desktop", only: wide ? null : LAYOUT_ONLY_RULES }));
       } catch (e) {
         quality = { issues: [], suppressed: [], errors: [`quality sweep failed: ${e.message || e}`] };
       }
       let design = null;
-      if (args.designEval) {
+      if (args.designEval && wide) {
         try {
-          design = await page.evaluate(args.designEval);
+          design = await ev(page, args.designEval);
         } catch (e) {
           design = { issues: [], errors: [`design-system evaluation failed: ${e.message || e}`] };
         }
       }
       const fingerprint = vp.label === "desktop" ? await fingerprintNode(page, vp) : null;
 
-      const art = await artOverTextNode(page, vp);
-      const hiddenText = vp.label === "desktop" ? await page.evaluate(HIDDEN_TEXT_PROBE).catch(() => null) : null;
+      const art = wide ? await artOverTextNode(page, vp) : null;
+      const hiddenText = vp.label === "desktop" ? await ev(page, HIDDEN_TEXT_PROBE).catch(() => null) : null;
 
       // Scripted interactions (keyboard, then the mobile-menu click below) feed Event Timing for the
       // lab interaction proxy; it is read only after every interaction has run
       for (let i = 0; i < 3; i++) await page.keyboard.press("Tab");
       await page.keyboard.press("Shift+Tab");
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(WAIT.key);
 
       let menu = null;
       if (dom.menuToggleVisible) {
-        const before = await page.evaluate(VISIBLE_NAV_LINKS_SCRIPT);
+        const before = await ev(page, VISIBLE_NAV_LINKS_SCRIPT);
         try {
           await page.locator(MENU_TOGGLE_SELECTOR).first().click({ timeout: 3000 });
-          await page.waitForTimeout(500);
-          const after = await page.evaluate(VISIBLE_NAV_LINKS_SCRIPT);
+          // Poll until the drawer shows more links (up to 800ms) instead of a fixed wait
+          let after = before;
+          for (let ms = 0; ms < 800 && after <= before; ms += 100) {
+            await page.waitForTimeout(100);
+            after = await ev(page, VISIBLE_NAV_LINKS_SCRIPT);
+          }
+          await page.waitForTimeout(WAIT.key);
           const menuShot = path.join(shotDir, `${vp.label}-menu-open.png`);
           await page.screenshot({ path: menuShot, fullPage: false });
           menu = { links_before: before, links_after: after, opened: after > before, screenshot: menuShot };
@@ -6929,7 +7110,7 @@ async function collectWithNode(pw, args, shotDir) {
             menu.escape_closes = false;
             for (let ms = 100; ms <= 1500; ms += 100) {
               await page.waitForTimeout(100);
-              if ((await page.evaluate(VISIBLE_NAV_LINKS_SCRIPT)) <= before) {
+              if ((await ev(page, VISIBLE_NAV_LINKS_SCRIPT)) <= before) {
                 menu.escape_closes = true;
                 menu.escape_close_ms = ms;
                 break;
@@ -6940,312 +7121,389 @@ async function collectWithNode(pw, args, shotDir) {
           menu = { links_before: before, links_after: null, opened: false, error: String(e.message || e) };
         }
       }
-      await page.waitForTimeout(100);
-      const inputPerf = await page.evaluate(PERF_READ_SCRIPT);
+      const inputPerf = await ev(page, PERF_READ_SCRIPT);
       const perf = loadPerf && inputPerf ? { ...loadPerf, inp_proxy_ms: inputPerf.inp_proxy_ms, event_entries: inputPerf.event_entries } : null;
-      // Motion density + pinned stages last, on a fresh load, so nothing above is disturbed
-      const motion = vp.label === "desktop" ? await motionPassNode(page, args.url) : null;
-      raw.push({ ...vp, dom, craft, design, ui, quality, fingerprint, hiddenText, perf, menu, art, motion, consoleErrors, screenshot, heroShot, settle });
-      await context.close();
-    }
-    raw.extra = { reduced: await reducedMotionNode(browser, args.url), throttled: await throttledPerfNode(browser, args.url) };
+      return { ...vp, checks: wide ? "full" : "layout", dom, craft, design, ui, quality, fingerprint, hiddenText, perf, menu, art, motion: null, consoleErrors, screenshot, heroShot, settle };
+      } finally {
+        await context.close();
+      }
+}
+
+/** Desktop motion density + pinned stages on a fresh load in its own context (Node runner). */
+async function motionContextNode(browser, url, caps) {
+  const vp = VIEWPORTS[0];
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+  try {
+    return await motionPassNode(await ctx.newPage(), url, caps);
+  } finally {
+    await ctx.close();
+  }
+}
+
+/**
+ * Collects raw per-viewport measurements with the Node `playwright` package: one browser, each
+ * viewport and side pass in its own context, all in parallel.
+ */
+async function collectWithNode(pw, args, shotDir) {
+  const full = Boolean(args.full);
+  const caps = MODE_CAPS[full ? "full" : "fast"];
+  const browser = await pw.chromium.launch({ headless: true });
+  try {
+    const firstLine = (e) => String((e && e.message) || e).split("\n")[0];
+    const [motion, reduced, throttled, ...vps] = await Promise.all([
+      motionContextNode(browser, args.url, caps).catch((e) => ({ density: null, pins: [], errors: [firstLine(e)] })),
+      reducedMotionNode(browser, args.url, caps),
+      full ? throttledPerfNode(browser, args.url) : Promise.resolve(null),
+      ...VIEWPORTS.map((vp) => viewportPassNode(browser, vp, args, shotDir, caps, full || vp.label === "desktop")),
+    ]);
+    const raw = vps;
+    raw[0].motion = motion;
+    raw.extra = { reduced, throttled };
+    raw.mode = full ? "full" : "fast";
+    return raw;
   } finally {
     await browser.close();
   }
-  return raw;
 }
 
 /** Same collection sequence through Python Playwright (falls back to installed Chrome/Edge). */
 function collectWithPython(args, shotDir) {
   const pyCode = `
-import json, sys, os, base64, time
-from playwright.sync_api import sync_playwright
+import json, sys, os, base64, time, asyncio
+from playwright.async_api import async_playwright
 
 url, raw_out, shot_dir, cfg_path = sys.argv[1:5]
 cfg = json.load(open(cfg_path, encoding="utf-8"))
+FULL = bool(cfg["full"])
+CAPS = cfg["caps"]
+WAIT = cfg["wait"]
 
-def settle(page, cap_ms):
+def b64(png):
+    return "data:image/png;base64," + base64.b64encode(png).decode("ascii")
+
+def first_line(e):
+    s = str(e).splitlines()
+    return s[0] if s else repr(e)
+
+async def quiet(page, cap_ms):
+    # Event waits: network idle (capped), then fonts.ready (capped)
+    try:
+        await page.wait_for_load_state("networkidle", timeout=cap_ms)
+    except Exception:
+        pass
+    try:
+        await page.evaluate(cfg["fonts_ready"], 3000)
+    except Exception:
+        pass
+
+async def settle(page, cap_ms):
     # Mirrors settleNode: finite animations done + first screen stable across two masked frames
     t0 = time.time()
     prev = None
     while True:
-        last = page.evaluate(cfg["settle_pending"] + "(" + str(cfg["settle_cap"]) + ")")
+        last = await page.evaluate(cfg["settle_pending"] + "(" + str(cfg["settle_cap"]) + ")")
         shot = None
         if last["pending"] == 0:
-            shot = "data:image/png;base64," + base64.b64encode(page.screenshot(mask=[page.locator(cfg["settle_mask"])])).decode("ascii")
-            if prev and page.evaluate(cfg["pin_diff"], [prev, shot]) <= cfg["settle_stable_max"]:
+            shot = b64(await page.screenshot(mask=[page.locator(cfg["settle_mask"])]))
+            if prev and await page.evaluate(cfg["pin_diff"], [prev, shot]) <= cfg["settle_stable_max"]:
                 return {"settled": True, "ms": round((time.time() - t0) * 1000), "pending_animations": 0, "endless_loops": last["loops"]}
         prev = shot
         elapsed = round((time.time() - t0) * 1000)
         if elapsed >= cap_ms:
             return {"settled": False, "ms": elapsed, "pending_animations": last["pending"], "endless_loops": last["loops"]}
-        page.wait_for_timeout(cfg["settle_step"])
+        await page.wait_for_timeout(cfg["settle_step"])
 
-def text_over_graphic(page, tg):
+async def text_over_graphic(page, tg):
     # Mirrors textOverGraphicNode; hits are folded in by the Node side (addTextGraphicHits)
     if tg["positions"] >= cfg["tg_max_positions"] or tg["sampled"] >= cfg["tg_max_total"]:
         return
-    found = page.evaluate(cfg["tg_find"] + "(" + str(min(cfg["tg_max_per_position"], cfg["tg_max_total"] - tg["sampled"])) + ")")
+    found = await page.evaluate(cfg["tg_find"] + "(" + str(min(cfg["tg_max_per_position"], cfg["tg_max_total"] - tg["sampled"])) + ")")
     if not found["candidates"]:
         return
     tg["positions"] += 1
-    shown = page.screenshot(clip=found["clip"])
-    page.evaluate(cfg["tg_hide"])
+    shown = await page.screenshot(clip=found["clip"])
+    await page.evaluate(cfg["tg_hide"])
     try:
-        page.wait_for_timeout(60)
-        hidden = page.screenshot(clip=found["clip"])
+        await page.wait_for_timeout(60)
+        hidden = await page.screenshot(clip=found["clip"])
     finally:
-        page.evaluate(cfg["tg_restore"])
-    stats = page.evaluate(cfg["tg_stats"], {
-        "shown": "data:image/png;base64," + base64.b64encode(shown).decode("ascii"),
-        "hidden": "data:image/png;base64," + base64.b64encode(hidden).decode("ascii"),
-        "clip": found["clip"],
-        "candidates": found["candidates"],
-    })
+        await page.evaluate(cfg["tg_restore"])
+    stats = await page.evaluate(cfg["tg_stats"], {"shown": b64(shown), "hidden": b64(hidden), "clip": found["clip"], "candidates": found["candidates"]})
     tg["sampled"] += len([x for x in stats if x])
-    tg["raw"].append({"found": found, "stats": stats, "at": round(page.evaluate("window.scrollY"))})
+    tg["raw"].append({"found": found, "stats": stats, "at": round(await page.evaluate("window.scrollY"))})
 
-raw = []
-with sync_playwright() as p:
-    browser = None
-    errors = []
-    for kwargs in [
-        {},
-        {"channel": "chrome"},
-        {"channel": "msedge"},
-    ]:
-        try:
-            browser = p.chromium.launch(headless=True, **kwargs)
-            break
-        except Exception as e:
-            errors.append(str(e).splitlines()[0])
-    if browser is None:
-        raise RuntimeError("Could not launch headless Chromium, Chrome, or Edge: " + " | ".join(errors))
+async def art_scan(page, vp):
+    art = {"hits": [], "positions": 0, "diffs": 0, "errors": [], "tg": {"positions": 0, "sampled": 0, "raw": [], "errors": []}}
+    art_t0 = time.time()
+    try:
+        step = 700 if vp["width"] < 768 else 760
+        vh = vp["height"]
+        scroll_h = await page.evaluate(cfg["art_scroll"], 0)
+        y = 0
+        while art["positions"] < cfg["art_max_scans"] and art["diffs"] < cfg["art_max_diffs"] and y < max(1, scroll_h - vh + step):
+            scroll_h = await page.evaluate(cfg["art_scroll"], min(y, max(0, scroll_h - vh)))
+            y += step
+            art["positions"] += 1
+            await page.wait_for_timeout(WAIT["art_step"])
+            try:
+                await text_over_graphic(page, art["tg"])
+            except Exception as e:
+                if len(art["tg"]["errors"]) < 3:
+                    art["tg"]["errors"].append(first_line(e))
+                try:
+                    await page.evaluate(cfg["tg_restore"])
+                except Exception:
+                    pass
+            found = await page.evaluate(cfg["art_lines"])
+            if not found["lines"]:
+                continue
+            art["diffs"] += 1
+            shown = [await page.screenshot(clip=found["clip"])]
+            for _ in range(2 if art["positions"] == 1 else 0):
+                await page.wait_for_timeout(WAIT["art_first"])
+                shown.append(await page.screenshot(clip=found["clip"]))
+            await page.evaluate(cfg["art_hide"])
+            try:
+                await page.wait_for_timeout(60)
+                hidden = await page.screenshot(clip=found["clip"])
+            finally:
+                await page.evaluate(cfg["art_restore"])
+            cover = await page.evaluate(cfg["art_diff"], {"shown": [b64(x) for x in shown], "b": b64(hidden), "lines": found["lines"], "clip": found["clip"]})
+            at = round(await page.evaluate("window.scrollY"))
+            for line, c in zip(found["lines"], cover):
+                if c["line"] < cfg["art_cover_min"] and c["word"] < cfg["art_word_min"]:
+                    continue
+                prev = next((h for h in art["hits"] if h["text"] == line["text"]), None)
+                if not prev:
+                    art["hits"].append({"text": line["text"], "y": at, "cover": c["line"], "word": c["word"], "word_text": c["wordText"]})
+                else:
+                    prev["cover"] = max(prev["cover"], c["line"])
+                    if c["word"] > prev["word"]:
+                        prev["word"] = c["word"]
+                        prev["word_text"] = c["wordText"]
+        await page.evaluate(cfg["art_scroll"], 0)
+        await page.evaluate(cfg["frames"])
+    except Exception as e:
+        art["errors"].append(first_line(e))
+    art["ms"] = round((time.time() - art_t0) * 1000)
+    return art
 
-    for vp in cfg["viewports"]:
-        ctx = browser.new_context(viewport={"width": vp["width"], "height": vp["height"]})
-        ctx.add_init_script(cfg["perf_init"])
-        page = ctx.new_page()
+async def viewport_pass(browser, vp, wide):
+    ctx = await browser.new_context(viewport={"width": vp["width"], "height": vp["height"]})
+    try:
+        await ctx.add_init_script(cfg["perf_init"])
+        page = await ctx.new_page()
         console_errors = []
         page.on("pageerror", lambda err, ce=console_errors: ce.append(f"PageError: {err}"))
         page.on("console", lambda msg, ce=console_errors: ce.append(f"console.error: {msg.text}") if msg.type == "error" else None)
 
-        page.goto(url, wait_until="load", timeout=30000)
-        page.evaluate("() => (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => new Promise(r => setTimeout(r, 1000)))")
-
-        settle_load = settle(page, cfg["settle_cap"])
-        load_perf = page.evaluate(cfg["perf_read"])
-        page.evaluate(cfg["scroll_pass"])
-        settle_top = settle(page, max(cfg["settle_step"] * 3, cfg["settle_cap"] - settle_load["ms"]))
+        await page.goto(url, wait_until="load", timeout=30000)
+        await quiet(page, CAPS["netidle_ms"])
+        settle_load = await settle(page, CAPS["settle_ms"])
+        load_perf = await page.evaluate(cfg["perf_read"])
+        await page.evaluate(cfg["scroll_pass"])
+        settle_top = await settle(page, max(cfg["settle_step"] * 3, CAPS["settle_ms"] - settle_load["ms"]))
         settle_info = {"settled": settle_load["settled"] and settle_top["settled"], "ms": settle_load["ms"] + settle_top["ms"], "load": settle_load, "after_scroll": settle_top}
         shot = os.path.join(shot_dir, f"{vp['label']}.png")
         hero_shot = None
         if vp["label"] == "mobile":
             hero_shot = os.path.join(shot_dir, "mobile-hero.png")
-            page.screenshot(path=hero_shot, full_page=False)
-        page.screenshot(path=shot, full_page=True)
-        dom = page.evaluate(cfg["dom_eval"])
+            await page.screenshot(path=hero_shot, full_page=False)
+        await page.screenshot(path=shot, full_page=True)
+        dom = await page.evaluate(cfg["dom_eval"])
+        craft = None
+        ui = None
+        design = None
+        if wide:
+            try:
+                craft = await page.evaluate(cfg["craft_eval"])
+            except Exception as e:
+                craft = {"issues": [], "suppressed": [], "errors": ["craft evaluation failed: " + first_line(e)]}
+            try:
+                tells = await page.evaluate(cfg["tells_eval"])
+                craft["issues"] = craft.get("issues", []) + tells["issues"]
+                craft["suppressed"] = craft.get("suppressed", []) + tells["suppressed"]
+                craft["errors"] = craft.get("errors", []) + tells["errors"]
+            except Exception as e:
+                craft["errors"] = craft.get("errors", []) + ["tells evaluation failed: " + first_line(e)]
+            try:
+                ui = await page.evaluate(cfg["interface_eval"])
+            except Exception as e:
+                ui = {"issues": [], "errors": ["interface evaluation failed: " + first_line(e)]}
         try:
-            craft = page.evaluate(cfg["craft_eval"])
+            q = cfg["quality_desktop"] if vp["label"] == "desktop" else (cfg["quality_other"] if wide else cfg["quality_layout"])
+            quality = await page.evaluate(q)
         except Exception as e:
-            craft = {"issues": [], "suppressed": [], "errors": ["craft evaluation failed: " + str(e).splitlines()[0]]}
-        try:
-            tells = page.evaluate(cfg["tells_eval"])
-            craft["issues"] = craft.get("issues", []) + tells["issues"]
-            craft["suppressed"] = craft.get("suppressed", []) + tells["suppressed"]
-            craft["errors"] = craft.get("errors", []) + tells["errors"]
-        except Exception as e:
-            craft["errors"] = craft.get("errors", []) + ["tells evaluation failed: " + str(e).splitlines()[0]]
-        try:
-            ui = page.evaluate(cfg["interface_eval"])
-        except Exception as e:
-            ui = {"issues": [], "errors": ["interface evaluation failed: " + str(e).splitlines()[0]]}
-        try:
-            quality = page.evaluate(cfg["quality_desktop"] if vp["label"] == "desktop" else cfg["quality_other"])
-        except Exception as e:
-            quality = {"issues": [], "suppressed": [], "errors": ["quality sweep failed: " + str(e).splitlines()[0]]}
+            quality = {"issues": [], "suppressed": [], "errors": ["quality sweep failed: " + first_line(e)]}
         fingerprint = None
         if vp["label"] == "desktop":
             try:
-                layout = page.evaluate(cfg["layout_vector"])
-                png = page.screenshot(full_page=True, clip={"x": 0, "y": 0, "width": vp["width"], "height": max(1, layout["height_px"])})
-                fingerprint = {"layout": layout, "palette": page.evaluate(cfg["palette"], "data:image/png;base64," + base64.b64encode(png).decode("ascii"))}
+                layout = await page.evaluate(cfg["layout_vector"])
+                png = await page.screenshot(full_page=True, clip={"x": 0, "y": 0, "width": vp["width"], "height": max(1, layout["height_px"])})
+                fingerprint = {"layout": layout, "palette": await page.evaluate(cfg["palette"], b64(png))}
             except Exception as e:
-                fingerprint = {"error": str(e).splitlines()[0]}
-        design = None
-        if cfg.get("design_eval"):
+                fingerprint = {"error": first_line(e)}
+        if wide and cfg.get("design_eval"):
             try:
-                design = page.evaluate(cfg["design_eval"])
+                design = await page.evaluate(cfg["design_eval"])
             except Exception as e:
-                design = {"issues": [], "errors": ["design-system evaluation failed: " + str(e).splitlines()[0]]}
+                design = {"issues": [], "errors": ["design-system evaluation failed: " + first_line(e)]}
 
-        art = {"hits": [], "positions": 0, "diffs": 0, "errors": [], "tg": {"positions": 0, "sampled": 0, "raw": [], "errors": []}}
-        art_t0 = time.time()
-        try:
-            step = 700 if vp["width"] < 768 else 760
-            vh = vp["height"]
-            scroll_h = page.evaluate(cfg["art_scroll"], 0)
-            y = 0
-            while art["positions"] < cfg["art_max_scans"] and art["diffs"] < cfg["art_max_diffs"] and y < max(1, scroll_h - vh + step):
-                scroll_h = page.evaluate(cfg["art_scroll"], min(y, max(0, scroll_h - vh)))
-                y += step
-                art["positions"] += 1
-                page.wait_for_timeout(400)
-                try:
-                    text_over_graphic(page, art["tg"])
-                except Exception as e:
-                    if len(art["tg"]["errors"]) < 3:
-                        art["tg"]["errors"].append(str(e).splitlines()[0])
-                    try:
-                        page.evaluate(cfg["tg_restore"])
-                    except Exception:
-                        pass
-                found = page.evaluate(cfg["art_lines"])
-                if not found["lines"]:
-                    continue
-                art["diffs"] += 1
-                shown = [page.screenshot(clip=found["clip"])]
-                for _ in range(2 if art["positions"] == 1 else 0):
-                    page.wait_for_timeout(600)
-                    shown.append(page.screenshot(clip=found["clip"]))
-                page.evaluate(cfg["art_hide"])
-                try:
-                    page.wait_for_timeout(60)
-                    hidden = page.screenshot(clip=found["clip"])
-                finally:
-                    page.evaluate(cfg["art_restore"])
-                cover = page.evaluate(cfg["art_diff"], {
-                    "shown": ["data:image/png;base64," + base64.b64encode(x).decode("ascii") for x in shown],
-                    "b": "data:image/png;base64," + base64.b64encode(hidden).decode("ascii"),
-                    "lines": found["lines"],
-                    "clip": found["clip"],
-                })
-                at = round(page.evaluate("window.scrollY"))
-                for line, c in zip(found["lines"], cover):
-                    if c["line"] < cfg["art_cover_min"] and c["word"] < cfg["art_word_min"]:
-                        continue
-                    prev = next((h for h in art["hits"] if h["text"] == line["text"]), None)
-                    if not prev:
-                        art["hits"].append({"text": line["text"], "y": at, "cover": c["line"], "word": c["word"], "word_text": c["wordText"]})
-                    else:
-                        prev["cover"] = max(prev["cover"], c["line"])
-                        if c["word"] > prev["word"]:
-                            prev["word"] = c["word"]
-                            prev["word_text"] = c["wordText"]
-            page.evaluate(cfg["art_scroll"], 0)
-            page.wait_for_timeout(300)
-        except Exception as e:
-            art["errors"].append(str(e).splitlines()[0])
-        art["ms"] = round((time.time() - art_t0) * 1000)
+        art = await art_scan(page, vp) if wide else None
         hidden_text = None
         if vp["label"] == "desktop":
             try:
-                hidden_text = page.evaluate(cfg["hidden_text"])
+                hidden_text = await page.evaluate(cfg["hidden_text"])
             except Exception:
                 hidden_text = None
 
         for _ in range(3):
-            page.keyboard.press("Tab")
-        page.keyboard.press("Shift+Tab")
-        page.wait_for_timeout(300)
+            await page.keyboard.press("Tab")
+        await page.keyboard.press("Shift+Tab")
+        await page.wait_for_timeout(WAIT["key"])
 
         menu = None
         if dom.get("menuToggleVisible"):
-            before = page.evaluate(cfg["nav_links"])
+            before = await page.evaluate(cfg["nav_links"])
             try:
-                page.locator(cfg["menu_toggle"]).first.click(timeout=3000)
-                page.wait_for_timeout(500)
-                after = page.evaluate(cfg["nav_links"])
+                await page.locator(cfg["menu_toggle"]).first.click(timeout=3000)
+                # Poll until the drawer shows more links (up to 800ms) instead of a fixed wait
+                after = before
+                ms = 0
+                while ms < 800 and after <= before:
+                    await page.wait_for_timeout(100)
+                    ms += 100
+                    after = await page.evaluate(cfg["nav_links"])
+                await page.wait_for_timeout(WAIT["key"])
                 menu_shot = os.path.join(shot_dir, f"{vp['label']}-menu-open.png")
-                page.screenshot(path=menu_shot, full_page=False)
+                await page.screenshot(path=menu_shot, full_page=False)
                 menu = {"links_before": before, "links_after": after, "opened": after > before, "screenshot": menu_shot}
                 if menu["opened"]:
-                    page.keyboard.press("Escape")
+                    await page.keyboard.press("Escape")
                     # Drawers animate out: poll up to 1.5s, and record how long the close took
                     menu["escape_closes"] = False
                     for step in range(1, 16):
-                        page.wait_for_timeout(100)
-                        if page.evaluate(cfg["nav_links"]) <= before:
+                        await page.wait_for_timeout(100)
+                        if await page.evaluate(cfg["nav_links"]) <= before:
                             menu["escape_closes"] = True
                             menu["escape_close_ms"] = step * 100
                             break
             except Exception as e:
-                menu = {"links_before": before, "links_after": None, "opened": False, "error": str(e).splitlines()[0]}
+                menu = {"links_before": before, "links_after": None, "opened": False, "error": first_line(e)}
         # Lab interaction proxy is read after every scripted interaction, including the menu click
-        page.wait_for_timeout(100)
-        input_perf = page.evaluate(cfg["perf_read"])
+        input_perf = await page.evaluate(cfg["perf_read"])
         perf = {**load_perf, "inp_proxy_ms": input_perf["inp_proxy_ms"], "event_entries": input_perf["event_entries"]} if load_perf and input_perf else None
-        motion = None
-        if vp["label"] == "desktop":
-            motion = {"density": None, "pins": [], "errors": []}
-            try:
-                page.goto(url, wait_until="load", timeout=30000)
-                page.evaluate("() => (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => new Promise(r => setTimeout(r, 800)))")
-                motion["density"] = page.evaluate(cfg["motion_probe"])
-                for pin in page.evaluate(cfg["pin_find"]):
-                    shots, clip = [], None
-                    for f in cfg["pin_fractions"]:
-                        page.evaluate(cfg["art_scroll"], round(pin["start"] + (pin["end"] - pin["start"]) * f))
-                        page.wait_for_timeout(450)
-                        clip = clip or page.evaluate(cfg["pin_clip"], pin["id"])
-                        if not clip:
-                            break
-                        shots.append("data:image/png;base64," + base64.b64encode(page.screenshot(clip=clip)).decode("ascii"))
-                    if len(shots) == len(cfg["pin_fractions"]):
-                        motion["pins"].append({**pin, "max_change": page.evaluate(cfg["pin_diff"], shots)})
-                page.evaluate(cfg["art_scroll"], 0)
-            except Exception as e:
-                motion["errors"].append(str(e).splitlines()[0])
-        raw.append({**vp, "dom": dom, "craft": craft, "design": design, "ui": ui, "quality": quality, "fingerprint": fingerprint, "hiddenText": hidden_text, "perf": perf, "menu": menu, "art": art, "motion": motion, "consoleErrors": console_errors, "screenshot": shot, "heroShot": hero_shot, "settle": settle_info})
-        ctx.close()
+        return {**vp, "checks": "full" if wide else "layout", "dom": dom, "craft": craft, "design": design, "ui": ui, "quality": quality, "fingerprint": fingerprint, "hiddenText": hidden_text, "perf": perf, "menu": menu, "art": art, "motion": None, "consoleErrors": console_errors, "screenshot": shot, "heroShot": hero_shot, "settle": settle_info}
+    finally:
+        await ctx.close()
 
-    extra = {"reduced": {"hidden": []}, "throttled": None}
-    # Reduced-motion run (desktop): text hidden only here is a reveal that reduce skips without its end state
-    d_vp = cfg["viewports"][0]
-    rctx = browser.new_context(viewport={"width": d_vp["width"], "height": d_vp["height"]}, reduced_motion="reduce")
+async def motion_pass(browser):
+    # Desktop motion density + pinned stages on a fresh load in its own context
+    vp = cfg["viewports"][0]
+    motion = {"density": None, "pins": [], "errors": []}
+    ctx = await browser.new_context(viewport={"width": vp["width"], "height": vp["height"]})
     try:
-        rpage = rctx.new_page()
-        rpage.goto(url, wait_until="load", timeout=30000)
-        rpage.wait_for_timeout(1200)
-        hidden = rpage.evaluate(cfg["hidden_text"])
-        running = rpage.evaluate(cfg["running_motion"])
+        page = await ctx.new_page()
+        await page.goto(url, wait_until="load", timeout=30000)
+        await quiet(page, CAPS["netidle_ms"])
+        await page.wait_for_timeout(WAIT["scroll_anim"])
+        motion["density"] = await page.evaluate(cfg["motion_probe"])
+        for pin in await page.evaluate(cfg["pin_find"]):
+            shots, clip = [], None
+            for f in cfg["pin_fractions"]:
+                await page.evaluate(cfg["art_scroll"], round(pin["start"] + (pin["end"] - pin["start"]) * f))
+                await page.wait_for_timeout(WAIT["pin"])
+                clip = clip or await page.evaluate(cfg["pin_clip"], pin["id"])
+                if not clip:
+                    break
+                shots.append(b64(await page.screenshot(clip=clip)))
+            if len(shots) == len(cfg["pin_fractions"]):
+                motion["pins"].append({**pin, "max_change": await page.evaluate(cfg["pin_diff"], shots)})
+        await page.evaluate(cfg["art_scroll"], 0)
+    except Exception as e:
+        motion["errors"].append(first_line(e))
+    finally:
+        await ctx.close()
+    return motion
+
+async def reduced_pass(browser):
+    # Reduced-motion run (desktop): text hidden only here is a reveal that reduce skips without its end state
+    vp = cfg["viewports"][0]
+    rctx = await browser.new_context(viewport={"width": vp["width"], "height": vp["height"]}, reduced_motion="reduce")
+    try:
+        rpage = await rctx.new_page()
+        await rpage.goto(url, wait_until="load", timeout=30000)
+        await quiet(rpage, CAPS["netidle_ms"])
+        await rpage.wait_for_timeout(WAIT["reduced"])
+        hidden = await rpage.evaluate(cfg["hidden_text"])
+        try:
+            running = await rpage.evaluate(cfg["running_motion"])
+        except Exception:
+            running = []
         widths = []
         for w in cfg["extra_widths"]:
-            rpage.set_viewport_size({"width": w, "height": 900})
-            rpage.wait_for_timeout(300)
-            widths.append({"width": w, "overflow_px": rpage.evaluate(cfg["overflow_probe"])})
-        extra["reduced"] = {"hidden": hidden, "running": running, "widths": widths}
+            await rpage.set_viewport_size({"width": w, "height": 900})
+            await rpage.evaluate(cfg["frames"])
+            widths.append({"width": w, "overflow_px": await rpage.evaluate(cfg["overflow_probe"])})
+        return {"hidden": hidden, "running": running, "widths": widths}
     except Exception as e:
-        extra["reduced"] = {"hidden": [], "error": str(e).splitlines()[0]}
+        return {"hidden": [], "error": first_line(e)}
     finally:
-        rctx.close()
-    # Throttled lab load (mobile): CPU 4x + network emulation over CDP
-    m_vp = next(v for v in cfg["viewports"] if v["label"] == "mobile")
-    tctx = browser.new_context(viewport={"width": m_vp["width"], "height": m_vp["height"]})
-    try:
-        tctx.add_init_script(cfg["perf_init"])
-        tpage = tctx.new_page()
-        cdp = tctx.new_cdp_session(tpage)
-        th = cfg["throttle"]
-        cdp.send("Network.enable")
-        cdp.send("Network.emulateNetworkConditions", {"offline": False, "latency": th["latency_ms"], "downloadThroughput": th["down_bytes_s"], "uploadThroughput": th["up_bytes_s"]})
-        cdp.send("Emulation.setCPUThrottlingRate", {"rate": th["cpu"]})
-        t0 = time.time()
-        tpage.goto(url, wait_until="load", timeout=60000)
-        load_ms = round((time.time() - t0) * 1000)
-        tpage.wait_for_timeout(2500)
-        for _ in range(3):
-            tpage.keyboard.press("Tab")
-        tpage.wait_for_timeout(300)
-        extra["throttled"] = {**(tpage.evaluate(cfg["perf_read"]) or {}), "load_event_ms": load_ms}
-    except Exception as e:
-        extra["throttled"] = {"error": str(e).splitlines()[0]}
-    finally:
-        tctx.close()
-    browser.close()
+        await rctx.close()
 
-with open(raw_out, "w", encoding="utf-8") as f:
-    json.dump({"viewports": raw, "extra": extra}, f)
+async def throttled_pass(browser):
+    # Throttled lab load (mobile): CPU 4x + network emulation over CDP
+    vp = next(v for v in cfg["viewports"] if v["label"] == "mobile")
+    tctx = await browser.new_context(viewport={"width": vp["width"], "height": vp["height"]})
+    try:
+        await tctx.add_init_script(cfg["perf_init"])
+        tpage = await tctx.new_page()
+        cdp = await tctx.new_cdp_session(tpage)
+        th = cfg["throttle"]
+        await cdp.send("Network.enable")
+        await cdp.send("Network.emulateNetworkConditions", {"offline": False, "latency": th["latency_ms"], "downloadThroughput": th["down_bytes_s"], "uploadThroughput": th["up_bytes_s"]})
+        await cdp.send("Emulation.setCPUThrottlingRate", {"rate": th["cpu"]})
+        t0 = time.time()
+        await tpage.goto(url, wait_until="load", timeout=60000)
+        load_ms = round((time.time() - t0) * 1000)
+        await quiet(tpage, 4000)
+        await settle(tpage, 3000)
+        for _ in range(3):
+            await tpage.keyboard.press("Tab")
+        await tpage.wait_for_timeout(WAIT["key"])
+        return {**((await tpage.evaluate(cfg["perf_read"])) or {}), "load_event_ms": load_ms}
+    except Exception as e:
+        return {"error": first_line(e)}
+    finally:
+        await tctx.close()
+
+async def none():
+    return None
+
+async def main():
+    async with async_playwright() as p:
+        browser = None
+        errors = []
+        for kwargs in [{}, {"channel": "chrome"}, {"channel": "msedge"}]:
+            try:
+                browser = await p.chromium.launch(headless=True, **kwargs)
+                break
+            except Exception as e:
+                errors.append(first_line(e))
+        if browser is None:
+            raise RuntimeError("Could not launch headless Chromium, Chrome, or Edge: " + " | ".join(errors))
+        try:
+            jobs = [viewport_pass(browser, vp, FULL or vp["label"] == "desktop") for vp in cfg["viewports"]]
+            res = await asyncio.gather(motion_pass(browser), reduced_pass(browser), throttled_pass(browser) if FULL else none(), *jobs)
+        finally:
+            await browser.close()
+    motion, reduced, throttled = res[0], res[1], res[2]
+    raw = list(res[3:])
+    raw[0]["motion"] = motion
+    with open(raw_out, "w", encoding="utf-8") as f:
+        json.dump({"viewports": raw, "extra": {"reduced": reduced, "throttled": throttled}}, f)
+
+asyncio.run(main())
 `;
 
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "layoza-qa-"));
@@ -7293,6 +7551,12 @@ with open(raw_out, "w", encoding="utf-8") as f:
       tg_max_positions: TG_MAX_POSITIONS,
       quality_desktop: QUALITY_EVAL({ allow: args.allow, skipFocus: false }),
       quality_other: QUALITY_EVAL({ allow: args.allow, skipFocus: true }),
+      quality_layout: QUALITY_EVAL({ allow: args.allow, skipFocus: true, only: LAYOUT_ONLY_RULES }),
+      full: Boolean(args.full),
+      caps: MODE_CAPS[args.full ? "full" : "fast"],
+      wait: WAIT,
+      frames: FRAMES_SCRIPT,
+      fonts_ready: FONTS_READY_SCRIPT,
       layout_vector: LAYOUT_VECTOR_SCRIPT,
       palette: PALETTE_SCRIPT,
       hidden_text: HIDDEN_TEXT_PROBE,
@@ -7315,6 +7579,7 @@ with open(raw_out, "w", encoding="utf-8") as f:
     const parsed = JSON.parse(fs.readFileSync(rawPath, "utf8"));
     const raw = parsed.viewports;
     raw.extra = parsed.extra;
+    raw.mode = args.full ? "full" : "fast";
     // Fold the Python runner's raw text-over-graphic samples with the same rules as the Node runner
     for (const v of raw) {
       const t = v.art && v.art.tg;
@@ -7350,7 +7615,8 @@ function craftSummary(raw) {
   for (const v of raw) {
     const counts = {};
     for (const i of (v.craft && v.craft.issues) || []) counts[i.rule] = (counts[i.rule] || 0) + 1;
-    perViewport[v.label] = counts;
+    // A viewport whose craft pass did not run (fast mode at 768/375) reports null, not "no findings"
+    perViewport[v.label] = v.craft ? counts : null;
     for (const [rule, n] of Object.entries(counts)) summary[rule] = Math.max(summary[rule] || 0, n);
     for (const s of (v.craft && v.craft.suppressed) || []) {
       if (!suppressed.some((x) => x.rule === s.rule && x.detail === s.detail)) suppressed.push(s);
@@ -7572,6 +7838,8 @@ function assembleReport(url, engine, raw, tokens) {
       label: v.label,
       width: v.width,
       height: v.height,
+      // "full" = every check ran here; "layout" = layout, overflow and touch rules only (fast mode)
+      checks: v.checks || "full",
       horizontal_overflow_px: v.dom.horizontalOverflowPx,
       clipped_text_nodes: v.dom.clippedTextNodes,
       overlapping_interactive_elements: v.dom.overlappingInteractiveElements,
@@ -7678,6 +7946,23 @@ function assembleReport(url, engine, raw, tokens) {
     }
   }
   report.look_fingerprint = desktop.fingerprint && !desktop.fingerprint.error ? desktop.fingerprint : null;
+  // Repeated section structure inside this page (one WARN per pair, on the desktop viewport)
+  const twice = report.look_fingerprint && !allowSet.has("same-section-twice") ? sameSectionTwice(report.look_fingerprint.layout.sections) : [];
+  const deskOut = (report.viewports || []).find((v) => v.label === "desktop");
+  if (deskOut && Array.isArray(deskOut.issues)) {
+    for (const t of twice.slice(0, 6)) {
+      deskOut.issues.push({
+        rule: "same-section-twice",
+        severity: "warning",
+        category: "design-quality",
+        selector: "section #" + t.a.index + " / #" + t.b.index,
+        detail: "Sections #" + t.a.index + " (" + t.a.label + ") and #" + t.b.index + " (" + t.b.label + ") share one structure (similarity " + t.sim + ").",
+        measured: "structure similarity " + t.sim + " (flag at >= 0.93)",
+        why: "The page repeats one section layout, so the scroll reads as the same block twice and the second one adds no new shape.",
+        fix: "Give one of the two sections its own composition (a different column count, media placement or reading order), or merge them.",
+      });
+    }
+  }
   const mobile = raw.find((v) => v.label === "mobile");
   const thr = raw.extra && raw.extra.throttled;
   report.lab_perf = {
@@ -7686,10 +7971,28 @@ function assembleReport(url, engine, raw, tokens) {
     unthrottled: mobile && mobile.perf ? { lcp_ms: mobile.perf.lcp_ms, cls: mobile.perf.cls } : null,
     throttled: thr && !thr.error ? { lcp_ms: thr.lcp_ms ?? null, cls: thr.cls ?? null, load_event_ms: thr.load_event_ms ?? null } : null,
     throttled_error: thr && thr.error ? thr.error : null,
+    throttled_skipped: thr ? null : "skipped (fast mode); run with --full for the throttled pass",
     profile: THROTTLE,
     inp: "lab interaction proxy only (scripted key presses), not field INP",
     note: url.startsWith("file:") ? "file:// loads bypass the network, so only the CPU throttle applies; serve over http for network-throttled numbers" : "CDP network emulation + CPU slowdown; Lab data, not field (CrUX) data",
   };
+  // Which passes ran. Nothing is reported from a pass that did not run.
+  const mode = raw.mode === "full" ? "full" : "fast";
+  const layoutOnly = raw.filter((v) => v.checks === "layout").map((v) => v.width);
+  const passes = raw.map((v) => (v.checks === "layout" ? "layout-rules@" : "full-sweep@") + v.width);
+  if (raw.extra && raw.extra.reduced && !raw.extra.reduced.error) passes.push("reduced-motion@" + VIEWPORTS[0].width, "extra-widths@" + EXTRA_WIDTHS.join(","));
+  if (desktop.motion) passes.push("motion-density@" + desktop.width);
+  if (thr) passes.push("throttled-perf@" + (VIEWPORTS.find((v) => v.label === "mobile") || {}).width);
+  const skipped = [];
+  if (!thr) skipped.push("Throttled Lab LCP/CLS (slow-device pass): skipped in fast mode; run with --full");
+  if (layoutOnly.length) skipped.push("Full rule sweep, craft, tells, interface, design-token and art-over-text checks at " + layoutOnly.join("px, ") + "px: fast mode ran layout, overflow and touch rules only there; run with --full");
+  if (raw.extra && raw.extra.reduced && raw.extra.reduced.error) skipped.push("Reduced-motion and extra-width pass failed: " + raw.extra.reduced.error);
+  report.mode = mode;
+  report.passes = passes;
+  report.skipped_passes = skipped;
+  report.methodology_disclosure += mode === "fast"
+    ? " Fast mode: one browser, viewports and side passes in parallel contexts (parallel loads share the CPU, so lab timings can read higher than a lone load)."
+    : " Full mode: adds the throttled slow-device pass and the full rule sweep at every width.";
   report.unmeasured = Object.entries(report)
     .filter(([, v]) => v === null)
     .map(([k]) => k);
@@ -7714,7 +8017,7 @@ async function main() {
     process.exit(verdict.verdict === "re-skin" ? 2 : 0);
   }
   if (!args.url) {
-    console.error("Usage: node scripts/browser-qa.mjs (--url <http-url> | --file <html-path>) [--out <json-path>] [--screenshots <dir>] [--design-tokens <json-path>] [--allow rule-or-group,...] | --compare <a.json> <b.json>");
+    console.error("Usage: node scripts/browser-qa.mjs (--url <http-url> | --file <html-path>) [--out <json-path>] [--screenshots <dir>] [--design-tokens <json-path>] [--allow rule-or-group,...] [--full] | --compare <a.json> <b.json>");
     process.exit(1);
   }
   const outPath = path.resolve(args.out);
@@ -7726,19 +8029,30 @@ async function main() {
 
   // Layoza runs this script from a temp folder, where a bare import cannot see the project's
   // node_modules. Resolve playwright from the working directory (the project) first.
+  // LAYOZA_PLAYWRIGHT_DIR may point at a folder holding node_modules/playwright (a scratch
+  // install), so the Node runner works without adding playwright to the project.
   let pw = null;
-  try {
-    const projectRequire = createRequire(path.join(process.cwd(), "noop.js"));
-    const mod = await import(pathToFileURL(projectRequire.resolve("playwright")).href);
-    // A CommonJS entry imported by file URL may expose its exports only on `default`
-    pw = mod.chromium ? mod : mod.default;
-  } catch {
+  const bases = [process.env.LAYOZA_PLAYWRIGHT_DIR, process.cwd()].filter(Boolean);
+  for (const base of bases) {
     try {
-      pw = await import("playwright");
+      const req = createRequire(path.join(path.resolve(base), "noop.js"));
+      const mod = await import(pathToFileURL(req.resolve("playwright")).href);
+      // A CommonJS entry imported by file URL may expose its exports only on `default`
+      pw = mod.chromium ? mod : mod.default;
+      break;
     } catch {
       pw = null;
     }
   }
+  if (!pw && process.env.LAYOZA_QA_ENGINE !== "python") {
+    try {
+      const mod = await import("playwright");
+      pw = mod.chromium ? mod : mod.default;
+    } catch {
+      pw = null;
+    }
+  }
+  if (process.env.LAYOZA_QA_ENGINE === "python") pw = null;
   let tokens = null;
   if (args.designTokens) {
     try {
