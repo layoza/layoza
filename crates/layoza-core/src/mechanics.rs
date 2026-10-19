@@ -162,7 +162,7 @@ pub const NICHES: &[&str] = &[
     "store", "restaurant", "local-business", "saas", "dashboard", "agency", "kinetic", "3d", "editorial",
     "portfolio", "finance", "health", "education", "events", "real-estate", "travel", "nonprofit", "docs",
     "landing", "professional", "legal", "museum", "devtools", "memorial", "body-art", "civic", "venue", "camp",
-    "winery", "home-services", "any",
+    "winery", "home-services", "industrial", "any",
 ];
 
 /// The parsed catalogue (embedded at compile time; parsed once).
@@ -218,6 +218,7 @@ pub fn normalize_niche(raw: &str) -> String {
         "summer-camp" | "kids-camp" | "day-camp" => "camp".into(),
         "vineyard" | "brewery" | "distillery" | "cidery" => "winery".into(),
         "plumber" | "electrician" | "roofer" | "contractor" | "home-service" | "trades-services" => "home-services".into(),
+        "b2b" | "manufacturer" | "manufacturing" | "supplier" | "b2b-supplier" | "industrial-b2b" | "signage" | "led" => "industrial".into(),
         "devtool" | "dev-tools" | "developer-tools" | "ai-devtools" | "cli" | "mcp" | "open-source" | "oss" => "devtools".into(),
         _ => s,
     }
@@ -246,6 +247,10 @@ const NICHE_WORDS: &[(&str, &str)] = &[
     ("roofer", "home-services"), ("roofing", "home-services"), ("contractor", "home-services"),
     ("handyman", "home-services"), ("hvac", "home-services"), ("locksmith", "home-services"),
     ("boiler", "home-services"),
+    ("industrial", "industrial"), ("manufacturer", "industrial"), ("manufacturing", "industrial"), ("supplier", "industrial"),
+    ("b2b", "industrial"), ("fabrication", "industrial"), ("machinery", "industrial"), ("wholesale", "industrial"),
+    ("distributor", "industrial"), ("signage", "industrial"), ("smd", "industrial"), ("led screen", "industrial"),
+    ("led display", "industrial"), ("led wall", "industrial"), ("video wall", "industrial"), ("billboard", "industrial"),
     ("shop", "store"), ("store", "store"), ("boutique", "store"), ("ecommerce", "store"), ("e-commerce", "store"),
     ("retail", "store"), ("apparel", "store"), ("fashion", "store"), ("skincare", "store"), ("cosmetics", "store"),
     ("sneakers", "store"), ("furniture", "store"), ("merch", "store"), ("catalogue", "store"), ("catalog", "store"),
@@ -443,6 +448,17 @@ pub fn niche_signal(brief: &str) -> Vec<String> {
     if niches.first().is_some_and(|n| SURFACE_NICHES.contains(&n.as_str())) {
         niches.retain(|n| SURFACE_NICHES.contains(&n.as_str()) || !NARROW_TRADES.contains(&n.as_str()));
     }
+    // A supplier names the buyers it serves (schools, weddings, venues); those are its market, not
+    // its trade, and a bare "B2B" is not software unless the brief also names a software product.
+    if niches.iter().any(|n| n == "industrial") {
+        let toks = tokens(brief);
+        let software = ["saas", "software", "app", "platform", "api", "dashboard"].iter().any(|w| toks.iter().any(|t| t == w));
+        niches.retain(|n| match n.as_str() {
+            "saas" => software,
+            "events" | "education" | "venue" | "restaurant" | "hospitality" | "civic" | "memorial" | "health" | "retail" => false,
+            _ => true,
+        });
+    }
     niches
 }
 
@@ -599,7 +615,25 @@ pub fn brief_objects(brief: &str) -> Vec<String> {
 /// The visitor's action as the brief states it: the first action verb with the noun phrase it takes
 /// ("lets residents report leaks" -> "report leaks"). `None` when the brief names no action; the
 /// caller must then ask, never guess a booking.
+/// The page's main action when the brief labels it ("Primary CTA: Get a Free Quote"). Section-level
+/// "CTA:" lines are not the page's action, so only primary/main labels count.
+fn labelled_cta(brief: &str) -> Option<String> {
+    const LABELS: &[&str] = &["primary cta", "main cta", "primary call to action", "main call to action", "primary action", "main action", "primary button"];
+    brief.split(['\n', '.', ';']).find_map(|seg| {
+        let t = seg.trim().trim_start_matches(['*', '-', '\u{2022}', ' ']);
+        let (label, value) = t.split_once(':')?;
+        if !LABELS.contains(&label.trim().to_lowercase().as_str()) {
+            return None;
+        }
+        let v = value.trim().trim_matches(['"', '\'', '`', '\u{201C}', '\u{201D}']).trim().to_lowercase();
+        (!v.is_empty() && v.split_whitespace().count() <= 6).then_some(v)
+    })
+}
+
 pub fn brief_action(brief: &str) -> Option<String> {
+    if let Some(cta) = labelled_cta(brief) {
+        return Some(cta);
+    }
     for clause in object_words(brief) {
         for i in 0..clause.len() {
             let Some(base) = action_at(&clause, i) else { continue };
@@ -632,7 +666,17 @@ pub fn brief_action(brief: &str) -> Option<String> {
 
 /// Intensity the brief asks for in so many words, if any. Restraint wins over ambition.
 pub fn brief_intensity(brief: &str) -> Option<Intensity> {
-    let toks = tokens(brief);
+    // Fallback and guardrail phrases ("degrade to a static image", "respect prefers-reduced-motion")
+    // say what happens when motion is off; they do not ask for a calm page.
+    let mut plain = brief.to_lowercase();
+    for p in [
+        "prefers-reduced-motion", "prefers reduced motion", "reduced-motion support", "reduced motion support",
+        "reduced-motion fallback", "reduced motion fallback", "static image", "static fallback", "static poster",
+        "static frame", "static version", "static still",
+    ] {
+        plain = plain.replace(p, " ");
+    }
+    let toks = tokens(&plain);
     // An explicit heavy-motion ask outranks a stray calm word elsewhere ("a minimal footer").
     const HEAVY: &[&str] = &[
         "highly animated", "heavily animated", "very animated", "fully animated", "cinematic", "motion-rich",
@@ -693,6 +737,7 @@ fn trade_roles(niche: &str) -> &'static [&'static str] {
         "camp" => &["schedule", "pricing", "team", "curriculum"],
         "winery" => &["menu", "location", "schedule", "gallery", "about"],
         "home-services" => &["services", "pricing", "proof", "process"],
+        "industrial" => &["comparison", "catalogue", "process", "proof", "cta"],
         "body-art" => &["gallery", "team", "process", "pricing"],
         _ => &[],
     }
@@ -701,7 +746,7 @@ fn trade_roles(niche: &str) -> &'static [&'static str] {
 /// Niches whose mechanics depict that trade's own object; foreign to any other brief.
 const NARROW_TRADES: &[&str] = &[
     "store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel", "devtools", "legal", "museum",
-    "memorial", "body-art", "civic", "venue", "camp", "winery", "home-services",
+    "memorial", "body-art", "civic", "venue", "camp", "winery", "home-services", "industrial",
 ];
 
 /// Niches close enough that one's mechanics read naturally on the other's site. Used only when a
@@ -737,6 +782,7 @@ fn related_niches(niche: &str) -> &'static [&'static str] {
         "camp" => &["education", "events", "nonprofit"],
         "winery" => &["restaurant", "travel", "events"],
         "home-services" => &["local-business", "professional"],
+        "industrial" => &["professional", "3d", "landing"],
         "body-art" => &["local-business", "portfolio", "agency"],
         _ => &[],
     }
@@ -992,7 +1038,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let mut notes = Vec::new();
 
     // Niches: the brief's own words first, then the hint; the hint never displaces the brief.
-    let mut niches = opts.niches.clone().unwrap_or_else(|| detect_niches(brief));
+    let mut niches = opts.niches.clone().unwrap_or_else(|| niche_signal(brief));
     // A tool brief ("bakery dashboard"): the trade is the tool's content, not its storefront.
     // (Idempotent, so a shared signal from `niche_signal` passes through unchanged.)
     if niches.first().is_some_and(|n| SURFACE_NICHES.contains(&n.as_str())) {
@@ -1091,7 +1137,8 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         notes.push("Calm deal: every mechanic is a quiet, CSS-capable idea. Keep each section's distinct idea; do not add bold motion.".into());
     }
     let toks = tokens(brief);
-    if ["no animation", "no motion", "static", "without animation"].iter().any(|w| hit(&toks, w)) {
+    // "A static image fallback" is a fallback, not a ban: only a whole-page ask stops motion.
+    if ["no animation", "no animations", "no motion", "static site", "static page", "without animation"].iter().any(|w| hit(&toks, w)) {
         notes.push("The brief asks for no motion: build each mechanic as its reduced-motion end state (the composition stays, nothing moves) and declare <meta name=\"layoza-motion\" content=\"none\">.".into());
     }
 
@@ -1287,8 +1334,11 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             let top = v.first().map(|m| score(m)).unwrap_or(0);
             v.iter().copied().filter(|m| score(m) + slack >= top).take(4).collect()
         };
+        // A composition match from a broader class (a universal hero) keeps the promise only when it
+        // nearly ties the best; an in-trade hero is not given up for a generic one's layout.
+        let best_class = list.first().map(|m| fit_class(m, &niches).0);
         let near: Vec<&'static Mechanic> = match matching.first() {
-            Some(m) if score(m) + 10 >= best => window(&matching, 6),
+            Some(m) if score(m) + if Some(fit_class(m, &niches).0) == best_class { 10 } else { 3 } >= best => window(&matching, 6),
             // No niche: every broad hero is about equally (un)fitting, so a tiny score window must
             // not decide. The whole brief picks among all of them, so different briefs diverge.
             _ if niches.is_empty() => {

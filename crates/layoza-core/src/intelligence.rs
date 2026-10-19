@@ -161,6 +161,55 @@ pub const BODY_FLOOR_REM: f64 = 1.0;
 /// Smallest label / caption size, in rem (12px).
 pub const LABEL_FLOOR_REM: f64 = 0.75;
 
+/// Pixel ranges the brief gives for a type role ("Desktop hero headline: approximately 76–104px").
+/// Returns (role token, min px, max px) for the hero (display), section (h2) and body lines.
+pub(crate) fn brief_type_sizes(query: &str) -> Vec<(&'static str, f64, f64)> {
+    let mut out: Vec<(&'static str, f64, f64)> = Vec::new();
+    for line in query.lines() {
+        let l = line.to_lowercase();
+        let role = if l.contains("hero") && (l.contains("headline") || l.contains("heading") || l.contains("h1")) {
+            "display"
+        } else if l.contains("section heading") || l.contains("section headline") || l.contains("h2") {
+            "h2"
+        } else if l.contains("body copy") || l.contains("body text") {
+            "body"
+        } else {
+            continue;
+        };
+        if !l.contains("px") || out.iter().any(|(r, _, _)| *r == role) {
+            continue;
+        }
+        let nums: Vec<f64> = l
+            .split(|c: char| !c.is_ascii_digit() && c != '.')
+            .filter_map(|n| n.parse::<f64>().ok())
+            .filter(|n| (10.0..=240.0).contains(n))
+            .collect();
+        match nums.as_slice() {
+            [a, b, ..] if a <= b => out.push((role, *a, *b)),
+            [a, ..] => out.push((role, *a, *a)),
+            _ => {}
+        }
+    }
+    out
+}
+
+/// Type tokens with the brief's own pixel sizes for hero, section and body, when it gives them.
+fn with_brief_sizes(mut t: std::collections::BTreeMap<String, String>, query: &str) -> std::collections::BTreeMap<String, String> {
+    let rem = |px: f64| {
+        let s = format!("{:.3}", px / 16.0);
+        format!("{}rem", s.trim_end_matches('0').trim_end_matches('.'))
+    };
+    for (role, lo, hi) in brief_type_sizes(query) {
+        let v = match role {
+            "display" => format!("clamp({}, 7vw, {})", rem(lo * 0.55), rem(hi)),
+            "h2" => format!("clamp({}, 4.5vw, {})", rem(lo * 0.6), rem(hi)),
+            _ => format!("clamp({}, 1vw + 0.8rem, {})", rem(lo), rem(hi)),
+        };
+        t.insert(role.to_string(), v);
+    }
+    t
+}
+
 /// Type scale tokens from a ratio label such as `1.250 (Major Third)`. Steps are rounded to 3
 /// decimals; body and label sizes are clamped to their floors whatever the ratio says.
 pub fn type_tokens(scale_ratio: &str) -> std::collections::BTreeMap<String, String> {
@@ -180,7 +229,8 @@ pub fn type_tokens(scale_ratio: &str) -> std::collections::BTreeMap<String, Stri
     t.insert("h3".to_string(), rem(body * r.powi(2)));
     t.insert("h2".to_string(), rem(body * r.powi(3)));
     t.insert("h1".to_string(), rem(body * r.powi(4)));
-    t.insert("display".to_string(), format!("clamp({}, 6vw, {})", rem(body * r.powi(4)), rem(body * r.powi(6))));
+    // A hero headline under ~44px or capped under ~72px reads as a blog title, whatever the ratio.
+    t.insert("display".to_string(), format!("clamp({}, 6vw, {})", rem((body * r.powi(4)).max(2.75)), rem((body * r.powi(6)).max(4.5))));
     t.insert("ratio".to_string(), format!("{}", r));
     t
 }
@@ -289,13 +339,33 @@ pub fn affirmed_brief(query: &str) -> String {
             if !bullet {
                 in_negative_list = false;
             }
-            if negated || (bullet && in_negative_list) {
+            if bullet && in_negative_list {
+                continue;
+            }
+            if negated {
+                // "X, not Y" / "X rather than Y": the ask is X, only the tail is ruled out.
+                let head = [", not ", " rather than ", " instead of ", ", never "]
+                    .iter()
+                    .filter_map(|m| t.to_ascii_lowercase().find(m))
+                    .min()
+                    .map(|at| &t[..at])
+                    .filter(|h| !NEG.iter().any(|n| tokenize(h).iter().any(|w| w == n)) && !h.trim().is_empty());
+                if let Some(h) = head {
+                    kept.push(h.trim());
+                }
                 continue;
             }
             kept.push(t);
         }
     }
     kept.join(". ")
+}
+
+/// The brief sells to businesses by quote or survey rather than through a basket.
+pub(crate) fn b2b_brief(tokens: &[String]) -> bool {
+    ["b2b", "quote", "quotes", "quotation", "wholesale", "distributor", "procurement", "supplier", "manufacturer", "site survey", "tender"]
+        .iter()
+        .any(|w| keyword_hit(tokens, w))
 }
 
 /// Whole-word (or whole-phrase) match, so `ai` no longer matches "detail" and `art` no longer matches "start".
@@ -508,6 +578,10 @@ pub struct BriefSignals {
     /// directions' palettes are only fallbacks.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub brief_colors: Vec<String>,
+    /// Roles the brief gives its colours by label: `ground` (page background), `text`, `muted`
+    /// (secondary text) and `band` (the dark chapter colour on a light page).
+    #[serde(default, skip_serializing_if = "std::collections::BTreeMap::is_empty")]
+    pub brief_color_roles: std::collections::BTreeMap<String, String>,
     /// Font families the brief names, in order. When present they are the type system; the
     /// directions' pairings are only fallbacks.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -565,16 +639,22 @@ fn brief_font_names(query: &str) -> Vec<String> {
     found.into_iter().map(|(_, f)| f.to_string()).collect()
 }
 
-/// `#RRGGBB` / `#RGB` colours in the brief, upper-cased, first occurrence order.
+/// `#RRGGBB` / `#RGB` colours in the brief, upper-cased, first occurrence order, except that the
+/// colour the brief names as the page background moves to the front so it becomes the ground.
 fn brief_hex_colors(query: &str) -> Vec<String> {
     let b = query.as_bytes();
     let mut out: Vec<String> = Vec::new();
+    let mut labelled: Vec<String> = Vec::new();
     let mut i = 0;
     while i < b.len() {
         if b[i] == b'#' {
             let n = b[i + 1..].iter().take_while(|c| c.is_ascii_hexdigit()).count();
             if n == 6 || n == 3 {
                 let hex = format!("#{}", &query[i + 1..i + 1 + n]).to_uppercase();
+                let start = query[..i].rfind(['\n', ';', ',']).map_or(0, |p| p + 1);
+                if is_ground_label(&query[start..i]) && !labelled.contains(&hex) {
+                    labelled.push(hex.clone());
+                }
                 if !out.contains(&hex) {
                     out.push(hex);
                 }
@@ -584,7 +664,72 @@ fn brief_hex_colors(query: &str) -> Vec<String> {
             i += 1;
         }
     }
+    // Several labelled grounds (a light page and a dark band): the light one is the page unless
+    // the brief asks for a dark site.
+    let lower = query.to_lowercase();
+    let wants_dark = ["dark mode", "dark theme", "dark website", "dark site", "dark ui"].iter().any(|w| lower.contains(w))
+        && !["fully dark", "all dark", "entirely dark"].iter().any(|w| lower.contains(&format!("avoid a {w}")) || lower.contains(&format!("avoid {w}")) || lower.contains(&format!("not {w}")));
+    labelled.sort_by_key(|h| {
+        let light = wcag_contrast(h, "#000000").is_some_and(|c| c * 0.05 - 0.05 > 0.5);
+        light == wants_dark
+    });
+    if let Some(g) = labelled.first() {
+        out.retain(|c| c != g);
+        out.insert(0, g.clone());
+    }
     out
+}
+
+/// Each brief colour with the words written before it on its line ("Text Dark: #10203A").
+fn labelled_hexes(query: &str) -> Vec<(String, Vec<String>)> {
+    let mut out = Vec::new();
+    for (i, _) in query.match_indices('#') {
+        let n = query.as_bytes()[i + 1..].iter().take_while(|c| c.is_ascii_hexdigit()).count();
+        if n == 6 || n == 3 {
+            let start = query[..i].rfind(['\n', ';', ',']).map_or(0, |p| p + 1);
+            out.push((format!("#{}", &query[i + 1..i + 1 + n]).to_uppercase(), tokenize(&query[start..i])));
+        }
+    }
+    out
+}
+
+/// Roles the brief's colour labels assign: the ground (first of `brief_hex_colors` when labelled),
+/// body text, secondary text, and on a light ground the dark chapter band.
+fn brief_color_roles(query: &str, colors: &[String]) -> std::collections::BTreeMap<String, String> {
+    let lum = |h: &str| wcag_contrast(h, "#000000").map(|c| c * 0.05 - 0.05);
+    let has = |t: &[String], w: &[&str]| t.iter().any(|x| w.contains(&x.as_str()));
+    let mut roles = std::collections::BTreeMap::new();
+    let labelled = labelled_hexes(query);
+    let ground = colors.first().filter(|g| labelled.iter().any(|(h, t)| h == *g && is_ground_label(&t.join(" "))));
+    if let Some(g) = ground {
+        roles.insert("ground".to_string(), g.clone());
+    }
+    for (hex, t) in &labelled {
+        let text_label = has(t, &["text", "ink", "copy", "body", "foreground"]);
+        if text_label && has(t, &["secondary", "muted", "subtle", "caption", "meta"]) {
+            roles.entry("muted".to_string()).or_insert_with(|| hex.clone());
+        } else if text_label {
+            roles.entry("text".to_string()).or_insert_with(|| hex.clone());
+        }
+    }
+    // A dark band only makes sense on a light page: the first near-black colour named dark/navy/night.
+    if ground.and_then(|g| lum(g)).is_some_and(|l| l > 0.5) {
+        let band = labelled
+            .iter()
+            .filter(|(h, t)| lum(h).is_some_and(|l| l < 0.03) && !has(t, &["text", "ink", "copy"]))
+            .find(|(_, t)| has(t, &["dark", "navy", "night", "midnight", "deep", "ink", "black", "charcoal"]));
+        if let Some((h, _)) = band {
+            roles.insert("band".to_string(), h.clone());
+        }
+    }
+    roles
+}
+
+/// The words before a colour name it as the page ground ("Light Background:", "page bg", "canvas").
+fn is_ground_label(label: &str) -> bool {
+    let tokens = tokenize(label);
+    let dark_band = tokens.iter().any(|t| t == "section" || t == "sections" || t == "band" || t == "overlay");
+    !dark_band && ["background", "bg", "canvas", "ground", "page"].iter().any(|w| tokens.iter().any(|t| t == w))
 }
 
 /// Subject word -> palette/subject family.
@@ -605,6 +750,10 @@ const NICHE_LEXICON: &[(&str, &str)] = &[
     ("dashboard", "data"), ("operations", "data"), ("ops", "data"), ("analytics", "data"), ("admin", "data"),
     ("tracking", "data"), ("inventory", "data"), ("planning", "data"), ("logistics", "data"), ("scheduling", "data"),
     ("workshop", "industrial"), ("repair", "industrial"), ("bicycle", "industrial"), ("machine", "industrial"),
+    ("manufacturer", "industrial"), ("supplier", "industrial"), ("wholesale", "industrial"), ("distributor", "industrial"),
+    ("fabrication", "industrial"), ("machinery", "industrial"), ("signage", "industrial"), ("led screen", "industrial"),
+    ("led screens", "industrial"), ("led display", "industrial"), ("led wall", "industrial"), ("video wall", "industrial"),
+    ("video walls", "industrial"), ("billboard", "industrial"),
     ("factory", "industrial"), ("manufacturing", "industrial"), ("steel", "industrial"), ("engineering", "industrial"),
     ("bar", "night"), ("club", "night"), ("cocktail", "night"), ("nightlife", "night"), ("cinema", "night"),
     ("wine", "earth"), ("vineyard", "earth"), ("clay", "earth"), ("ceramics", "earth"), ("pottery", "earth"),
@@ -701,11 +850,26 @@ pub fn brief_signals(query: &str) -> BriefSignals {
     } else {
         surfaces.iter().find(|(_, c)| *c == best).map(|(s, _)| *s).unwrap_or(Surface::General)
     };
+    // A quote-led B2B supplier that names venues, stores or a blog it serves is still a supplier.
+    let surface = match surface {
+        Surface::Commerce | Surface::Venue | Surface::Editorial if b2b_brief(&tokens) => Surface::General,
+        s => s,
+    };
 
     let mut niche_tags: Vec<String> = Vec::new();
     for (word, tag) in NICHE_LEXICON {
         if has(word) && !niche_tags.iter().any(|t| t == tag) {
             niche_tags.push((*tag).to_string());
+        }
+    }
+    // A B2B supplier lists who it sells to (weddings, schools, clinics); those are its buyers'
+    // worlds, not its own, so they do not steer its layouts or palette.
+    if b2b_brief(&tokens) {
+        niche_tags.retain(|t| !matches!(t.as_str(), "celebration" | "play" | "civic" | "memorial" | "literary" | "care" | "legal"));
+        // "Motion" and "animation" in a supplier brief are build asks (reduced-motion, hero
+        // animation), not a motion studio's trade.
+        if !["showreel", "motion studio", "animation studio", "motion design"].iter().any(|w| has(w)) {
+            niche_tags.retain(|t| t != "kinetic");
         }
     }
 
@@ -747,8 +911,12 @@ pub fn brief_signals(query: &str) -> BriefSignals {
         constraints.push("reduced-motion".into());
         cap(1);
     } else if ["reduced motion", "reduced-motion", "reduce motion"].iter().any(|p| lower.contains(p)) {
-        // "Respect prefers-reduced-motion" next to "highly animated" asks for a fallback, not stillness.
-        if heavy {
+        // "Respect prefers-reduced-motion" is the accessibility guardrail every page keeps: it asks
+        // for a fallback, not stillness. Only a plain "reduced motion" ask with no such framing caps.
+        let guardrail = ["prefers-reduced-motion", "prefers reduced motion", "reduced-motion support", "reduced motion support", "reduced-motion behavior", "reduced-motion behaviour", "reduced-motion fallback"]
+            .iter()
+            .any(|p| lower.contains(p));
+        if heavy || guardrail {
             constraints.push("reduced-motion fallback".into());
         } else {
             constraints.push("reduced-motion".into());
@@ -779,11 +947,12 @@ pub fn brief_signals(query: &str) -> BriefSignals {
     }
 
     let brief_colors = brief_hex_colors(query);
+    let brief_color_roles = brief_color_roles(query, &brief_colors);
     let brief_fonts = brief_font_names(query);
     let niches = crate::mechanics::niche_signal(query);
     let brief_objects = crate::mechanics::brief_objects(query);
     let brief_action = crate::mechanics::brief_action(query);
-    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_fonts, niches, brief_objects, brief_action }
+    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_color_roles, brief_fonts, niches, brief_objects, brief_action }
 }
 
 /// Applies the brief's motion bias and ceiling to a direction's motion dial.
@@ -2020,7 +2189,7 @@ pub fn recommend_design_steered(
             archetype: d.arch.key.to_string(),
             nav: None,
             footer: None,
-            type_tokens: type_tokens(&d.typography.scale_ratio),
+            type_tokens: with_brief_sizes(type_tokens(&d.typography.scale_ratio), raw_query),
             index: i as u8 + 1,
             title: format!("Direction {letter} — {} ({})", best_industry.name, d.arch.name),
             style_family: d.arch.style_family.into(),
@@ -2053,7 +2222,22 @@ pub fn recommend_design_steered(
     }
     let mut active_dials = active_dials;
     active_dials.motion_intensity = tune(active_dials.motion_intensity);
-    let compositions: Vec<&str> = dealt.iter().map(|d| d.arch.composition).collect();
+    // A hero frame the brief pinned ("split hero") is the composition the hero deal looks for first.
+    let pinned_comp = |d: &CreativeDirection| -> Option<&'static str> {
+        let s = d.page_shape.as_ref()?;
+        if !s.pinned_by_prompt.iter().any(|a| a == "hero_frame") {
+            return None;
+        }
+        match s.hero_frame.id.as_str() {
+            "split" => Some("split"),
+            "full-bleed-scene" => Some("full-bleed"),
+            "object-centre" => Some("centred"),
+            "pinned-story" => Some("sticky-stage"),
+            "poster-type" => Some("poster"),
+            _ => None,
+        }
+    };
+    let compositions: Vec<&str> = dealt.iter().zip(directions.iter()).map(|(d, c)| pinned_comp(c).unwrap_or(d.arch.composition)).collect();
 
     for d in &mut directions {
         verify_palette(&mut d.palette);
@@ -2238,6 +2422,73 @@ mod tests {
 
     fn rec(q: &str) -> DesignRecommendation {
         recommend_design(q, OperatingMode::NewWebsite, None, None)
+    }
+
+    const LED_BRIEF: &str = "Homepage for a B2B supplier of SMD LED screens and video walls in Pakistan.\n\
+        Clients include wedding halls, schools and shopping malls.\n\
+        Dark Navy: #06142D\n\
+        Light Background: #F6FAFF\n\
+        Text Dark: #10203A\n\
+        Secondary Text: #65748B\n\
+        Alternate light and dark sections; avoid a fully dark site.\n\
+        Desktop hero headline: approximately 76–104px depending on composition.\n\
+        Section headings: approximately 48–76px.\n\
+        Use a split hero. The hero should degrade to a static image on low-powered devices.\n\
+        Respect prefers-reduced-motion.\n\
+        Primary CTA: Get a Free Quote";
+
+    #[test]
+    fn a_labelled_light_ground_and_text_colours_win_over_the_first_dark_hex() {
+        let r = rec(LED_BRIEF);
+        let roles = &r.brief_signals.brief_color_roles;
+        assert_eq!(roles.get("ground").map(String::as_str), Some("#F6FAFF"), "{roles:?}");
+        assert_eq!(roles.get("text").map(String::as_str), Some("#10203A"));
+        assert_eq!(roles.get("band").map(String::as_str), Some("#06142D"));
+        for d in &r.directions {
+            assert_eq!(d.palette.background, "#F6FAFF", "direction {}", d.index);
+            assert_eq!(d.page_shape.as_ref().unwrap().ground.id, "inverted-alternating");
+        }
+    }
+
+    #[test]
+    fn a_b2b_supplier_reads_as_its_trade_not_its_buyers() {
+        let r = rec(LED_BRIEF);
+        assert_eq!(r.brief_signals.surface, Surface::General);
+        assert_eq!(r.brief_signals.niches.first().map(String::as_str), Some("industrial"));
+        // Weddings and schools are the supplier's buyers; they must not steer its layouts.
+        assert!(!r.brief_signals.niche_tags.iter().any(|t| t == "celebration" || t == "civic"), "{:?}", r.brief_signals.niche_tags);
+        let u = r.understood_brief.as_ref().unwrap();
+        assert!(u.audience.contains("B2B") || u.audience.contains("business"), "{}", u.audience);
+        assert_eq!(u.primary_action, "get a free quote");
+        for d in &r.directions {
+            let s = d.page_shape.as_ref().unwrap();
+            assert!(!["stamped", "wide-caps"].contains(&s.labels.id.as_str()), "direction {}: {}", d.index, s.labels.id);
+            assert_ne!(s.section_head.id, "margin-numeral");
+            assert_ne!(s.motion.id, "micro", "prefers-reduced-motion is a fallback, not a ban");
+        }
+        assert!(r.directions.iter().filter(|d| d.mechanics.first().is_some_and(|h| h.id.starts_with("hero-industrial-"))).count() >= 2);
+    }
+
+    #[test]
+    fn brief_pixel_sizes_set_the_display_and_section_tokens() {
+        assert_eq!(brief_type_sizes(LED_BRIEF), vec![("display", 76.0, 104.0), ("h2", 48.0, 76.0)]);
+        let r = rec(LED_BRIEF);
+        let t = &r.directions[0].type_tokens;
+        assert_eq!(t.get("display").map(String::as_str), Some("clamp(2.613rem, 7vw, 6.5rem)"));
+        assert_eq!(t.get("h2").map(String::as_str), Some("clamp(1.8rem, 4.5vw, 4.75rem)"));
+        // Without brief sizes the hero still never shrinks to a blog title.
+        let plain = type_tokens("1.125 (Major Second)");
+        assert!(plain["display"].starts_with("clamp(2.75rem"), "{}", plain["display"]);
+    }
+
+    #[test]
+    fn named_fonts_get_no_extra_mono_and_load_their_bold_cut() {
+        let r = rec("Portfolio site for an architect. Fonts: Space Grotesk and Inter.");
+        for d in &r.directions {
+            let t = &d.typography;
+            assert!(["Space Grotesk", "Inter"].contains(&t.mono_font.as_str()), "{}", t.mono_font);
+            assert!(t.google_fonts_url.contains(":wght@400;700"), "{}", t.google_fonts_url);
+        }
     }
 
     #[test]

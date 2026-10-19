@@ -63,8 +63,13 @@ pub fn same_look_requested(q: &str) -> bool {
 /// Why the brief needs a made-to-measure route instead of a library pick, if it does.
 pub fn custom_route_reason(q: &str, match_score: usize, brief_objects: usize) -> Option<String> {
     let l = q.to_lowercase();
-    let asks = ["bespoke", "made-to-measure", "made to measure", "one-off", "unlike any", "never seen", "not a template", "no template", "our own look", "invent", "from scratch", "custom look", "one of a kind"];
-    if let Some(p) = asks.iter().find(|p| l.contains(*p)) {
+    // Asks worded as a negation are read on the raw brief; the rest only where the brief is not
+    // ruling something out ("do not invent awards" is no request for an invented look).
+    let negated_asks = ["never seen", "not a template", "no template"];
+    let asks = ["bespoke", "made-to-measure", "made to measure", "one-off", "unlike any", "our own look", "invent", "from scratch", "custom look", "one of a kind"];
+    let affirmed = crate::intelligence::affirmed_brief(q).to_lowercase();
+    let hit = negated_asks.iter().find(|p| l.contains(*p)).or_else(|| asks.iter().find(|p| affirmed.contains(*p)));
+    if let Some(p) = hit {
         return Some(format!("the brief asks for it (\"{}\")", p));
     }
     let words = q.split_whitespace().count();

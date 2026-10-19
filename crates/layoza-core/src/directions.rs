@@ -425,7 +425,7 @@ const TRADES: &[Trade] = &[
     tr(&["kinetic", "motion", "animation", "showreel"], Some(S::Showcase),
         ["type in motion", "the frame sequence", "the edit timeline"], "open the reel or start a project", "frame numbers, timecodes and easing curves", &["kinetic"]),
     tr(&["smd", "signage", "billboard", "billboards", "led screen", "led screens", "led display", "led displays", "led wall", "led walls", "video wall", "video walls", "jumbotron"], None,
-        ["the lit screen on its site", "the module and its pixel pitch", "the cabinet from the side"], "request a site survey or quote", "pixel pitch, nits, viewing distance and IP rating", &["industrial", "kinetic"]),
+        ["the lit screen on its site", "the module and its pixel pitch", "the cabinet from the side"], "request a site survey or quote", "pixel pitch, nits, viewing distance and IP rating", &["industrial", "infrastructure"]),
     tr(&["agency", "studio", "portfolio", "designer", "photographer"], Some(S::Showcase),
         ["the work itself", "the process sketches", "the client credits"], "open a case study or start a project", "project numbers, years and credits", &["generic"]),
     tr(&["cli", "sdk", "api", "devtool", "devtools", "dev tool", "dev tools", "developer", "developers", "terminal", "mcp", "compiler", "library"], Some(S::DevTool),
@@ -845,9 +845,9 @@ fn brand_ground(colors: &[String]) -> Option<&String> {
 /// Builds the palette around the brief's own colours on top of a dealt base palette: a near-black
 /// or near-white brief colour becomes the ground, the rest become accents; text and muted text
 /// are re-picked so both still clear AA on background and surface.
-fn brand_palette(colors: &[String], base: &PaletteRecommendation) -> PaletteRecommendation {
+fn brand_palette(colors: &[String], roles: &std::collections::BTreeMap<String, String>, base: &PaletteRecommendation) -> PaletteRecommendation {
     let ground = brand_ground(colors);
-    let accents: Vec<&String> = colors.iter().filter(|c| Some(*c) != ground).collect();
+    let accents: Vec<&String> = colors.iter().filter(|c| Some(*c) != ground && !roles.values().any(|r| r == *c)).collect();
     let (bg, surface) = match ground.and_then(|g| rgb(g).map(|c| (g, c))) {
         Some((g, c)) => {
             let toward = if luminance(g).unwrap_or(0.0) < 0.5 { (255, 255, 255) } else { (0, 0, 0) };
@@ -856,14 +856,18 @@ fn brand_palette(colors: &[String], base: &PaletteRecommendation) -> PaletteReco
         None => (base.background.clone(), base.surface.clone()),
     };
     let ok = |c: &str| contrast(c, &bg) >= 4.5 && contrast(c, &surface) >= 4.5;
-    let fg = if ok(&base.foreground) {
+    let fg = if let Some(t) = roles.get("text").filter(|t| ok(t)) {
+        t.clone()
+    } else if ok(&base.foreground) {
         base.foreground.clone()
     } else if contrast("#FFFFFF", &bg) >= contrast("#111111", &bg) {
         "#FFFFFF".to_string()
     } else {
         "#111111".to_string()
     };
-    let muted = if ok(&base.muted) {
+    let muted = if let Some(m) = roles.get("muted").filter(|m| ok(m)) {
+        m.clone()
+    } else if ok(&base.muted) {
         base.muted.clone()
     } else {
         let (f, b) = (rgb(&fg).unwrap_or((0, 0, 0)), rgb(&bg).unwrap_or((255, 255, 255)));
@@ -881,7 +885,7 @@ fn brand_palette(colors: &[String], base: &PaletteRecommendation) -> PaletteReco
         },
         if accents.is_empty() { "accents kept from the base".to_string() } else { format!("{} as accents", accents.iter().map(|c| c.as_str()).collect::<Vec<_>>().join(" and ")) },
         base.notes.split(" | ").next().unwrap_or("")
-    );
+    ) + &roles.get("band").map(|b| format!(" | dark chapters on {b} with white text; alternate them with the light ground")).unwrap_or_default();
     let mut p = palette(&format!("brand-{}-on-{}", hexes.join("-"), base.id), &bg, &surface, &fg, &muted, &primary, &secondary, 0.0, &notes);
     verify_palette(&mut p);
     p
@@ -1010,7 +1014,8 @@ pub(crate) fn is_paid_face(name: &str) -> bool {
 /// two sources (Fontshare faces with a Google mono), and notes for paid faces.
 fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> (TypographyPairing, Option<String>, Vec<String>) {
     let names: Vec<&String> = fonts.iter().filter(|f| !is_mono_name(f)).collect();
-    let mono = fonts.iter().find(|f| is_mono_name(f)).cloned().unwrap_or_else(|| base.mono_font.clone());
+    // A brief that names two or more faces has its system; a third, unasked mono face only adds noise.
+    let mono = fonts.iter().find(|f| is_mono_name(f)).cloned().unwrap_or_else(|| if names.len() >= 2 { names[(slot as usize + 1) % names.len()].clone() } else { base.mono_font.clone() });
     let (display, body) = match names.len() {
         0 => (base.display_font.clone(), base.body_font.clone()),
         // One named face leads display; body comes from the base so long text stays legible.
@@ -1019,6 +1024,7 @@ fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> (Typograp
     };
     let fontshare = |f: &str| type_pool().iter().any(|e| e.source == "fontshare" && (e.pairing.display_font == f || e.pairing.body_font == f));
     let mut fams: Vec<&String> = vec![&display, &body, &mono];
+    fams.sort();
     fams.dedup();
     let paid: Vec<String> = fams
         .iter()
@@ -1026,7 +1032,12 @@ fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> (Typograp
         .map(|f| format!("{f} is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN"))
         .collect();
     let free: Vec<&String> = fams.iter().copied().filter(|f| !is_paid_face(f)).collect();
-    let google: Vec<String> = free.iter().filter(|f| !fontshare(f)).map(|f| format!("family={}", f.replace(' ', "+"))).collect();
+    let google: Vec<String> = free.iter().filter(|f| !fontshare(f)).map(|f| {
+            // Bold headings need the 700 cut; Google rejects the whole sheet for a weight a face lacks,
+            // so single-weight display faces are asked for as they are.
+            const ONE_WEIGHT: &[&str] = &["Anton", "Bebas Neue", "Abril Fatface", "Alfa Slab One", "Archivo Black", "Bungee", "Righteous", "Lobster", "Pacifico", "Ultra", "Monoton", "Shrikhand", "Rubik Mono One", "Dela Gothic One", "Titan One", "DM Serif Display", "Instrument Serif", "Black Han Sans"];
+            if ONE_WEIGHT.contains(&f.as_str()) { format!("family={}", f.replace(' ', "+")) } else { format!("family={}:wght@400;700", f.replace(' ', "+")) }
+        }).collect();
     let shared: Vec<String> = free.iter().filter(|f| fontshare(f)).map(|f| format!("f[]={}@400,700", f.to_lowercase().replace(' ', "-"))).collect();
     let g_url = (!google.is_empty()).then(|| format!("https://fonts.googleapis.com/css2?{}&display=swap", google.join("&")));
     let f_url = (!shared.is_empty()).then(|| format!("https://api.fontshare.com/v2/css?{}&display=swap", shared.join("&")));
@@ -1169,6 +1180,12 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     s -= 12;
                 }
                 s += a.tags.iter().map(|t| w(t)).sum::<i32>().min(8);
+                // A layout led by a ceremonial or personal trade (a memorial room, a nursery) reads as
+                // borrowed on any other trade, even when it shares the brief's moods (luxe, night).
+                let personal = a.tags.iter().find(|t| SUBJECT_TAGS.contains(t)).is_some_and(|t| matches!(*t, "memorial" | "care" | "play" | "celebration" | "ink"));
+                if !solemn && !subject.tags.is_empty() && personal && foreign(a.tags, &wants) {
+                    s -= 8;
+                }
                 // A layout written for other trades (a drawing sheet for engineers, a price board for
                 // trades) must not land on a showpiece, shop or product brief that shares none of its
                 // subjects: fit before novelty. Quiet trades keep their warm cross-trade layouts.
@@ -1474,7 +1491,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     // the dealt picks stay as the base they are fitted onto.
     for d in &mut out {
         if !signals.brief_colors.is_empty() {
-            d.palette = brand_palette(&signals.brief_colors, &d.palette);
+            d.palette = brand_palette(&signals.brief_colors, &signals.brief_color_roles, &d.palette);
             d.tone = Tone::of(&d.palette);
             d.brand.push(format!("palette built around the brief's colours ({})", signals.brief_colors.join(", ")));
         }

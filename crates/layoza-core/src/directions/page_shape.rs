@@ -129,7 +129,7 @@ const FLOWS: &[Opt] = &[
 const SECTION_HEADS: &[Opt] = &[
     o("title-note", "Title left, short note right on one shared baseline.", &["house"]),
     o("centred-overline", "Centred title with one small overline word above it; symmetric openings.", &["+calm", "+solemn", "+venue", "+commerce"]),
-    o("margin-numeral", "Giant section numeral in the left margin, the title small beside it.", &["+showcase", "+editorial", "+bold", "+venue", "+product-ui", "+devtool"]),
+    o("margin-numeral", "Giant section numeral in the left margin, the title small beside it.", &["-trust", "+showcase", "+editorial", "+bold", "+venue", "+product-ui", "+devtool"]),
     o("run-in", "Run-in heads: a bold title opens the first sentence of the section, no line break.", &["+editorial", "+calm", "+devtool", "+venue", "+product-ui"]),
     o("outline-title", "Oversized outline title bleeding off the edge, filling solid as it scrolls in.", &["+showcase", "+bold", "-solemn", "-calm", "-trust", "+commerce"]),
     o("no-heads", "No section heads: the content itself and a change of ground mark each section.", &["+showcase", "+commerce"]),
@@ -179,7 +179,7 @@ const LABELS: &[Opt] = &[
     o("stamped", "Labels as rubber-stamp marks in the accent ink, slightly rotated, like a tag or a receipt stamp.", &["+playful", "+venue", "+commerce", "-solemn", "-trust", "-devtool", "+showcase"]),
     o("outline-tags", "Labels in hairline-outlined tags, no fill, in the body face.", &["+product-ui", "+devtool", "+commerce"]),
     o("accent-dash", "A short accent dash before each label, body face semibold, sentence case.", &["+trust", "+calm", "+product-ui", "+solemn", "+devtool"]),
-    o("wide-caps", "Wide-tracked caps in the display face for labels; one size, one weight.", &["+showcase", "+bold", "+venue", "-solemn", "-devtool"]),
+    o("wide-caps", "Wide-tracked caps in the display face for labels; one size, one weight.", &["+showcase", "+bold", "+venue", "-solemn", "-trust", "-devtool"]),
 ];
 
 fn pool(axis: usize) -> &'static [Opt] {
@@ -381,10 +381,12 @@ impl ShapeBrief {
         let words = tokenize(&q);
         let raw_l = raw.to_lowercase();
         let solemn = has("memorial") || (has("legal") && !has("kinetic")) || (has("care") && !has("play"));
-        let trust = solemn || TRUST_TAGS.iter().any(|t| has(t));
-        let playful = has("play") || has("celebration") || has("sport");
         // Software briefs the surface reader leaves general ("B2B SaaS for ...") read as product UI here.
-        let software = ["saas", "software", "app", "platform", "startup", "b2b"].iter().any(|w| hit(&q, &words, w));
+        // "B2B" alone is a supplier as often as software, so it does not make a product UI by itself.
+        let software = ["saas", "software", "app", "platform", "startup"].iter().any(|w| hit(&q, &words, w));
+        // A quote-led B2B supplier sells on trust: plain labels, no stamps, motion capped at medium.
+        let trust = solemn || TRUST_TAGS.iter().any(|t| has(t)) || (!software && crate::intelligence::b2b_brief(&words));
+        let playful = has("play") || has("celebration") || has("sport");
         let mut ctx: Vec<&'static str> = vec![match signals.surface {
             Surface::General if software => "product-ui",
             Surface::ProductUi => "product-ui",
@@ -410,15 +412,18 @@ impl ShapeBrief {
         let pin_rules: &[(usize, &[&str], &str)] = &[
             (0, &["split hero", "split-screen", "split screen"], "split"),
             (0, &["video hero", "full-bleed", "fullscreen hero", "full-screen hero"], "full-bleed-scene"),
-            (1, &["editorial", "magazine"], "editorial-column"),
+            // "Editorial type hierarchy" is a quality, not a layout; only a layout ask pins the column.
+            (1, &["editorial layout", "editorial column", "magazine layout", "magazine-style", "magazine style", "longform", "long-form"], "editorial-column"),
             (1, &["bento"], "bento"),
             (1, &["slides", "slideshow", "fullpage", "full-page scroll"], "snap-slides"),
             (1, &["horizontal scroll", "sideways scroll"], "horizontal-chapters"),
-            (1, &["timeline"], "spine"),
+            // A process timeline is a section, not the page's flow; only a page-level ask pins the spine.
+            (1, &["timeline layout", "timeline page", "page as a timeline", "one long timeline", "vertical timeline site"], "spine"),
             (2, &["brutalist", "brutalism"], "banner-rule"),
-            (4,&["3d", "three.js", "webgl"], "rendered-3d"),
-            (4, &["glass", "glassmorphism", "frosted"], "glass-light"),
-            (4, &["illustrated", "illustration", "illustrations", "hand-drawn"], "illustrated"),
+            // "3D" is often the trade itself (3D LED, 3D printing); only a visuals ask pins rendered 3D.
+            (4, &["3d renders", "3d visuals", "rendered 3d", "3d-rendered", "3d illustration", "3d illustrations", "3d objects"], "rendered-3d"),
+            (4, &["glassmorphism", "frosted glass", "glass ui", "glass panels", "glass cards"], "glass-light"),
+            (4, &["illustrated style", "illustration style", "illustration-led", "illustrated site", "illustrations throughout", "hand-drawn"], "illustrated"),
             (4, &["photography-led", "photographic", "photo-led"], "photographic"),
             (4, &["brutalist", "brutalism", "typographic", "type-led", "type-only"], "typographic"),
             (5, &["small caps", "small-caps"], "small-caps"),
@@ -430,12 +435,19 @@ impl ShapeBrief {
             }
         }
         let (tone_pin, hue_pin) = palette_pins(query);
+        // A brief that asks for light and dark chapters gets the alternating ground, whatever its tone.
+        let alternating = ["alternate light and dark", "alternating light and dark", "light and dark sections", "alternate dark and light", "dark and light sections", "alternate between light and dark"]
+            .iter()
+            .any(|k| q.contains(k));
         pins[3] = match tone_pin {
+            _ if alternating => Some("inverted-alternating"),
             Some(Tone::Dark) => Some("dark-throughout"),
             Some(Tone::Light) => Some("light-throughout"),
             _ => None,
         };
-        let calm_words = ["minimal", "minimalist", "calm", "quiet", "static", "understated", "subtle", "serene", "gentle", "still"];
+        // "Static" and "still" name fallbacks as often as a mood ("a static image on slow devices");
+        // a whole-page ask ("static site") is read as no motion above.
+        let calm_words = ["minimal", "minimalist", "calm", "quiet", "understated", "subtle", "serene", "gentle"];
         let heavy_words = ["animated", "animation-heavy", "immersive", "kinetic", "cinematic", "motion-rich", "3d", "webgl", "bold", "scrollytelling", "experimental", "interactive"];
         let no_motion = ["no animation", "no animations", "no motion", "without animation", "static site", "static page"].iter().any(|p| raw_l.contains(p))
             || signals.constraints.iter().any(|c| c == "reduced-motion");
@@ -832,16 +844,23 @@ pub(crate) fn understand(b: &ShapeBrief, signals: &BriefSignals, query: &str, tr
     let named: Vec<String> = AUDIENCE_PHRASES
         .iter()
         .filter(|p| q.contains(*p))
-        .map(|p| p.to_string())
+        .map(|p| if *p == "b2b" { "business buyers (B2B)".to_string() } else { p.to_string() })
         .chain(AUDIENCE_WORDS.iter().filter(|w| words.iter().any(|x| x == *w)).map(|w| w.to_string()))
         .collect();
-    let audience = if named.is_empty() {
+    let b2b = crate::intelligence::b2b_brief(&words);
+    let audience = if named.is_empty() && b2b {
+        assumed.push("audience: business buyers specifying for their own site (B2B, quote-led)".into());
+        "business buyers specifying for their own site or premises".to_string()
+    } else if named.is_empty() {
         assumed.push(format!("audience: {surface_audience} (niche default)"));
         surface_audience.to_string()
     } else {
         named.join(", ")
     };
-    let primary_action = match signals.brief_action.clone().or_else(|| subject.from_trades.then(|| subject.action.clone())) {
+    // A bare verb ("buy") says less than the trade's own action, so the trade's wins over it.
+    let trade_action = subject.from_trades.then(|| subject.action.clone());
+    let brief_action = signals.brief_action.clone().filter(|a| a.contains(' ') || trade_action.is_none());
+    let primary_action = match brief_action.or(trade_action) {
         // The business sells; the visitor buys.
         Some(a) if a.starts_with("sell ") => format!("buy {}", &a[5..]),
         Some(a) if !a.is_empty() => a,

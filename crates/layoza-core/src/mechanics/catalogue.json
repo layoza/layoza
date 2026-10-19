@@ -10062,5 +10062,299 @@
       "css": "aspect-ratio with a min-height fallback; two-column grid; perspective on the parent for the turn.",
       "js": "One-shot IntersectionObserver class; disconnect after it fires."
     }
+  },
+  {
+    "id": "hero-industrial-product-at-scale",
+    "name": "The product, installed, at true scale",
+    "kind": "hero",
+    "role": "hero",
+    "family": "industrial-product-at-scale",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "bold",
+      "technical",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "split",
+    "hero_material": "real-photo",
+    "look_family": "documentary-photo",
+    "blueprint": "Split hero for a B2B maker or installer: left, the h1 in two authored lines at clamp(2.75rem, 6vw, 6rem) naming what the firm builds and for whom, one sentence under it, the primary quote button and a secondary call or WhatsApp link; right, a real photograph of the product installed on a real site, cropped so its true size reads against people, doors or a street. Under both, a ruled strip of exactly three verifiable facts from the brief (warranty, range, service area). The primary button carries the page's one motif. Corner radius decided once for the page.",
+    "motion": "Image settles from scale 1.04 to 1 over 900ms; h1 lines rise 12px with a 60ms stagger. Nothing loops.",
+    "still_check": "Any still shows h1, both actions, the installed product and the three facts.",
+    "mobile": "At 375px the photo moves under the actions and keeps a 4:3 crop that still shows scale.",
+    "a11y": "One h1; image alt names the product and site; both actions are real links. Reduced motion: no rise, no scale.",
+    "avoid": "Floating product cut-outs on gradients, invented project names, or a render passed off as an installation.",
+    "stack_notes": {
+      "css": "Grid split with a ruled facts strip.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-industrial-spec-lens",
+    "name": "Look inside the product",
+    "kind": "hero",
+    "role": "hero",
+    "family": "industrial-spec-lens",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "technical",
+      "bold",
+      "trustworthy",
+      "experimental",
+      "luxe"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "split",
+    "hero_material": "physical-object",
+    "look_family": "technical-blueprint",
+    "blueprint": "Split hero: the product shot large on one side, and a circular lens that follows the pointer (or steps through three fixed points on touch and scroll) shows the build underneath, such as the module and its pitch, the cabinet depth or the weatherproofing, each with a one-line spec callout. The h1 sits in two lines at clamp(2.5rem, 5.5vw, 5.5rem) beside it with the quote button. The lens uses a second real close-up image, not a filter.",
+    "motion": "Lens moves with the pointer via transform only; callouts fade 200ms. Three scroll stops on touch.",
+    "still_check": "Any still shows the product, the h1, the quote button and the first callout.",
+    "mobile": "At 375px the lens is replaced by three tappable close-ups in a row.",
+    "a11y": "Callouts are real text in a list, not only on hover; keyboard can step the three points. Reduced motion: static close-ups side by side.",
+    "avoid": "Inventing specs the brief does not give, or a lens over a stock render.",
+    "stack_notes": {
+      "css": "Static product shot plus a list of close-ups.",
+      "js": "Pointer tracking with requestAnimationFrame; remove listeners on unmount."
+    }
+  },
+  {
+    "id": "hero-industrial-site-scene",
+    "name": "The installation in its place",
+    "kind": "hero",
+    "role": "hero",
+    "family": "industrial-site-scene",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "cinematic",
+      "bold",
+      "dark",
+      "luxe",
+      "trustworthy"
+    ],
+    "intensity": "wild",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "video",
+    "look_family": "cinematic-film",
+    "blueprint": "Full-bleed hero video or photograph of the product working in its real setting (a lit screen on a facade at dusk, a line running in a plant), with a bottom scrim, the h1 in two lines at clamp(2.75rem, 6.5vw, 6.5rem) bottom-left, one supporting sentence, the quote button and a call link. A small caption names the setting or says Illustrative when it is a concept. Poster image set so LCP is the still.",
+    "motion": "Video plays muted inline after the poster paints; h1 masks up line by line over 700ms.",
+    "still_check": "Any still shows h1, actions, caption and a readable poster frame.",
+    "mobile": "At 375px the poster crops to the product, the scrim deepens, and text stays 4.5:1.",
+    "a11y": "Pause control for the video; captions honest about concept vs completed work. Reduced motion: poster only.",
+    "avoid": "Autoplaying sound, unlabelled concept art posing as a client project, or text over busy footage without a scrim.",
+    "stack_notes": {
+      "css": "Video with poster and scrim.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "section-industrial-spec-explorer",
+    "name": "Pick a model, see what changes",
+    "kind": "section",
+    "role": "comparison",
+    "family": "industrial-spec-explorer",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "technical",
+      "calm"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "blueprint": "One interactive tied to the product's deciding spec (pixel pitch, load rating, output): a segmented control of the real models, and for the chosen one a live preview (canvas or image) plus readouts of the brief's verified numbers, such as viewing distance, typical use and model name. Labelled Illustrative when the preview is a demonstration. Under it the same data as a plain table. h2 at clamp(1.75rem, 3.5vw, 3rem).",
+    "motion": "Preview redraws in 250ms on change; readout numbers tween once.",
+    "still_check": "Any still shows the control, a preview and the readouts for the default model.",
+    "mobile": "At 375px the control scrolls horizontally and the readouts stack.",
+    "a11y": "Control is a radio group; readouts in a live region; table always present. Reduced motion: no tween.",
+    "avoid": "Inventing numbers, or a configurator with prices the brief does not give.",
+    "stack_notes": {
+      "css": "Radio group plus table.",
+      "js": "Redraw on change; cancel animation frames on unmount."
+    }
+  },
+  {
+    "id": "section-industrial-range-by-application",
+    "name": "The range, by where it goes",
+    "kind": "section",
+    "role": "catalogue",
+    "family": "industrial-range-by-application",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Catalogue grouped by application, not by SKU: three to four bands (indoor, outdoor, specialist), each with a real product image, the two or three specs a buyer decides on, the places it suits, and a link to its real page. Bands alternate image side; no row of identical cards. h2 at clamp(1.75rem, 3.5vw, 3rem).",
+    "motion": "Images reveal with a 400ms clip from the motif edge as each band enters.",
+    "still_check": "Any still shows every band with its image, specs and link.",
+    "mobile": "At 375px each band stacks image, specs, link.",
+    "a11y": "Each band is an article with its own h3; links name the product. Reduced motion: no clip.",
+    "avoid": "Icon cards, invented models, or prices the brief does not state.",
+    "stack_notes": {
+      "css": "Alternating grid bands.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "section-industrial-survey-to-handover",
+    "name": "From site survey to handover",
+    "kind": "section",
+    "role": "process",
+    "family": "industrial-survey-to-handover",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "The real delivery sequence as an ordered list: survey, design, fabrication, installation, calibration, training and handover, each with what the client receives at that step and who does it. A thin line joins the steps and fills as the reader scrolls. h2 at clamp(1.75rem, 3.5vw, 3rem). Steps come from the brief; none invented.",
+    "motion": "Connector line fills with scroll via a scroll timeline where supported; steps fade 200ms.",
+    "still_check": "Any still shows every step and its deliverable.",
+    "mobile": "At 375px the line runs down the left edge.",
+    "a11y": "A real ol; no meaning carried by the line alone. Reduced motion: line drawn full.",
+    "avoid": "Generic three-step icons, or durations the brief does not give.",
+    "stack_notes": {
+      "css": "Ordered list with a pseudo-element line.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "section-industrial-installed-proof",
+    "name": "Who it is installed for",
+    "kind": "section",
+    "role": "proof",
+    "family": "industrial-installed-proof",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Proof built from what the brief verifies: a strip of real client logos at one height, then one or two quoted testimonials at clamp(1.5rem, 2.6vw, 2.25rem) with the client and site named, and the firm's one verifiable count. No metrics the brief does not give.",
+    "motion": "Logos go from muted to full colour on hover; quotes fade in once.",
+    "still_check": "Any still shows logos, quotes and attribution.",
+    "mobile": "At 375px logos wrap to two rows; one quote shows at a time with a plain next button.",
+    "a11y": "Logos have alt text with the client name; quotes in blockquote with cite. Reduced motion: no fade.",
+    "avoid": "Fake star ratings, invented counters, or unnamed quotes.",
+    "stack_notes": {
+      "css": "Logo row and blockquotes.",
+      "js": "Optional quote stepper; no autoplay."
+    }
+  },
+  {
+    "id": "section-industrial-quote-request",
+    "name": "Request a site survey or quote",
+    "kind": "section",
+    "role": "cta",
+    "family": "industrial-quote-request",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "Closing quote section on the dark chapter: the h2 at clamp(2rem, 4.5vw, 4rem), a short form with the fields this trade needs (name, company, phone, city, site type, approximate size, timeline), honest about how it is sent, and beside it the phone, WhatsApp, email and address as direct links. No fake success state.",
+    "motion": "Focus ring appears in 150ms; nothing else moves.",
+    "still_check": "Any still shows the form, contact links and hours.",
+    "mobile": "At 375px contact links come first, the form under them.",
+    "a11y": "Visible labels, inline errors, honeypot, works without JS via mailto or WhatsApp. Reduced motion: nothing to reduce.",
+    "avoid": "Pretending to submit to a server that does not exist, or asking for more than a quote needs.",
+    "stack_notes": {
+      "css": "Two-column form and contact block.",
+      "js": "Client-side validation; build the message link on submit."
+    }
+  },
+  {
+    "id": "section-industrial-fit-guide",
+    "name": "Which one fits my site?",
+    "kind": "section",
+    "role": "comparison",
+    "family": "industrial-fit-guide",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "technical",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "blueprint": "A decision guide for buyers: three questions as rows (how far away do people stand, indoors or out, flat or curved) with the brief's real answer ranges, each pointing to the product that fits. Reads as a ruled table, not cards. h2 at clamp(1.75rem, 3.5vw, 3rem).",
+    "motion": "Row highlights on hover and focus in 150ms.",
+    "still_check": "Any still shows every question and its answer.",
+    "mobile": "At 375px each row stacks question, answer, product.",
+    "a11y": "A table with caption and row headers. Reduced motion: no highlight transition.",
+    "avoid": "Ranges the brief does not state.",
+    "stack_notes": {
+      "css": "Ruled table.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-industrial-switched-on",
+    "name": "Blank wall, then switched on",
+    "kind": "hero",
+    "role": "hero",
+    "family": "industrial-switched-on",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "bold",
+      "technical",
+      "trustworthy",
+      "dark",
+      "calm"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "real-photo",
+    "look_family": "dark-single-accent",
+    "blueprint": "Stacked hero for a maker whose product changes a place: the h1 in two lines at clamp(2.75rem, 6vw, 6rem) with one sentence, the quote button and a call link sit above one wide frame. In the frame, the same real site photographed twice (before: a blank facade, wall or stage; after: the product installed and working), joined by a draggable divider that starts at 50%. One short caption names the site, or says Illustrative when the after image is a concept. The divider handle carries the page's one motif.",
+    "motion": "Divider eases from 35% to 50% once on load over 700ms; dragging follows the pointer with transform only. Nothing loops.",
+    "still_check": "Any still shows the h1, both actions, and both halves of the frame split at 50% with the caption.",
+    "mobile": "At 375px the frame keeps 4:3, the divider becomes a two-button toggle (Before / After) above it.",
+    "a11y": "The divider is a range input with a label; both images carry alt text naming before and after. Reduced motion: no load ease, the frame rests at 50%.",
+    "avoid": "A before image from a different site, a render presented as a completed installation, or a slider with no keyboard control.",
+    "stack_notes": {
+      "css": "Two stacked images with clip-path driven by a custom property set from a range input.",
+      "js": "Pointer and keyboard drive the custom property; remove listeners on unmount."
+    }
   }
 ]
