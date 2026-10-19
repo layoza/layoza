@@ -8,6 +8,7 @@ pub mod benchmark;
 pub mod design_md;
 pub mod directions;
 pub mod dna;
+pub mod guidelines;
 pub mod history;
 pub mod hooks;
 pub mod installer;
