@@ -129,6 +129,15 @@ pub struct Mechanic {
     /// minority of the catalogue and are never preferred by the deal.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub composition: String,
+    /// Hero only: what the first screen is made of (`real-photo`, `generated-image`,
+    /// `procedural`, `data-image`, `giant-type`, `physical-object`, `video`), so a deal
+    /// can avoid a page that is all typography.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub hero_material: String,
+    /// Hero only: the visual look family (`warm-paper-serif`, `dark-single-accent`,
+    /// `hairline-newspaper`, ...). Families are fine; repeating one across a deal is not.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub look_family: String,
     pub blueprint: String,
     /// What moves, mapped to scroll progress (never velocity).
     pub motion: String,
@@ -147,7 +156,8 @@ pub struct Mechanic {
 pub const NICHES: &[&str] = &[
     "store", "restaurant", "local-business", "saas", "dashboard", "agency", "kinetic", "3d", "editorial",
     "portfolio", "finance", "health", "education", "events", "real-estate", "travel", "nonprofit", "docs",
-    "landing", "professional", "legal", "museum", "devtools", "any",
+    "landing", "professional", "legal", "museum", "devtools", "memorial", "body-art", "civic", "venue", "camp",
+    "winery", "home-services", "any",
 ];
 
 /// The parsed catalogue (embedded at compile time; parsed once).
@@ -196,6 +206,13 @@ pub fn normalize_niche(raw: &str) -> String {
         "hotel" | "tourism" => "travel".into(),
         "charity" | "non-profit" | "ngo" => "nonprofit".into(),
         "documentation" => "docs".into(),
+        "funeral" | "funeral-home" | "funeral-director" | "cremation" | "cemetery" => "memorial".into(),
+        "tattoo" | "tattoo-studio" | "piercing" | "bodyart" => "body-art".into(),
+        "government" | "council" | "utility" | "municipal" | "public-sector" => "civic".into(),
+        "wedding-venue" | "event-space" | "events-venue" => "venue".into(),
+        "summer-camp" | "kids-camp" | "day-camp" => "camp".into(),
+        "vineyard" | "brewery" | "distillery" | "cidery" => "winery".into(),
+        "plumber" | "electrician" | "roofer" | "contractor" | "home-service" | "trades-services" => "home-services".into(),
         "devtool" | "dev-tools" | "developer-tools" | "ai-devtools" | "cli" | "mcp" | "open-source" | "oss" => "devtools".into(),
         _ => s,
     }
@@ -207,6 +224,23 @@ pub fn normalize_niche(raw: &str) -> String {
 
 /// Brief word/phrase -> niche.
 const NICHE_WORDS: &[(&str, &str)] = &[
+    ("funeral", "memorial"), ("funeral home", "memorial"), ("funeral director", "memorial"),
+    ("cremation", "memorial"), ("crematorium", "memorial"), ("memorial", "memorial"), ("cemetery", "memorial"),
+    ("obituary", "memorial"), ("undertaker", "memorial"),
+    ("tattoo", "body-art"), ("tattooist", "body-art"), ("tattoo parlour", "body-art"), ("piercing", "body-art"),
+    ("council", "civic"), ("municipal", "civic"), ("government", "civic"), ("public transport", "civic"),
+    ("transit", "civic"), ("utility", "civic"), ("utilities", "civic"), ("town hall", "civic"),
+    ("local authority", "civic"), ("public service", "civic"),
+    ("venue", "venue"), ("wedding venue", "venue"), ("event space", "venue"), ("banquet hall", "venue"),
+    ("function room", "venue"),
+    ("camp", "camp"), ("summer camp", "camp"), ("day camp", "camp"), ("kids camp", "camp"),
+    ("coding camp", "camp"), ("summer school", "camp"), ("holiday club", "camp"),
+    ("vineyard", "winery"), ("winery", "winery"), ("brewery", "winery"), ("distillery", "winery"),
+    ("cellar door", "winery"), ("taproom", "winery"), ("cidery", "winery"),
+    ("plumber", "home-services"), ("plumbing", "home-services"), ("electrician", "home-services"),
+    ("roofer", "home-services"), ("roofing", "home-services"), ("contractor", "home-services"),
+    ("handyman", "home-services"), ("hvac", "home-services"), ("locksmith", "home-services"),
+    ("boiler", "home-services"),
     ("shop", "store"), ("store", "store"), ("boutique", "store"), ("ecommerce", "store"), ("e-commerce", "store"),
     ("retail", "store"), ("apparel", "store"), ("fashion", "store"), ("skincare", "store"), ("cosmetics", "store"),
     ("sneakers", "store"), ("furniture", "store"), ("merch", "store"), ("catalogue", "store"), ("catalog", "store"),
@@ -214,9 +248,9 @@ const NICHE_WORDS: &[(&str, &str)] = &[
     ("restaurant", "restaurant"), ("bistro", "restaurant"), ("cafe", "restaurant"), ("café", "restaurant"),
     ("coffee", "restaurant"), ("bar", "restaurant"), ("dining", "restaurant"), ("chef", "restaurant"),
     ("eatery", "restaurant"), ("pizzeria", "restaurant"), ("ramen", "restaurant"), ("seafood", "restaurant"),
-    ("wine", "restaurant"), ("brewery", "restaurant"), ("tasting menu", "restaurant"), ("bakery", "restaurant"),
+    ("wine", "restaurant"), ("tasting menu", "restaurant"), ("bakery", "restaurant"),
     ("bakery", "local-business"), ("baker", "local-business"), ("florist", "local-business"), ("salon", "local-business"),
-    ("barber", "local-business"), ("plumber", "local-business"), ("electrician", "local-business"),
+    ("barber", "local-business"),
     ("garage", "local-business"), ("laundry", "local-business"), ("neighbourhood", "local-business"),
     ("neighborhood", "local-business"), ("local", "local-business"), ("tailor", "local-business"),
     ("repair", "local-business"), ("pottery", "local-business"), ("bookshop", "local-business"),
@@ -612,7 +646,7 @@ pub fn brief_intensity(brief: &str) -> Option<Intensity> {
 /// Default intensity for a niche when the brief names none: task surfaces calm, showcases wild.
 fn niche_default_intensity(niches: &[String]) -> Intensity {
     match niches.first().map(String::as_str) {
-        Some("dashboard" | "docs" | "health" | "finance" | "professional" | "legal") => Intensity::Calm,
+        Some("dashboard" | "docs" | "health" | "finance" | "professional" | "legal" | "memorial" | "civic") => Intensity::Calm,
         Some("kinetic" | "3d") => Intensity::Wild,
         _ => Intensity::Bold,
     }
@@ -643,12 +677,22 @@ fn trade_roles(niche: &str) -> &'static [&'static str] {
         "legal" => &["services", "team", "proof", "process"],
         "museum" => &["schedule", "pricing", "gallery", "location"],
         "devtools" => &["features", "proof", "process", "docs-nav", "data-story", "comparison"],
+        "memorial" => &["services", "schedule", "pricing", "about", "process"],
+        "civic" => &["services", "schedule", "data-story", "location", "timeline"],
+        "venue" => &["gallery", "location", "pricing", "schedule"],
+        "camp" => &["schedule", "pricing", "team", "curriculum"],
+        "winery" => &["menu", "location", "schedule", "gallery", "about"],
+        "home-services" => &["services", "pricing", "proof", "process"],
+        "body-art" => &["gallery", "team", "process", "pricing"],
         _ => &[],
     }
 }
 
 /// Niches whose mechanics depict that trade's own object; foreign to any other brief.
-const NARROW_TRADES: &[&str] = &["store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel", "devtools", "legal", "museum"];
+const NARROW_TRADES: &[&str] = &[
+    "store", "restaurant", "real-estate", "dashboard", "docs", "events", "travel", "devtools", "legal", "museum",
+    "memorial", "body-art", "civic", "venue", "camp", "winery", "home-services",
+];
 
 /// Niches close enough that one's mechanics read naturally on the other's site. Used only when a
 /// niche has too few in-niche entries at the asked intensity, before anything unrelated is dealt.
@@ -677,6 +721,13 @@ fn related_niches(niche: &str) -> &'static [&'static str] {
         "professional" => &["finance", "health"],
         "legal" => &["professional", "finance", "editorial"],
         "museum" => &["events", "education", "nonprofit", "travel"],
+        "memorial" => &["professional", "nonprofit", "local-business"],
+        "civic" => &["nonprofit", "docs", "professional"],
+        "venue" => &["events", "travel", "restaurant"],
+        "camp" => &["education", "events", "nonprofit"],
+        "winery" => &["restaurant", "travel", "events"],
+        "home-services" => &["local-business", "professional"],
+        "body-art" => &["local-business", "portfolio", "agency"],
         _ => &[],
     }
 }
@@ -1433,6 +1484,65 @@ mod tests {
         for n in NICHES.iter().filter(|n| **n != "any") {
             assert!(!list_mechanics(Some(n), Some(MechanicKind::Hero), None).is_empty(), "no hero for {}", n);
             assert!(list_mechanics(Some(n), Some(MechanicKind::Section), None).len() >= 2, "sections for {}", n);
+        }
+    }
+
+    #[test]
+    fn catalogue_is_broad_with_a_universal_hero_pool() {
+        let cat = catalogue();
+        assert!(cat.len() >= 260, "{} entries", cat.len());
+        let universal: Vec<&Mechanic> =
+            cat.iter().filter(|m| m.kind == MechanicKind::Hero && m.niches.iter().any(|n| n == "any")).collect();
+        assert!(universal.len() >= 60, "{} universal heroes", universal.len());
+        for c in ["layered", "centred", "object-wrap", "poster", "stacked", "split", "full-bleed", "sticky-stage"] {
+            assert!(universal.iter().any(|m| m.composition == c), "no universal {c} hero");
+        }
+        assert!(universal.iter().filter(|m| m.intensity == Intensity::Calm).all(|m| m.tier == Tier::Css));
+        assert!(cat.iter().filter(|m| m.kind == MechanicKind::Transition).count() >= 15);
+        let role = |r: &str| cat.iter().filter(|m| m.role == r).count();
+        assert!(role("nav") >= 12 && role("footer") >= 10 && role("section-head") >= 8 && role("proof") >= 8, "role coverage");
+    }
+
+    #[test]
+    fn every_hero_names_its_material_and_look() {
+        const MATERIALS: &[&str] =
+            &["real-photo", "generated-image", "procedural", "data-image", "giant-type", "physical-object", "video"];
+        for m in catalogue().iter().filter(|m| m.kind == MechanicKind::Hero) {
+            assert!(MATERIALS.contains(&m.hero_material.as_str()), "{}: hero_material {:?}", m.id, m.hero_material);
+            assert!(!m.look_family.trim().is_empty(), "{}: no look_family", m.id);
+        }
+        // The universal pool is not all typography.
+        let giant = catalogue().iter().filter(|m| m.kind == MechanicKind::Hero && m.hero_material == "giant-type").count();
+        let heroes = catalogue().iter().filter(|m| m.kind == MechanicKind::Hero).count();
+        assert!(giant * 4 < heroes, "{giant} of {heroes} heroes are giant type");
+    }
+
+    #[test]
+    fn new_trades_are_detected() {
+        for (brief, niche) in [
+            ("funeral home", "memorial"),
+            ("municipal water utility", "civic"),
+            ("tattoo studio", "body-art"),
+            ("vineyard wedding venue", "winery"),
+            ("kids coding camp", "camp"),
+            ("emergency plumber", "home-services"),
+            ("craft brewery taproom", "winery"),
+            ("barn wedding venue", "venue"),
+        ] {
+            let n = detect_niches(brief);
+            assert!(n.iter().any(|x| x == niche), "{brief}: {n:?}");
+        }
+        assert_eq!(detect_niches("funeral home").first().map(String::as_str), Some("memorial"));
+        assert_eq!(normalize_niche("funeral home"), "memorial");
+        assert_eq!(normalize_niche("electrician"), "home-services");
+    }
+
+    #[test]
+    fn funeral_home_and_water_utility_get_different_heroes() {
+        for seed in 0..5 {
+            let a = deal_mechanics("funeral home", None, None, 4, seed).hero.expect("hero");
+            let b = deal_mechanics("municipal water utility", None, None, 4, seed).hero.expect("hero");
+            assert_ne!(a.id, b.id, "seed {seed}");
         }
     }
 
