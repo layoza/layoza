@@ -851,6 +851,23 @@ const EDGE_ROLES: &[&str] = &["footer", "faq", "cta", "contact", "nav", "section
 /// Furniture with its own deal slot, so it never takes a section suggestion.
 const SLOT_ROLES: &[&str] = &["nav", "footer"];
 
+/// Look families that read as a document (newspaper, civic form, paper page, drawing sheet).
+const DOCUMENT_LOOKS: &[&str] = &["hairline-newspaper", "quiet-civic", "warm-paper-serif", "technical-blueprint"];
+
+/// Look families that read as a staged scene: dark, sparse, photographic.
+const STAGED_LOOKS: &[&str] = &["cinematic-dark", "luxe-dark", "dark-single-accent", "luxury-sparse", "documentary-photo"];
+
+/// The header family a brief describes in words: a header laid over the hero that turns solid,
+/// glass or transparent, on scroll.
+fn brief_nav_family(brief_l: &str) -> Option<&'static str> {
+    let header = ["header", "navigation", "navbar", "nav bar", "menu bar"].iter().any(|w| brief_l.contains(w));
+    let overlay = ["overlays the hero", "overlay the hero", "over the hero", "transparent header", "transparent nav", "glass", "transparent or"]
+        .iter()
+        .any(|w| brief_l.contains(w));
+    let settles = ["after scrolling", "on scroll", "after scroll", "when scrolling", "sticky"].iter().any(|w| brief_l.contains(w));
+    (header && overlay && settles).then_some("nav-overlay-settle")
+}
+
 // ---------------------------------------------------------------------------------------------
 // Deal
 // ---------------------------------------------------------------------------------------------
@@ -1455,9 +1472,31 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let transition = take(&transitions, &mut used_families, &|_| true);
     // Page furniture slots, new sites only: an existing site keeps its own navigation and footer.
     let (nav, footer) = if opts.existing.is_none() {
+        let brief_l = opts.brief.to_lowercase();
+        // A cinematic or immersive brief never gets a newspaper, civic, paper or drawing-sheet header or footer.
+        let cinematic = ["cinematic", "immersive", "filmic"].iter().any(|k| brief_l.contains(k));
+        let staged = |m: &Mechanic| !cinematic || !DOCUMENT_LOOKS.contains(&m.look_family.as_str());
+        let asked_nav = brief_nav_family(&brief_l);
         let mut slot = |role: &str| {
+            // The header the brief describes in words is dealt before any rotation.
+            if role == "nav" {
+                if let Some(fam) = asked_nav {
+                    let asked = |m: &Mechanic| m.role == "nav" && m.family == fam;
+                    if let Some(m) = take_rotated(&sections, &mut used_families, &asked, role).or_else(|| take_rotated(&wider, &mut used_families, &asked, role)) {
+                        return Some(m);
+                    }
+                }
+            }
+            let fitting = |m: &Mechanic| m.role == role && staged(m);
             let is_role = |m: &Mechanic| m.role == role;
-            take_rotated(&sections, &mut used_families, &is_role, role).or_else(|| take_rotated(&wider, &mut used_families, &is_role, role))
+            // A cinematic brief's furniture comes from the staged looks first.
+            let scene = |m: &Mechanic| cinematic && m.role == role && STAGED_LOOKS.contains(&m.look_family.as_str());
+            take_rotated(&sections, &mut used_families, &scene, role)
+                .or_else(|| take_rotated(&wider, &mut used_families, &scene, role))
+                .or_else(|| take_rotated(&sections, &mut used_families, &fitting, role))
+                .or_else(|| take_rotated(&wider, &mut used_families, &fitting, role))
+                .or_else(|| take_rotated(&sections, &mut used_families, &is_role, role))
+                .or_else(|| take_rotated(&wider, &mut used_families, &is_role, role))
         };
         (slot("nav"), slot("footer"))
     } else {

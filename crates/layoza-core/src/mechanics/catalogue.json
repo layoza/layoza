@@ -9911,6 +9911,36 @@
     }
   },
   {
+    "id": "nav-overlay-glass-sticky",
+    "name": "Overlay header that settles into a solid bar",
+    "kind": "section",
+    "role": "nav",
+    "family": "nav-overlay-settle",
+    "niches": [
+      "any"
+    ],
+    "moods": [
+      "luxe",
+      "bold",
+      "minimal",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "js",
+    "headline_interlock": false,
+    "look_family": "cinematic-dark",
+    "blueprint": "One compact row, 68-76px tall, laid over the hero picture: wordmark, the site's real links, one small call line and one primary button. Over the hero it is transparent with a faint scrim (or a light blur only where the picture is busy) and light text; once the hero leaves the viewport it settles into a solid light bar with dark text, a hairline under it and a 64px height. The wordmark swaps to its dark version at the same moment. Link hovers draw an underline from the left in the accent; the current page keeps it. A products link opens a panel of the real product lines, each with its picture, one-line use and its page link, not a plain list.",
+    "motion": "Background, text colour and height change together in 200ms on one class switch triggered by an IntersectionObserver on the hero; underlines draw in 180ms; the products panel fades and drops 8px in 200ms.",
+    "still_check": "Any still shows the full row readable over the hero and as the solid bar.",
+    "mobile": "At 375px the row keeps the wordmark, a call icon link and a menu button; the menu opens a full-height sheet with the links, the product lines and the primary button at thumb reach.",
+    "a11y": "Header is a banner landmark with a nav list; text over the hero keeps 4.5:1 via the scrim; the products button has aria-expanded and aria-controls, opens on Enter/Space/ArrowDown, closes on Escape and returns focus; the mobile sheet traps focus and closes on Escape. Reduced motion: colour switch only, no height or panel movement.",
+    "avoid": "A tall masthead, a separate utility row, a second row of tabs, capsule pills, heavy glass on the solid state, a glow under the bar. Avoid the default fingerprint: centred links with a lone button and nothing in the products panel.",
+    "stack_notes": {
+      "css": "Fallback: position: sticky with the solid state when JS is off; the scrim is a gradient on the hero, not on the header.",
+      "js": "One IntersectionObserver on the hero toggles a class on the header; disconnect it on unmount."
+    }
+  },
+  {
     "id": "footer-week-hours",
     "name": "Week hours footer",
     "kind": "section",
