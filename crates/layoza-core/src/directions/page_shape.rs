@@ -97,6 +97,17 @@ impl PageShape {
         }
         out
     }
+
+    /// The same lines with the page-wide restraint cut to one pointer, for the directions after
+    /// the first when all three share it.
+    pub fn lines_without_restraint(&self) -> Vec<String> {
+        let mut out = self.lines();
+        if let Some(i) = out.iter().position(|l| l.starts_with("Restraint (")) {
+            out.truncate(i);
+            out.push("Restraint: as direction 1 (shared by all three).".into());
+        }
+        out
+    }
 }
 
 pub(crate) const REDUCED: &str =
@@ -330,6 +341,8 @@ pub(crate) struct ShapeBrief {
     brand_pins: Vec<&'static str>,
     /// Page-wide restraint rules, with the brief's explicit asks already carved out.
     restraint: Vec<String>,
+    /// The brief describes its hero on a dark ground ("deep navy surroundings").
+    hero_dark: bool,
 }
 
 const HIGH_MOTION_WORDS: &[&str] = &[
@@ -509,8 +522,9 @@ impl ShapeBrief {
         if !signals.brief_fonts.is_empty() {
             brand_pins.push("typography");
         }
+        let hero_dark = hero_dark_ask(&raw_l);
         let restraint = restraint_rules(&raw_l, signals.surface == Surface::DevTool || has("code"));
-        ShapeBrief { ctx, pins, tier_pin, tier_cap, stack, stack_named, seed: fnv1a(&format!("{q}|{variant}")), tone_words, brand_pins, restraint }
+        ShapeBrief { ctx, pins, tier_pin, tier_cap, stack, stack_named, seed: fnv1a(&format!("{q}|{variant}")), tone_words, brand_pins, restraint, hero_dark }
     }
 
     /// The motion tier for a direction whose motion dial is `dial`.
@@ -794,8 +808,22 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
         s.motif = ShapePick { id: best.id.into(), build: best.build.replace("{object}", object) };
         s.button = ShapePick { id: best.button_id.into(), build: best.button.into() };
         s.restraint = b.restraint.clone();
+        if b.hero_dark && s.ground.id != "dark-throughout" {
+            s.ground.build.push_str(" The hero opens on the dark ground the brief describes; light sections follow.");
+        }
     }
     shapes
+}
+
+/// The brief's own hero description asks for a dark ground: a dark word in a line that names the
+/// hero, or within the few lines under a short "hero" heading.
+fn hero_dark_ask(raw: &str) -> bool {
+    const DARK: &[&str] = &["dark", "navy", "night", "black", "midnight", "deep blue"];
+    let lines: Vec<&str> = raw.lines().map(str::trim).filter(|l| !l.is_empty()).collect();
+    let dark = |l: &str| DARK.iter().any(|d| l.contains(d)) && !l.contains("fallback");
+    lines.iter().enumerate().any(|(i, l)| {
+        l.contains("hero") && (dark(l) || (l.len() < 60 && lines.iter().skip(i + 1).take(8).any(|n| dark(n))))
+    })
 }
 
 /// Subject tags that steer the motif deal.
@@ -905,7 +933,7 @@ fn restraint_rules(raw: &str, code: bool) -> Vec<String> {
         "No index numerals (01, 02) on sections or steps; an ordered list carries order.".to_string()
     });
     out.push(if asks(&["glow", "gradient", "luminous", "lighting effect", "light effect", "glass"]) {
-        "One light effect, only where the brief puts it; no gradient washes, blobs or glass elsewhere.".to_string()
+        "Light effects only where the brief puts them, each one deliberate; no gradient washes, blobs or glass elsewhere.".to_string()
     } else {
         "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.".to_string()
     });
@@ -953,6 +981,10 @@ pub struct UnderstoodBrief {
     /// At most two questions, only for what blocks building (an unknown trade).
     #[serde(default)]
     pub open_questions: Vec<String>,
+    /// Brief segments not read as trade, mood or surface (the writer's role, research steps,
+    /// build plumbing), shown so a misread is visible. Constraints still read them.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub set_aside: Vec<String>,
 }
 
 impl UnderstoodBrief {
@@ -974,6 +1006,10 @@ impl UnderstoodBrief {
         }
         out.extend(self.assumed.iter().map(|a| format!("Assumed: {a}")));
         out.extend(self.open_questions.iter().map(|q| format!("Open question: {q}")));
+        if !self.set_aside.is_empty() {
+            let shown: Vec<&str> = self.set_aside.iter().take(4).map(String::as_str).collect();
+            out.push(format!("Not read as trade or look ({}): {}", self.set_aside.len(), shown.join(" | ")));
+        }
         out
     }
 }
@@ -1045,6 +1081,13 @@ pub(crate) fn understand(b: &ShapeBrief, signals: &BriefSignals, query: &str, tr
         }
     };
     let mut tone: Vec<String> = b.tone_words.iter().map(|t| t.to_string()).collect();
+    // Opposite words in one brief describe a mix, not a contradiction: say which one leads.
+    for (a, z, mix) in [("calm", "bold", "calm structure with bold moments"), ("light", "dark", "light ground with dark chapters")] {
+        if let (Some(i), Some(j)) = (tone.iter().position(|t| t == a), tone.iter().position(|t| t == z)) {
+            tone[i.min(j)] = mix.to_string();
+            tone.remove(i.max(j));
+        }
+    }
     if tone.is_empty() {
         assumed.push(format!("tone: {surface_tone} (niche default)"));
         tone.push(surface_tone.to_string());
@@ -1090,6 +1133,7 @@ pub(crate) fn understand(b: &ShapeBrief, signals: &BriefSignals, query: &str, tr
         pinned_by_prompt: b.pinned(),
         assumed,
         open_questions,
+        set_aside: Vec::new(),
     }
 }
 
@@ -1380,5 +1424,24 @@ mod tests {
         assert!(u.stack.is_none());
         let unknown = rec("website").understood_brief.unwrap();
         assert!((1..=2).contains(&unknown.open_questions.len()), "{:?}", unknown.open_questions);
+    }
+
+    #[test]
+    fn a_dark_hero_in_the_brief_leads_the_ground() {
+        assert!(hero_dark_ask("hero layout
+* large type on the left
+* deep navy surroundings with blue light"));
+        assert!(hero_dark_ask("a cinematic hero on a dark ground"));
+        assert!(!hero_dark_ask("hero with a big photo of bread
+light and airy"));
+        assert!(!hero_dark_ask("hero video with a dark static image fallback"));
+    }
+
+    #[test]
+    fn opposite_tone_words_read_as_one_mix() {
+        let u = rec("bold but calm architecture studio, light pages with dark chapters").understood_brief.unwrap();
+        for w in ["calm", "bold", "light", "dark"] {
+            assert!(!u.tone.iter().any(|t| t == w), "{:?}", u.tone);
+        }
     }
 }

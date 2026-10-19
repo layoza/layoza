@@ -361,6 +361,55 @@ pub fn affirmed_brief(query: &str) -> String {
     kept.join(". ")
 }
 
+/// Why a brief segment was set aside from the trade, mood and surface reading.
+fn set_aside_zone(seg: &str, long: bool) -> Option<&'static str> {
+    let l = seg.trim().trim_start_matches(['*', '-', '•', ' ']).to_lowercase();
+    let l = l.trim_start_matches(|c: char| c.is_ascii_digit() || c == '.' || c == ')' || c == ' ');
+    // The writer's persona ("act as a 3D interactive specialist") is not the client's trade.
+    const ROLE: &[&str] = &["act as", "you are", "you're", "your role", "as an elite", "as a senior", "as an award", "imagine you", "pretend you"];
+    if ROLE.iter().any(|r| l.starts_with(r)) {
+        return Some("role");
+    }
+    // Build plumbing (fallbacks, SEO, markup, budgets) is a guardrail, not a look.
+    const TECH: &[&str] = &[
+        "fallback", "lazy-load", "lazy load", "core web vitals", "lighthouse", "semantic html", "schema markup", "structured data",
+        "meta tag", "alt text", "screen reader", "code split", "code-split", "bundle size", "polyfill", "browser support", "file structure",
+        "deliverable", "page speed", "image compression", "webp", "avif", "source code",
+    ];
+    if TECH.iter().any(|t| l.contains(t)) {
+        return Some("tech");
+    }
+    // Research and working steps in long briefs ("visit the site", "analyze the navigation").
+    const PROCESS: &[&str] =
+        &["visit ", "before writing", "before you", "analyze ", "analyse ", "explore ", "research ", "identify ", "review the", "audit the", "phase "];
+    if long && PROCESS.iter().any(|p| l.starts_with(p)) {
+        return Some("process");
+    }
+    None
+}
+
+/// The affirmed brief split into what describes the client (trade, objects, look) and what is
+/// set aside as the writer's role, research steps or build plumbing, so a persona line ("3D
+/// interactive specialist") or a fallback line ("static image fallback") never picks the trade,
+/// the mood or the surface. Constraints still read the whole affirmed brief.
+pub fn reading_brief(affirmed: &str) -> (String, Vec<String>) {
+    let long = affirmed.len() > 800;
+    let mut kept: Vec<&str> = Vec::new();
+    let mut set_aside: Vec<String> = Vec::new();
+    for seg in affirmed.split(". ").map(str::trim).filter(|s| !s.is_empty()) {
+        match set_aside_zone(seg, long) {
+            Some(zone) => set_aside.push(format!("{zone}: {}", seg.chars().take(70).collect::<String>())),
+            None => kept.push(seg),
+        }
+    }
+    let reading = kept.join(". ");
+    if reading.trim().is_empty() {
+        (affirmed.to_string(), Vec::new())
+    } else {
+        (reading, set_aside)
+    }
+}
+
 /// The brief sells to businesses by quote or survey rather than through a basket.
 pub(crate) fn b2b_brief(tokens: &[String]) -> bool {
     ["b2b", "quote", "quotes", "quotation", "wholesale", "distributor", "procurement", "supplier", "manufacturer", "site survey", "tender"]
@@ -2012,7 +2061,10 @@ pub fn recommend_design_steered(
 ) -> DesignRecommendation {
     // Match on what the brief asks for, not on what it rules out.
     let affirmed = affirmed_brief(raw_query);
-    let query: &str = if affirmed.trim().is_empty() { raw_query } else { &affirmed };
+    let affirmed: &str = if affirmed.trim().is_empty() { raw_query } else { &affirmed };
+    // Trade, mood and surface read only the segments that describe the client.
+    let (reading, set_aside) = reading_brief(affirmed);
+    let query: &str = &reading;
     let q_lower = query.to_ascii_lowercase();
     let industries = catalog_industries();
     let styles = catalog_styles();
@@ -2020,7 +2072,17 @@ pub fn recommend_design_steered(
     // Whole-word keyword scoring; no silent fallback (confidence is reported to the agent)
     let ranked = rank_industries(query, &industries);
     let match_score = ranked[0].0;
-    let signals = brief_signals(query);
+    let mut signals = brief_signals(query);
+    if !set_aside.is_empty() {
+        // Guardrails, colours, fonts and motion asks hold wherever the brief states them.
+        let whole = brief_signals(affirmed);
+        signals.constraints = whole.constraints;
+        signals.motion_cap = whole.motion_cap;
+        signals.motion_bias = signals.motion_bias.max(whole.motion_bias);
+        signals.brief_colors = whole.brief_colors;
+        signals.brief_color_roles = whole.brief_color_roles;
+        signals.brief_fonts = whole.brief_fonts;
+    }
     let mut subject = crate::directions::read_subject(query, &signals);
     if !subject.from_trades {
         // Unknown trade: the brief's own nouns and verbs, not a fixed fallback shared by every
@@ -2143,7 +2205,8 @@ pub fn recommend_design_steered(
     let new_site = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
     let framework = existing_dna.map(|d| d.framework.as_str());
     let shape_brief = crate::directions::page_shape::ShapeBrief::read(&signals, query, raw_query, framework, variant, signals.motion_bias >= 4);
-    let understood_brief = crate::directions::page_shape::understand(&shape_brief, &signals, query, &best_industry.name, &match_confidence, tune(active_dials.motion_intensity));
+    let mut understood_brief = crate::directions::page_shape::understand(&shape_brief, &signals, query, &best_industry.name, &match_confidence, tune(active_dials.motion_intensity));
+    understood_brief.set_aside = set_aside;
     let industry_look = (match_score > 0).then_some((&best_industry.typography_pairing, &best_industry.palette));
     let heavy_tier = new_site && shape_brief.tier(10) == crate::directions::page_shape::Tier::Heavy;
     let dealt = crate::directions::with_heavy_tier(heavy_tier, || crate::directions::deal(&signals, query, variant, industry_look));
@@ -2334,7 +2397,7 @@ pub fn recommend_design_steered(
         workflow_guidance.insert(
             0,
             format!(
-                "BRIEF FONTS: the brief names its own type ({}). Build every direction's type system from these (pick the display, body and mono roles among them); the direction pairings below are fallbacks only.",
+                "BRIEF FONTS: the brief names its own type ({}). Build every direction's type system from these (display and body roles among them; a mono role only where the restraint allows one); the direction pairings below are fallbacks only.",
                 signals.brief_fonts.join(", ")
             ),
         );
@@ -2388,6 +2451,18 @@ pub fn recommend_design_steered(
             0,
             "COMPONENT SCOPE: the brief is one component, not a page. Skip page-level steps (hero, three directions, art loop); keep the project's tokens, every state (default, hover, focus-visible, active, disabled, loading, error, empty), keyboard and screen-reader behaviour, reduced-motion rules and RTL with logical properties. Stamp it with `scope: component`.".into(),
         );
+    }
+    // The brief's own type and colours replace the industry defaults, so the output never
+    // names a baseline face or palette the brief already overrode.
+    if matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign) {
+        if let Some(d) = directions.first() {
+            if !signals.brief_fonts.is_empty() {
+                best_industry.typography_pairing = d.typography.clone();
+            }
+            if !signals.brief_colors.is_empty() {
+                best_industry.palette = d.palette.clone();
+            }
+        }
     }
     DesignRecommendation {
         scope: if component { "component".into() } else { "page".into() },
@@ -2576,6 +2651,27 @@ mod tests {
         assert!(rec("bakery site, reduced motion please").directions.iter().all(|d| d.dials.motion_intensity <= 1));
         // flattened bullets
         assert!(!affirmed_brief("Avoid: * dashboard mockups * neon").contains("dashboard"));
+    }
+
+    #[test]
+    fn persona_and_plumbing_lines_do_not_pick_the_trade_or_mood() {
+        let (reading, aside) = reading_brief("Act as a 3D interactive specialist and senior developer. A bakery in Leeds selling sourdough. Static image fallback when WebGL fails");
+        assert!(!reading.contains("3D") && !reading.contains("fallback"), "{reading}");
+        assert!(reading.contains("bakery"));
+        assert_eq!(aside.len(), 2, "{aside:?}");
+        // Guardrails still hold although their line was set aside from the reading.
+        let r = rec("Act as an elite UX lead. A dental clinic in Bristol. Reduced-motion fallback for every effect");
+        assert!(r.brief_signals.constraints.iter().any(|c| c.starts_with("reduced-motion")), "{:?}", r.brief_signals.constraints);
+        assert!(r.understood_brief.as_ref().is_some_and(|u| !u.set_aside.is_empty()));
+        // Short briefs keep their working verbs: "explore our menu" is content, not process.
+        assert!(reading_brief("Explore our menu of small plates").1.is_empty());
+    }
+
+    #[test]
+    fn brief_type_and_colours_replace_the_industry_baseline() {
+        let r = rec("industrial pump maker, fonts Sora and Inter, colours #0B1F3A and #F4F6F8");
+        assert!(["Sora", "Inter"].contains(&r.matched_industry.typography_pairing.display_font.as_str()), "{}", r.matched_industry.typography_pairing.display_font);
+        assert_ne!(r.matched_industry.palette.id, catalog_industries().iter().find(|i| i.slug == r.matched_industry.slug).unwrap().palette.id);
     }
 
     #[test]
