@@ -210,6 +210,27 @@ pub struct Look {
     /// Seconds since the Unix epoch when the look was recorded.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub at: Option<u64>,
+    /// Page-shape axes (design-system runs): hero frame, flow, section heads, ground, material,
+    /// labels, motion signature and tools.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hero_frame: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub flow: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub section_head: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ground: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub material: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub labels: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub motion_signature: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub motion_tools: Vec<String>,
+    /// Axes the brief pinned (exempt from the uniqueness check).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub pinned: Vec<String>,
 }
 
 /// Ledger entries a new deal checks, per slot, for repeats (override with `window` / `--window`).

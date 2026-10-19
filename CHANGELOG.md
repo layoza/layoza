@@ -6,6 +6,41 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Stated purpose (stop look-alike AI output) in the MCP server instructions, prompts, README,
+  entry skill and the generated project skill.
+- Uniqueness ledger `.layoza/looks.jsonl` covers every slot (palette, type, hero, nav, sections,
+  footer, archetype); `design-system` and `mechanics deal` steer away from the last 20 entries
+  (`--window N`) and print a `uniqueness` block and a `ledger:` line. Typography is compared by
+  font family, so a renamed pairing with the same faces counts as a repeat and is steered away.
+- Design knowledge: 208 palettes with computed contrast, 200 free type pairings, 75 layout
+  archetypes, 318 mechanics with nav, footer, section-head and proof roles, 163 UX guidelines,
+  40 chart situations, 16 stack notes and icon guidance (`guidelines`, `chart` commands and
+  5 MCP tools).
+- Browser QA rules for section re-skins (`QA-SECTION-RESKIN`, `QA-SAME-SECTION-TWICE`) and the
+  `DESIGN-DIRECTION-NOT-APPROVED` gate; `qa --full` / `--allow`, `audit` / `verify --strict`;
+  opt-in edit hook with a 300 ms budget; 16px / 12px type-floor lint.
+- Page shape: every new-site direction is dealt a binding `page_shape` (hero frame, section flow,
+  section head, ground, material, label style and a motion tier with named techniques, tools and
+  static fallbacks). The three directions of a deal differ on every axis and the deal steers away
+  from the ledger; prompt words (dark, minimal, animated, bento, glass, 3D, a named stack) pin
+  only their own axis.
+- `understood_brief` on `design-system`: trade, audience, goal, tone, motion wish, stack and
+  must-haves read from the prompt, with niche-based assumptions instead of questions (at most
+  one or two blocking open questions).
+- Agencies, SaaS and other showcase niches default to heavy motion (GSAP, Three.js / R3F,
+  Motion, Lenis, view transitions, CSS scroll timelines, chosen per direction); solemn and task
+  UIs stay calmer.
+- The direction gate accepts `PICKED: auto — <direction>, <why it fits the niche>`.
+
+### Changed
+- `layoza qa` is fast by default (about 14 s instead of about 70 s); `--full` runs the throttled
+  pass and every width. The Node runner now calls page functions it was handed as strings.
+- Long briefs keep the trade's head noun (e.g. "funeral home", "wedding venue").
+- MCP private-host guard resolves DNS before allowing a URL.
+- Skills: designer persona, decide-from-niche intake, binding page shape, and a "best in the
+  world, never a template" bar where every section earns its own layout.
+
 ## [0.1.4] - 2026-10-19
 
 ### Added

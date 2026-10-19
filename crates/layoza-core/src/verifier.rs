@@ -468,6 +468,19 @@ fn audit_direction_approval(base_dir: &Path, strict: bool, findings: &mut Vec<Au
     if line_says_existing("PICKED:") || line_says_existing("PURPOSE:") {
         return;
     }
+    // An automatic pick decided from the niche (`PICKED: auto — <reason>`) or an unattended run
+    // records its own reason; it needs no separate approval file.
+    let picked_by_rule = upper.lines().any(|l| {
+        let l = l.replace('*', "");
+        let l = l.trim().trim_start_matches(['-', '#', ' ']);
+        l.strip_prefix("PICKED:").is_some_and(|v| {
+            let mut words = v.split(|c: char| !c.is_ascii_alphanumeric()).filter(|w| !w.is_empty());
+            matches!(words.next(), Some("AUTO" | "UNATTENDED")) && words.next().is_some()
+        })
+    });
+    if picked_by_rule {
+        return;
+    }
     let rel = ".layoza/direction-approved.md";
     let approved = fs::read_to_string(base_dir.join(rel)).is_ok_and(|t| !t.trim_start_matches('\u{feff}').trim().is_empty());
     if approved {
@@ -556,7 +569,7 @@ fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &
             "design-process",
             rel,
             "No direction pick is recorded, so the look was chosen without the user. Show the user three distinct directions (a rendered hero sketch screenshot each, not ASCII) and wait for their choice before building.".into(),
-            "Add `PICKED: <direction> (chosen by the user)` to .layoza/direction.md, `PICKED: unattended — <why nobody could be asked>`, or for an existing site `PICKED: existing — <design followed>`.",
+            "Add `PICKED: <direction> (chosen by the user)` to .layoza/direction.md, `PICKED: auto — <direction>, <why it fits the niche>`, `PICKED: unattended — <why nobody could be asked>`, or for an existing site `PICKED: existing — <design followed>`.",
         )),
         _ => {}
     }
@@ -2588,7 +2601,11 @@ mod gate_file_tests {
         assert!(gate(&none, true).is_empty());
         let empty = site("empty", Some("PURPOSE: x; new\nPICKED: A\n"), Some("  \n"));
         assert_eq!(gate(&empty, false).len(), 1);
-        for d in [dir, none, empty] {
+        let auto = site("auto", Some("PURPOSE: sell phones; audience: shoppers; new\nPICKED: auto — C configurator, fits a phone store\n"), None);
+        assert!(gate(&auto, true).is_empty(), "a reasoned auto pick needs no approval file");
+        let bare = site("bare-auto", Some("PURPOSE: sell phones; new\nPICKED: auto\n"), None);
+        assert_eq!(gate(&bare, false).len(), 1, "auto without a reason is not a pick");
+        for d in [dir, none, empty, auto, bare] {
             let _ = fs::remove_dir_all(&d);
         }
     }

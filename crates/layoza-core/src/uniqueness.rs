@@ -67,7 +67,24 @@ pub fn slots_of(look: &Look) -> Vec<(String, String)> {
     push("palette", &look.palette);
     push("typography", &look.typography);
     push("archetype", &look.archetype);
+    push("hero-frame", &look.hero_frame);
+    push("flow", &look.flow);
+    push("section-head", &look.section_head);
+    push("ground", &look.ground);
+    push("material", &look.material);
+    push("labels", &look.labels);
+    push("motion", &look.motion_signature);
     out
+}
+
+/// True when the look's brief pinned this slot kind (the user's words, not a repeat).
+fn pinned(look: &Look, kind: &str) -> bool {
+    let axis = match kind {
+        "hero-frame" => "hero_frame",
+        "section-head" => "section_head",
+        k => k,
+    };
+    look.pinned.iter().any(|p| p == axis)
 }
 
 /// Ledger key for a type pairing: `display-family/body-family`, lowercased.
@@ -96,6 +113,13 @@ fn used_in(look: &Look, kind: &str, id: &str) -> bool {
         "palette" => eq(&look.palette),
         "typography" => look.typography.as_deref().is_some_and(|x| same_type(x, id)),
         "archetype" => eq(&look.archetype),
+        "hero-frame" => eq(&look.hero_frame),
+        "flow" => eq(&look.flow),
+        "section-head" => eq(&look.section_head),
+        "ground" => eq(&look.ground),
+        "material" => eq(&look.material),
+        "labels" => eq(&look.labels),
+        "motion" => eq(&look.motion_signature),
         _ => look.sections.iter().chain(&look.mechanics).any(|x| x.eq_ignore_ascii_case(id)),
     }
 }
@@ -122,6 +146,8 @@ pub fn check(looks: &[Look], recent: &[Look], window: usize, ledger_on: bool) ->
             let kind = kind_of(&slot);
             let status = if !ledger_on {
                 "unchecked (ledger off)".to_string()
+            } else if pinned(look, kind) {
+                "pinned by prompt".to_string()
             } else if let Some(j) = looks[..i].iter().position(|o| used_in(o, kind, &id)) {
                 repeats += 1;
                 format!("repeat (also in direction {} of this run)", letters.get(j).copied().unwrap_or('X'))
@@ -163,7 +189,7 @@ impl Uniqueness {
             self.score, self.fresh, self.repeats, self.ledger, self.entries_compared, self.window
         )];
         out.push(format!("  {}", self.verdict));
-        for s in self.slots.iter().filter(|s| !s.status.starts_with("fresh")) {
+        for s in self.slots.iter().filter(|s| !s.status.starts_with("fresh") && !s.status.starts_with("pinned")) {
             out.push(format!("  - {} {}: {}", s.slot, s.id, s.status));
         }
         out

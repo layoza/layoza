@@ -101,7 +101,10 @@ exceptions.
   craft → black brutalist craft). Both ends are the rut.
 - **Calibration:** generated pages cluster on cream + serif + terracotta;
   near-black + one neon accent + glow; broadsheet hairlines + italic serif +
-  tiny mono labels; flat ink + black boxes + hard offset shadows. **Treat your
+  tiny mono labels; flat ink + black boxes + hard offset shadows; and the
+  Layoza house skeleton (split hero, stacked full-width bands, every section
+  head "title left, note right", mono labels, every section a paper ticket or
+  receipt). **Treat your
   first palette as already spent:** if OWN-WORLD reads cream, paper, parchment
   or lamplight and the brief didn't pin it, rework it from the world's real,
   saturated materials.
@@ -113,8 +116,9 @@ generic *treatments* are banned.
 
 List **seven** candidate worlds the audience knows by heart, across at least
 three families: place (architecture, signage, transit, landscape, light);
-notation and print (charts, maps, tickets, labels, manuals, packaging); material
-and process; ritual; and the subject's own objects. Give each two lines: why it
+notation and print (charts, maps, manuals, packaging); screens, light and
+signal; material and process; rendered objects and scale; ritual; and the
+subject's own objects. Give each two lines: why it
 fits and can carry the argument, and how it looks (ground, colours, type voices,
 one signature). Order them by resonance, then let the dealer pick from your top four:
 
@@ -130,29 +134,29 @@ model's first pick converges on the category; overrule it only when the dealt
 world fails truth, clarity or this fit-check. Detail and a worked example:
 [reference/world.md](reference/world.md).
 
-### 3b. The user picks (hard stop)
+### 3b. Pick by niche fit (ask only when asked)
 
 **Existing site (Mode B/C)? Skip directions and sketches:** use
 [layoza-extend-website](../layoza-extend-website/SKILL.md) or
 [layoza-refine](../layoza-refine/SKILL.md) and follow the site's own design.
 
 Shape the dealt world and the two strongest challengers into **three directions
-that differ in layout, identity, type, content treatment and motion**. Show
-each as a **rendered sketch, never ASCII or a text wireframe**:
+that differ in layout, identity, type, content treatment and motion**, each on
+its dealt `page_shape`.
 
-1. Write one small static hero per direction, e.g.
-   `.layoza/sketches/a/index.html` (b, c): real fonts, palette and copy, the
-   subject art roughed in; no motion needed.
-2. Screenshot each at 1440 (and 375 if cheap): MCP `capture_screenshots` with
-   `sketch: true` (paths only, cheap), or `layoza qa <file>`.
-3. Show the user the images with the idea sentence, palette, motion idea and
-   one plain line of strength and weakness each, then your recommendation.
+**Decide, don't interview.** Pick the direction that best fits the niche and
+the brief by the fit-check, record `PICKED: auto — <direction>, <why it fits
+the niche>` in `direction.md`, and build. Ask the user only when they asked to
+choose, or when `understood_brief.open_questions` holds something that blocks
+building. Anything the user named (colour, font, style, motion level) is kept
+exactly; every other axis stays as dealt.
 
-**Stop and wait for the user's choice.** Do not build a look the user has not chosen. Record it in `direction.md` as
-`PICKED: <direction> (chosen by the user)`. In an unattended run with nobody to
-ask, record `PICKED: unattended — <why nobody could be asked>` and choose by
-the fit-check. `layoza audit` / `qa` fail with `DESIGN-NO-DIRECTION-PICK` until
-this line exists.
+When the user asked to choose: write one small static hero per direction
+(`.layoza/sketches/a|b|c/index.html`, real fonts, palette, copy), screenshot
+them (MCP `capture_screenshots` with `sketch: true`, or `layoza qa`), show the
+images with one line of strength and weakness each plus your recommendation,
+wait, and record `PICKED: <direction> (chosen by the user)`. `layoza audit` /
+`qa` fail with `DESIGN-NO-DIRECTION-PICK` until a `PICKED:` line exists.
 
 ## 4. Fuse: world from far, subject up close
 
@@ -171,15 +175,12 @@ this line exists.
 - **Sibling test:** would you write this exact plan for a neighbouring
   business in the same category? Every block that matches is a default: revise
   it and note what changed.
-- **Hero composition is yours to decide.** Layoza assigns none. Agents drift to
-  headline-left / visual-right, so choose the first screen from the subject:
-  what must be seen first, how big, what the visitor does there. Shapes to
-  think past the reflex (examples, not a menu): type as the image, the object
-  filling the screen, the headline broken around the object, stacked bands,
-  an index or spec sheet, a full-bleed scene with a text plate. The three
-  directions use three different first screens. A split is fine when you can
-  say why it beats the others for this subject. Record it as `HERO:` with
-  that reason in `.layoza/direction.md`.
+- **The page shape is dealt and binding.** Build `page_shape` as dealt: hero
+  frame, flow, section heads, ground, material, labels and motion. It exists
+  because agents drift to one skeleton (headline-left / visual-right over
+  stacked bands). Change an axis only when the user named it, or when it fails
+  the subject test; record the change and the reason as `HERO:` / `SHAPE:` in
+  `.layoza/direction.md`.
 
 ## 5. Contract and copy (before code)
 
@@ -188,7 +189,7 @@ Write `.layoza/direction.md`, a dev-only file that is never served:
 - **PURPOSE:** the intake from step 0: purpose and primary action, audience,
   new or existing, must-keep. `layoza audit` fails with `DESIGN-NO-PURPOSE`
   until this line exists.
-- **PICKED:** the user's choice from step 3b (Mode B/C, if this file is kept:
+- **PICKED:** the auto pick or the user's choice from step 3b (Mode B/C, if this file is kept:
   `PICKED: existing — <the site design being followed>`).
 - **THESIS:** the idea sentence and the category arrangement it refuses. Name
   the trade's objects (the catch board, the lens, the ticket), not style words:
@@ -282,10 +283,14 @@ Load [reference/craft-floor.md](reference/craft-floor.md) and
 
 ## 7. Motion: designed, not defaulted
 
-Decide what motion makes *this* subject understood or felt (load choreography,
-a scroll story showing something from the subject's world, content-shaped
-section entrances, tactile micro-interactions), then pick the lightest tool that
-does it well. Values, tools and guardrails:
+Build `page_shape.motion` as dealt: its tier follows the niche (and the
+user's words win), its tools are named per technique (GSAP + ScrollTrigger,
+Three.js / R3F, Motion, CSS scroll-driven animation, View Transitions, WAAPI,
+canvas or SVG). A heavy tier means the heavy techniques ship for real: a pinned
+scene that changes, type that moves with meaning, a live canvas or WebGL
+object. Each has a static frame visible without JS, without WebGL and under
+reduced motion, so screenshots never show an empty slab. Then decide what each
+move makes *this* subject understood or felt. Values, tools and guardrails:
 [layoza-animations](../layoza-animations/SKILL.md). Never one identical fade-up
 on every section; content is visible without JS; reduced motion is honoured.
 
@@ -328,6 +333,29 @@ Load [reference/finish.md](reference/finish.md).
    good.** Only the art loop, the reviewer and the user decide that. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
 5. **Report honestly:** the score, QA errors (0 or a list), metrics with nulls
    named, what is still open, and anything the user should confirm.
+
+## The bar: best in the world, never a template
+
+A page ships only when a designer would put it in their portfolio:
+- one idea a competitor could not reuse unchanged, visible in the first screen;
+- one unforgettable signature move, built at full strength, not hinted;
+- a page shape no other recent Layoza site used (the ledger proves it);
+- type, colour and space with intent at every width, with no defaults left in;
+- motion that explains or delights, heavy only where the niche allows;
+- usable first: the main action, readable text and keyboard access never lose
+  to the art.
+
+**Every section earns its place.** Each one answers a question this niche's
+visitor actually asks, shows this subject (not a stock block that would fit any
+site), and has its own composition from its content: no two sections on the
+page share a layout, and none is a reflex filler (logo wall, icon-card
+features, testimonial carousel, stat row, generic CTA band) unless the content
+truly is that, then built in the world's language. Cover the headings: a
+stranger should still name the business from each section alone. The nav and
+footer obey the same rule.
+
+Balance: ambition never excuses broken usability, and passing QA never
+excuses a plain page. When the two conflict, keep the idea and fix the cause.
 
 ## Absolute refusals for new work (the worst tells only)
 

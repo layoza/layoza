@@ -278,6 +278,12 @@ fn main() {
                     rec.active_dials.motion_intensity,
                     rec.active_dials.visual_density
                 );
+                if let Some(u) = &rec.understood_brief {
+                    println!("\nUnderstood brief (proceed on these; ask only a blocking open question):");
+                    for l in u.lines() {
+                        println!("  {}", l);
+                    }
+                }
                 println!("\nThree Materially Distinct Directions:");
                 for dir in &rec.directions {
                     println!("  [{}] {}", dir.index, dir.title);
@@ -319,6 +325,12 @@ fn main() {
                     }
                     if !dir.rationale.is_empty() {
                         println!("      Why     : {}", dir.rationale);
+                    }
+                    if let Some(p) = &dir.page_shape {
+                        println!("      Page shape (binding):");
+                        for l in p.lines() {
+                            println!("        {}", l);
+                        }
                     }
                 }
                 if let Some(a) = avoid.as_ref().filter(|a| a["entries"].as_u64().unwrap_or(0) > 0) {

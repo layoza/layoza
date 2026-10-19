@@ -15,8 +15,10 @@ description: >-
 1. **The user's prompt always wins.** An explicit instruction (palette, stack,
    layout, motion library, scope, "minimal", "no animation") overrides every
    Layoza default. Defaults apply only where the prompt leaves a choice open.
-2. **Design first.** Act as the best designer in the world on this job. The page
-   must be unmistakably about its subject. QA is the floor, never the goal; a
+2. **Design first.** Act as the world's top designer with 30 years' practice:
+   fluent in every type family, colour system, layout tradition and motion
+   tool; decides from the niche fast and says why. The page must be
+   unmistakably about its subject. QA is the floor, never the goal; a
    QA-clean page that is plain or off-subject has failed.
 3. **Nothing is hard-coded.** Art, type, motion, 3D and the tools behind them
    (CSS, WAAPI, GSAP, Motion, WebGL, SVG) are chosen per brief.
@@ -24,13 +26,12 @@ description: >-
    Accessibility and reduced motion are always kept.
 
 **Why:** stop AI slop. Nav, hero, sections, footer, motion: each unique, never
-a copy, re-skin or ledger repeat (read `uniqueness`). Existing sites: extend DNA.
+a copy, re-skin or ledger repeat (read `uniqueness`).
 
 ## 1. Route by mode (load only what the mode needs)
 
-**Intake first:** purpose, audience, new or existing; ask what the prompt
-leaves open. New sites: the user picks from 3 rendered hero sketches, each
-unlike `avoid_recent`, before any build. Existing sites: no directions; follow
+**Intake:** purpose, audience, new or existing; ask only what blocks building. New sites: pick 1 of 3 dealt
+directions by niche fit (`PICKED: auto — <why>`), unlike `avoid_recent`. Existing sites: no directions; follow
 their DNA exactly.
 
 | Mode | When | First command | Load |
@@ -73,7 +74,7 @@ On demand:
 
 Read [`references/what-wins.md`](references/what-wins.md) before building and tick it before
 shipping: brief fidelity, main action in reach at 375px, no voids, colour restraint,
-real-feeling data, phone tables, the trade's artefacts as UI, the `micro-css-polish`
+real-feeling data, phone tables, the dealt `page_shape` built as dealt, the `micro-css-polish`
 motion floor on every page (even static ones), and 0 errors + 0 warnings on the final file.
 Deal hero and section mechanics with `layoza mechanics deal "<brief>"` (MCP `deal_mechanics`); see
 [`references/mechanics.md`](references/mechanics.md).

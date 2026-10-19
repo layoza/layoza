@@ -116,6 +116,11 @@ pub struct CreativeDirection {
     /// pairing's own `font_url` does not already carry it. Load it next to `typography.font_url`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub extra_font_url: Option<String>,
+    /// Binding page-level form for a new site or redesign: hero frame, flow, section heads, ground,
+    /// material, labels and motion (techniques, tools, fallbacks). Distinct across the three
+    /// directions and steered away from the look ledger; axes in `pinned_by_prompt` follow the brief.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub page_shape: Option<crate::directions::page_shape::PageShape>,
 }
 
 /// One-line reminder printed above deal and design-system text output.
@@ -144,6 +149,12 @@ pub fn purpose_markdown() -> String {
     }
     s
 }
+
+/// The page shape is binding (guidance line and MCP instructions).
+pub const PAGE_SHAPE_RULE: &str = "PAGE SHAPE: each direction's `page_shape` is binding. Build its hero frame, flow, section heads, ground, material, labels and motion exactly as dealt; it wins over `layout_composition` wording. Use the named motion tools and keep every fallback. Axes in `pinned_by_prompt` follow the user's words; every other axis stays as dealt, unique against the ledger.";
+
+/// How to read `understood_brief` (MCP instructions).
+pub const UNDERSTOOD_RULE: &str = "Read understood_brief; proceed on its niche-based assumptions without asking; ask only an open_question that blocks building; explicit user asks (a colour, font, style, motion level) override the deal for that axis only — every other axis stays unique.";
 
 /// Smallest body size, in rem (16px at the default root size).
 pub const BODY_FLOOR_REM: f64 = 1.0;
@@ -211,6 +222,9 @@ pub struct DesignRecommendation {
     /// server, which own the ledger).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub uniqueness: Option<crate::uniqueness::Uniqueness>,
+    /// What was read from the brief before dealing, with niche-based defaults for what it left out.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub understood_brief: Option<crate::directions::page_shape::UnderstoodBrief>,
 }
 
 /// Brief-derived guidance that pushes a design away from category defaults toward the brand's own world.
@@ -1713,6 +1727,15 @@ pub fn looks_of(rec: &DesignRecommendation, run: &str) -> Vec<crate::baseline::L
             archetype: (!d.archetype.is_empty()).then(|| d.archetype.clone()),
             transition: None,
             at: None,
+            hero_frame: d.page_shape.as_ref().map(|p| p.hero_frame.id.clone()),
+            flow: d.page_shape.as_ref().map(|p| p.flow.id.clone()),
+            section_head: d.page_shape.as_ref().map(|p| p.section_head.id.clone()),
+            ground: d.page_shape.as_ref().map(|p| p.ground.id.clone()),
+            material: d.page_shape.as_ref().map(|p| p.material.id.clone()),
+            labels: d.page_shape.as_ref().map(|p| p.labels.id.clone()),
+            motion_signature: d.page_shape.as_ref().map(|p| p.motion_signature.clone()).filter(|s| !s.is_empty()),
+            motion_tools: d.page_shape.as_ref().map(|p| p.motion_tools.clone()).unwrap_or_default(),
+            pinned: d.page_shape.as_ref().map(|p| p.pinned_by_prompt.clone()).unwrap_or_default(),
         })
         .collect()
 }
@@ -1744,7 +1767,7 @@ pub fn recommend_design_avoiding(
     let mut best: Option<(usize, DesignRecommendation)> = None;
     for v in variant..variant + 6 {
         let rec = crate::directions::with_recent_faces(recent_display.clone(), recent_body.clone(), || {
-            recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids)
+            crate::directions::page_shape::with_recent_shapes(recent.to_vec(), || recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids))
         });
         let o = overlap(&rec);
         if best.as_ref().is_none_or(|(b, _)| o < *b) {
@@ -1803,7 +1826,7 @@ pub fn recommend_design_steered(
         subject.action = signals
             .brief_action
             .clone()
-            .unwrap_or_else(|| "the visitor's next step (the brief names none: ask the user, do not assume booking)".into());
+            .unwrap_or_else(|| "the visitor's next step (the brief names none: use the niche's usual action, do not assume booking)".into());
     }
     let mut best_industry = if match_score > 0 {
         ranked[0].1.clone()
@@ -1904,6 +1927,11 @@ pub fn recommend_design_steered(
     // Deal three directions: each is an archetype (layout composition + palette tone + type voice +
     // hero composition) with type and palette chosen for it from decoupled pools. A variant > 0
     // re-deals every slot away from variant 0's picks.
+    // Read the brief before dealing: pins, register, stack and the motion tier it allows.
+    let new_site = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
+    let framework = existing_dna.map(|d| d.framework.as_str());
+    let shape_brief = crate::directions::page_shape::ShapeBrief::read(&signals, query, raw_query, framework, variant, signals.motion_bias >= 4);
+    let understood_brief = crate::directions::page_shape::understand(&shape_brief, &signals, query, &best_industry.name, &match_confidence, tune(active_dials.motion_intensity));
     let industry_look = (match_score > 0).then_some((&best_industry.typography_pairing, &best_industry.palette));
     let dealt = crate::directions::deal(&signals, query, variant, industry_look);
     let (place_cues, material_cues) = extract_cues(query);
@@ -1925,6 +1953,10 @@ pub fn recommend_design_steered(
         };
         if heavy {
             dials.motion_intensity = dials.motion_intensity.max(8);
+        }
+        if tune_brief_motion && new_site {
+            // The dial and the page shape's motion tier agree: the niche caps it, the prompt pins it.
+            dials.motion_intensity = shape_brief.clamp_dial(dials.motion_intensity);
         }
         let text = crate::directions::write(d, &ctx, dials.motion_intensity);
         let mut motion = text.motion;
@@ -1958,7 +1990,23 @@ pub fn recommend_design_steered(
             dials,
             rationale: crate::directions::rationale(d, &signals, &subject, &best_industry.name),
             mechanics: Vec::new(),
+            page_shape: None,
         });
+    }
+    if new_site {
+        let ins: Vec<crate::directions::page_shape::ShapeIn> = dealt
+            .iter()
+            .zip(&directions)
+            .map(|(d, c)| crate::directions::page_shape::ShapeIn {
+                hero_material: d.arch.hero_material,
+                composition: d.arch.composition,
+                tone: d.tone,
+                motion_dial: c.dials.motion_intensity,
+            })
+            .collect();
+        for (c, shape) in directions.iter_mut().zip(crate::directions::page_shape::deal_shapes(&shape_brief, &ins)) {
+            c.page_shape = Some(shape);
+        }
     }
     let mut active_dials = active_dials;
     active_dials.motion_intensity = tune(active_dials.motion_intensity);
@@ -2080,6 +2128,7 @@ pub fn recommend_design_steered(
         workflow_guidance.push(
             "DIRECTIONS: sketch more candidates than you need, from three strategies: (a) what the strongest designer for this subject would make with no budget limit; (b) a verified real reference in the same medium, screenshotted and studied (structure, not pixels); (c) a random roll from Layoza's libraries (these three directions, or `variant`). Keep the 3 that are strongest, most different from each other and not in the look ledger. One shared family (e.g. warm paper serif) is fine; three from the same family is the failure. At most one may be overcooked (the whole page as one prop or metaphor). Each names its `hero_material`; gather the images the content needs before designing. Present them and stop for the user's pick; record it in .layoza/direction-approved.md.".into(),
         );
+        workflow_guidance.push(PAGE_SHAPE_RULE.into());
         workflow_guidance.push("FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.".into());
         workflow_guidance.push("COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.".into());
         workflow_guidance.push(format!(
@@ -2106,6 +2155,7 @@ pub fn recommend_design_steered(
         rotation: None,
         taste: Vec::new(),
         uniqueness: None,
+        understood_brief: Some(understood_brief),
         mode,
         query: raw_query.to_string(),
         distinctiveness: distinctiveness_for(query, &best_industry.slug, &signals),

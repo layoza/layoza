@@ -1046,6 +1046,11 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         *body_freq.entry(family(&e.pairing.body_font)).or_default() += 1;
     }
     let ground_tone = brand_ground(&signals.brief_colors).map(|g| if luminance(g).unwrap_or(1.0) < 0.5 { Tone::Dark } else { Tone::Light });
+    // Ground and hue the brief names in words pin the palette; every other axis is still dealt.
+    let (tone_pin, hue_pin) = page_shape::palette_pins(query);
+    let pin_ok = |p: &PaletteRecommendation| {
+        tone_pin.is_none_or(|t| Tone::of(p) == t) && hue_pin.is_none_or(|h| pals.iter().find(|e| e.palette.id == p.id).is_some_and(|e| e.accent_hue == h))
+    };
 
     let mut out: Vec<Dealt> = Vec::new();
     let mut used_comp: Vec<&str> = Vec::new();
@@ -1152,7 +1157,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
 
         // Type and palette: A at variant 0 keeps the matched industry's own.
         if slot == 0 && variant == 0 {
-            if let Some((t, p)) = industry {
+            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p)) {
                 let tone = Tone::of(p);
                 used_tones.push(tone);
                 let te = types.iter().find(|e| e.pairing.id == t.id || e.pairing.display_font == t.display_font);
@@ -1292,6 +1297,12 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 }
                 if ground_tone.is_some_and(|g| g == e.tone) {
                     s += 6;
+                }
+                if let Some(t) = tone_pin {
+                    s += if e.tone == t { 20 } else { -20 };
+                }
+                if let Some(hue) = hue_pin {
+                    s += if e.accent_hue == hue { 12 } else { -12 };
                 }
                 match e.tone {
                     Tone::Dark if mood("dark") => s += 2,
@@ -1465,7 +1476,7 @@ pub(crate) fn rationale(d: &Dealt, signals: &BriefSignals, subject: &Subject, in
         out.push_str(" (a split, chosen only because two views must be read side by side)");
     }
     out.push_str(&format!(
-        ", hero material {}, look family {}, corners {}. Motion idea: {}.",
+        ", hero material {}, look family {}, corners {}. Motion flavour (tier and tools follow page_shape.motion): {}.",
         d.arch.hero_material,
         d.arch.look_family,
         d.radius,
@@ -1606,6 +1617,8 @@ pub(crate) fn brief_industry(query: &str, signals: &BriefSignals, subject: &Subj
         ),
     }
 }
+
+pub mod page_shape;
 
 #[cfg(test)]
 mod tests;

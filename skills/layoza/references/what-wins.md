@@ -28,10 +28,12 @@ agencies. Treat each as a hard rule unless the prompt overrides it.
    item sits at 80%).
 6. **Tables on phones** reflow into cards, or keep a sticky first column with
    a visible scroll cue (edge fade or "scroll →"). Header text is never cut.
-7. **Own the trade's artefacts.** Draw the UI as the trade's own objects
-   (swing tickets on a rail, a tide chart, a till roll, a fish crate) while
-   keeping standard affordances (buttons look like buttons, tables scan). This
-   is what judges call creative; generic cards are what they call template.
+7. **Subject, in the dealt material.** The trade must be unmistakable, but
+   the dealt `page_shape.material` decides how it is drawn: product screens,
+   rendered 3D, glass and light, illustration, pure type, or (only when dealt)
+   paper and print artefacts. Never default to tickets, receipts and dockets on
+   every section; one object-as-UI move per page is a signature, ten is a
+   costume. Keep standard affordances (buttons look like buttons, tables scan).
 8. **Motion floor.** Every page, including calm, minimal, "static" sites,
    dashboards and stores, ships the `micro-css-polish` recipe
    (`layoza animate --recipe micro-css-polish`): one hero entrance, hover and
@@ -75,3 +77,11 @@ agencies. Treat each as a hard rule unless the prompt overrides it.
    in every still, and check display type for collisions such as touching
    letters.
    Get the two signature mechanics from `layoza mechanics deal` ([`mechanics.md`](mechanics.md)).
+14. **The page shape is binding.** Build the direction's dealt `page_shape`
+   (hero frame, flow, section heads, ground, material, labels, motion) as
+   dealt. Two sites from Layoza must not share a skeleton: if your page is a
+   split hero over stacked bands with "title left, note right" heads and mono
+   labels, and that was not dealt, it is the house default leaking: rebuild.
+   High `motion_intensity` means the dealt heavy techniques actually ship
+   (pinned scenes, kinetic type, canvas/WebGL), each with a static fallback
+   that QA and headless screenshots can see (never an empty pinned slab).
