@@ -470,6 +470,8 @@ const TRADES: &[Trade] = &[
         ["the place itself", "the route", "the day-by-day itinerary"], "check dates and book", "dates, distances and prices", &["generic"]),
     tr(&["watch", "watches", "jewellery", "jewelry", "jeweller", "jeweler"], Some(S::Commerce),
         ["the piece at macro scale", "the movement or setting", "the hallmark"], "book a viewing or buy", "calibres, carats and hallmarks", &["luxe"]),
+    tr(&["phone", "phones", "smartphone", "smartphones", "mobile phones", "electronics", "gadgets", "headphones", "earbuds", "laptop", "laptops"], Some(S::Commerce),
+        ["the device in the hand", "the colourways side by side", "the camera and screen up close"], "choose a model and add to bag", "storage sizes, battery hours, prices and delivery dates", &["tech"]),
     tr(&["store", "shop", "ecommerce", "webshop", "boutique"], Some(S::Commerce),
         ["the product", "price and stock", "the parcel"], "add to bag", "prices, stock and delivery dates", &["generic"]),
     // Trades added with the wider pools.
@@ -915,6 +917,26 @@ pub(crate) fn with_recent_faces<T>(display: Vec<String>, body: Vec<String>, f: i
     out
 }
 
+thread_local! {
+    /// True while dealing for a niche whose page shape moves at the heavy tier, set by [`with_heavy_tier`].
+    static HEAVY_TIER: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// Runs `f` with the page shape's motion tier known to the archetype deal: a heavy-motion niche is
+/// never dealt a layout whose own motion is static (price lists, status boards, focus-only pages).
+pub(crate) fn with_heavy_tier<T>(on: bool, f: impl FnOnce() -> T) -> T {
+    let was = HEAVY_TIER.with(|h| h.replace(on));
+    let out = f();
+    HEAVY_TIER.with(|h| h.set(was));
+    out
+}
+
+/// Whether an archetype's bold motion is still static (nothing moves with scroll or on entry).
+fn static_motion(a: &Archetype) -> bool {
+    let m = a.motion_bold.to_lowercase();
+    ["no motion", "nothing moves", "nothing else moves", "no scroll", "zero decorative", "only;", "only (", "only."].iter().any(|p| m.contains(p)) || m.trim_end_matches('.').ends_with(" only")
+}
+
 /// Family of a face: optical and width cuts ("Libre Caslon Display", "Libre Caslon Text",
 /// "Sofia Sans Condensed") belong to one family.
 pub(crate) fn family(face: &str) -> String {
@@ -1026,6 +1048,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let task_first = matches!(signals.surface, S::ProductUi | S::DevTool) || ["finance", "legal", "code", "infrastructure", "civic", "trades", "care"].iter().any(|t| has(t));
     // A map hero needs a place to map: a venue, a named place, a service area or a location word.
     let words: Vec<&str> = q.split(|c: char| !c.is_alphanumeric()).collect();
+    let heavy_tier = HEAVY_TIER.with(|h| h.get());
     let place = signals.surface == S::Venue
         || script.is_some()
         || ["civic", "infrastructure", "trades"].iter().any(|t| has(t))
@@ -1098,6 +1121,22 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     s -= 12;
                 }
                 s += a.tags.iter().map(|t| w(t)).sum::<i32>().min(8);
+                // A layout written for other trades (a drawing sheet for engineers, a price board for
+                // trades) must not land on a showpiece, shop or product brief that shares none of its
+                // subjects: fit before novelty. Quiet trades keep their warm cross-trade layouts.
+                if heavy_tier && !a.tags.is_empty() && !a.tags.iter().any(|t| wants(t)) {
+                    s -= 6;
+                }
+                // A niche dealt heavy motion gets layouts that move; and a showpiece or shop leads with
+                // a visual (object, photo, illustration, scene), not a document or a wall of figures.
+                if heavy_tier && signals.surface != S::ProductUi {
+                    if static_motion(a) {
+                        s -= 15;
+                    }
+                    if matches!(signals.surface, S::Showcase | S::Commerce) && (matches!(a.hero_material, "document" | "data-as-image") || (signals.surface == S::Commerce && a.hero_material == "giant-type")) {
+                        s -= 6;
+                    }
+                }
                 if !a.needs.is_empty() {
                     s += 2;
                 }

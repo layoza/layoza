@@ -1933,7 +1933,8 @@ pub fn recommend_design_steered(
     let shape_brief = crate::directions::page_shape::ShapeBrief::read(&signals, query, raw_query, framework, variant, signals.motion_bias >= 4);
     let understood_brief = crate::directions::page_shape::understand(&shape_brief, &signals, query, &best_industry.name, &match_confidence, tune(active_dials.motion_intensity));
     let industry_look = (match_score > 0).then_some((&best_industry.typography_pairing, &best_industry.palette));
-    let dealt = crate::directions::deal(&signals, query, variant, industry_look);
+    let heavy_tier = new_site && shape_brief.tier(10) == crate::directions::page_shape::Tier::Heavy;
+    let dealt = crate::directions::with_heavy_tier(heavy_tier, || crate::directions::deal(&signals, query, variant, industry_look));
     let (place_cues, material_cues) = extract_cues(query);
     let ctx = crate::directions::Ctx {
         subject: &subject,

@@ -25,7 +25,11 @@ agencies. Treat each as a hard rule unless the prompt overrides it.
    internally consistent: no two KPIs share a value, units pluralise
    ("1 pack", "3 packs"), dates and weekdays agree, totals add up, and every
    status agrees with its own rule (if "low" means under 50% of par, no listed
-   item sits at 80%).
+   item sits at 80%). Data lives in the 1-2 sections where the visitor needs
+   it (prices, a schedule, a spec); every other section leads with one
+   dominant visual (art, photo, 3D, a scene, type as image), not rows. A page
+   of stacked lists and tables reads as a spreadsheet, however real the
+   numbers (QA: `UI-LEDGER-HEAVY`, `UI-VISUAL-STARVED`, `UI-REPEATED-CARD`).
 6. **Tables on phones** reflow into cards, or keep a sticky first column with
    a visible scroll cue (edge fade or "scroll →"). Header text is never cut.
 7. **Subject, in the dealt material.** The trade must be unmistakable, but

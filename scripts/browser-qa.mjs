@@ -1584,6 +1584,82 @@ const DOM_EVAL_SCRIPT = `(() => {
     }
   }
 
+  // --- Ledger-heavy / visual-starved page (desktop). A section is the largest box around one h2. Sections
+  // built as stacked rows (lists, tables, row-cards) with no dominant visual read as a spreadsheet; a page
+  // where most sections carry no visual moment (art, 3D, scene, media, type as image) reads as a document.
+  if (vw >= 1024) {
+    const sections = [];
+    for (const h of Array.from(document.querySelectorAll("main h2, body > section h2, body > div h2"))) {
+      if (!isVisible(h) || h.closest("header, footer, nav, dialog, [aria-hidden='true']")) continue;
+      let s = h;
+      while (s.parentElement && s.parentElement !== document.body && s.parentElement.querySelectorAll("h2").length === 1) s = s.parentElement;
+      if (!sections.includes(s)) sections.push(s);
+    }
+    const ledgerSecs = [];
+    const starved = [];
+    const cardSigs = new Map();
+    for (const s of sections.slice(0, 40)) {
+      const sr = s.getBoundingClientRect();
+      const sArea = Math.max(1, sr.width * sr.height);
+      let rows = s.querySelectorAll("tr").length;
+      let listArea = 0;
+      for (const t of Array.from(s.querySelectorAll("table"))) { const tr = t.getBoundingClientRect(); listArea += tr.width * tr.height; }
+      for (const c of Array.from(s.querySelectorAll("ul, ol, dl, div")).slice(0, 400)) {
+        const kids = Array.from(c.children).filter(isVisible);
+        if (kids.length < 4) continue;
+        const rr = kids.map((k) => k.getBoundingClientRect());
+        let stacked = 0;
+        for (let i = 1; i < rr.length; i++) if (rr[i].top >= rr[i - 1].bottom - 4 && Math.abs(rr[i].left - rr[i - 1].left) < 8) stacked++;
+        const w0 = rr[0].width;
+        if (stacked < kids.length - 2 || w0 < 200 || rr.some((q) => Math.abs(q.width - w0) > w0 * 0.1 || q.height > 220)) continue;
+        rows += kids.length;
+        const cr = c.getBoundingClientRect();
+        listArea += cr.width * cr.height;
+      }
+      let visual = false;
+      for (const m of Array.from(s.querySelectorAll("canvas, video, img, picture, svg"))) {
+        if (m.parentElement && m.parentElement.closest("svg")) continue;
+        const mr = m.getBoundingClientRect();
+        if (isVisible(m) && (mr.width * mr.height >= sArea * 0.25 || (mr.width >= vw * 0.45 && mr.height >= 280))) { visual = true; break; }
+      }
+      if (!visual) {
+        for (const h of Array.from(s.querySelectorAll("h1, h2, p, span, div, strong, b")).slice(0, 300)) {
+          if (h.children.length > 3 || !h.textContent.trim()) continue;
+          if (parseFloat(getComputedStyle(h).fontSize) >= 120 && isVisible(h)) { visual = true; break; }
+        }
+      }
+      if (!visual) {
+        const bi = getComputedStyle(s).backgroundImage;
+        if (bi.includes("url(")) visual = true;
+      }
+      const label = describe(s);
+      if (rows >= 4 && listArea >= sArea * 0.25 && !visual) ledgerSecs.push(label + " (" + rows + " rows)");
+      if (!visual) starved.push(label);
+      const seen = new Set();
+      for (const b of Array.from(s.querySelectorAll("*")).slice(0, 600)) {
+        const br = b.getBoundingClientRect();
+        if (br.width < 240 || br.height < 140 || br.width > sr.width * 0.9 || !isVisible(b)) continue;
+        const bc = getComputedStyle(b);
+        const bordered = parseFloat(bc.borderTopWidth) > 0 && bc.borderTopStyle !== "none";
+        const tinted = bc.backgroundColor !== "transparent" && !bc.backgroundColor.endsWith(", 0)");
+        if (!bordered && !tinted) continue;
+        const sig = [bc.borderTopWidth, bc.borderTopColor, bc.backgroundColor, bc.borderTopLeftRadius, bc.boxShadow].join("|");
+        if (!seen.has(sig)) { seen.add(sig); cardSigs.set(sig, (cardSigs.get(sig) || 0) + 1); }
+      }
+    }
+    const n = sections.length;
+    if (n >= 3 && ledgerSecs.length >= 2 && ledgerSecs.length / n >= 0.3) {
+      issue("ledger-heavy-page", "warning", ledgerSecs.length + " of " + n + " sections are stacked rows or tables with no dominant visual: " + ledgerSecs.slice(0, 4).join("; ") + " at " + vw + "px wide (keep data to the 1-2 sections where the visitor needs it; give the rest one visual moment: art, 3D, a scene or type as image)");
+    }
+    if (n >= 4 && starved.length / n >= 0.6) {
+      issue("visual-starved-page", "warning", starved.length + " of " + n + " sections have no visual moment (no art, media, 3D or type-as-image covering a quarter of the section), e.g. " + starved.slice(0, 3).join("; ") + " at " + vw + "px wide (each section needs one dominant visual drawn from its own content)");
+    }
+    const topSig = Array.from(cardSigs.values()).reduce((a, b) => Math.max(a, b), 0);
+    if (n >= 4 && topSig >= 4 && topSig / n >= 0.5) {
+      issue("repeated-card-look", "warning", "One card treatment (same border, fill, radius and shadow) is used in " + topSig + " of " + n + " sections at " + vw + "px wide (give each section its own material: open ground, full-bleed colour, inset, art plate; boxes are not a layout)");
+    }
+  }
+
   // --- Hero empty band (phones): a tall stretch of the first screen with no text, image or photo reads
   // as a void in the most-seen frame. Gradients alone do not count as content.
   if (vw < 600 && window.scrollY < 4) {

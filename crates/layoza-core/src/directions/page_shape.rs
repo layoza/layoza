@@ -591,13 +591,24 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
             let opt = match b.pins[axis].and_then(|id| pool(axis).iter().find(|o| o.id == id)) {
                 Some(p) => p,
                 None => {
-                    let scored: Vec<(i32, &Opt)> = pool(axis)
+                    // Niche fit first: only values that fit the niche (or, when too few do, the
+                    // best-fitting ones) enter the deal; the ledger and the jitter then
+                    // choose among those, so uniqueness never reaches for a value the niche does not fit.
+                    let fits: Vec<(i32, &Opt)> = pool(axis)
                         .iter()
                         .filter(|o| !(axis == 4 && o.id == "paper-print" && paper_last_run))
-                        .filter_map(|o| {
-                            let fit = fit_score(o.fit, ctx)?;
+                        .filter_map(|o| Some((fit_score(o.fit, ctx)?, o)))
+                        .collect();
+                    let mut ranked: Vec<i32> = fits.iter().map(|(f, _)| *f).collect();
+                    ranked.sort_unstable_by(|a, b| b.cmp(a));
+                    // Enough values actively fit for every direction: neutral ones stay out.
+                    let floor = if ranked.iter().filter(|f| **f > 0).count() >= ins.len() { 1 } else { ranked.get(ins.len()).or(ranked.last()).copied().unwrap_or(0) };
+                    let scored: Vec<(i32, &Opt)> = fits
+                        .into_iter()
+                        .filter(|(f, _)| *f >= floor)
+                        .map(|(fit, o)| {
                             let d = newest_first.iter().position(|l| axis_of(l, axis) == Some(o.id));
-                            Some((fit - recency(d) + jitter(&format!("{axis}|{i}|{}", o.id)), o))
+                            (fit - recency(d) + jitter(&format!("{axis}|{i}|{}", o.id)), o)
                         })
                         .collect();
                     let fresh: Vec<&(i32, &Opt)> = scored.iter().filter(|(_, o)| !used.contains(&o.id)).collect();
@@ -901,6 +912,26 @@ mod tests {
         }
     }
 
+    #[test]
+    fn niche_fit_gates_the_deal_before_uniqueness() {
+        // A phone store is dealt shoppable, visual shapes: never a document material, a words-only
+        // hero, a chapter-index flow or a foreign trade's archetype.
+        let r = rec("mobile phone store ecommerce selling phones, cases, chargers and earbuds");
+        for (d, p) in r.directions.iter().zip(shapes(&r)) {
+            assert!(!["blueprint-sheet", "price-board", "status-board"].contains(&d.archetype.as_str()), "{}", d.archetype);
+            assert!(!["paper-print", "typographic", "tactile"].contains(&p.material.id.as_str()), "{}", p.material.id);
+            assert!(!["poster-type", "index-first", "quiet-statement"].contains(&p.hero_frame.id.as_str()), "{}", p.hero_frame.id);
+            assert!(!["drawer-rows", "editorial-column", "spine"].contains(&p.flow.id.as_str()), "{}", p.flow.id);
+        }
+        // Heavy-motion niches never get an archetype whose motion is "nothing moves".
+        for q in ["independent brand and digital design agency", "B2B SaaS for scheduling field-service technicians"] {
+            let r = rec(q);
+            for d in &r.directions {
+                assert_ne!(d.archetype, "ticket-stub", "{q}");
+            }
+        }
+    }
+
     const WILD: &[&str] = &["kinetic-type", "webgl-scene", "cursor-field", "marquee-physics", "smooth-depth"];
 
     #[test]
@@ -961,10 +992,8 @@ mod tests {
                 assert!(!seen.get(a).is_some_and(|s| s.contains(&v)), "{q}: {a} {v} repeats {:?}", seen.get(a));
                 seen.entry(a).or_default().push(v);
             }
-            // Newest first, as the ledger reader returns it.
-            let mut next = looks_of(&r, &format!("run-{i}"));
-            next.extend(recent);
-            recent = next;
+            // Oldest first, as the ledger reader returns it.
+            recent.extend(looks_of(&r, &format!("run-{i}")));
         }
     }
 
@@ -984,9 +1013,7 @@ mod tests {
                 let paper = s.iter().any(|p| p.material.id == "paper-print");
                 assert!(!(paper && paper_prev), "{q}: paper-print in consecutive runs");
                 paper_prev = paper;
-                let mut next = looks_of(&r, &format!("run-{i}"));
-                next.extend(recent);
-                recent = next;
+                recent.extend(looks_of(&r, &format!("run-{i}")));
             }
         }
     }

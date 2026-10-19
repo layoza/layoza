@@ -30,7 +30,8 @@ a copy, re-skin or ledger repeat (read `uniqueness`).
 
 ## 1. Route by mode (load only what the mode needs)
 
-**Intake:** purpose, audience, new or existing; ask only what blocks building. New sites: pick 1 of 3 dealt
+**Intake:** existing site: follow its DNA, ask nothing. New site with a clear niche: ask nothing, decide.
+Vague brief: one short question. New sites: pick 1 of 3 dealt
 directions by niche fit (`PICKED: auto — <why>`), unlike `avoid_recent`. Existing sites: no directions; follow
 their DNA exactly.
 
