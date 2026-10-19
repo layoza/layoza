@@ -510,8 +510,116 @@ pub fn sanitize_id(id: &str) -> String {
         .collect()
 }
 
+/// True for addresses a public page load must not reach: private, loopback, link-local,
+/// unspecified, unique-local (fc00::/7), carrier-grade NAT (100.64/10), broadcast and
+/// IPv4-mapped forms of those.
+pub fn is_non_public_ip(ip: std::net::IpAddr) -> bool {
+    use std::net::IpAddr;
+    match ip {
+        IpAddr::V4(v4) => {
+            let o = v4.octets();
+            v4.is_private()
+                || v4.is_loopback()
+                || v4.is_link_local()
+                || v4.is_unspecified()
+                || v4.is_broadcast()
+                || o[0] == 0
+                || (o[0] == 100 && (64..=127).contains(&o[1]))
+        }
+        IpAddr::V6(v6) => {
+            if let Some(v4) = v6.to_ipv4_mapped() {
+                return is_non_public_ip(IpAddr::V4(v4));
+            }
+            let seg = v6.segments();
+            v6.is_loopback() || v6.is_unspecified() || (seg[0] & 0xfe00) == 0xfc00 || (seg[0] & 0xffc0) == 0xfe80
+        }
+    }
+}
+
+/// Splits an http(s) URL into (host, port). Other schemes and hostless URLs are errors.
+pub fn url_host_port(url: &str) -> Result<(String, u16), String> {
+    let (rest, default_port) = if let Some(r) = url.strip_prefix("http://") {
+        (r, 80)
+    } else if let Some(r) = url.strip_prefix("https://") {
+        (r, 443)
+    } else {
+        return Err("Only http(s) URLs can be loaded.".into());
+    };
+    let authority = rest.split(['/', '?', '#']).next().unwrap_or("");
+    let host_port = authority.rsplit('@').next().unwrap_or("");
+    let (host, port) = if let Some(v6) = host_port.strip_prefix('[') {
+        let mut it = v6.splitn(2, ']');
+        let h = it.next().unwrap_or("");
+        let p = it.next().unwrap_or("").strip_prefix(':');
+        (h.to_lowercase(), p)
+    } else {
+        let mut it = host_port.splitn(2, ':');
+        (it.next().unwrap_or("").to_lowercase(), it.next())
+    };
+    if host.is_empty() {
+        return Err(format!("`{}` has no host.", sanitize_id(url)));
+    }
+    let port = match port {
+        None | Some("") => default_port,
+        Some(p) => p.parse().map_err(|_| format!("`{}` has an invalid port.", sanitize_id(url)))?,
+    };
+    Ok((host, port))
+}
+
+/// Live-page guard. http(s) only. `localhost`, `*.localhost` and loopback literals pass because
+/// naming them is explicit. Any other host is resolved (DNS included) and refused when an address
+/// it resolves to is private, loopback, link-local, unspecified, unique-local or CGNAT, unless
+/// `allow_private` is set. A name that does not resolve is refused too, since nothing could load it.
+pub fn check_public_url(url: &str, allow_private: bool) -> Result<(), String> {
+    use std::net::{IpAddr, ToSocketAddrs};
+    let (host, port) = url_host_port(url)?;
+    let literal: Option<IpAddr> = host.parse().ok();
+    let explicit_local = host == "localhost" || host.ends_with(".localhost") || literal.is_some_and(|ip| ip.is_loopback());
+    if explicit_local || allow_private {
+        return Ok(());
+    }
+    let refuse = |what: &str| {
+        Err(format!(
+            "`{}` {}. Pass `allow_private_network: true` only if the user asked to test that host.",
+            sanitize_id(&host),
+            what
+        ))
+    };
+    if host == "metadata.google.internal" || host.ends_with(".internal") {
+        return refuse("is a private-network name");
+    }
+    let addrs: Vec<IpAddr> = match literal {
+        Some(ip) => vec![ip],
+        None => match (host.as_str(), port).to_socket_addrs() {
+            Ok(it) => it.map(|a| a.ip()).collect(),
+            Err(e) => return Err(format!("`{}` does not resolve: {}", sanitize_id(&host), e)),
+        },
+    };
+    if let Some(ip) = addrs.iter().find(|ip| is_non_public_ip(**ip)) {
+        return refuse(&format!("resolves to the private-network address {}", ip));
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn public_url_guard_rejects_private_literals_offline() {
+        use super::check_public_url as c;
+        for bad in [
+            "http://10.0.0.1/", "http://172.16.5.4", "http://192.168.1.1:8080/x", "http://169.254.169.254/latest",
+            "http://100.64.0.1", "http://0.0.0.0", "http://[fc00::1]/", "http://[fe80::1]", "http://[::]",
+            "http://[::ffff:10.0.0.1]/", "http://metadata.google.internal/", "ftp://example.com", "file:///etc/passwd", "http:///nohost",
+        ] {
+            assert!(c(bad, false).is_err(), "{bad} should be refused");
+        }
+        for ok in ["http://localhost:3000", "http://app.localhost", "http://127.0.0.1:8080", "http://[::1]:5173", "https://8.8.8.8/"] {
+            assert!(c(ok, false).is_ok(), "{ok} should pass");
+        }
+        assert!(c("http://10.0.0.1/", true).is_ok());
+        assert_eq!(super::url_host_port("https://u:p@Example.com:8443/a").unwrap(), ("example.com".into(), 8443));
+    }
+
     use super::*;
 
     #[test]

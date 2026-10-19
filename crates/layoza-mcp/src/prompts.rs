@@ -131,7 +131,7 @@ pub fn get(params: &Value) -> Result<Value, String> {
     }
     Ok(json!({
         "description": def.description,
-        "messages": [{ "role": "user", "content": { "type": "text", "text": (def.body)(&ctx) } }]
+        "messages": [{ "role": "user", "content": { "type": "text", "text": format!("{}\n{}", layoza_core::intelligence::purpose_markdown(), (def.body)(&ctx)) } }]
     }))
 }
 
@@ -447,7 +447,11 @@ mod tests {
                 let args: serde_json::Map<String, Value> =
                     all.as_object().unwrap().iter().filter(|(k, _)| p.args.iter().any(|a| a.0 == k.as_str())).map(|(k, v)| (k.clone(), v.clone())).collect();
                 let t = text(p.name, Value::Object(args));
-                let words = t.split_whitespace().count();
+                // The shared purpose preamble is budgeted on its own; the workflow itself stays short.
+                let preamble = layoza_core::intelligence::purpose_markdown().split_whitespace().count();
+                assert!(preamble < 170, "purpose preamble has {preamble} words");
+                assert!(t.contains("never a copy, a re-skin or a repeat"), "{} lacks the purpose preamble", p.name);
+                let words = t.split_whitespace().count() - preamble;
                 assert!(words < 900, "{} has {} words for {brief}", p.name, words);
                 for tool in ["capture_screenshots", "verify_functional", "audit_accessibility"] {
                     assert!(t.contains(tool), "{} never calls {}", p.name, tool);
