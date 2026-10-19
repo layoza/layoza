@@ -1,0 +1,479 @@
+[
+ {
+  "id": "html",
+  "name": "HTML/CSS/JS",
+  "aliases": [
+   "vanilla",
+   "static",
+   "plain html"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Custom properties on :root for colour, space, radius and type; light-dark() or a [data-theme] override for dark mode; @layer to order reset, tokens, components.",
+   "dont": "Hard-coded hex values scattered across selectors, or !important to win cascade fights."
+  },
+  "motion": {
+   "do": "CSS transitions and the Web Animations API first; wrap motion in @media (prefers-reduced-motion: no-preference) and check matchMedia in JS; use View Transitions for page/state changes.",
+   "dont": "A JS animation library for hover effects, or scroll listeners without passive:true."
+  },
+  "media": {
+   "do": "<picture> with AVIF/WebP, width/height on every <img>, fetchpriority=high on the LCP image, loading=lazy below the fold; WOFF2 variable fonts with font-display:swap and one preload.",
+   "dont": "Background-image heroes (not preloadable), or Google Fonts CSS with six weights."
+  },
+  "a11y": {
+   "do": "Native elements first: <button>, <dialog>, <details>, popover; :focus-visible rings; one <main>.",
+   "dont": "Div-and-span widgets wired with click handlers."
+  },
+  "performance": {
+   "do": "type=module scripts with defer, no render-blocking JS, content-visibility for long pages.",
+   "dont": "jQuery for a menu toggle."
+  }
+ },
+ {
+  "id": "react",
+  "name": "React",
+  "aliases": [
+   "react 19",
+   "jsx",
+   "tsx",
+   "vite react"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Tokens live in CSS variables; components read them via classes or CSS modules; theme switch flips data-theme on <html>.",
+   "dont": "Theme values in JS objects threaded through context and inline styles on every render."
+  },
+  "motion": {
+   "do": "CSS transitions or Motion (motion/react) with useReducedMotion(); clean up in useEffect return; View Transitions via startTransition where supported.",
+   "dont": "Animating layout properties with state every frame, or effects without cleanup."
+  },
+  "media": {
+   "do": "Explicit width/height, loading=lazy, decoding=async; a single font loader in index.html; import heavy widgets with React.lazy + Suspense.",
+   "dont": "Importing whole icon packs or image files into the main bundle."
+  },
+  "a11y": {
+   "do": "Semantic JSX; headless libraries (React Aria, Radix) for complex widgets; manage focus on route change.",
+   "dont": "onClick on div; aria-* sprinkled without roles and keyboard handling."
+  },
+  "performance": {
+   "do": "React Compiler or targeted memo for hot lists; virtualise long lists; useTransition for expensive updates; keep INP <= 200 ms.",
+   "dont": "Global context that re-renders the whole tree on each keystroke."
+  }
+ },
+ {
+  "id": "nextjs",
+  "name": "Next.js",
+  "aliases": [
+   "next",
+   "app router",
+   "next 15",
+   "next 16"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Tokens in a global CSS file imported from the root layout; next-themes or a blocking script for theme without flash.",
+   "dont": "CSS-in-JS runtimes that force client components for static content."
+  },
+  "motion": {
+   "do": "Keep motion in small client components; respect prefers-reduced-motion; experimental viewTransition/React ViewTransition for route changes.",
+   "dont": "Marking a whole page 'use client' to animate one heading."
+  },
+  "media": {
+   "do": "next/image with sizes and priority on the LCP image; next/font for self-hosted, subset fonts with display swap.",
+   "dont": "Raw <img> for large photos, or fonts from a third-party CSS URL."
+  },
+  "a11y": {
+   "do": "Use the root layout for <html lang>; route announcer is built in, still move focus to <h1> on navigation in custom flows.",
+   "dont": "Client-only rendering of primary content."
+  },
+  "performance": {
+   "do": "Server Components by default, streaming with Suspense, static/ISR where possible, next/script strategy=lazyOnload for third parties.",
+   "dont": "Fetching in client effects what the server could render."
+  }
+ },
+ {
+  "id": "astro",
+  "name": "Astro",
+  "aliases": [
+   "astro 5",
+   "islands"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Tokens in a global stylesheet; scoped <style> in components reads the variables.",
+   "dont": "Duplicating token values inside each component's scoped styles."
+  },
+  "motion": {
+   "do": "CSS-first motion; ClientRouter view transitions honour reduced motion automatically — keep custom ones in a no-preference query.",
+   "dont": "Hydrating a framework island just to animate on scroll."
+  },
+  "media": {
+   "do": "astro:assets <Image>/<Picture> for AVIF/WebP and dimensions; the Fonts API or self-hosted WOFF2 with preload.",
+   "dont": "Unoptimised images in /public for content photos."
+  },
+  "a11y": {
+   "do": "Static HTML is the default; islands get client:visible or client:idle and keep accessible markup server-rendered.",
+   "dont": "client:load on every component."
+  },
+  "performance": {
+   "do": "Zero JS by default; ship islands only where interaction exists; prefetch links on hover.",
+   "dont": "Wrapping the whole layout in a React island."
+  }
+ },
+ {
+  "id": "vue",
+  "name": "Vue",
+  "aliases": [
+   "vue 3",
+   "sfc",
+   "vite vue"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "CSS variables in a global file; v-bind() in <style> only for truly dynamic values.",
+   "dont": "Hard-coded colours in scoped styles per component."
+  },
+  "motion": {
+   "do": "<Transition> with CSS classes; check usePreferredReducedMotion (VueUse) or the media query; remove listeners in onBeforeUnmount.",
+   "dont": "JS hooks for transitions that CSS can do."
+  },
+  "media": {
+   "do": "defineAsyncComponent for heavy widgets; native lazy images with dimensions.",
+   "dont": "Global registration of every component."
+  },
+  "a11y": {
+   "do": "Native elements and headless libraries (Reka UI) for complex widgets; v-bind aria state.",
+   "dont": "@click on div without role and keydown."
+  },
+  "performance": {
+   "do": "shallowRef for large data; v-memo/v-once for static parts; virtualise long lists.",
+   "dont": "Deep reactivity on large immutable datasets."
+  }
+ },
+ {
+  "id": "nuxt",
+  "name": "Nuxt",
+  "aliases": [
+   "nuxt 3",
+   "nuxt 4"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Tokens in assets/css imported in nuxt.config css; Nuxt UI theme via app.config when used.",
+   "dont": "Mixing two UI kits with different token systems."
+  },
+  "motion": {
+   "do": "Page transitions in app.vue with CSS; disable under reduced motion via the media query.",
+   "dont": "Heavy client-only animation plugins loaded globally."
+  },
+  "media": {
+   "do": "@nuxt/image (<NuxtImg>/<NuxtPicture>) with sizes; @nuxt/fonts for self-hosted fonts.",
+   "dont": "Remote font CSS links in the head."
+  },
+  "a11y": {
+   "do": "useHead({ htmlAttrs: { lang } }); route announcer component; focus management on navigation.",
+   "dont": "Client-only pages for core content."
+  },
+  "performance": {
+   "do": "SSR/SSG by default, lazy hydration (hydrate-on-visible) for below-fold components, useFetch with keys.",
+   "dont": "Fetching in onMounted what SSR can deliver."
+  }
+ },
+ {
+  "id": "sveltekit",
+  "name": "SvelteKit",
+  "aliases": [
+   "svelte",
+   "svelte 5",
+   "runes"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "CSS variables in app.css; component styles read them; theme via data attribute set in hooks or app.html.",
+   "dont": "Per-component hard-coded palettes."
+  },
+  "motion": {
+   "do": "svelte/transition and svelte/motion with prefersReducedMotion from svelte/motion; effects clean up in $effect return.",
+   "dont": "Transitions that ignore reduced motion."
+  },
+  "media": {
+   "do": "@sveltejs/enhanced-img for responsive images; self-hosted fonts preloaded in app.html.",
+   "dont": "Large unoptimised images in static/."
+  },
+  "a11y": {
+   "do": "Svelte's a11y compiler warnings stay on and are fixed, not silenced.",
+   "dont": "svelte-ignore a11y comments to pass the build."
+  },
+  "performance": {
+   "do": "SSR + prerender where possible; load functions for data; snapshot/lazy import for heavy parts.",
+   "dont": "Disabling SSR site-wide."
+  }
+ },
+ {
+  "id": "gutenberg",
+  "name": "WordPress Gutenberg (theme.json v3)",
+  "aliases": [
+   "wordpress",
+   "block theme",
+   "theme.json",
+   "fse"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "theme.json v3 settings.color.palette, typography.fontSizes (fluid), spacing.spacingSizes; reference presets as var(--wp--preset--...) in block styles.",
+   "dont": "Hard-coded colours in block markup or custom CSS that bypass theme.json presets."
+  },
+  "motion": {
+   "do": "Small CSS animations in the theme stylesheet with a reduced-motion guard; Interactivity API for interactive blocks.",
+   "dont": "Enqueuing GSAP or jQuery plugins site-wide for one block."
+  },
+  "media": {
+   "do": "Core image block with sizes; fontFamilies in theme.json with fontFace (WOFF2) so WordPress self-hosts them.",
+   "dont": "Google Fonts enqueued via a plugin plus theme duplicates."
+  },
+  "a11y": {
+   "do": "Block patterns built from core blocks keep semantics; set heading levels deliberately; label navigation blocks.",
+   "dont": "Custom HTML blocks that recreate buttons with divs."
+  },
+  "performance": {
+   "do": "Load block assets per block (block.json style/viewScript); avoid page-builder bloat; cache and lazy-load embeds.",
+   "dont": "Global scripts on every page for one landing page widget."
+  }
+ },
+ {
+  "id": "elementor",
+  "name": "Elementor",
+  "aliases": [
+   "elementor pro",
+   "elementor json"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Site Settings global colours and global fonts; widgets reference globals, not literal values; container (flexbox/grid) layout.",
+   "dont": "Per-widget custom colours and font sizes that drift from the kit."
+  },
+  "motion": {
+   "do": "Entrance animations sparingly; add a reduced-motion override in Site Settings custom CSS; prefer CSS over Motion Effects on mobile.",
+   "dont": "Motion effects and parallax on every section."
+  },
+  "media": {
+   "do": "Optimised image sizes per breakpoint; enable lazy load; load fonts locally (Elementor > Settings > Performance).",
+   "dont": "Full-size uploads in image widgets."
+  },
+  "a11y": {
+   "do": "Set HTML tags on heading widgets correctly; labels on form fields; aria-label on icon-only buttons via attributes.",
+   "dont": "Headings chosen by visual size; icon boxes as the only links."
+  },
+  "performance": {
+   "do": "Turn on Optimized DOM, improved CSS/asset loading and inline font icons; keep sections flat with containers.",
+   "dont": "Nested inner sections and dozens of unused add-on widgets."
+  }
+ },
+ {
+  "id": "bricks",
+  "name": "Bricks Builder",
+  "aliases": [
+   "bricks",
+   "bricks json"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Global classes and theme styles; colour palette and CSS variables defined once; BEM-like class naming.",
+   "dont": "Styling every element by ID."
+  },
+  "motion": {
+   "do": "Interactions with a reduced-motion check in custom CSS; native CSS animations over third-party scripts.",
+   "dont": "Scroll-triggered animations on every element."
+  },
+  "media": {
+   "do": "Responsive image sizes and lazy load; self-host fonts via custom fonts.",
+   "dont": "Remote font CSS."
+  },
+  "a11y": {
+   "do": "Choose semantic HTML tags per element (section, nav, header); label nav menus and forms.",
+   "dont": "Generic divs for everything."
+  },
+  "performance": {
+   "do": "Disable unused features; keep the DOM shallow; load scripts conditionally.",
+   "dont": "Global code snippets loaded on all pages."
+  }
+ },
+ {
+  "id": "shopify",
+  "name": "Shopify Liquid",
+  "aliases": [
+   "shopify",
+   "liquid",
+   "online store 2.0",
+   "dawn"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "settings_schema.json colour schemes and type settings output as CSS variables in theme.liquid; section blocks use those variables.",
+   "dont": "Hard-coded hex values in section CSS that merchants cannot change."
+  },
+  "motion": {
+   "do": "CSS transitions with a reduced-motion guard; web components for interactivity, cleaned up in disconnectedCallback.",
+   "dont": "jQuery plugins for sliders."
+  },
+  "media": {
+   "do": "image_url with widths + image_tag (srcset, sizes, loading=lazy, fetchpriority on the hero); font_face filter with font_display: 'swap'.",
+   "dont": "img_url legacy filters or full-size images."
+  },
+  "a11y": {
+   "do": "Accessible cart drawer (dialog semantics, focus return); visible focus; labelled product option inputs.",
+   "dont": "Variant pickers built from unlabelled swatches."
+  },
+  "performance": {
+   "do": "Section rendering API for partial updates; defer scripts; keep app embeds minimal; Theme Check passes.",
+   "dont": "Loading every app's script on every template."
+  }
+ },
+ {
+  "id": "tailwind",
+  "name": "Tailwind CSS",
+  "aliases": [
+   "tailwind v4",
+   "tailwindcss"
+  ],
+  "platform": "web",
+  "tokens": {
+   "do": "Tailwind v4 @theme for tokens (colours, fonts, spacing) so utilities and CSS variables share one source; dark: variant tied to a class or media.",
+   "dont": "Arbitrary values like text-[#3b82f6] everywhere instead of tokens."
+  },
+  "motion": {
+   "do": "motion-safe: / motion-reduce: variants on every animate-* and transition utility.",
+   "dont": "animate-bounce on CTAs without motion-safe."
+  },
+  "media": {
+   "do": "aspect-* and size utilities on media; font tokens in @theme with @font-face font-display.",
+   "dont": "Fixed h-screen heroes (use min-h-svh)."
+  },
+  "a11y": {
+   "do": "focus-visible:ring-* with ring-offset; sr-only for icon labels; not-sr-only on skip links.",
+   "dont": "outline-none without a focus-visible replacement."
+  },
+  "performance": {
+   "do": "Rely on automatic content detection; keep class lists readable with components, not @apply everywhere.",
+   "dont": "Safelisting huge class patterns."
+  }
+ },
+ {
+  "id": "react-native",
+  "name": "React Native",
+  "aliases": [
+   "expo",
+   "rn"
+  ],
+  "platform": "mobile",
+  "tokens": {
+   "do": "A theme object from one tokens file; useColorScheme for dark mode; spacing scale in dp.",
+   "dont": "Inline magic numbers and colours in StyleSheet per screen."
+  },
+  "motion": {
+   "do": "Reanimated worklets on the UI thread; AccessibilityInfo.isReduceMotionEnabled / useReducedMotion to shorten or skip; cancel animations on unmount.",
+   "dont": "Animated.timing on the JS thread for gestures."
+  },
+  "media": {
+   "do": "expo-image with caching and placeholders; expo-font / config plugin to embed fonts at build.",
+   "dont": "Large remote images without dimensions or caching."
+  },
+  "a11y": {
+   "do": "accessibilityRole, accessibilityLabel, accessibilityState on custom controls; hitSlop to reach 44pt.",
+   "dont": "Pressables with no role or label."
+  },
+  "performance": {
+   "do": "FlashList/FlatList with keys and getItemLayout; Hermes; avoid re-renders with memo; New Architecture enabled.",
+   "dont": "ScrollView with hundreds of children."
+  }
+ },
+ {
+  "id": "flutter",
+  "name": "Flutter",
+  "aliases": [
+   "dart",
+   "material 3"
+  ],
+  "platform": "mobile",
+  "tokens": {
+   "do": "ThemeData with ColorScheme.fromSeed and ThemeExtension for custom tokens; Theme.of(context) in widgets.",
+   "dont": "Colors.blue literals in widgets."
+  },
+  "motion": {
+   "do": "Implicit animations (AnimatedContainer etc.); check MediaQuery.disableAnimationsOf(context); dispose AnimationControllers.",
+   "dont": "Controllers that are never disposed."
+  },
+  "media": {
+   "do": "cached_network_image or precacheImage; bundle fonts in pubspec; size images with cacheWidth.",
+   "dont": "Decoding full-resolution images for thumbnails."
+  },
+  "a11y": {
+   "do": "Semantics widgets and labels; ensure 48x48 tap targets (MaterialTapTargetSize.padded); support text scaling.",
+   "dont": "Fixed-height text containers that clip at 200% text scale."
+  },
+  "performance": {
+   "do": "const constructors; ListView.builder; avoid rebuilding large subtrees; profile with DevTools on device.",
+   "dont": "Building every list item eagerly."
+  }
+ },
+ {
+  "id": "swiftui",
+  "name": "SwiftUI",
+  "aliases": [
+   "ios",
+   "swift",
+   "apple"
+  ],
+  "platform": "mobile",
+  "tokens": {
+   "do": "Asset catalog colours with dark variants; semantic Color/ShapeStyle (.primary, .secondary); custom tokens in an extension.",
+   "dont": "RGB literals per view."
+  },
+  "motion": {
+   "do": "withAnimation and transitions; read @Environment(\\.accessibilityReduceMotion) to swap moves for fades.",
+   "dont": "Spring animations that ignore Reduce Motion."
+  },
+  "media": {
+   "do": "AsyncImage with placeholders or a caching loader; custom fonts registered and used with relativeTo: for Dynamic Type.",
+   "dont": "Fixed font sizes that ignore Dynamic Type."
+  },
+  "a11y": {
+   "do": ".accessibilityLabel/.accessibilityHint, .accessibilityElement(children:) to group; 44pt targets via .contentShape.",
+   "dont": "Image-only buttons without labels."
+  },
+  "performance": {
+   "do": "LazyVStack/List for long content; @Observable models; avoid heavy work in body.",
+   "dont": "Expensive computed properties re-evaluated in body."
+  }
+ },
+ {
+  "id": "compose",
+  "name": "Jetpack Compose",
+  "aliases": [
+   "android",
+   "kotlin",
+   "material 3 compose"
+  ],
+  "platform": "mobile",
+  "tokens": {
+   "do": "MaterialTheme with a ColorScheme (dynamic colour on Android 12+) and CompositionLocal for custom tokens.",
+   "dont": "Color(0xFF...) literals in composables."
+  },
+  "motion": {
+   "do": "animate*AsState and AnimatedVisibility; check Settings.Global ANIMATOR_DURATION_SCALE or a reduced-motion flag to skip motion.",
+   "dont": "Infinite animations without a stop condition."
+  },
+  "media": {
+   "do": "Coil AsyncImage with size; downloadable or bundled fonts via FontFamily; respect font scale.",
+   "dont": "Loading full bitmaps into small Image composables."
+  },
+  "a11y": {
+   "do": "Modifier.semantics, contentDescription on icons, minimumInteractiveComponentSize (48dp).",
+   "dont": "clickable on Box without role or label."
+  },
+  "performance": {
+   "do": "LazyColumn with keys; stable/immutable state; derivedStateOf for scroll-driven values; baseline profiles.",
+   "dont": "Reading scroll state in composition every frame."
+  }
+ }
+]

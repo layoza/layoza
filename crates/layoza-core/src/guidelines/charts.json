@@ -1,0 +1,1055 @@
+[
+ {
+  "id": "bar-compare",
+  "situation": "Compare a value across a handful of categories",
+  "data_shape": "categorical",
+  "task": "compare",
+  "keywords": [
+   "bar",
+   "categories",
+   "compare values"
+  ],
+  "best": "Horizontal bar chart sorted by value",
+  "alternatives": [
+   "vertical column chart",
+   "dot plot"
+  ],
+  "avoid_when": "categories have a natural order you would break by sorting, or there are more than ~30 bars",
+  "volume": "3-30 categories",
+  "encoding": "single hue; highlight the one bar that matters in a contrasting hue + label",
+  "fallback": {
+   "table": "category | value, sorted the same way as the chart",
+   "aria_summary": "'{top} leads at {max}; {bottom} is lowest at {min}.'",
+   "keyboard": "Tab to the chart, arrow keys step through bars announcing name and value"
+  },
+  "render": "svg",
+  "libraries": "Observable Plot barX, ECharts bar, Chart.js indexAxis:'y', Recharts BarChart layout=vertical, D3 scaleBand"
+ },
+ {
+  "id": "column-time-discrete",
+  "situation": "Show a count per period when periods are few and discrete",
+  "data_shape": "time-series",
+  "task": "compare",
+  "keywords": [
+   "monthly",
+   "column",
+   "per period"
+  ],
+  "best": "Vertical column chart with periods on the x-axis",
+  "alternatives": [
+   "line chart once periods exceed ~20",
+   "lollipop chart"
+  ],
+  "avoid_when": "periods exceed ~24 or the trend shape matters more than individual values",
+  "volume": "4-24 periods",
+  "encoding": "one hue; annotate the latest period",
+  "fallback": {
+   "table": "period | value",
+   "aria_summary": "'Values by month from {first} to {last}; peak {max} in {peakPeriod}.'",
+   "keyboard": "arrow keys move between periods"
+  },
+  "render": "svg",
+  "libraries": "any library; keep the zero baseline"
+ },
+ {
+  "id": "line-trend",
+  "situation": "Show how one or a few measures change over continuous time",
+  "data_shape": "time-series",
+  "task": "trend",
+  "keywords": [
+   "trend",
+   "over time",
+   "line"
+  ],
+  "best": "Line chart with direct end-of-line labels",
+  "alternatives": [
+   "area chart for a single cumulative series",
+   "sparkline in dense UIs"
+  ],
+  "avoid_when": "fewer than ~5 points (use columns) or more than ~6 series (use small multiples)",
+  "volume": "5-10,000 points per series; downsample (LTTB) above ~2,000 per series",
+  "encoding": "<= 6 series; vary dash pattern or marker shape as well as hue; label lines directly instead of a legend",
+  "fallback": {
+   "table": "date | series A | series B; offer CSV download for long ranges",
+   "aria_summary": "'{series} rose {pct}% from {start} to {end}, peaking at {max} on {date}.'",
+   "keyboard": "arrow keys move along x; Up/Down switch series"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "Observable Plot line, ECharts line with sampling:'lttb', Chart.js decimation plugin, Recharts LineChart, D3 line"
+ },
+ {
+  "id": "small-multiples",
+  "situation": "Compare the trend of many series without spaghetti",
+  "data_shape": "time-series",
+  "task": "compare",
+  "keywords": [
+   "many series",
+   "small multiples",
+   "facet",
+   "spaghetti"
+  ],
+  "best": "Small multiples: one mini line chart per series on a shared y-scale",
+  "alternatives": [
+   "line chart with one highlighted series and the rest grey"
+  ],
+  "avoid_when": "series need precise cross-comparison at the same x (overlay instead)",
+  "volume": "6-50 series",
+  "encoding": "single hue per panel; shared scales stated in a caption",
+  "fallback": {
+   "table": "one table with a column per series",
+   "aria_summary": "'{n} series; {k} grew, {m} declined; largest gain {name}.'",
+   "keyboard": "each panel focusable with its own summary"
+  },
+  "render": "svg",
+  "libraries": "Observable Plot fx/fy facets, ECharts grid array, D3 repeat; Chart.js/Recharts need one instance per panel"
+ },
+ {
+  "id": "stacked-area-composition-time",
+  "situation": "Show how parts of a total change over time",
+  "data_shape": "part-to-whole",
+  "task": "trend",
+  "keywords": [
+   "composition over time",
+   "stacked area",
+   "share"
+  ],
+  "best": "Stacked area (absolute) or 100% stacked area (share)",
+  "alternatives": [
+   "stacked columns for few periods",
+   "small multiples when each part's trend matters"
+  ],
+  "avoid_when": "readers must compare middle layers precisely, or there are more than ~6 parts",
+  "volume": "2-6 parts, 10+ periods",
+  "encoding": "ordered sequential or categorical palette; biggest/most stable layer at the bottom; label layers inline",
+  "fallback": {
+   "table": "period | part 1 | part 2 | ... | total",
+   "aria_summary": "'In {last}, {topPart} made up {share}% of the total, up from {prevShare}%.'",
+   "keyboard": "arrow keys over periods announce every layer"
+  },
+  "render": "svg",
+  "libraries": "Observable Plot areaY stack, ECharts stack, Chart.js fill:'stack', Recharts AreaChart stackId"
+ },
+ {
+  "id": "donut-few-parts",
+  "situation": "Show the share of 2 to 4 parts of a single whole",
+  "data_shape": "part-to-whole",
+  "task": "composition",
+  "keywords": [
+   "share",
+   "percentage",
+   "donut",
+   "pie"
+  ],
+  "best": "Single stacked bar or a donut with at most 4 slices",
+  "alternatives": [
+   "waffle chart",
+   "plain big-number percentages"
+  ],
+  "avoid_when": "more than 4-5 parts, parts are similar in size, or values do not sum to a meaningful whole",
+  "volume": "2-4 parts",
+  "encoding": "label every slice directly with % and name; distinct lightness, not only hue",
+  "fallback": {
+   "table": "part | value | %",
+   "aria_summary": "'{part} is {pct}% of {whole}.'",
+   "keyboard": "Tab to each slice; announce name and %"
+  },
+  "render": "svg",
+  "libraries": "D3 pie/arc, ECharts pie radius:['50%','70%'], Chart.js doughnut, Recharts PieChart; Plot has no pie — use a stacked bar"
+ },
+ {
+  "id": "waffle-share",
+  "situation": "Make a single proportion tangible for a general audience",
+  "data_shape": "part-to-whole",
+  "task": "composition",
+  "keywords": [
+   "out of 100",
+   "waffle",
+   "proportion"
+  ],
+  "best": "10×10 waffle grid",
+  "alternatives": [
+   "single stacked bar",
+   "big number with context"
+  ],
+  "avoid_when": "the precise value matters more than the gist, or there are many categories",
+  "volume": "1-3 categories",
+  "encoding": "one strong hue vs a neutral; pattern fill for the second category",
+  "fallback": {
+   "table": "category | count of 100",
+   "aria_summary": "'{n} out of every 100 {unit}.'",
+   "keyboard": "not interactive; summary text is enough"
+  },
+  "render": "svg",
+  "libraries": "plain SVG/CSS grid; D3 or Plot cell marks"
+ },
+ {
+  "id": "treemap-hierarchy-size",
+  "situation": "Show sizes inside a hierarchy (budget, disk usage, portfolio)",
+  "data_shape": "hierarchy",
+  "task": "composition",
+  "keywords": [
+   "treemap",
+   "nested",
+   "hierarchy size"
+  ],
+  "best": "Squarified treemap",
+  "alternatives": [
+   "sunburst for depth-first exploration",
+   "sorted bar chart of the top level"
+  ],
+  "avoid_when": "precise comparison between items is needed, or the hierarchy is deeper than ~3 levels",
+  "volume": "10-1,000 leaves",
+  "encoding": "hue by top-level group, lightness by a second measure; label rectangles larger than ~40×20 px",
+  "fallback": {
+   "table": "path | value, sortable",
+   "aria_summary": "'Largest: {top} ({pct}%). {n} items total.'",
+   "keyboard": "tree navigation: arrow keys move siblings, Enter drills in, Esc goes up"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "D3 treemap, ECharts treemap, Plot via d3-hierarchy, Recharts Treemap"
+ },
+ {
+  "id": "sunburst-hierarchy-depth",
+  "situation": "Explore a multi-level hierarchy where depth matters",
+  "data_shape": "hierarchy",
+  "task": "explore",
+  "keywords": [
+   "sunburst",
+   "drill down",
+   "levels"
+  ],
+  "best": "Zoomable sunburst",
+  "alternatives": [
+   "icicle chart (easier to label)",
+   "indented tree with bars"
+  ],
+  "avoid_when": "people must compare leaf sizes; angles are hard to read",
+  "volume": "2-5 levels, <= 500 nodes",
+  "encoding": "hue by branch; lightness by depth",
+  "fallback": {
+   "table": "indented tree table with values",
+   "aria_summary": "'{root} has {n} branches; {top} is {pct}%.'",
+   "keyboard": "tree pattern keys; breadcrumb of the current path"
+  },
+  "render": "svg",
+  "libraries": "D3 partition, ECharts sunburst"
+ },
+ {
+  "id": "histogram-distribution",
+  "situation": "Show the distribution of one numeric variable",
+  "data_shape": "distribution",
+  "task": "distribution",
+  "keywords": [
+   "histogram",
+   "spread",
+   "frequency"
+  ],
+  "best": "Histogram with deliberate bin width",
+  "alternatives": [
+   "density plot",
+   "box plot for comparing groups",
+   "dot/strip plot for < 50 values"
+  ],
+  "avoid_when": "values are few (< 30) or the reader needs individual values",
+  "volume": "50-1,000,000 values; bin before render above ~10k",
+  "encoding": "one hue; mark the median/target with a labelled rule",
+  "fallback": {
+   "table": "bin range | count",
+   "aria_summary": "'Most values fall between {a} and {b}; median {median}.'",
+   "keyboard": "arrow keys step through bins"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "Plot binX, ECharts with pre-binned data, Chart.js bar on bins, Recharts BarChart, D3 bin"
+ },
+ {
+  "id": "box-compare-distributions",
+  "situation": "Compare distributions across groups",
+  "data_shape": "distribution",
+  "task": "compare",
+  "keywords": [
+   "box plot",
+   "quartiles",
+   "spread by group"
+  ],
+  "best": "Box plot with points overlaid when n is small",
+  "alternatives": [
+   "violin plot",
+   "ridgeline",
+   "strip plot"
+  ],
+  "avoid_when": "the audience is unfamiliar with quartiles (explain or use strip plot)",
+  "volume": "3-20 groups, 20+ values each",
+  "encoding": "single hue; outliers as hollow points; explain whiskers in a caption",
+  "fallback": {
+   "table": "group | min | Q1 | median | Q3 | max | n",
+   "aria_summary": "'{group} has the highest median ({m}); {group2} is most spread.'",
+   "keyboard": "each box focusable, announcing five-number summary"
+  },
+  "render": "svg",
+  "libraries": "Plot boxY, ECharts boxplot, D3 manual; Chart.js/Recharts need plugins"
+ },
+ {
+  "id": "strip-few-values",
+  "situation": "Show every individual value when there are few",
+  "data_shape": "distribution",
+  "task": "distribution",
+  "keywords": [
+   "dot plot",
+   "strip",
+   "beeswarm",
+   "jitter"
+  ],
+  "best": "Strip or beeswarm plot",
+  "alternatives": [
+   "histogram once n > ~200"
+  ],
+  "avoid_when": "thousands of points (overplotting)",
+  "volume": "10-300 values",
+  "encoding": "one hue with 60-70% opacity; highlight named points with labels",
+  "fallback": {
+   "table": "item | value",
+   "aria_summary": "'{n} values from {min} to {max}; {outlier} stands out.'",
+   "keyboard": "points focusable when they represent named items"
+  },
+  "render": "svg",
+  "libraries": "Plot dot + dodgeY, D3 force beeswarm"
+ },
+ {
+  "id": "scatter-correlation",
+  "situation": "Show the relationship between two numeric variables",
+  "data_shape": "correlation",
+  "task": "relationship",
+  "keywords": [
+   "scatter",
+   "correlation",
+   "x vs y"
+  ],
+  "best": "Scatter plot with optional trend line",
+  "alternatives": [
+   "hexbin or 2D density for large n",
+   "connected scatter for time"
+  ],
+  "avoid_when": "one variable is categorical, or the reader expects causation from it",
+  "volume": "20-5,000 points (SVG to ~2k); hexbin/canvas above",
+  "encoding": "one hue; encode a group by shape + hue; keep opacity for overlap",
+  "fallback": {
+   "table": "item | x | y (| group)",
+   "aria_summary": "'{x} and {y} are {strength} correlated (r = {r}).'",
+   "keyboard": "points as a list ordered by x; arrow keys move to nearest"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "Plot dot/hexbin, ECharts scatter with large:true, Chart.js scatter, Recharts ScatterChart, D3 + canvas"
+ },
+ {
+  "id": "bubble-three-measures",
+  "situation": "Add a third measure to a scatter",
+  "data_shape": "correlation",
+  "task": "relationship",
+  "keywords": [
+   "bubble",
+   "three variables",
+   "size"
+  ],
+  "best": "Bubble chart with area-scaled radius",
+  "alternatives": [
+   "scatter + colour for the third measure",
+   "small multiples"
+  ],
+  "avoid_when": "the size measure needs precise reading, or bubbles exceed ~100",
+  "volume": "<= 100 bubbles",
+  "encoding": "scale area, not radius; include a size legend; translucent fills",
+  "fallback": {
+   "table": "item | x | y | size",
+   "aria_summary": "'{item} is largest ({size}) at x={x}, y={y}.'",
+   "keyboard": "bubbles focusable in x order"
+  },
+  "render": "svg",
+  "libraries": "Plot dot r channel (sqrt scale), ECharts symbolSize, Chart.js bubble, Recharts ZAxis"
+ },
+ {
+  "id": "heatmap-matrix",
+  "situation": "Show a value across two categorical or time dimensions",
+  "data_shape": "matrix",
+  "task": "pattern",
+  "keywords": [
+   "heatmap",
+   "matrix",
+   "day by hour",
+   "calendar"
+  ],
+  "best": "Heatmap with a sequential scale",
+  "alternatives": [
+   "calendar heatmap for daily data",
+   "small multiples of bars"
+  ],
+  "avoid_when": "exact values are needed for many cells, or one dimension has > 60 levels",
+  "volume": "up to ~3,000 cells (canvas above)",
+  "encoding": "perceptually uniform sequential (viridis/cividis); diverging only around a meaningful midpoint; show a legend with units",
+  "fallback": {
+   "table": "row | column | value (pivotable)",
+   "aria_summary": "'Peak at {row}/{col} ({max}); quietest at {minCell}.'",
+   "keyboard": "grid navigation with arrow keys, announcing row, column and value"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "Plot cell, ECharts heatmap, D3 scaleSequential; Chart.js matrix plugin"
+ },
+ {
+  "id": "correlation-matrix",
+  "situation": "Show pairwise correlations among many variables",
+  "data_shape": "matrix",
+  "task": "relationship",
+  "keywords": [
+   "correlation matrix",
+   "pairwise"
+  ],
+  "best": "Lower-triangle heatmap with a diverging scale centred on 0",
+  "alternatives": [
+   "scatterplot matrix for <= 6 variables"
+  ],
+  "avoid_when": "fewer than 4 variables (just list them)",
+  "volume": "4-30 variables",
+  "encoding": "diverging palette (blue-orange is safer than red-green); print r in cells when space allows",
+  "fallback": {
+   "table": "variable pair | r",
+   "aria_summary": "'Strongest: {a}–{b} (r={r}).'",
+   "keyboard": "grid keys"
+  },
+  "render": "svg",
+  "libraries": "Plot cell, ECharts heatmap, D3"
+ },
+ {
+  "id": "diverging-bar-deviation",
+  "situation": "Show values above and below a baseline or target",
+  "data_shape": "deviation",
+  "task": "compare",
+  "keywords": [
+   "above below",
+   "variance",
+   "diverging",
+   "vs target"
+  ],
+  "best": "Diverging bar chart around a labelled zero/target line",
+  "alternatives": [
+   "dot plot with a reference line",
+   "bullet chart"
+  ],
+  "avoid_when": "the baseline has no meaning",
+  "volume": "3-40 items",
+  "encoding": "two hues of different lightness for negative/positive, plus +/− signs in labels",
+  "fallback": {
+   "table": "item | value | difference from baseline",
+   "aria_summary": "'{k} items above target; largest gap {item} ({diff}).'",
+   "keyboard": "arrow keys over bars"
+  },
+  "render": "svg",
+  "libraries": "any library; Plot barX with x1/x2 is concise"
+ },
+ {
+  "id": "diverging-stacked-likert",
+  "situation": "Show survey responses on an agree–disagree scale",
+  "data_shape": "deviation",
+  "task": "composition",
+  "keywords": [
+   "likert",
+   "survey",
+   "sentiment",
+   "agree"
+  ],
+  "best": "Diverging stacked bar centred on neutral",
+  "alternatives": [
+   "100% stacked bar with neutral at the side"
+  ],
+  "avoid_when": "the scale is not ordered",
+  "volume": "3-20 questions, 3-7 scale points",
+  "encoding": "diverging palette with a grey neutral; label extremes",
+  "fallback": {
+   "table": "question | each response % | n",
+   "aria_summary": "'{q}: {agree}% agree, {disagree}% disagree.'",
+   "keyboard": "row-by-row with all response shares read out"
+  },
+  "render": "svg",
+  "libraries": "Plot barX stack with offset, ECharts stacked bar with negative values, D3"
+ },
+ {
+  "id": "waterfall-change-breakdown",
+  "situation": "Explain how a starting value became an ending value",
+  "data_shape": "flow",
+  "task": "change",
+  "keywords": [
+   "waterfall",
+   "bridge",
+   "breakdown",
+   "variance"
+  ],
+  "best": "Waterfall (bridge) chart",
+  "alternatives": [
+   "diverging bars of the contributions"
+  ],
+  "avoid_when": "steps are not additive",
+  "volume": "3-20 steps",
+  "encoding": "increase/decrease hues differ in lightness and carry +/− labels; totals in neutral",
+  "fallback": {
+   "table": "step | change | running total",
+   "aria_summary": "'Started at {start}; {biggest} added {delta}; ended at {end}.'",
+   "keyboard": "steps announced in order with running total"
+  },
+  "render": "svg",
+  "libraries": "ECharts stacked bar trick, Plot barY with y1/y2, D3; Chart.js floating bars"
+ },
+ {
+  "id": "sankey-flow",
+  "situation": "Show quantities flowing between stages or categories",
+  "data_shape": "flow",
+  "task": "flow",
+  "keywords": [
+   "sankey",
+   "flow",
+   "funnel paths",
+   "energy"
+  ],
+  "best": "Sankey diagram",
+  "alternatives": [
+   "alluvial for categories over time",
+   "funnel for a single path"
+  ],
+  "avoid_when": "more than ~30 nodes or cyclic flows",
+  "volume": "<= 30 nodes, <= 100 links",
+  "encoding": "colour links by source; label node totals; avoid more than 8 hues",
+  "fallback": {
+   "table": "source | target | value",
+   "aria_summary": "'Most of {source} ({pct}%) goes to {target}.'",
+   "keyboard": "nodes focusable; announce in/out totals"
+  },
+  "render": "svg",
+  "libraries": "d3-sankey, ECharts sankey, Plotly; Chart.js sankey plugin"
+ },
+ {
+  "id": "funnel-conversion",
+  "situation": "Show drop-off through ordered steps",
+  "data_shape": "flow",
+  "task": "change",
+  "keywords": [
+   "funnel",
+   "conversion",
+   "drop off",
+   "steps"
+  ],
+  "best": "Horizontal bar funnel with step-to-step conversion %",
+  "alternatives": [
+   "line of conversion rate over time for trends"
+  ],
+  "avoid_when": "steps are not strictly sequential",
+  "volume": "3-8 steps",
+  "encoding": "single hue with decreasing lightness; call out the biggest drop",
+  "fallback": {
+   "table": "step | users | % of previous | % of first",
+   "aria_summary": "'{pct}% of visitors complete; largest drop at {step} (−{drop}%).'",
+   "keyboard": "arrow keys over steps"
+  },
+  "render": "svg",
+  "libraries": "any bar chart; ECharts funnel; avoid trapezoid shapes that distort"
+ },
+ {
+  "id": "gantt-schedule",
+  "situation": "Show tasks over time with durations and dependencies",
+  "data_shape": "time-span",
+  "task": "schedule",
+  "keywords": [
+   "gantt",
+   "timeline",
+   "schedule",
+   "roadmap"
+  ],
+  "best": "Gantt chart",
+  "alternatives": [
+   "simple timeline for milestones only"
+  ],
+  "avoid_when": "tasks have no duration (use a milestone timeline)",
+  "volume": "5-200 tasks",
+  "encoding": "colour by owner or status (with icons/text, not colour alone); today line labelled",
+  "fallback": {
+   "table": "task | start | end | owner | status",
+   "aria_summary": "'{n} tasks; {late} behind schedule; next milestone {m} on {date}.'",
+   "keyboard": "list view with arrow navigation"
+  },
+  "render": "svg",
+  "libraries": "Plot barX with x1/x2, ECharts custom series, D3; dedicated gantt libs for editing"
+ },
+ {
+  "id": "timeline-events",
+  "situation": "Show discrete events in order",
+  "data_shape": "time-span",
+  "task": "sequence",
+  "keywords": [
+   "timeline",
+   "events",
+   "history",
+   "milestones"
+  ],
+  "best": "Annotated horizontal (desktop) or vertical (mobile) timeline",
+  "alternatives": [
+   "table of dated events"
+  ],
+  "avoid_when": "events need quantitative comparison",
+  "volume": "3-50 events",
+  "encoding": "one hue; category by icon + label",
+  "fallback": {
+   "table": "date | event | detail",
+   "aria_summary": "'{n} events from {first} to {last}.'",
+   "keyboard": "an ordered list is the accessible form"
+  },
+  "render": "svg",
+  "libraries": "semantic <ol> + CSS; D3/Plot tickX for dense data"
+ },
+ {
+  "id": "choropleth-region-rate",
+  "situation": "Show a rate or ratio by geographic region",
+  "data_shape": "geospatial",
+  "task": "locate",
+  "keywords": [
+   "map",
+   "choropleth",
+   "region",
+   "by country",
+   "by state"
+  ],
+  "best": "Choropleth with a classed sequential scale (5-7 steps)",
+  "alternatives": [
+   "tile grid map for equal-weight regions",
+   "sorted bar chart"
+  ],
+  "avoid_when": "showing raw totals (use proportional symbols) or small regions hide large populations",
+  "volume": "10-3,000 regions",
+  "encoding": "sequential colour-blind-safe scale; legend with ranges; hatch 'no data'",
+  "fallback": {
+   "table": "region | value | rank",
+   "aria_summary": "'Highest in {region} ({v}); lowest in {r2}.'",
+   "keyboard": "region list with search; map is supplementary"
+  },
+  "render": "svg",
+  "libraries": "Plot geo, D3 geoPath, ECharts map; MapLibre for slippy maps"
+ },
+ {
+  "id": "symbol-map-totals",
+  "situation": "Show counts or totals at locations",
+  "data_shape": "geospatial",
+  "task": "locate",
+  "keywords": [
+   "bubble map",
+   "points",
+   "locations",
+   "stores"
+  ],
+  "best": "Proportional symbol map (area-scaled circles)",
+  "alternatives": [
+   "dot density",
+   "clustered markers on a slippy map"
+  ],
+  "avoid_when": "values are rates (use choropleth)",
+  "volume": "10-5,000 locations (cluster above)",
+  "encoding": "one hue, translucent, area-scaled, with a size legend",
+  "fallback": {
+   "table": "place | lat | lon | value",
+   "aria_summary": "'{n} locations; largest {place} ({v}).'",
+   "keyboard": "searchable list of places"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "Plot dot on geo, MapLibre circle layer, ECharts scatter on geo, D3"
+ },
+ {
+  "id": "kpi-single-value",
+  "situation": "Show one headline number and its change",
+  "data_shape": "single-value",
+  "task": "monitor",
+  "keywords": [
+   "kpi",
+   "big number",
+   "stat",
+   "metric card"
+  ],
+  "best": "KPI card: value, unit, period, delta vs comparison, optional sparkline",
+  "alternatives": [
+   "bullet chart against a target"
+  ],
+  "avoid_when": "the number has no comparison point (add one)",
+  "volume": "1 value (+ 10-60 points for sparkline)",
+  "encoding": "delta direction with arrow + sign + colour; never colour alone",
+  "fallback": {
+   "table": "not needed; the text is the data",
+   "aria_summary": "'{metric}: {value} {unit}, {delta} vs {period}.'",
+   "keyboard": "static text, no interaction needed"
+  },
+  "render": "svg",
+  "libraries": "plain HTML; sparkline via Plot or a tiny SVG path"
+ },
+ {
+  "id": "bullet-target",
+  "situation": "Show progress toward a target with qualitative ranges",
+  "data_shape": "single-value",
+  "task": "compare",
+  "keywords": [
+   "bullet",
+   "target",
+   "goal",
+   "progress vs target"
+  ],
+  "best": "Bullet chart",
+  "alternatives": [
+   "progress bar with target tick",
+   "KPI card"
+  ],
+  "avoid_when": "there is no target",
+  "volume": "1-20 measures",
+  "encoding": "greyscale bands for ranges; one strong hue for the measure; target as a labelled tick",
+  "fallback": {
+   "table": "measure | value | target | ranges",
+   "aria_summary": "'{measure} at {pct}% of target.'",
+   "keyboard": "one focus stop per bullet"
+  },
+  "render": "svg",
+  "libraries": "D3, Plot (bars + tick), ECharts custom; avoid gauges"
+ },
+ {
+  "id": "gauge-avoid",
+  "situation": "Show a single value on a dial (gauge request)",
+  "data_shape": "single-value",
+  "task": "monitor",
+  "keywords": [
+   "gauge",
+   "speedometer",
+   "dial"
+  ],
+  "best": "Usually a bullet chart or KPI card instead",
+  "alternatives": [
+   "semicircle gauge only for a single, well-known 0-100 scale"
+  ],
+  "avoid_when": "dashboards with more than one gauge — they waste space and are hard to compare",
+  "volume": "1 value",
+  "encoding": "if a gauge is mandated, use 3 bands max and a numeric label",
+  "fallback": {
+   "table": "value | min | max | thresholds",
+   "aria_summary": "'{metric} is {v} of {max} ({band}).'",
+   "keyboard": "not interactive"
+  },
+  "render": "svg",
+  "libraries": "ECharts gauge; prefer a bullet"
+ },
+ {
+  "id": "slope-two-points",
+  "situation": "Compare change between two points in time for several items",
+  "data_shape": "time-series",
+  "task": "change",
+  "keywords": [
+   "before after",
+   "slope",
+   "two periods",
+   "ranking change"
+  ],
+  "best": "Slope chart",
+  "alternatives": [
+   "dumbbell chart",
+   "paired bars"
+  ],
+  "avoid_when": "more than two time points",
+  "volume": "3-20 items",
+  "encoding": "highlight risers vs fallers by hue + line style; label both ends",
+  "fallback": {
+   "table": "item | before | after | change",
+   "aria_summary": "'{k} items rose; {top} gained most (+{d}).'",
+   "keyboard": "arrow keys through items"
+  },
+  "render": "svg",
+  "libraries": "Plot line + text, D3, ECharts line with two categories"
+ },
+ {
+  "id": "dumbbell-gap",
+  "situation": "Show the gap between two values per item",
+  "data_shape": "comparison",
+  "task": "compare",
+  "keywords": [
+   "dumbbell",
+   "gap",
+   "range",
+   "min max"
+  ],
+  "best": "Dumbbell (connected dot) plot",
+  "alternatives": [
+   "grouped bar chart",
+   "slope chart"
+  ],
+  "avoid_when": "values do not share a scale",
+  "volume": "3-40 items",
+  "encoding": "two marker shapes and hues for the two values; sort by gap",
+  "fallback": {
+   "table": "item | value A | value B | gap",
+   "aria_summary": "'Widest gap: {item} ({gap}).'",
+   "keyboard": "arrow keys through rows"
+  },
+  "render": "svg",
+  "libraries": "Plot link + dot, D3, ECharts custom"
+ },
+ {
+  "id": "grouped-bar-subgroups",
+  "situation": "Compare a value across categories and a few subgroups",
+  "data_shape": "categorical",
+  "task": "compare",
+  "keywords": [
+   "grouped bar",
+   "clustered",
+   "by segment"
+  ],
+  "best": "Grouped bar chart (≤ 3 subgroups)",
+  "alternatives": [
+   "small multiples of bars",
+   "dot plot with colour"
+  ],
+  "avoid_when": "more than ~3-4 subgroups",
+  "volume": "3-15 categories × 2-3 subgroups",
+  "encoding": "distinct lightness + pattern per subgroup; legend in the same order as bars",
+  "fallback": {
+   "table": "category | subgroup A | subgroup B",
+   "aria_summary": "'{cat} leads for {subgroup}.'",
+   "keyboard": "arrow keys across categories, Up/Down across subgroups"
+  },
+  "render": "svg",
+  "libraries": "Plot barY with fx, ECharts bar series, Chart.js datasets, Recharts multiple Bar"
+ },
+ {
+  "id": "ranking-over-time",
+  "situation": "Show how rank order changes over time",
+  "data_shape": "ranking",
+  "task": "rank",
+  "keywords": [
+   "bump chart",
+   "ranking",
+   "league table"
+  ],
+  "best": "Bump chart",
+  "alternatives": [
+   "slope chart for two periods",
+   "sorted table with rank deltas"
+  ],
+  "avoid_when": "values matter more than ranks",
+  "volume": "5-15 items, 3-20 periods",
+  "encoding": "highlight 1-3 items; grey the rest",
+  "fallback": {
+   "table": "period | rank 1..n",
+   "aria_summary": "'{item} climbed from #{a} to #{b}.'",
+   "keyboard": "arrow keys over periods"
+  },
+  "render": "svg",
+  "libraries": "Plot line on rank, D3, ECharts line inverse axis"
+ },
+ {
+  "id": "ranking-top-n",
+  "situation": "Show a top-N list where order is the message",
+  "data_shape": "ranking",
+  "task": "rank",
+  "keywords": [
+   "top 10",
+   "leaderboard",
+   "ranking"
+  ],
+  "best": "Sorted horizontal bars or a table with inline bars",
+  "alternatives": [
+   "lollipop chart"
+  ],
+  "avoid_when": "the list is long; paginate or search instead",
+  "volume": "5-25 items",
+  "encoding": "single hue; highlight the viewer's own item",
+  "fallback": {
+   "table": "rank | item | value",
+   "aria_summary": "'#1 {item} with {v}.'",
+   "keyboard": "native table semantics"
+  },
+  "render": "svg",
+  "libraries": "HTML table + CSS bars, or any bar chart"
+ },
+ {
+  "id": "network-relationships",
+  "situation": "Show connections between entities",
+  "data_shape": "network",
+  "task": "explore",
+  "keywords": [
+   "network",
+   "graph",
+   "nodes",
+   "links",
+   "dependencies"
+  ],
+  "best": "Force-directed node-link diagram (small) or adjacency matrix (dense)",
+  "alternatives": [
+   "arc diagram",
+   "hierarchical edge bundling"
+  ],
+  "avoid_when": "more than ~300 nodes in node-link form (hairball)",
+  "volume": "<= 300 nodes node-link; matrix above",
+  "encoding": "colour by community (<= 8) plus labels on hubs",
+  "fallback": {
+   "table": "source | target | weight; per-node degree table",
+   "aria_summary": "'{n} nodes, {m} links; most connected {hub}.'",
+   "keyboard": "node list with neighbours; focus moves along links"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "D3 force, ECharts graph, Cytoscape.js, Sigma.js (WebGL) for large graphs"
+ },
+ {
+  "id": "candlestick-ohlc",
+  "situation": "Show open-high-low-close prices",
+  "data_shape": "time-series",
+  "task": "trend",
+  "keywords": [
+   "candlestick",
+   "ohlc",
+   "stock",
+   "price"
+  ],
+  "best": "Candlestick chart with volume pane",
+  "alternatives": [
+   "line chart of close for general audiences"
+  ],
+  "avoid_when": "the audience is not trading-literate",
+  "volume": "20-5,000 candles; canvas above ~1k",
+  "encoding": "up/down by fill vs hollow as well as hue (avoid red/green only)",
+  "fallback": {
+   "table": "date | open | high | low | close | volume",
+   "aria_summary": "'Closed at {c} ({pct}%), range {low}-{high}.'",
+   "keyboard": "arrow keys over candles"
+  },
+  "render": "canvas",
+  "libraries": "ECharts candlestick, TradingView Lightweight Charts, Plot ruleX + barY"
+ },
+ {
+  "id": "realtime-stream",
+  "situation": "Monitor a live metric updating every second",
+  "data_shape": "time-series",
+  "task": "monitor",
+  "keywords": [
+   "real-time",
+   "live",
+   "streaming",
+   "monitoring"
+  ],
+  "best": "Rolling line chart with a fixed time window",
+  "alternatives": [
+   "KPI card with sparkline",
+   "status list for many metrics"
+  ],
+  "avoid_when": "updates are faster than people can read; aggregate instead",
+  "volume": "window of 60-3,600 points; throttle redraw to <= 4 fps for readers",
+  "encoding": "one hue per metric; threshold lines labelled",
+  "fallback": {
+   "table": "latest N values + current value text",
+   "aria_summary": "live region announcing threshold crossings only, never every tick",
+   "keyboard": "pause/resume control; arrow keys when paused"
+  },
+  "render": "canvas",
+  "libraries": "ECharts with appendData, uPlot, Chart.js streaming plugin; canvas preferred"
+ },
+ {
+  "id": "uncertainty-range",
+  "situation": "Show an estimate with its uncertainty or forecast band",
+  "data_shape": "uncertainty",
+  "task": "trend",
+  "keywords": [
+   "confidence interval",
+   "forecast",
+   "error bars",
+   "range"
+  ],
+  "best": "Line with shaded interval band, or point + error bars",
+  "alternatives": [
+   "fan chart for multiple intervals",
+   "quantile dot plot"
+  ],
+  "avoid_when": "readers will treat the band as hard limits without explanation",
+  "volume": "any; keep band translucent",
+  "encoding": "band in a lighter tint of the line hue; state the interval (e.g. 90%) in the legend",
+  "fallback": {
+   "table": "x | estimate | lower | upper",
+   "aria_summary": "'Forecast {v} (90% range {lo}–{hi}).'",
+   "keyboard": "arrow keys read estimate and bounds"
+  },
+  "render": "svg",
+  "libraries": "Plot areaY + line, ECharts stacked area trick, D3 area, Recharts Area with range"
+ },
+ {
+  "id": "radar-profile",
+  "situation": "Compare a few items across several attributes (profile)",
+  "data_shape": "multivariate",
+  "task": "compare",
+  "keywords": [
+   "radar",
+   "spider",
+   "attributes",
+   "profile"
+  ],
+  "best": "Usually a grouped bar or dot plot; radar only for 3-8 axes with shared scale and <= 3 items",
+  "alternatives": [
+   "parallel coordinates for many items",
+   "heatmap"
+  ],
+  "avoid_when": "axes have different units, or more than 3 items overlap",
+  "volume": "3-8 axes, 1-3 items",
+  "encoding": "translucent fills, distinct line styles, labelled axes",
+  "fallback": {
+   "table": "item | attribute 1..n",
+   "aria_summary": "'{item} scores highest on {attr}.'",
+   "keyboard": "table is the primary accessible form"
+  },
+  "render": "svg",
+  "libraries": "ECharts radar, Chart.js radar, Recharts RadarChart; Plot via line in polar projection"
+ },
+ {
+  "id": "parallel-coordinates",
+  "situation": "Explore many items across many numeric dimensions",
+  "data_shape": "multivariate",
+  "task": "explore",
+  "keywords": [
+   "parallel coordinates",
+   "multidimensional",
+   "filtering"
+  ],
+  "best": "Parallel coordinates with brushing",
+  "alternatives": [
+   "scatterplot matrix",
+   "heatmap of normalised values"
+  ],
+  "avoid_when": "the audience is non-technical",
+  "volume": "50-10,000 lines (canvas above ~1k)",
+  "encoding": "neutral lines; brushed selection in one strong hue",
+  "fallback": {
+   "table": "full data table with filters",
+   "aria_summary": "'{n} items; {k} match the current filters.'",
+   "keyboard": "filters as form controls mirror the brushes"
+  },
+  "render": "svg below ~2k marks, canvas above",
+  "libraries": "ECharts parallel, D3, Plotly"
+ },
+ {
+  "id": "data-table-precise",
+  "situation": "Readers need exact values or to look up specific items",
+  "data_shape": "tabular",
+  "task": "lookup",
+  "keywords": [
+   "table",
+   "exact values",
+   "lookup",
+   "spreadsheet"
+  ],
+  "best": "Sortable data table with inline bars or sparklines",
+  "alternatives": [
+   "chart plus downloadable table"
+  ],
+  "avoid_when": "the message is a pattern, not a value",
+  "volume": "any; paginate or virtualise above ~200 rows",
+  "encoding": "conditional colour only with text values present",
+  "fallback": {
+   "table": "it is the table",
+   "aria_summary": "caption states the scope and units",
+   "keyboard": "native table semantics; sortable headers as buttons"
+  },
+  "render": "svg",
+  "libraries": "HTML table; TanStack Table or AG Grid for heavy interaction"
+ }
+]

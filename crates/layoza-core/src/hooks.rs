@@ -11,10 +11,20 @@
 // - Never blocks: always exit 0, never emits `decision: "block"`, swallows every internal error.
 // - Fast: no browser, no project walk; one file (<= 512 KB) plus at most a few DNA lookups.
 // - Brand-aware: colours from `SITE-DNA.json` / `DESIGN.md` are never flagged as off-brand.
-// - Quiet: per-file 10 s rate limit, objective errors/warnings only plus <= 5 critique notes,
-//   and a single real-browser QA reminder per agent session.
+// - Quiet: an unchanged file is not re-checked within 10 s (a changed one always is), objective
+//   errors/warnings only plus <= 5 critique notes, and one real-browser QA reminder per session.
+// - Opt-in rules: besides the verifier's static audit, guidelines that carry a `hook` block
+//   (`guidelines.rs`) run as cheap pattern checks. Rules marked `default_on: false` run only when
+//   the project lists them in `.layoza/hooks.json`; any rule can be disabled there.
+// - Latency budget: the whole check targets <= 300 ms per file (configurable). Guideline rules stop
+//   as soon as the budget is spent, and the summary reports the measured time and any skipped work.
+//
+// `.layoza/hooks.json` (all keys optional):
+//   { "budget_ms": 300, "enable": ["I18N-02"], "disable": ["NAV-07"], "verifier": true }
+// `LAYOZA_HOOK_BUDGET_MS` overrides `budget_ms`.
 
 use crate::dna::SiteDna;
+use crate::guidelines;
 use crate::installer::resolve_user_home;
 use crate::verifier::{audit_file_content, AuditFinding, FindingKind, Severity};
 use serde::Serialize;
@@ -23,6 +33,7 @@ use std::collections::BTreeSet;
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::time::Instant;
 
 /// Marker argument carried by Layoza's hook command; `off`/`status` identify our entry by it,
 /// so hooks written by the user or other tools are never touched.
@@ -37,6 +48,10 @@ pub const RATE_LIMIT_MS: u64 = 10_000;
 pub const MAX_CRITIQUE_NOTES: usize = 5;
 /// Files larger than this are skipped (generated bundles, minified CSS, etc).
 pub const MAX_FILE_BYTES: u64 = 512 * 1024;
+/// Default per-file latency budget for `check-edit`.
+pub const DEFAULT_BUDGET_MS: u64 = 300;
+/// Guideline hook findings shown per edit, at most.
+pub const MAX_GUIDELINE_FINDINGS: usize = 6;
 
 pub const UI_EXTENSIONS: &[&str] = &[
     "html", "htm", "css", "scss", "tsx", "jsx", "vue", "svelte", "astro", "php", "liquid",
@@ -382,10 +397,121 @@ fn load_brand_context(file: &Path, project_root: &Path) -> BrandContext {
     ctx
 }
 
+/// Per-project hook settings from `.layoza/hooks.json`. Unknown keys are ignored and a malformed
+/// file falls back to defaults, so a typo never breaks the hook.
+#[derive(Debug, Clone, serde::Deserialize, Serialize)]
+pub struct HookConfig {
+    #[serde(default = "default_budget")]
+    pub budget_ms: u64,
+    /// Guideline ids to run even though they ship `default_on: false`.
+    #[serde(default)]
+    pub enable: Vec<String>,
+    /// Guideline ids (or verifier rule ids) never reported for this project.
+    #[serde(default)]
+    pub disable: Vec<String>,
+    /// Run the verifier's static audit (on by default).
+    #[serde(default = "default_true")]
+    pub verifier: bool,
+}
+
+fn default_budget() -> u64 {
+    DEFAULT_BUDGET_MS
+}
+fn default_true() -> bool {
+    true
+}
+
+impl Default for HookConfig {
+    fn default() -> Self {
+        HookConfig { budget_ms: DEFAULT_BUDGET_MS, enable: Vec::new(), disable: Vec::new(), verifier: true }
+    }
+}
+
+impl HookConfig {
+    pub fn load(project_root: &Path) -> HookConfig {
+        let mut cfg: HookConfig = fs::read_to_string(project_root.join(".layoza").join("hooks.json"))
+            .ok()
+            .and_then(|s| serde_json::from_str(s.trim_start_matches('\u{feff}')).ok())
+            .unwrap_or_default();
+        if let Some(ms) = env::var("LAYOZA_HOOK_BUDGET_MS").ok().and_then(|v| v.trim().parse::<u64>().ok()) {
+            cfg.budget_ms = ms;
+        }
+        cfg.budget_ms = cfg.budget_ms.clamp(20, 5_000);
+        cfg
+    }
+
+    fn is_disabled(&self, id: &str) -> bool {
+        self.disable.iter().any(|d| d.eq_ignore_ascii_case(id))
+    }
+
+    /// A guideline rule runs when it opted in (`default_on`) or the project enabled it, and the
+    /// project has not disabled it.
+    pub fn rule_active(&self, id: &str, default_on: bool) -> bool {
+        !self.is_disabled(id) && (default_on || self.enable.iter().any(|e| e.eq_ignore_ascii_case(id)))
+    }
+}
+
+/// Runs the opted-in guideline pattern rules on one file until `deadline_ms` after `start`.
+/// Returns the findings and how many active rules were skipped because the budget ran out.
+pub fn guideline_findings(
+    label: &str,
+    content: &str,
+    cfg: &HookConfig,
+    start: Instant,
+    deadline_ms: u64,
+) -> (Vec<AuditFinding>, usize) {
+    let squashed: String = content.chars().filter(|c| !c.is_whitespace()).collect::<String>().to_ascii_lowercase();
+    let mut out = Vec::new();
+    let mut skipped = 0;
+    for (g, rule) in guidelines::hook_rules() {
+        if !cfg.rule_active(&g.id, rule.default_on) {
+            continue;
+        }
+        if start.elapsed().as_millis() as u64 >= deadline_ms {
+            skipped += 1;
+            continue;
+        }
+        let hit = rule.patterns.iter().any(|p| squashed.contains(p.as_str()));
+        if !hit || rule.unless.iter().any(|u| squashed.contains(u.as_str())) {
+            continue;
+        }
+        let severity = match g.severity.as_str() {
+            "critical" => Severity::Error,
+            "low" => Severity::Info,
+            _ => Severity::Warning,
+        };
+        out.push(AuditFinding {
+            rule_id: g.id.clone(),
+            kind: FindingKind::DeterministicObjective,
+            severity,
+            category: g.category.clone(),
+            file_or_selector: label.into(),
+            message: format!(
+                "{} ({}).",
+                g.rule.trim_end_matches('.'),
+                rule.message.as_deref().unwrap_or("pattern found")
+            ),
+            remediation: format!("{} Check: {}.", g.do_.trim_end_matches('.'), g.check),
+            auto_repairable: false,
+        });
+    }
+    (out, skipped)
+}
+
+fn content_hash(content: &str) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut h = std::collections::hash_map::DefaultHasher::new();
+    content.hash(&mut h);
+    h.finish()
+}
+
 #[derive(Debug, Default, serde::Deserialize, Serialize)]
 struct HookState {
     #[serde(default)]
     checked: std::collections::BTreeMap<String, u64>,
+    /// Content hash at the last check; a changed file is re-checked even inside the window.
+    #[serde(default)]
+    hashes: std::collections::BTreeMap<String, u64>,
     #[serde(default)]
     reminded_sessions: Vec<String>,
 }
@@ -465,6 +591,7 @@ fn off_palette_note(label: &str, content: &str, palette: &BTreeSet<String>) -> O
 /// (a Claude Code hook JSON object) or `None` when the hook should stay silent.
 /// Never returns an error: anything unexpected degrades to silence.
 pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_ms: u64) -> Option<String> {
+    let start = Instant::now();
     if env::var("LAYOZA_HOOK").map(|v| v == "off" || v == "0").unwrap_or(false) {
         return None;
     }
@@ -492,16 +619,23 @@ pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_m
         return None;
     }
 
-    // Rate limit + once-per-session reminder bookkeeping.
+    let content = fs::read_to_string(&file).ok()?;
+    let hash = content_hash(&content);
+
+    // Rate limit (unchanged content only) + once-per-session reminder bookkeeping.
     let mut state = load_state(&project_root);
     let key = rate_key(&file);
     if let Some(&last) = state.checked.get(&key) {
-        if now_ms.saturating_sub(last) < RATE_LIMIT_MS {
+        let unchanged = state.hashes.get(&key).map_or(true, |h| *h == hash);
+        if unchanged && now_ms.saturating_sub(last) < RATE_LIMIT_MS {
             return None;
         }
     }
     state.checked.retain(|_, t| now_ms.saturating_sub(*t) < 3_600_000);
-    state.checked.insert(key, now_ms);
+    let live: BTreeSet<String> = state.checked.keys().cloned().collect();
+    state.hashes.retain(|k, _| live.contains(k));
+    state.checked.insert(key.clone(), now_ms);
+    state.hashes.insert(key, hash);
     let session = payload
         .get("session_id")
         .and_then(Value::as_str)
@@ -515,7 +649,7 @@ pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_m
     }
     save_state(&project_root, &state);
 
-    let content = fs::read_to_string(&file).ok()?;
+    let cfg = HookConfig::load(&project_root);
     let label = file
         .strip_prefix(&project_root)
         .unwrap_or(&file)
@@ -524,10 +658,17 @@ pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_m
     let brand = load_brand_context(&file, &project_root);
 
     let mut findings = Vec::new();
-    audit_file_content(&label, &content, brand.dna.as_ref(), &mut findings);
+    if cfg.verifier {
+        audit_file_content(&label, &content, brand.dna.as_ref(), &mut findings);
+    }
     if let Some(n) = off_palette_note(&label, &content, &brand.palette) {
         findings.push(n);
     }
+    // Static subset of the guideline rules, only while the latency budget lasts.
+    let (mut guide, skipped) = guideline_findings(&label, &content, &cfg, start, cfg.budget_ms);
+    guide.truncate(MAX_GUIDELINE_FINDINGS);
+    findings.extend(guide);
+    findings.retain(|f| !cfg.is_disabled(&f.rule_id));
 
     // Brand-aware filter: never critique colours the brand itself owns.
     findings.retain(|f| {
@@ -554,14 +695,24 @@ pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_m
         return None;
     }
 
+    let elapsed_ms = start.elapsed().as_millis() as u64;
+    let timing = if elapsed_ms > cfg.budget_ms || skipped > 0 {
+        format!(
+            " [{} ms, over the {} ms budget; {} guideline rule(s) skipped]",
+            elapsed_ms, cfg.budget_ms, skipped
+        )
+    } else {
+        format!(" [{} ms of {} ms budget]", elapsed_ms, cfg.budget_ms)
+    };
+
     let mut lines = Vec::new();
     let errors = objective.iter().filter(|f| f.severity == Severity::Error).count();
     let warnings = objective.len() - errors;
     if objective.is_empty() && critiques.is_empty() {
-        lines.push(format!("Layoza check-edit: `{}` passed the static checks.", label));
+        lines.push(format!("Layoza check-edit: `{}` passed the static checks.{}", label, timing));
     } else {
         lines.push(format!(
-            "Layoza check-edit on `{}`: {} error(s), {} warning(s), {} design note(s){}.",
+            "Layoza check-edit on `{}`: {} error(s), {} warning(s), {} design note(s){}.{}",
             label,
             errors,
             warnings,
@@ -570,7 +721,8 @@ pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_m
                 .source
                 .as_deref()
                 .map(|s| format!(" (brand context: {})", s.rsplit('/').next().unwrap_or(s)))
-                .unwrap_or_default()
+                .unwrap_or_default(),
+            timing
         ));
         for f in objective.iter().chain(critiques.iter()) {
             lines.push(format!(
@@ -802,6 +954,45 @@ mod hook_tests {
         assert!(!ctx2.contains("#8b5cf6,"), "{}", ctx2);
         let _ = fs::remove_dir_all(d);
         let _ = fs::remove_dir_all(d2);
+    }
+
+    #[test]
+    fn guideline_rules_run_opt_in_and_report_timing() {
+        let d = temp_dir("guide");
+        let f = d.join("page.html");
+        let html = "<html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, maximum-scale=1, user-scalable=no\"></head>\
+                    <body><main><p style=\"margin-left: 8px\">Hi</p><a href=\"/x\" tabindex=\"3\">x</a></main></body></html>";
+        fs::write(&f, html).unwrap();
+        let out = check_edit(&payload(&f, "g"), Some(&d), &d, 1).expect("findings");
+        let ctx = context_of(&out);
+        assert!(ctx.contains("TOUCH-03"), "zoom rule (default on): {}", ctx);
+        assert!(ctx.contains("NAV-11"), "positive tabindex rule: {}", ctx);
+        assert!(!ctx.contains("I18N-02"), "opt-in-only rule must stay off by default: {}", ctx);
+        assert!(ctx.contains("ms of 300 ms budget"), "timing reported: {}", ctx);
+
+        // Project opts in to I18N-02 and disables NAV-11; a changed file is re-checked at once.
+        fs::write(d.join(".layoza").join("hooks.json"), r#"{"enable":["I18N-02"],"disable":["nav-11"],"budget_ms":250}"#).unwrap();
+        fs::write(&f, format!("{}\n", html)).unwrap();
+        let ctx2 = context_of(&check_edit(&payload(&f, "g"), Some(&d), &d, 2).expect("changed file re-checked"));
+        assert!(ctx2.contains("I18N-02") && !ctx2.contains("NAV-11"), "{}", ctx2);
+        assert!(ctx2.contains("250 ms budget"), "{}", ctx2);
+        // Unchanged within the window: still rate-limited.
+        assert_eq!(check_edit(&payload(&f, "g"), Some(&d), &d, 3), None);
+        let _ = fs::remove_dir_all(d);
+    }
+
+    #[test]
+    fn guideline_rules_respect_the_budget() {
+        let cfg = HookConfig::default();
+        let start = Instant::now();
+        let (found, skipped) = guideline_findings("a.css", ".a{transition:all .2s}", &cfg, start, 0);
+        assert!(found.is_empty() && skipped > 0);
+        let (found, skipped) = guideline_findings("a.css", ".a{transition: all .2s}", &cfg, start, 10_000);
+        assert_eq!(skipped, 0);
+        assert!(found.iter().any(|f| f.rule_id == "PERF-07"), "{:?}", found);
+        // Exemptions apply: dvh present means 100vh fallback is fine.
+        let (found, _) = guideline_findings("a.css", ".h{min-height:100vh;min-height:100dvh}", &cfg, start, 10_000);
+        assert!(found.iter().all(|f| f.rule_id != "TOUCH-05"), "{:?}", found);
     }
 
     #[test]

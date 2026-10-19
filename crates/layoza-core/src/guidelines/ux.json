@@ -1,0 +1,3635 @@
+[
+ {
+  "id": "FORM-01",
+  "category": "forms",
+  "rule": "Every field has a visible, persistent label tied to the control.",
+  "check": "every input/select/textarea has a <label for> or aria-labelledby; 0 unlabeled controls",
+  "measured_by": "browser",
+  "do": "Put the label above the field and link it with for/id.",
+  "dont": "Rely on placeholder text as the only label; it vanishes on typing.",
+  "good": "<label for=\"email\">Email</label><input id=\"email\" type=\"email\">",
+  "bad": "<input placeholder=\"Email\">",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "label",
+   "placeholder",
+   "field"
+  ],
+  "hook": {
+   "patterns": [
+    "placeholder="
+   ],
+   "unless": [
+    "<label",
+    "aria-label",
+    "aria-labelledby",
+    "label="
+   ],
+   "default_on": true,
+   "message": "placeholder present but no label in this file"
+  }
+ },
+ {
+  "id": "FORM-02",
+  "category": "forms",
+  "rule": "Use the input type and inputmode that match the data so mobile keyboards fit it.",
+  "check": "email/tel/url/number-like fields use type or inputmode, not plain text",
+  "measured_by": "static",
+  "do": "type=email, type=tel, inputmode=numeric for codes.",
+  "dont": "type=number for card numbers, ZIPs or phone numbers (it adds spinners and drops leading zeros).",
+  "good": "<input type=\"text\" inputmode=\"numeric\" autocomplete=\"one-time-code\">",
+  "bad": "<input type=\"number\" name=\"zip\">",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "keyboard",
+   "inputmode",
+   "type"
+  ]
+ },
+ {
+  "id": "FORM-03",
+  "category": "forms",
+  "rule": "Turn on browser and OS autofill with correct autocomplete tokens.",
+  "check": "name/email/tel/address/cc fields carry a valid autocomplete token",
+  "measured_by": "browser",
+  "do": "autocomplete=\"email\", \"given-name\", \"street-address\", \"cc-number\".",
+  "dont": "autocomplete=\"off\" on personal-data fields.",
+  "good": "<input name=\"email\" autocomplete=\"email\">",
+  "bad": "<input name=\"email\" autocomplete=\"off\">",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "autocomplete",
+   "autofill"
+  ]
+ },
+ {
+  "id": "FORM-04",
+  "category": "forms",
+  "rule": "Validate on blur or submit, not on every keystroke before the user finishes.",
+  "check": "no error shown while the field has focus and has never been blurred",
+  "measured_by": "manual",
+  "do": "Show the error after the first blur, then re-validate live so it clears as soon as it is fixed.",
+  "dont": "Flash 'invalid email' after the first character.",
+  "good": "input.addEventListener(\"blur\", validate)",
+  "bad": "input.addEventListener(\"input\", showErrors)",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "validation",
+   "inline",
+   "blur"
+  ]
+ },
+ {
+  "id": "FORM-05",
+  "category": "forms",
+  "rule": "Errors sit next to the field, say what went wrong and how to fix it, and are announced.",
+  "check": "error text linked via aria-describedby and field has aria-invalid=true",
+  "measured_by": "browser",
+  "do": "'Enter a date after 01/01/2020' under the field, linked with aria-describedby.",
+  "dont": "A red border alone, or one 'Form has errors' banner with no field pointer.",
+  "good": "<input aria-invalid=\"true\" aria-describedby=\"dob-err\"><p id=\"dob-err\">Enter a date after 2020.</p>",
+  "bad": "<input class=\"red\">",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "error",
+   "aria-invalid",
+   "describedby"
+  ]
+ },
+ {
+  "id": "FORM-06",
+  "category": "forms",
+  "rule": "On a failed submit, move focus to the first invalid field or to an error summary that links to each field.",
+  "check": "after failed submit, document.activeElement is the summary or first invalid field",
+  "measured_by": "browser",
+  "do": "Summary at the top with anchor links; focus it on submit.",
+  "dont": "Leave focus on the submit button with errors scrolled out of view.",
+  "good": "summary.focus(); // <div role=\"alert\" tabindex=\"-1\">",
+  "bad": "/* errors rendered, focus unchanged */",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "submit",
+   "error summary",
+   "focus"
+  ]
+ },
+ {
+  "id": "FORM-07",
+  "category": "forms",
+  "rule": "Mark optional fields rather than required ones when most fields are required, and never use colour alone.",
+  "check": "required state exposed with the required attribute, not only an asterisk colour",
+  "measured_by": "static",
+  "do": "Use the required attribute; add '(optional)' text to the few optional fields.",
+  "dont": "A red asterisk with no text alternative and no required attribute.",
+  "good": "<input required> <label>Company (optional)</label>",
+  "bad": "<span style=\"color:red\">*</span>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "required",
+   "optional"
+  ]
+ },
+ {
+  "id": "FORM-08",
+  "category": "forms",
+  "rule": "Keep forms to one column so the reading path is a straight line.",
+  "check": "multi-column only for tightly related short pairs (city/postcode, expiry/CVC)",
+  "measured_by": "manual",
+  "do": "Stack fields; pair only short related fields.",
+  "dont": "Zig-zag two-column layouts that hide fields from skimmers.",
+  "good": ".form{display:grid;gap:1rem}",
+  "bad": ".form{display:grid;grid-template-columns:1fr 1fr}",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "layout",
+   "column"
+  ]
+ },
+ {
+  "id": "FORM-09",
+  "category": "forms",
+  "rule": "Disable the submit button only while a request is in flight, never as the way to signal invalid input.",
+  "check": "submit is enabled while idle; aria-busy or a spinner while pending",
+  "measured_by": "browser",
+  "do": "Let the user press submit and then explain what is missing.",
+  "dont": "A greyed-out submit with no hint about why.",
+  "good": "<button aria-busy=\"true\" disabled>Saving…</button>",
+  "bad": "<button disabled>Continue</button> <!-- forever, unexplained -->",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "disabled",
+   "submit"
+  ]
+ },
+ {
+  "id": "FORM-10",
+  "category": "forms",
+  "rule": "Prevent double submits and make retries safe.",
+  "check": "second click within the pending window sends no second request",
+  "measured_by": "manual",
+  "do": "Set a pending state on first submit; send an idempotency key for payments.",
+  "dont": "Let a slow network turn one click into two orders.",
+  "good": "if (pending) return; pending = true;",
+  "bad": "form.onsubmit = () => fetch(url, opts)",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "double submit",
+   "idempotent"
+  ]
+ },
+ {
+  "id": "FORM-11",
+  "category": "forms",
+  "rule": "Allow paste in every field, including passwords and verification codes.",
+  "check": "no onpaste preventDefault in source",
+  "measured_by": "static",
+  "do": "Accept pasted one-time codes and split them across segmented inputs.",
+  "dont": "Block paste 'for security' on passwords or emails.",
+  "good": "<input autocomplete=\"current-password\">",
+  "bad": "<input onpaste=\"return false\">",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "paste",
+   "password",
+   "otp"
+  ],
+  "hook": {
+   "patterns": [
+    "onpaste=\"returnfalse",
+    "onpaste={()=>false",
+    "onpaste={(e)=>e.preventdefault()"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "paste is blocked"
+  }
+ },
+ {
+  "id": "FORM-12",
+  "category": "forms",
+  "rule": "Offer a show-password toggle and support password managers.",
+  "check": "password field has a toggle button with aria-pressed and autocomplete set",
+  "measured_by": "static",
+  "do": "A 'Show' button with aria-pressed next to the field.",
+  "dont": "Two password fields with no reveal option.",
+  "good": "<button type=\"button\" aria-pressed=\"false\">Show</button>",
+  "bad": "<input type=\"password\"><input type=\"password\">",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "password",
+   "reveal"
+  ]
+ },
+ {
+  "id": "STATE-01",
+  "category": "input states",
+  "rule": "Every interactive element has distinct default, hover, focus-visible, active, disabled and loading looks.",
+  "check": "focus-visible style differs from default; disabled has visual + disabled attr",
+  "measured_by": "browser",
+  "do": "Define all states in the component, not ad hoc.",
+  "dont": "Only style :hover, leaving keyboard users with no feedback.",
+  "good": ".btn:hover{} .btn:focus-visible{} .btn:active{} .btn:disabled{}",
+  "bad": ".btn:hover{background:#333}",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "states",
+   "hover",
+   "active"
+  ]
+ },
+ {
+  "id": "STATE-02",
+  "category": "input states",
+  "rule": "Focus indicator is visible and contrasts at least 3:1 with the surrounding colours.",
+  "check": "focus ring contrast >= 3:1 against adjacent colours and >= 2 CSS px thick",
+  "measured_by": "browser",
+  "do": "outline:2px solid with offset, in a token colour checked against both themes.",
+  "dont": "outline:none with no replacement.",
+  "good": ":focus-visible{outline:2px solid var(--focus);outline-offset:2px}",
+  "bad": ":focus{outline:none}",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "desktop"
+  ],
+  "keywords": [
+   "focus",
+   "outline",
+   "ring"
+  ]
+ },
+ {
+  "id": "STATE-03",
+  "category": "input states",
+  "rule": "Focused elements are never fully hidden by sticky headers, cookie bars or chat widgets.",
+  "check": "focused element's box is not fully covered by a fixed/sticky element (WCAG 2.4.11)",
+  "measured_by": "browser",
+  "do": "scroll-padding-top equal to the sticky header height.",
+  "dont": "Tab into links that sit underneath a fixed header.",
+  "good": "html{scroll-padding-top:var(--header-h)}",
+  "bad": "header{position:fixed}/* no scroll padding */",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "focus obscured",
+   "sticky"
+  ]
+ },
+ {
+  "id": "STATE-04",
+  "category": "input states",
+  "rule": "Hover is an enhancement, never the only way to reveal actions or information.",
+  "check": "every hover-revealed control is also reachable on focus and on touch",
+  "measured_by": "browser",
+  "do": "Show row actions on hover and on :focus-within; always show them on touch (@media (hover:none)).",
+  "dont": "Delete buttons that exist only on mouse hover.",
+  "good": ".row:is(:hover,:focus-within) .actions{opacity:1}@media (hover:none){.actions{opacity:1}}",
+  "bad": ".row:hover .actions{display:block}",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "hover",
+   "touch",
+   "focus-within"
+  ]
+ },
+ {
+  "id": "STATE-05",
+  "category": "input states",
+  "rule": "Disabled controls explain why when the reason is not obvious.",
+  "check": "disabled control has adjacent helper text or aria-describedby",
+  "measured_by": "manual",
+  "do": "'Add a payment method to continue' next to a disabled button.",
+  "dont": "Silently disabled buttons.",
+  "good": "<button disabled aria-describedby=\"why\">Pay</button><p id=\"why\">Add a card first.</p>",
+  "bad": "<button disabled>Pay</button>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "disabled",
+   "explain"
+  ]
+ },
+ {
+  "id": "STATE-06",
+  "category": "input states",
+  "rule": "State changes are not conveyed by colour alone.",
+  "check": "selected/error/success states carry an icon, text or shape change as well as colour",
+  "measured_by": "browser",
+  "do": "Error = red + icon + message. Selected tab = colour + underline.",
+  "dont": "A green vs red dot as the only status signal.",
+  "good": "<span class=\"status\">✓ Paid</span>",
+  "bad": "<span class=\"dot green\"></span>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "colour alone",
+   "status",
+   "wcag 1.4.1"
+  ]
+ },
+ {
+  "id": "STATE-07",
+  "category": "input states",
+  "rule": "Toggles reflect their state to assistive tech.",
+  "check": "toggle buttons expose aria-pressed or role=switch with aria-checked",
+  "measured_by": "browser",
+  "do": "button[aria-pressed] for toggles; role=switch for on/off settings.",
+  "dont": "A div that swaps a CSS class with no ARIA state.",
+  "good": "<button aria-pressed=\"true\">Bold</button>",
+  "bad": "<div class=\"toggle on\" onclick=\"t()\"></div>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "toggle",
+   "aria-pressed",
+   "switch"
+  ]
+ },
+ {
+  "id": "STATE-08",
+  "category": "input states",
+  "rule": "Press feedback appears within 100 ms of input.",
+  "check": "visual response to pointerdown/click <= 100 ms; INP <= 200 ms",
+  "measured_by": "browser",
+  "do": "Use :active styles and optimistic UI; defer heavy work after paint.",
+  "dont": "Run the expensive handler before any visual change.",
+  "good": "btn.onclick = () => { setPending(true); requestAnimationFrame(() => work()); }",
+  "bad": "btn.onclick = () => { heavySync(); setPending(true); }",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "feedback",
+   "latency",
+   "inp"
+  ]
+ },
+ {
+  "id": "STATE-09",
+  "category": "input states",
+  "rule": "Selected and current items use aria-current or aria-selected, not only styling.",
+  "check": "current nav link has aria-current=page",
+  "measured_by": "browser",
+  "do": "<a aria-current=\"page\"> for the current page.",
+  "dont": "A bold 'active' class only.",
+  "good": "<a href=\"/pricing\" aria-current=\"page\">Pricing</a>",
+  "bad": "<a class=\"active\" href=\"/pricing\">Pricing</a>",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "aria-current",
+   "selected"
+  ]
+ },
+ {
+  "id": "STATE-10",
+  "category": "input states",
+  "rule": "Read-only and disabled are different: read-only stays focusable and copyable.",
+  "check": "read-only values use readonly, not disabled",
+  "measured_by": "static",
+  "do": "readonly for values the user may copy; disabled for unavailable actions.",
+  "dont": "disabled on an account ID the user needs to copy.",
+  "good": "<input readonly value=\"ACC-2041\">",
+  "bad": "<input disabled value=\"ACC-2041\">",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "readonly",
+   "disabled"
+  ]
+ },
+ {
+  "id": "NAV-01",
+  "category": "navigation",
+  "rule": "Primary navigation has 7 or fewer top-level items and a clear current location.",
+  "check": "top-level nav items <= 7; current item marked",
+  "measured_by": "browser",
+  "do": "Group the rest into a 'More' menu or secondary nav.",
+  "dont": "Twelve top-level links that wrap to two rows.",
+  "good": "<nav aria-label=\"Main\"><a aria-current=\"page\">Home</a>…</nav>",
+  "bad": "<div class=\"nav\">12 links</div>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "menu",
+   "top level",
+   "ia"
+  ]
+ },
+ {
+  "id": "NAV-02",
+  "category": "navigation",
+  "rule": "Wrap navigation in a labelled nav landmark; label each one when there are several.",
+  "check": "each <nav> has a unique aria-label when more than one exists",
+  "measured_by": "browser",
+  "do": "nav aria-label=\"Main\" and nav aria-label=\"Footer\".",
+  "dont": "Two unlabelled navs or a div of links.",
+  "good": "<nav aria-label=\"Footer\">",
+  "bad": "<div class=\"footer-links\">",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "landmark",
+   "nav",
+   "aria-label"
+  ]
+ },
+ {
+  "id": "NAV-03",
+  "category": "navigation",
+  "rule": "Provide a skip link to the main content as the first focusable element.",
+  "check": "first Tab press reveals a working 'Skip to content' link",
+  "measured_by": "browser",
+  "do": "Visually hidden until focused; targets <main id>.",
+  "dont": "No skip link on pages with long headers.",
+  "good": "<a class=\"skip\" href=\"#main\">Skip to content</a><main id=\"main\">",
+  "bad": "<header>40 links</header><main>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "skip link",
+   "bypass"
+  ]
+ },
+ {
+  "id": "NAV-04",
+  "category": "navigation",
+  "rule": "The mobile menu toggle is a real button that reports its state and closes with Escape.",
+  "check": "toggle has aria-expanded that flips; Escape closes and returns focus to the toggle",
+  "measured_by": "browser",
+  "do": "button[aria-expanded][aria-controls]; trap focus only if it is modal.",
+  "dont": "A hamburger div that cannot be reached by keyboard.",
+  "good": "<button aria-expanded=\"false\" aria-controls=\"menu\">Menu</button>",
+  "bad": "<div class=\"burger\" onclick=\"open()\">",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "hamburger",
+   "mobile menu",
+   "aria-expanded"
+  ]
+ },
+ {
+  "id": "NAV-05",
+  "category": "navigation",
+  "rule": "Use bottom tab bars for 3 to 5 top destinations in mobile apps.",
+  "check": "3-5 tabs; each has icon + text label",
+  "measured_by": "manual",
+  "do": "Icon plus short label; keep tabs persistent across the section.",
+  "dont": "Icon-only tabs or more than 5 tabs.",
+  "good": "TabView { Home().tabItem { Label(\"Home\", systemImage: \"house\") } }",
+  "bad": "Six icon-only tabs",
+  "severity": "medium",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "tab bar",
+   "bottom nav"
+  ]
+ },
+ {
+  "id": "NAV-06",
+  "category": "navigation",
+  "rule": "Back always goes back: browser and system back restore the previous view, scroll and filters.",
+  "check": "after back navigation, previous scroll position and filters are restored",
+  "measured_by": "browser",
+  "do": "Store filter state in the URL; let the router restore scroll.",
+  "dont": "Open details in client state so Back leaves the app.",
+  "good": "router.push(`?q=${q}&page=2`)",
+  "bad": "setView(\"detail\") // no history entry",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "back",
+   "history",
+   "url state"
+  ]
+ },
+ {
+  "id": "NAV-07",
+  "category": "navigation",
+  "rule": "Links look like links and buttons look like buttons; links navigate, buttons act.",
+  "check": "no <a> without href used as a button; no button used for page navigation",
+  "measured_by": "static",
+  "do": "<a href> for navigation, <button> for actions.",
+  "dont": "href=\"#\" or javascript: to trigger actions.",
+  "good": "<button type=\"button\" onclick=\"save()\">Save</button>",
+  "bad": "<a href=\"javascript:save()\">Save</a>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "link",
+   "button",
+   "semantics"
+  ],
+  "hook": {
+   "patterns": [
+    "href=\"javascript:",
+    "href='javascript:",
+    "href=\"#\""
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "link used as a button"
+  }
+ },
+ {
+  "id": "NAV-08",
+  "category": "navigation",
+  "rule": "Breadcrumbs show hierarchy on deep sites, not history.",
+  "check": "breadcrumb nav has aria-label and current item aria-current",
+  "measured_by": "static",
+  "do": "Use for 3+ levels of hierarchy.",
+  "dont": "Breadcrumbs on a two-page site.",
+  "good": "<nav aria-label=\"Breadcrumb\"><ol><li><a href=\"/\">Home</a></li><li aria-current=\"page\">Shoes</li></ol></nav>",
+  "bad": "<div>Home > Shoes</div>",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "breadcrumb"
+  ]
+ },
+ {
+  "id": "NAV-09",
+  "category": "navigation",
+  "rule": "Anchor jumps account for sticky headers and respect reduced motion.",
+  "check": "scroll-margin-top set on anchor targets; smooth scroll only without reduced-motion",
+  "measured_by": "static",
+  "do": "scroll-margin-top on headings; smooth scrolling inside a no-preference media query.",
+  "dont": "Global smooth scroll that ignores reduced-motion.",
+  "good": "@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}",
+  "bad": "html{scroll-behavior:smooth}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "anchor",
+   "smooth scroll"
+  ],
+  "hook": {
+   "patterns": [
+    "scroll-behavior:smooth"
+   ],
+   "unless": [
+    "prefers-reduced-motion"
+   ],
+   "default_on": true,
+   "message": "smooth scroll without a reduced-motion guard"
+  }
+ },
+ {
+  "id": "NAV-10",
+  "category": "navigation",
+  "rule": "Never open new tabs or windows without warning.",
+  "check": "links with target=_blank state it in text or an icon with a label",
+  "measured_by": "static",
+  "do": "Add '(opens in new tab)' visually or in a visually-hidden span.",
+  "dont": "Open every external link in a new tab silently.",
+  "good": "<a href=\"…\" target=\"_blank\">Report <span class=\"sr-only\">(opens in new tab)</span></a>",
+  "bad": "<a href=\"…\" target=\"_blank\">Report</a>",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "target blank",
+   "new tab"
+  ]
+ },
+ {
+  "id": "NAV-11",
+  "category": "navigation",
+  "rule": "Positive tabindex is never used; DOM order is the focus order.",
+  "check": "no tabindex > 0 in source",
+  "measured_by": "static",
+  "do": "Fix the DOM order; use tabindex=0 or -1 only.",
+  "dont": "tabindex=\"3\" to patch focus order.",
+  "good": "<button>First</button><button>Second</button>",
+  "bad": "<button tabindex=\"2\">First</button>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "tabindex",
+   "focus order"
+  ],
+  "hook": {
+   "patterns": [
+    "tabindex=\"1",
+    "tabindex=\"2",
+    "tabindex=\"3",
+    "tabindex=\"4",
+    "tabindex=\"5",
+    "tabindex=\"6",
+    "tabindex=\"7",
+    "tabindex=\"8",
+    "tabindex=\"9",
+    "tabindex={1",
+    "tabindex={2",
+    "tabindex={3"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "positive tabindex"
+  }
+ },
+ {
+  "id": "FDBK-01",
+  "category": "feedback",
+  "rule": "Every user action gets visible feedback: success, failure or progress.",
+  "check": "each mutating action shows a result within 1 s or a progress indicator",
+  "measured_by": "manual",
+  "do": "Inline 'Saved' text or a toast after saving.",
+  "dont": "A save button that silently does nothing visible.",
+  "good": "setStatus(\"Saved\")",
+  "bad": "await save() // no UI change",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "confirmation",
+   "toast",
+   "feedback"
+  ]
+ },
+ {
+  "id": "FDBK-02",
+  "category": "feedback",
+  "rule": "Status messages are announced without moving focus.",
+  "check": "toasts and inline status use role=status or aria-live=polite",
+  "measured_by": "browser",
+  "do": "A persistent <div role=\"status\"> that receives text updates.",
+  "dont": "Injecting a new live region at the same moment as its text (often not announced).",
+  "good": "<div role=\"status\" aria-live=\"polite\">{msg}</div>",
+  "bad": "{msg && <div aria-live=\"polite\">{msg}</div>}",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "aria-live",
+   "status",
+   "announce"
+  ]
+ },
+ {
+  "id": "FDBK-03",
+  "category": "feedback",
+  "rule": "Toasts stay at least 5 s, pause on hover and focus, and never carry the only copy of an action.",
+  "check": "auto-dismiss >= 5000 ms; pausable; actions also available elsewhere",
+  "measured_by": "manual",
+  "do": "Undo in the toast and in the item's menu.",
+  "dont": "A 2-second toast with the only Undo button.",
+  "good": "toast({ duration: 6000, pauseOnHover: true })",
+  "bad": "toast({ duration: 1500, action: \"Undo\" })",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "toast",
+   "snackbar",
+   "timing"
+  ]
+ },
+ {
+  "id": "FDBK-04",
+  "category": "feedback",
+  "rule": "Prefer undo over confirmation for reversible actions.",
+  "check": "reversible deletes offer undo for >= 5 s instead of a confirm dialog",
+  "measured_by": "manual",
+  "do": "Archive immediately with an Undo toast.",
+  "dont": "'Are you sure?' on every reversible action.",
+  "good": "archive(id); toast(\"Archived\", { action: undo })",
+  "bad": "if (confirm(\"Are you sure?\")) archive(id)",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "undo",
+   "confirm"
+  ]
+ },
+ {
+  "id": "FDBK-05",
+  "category": "feedback",
+  "rule": "Destructive, irreversible actions need explicit confirmation naming the object.",
+  "check": "confirm dialog names the item and uses a specific verb button",
+  "measured_by": "manual",
+  "do": "'Delete project “Atlas”? This removes 42 files.' [Delete project]",
+  "dont": "'Are you sure?' [OK] [Cancel].",
+  "good": "<button class=\"danger\">Delete project</button>",
+  "bad": "<button>OK</button>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "destructive",
+   "delete",
+   "confirm"
+  ]
+ },
+ {
+  "id": "FDBK-06",
+  "category": "feedback",
+  "rule": "Optimistic updates roll back visibly when the server rejects them.",
+  "check": "on failure the item reverts and an error explains it",
+  "measured_by": "manual",
+  "do": "Show the change at once, revert with a message on error.",
+  "dont": "Keep the optimistic state after a failed request.",
+  "good": "try { await save() } catch { revert(); notify(\"Couldn't save. Retry?\") }",
+  "bad": "save().catch(() => {})",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "optimistic",
+   "rollback"
+  ]
+ },
+ {
+  "id": "FDBK-07",
+  "category": "feedback",
+  "rule": "Use haptics sparingly and only for meaningful confirmations.",
+  "check": "haptic feedback only on success/error/selection changes, never on scroll",
+  "measured_by": "manual",
+  "do": "A light impact on a completed payment.",
+  "dont": "Vibration on every tap.",
+  "good": "UINotificationFeedbackGenerator().notificationOccurred(.success)",
+  "bad": "navigator.vibrate(200) // every click",
+  "severity": "low",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "haptics",
+   "vibration"
+  ]
+ },
+ {
+  "id": "FDBK-08",
+  "category": "feedback",
+  "rule": "Feedback appears near where the user is looking.",
+  "check": "inline feedback within the same viewport region as the trigger",
+  "measured_by": "manual",
+  "do": "Show 'Copied' next to the copy button.",
+  "dont": "A toast in the far corner for a tiny inline action.",
+  "good": "<button>Copy</button><span role=\"status\">Copied</span>",
+  "bad": "toast(\"Copied\") // bottom-left on a 1440px screen",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "proximity",
+   "inline"
+  ]
+ },
+ {
+  "id": "FDBK-09",
+  "category": "feedback",
+  "rule": "System alerts, alert() and confirm() are not used for product feedback.",
+  "check": "no window.alert/confirm in UI code",
+  "measured_by": "static",
+  "do": "Use the product's own dialog and toast components.",
+  "dont": "Native alert boxes that block the thread and cannot be styled.",
+  "good": "openDialog({ title: \"Remove member?\" })",
+  "bad": "alert(\"Saved!\")",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "alert",
+   "native dialog"
+  ],
+  "hook": {
+   "patterns": [
+    "window.alert(",
+    "window.confirm("
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "native alert/confirm used for UI feedback"
+  }
+ },
+ {
+  "id": "FDBK-10",
+  "category": "feedback",
+  "rule": "Progress for tasks over 4 s shows how far along it is.",
+  "check": "determinate progress (percent or steps) for operations > 4 s",
+  "measured_by": "manual",
+  "do": "'Uploading 3 of 8 files — 42%'.",
+  "dont": "An indefinite spinner for a two-minute upload.",
+  "good": "<progress value=\"42\" max=\"100\">42%</progress>",
+  "bad": "<div class=\"spinner\"></div>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "progress",
+   "upload"
+  ]
+ },
+ {
+  "id": "LEE-01",
+  "category": "loading, empty and error",
+  "rule": "Use skeletons that match the final layout for content loads over 300 ms.",
+  "check": "skeleton dimensions within 10% of the loaded content; CLS <= 0.1",
+  "measured_by": "browser",
+  "do": "Skeleton rows with the same heights as real rows.",
+  "dont": "A centred spinner that is replaced by a tall list, shifting everything.",
+  "good": "<div class=\"sk-row\" style=\"height:56px\"></div>",
+  "bad": "<Spinner/>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "skeleton",
+   "loading",
+   "cls"
+  ]
+ },
+ {
+  "id": "LEE-02",
+  "category": "loading, empty and error",
+  "rule": "Delay loading indicators by about 300 ms to avoid flicker on fast responses.",
+  "check": "no spinner rendered for responses < 300 ms",
+  "measured_by": "manual",
+  "do": "Start the spinner after a short timeout; keep it at least 500 ms once shown.",
+  "dont": "Flash a spinner for 40 ms.",
+  "good": "const t = setTimeout(() => setLoading(true), 300)",
+  "bad": "setLoading(true); await fetch(u)",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "spinner",
+   "flicker",
+   "delay"
+  ]
+ },
+ {
+  "id": "LEE-03",
+  "category": "loading, empty and error",
+  "rule": "Empty states explain what belongs here and offer the next action.",
+  "check": "empty view has a sentence and a primary action",
+  "measured_by": "manual",
+  "do": "'No invoices yet. Create your first invoice.' [Create invoice]",
+  "dont": "A blank table with headers only.",
+  "good": "<p>No invoices yet.</p><a href=\"/new\">Create invoice</a>",
+  "bad": "<table><thead>…</thead></table>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "empty state",
+   "zero data"
+  ]
+ },
+ {
+  "id": "LEE-04",
+  "category": "loading, empty and error",
+  "rule": "Distinguish 'nothing here yet', 'no results for this filter' and 'failed to load'.",
+  "check": "three different messages and actions for the three states",
+  "measured_by": "manual",
+  "do": "No results: show the active filters and a 'Clear filters' button.",
+  "dont": "One 'Nothing found' message for errors too.",
+  "good": "if (error) Retry; else if (filtered) ClearFilters; else CreateFirst",
+  "bad": "if (!items.length) \"Nothing found\"",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "empty",
+   "filters",
+   "error"
+  ]
+ },
+ {
+  "id": "LEE-05",
+  "category": "loading, empty and error",
+  "rule": "Error messages say what happened, why if known, and what to do next, in plain words.",
+  "check": "no raw codes or stack traces shown; every error offers a next step",
+  "measured_by": "manual",
+  "do": "'We couldn't reach the server. Check your connection and try again.' [Retry]",
+  "dont": "'Error 0x80004005'.",
+  "good": "<p>Couldn't load orders.</p><button>Try again</button>",
+  "bad": "<p>{error.stack}</p>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "error message",
+   "copy",
+   "retry"
+  ]
+ },
+ {
+  "id": "LEE-06",
+  "category": "loading, empty and error",
+  "rule": "Failed regions fail locally: one broken widget never blanks the whole page.",
+  "check": "error boundary per independent region",
+  "measured_by": "manual",
+  "do": "Wrap each panel in its own error boundary with a retry.",
+  "dont": "One top-level boundary that replaces the app with an error.",
+  "good": "<ErrorBoundary fallback={<PanelError/>}><Chart/></ErrorBoundary>",
+  "bad": "<ErrorBoundary><App/></ErrorBoundary>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "error boundary",
+   "resilience"
+  ]
+ },
+ {
+  "id": "LEE-07",
+  "category": "loading, empty and error",
+  "rule": "Offline state is detected and explained; queued work is shown.",
+  "check": "offline banner within 2 s of losing connection; pending changes listed",
+  "measured_by": "browser",
+  "do": "Show 'You're offline. 3 changes will sync.'",
+  "dont": "Fail each request separately with generic errors.",
+  "good": "addEventListener(\"offline\", () => setOffline(true))",
+  "bad": "/* no offline handling */",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "offline",
+   "network"
+  ]
+ },
+ {
+  "id": "LEE-08",
+  "category": "loading, empty and error",
+  "rule": "Lists load more with a button or paginate; infinite scroll keeps the footer reachable.",
+  "check": "footer reachable by keyboard and scroll; 'Load more' button available",
+  "measured_by": "browser",
+  "do": "A 'Load more' button plus URL page state.",
+  "dont": "Infinite scroll that makes the footer unreachable.",
+  "good": "<button>Load 20 more</button>",
+  "bad": "onScrollEnd(loadMore) // footer never reachable",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "infinite scroll",
+   "pagination"
+  ]
+ },
+ {
+  "id": "LEE-09",
+  "category": "loading, empty and error",
+  "rule": "404 and 500 pages keep the site navigation and offer search or a way home.",
+  "check": "error pages render the global nav and at least one recovery link",
+  "measured_by": "browser",
+  "do": "Header, a short explanation, search and popular links.",
+  "dont": "A bare 'Not found' string.",
+  "good": "<Layout><h1>Page not found</h1><Search/></Layout>",
+  "bad": "res.send(\"Not found\")",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "404",
+   "500",
+   "error page"
+  ]
+ },
+ {
+  "id": "LEE-10",
+  "category": "loading, empty and error",
+  "rule": "Timeouts are handled: requests over 10 s show a message and a cancel or retry.",
+  "check": "long requests time out with a visible message; user can cancel",
+  "measured_by": "manual",
+  "do": "AbortController with a 10-15 s timeout and a retry button.",
+  "dont": "A spinner that spins forever.",
+  "good": "fetch(u, { signal: AbortSignal.timeout(12000) })",
+  "bad": "fetch(u)",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "timeout",
+   "abort"
+  ]
+ },
+ {
+  "id": "LEE-11",
+  "category": "loading, empty and error",
+  "rule": "Loading never hides content that was already on screen.",
+  "check": "refreshing keeps stale data visible with a subtle busy indicator",
+  "measured_by": "manual",
+  "do": "Show cached data with a small 'Updating…' label.",
+  "dont": "Blank the list on every refetch.",
+  "good": "{isFetching && <small>Updating…</small>}<List items={data}/>",
+  "bad": "{isFetching ? <Spinner/> : <List/>}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "stale while revalidate",
+   "refetch"
+  ]
+ },
+ {
+  "id": "OVL-01",
+  "category": "modals and overlays",
+  "rule": "Modal dialogs trap focus, close on Escape and return focus to the trigger.",
+  "check": "Tab cycles inside; Esc closes; focus returns to opener",
+  "measured_by": "browser",
+  "do": "Use the native <dialog> with showModal() or a tested library.",
+  "dont": "A div overlay that lets Tab escape into the page behind.",
+  "good": "dialog.showModal(); dialog.addEventListener(\"close\", () => opener.focus())",
+  "bad": "<div class=\"modal\">…</div>",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "desktop"
+  ],
+  "keywords": [
+   "modal",
+   "focus trap",
+   "dialog"
+  ]
+ },
+ {
+  "id": "OVL-02",
+  "category": "modals and overlays",
+  "rule": "Dialogs have an accessible name and the background is inert.",
+  "check": "role=dialog/aria-modal or <dialog>; aria-labelledby set; background inert",
+  "measured_by": "browser",
+  "do": "aria-labelledby pointing at the dialog title; inert on the page behind.",
+  "dont": "Unnamed dialogs; screen reader can wander behind.",
+  "good": "<dialog aria-labelledby=\"t\"><h2 id=\"t\">Invite</h2></dialog>",
+  "bad": "<div class=\"popup\">",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "dialog",
+   "aria-modal",
+   "inert"
+  ]
+ },
+ {
+  "id": "OVL-03",
+  "category": "modals and overlays",
+  "rule": "Use a modal only when the task must be finished or dismissed before continuing.",
+  "check": "non-blocking info uses inline UI, drawers or toasts instead",
+  "measured_by": "manual",
+  "do": "Inline expansion for details; modal for 'Discard changes?'.",
+  "dont": "Modals for newsletters on first page view.",
+  "good": "<details><summary>Shipping info</summary>…</details>",
+  "bad": "setTimeout(openNewsletterModal, 2000)",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "modal overuse",
+   "interruption"
+  ]
+ },
+ {
+  "id": "OVL-04",
+  "category": "modals and overlays",
+  "rule": "Lock background scroll while a modal is open without layout shift.",
+  "check": "no scroll chaining; scrollbar gutter stable when locking",
+  "measured_by": "browser",
+  "do": "overflow:hidden plus scrollbar-gutter:stable; overscroll-behavior:contain on the dialog.",
+  "dont": "Locking scroll so the page jumps sideways by the scrollbar width.",
+  "good": "html{scrollbar-gutter:stable} dialog{overscroll-behavior:contain}",
+  "bad": "body.modal-open{overflow:hidden}",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "scroll lock",
+   "overscroll"
+  ]
+ },
+ {
+  "id": "OVL-05",
+  "category": "modals and overlays",
+  "rule": "Every overlay has a visible close control of at least 24×24 CSS px with a label.",
+  "check": "close button >= 24x24 CSS px (44pt on touch) with accessible name",
+  "measured_by": "browser",
+  "do": "<button aria-label=\"Close\">×</button> sized 44px on touch.",
+  "dont": "A tiny × glyph with no label.",
+  "good": "<button class=\"close\" aria-label=\"Close dialog\"><svg aria-hidden=\"true\">…</svg></button>",
+  "bad": "<span onclick=\"close()\">×</span>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "close button",
+   "target size"
+  ]
+ },
+ {
+  "id": "OVL-06",
+  "category": "modals and overlays",
+  "rule": "Bottom sheets on mobile have a grab handle, support swipe-down and a visible close.",
+  "check": "sheet dismissible by swipe, scrim tap and button",
+  "measured_by": "manual",
+  "do": "Native sheet APIs (presentationDetents, ModalBottomSheet).",
+  "dont": "Custom sheets that only close by swiping.",
+  "good": ".sheet(isPresented: $show) { Form().presentationDetents([.medium, .large]) }",
+  "bad": "Sheet without close button",
+  "severity": "medium",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "bottom sheet",
+   "drawer"
+  ]
+ },
+ {
+  "id": "OVL-07",
+  "category": "modals and overlays",
+  "rule": "Tooltips are supplementary, appear on hover and focus, and can be dismissed with Escape.",
+  "check": "tooltip shown on focus too; Esc hides it; hoverable (WCAG 1.4.13)",
+  "measured_by": "browser",
+  "do": "aria-describedby to the tooltip; keep it open while hovered.",
+  "dont": "Critical info only in a title attribute.",
+  "good": "<button aria-describedby=\"tip\">Export</button><div role=\"tooltip\" id=\"tip\">CSV, max 10k rows</div>",
+  "bad": "<button title=\"Required!\">",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "tooltip",
+   "1.4.13"
+  ]
+ },
+ {
+  "id": "OVL-08",
+  "category": "modals and overlays",
+  "rule": "Popovers and menus position themselves within the viewport and flip when there is no room.",
+  "check": "no popover overflows the viewport at 320 px width",
+  "measured_by": "browser",
+  "do": "Use the Popover API with CSS anchor positioning or Floating UI collision handling.",
+  "dont": "Absolutely positioned menus that run off-screen.",
+  "good": "[popover]{position-try-fallbacks:flip-block}",
+  "bad": ".menu{position:absolute;left:100%}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "popover",
+   "anchor",
+   "overflow"
+  ]
+ },
+ {
+  "id": "OVL-09",
+  "category": "modals and overlays",
+  "rule": "Cookie and consent banners never cover primary content or focus, and reject is as easy as accept.",
+  "check": "banner height <= 30% of a 375x667 viewport; reject button equal prominence",
+  "measured_by": "browser",
+  "do": "A compact bottom bar with equally sized Accept/Reject.",
+  "dont": "A full-screen wall with a hidden reject link.",
+  "good": "<button>Reject all</button><button>Accept all</button>",
+  "bad": "<button class=\"big\">Accept</button><a class=\"tiny\">settings</a>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "cookie banner",
+   "consent"
+  ]
+ },
+ {
+  "id": "OVL-10",
+  "category": "modals and overlays",
+  "rule": "Stacked overlays are avoided; never open a modal from a modal.",
+  "check": "max one modal layer at a time",
+  "measured_by": "manual",
+  "do": "Replace the dialog content (step 2) instead of stacking.",
+  "dont": "Confirm dialog on top of an edit dialog on top of a drawer.",
+  "good": "setStep(\"confirm\")",
+  "bad": "openModal(ConfirmModal) // from inside EditModal",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "nested modal",
+   "stack"
+  ]
+ },
+ {
+  "id": "TBL-01",
+  "category": "tables",
+  "rule": "Data tables use real table markup with header cells and scope.",
+  "check": "<table> with <th scope> for row/column headers and a <caption>",
+  "measured_by": "static",
+  "do": "<caption>, <th scope=col>, <th scope=row>.",
+  "dont": "Div grids that look like tables.",
+  "good": "<table><caption>Q3 orders</caption><tr><th scope=\"col\">Order</th>",
+  "bad": "<div class=\"table\"><div class=\"row\">",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "table",
+   "th",
+   "scope",
+   "caption"
+  ]
+ },
+ {
+  "id": "TBL-02",
+  "category": "tables",
+  "rule": "Right-align numbers and use tabular figures so digits line up.",
+  "check": "numeric columns right-aligned with font-variant-numeric: tabular-nums",
+  "measured_by": "static",
+  "do": "td.num{text-align:right;font-variant-numeric:tabular-nums}",
+  "dont": "Centred, proportional figures in money columns.",
+  "good": "td.num{text-align:end;font-variant-numeric:tabular-nums}",
+  "bad": "td{text-align:center}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "numbers",
+   "tabular nums",
+   "alignment"
+  ]
+ },
+ {
+  "id": "TBL-03",
+  "category": "tables",
+  "rule": "Wide tables scroll inside a labelled, focusable region rather than breaking the page.",
+  "check": "no page-level horizontal overflow at 320 px; scroll container focusable with a name",
+  "measured_by": "browser",
+  "do": "<div role=\"region\" aria-label=\"Orders\" tabindex=\"0\" style=\"overflow-x:auto\">",
+  "dont": "Letting the table widen the whole page.",
+  "good": "<div role=\"region\" aria-label=\"Orders table\" tabindex=\"0\" class=\"scroll-x\"><table>…</table></div>",
+  "bad": "<table style=\"min-width:1400px\">",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "overflow",
+   "responsive table",
+   "scroll"
+  ]
+ },
+ {
+  "id": "TBL-04",
+  "category": "tables",
+  "rule": "Sortable columns are buttons in the header and expose aria-sort.",
+  "check": "sortable <th> contains a button; active column has aria-sort",
+  "measured_by": "browser",
+  "do": "<th aria-sort=\"ascending\"><button>Date</button></th>",
+  "dont": "Clickable header text with no state.",
+  "good": "<th aria-sort=\"descending\"><button>Amount</button></th>",
+  "bad": "<th onclick=\"sort()\">Amount ▲</th>",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "sort",
+   "aria-sort"
+  ]
+ },
+ {
+  "id": "TBL-05",
+  "category": "tables",
+  "rule": "Freeze the header row and the identifying first column on long or wide tables.",
+  "check": "header stays visible after scrolling 3+ rows",
+  "measured_by": "browser",
+  "do": "position:sticky on thead th and first column cells.",
+  "dont": "Users scrolling 200 rows with no idea which column is which.",
+  "good": "thead th{position:sticky;top:0} td:first-child{position:sticky;left:0}",
+  "bad": "/* static header */",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "sticky header",
+   "freeze"
+  ]
+ },
+ {
+  "id": "TBL-06",
+  "category": "tables",
+  "rule": "On narrow screens, reflow rows into cards only when columns are few; otherwise prioritise columns.",
+  "check": "at 375 px every row's key fields readable without horizontal page scroll",
+  "measured_by": "browser",
+  "do": "Card rows for <= 5 fields; column priority + 'more' for larger sets.",
+  "dont": "Squeezing 12 columns into 375 px.",
+  "good": "@container (width < 40rem){tr{display:grid}}",
+  "bad": "table{font-size:9px}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "mobile table",
+   "card list"
+  ]
+ },
+ {
+  "id": "TBL-07",
+  "category": "tables",
+  "rule": "Bulk selection shows the count and the available actions, and selection survives pagination only when stated.",
+  "check": "selected count visible; 'select all N' explicit",
+  "measured_by": "manual",
+  "do": "'12 selected · Select all 340' with a sticky action bar.",
+  "dont": "A header checkbox that silently selects only the visible page.",
+  "good": "<p role=\"status\">12 selected</p>",
+  "bad": "<input type=\"checkbox\" onclick=\"selectPage()\">",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "bulk",
+   "checkbox",
+   "selection"
+  ]
+ },
+ {
+  "id": "TBL-08",
+  "category": "tables",
+  "rule": "Zebra stripes or row dividers keep a contrast of at least 1.1:1 so rows are trackable but quiet.",
+  "check": "row separator visible in both themes",
+  "measured_by": "browser",
+  "do": "1px divider or subtle stripe from tokens.",
+  "dont": "Heavy borders on every cell.",
+  "good": "tr+tr td{border-top:1px solid var(--line)}",
+  "bad": "td{border:2px solid #000}",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "zebra",
+   "row lines"
+  ]
+ },
+ {
+  "id": "TBL-09",
+  "category": "tables",
+  "rule": "Truncated cell text is available in full on focus or via a details view.",
+  "check": "truncated cells expose the full value (title, tooltip or expand)",
+  "measured_by": "browser",
+  "do": "Ellipsis plus a tooltip reachable by keyboard.",
+  "dont": "Cut-off IDs with no way to read them.",
+  "good": "td{max-width:24ch;overflow:hidden;text-overflow:ellipsis}/* + tooltip */",
+  "bad": "td{overflow:hidden;width:80px}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "truncate",
+   "ellipsis"
+  ]
+ },
+ {
+  "id": "TBL-10",
+  "category": "tables",
+  "rule": "Inline editing makes edit mode obvious and saves or cancels explicitly.",
+  "check": "Enter saves, Escape cancels, focus returns to the cell",
+  "measured_by": "manual",
+  "do": "Show an input with Save/Cancel; announce the result.",
+  "dont": "Edits that save on blur with no indication.",
+  "good": "onKeyDown={e => e.key === \"Escape\" && cancel()}",
+  "bad": "onBlur={save} // silently",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "desktop"
+  ],
+  "keywords": [
+   "inline edit",
+   "grid"
+  ]
+ },
+ {
+  "id": "SRCH-01",
+  "category": "search",
+  "rule": "Search inputs use type=search inside a role=search landmark with a visible label or button.",
+  "check": "search form has role=search and a labelled input",
+  "measured_by": "static",
+  "do": "<form role=\"search\"><label for=\"q\">Search</label><input id=\"q\" type=\"search\">",
+  "dont": "A bare text input with a magnifier image.",
+  "good": "<search><form><input type=\"search\" aria-label=\"Search products\"></form></search>",
+  "bad": "<input class=\"search\">",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "search landmark",
+   "type search"
+  ]
+ },
+ {
+  "id": "SRCH-02",
+  "category": "search",
+  "rule": "Debounce as-you-type search about 150–300 ms and cancel stale requests.",
+  "check": "debounce 150-300 ms; earlier responses never overwrite newer ones",
+  "measured_by": "manual",
+  "do": "AbortController per keystroke cycle.",
+  "dont": "A request per keystroke with out-of-order results.",
+  "good": "controller?.abort(); controller = new AbortController()",
+  "bad": "input.oninput = () => fetch(`/s?q=${v}`)",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "debounce",
+   "race condition"
+  ]
+ },
+ {
+  "id": "SRCH-03",
+  "category": "search",
+  "rule": "Show the query and result count, and keep the query in the URL.",
+  "check": "results page shows count and query; ?q= present in URL",
+  "measured_by": "browser",
+  "do": "'24 results for “linen shirt”'.",
+  "dont": "Results with no echo of what was searched.",
+  "good": "history.replaceState(null, \"\", `?q=${encodeURIComponent(q)}`)",
+  "bad": "/* query only in component state */",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "result count",
+   "url"
+  ]
+ },
+ {
+  "id": "SRCH-04",
+  "category": "search",
+  "rule": "Zero-result pages suggest spelling fixes, broader terms or popular items.",
+  "check": "no-results view offers at least one recovery path",
+  "measured_by": "manual",
+  "do": "'No results for “lnen”. Did you mean linen?'",
+  "dont": "'0 results.' and nothing else.",
+  "good": "<p>Did you mean <a href=\"?q=linen\">linen</a>?</p>",
+  "bad": "<p>0 results</p>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "no results",
+   "did you mean"
+  ]
+ },
+ {
+  "id": "SRCH-05",
+  "category": "search",
+  "rule": "Autocomplete is a combobox with arrow-key navigation and announced counts.",
+  "check": "role=combobox, aria-expanded, aria-activedescendant; Up/Down/Enter/Esc work",
+  "measured_by": "browser",
+  "do": "Follow the ARIA combobox pattern or a tested headless library.",
+  "dont": "A div list under the input that only works with a mouse.",
+  "good": "<input role=\"combobox\" aria-expanded=\"true\" aria-controls=\"lb\" aria-activedescendant=\"opt3\">",
+  "bad": "<input><ul onclick>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "autocomplete",
+   "combobox",
+   "typeahead"
+  ]
+ },
+ {
+  "id": "SRCH-06",
+  "category": "search",
+  "rule": "Filters show what is applied and can be cleared individually and all at once.",
+  "check": "applied filters visible as removable chips + 'Clear all'",
+  "measured_by": "browser",
+  "do": "Chips with an × button labelled 'Remove filter: Blue'.",
+  "dont": "Filters hidden inside a closed panel with no summary.",
+  "good": "<button aria-label=\"Remove filter: Blue\">Blue ×</button>",
+  "bad": "<span class=\"chip\">Blue</span>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "filters",
+   "facets",
+   "chips"
+  ]
+ },
+ {
+  "id": "SRCH-07",
+  "category": "search",
+  "rule": "Highlight the matched terms in results using <mark>.",
+  "check": "matched substrings wrapped in <mark>",
+  "measured_by": "static",
+  "do": "<mark> with a token colour readable in both themes.",
+  "dont": "Bold-only highlights that disappear in dark mode.",
+  "good": "Linen <mark>shirt</mark>",
+  "bad": "<b style=\"color:yellow\">shirt</b>",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "highlight",
+   "mark"
+  ]
+ },
+ {
+  "id": "SRCH-08",
+  "category": "search",
+  "rule": "Provide a keyboard shortcut to focus search on content-heavy apps, and show it.",
+  "check": "'/' or Ctrl/Cmd+K focuses search; hint visible",
+  "measured_by": "manual",
+  "do": "Show '/' hint in the input; skip the shortcut while typing in other fields.",
+  "dont": "A hidden shortcut that hijacks typing.",
+  "good": "if (e.key === \"/\" && !isTyping(e.target)) { e.preventDefault(); q.focus() }",
+  "bad": "onkeydown = e => e.key === \"s\" && q.focus()",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "desktop"
+  ],
+  "keywords": [
+   "shortcut",
+   "command palette"
+  ]
+ },
+ {
+  "id": "SRCH-09",
+  "category": "search",
+  "rule": "Recent and suggested searches are clearable and private by default.",
+  "check": "recent searches deletable individually",
+  "measured_by": "manual",
+  "do": "A 'Clear' button and per-item remove.",
+  "dont": "Recent searches that cannot be removed on shared devices.",
+  "good": "<button aria-label=\"Remove recent search: rent\">×</button>",
+  "bad": "/* permanent recents */",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "recent searches",
+   "privacy"
+  ]
+ },
+ {
+  "id": "SRCH-10",
+  "category": "search",
+  "rule": "Search works with typos, plurals and synonyms for the domain.",
+  "check": "query 'shirts' matches 'shirt'; one-letter typo still returns results",
+  "measured_by": "manual",
+  "do": "Stemming and fuzzy match on the index.",
+  "dont": "Exact-string LIKE matching only.",
+  "good": "index.search(q, { fuzzy: 0.2, prefix: true })",
+  "bad": "WHERE title = ?",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "fuzzy",
+   "typo",
+   "stemming"
+  ]
+ },
+ {
+  "id": "ONB-01",
+  "category": "onboarding",
+  "rule": "Let people try the product before asking for an account when possible.",
+  "check": "core value reachable before signup in at most 3 steps",
+  "measured_by": "manual",
+  "do": "Guest checkout; sandbox project; demo data.",
+  "dont": "A signup wall before any content.",
+  "good": "<a href=\"/demo\">Try the demo</a>",
+  "bad": "redirect(\"/signup\") // on first visit",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "signup wall",
+   "guest"
+  ]
+ },
+ {
+  "id": "ONB-02",
+  "category": "onboarding",
+  "rule": "Ask for permissions in context, right when the feature needs them, with a reason first.",
+  "check": "no permission prompt on launch; pre-prompt explains the benefit",
+  "measured_by": "manual",
+  "do": "'Allow location to show nearby stores' then the system prompt.",
+  "dont": "Location, notifications and camera prompts on first launch.",
+  "good": "onTapNearby { explain(); requestLocation() }",
+  "bad": "onLaunch { requestAllPermissions() }",
+  "severity": "high",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "permissions",
+   "priming"
+  ]
+ },
+ {
+  "id": "ONB-03",
+  "category": "onboarding",
+  "rule": "Onboarding tours are short (3–5 steps), skippable and replayable.",
+  "check": "<= 5 steps; 'Skip' on every step; reachable later from help",
+  "measured_by": "manual",
+  "do": "Progress dots, Skip, and 'Replay tour' in Help.",
+  "dont": "Ten forced coach marks.",
+  "good": "<button>Skip tour</button> Step 2 of 4",
+  "bad": "Step 2 of 11 (no skip)",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "tour",
+   "coach marks",
+   "skip"
+  ]
+ },
+ {
+  "id": "ONB-04",
+  "category": "onboarding",
+  "rule": "Use progressive disclosure: show advanced settings after the basics work.",
+  "check": "first-run screen shows <= 5 decisions",
+  "measured_by": "manual",
+  "do": "Sensible defaults and an 'Advanced' section.",
+  "dont": "Twenty settings before the first use.",
+  "good": "<details><summary>Advanced</summary>…</details>",
+  "bad": "<form>20 required settings</form>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "progressive disclosure",
+   "defaults"
+  ]
+ },
+ {
+  "id": "ONB-05",
+  "category": "onboarding",
+  "rule": "Multi-step flows show the current step, the total and allow going back without losing data.",
+  "check": "step indicator 'n of N'; back keeps entered values",
+  "measured_by": "browser",
+  "do": "Stepper with aria-current=step and persisted draft.",
+  "dont": "A wizard that clears the form on Back.",
+  "good": "<li aria-current=\"step\">2. Shipping</li>",
+  "bad": "onBack = () => reset()",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "wizard",
+   "stepper",
+   "multi-step"
+  ]
+ },
+ {
+  "id": "ONB-06",
+  "category": "onboarding",
+  "rule": "Checklists for setup show progress and link straight to each task.",
+  "check": "each checklist item deep-links to its task",
+  "measured_by": "manual",
+  "do": "'3 of 5 done' with direct links.",
+  "dont": "A static list of instructions.",
+  "good": "<a href=\"/settings/domain\">Connect your domain</a> ✓",
+  "bad": "<li>Go to settings and find the domain page</li>",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "setup checklist",
+   "activation"
+  ]
+ },
+ {
+  "id": "ONB-07",
+  "category": "onboarding",
+  "rule": "Empty first-run screens teach with real sample content, clearly labelled as sample.",
+  "check": "sample data marked 'Sample' and removable in one action",
+  "measured_by": "manual",
+  "do": "A sample project with a 'Remove sample data' button.",
+  "dont": "Fake data indistinguishable from real data.",
+  "good": "<span class=\"badge\">Sample</span>",
+  "bad": "/* demo rows mixed with real rows */",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "sample data",
+   "first run"
+  ]
+ },
+ {
+  "id": "ONB-08",
+  "category": "onboarding",
+  "rule": "Signup asks only for what is needed now; collect profile details later.",
+  "check": "signup form <= 3 required fields",
+  "measured_by": "manual",
+  "do": "Email + password (or passkey); everything else later.",
+  "dont": "Phone, company size and job title on signup.",
+  "good": "<input type=\"email\" autocomplete=\"username webauthn\">",
+  "bad": "Signup with 9 required fields",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "signup",
+   "friction",
+   "passkey"
+  ]
+ },
+ {
+  "id": "ONB-09",
+  "category": "onboarding",
+  "rule": "Offer passkeys and social sign-in alongside email; never force a single provider.",
+  "check": "at least one non-password option; email fallback",
+  "measured_by": "manual",
+  "do": "Passkey button + email magic link.",
+  "dont": "Only 'Sign in with X'.",
+  "good": "navigator.credentials.get({ publicKey, mediation: \"conditional\" })",
+  "bad": "/* Google-only login */",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "passkey",
+   "sso",
+   "login"
+  ]
+ },
+ {
+  "id": "ONB-10",
+  "category": "onboarding",
+  "rule": "Welcome messages state the single next action, not a feature list.",
+  "check": "one primary CTA on the welcome screen",
+  "measured_by": "manual",
+  "do": "'Create your first board' as the one button.",
+  "dont": "Three equal CTAs and a feature carousel.",
+  "good": "<button class=\"primary\">Create your first board</button>",
+  "bad": "Carousel of 6 features",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "welcome",
+   "cta"
+  ]
+ },
+ {
+  "id": "I18N-01",
+  "category": "i18n and RTL",
+  "rule": "Set the document language and mark inline language changes.",
+  "check": "<html lang> set; foreign phrases have lang attributes",
+  "measured_by": "static",
+  "do": "<html lang=\"de\"> and <span lang=\"fr\">",
+  "dont": "No lang, so screen readers mispronounce everything.",
+  "good": "<html lang=\"ar\" dir=\"rtl\">",
+  "bad": "<html>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "lang",
+   "language"
+  ]
+ },
+ {
+  "id": "I18N-02",
+  "category": "i18n and RTL",
+  "rule": "Use CSS logical properties so layouts mirror correctly in RTL.",
+  "check": "no physical left/right margins or padding in component CSS",
+  "measured_by": "static",
+  "do": "margin-inline-start, padding-inline, inset-inline-end.",
+  "dont": "margin-left for spacing next to icons.",
+  "good": ".icon{margin-inline-end:.5rem}",
+  "bad": ".icon{margin-right:.5rem}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "logical properties",
+   "rtl",
+   "mirror"
+  ],
+  "hook": {
+   "patterns": [
+    "margin-left:",
+    "margin-right:",
+    "padding-left:",
+    "padding-right:"
+   ],
+   "unless": [
+    "margin-inline",
+    "padding-inline"
+   ],
+   "default_on": false,
+   "message": "physical left/right spacing; prefer logical properties"
+  }
+ },
+ {
+  "id": "I18N-03",
+  "category": "i18n and RTL",
+  "rule": "Mirror directional icons in RTL but not universal ones.",
+  "check": "arrows/chevrons flip in dir=rtl; play, clock and checkmarks do not",
+  "measured_by": "browser",
+  "do": "[dir=rtl] .icon-dir{transform:scaleX(-1)}",
+  "dont": "Flip every icon, including logos and media controls.",
+  "good": ":dir(rtl) .chevron{transform:scaleX(-1)}",
+  "bad": "[dir=rtl] svg{transform:scaleX(-1)}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "icons",
+   "rtl",
+   "mirror"
+  ]
+ },
+ {
+  "id": "I18N-04",
+  "category": "i18n and RTL",
+  "rule": "Leave room for text expansion of 30–40% and never fix widths on labels.",
+  "check": "UI survives +40% string length without clipping (pseudo-locale test)",
+  "measured_by": "browser",
+  "do": "Flexible buttons; test with a pseudo-locale.",
+  "dont": "Fixed-width buttons sized for English.",
+  "good": ".btn{padding-inline:1rem;min-width:max-content}",
+  "bad": ".btn{width:96px;white-space:nowrap;overflow:hidden}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "expansion",
+   "german",
+   "pseudo-locale"
+  ]
+ },
+ {
+  "id": "I18N-05",
+  "category": "i18n and RTL",
+  "rule": "Format dates, numbers, currency and plurals with the locale APIs.",
+  "check": "no hand-built date or number strings; Intl/ICU used",
+  "measured_by": "static",
+  "do": "Intl.DateTimeFormat, Intl.NumberFormat, Intl.PluralRules or ICU messages.",
+  "dont": "`${n} item(s)` and MM/DD/YYYY everywhere.",
+  "good": "new Intl.NumberFormat(locale, { style: \"currency\", currency }).format(v)",
+  "bad": "\"$\" + v.toFixed(2)",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "intl",
+   "plural",
+   "currency",
+   "date"
+  ]
+ },
+ {
+  "id": "I18N-06",
+  "category": "i18n and RTL",
+  "rule": "Never build sentences by concatenating translated fragments.",
+  "check": "full sentences with placeholders per message",
+  "measured_by": "static",
+  "do": "One message per sentence with named placeholders and plural rules.",
+  "dont": "Glue translated fragments together with variables in between.",
+  "good": "t(\"cart.items\", { count })",
+  "bad": "t(\"you_have\") + n + t(\"items\")",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "concatenation",
+   "icu",
+   "translation"
+  ]
+ },
+ {
+  "id": "I18N-07",
+  "category": "i18n and RTL",
+  "rule": "Choose fonts that cover every supported script, with sensible fallbacks.",
+  "check": "no tofu glyphs for supported locales",
+  "measured_by": "browser",
+  "do": "A font stack with script-specific fallbacks (e.g. Noto families).",
+  "dont": "A Latin-only webfont for an Arabic UI.",
+  "good": "font-family:\"Inter\",\"Noto Sans Arabic\",system-ui,sans-serif",
+  "bad": "font-family:\"LatinOnly\"",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "fonts",
+   "script",
+   "fallback"
+  ]
+ },
+ {
+  "id": "I18N-08",
+  "category": "i18n and RTL",
+  "rule": "Line height and font size are tuned per script (CJK, Arabic, Thai need different metrics).",
+  "check": "per-locale typography overrides exist for non-Latin scripts",
+  "measured_by": "manual",
+  "do": ":lang(ja){line-height:1.8} :lang(ar){font-size:1.05em}",
+  "dont": "One line-height for every script.",
+  "good": ":lang(th){line-height:1.9}",
+  "bad": "/* single global line-height:1.2 */",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "cjk",
+   "arabic",
+   "line height"
+  ]
+ },
+ {
+  "id": "I18N-09",
+  "category": "i18n and RTL",
+  "rule": "Let users pick their language explicitly and remember it; do not rely only on IP.",
+  "check": "language switcher in header or footer; choice persisted",
+  "measured_by": "manual",
+  "do": "A switcher listing languages in their own names (Deutsch, 日本語).",
+  "dont": "Flags for languages, or forced geo-redirects.",
+  "good": "<a hreflang=\"de\" lang=\"de\">Deutsch</a>",
+  "bad": "<img src=\"flag-de.png\">",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "language switcher",
+   "flags"
+  ]
+ },
+ {
+  "id": "I18N-10",
+  "category": "i18n and RTL",
+  "rule": "Use bidi isolation for user-generated text inside RTL or LTR strings.",
+  "check": "user names/values wrapped in <bdi> or dir=auto",
+  "measured_by": "static",
+  "do": "<bdi> around usernames in mixed-direction sentences.",
+  "dont": "Raw insertion that scrambles punctuation.",
+  "good": "<p>Reply from <bdi>{user}</bdi>: …</p>",
+  "bad": "<p>Reply from {user}: …</p>",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "bdi",
+   "bidi",
+   "dir auto"
+  ]
+ },
+ {
+  "id": "TOUCH-01",
+  "category": "touch and mobile",
+  "rule": "Touch targets are at least 44×44 pt (iOS), 48×48 dp (Android), and never under 24×24 CSS px on web.",
+  "check": "target box >= 24x24 CSS px with spacing (WCAG 2.5.8); >= 44px recommended for primary actions",
+  "measured_by": "browser",
+  "do": "Pad small icons to a 44 px hit area.",
+  "dont": "16 px icon buttons placed edge to edge.",
+  "good": ".icon-btn{min-width:44px;min-height:44px}",
+  "bad": ".icon-btn{width:16px;height:16px}",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "target size",
+   "tap",
+   "2.5.8"
+  ]
+ },
+ {
+  "id": "TOUCH-02",
+  "category": "touch and mobile",
+  "rule": "Leave at least 8 px between adjacent targets.",
+  "check": "gap between interactive targets >= 8 px",
+  "measured_by": "browser",
+  "do": "gap:.5rem between chips and toolbar buttons.",
+  "dont": "Links stacked with no spacing.",
+  "good": ".toolbar{display:flex;gap:8px}",
+  "bad": ".toolbar a{margin:0}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "spacing",
+   "mis-tap"
+  ]
+ },
+ {
+  "id": "TOUCH-03",
+  "category": "touch and mobile",
+  "rule": "Never disable pinch zoom.",
+  "check": "viewport meta has no user-scalable=no and no maximum-scale < 2",
+  "measured_by": "static",
+  "do": "Keep the standard viewport meta and fix layouts that break when zoomed.",
+  "dont": "maximum-scale=1 or user-scalable=no to stop iOS input zoom.",
+  "good": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+  "bad": "<meta name=\"viewport\" content=\"width=device-width, maximum-scale=1, user-scalable=no\">",
+  "severity": "critical",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "zoom",
+   "viewport",
+   "pinch"
+  ],
+  "hook": {
+   "patterns": [
+    "user-scalable=no",
+    "user-scalable=0",
+    "maximum-scale=1,",
+    "maximum-scale=1\"",
+    "maximum-scale=1.0"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "pinch zoom is disabled"
+  }
+ },
+ {
+  "id": "TOUCH-04",
+  "category": "touch and mobile",
+  "rule": "Inputs use at least 16 px text on mobile web so iOS does not auto-zoom.",
+  "check": "computed font-size of inputs >= 16 px at 375 px width",
+  "measured_by": "browser",
+  "do": "font-size:max(16px,1rem) on inputs.",
+  "dont": "14 px inputs that zoom the page on focus.",
+  "good": "input,select,textarea{font-size:max(16px,1rem)}",
+  "bad": "input{font-size:13px}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "ios zoom",
+   "input font"
+  ]
+ },
+ {
+  "id": "TOUCH-05",
+  "category": "touch and mobile",
+  "rule": "Use dynamic viewport units for full-height mobile layouts.",
+  "check": "full-height sections use dvh/svh with a vh fallback",
+  "measured_by": "static",
+  "do": "min-height:100svh (or dvh for app shells).",
+  "dont": "height:100vh, which hides content under mobile browser bars.",
+  "good": ".hero{min-height:100vh;min-height:100svh}",
+  "bad": ".hero{height:100vh}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "100vh",
+   "dvh",
+   "svh",
+   "mobile viewport"
+  ],
+  "hook": {
+   "patterns": [
+    "100vh"
+   ],
+   "unless": [
+    "dvh",
+    "svh",
+    "lvh"
+   ],
+   "default_on": true,
+   "message": "100vh without a dynamic viewport unit"
+  }
+ },
+ {
+  "id": "TOUCH-06",
+  "category": "touch and mobile",
+  "rule": "Respect safe areas on notched devices.",
+  "check": "fixed bars use env(safe-area-inset-*) padding; viewport-fit=cover only with it",
+  "measured_by": "browser",
+  "do": "padding-bottom:max(1rem, env(safe-area-inset-bottom)).",
+  "dont": "A bottom bar hidden behind the home indicator.",
+  "good": ".tabbar{padding-bottom:max(12px,env(safe-area-inset-bottom))}",
+  "bad": ".tabbar{bottom:0;padding:0}",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "safe area",
+   "notch"
+  ]
+ },
+ {
+  "id": "TOUCH-07",
+  "category": "touch and mobile",
+  "rule": "Every gesture has a visible, tappable alternative.",
+  "check": "swipe/long-press/pinch actions also available via buttons or menus",
+  "measured_by": "manual",
+  "do": "Swipe to delete plus a Delete item in the row menu.",
+  "dont": "Actions that exist only behind swipes.",
+  "good": ".swipeActions { Button(\"Delete\", role: .destructive) {} } + contextMenu",
+  "bad": "Swipe-only delete",
+  "severity": "high",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "gesture",
+   "swipe",
+   "alternative"
+  ]
+ },
+ {
+  "id": "TOUCH-08",
+  "category": "touch and mobile",
+  "rule": "Put primary actions in the thumb zone on phones.",
+  "check": "primary action within the bottom 40% of a 375x812 viewport on key mobile flows",
+  "measured_by": "browser",
+  "do": "A sticky bottom CTA on checkout.",
+  "dont": "The only Continue button at the top-right corner.",
+  "good": ".cta-bar{position:sticky;bottom:0}",
+  "bad": ".continue{position:absolute;top:8px;right:8px}",
+  "severity": "medium",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "thumb zone",
+   "reachability"
+  ]
+ },
+ {
+  "id": "TOUCH-09",
+  "category": "touch and mobile",
+  "rule": "Do not rely on hover or right-click on touch devices.",
+  "check": "@media (hover:none) states expose the same controls",
+  "measured_by": "browser",
+  "do": "Long-press menus with visible '…' buttons.",
+  "dont": "Tooltips as the only source of help on phones.",
+  "good": "@media (hover:none){.more{display:inline-flex}}",
+  "bad": ".card:hover .more{display:block}",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "hover none",
+   "touch"
+  ]
+ },
+ {
+  "id": "TOUCH-10",
+  "category": "touch and mobile",
+  "rule": "Support both orientations unless a single one is essential.",
+  "check": "content usable in portrait and landscape (WCAG 1.3.4)",
+  "measured_by": "browser",
+  "do": "Responsive layouts that adapt to landscape.",
+  "dont": "Locking a form to portrait.",
+  "good": "@media (orientation:landscape){.hero{grid-template-columns:1fr 1fr}}",
+  "bad": "screen.orientation.lock(\"portrait\")",
+  "severity": "medium",
+  "platforms": [
+   "ios",
+   "android"
+  ],
+  "keywords": [
+   "orientation",
+   "1.3.4"
+  ]
+ },
+ {
+  "id": "TOUCH-11",
+  "category": "touch and mobile",
+  "rule": "Remove the 300 ms tap delay and the grey tap flash with modern CSS, not hacks.",
+  "check": "touch-action:manipulation on controls; tap highlight styled",
+  "measured_by": "static",
+  "do": "touch-action:manipulation; -webkit-tap-highlight-color set to a token.",
+  "dont": "FastClick-era libraries.",
+  "good": "button{touch-action:manipulation}",
+  "bad": "<script src=\"fastclick.js\">",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "tap delay",
+   "touch-action"
+  ]
+ },
+ {
+  "id": "PERF-01",
+  "category": "performance",
+  "rule": "Largest Contentful Paint is 2.5 s or less at the 75th percentile.",
+  "check": "LCP <= 2.5 s (lab on throttled mobile, field p75 reported separately)",
+  "measured_by": "browser",
+  "do": "Preload the hero image, fetchpriority=high, server-render the hero text.",
+  "dont": "A client-rendered hero that waits for JS.",
+  "good": "<img src=\"hero.avif\" fetchpriority=\"high\" width=\"1600\" height=\"900\" alt=\"…\">",
+  "bad": "<img loading=\"lazy\" src=\"hero.jpg\"> <!-- the LCP image -->",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "lcp",
+   "core web vitals",
+   "hero"
+  ]
+ },
+ {
+  "id": "PERF-02",
+  "category": "performance",
+  "rule": "Interaction to Next Paint is 200 ms or less.",
+  "check": "INP <= 200 ms; no task > 50 ms in input handlers",
+  "measured_by": "browser",
+  "do": "Yield with scheduler.yield() or split work; paint first.",
+  "dont": "Long synchronous handlers on click.",
+  "good": "await scheduler.yield(); heavyWork()",
+  "bad": "onclick = () => heavyWork()",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "inp",
+   "long task",
+   "responsiveness"
+  ]
+ },
+ {
+  "id": "PERF-03",
+  "category": "performance",
+  "rule": "Cumulative Layout Shift is 0.1 or less.",
+  "check": "CLS <= 0.1; images/embeds have dimensions or aspect-ratio",
+  "measured_by": "browser",
+  "do": "width/height or aspect-ratio on media; reserve space for ads and banners.",
+  "dont": "Injecting a banner above content after load.",
+  "good": "img{aspect-ratio:16/9;height:auto}",
+  "bad": "<img src=\"a.jpg\"> <!-- no size -->",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "cls",
+   "layout shift",
+   "aspect-ratio"
+  ]
+ },
+ {
+  "id": "PERF-04",
+  "category": "performance",
+  "rule": "Lazy-load below-the-fold images and iframes, never the LCP image.",
+  "check": "offscreen <img>/<iframe> have loading=lazy; LCP image does not",
+  "measured_by": "static",
+  "do": "loading=\"lazy\" decoding=\"async\" on gallery images.",
+  "dont": "Lazy-loading the hero.",
+  "good": "<img loading=\"lazy\" decoding=\"async\" …>",
+  "bad": "<iframe src=\"map\">  <!-- eager offscreen embed -->",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "lazy loading",
+   "images"
+  ]
+ },
+ {
+  "id": "PERF-05",
+  "category": "performance",
+  "rule": "Serve modern image formats at the right size with srcset and sizes.",
+  "check": "image transfer <= 1.5x the rendered pixel size; AVIF/WebP offered",
+  "measured_by": "browser",
+  "do": "<picture> with AVIF and WebP, srcset widths, accurate sizes.",
+  "dont": "A 4000 px JPEG scaled down to 400 px.",
+  "good": "<img srcset=\"a-480.avif 480w, a-960.avif 960w\" sizes=\"(min-width:60rem) 50vw, 100vw\">",
+  "bad": "<img src=\"photo-4000.jpg\" width=\"400\">",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "srcset",
+   "avif",
+   "responsive images"
+  ]
+ },
+ {
+  "id": "PERF-06",
+  "category": "performance",
+  "rule": "Web fonts: at most 2 families and 4 files on first load, subset, preloaded, with font-display.",
+  "check": "<= 4 font files before LCP; font-display swap or optional; WOFF2",
+  "measured_by": "static",
+  "do": "Variable WOFF2, preload the one above-the-fold file, size-adjusted fallback.",
+  "dont": "Six weights of two families plus an icon font.",
+  "good": "@font-face{font-family:Brand;src:url(b.woff2) format(\"woff2\");font-display:swap}",
+  "bad": "@font-face{font-family:Brand;src:url(b.ttf)}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "fonts",
+   "font-display",
+   "woff2"
+  ],
+  "hook": {
+   "patterns": [
+    "@font-face"
+   ],
+   "unless": [
+    "font-display"
+   ],
+   "default_on": true,
+   "message": "@font-face without font-display"
+  }
+ },
+ {
+  "id": "PERF-07",
+  "category": "performance",
+  "rule": "Animate only transform and opacity; never transition 'all'.",
+  "check": "no transition:all; animated properties limited to transform/opacity/filter",
+  "measured_by": "static",
+  "do": "transition: transform .2s, opacity .2s",
+  "dont": "transition: all .3s on layout-heavy components.",
+  "good": ".card{transition:transform .2s ease,opacity .2s ease}",
+  "bad": ".card{transition:all .3s}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "animation performance",
+   "transition all",
+   "compositor"
+  ],
+  "hook": {
+   "patterns": [
+    "transition:all",
+    "transition-property:all"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "transition: all animates layout properties"
+  }
+ },
+ {
+  "id": "PERF-08",
+  "category": "performance",
+  "rule": "Ship 170 KB or less of compressed JavaScript for a content page's first load.",
+  "check": "initial JS <= 170 KB gzip for content pages; route-split the rest",
+  "measured_by": "browser",
+  "do": "Server components, islands, dynamic import for heavy widgets.",
+  "dont": "A 900 KB bundle to render a blog post.",
+  "good": "const Map = lazy(() => import(\"./Map\"))",
+  "bad": "import * as everything from \"giant-ui-kit\"",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "bundle size",
+   "javascript budget"
+  ]
+ },
+ {
+  "id": "PERF-09",
+  "category": "performance",
+  "rule": "Render long lists with virtualization above about 200 rows.",
+  "check": "DOM node count < 1500 for list views",
+  "measured_by": "browser",
+  "do": "A windowing library or content-visibility:auto for long static lists.",
+  "dont": "Mounting 5,000 rows at once.",
+  "good": ".row{content-visibility:auto;contain-intrinsic-size:auto 56px}",
+  "bad": "items.map(i => <Row/>) // 5000 items",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "virtualization",
+   "dom size",
+   "content-visibility"
+  ]
+ },
+ {
+  "id": "PERF-10",
+  "category": "performance",
+  "rule": "Load third-party scripts after interaction or idle, with async/defer.",
+  "check": "no render-blocking third-party <script> in <head>",
+  "measured_by": "static",
+  "do": "defer analytics; facade for chat widgets and video embeds.",
+  "dont": "Synchronous tag managers in the head.",
+  "good": "<script src=\"analytics.js\" defer></script>",
+  "bad": "<script src=\"https://third.party/widget.js\"></script>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "third party",
+   "defer",
+   "facade"
+  ]
+ },
+ {
+  "id": "PERF-11",
+  "category": "performance",
+  "rule": "Autoplaying background video is muted, inline, short, has a poster and pauses under reduced motion.",
+  "check": "autoplay video has muted, playsinline, poster; paused for reduced motion; pause control",
+  "measured_by": "static",
+  "do": "muted playsinline poster plus a pause button.",
+  "dont": "Autoplay with sound or no pause control.",
+  "good": "<video autoplay muted loop playsinline poster=\"p.avif\">",
+  "bad": "<video autoplay src=\"bg.mp4\">",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "video",
+   "autoplay",
+   "poster"
+  ],
+  "hook": {
+   "patterns": [
+    "<videoautoplay",
+    "autoplay>",
+    "autoplay/>",
+    "autoplayloop",
+    "autoplayplaysinline"
+   ],
+   "unless": [
+    "muted"
+   ],
+   "default_on": true,
+   "message": "autoplay without muted"
+  }
+ },
+ {
+  "id": "PERF-12",
+  "category": "performance",
+  "rule": "Respect data-saver and slow connections.",
+  "check": "heavy media skipped when Save-Data or prefers-reduced-data is set",
+  "measured_by": "manual",
+  "do": "Serve posters instead of video when navigator.connection.saveData is true.",
+  "dont": "Always stream the hero video.",
+  "good": "if (navigator.connection?.saveData) usePoster()",
+  "bad": "video.play()",
+  "severity": "low",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "save data",
+   "slow network"
+  ]
+ },
+ {
+  "id": "A11Y-01",
+  "category": "accessibility",
+  "rule": "Body text contrast is at least 4.5:1; large text (24 px, or 18.66 px bold) at least 3:1.",
+  "check": "text contrast >= 4.5:1 (>= 3:1 large)",
+  "measured_by": "browser",
+  "do": "Check every token pairing in light and dark themes.",
+  "dont": "Grey #999 text on white.",
+  "good": "color:#4b5563 /* 7.5:1 on white */",
+  "bad": "color:#a3a3a3 /* 2.5:1 on white */",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "contrast",
+   "wcag 1.4.3"
+  ]
+ },
+ {
+  "id": "A11Y-02",
+  "category": "accessibility",
+  "rule": "Non-text UI (borders of inputs, icons that carry meaning, chart marks) contrasts at least 3:1.",
+  "check": "UI component and graphic contrast >= 3:1 (WCAG 1.4.11)",
+  "measured_by": "browser",
+  "do": "Input borders at 3:1 against the background.",
+  "dont": "Hairline #eee input borders on white.",
+  "good": "input{border:1px solid #767676}",
+  "bad": "input{border:1px solid #eee}",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "non-text contrast",
+   "1.4.11",
+   "borders"
+  ]
+ },
+ {
+  "id": "A11Y-03",
+  "category": "accessibility",
+  "rule": "Use semantic landmarks: one main, plus header, nav and footer.",
+  "check": "exactly one <main>; header/nav/footer landmarks present",
+  "measured_by": "browser",
+  "do": "<header>, <nav>, <main>, <footer>.",
+  "dont": "A page built entirely from divs.",
+  "good": "<main id=\"main\">…</main>",
+  "bad": "<div id=\"content\">…</div>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "landmarks",
+   "main"
+  ]
+ },
+ {
+  "id": "A11Y-04",
+  "category": "accessibility",
+  "rule": "Headings form an outline: one h1, no skipped levels for structure.",
+  "check": "single <h1>; heading levels never jump by more than 1",
+  "measured_by": "browser",
+  "do": "Style with classes; choose levels by structure.",
+  "dont": "Pick h4 because it looks small.",
+  "good": "<h1>Pricing</h1><h2>Plans</h2><h3>Pro</h3>",
+  "bad": "<h1>Pricing</h1><h4>Plans</h4>",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "headings",
+   "outline"
+  ]
+ },
+ {
+  "id": "A11Y-05",
+  "category": "accessibility",
+  "rule": "Images have alt text that conveys purpose; decorative images use empty alt.",
+  "check": "every <img> has alt; decorative alt=\"\"",
+  "measured_by": "static",
+  "do": "alt describes the information, not 'image of'.",
+  "dont": "alt=\"image\" or filenames as alt.",
+  "good": "<img src=\"chart.png\" alt=\"Revenue rose 40% from Q1 to Q3\">",
+  "bad": "<img src=\"IMG_2041.jpg\" alt=\"IMG_2041.jpg\">",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "alt text",
+   "images"
+  ]
+ },
+ {
+  "id": "A11Y-06",
+  "category": "accessibility",
+  "rule": "Icon-only buttons have an accessible name and the icon is hidden from assistive tech.",
+  "check": "icon buttons have aria-label or visually-hidden text; svg aria-hidden=true",
+  "measured_by": "browser",
+  "do": "<button aria-label=\"Search\"><svg aria-hidden=\"true\">",
+  "dont": "An unlabelled button with only an SVG.",
+  "good": "<button aria-label=\"Open cart (3 items)\"><svg aria-hidden=\"true\" focusable=\"false\">…</svg></button>",
+  "bad": "<button><svg>…</svg></button>",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "icon button",
+   "aria-label"
+  ]
+ },
+ {
+  "id": "A11Y-07",
+  "category": "accessibility",
+  "rule": "All functionality works with a keyboard alone, in a logical order, with no traps.",
+  "check": "every control reachable and operable via Tab/Shift+Tab/Enter/Space/Esc",
+  "measured_by": "browser",
+  "do": "Use native elements; add key handlers for custom widgets per ARIA patterns.",
+  "dont": "Clickable divs and spans.",
+  "good": "<button onclick=\"open()\">Details</button>",
+  "bad": "<div onclick=\"open()\">Details</div>",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "desktop"
+  ],
+  "keywords": [
+   "keyboard",
+   "div onclick"
+  ],
+  "hook": {
+   "patterns": [
+    "<divonclick",
+    "<spanonclick",
+    "<divonclick={",
+    "<spanonclick={"
+   ],
+   "unless": [
+    "role=",
+    "onkeydown"
+   ],
+   "default_on": true,
+   "message": "click handler on a non-interactive element"
+  }
+ },
+ {
+  "id": "A11Y-08",
+  "category": "accessibility",
+  "rule": "Honour prefers-reduced-motion: remove parallax, autoplay and large movement; keep fades short.",
+  "check": "with reduce, no transform-based motion > 0 px and no autoplay",
+  "measured_by": "browser",
+  "do": "Wrap motion in @media (prefers-reduced-motion: no-preference).",
+  "dont": "Parallax that ignores the setting.",
+  "good": "@media (prefers-reduced-motion:no-preference){.reveal{animation:rise .4s}}",
+  "bad": ".reveal{animation:rise 1s}",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "reduced motion",
+   "vestibular"
+  ]
+ },
+ {
+  "id": "A11Y-09",
+  "category": "accessibility",
+  "rule": "Nothing flashes more than 3 times per second.",
+  "check": "no element flashes > 3 Hz",
+  "measured_by": "manual",
+  "do": "Static or slow fades for alerts.",
+  "dont": "Strobing 'live' badges.",
+  "good": ".live{animation:pulse 2s ease-in-out infinite}",
+  "bad": ".live{animation:blink .1s steps(2) infinite}",
+  "severity": "critical",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "flash",
+   "seizure",
+   "2.3.1"
+  ]
+ },
+ {
+  "id": "A11Y-10",
+  "category": "accessibility",
+  "rule": "Content reflows at 320 CSS px width and 400% zoom without two-dimensional scrolling.",
+  "check": "no horizontal scroll at 320 px for text content (WCAG 1.4.10)",
+  "measured_by": "browser",
+  "do": "Fluid layouts, min() widths, wrapping flex rows.",
+  "dont": "Fixed 1200 px containers.",
+  "good": ".wrap{width:min(100% - 2rem, 72rem)}",
+  "bad": ".wrap{width:1200px}",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "reflow",
+   "zoom",
+   "1.4.10"
+  ]
+ },
+ {
+  "id": "A11Y-11",
+  "category": "accessibility",
+  "rule": "Text spacing can be increased (line-height 1.5, letter 0.12em, word 0.16em) without clipping.",
+  "check": "no clipped text under WCAG 1.4.12 spacing overrides",
+  "measured_by": "browser",
+  "do": "Let containers grow with content; avoid fixed heights on text boxes.",
+  "dont": "Fixed-height cards with overflow:hidden text.",
+  "good": ".card{min-height:12rem}",
+  "bad": ".card{height:12rem;overflow:hidden}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "text spacing",
+   "1.4.12"
+  ]
+ },
+ {
+  "id": "A11Y-12",
+  "category": "accessibility",
+  "rule": "Custom widgets follow the ARIA Authoring Practices pattern or are replaced by native elements.",
+  "check": "tabs/menus/accordions expose correct roles, states and key bindings",
+  "measured_by": "browser",
+  "do": "Native <details>, <select>, <dialog> first; APG patterns for the rest.",
+  "dont": "role=\"button\" on a div without key handling.",
+  "good": "<details><summary>Shipping</summary>…</details>",
+  "bad": "<div role=\"button\">Shipping</div>",
+  "severity": "high",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "aria",
+   "apg",
+   "widgets"
+  ]
+ },
+ {
+  "id": "A11Y-13",
+  "category": "accessibility",
+  "rule": "Dragging actions have a single-pointer alternative.",
+  "check": "every drag operation also doable with clicks or keys (WCAG 2.5.7)",
+  "measured_by": "manual",
+  "do": "Move up/down buttons beside drag handles.",
+  "dont": "Reorder only by drag.",
+  "good": "<button aria-label=\"Move up\">↑</button>",
+  "bad": "/* drag-only kanban */",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "drag",
+   "2.5.7",
+   "reorder"
+  ]
+ },
+ {
+  "id": "A11Y-14",
+  "category": "accessibility",
+  "rule": "Screen-reader-only text uses a robust visually-hidden class, not display:none.",
+  "check": "sr-only class uses clip-path pattern",
+  "measured_by": "static",
+  "do": ".sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}",
+  "dont": "display:none on text meant for screen readers.",
+  "good": "<span class=\"sr-only\">(opens in new tab)</span>",
+  "bad": "<span style=\"display:none\">(opens in new tab)</span>",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "sr-only",
+   "visually hidden"
+  ]
+ },
+ {
+  "id": "A11Y-15",
+  "category": "accessibility",
+  "rule": "Captions for video with speech; transcripts for audio.",
+  "check": "<video> with speech has a <track kind=captions>",
+  "measured_by": "static",
+  "do": "WebVTT captions and a transcript link.",
+  "dont": "Video with auto-captions never reviewed.",
+  "good": "<track kind=\"captions\" src=\"en.vtt\" srclang=\"en\" label=\"English\">",
+  "bad": "<video src=\"talk.mp4\" controls>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "captions",
+   "transcript",
+   "video"
+  ]
+ },
+ {
+  "id": "COPY-01",
+  "category": "content",
+  "rule": "Button labels are verbs that say what happens.",
+  "check": "primary buttons start with a verb; no 'OK', 'Submit', 'Click here'",
+  "measured_by": "static",
+  "do": "'Save changes', 'Send invoice', 'Create account'.",
+  "dont": "'Submit', 'OK', 'Yes'.",
+  "good": "<button>Send invoice</button>",
+  "bad": "<button>Submit</button>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "button label",
+   "microcopy",
+   "verb"
+  ]
+ },
+ {
+  "id": "COPY-02",
+  "category": "content",
+  "rule": "Link text makes sense out of context.",
+  "check": "no 'click here', 'read more' or 'learn more' without context",
+  "measured_by": "static",
+  "do": "'Read the 2026 pricing report'.",
+  "dont": "Ten 'Learn more' links on one page.",
+  "good": "<a href=\"/report\">Read the pricing report</a>",
+  "bad": "<a href=\"/report\">Click here</a>",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "link text",
+   "click here"
+  ],
+  "hook": {
+   "patterns": [
+    ">clickhere<",
+    ">readmore<",
+    ">learnmore<",
+    ">here<"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "non-descriptive link text"
+  }
+ },
+ {
+  "id": "COPY-03",
+  "category": "content",
+  "rule": "Line length for body text is 45–75 characters.",
+  "check": "body text max-width between 45ch and 75ch",
+  "measured_by": "browser",
+  "do": "max-width:65ch on prose.",
+  "dont": "Full-width paragraphs on a 1920 px screen.",
+  "good": ".prose{max-width:65ch}",
+  "bad": "p{width:100%}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "desktop"
+  ],
+  "keywords": [
+   "measure",
+   "line length"
+  ]
+ },
+ {
+  "id": "COPY-04",
+  "category": "content",
+  "rule": "Body text is at least 16 px on web and line height 1.4–1.7.",
+  "check": "body font-size >= 16 px; line-height 1.4-1.7",
+  "measured_by": "browser",
+  "do": "font-size:1rem; line-height:1.55.",
+  "dont": "13 px body copy with 1.1 line height.",
+  "good": "body{font-size:1rem;line-height:1.55}",
+  "bad": "body{font-size:13px;line-height:1.1}",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "font size",
+   "line height",
+   "readability"
+  ],
+  "hook": {
+   "patterns": [
+    "font-size:9px",
+    "font-size:10px",
+    "font-size:11px"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "font size below 12px"
+  }
+ },
+ {
+  "id": "COPY-05",
+  "category": "content",
+  "rule": "Write in plain language at about a grade 8 reading level for general audiences.",
+  "check": "Flesch-Kincaid grade <= 9 for consumer copy",
+  "measured_by": "manual",
+  "do": "Short sentences, common words, active voice.",
+  "dont": "'Leverage synergistic onboarding paradigms'.",
+  "good": "\"Set up your shop in 5 minutes.\"",
+  "bad": "\"Leverage our turnkey commerce enablement.\"",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "plain language",
+   "readability"
+  ]
+ },
+ {
+  "id": "COPY-06",
+  "category": "content",
+  "rule": "Use real, specific content in designs; never ship lorem ipsum or placeholder stats.",
+  "check": "no 'lorem ipsum', 'Your Name', '10x' placeholder copy in shipped files",
+  "measured_by": "static",
+  "do": "Real product names, real numbers with sources.",
+  "dont": "'Lorem ipsum' or invented testimonials.",
+  "good": "<p>Ships to 38 countries since 2019.</p>",
+  "bad": "<p>Lorem ipsum dolor sit amet.</p>",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "lorem ipsum",
+   "placeholder",
+   "real content"
+  ],
+  "hook": {
+   "patterns": [
+    "loremipsum"
+   ],
+   "unless": [],
+   "default_on": true,
+   "message": "placeholder lorem ipsum text"
+  }
+ },
+ {
+  "id": "COPY-07",
+  "category": "content",
+  "rule": "Keep terminology consistent: one name per concept across the product.",
+  "check": "glossary terms used consistently (e.g. never both 'project' and 'workspace' for one thing)",
+  "measured_by": "manual",
+  "do": "Keep a short glossary and lint UI strings against it.",
+  "dont": "'Delete', 'Remove' and 'Trash' for the same action.",
+  "good": "Delete project · Project deleted",
+  "bad": "Remove workspace · Project trashed",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "terminology",
+   "consistency"
+  ]
+ },
+ {
+  "id": "COPY-08",
+  "category": "content",
+  "rule": "Use sentence case for UI labels and headings unless the brand says otherwise.",
+  "check": "labels in sentence case",
+  "measured_by": "manual",
+  "do": "'Create new project'.",
+  "dont": "'Create New Project' everywhere, or ALL CAPS paragraphs.",
+  "good": "<h2>Billing details</h2>",
+  "bad": "<h2>BILLING DETAILS AND PAYMENT INFORMATION</h2>",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "sentence case",
+   "capitalisation"
+  ]
+ },
+ {
+  "id": "COPY-09",
+  "category": "content",
+  "rule": "Front-load headings and labels with the words people scan for.",
+  "check": "first 2 words of each heading carry the key term",
+  "measured_by": "manual",
+  "do": "'Refunds: how long they take'.",
+  "dont": "'Everything you need to know about our refund process'.",
+  "good": "<h3>Refund timing</h3>",
+  "bad": "<h3>A quick note about how we think about refunds</h3>",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "scanning",
+   "headings"
+  ]
+ },
+ {
+  "id": "COPY-10",
+  "category": "content",
+  "rule": "Numbers, dates and units are shown in formats the reader understands, with units.",
+  "check": "every number has a unit; relative dates have absolute tooltips",
+  "measured_by": "manual",
+  "do": "'2 h ago' with a full timestamp on hover/focus.",
+  "dont": "'3' with no unit, or '04/05/06'.",
+  "good": "<time datetime=\"2026-10-19T09:00\">2 h ago</time>",
+  "bad": "<span>3</span>",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "units",
+   "dates",
+   "numbers"
+  ]
+ },
+ {
+  "id": "COPY-11",
+  "category": "content",
+  "rule": "Truncation never hides meaning; use line clamping with full text available.",
+  "check": "clamped text has an expand control or full text on detail view",
+  "measured_by": "browser",
+  "do": "-webkit-line-clamp:3 plus 'Show more'.",
+  "dont": "Cutting product names mid-word with no way to read them.",
+  "good": ".desc{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}",
+  "bad": ".title{width:120px;overflow:hidden}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "truncation",
+   "line clamp"
+  ]
+ },
+ {
+  "id": "DARK-01",
+  "category": "dark mode",
+  "rule": "Dark themes use dark grey surfaces (about #121212–#1e1e1e) rather than pure black for large areas.",
+  "check": "large surfaces not #000 unless OLED-specific; text not pure #fff on pure #000",
+  "measured_by": "browser",
+  "do": "Layered surfaces from tokens: --surface-1, --surface-2.",
+  "dont": "Pure #fff text on #000, which causes halation.",
+  "good": ":root[data-theme=dark]{--bg:#121417;--text:#e7e9ec}",
+  "bad": "body{background:#000;color:#fff}",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "dark surfaces",
+   "halation"
+  ]
+ },
+ {
+  "id": "DARK-02",
+  "category": "dark mode",
+  "rule": "Re-check every contrast pairing in dark mode; do not invert colours mechanically.",
+  "check": "all text >= 4.5:1 in dark theme",
+  "measured_by": "browser",
+  "do": "Separate dark tokens tuned for contrast.",
+  "dont": "filter:invert(1) on the page.",
+  "good": "--muted:#9aa3ad /* 6.9:1 on #121417 */",
+  "bad": "html.dark{filter:invert(1) hue-rotate(180deg)}",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "dark contrast",
+   "invert"
+  ]
+ },
+ {
+  "id": "DARK-03",
+  "category": "dark mode",
+  "rule": "Declare color-scheme so native controls, scrollbars and form fields match the theme.",
+  "check": "color-scheme set on :root (or meta) for light and dark",
+  "measured_by": "static",
+  "do": ":root{color-scheme:light dark}",
+  "dont": "Light native date pickers inside a dark UI.",
+  "good": ":root{color-scheme:light dark}",
+  "bad": "/* no color-scheme declared */",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "color-scheme",
+   "native controls"
+  ],
+  "hook": {
+   "patterns": [
+    "prefers-color-scheme:dark"
+   ],
+   "unless": [
+    "color-scheme"
+   ],
+   "default_on": true,
+   "message": "dark theme without a color-scheme declaration"
+  }
+ },
+ {
+  "id": "DARK-04",
+  "category": "dark mode",
+  "rule": "Follow the system preference by default and let users override it, persisting their choice.",
+  "check": "theme toggle offers light/dark/system; choice persists; no flash on load",
+  "measured_by": "browser",
+  "do": "Set data-theme in a blocking inline script before first paint.",
+  "dont": "Flash of light theme on every load.",
+  "good": "<script>document.documentElement.dataset.theme=localStorage.theme||\"system\"</script>",
+  "bad": "/* theme applied after hydration */",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "theme toggle",
+   "system",
+   "fouc"
+  ]
+ },
+ {
+  "id": "DARK-05",
+  "category": "dark mode",
+  "rule": "Express elevation with lighter surfaces, not heavier shadows, in dark mode.",
+  "check": "raised surfaces lighter than the base by a token step",
+  "measured_by": "manual",
+  "do": "Card --surface-2 lighter than --surface-1.",
+  "dont": "Black drop shadows that vanish on dark backgrounds.",
+  "good": ".card{background:var(--surface-2)}",
+  "bad": ".card{box-shadow:0 10px 30px #000}",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "elevation",
+   "shadows"
+  ]
+ },
+ {
+  "id": "DARK-06",
+  "category": "dark mode",
+  "rule": "Desaturate saturated brand colours for dark backgrounds.",
+  "check": "accent colours on dark surfaces still >= 3:1 and not vibrating",
+  "measured_by": "manual",
+  "do": "Use a lighter, less saturated tint of the brand colour in dark mode.",
+  "dont": "Pure #0000ff links on dark grey.",
+  "good": "--accent-dark:#7aa7ff",
+  "bad": "--accent:#0000ff /* same in both themes */",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "saturation",
+   "accent"
+  ]
+ },
+ {
+  "id": "DARK-07",
+  "category": "dark mode",
+  "rule": "Images and illustrations adapt: provide dark variants or reduce brightness of bright images.",
+  "check": "logos and diagrams have dark variants or transparent backgrounds",
+  "measured_by": "browser",
+  "do": "<picture> with a prefers-color-scheme source for logos.",
+  "dont": "White-boxed PNG logos on dark headers.",
+  "good": "<picture><source srcset=\"logo-dark.svg\" media=\"(prefers-color-scheme: dark)\"><img src=\"logo.svg\" alt=\"Acme\"></picture>",
+  "bad": "<img src=\"logo-white-bg.png\">",
+  "severity": "medium",
+  "platforms": [
+   "web"
+  ],
+  "keywords": [
+   "images",
+   "logos",
+   "dark variant"
+  ]
+ },
+ {
+  "id": "DARK-08",
+  "category": "dark mode",
+  "rule": "Charts and status colours have dark-theme versions that keep their meaning and contrast.",
+  "check": "chart series and status tokens >= 3:1 against dark surface",
+  "measured_by": "browser",
+  "do": "Separate dark palette for data and status.",
+  "dont": "Reusing light-theme chart colours that disappear on dark.",
+  "good": "--series-1-dark:#8ab4ff",
+  "bad": "--series-1:#1d4ed8 /* used on #121417 */",
+  "severity": "medium",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "charts",
+   "status colours"
+  ]
+ },
+ {
+  "id": "DARK-09",
+  "category": "dark mode",
+  "rule": "Shadows, borders and dividers are visible but subtle in both themes.",
+  "check": "dividers between 1.2:1 and 3:1 against their surface in both themes",
+  "measured_by": "browser",
+  "do": "Theme-specific --line tokens.",
+  "dont": "Borders that disappear entirely in dark mode.",
+  "good": "--line-dark:#2a2f36",
+  "bad": "--line:#e5e7eb /* reused in dark */",
+  "severity": "low",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "borders",
+   "dividers"
+  ]
+ },
+ {
+  "id": "DARK-10",
+  "category": "dark mode",
+  "rule": "Test focus rings, selection and highlights in dark mode.",
+  "check": "focus ring >= 3:1 against dark surfaces; ::selection readable",
+  "measured_by": "browser",
+  "do": "A focus token per theme.",
+  "dont": "A dark-blue focus ring on a near-black surface.",
+  "good": "--focus-dark:#9cc3ff",
+  "bad": ":focus-visible{outline-color:#1e3a8a} /* both themes */",
+  "severity": "high",
+  "platforms": [
+   "web",
+   "ios",
+   "android",
+   "desktop"
+  ],
+  "keywords": [
+   "focus",
+   "selection",
+   "dark mode"
+  ]
+ }
+]

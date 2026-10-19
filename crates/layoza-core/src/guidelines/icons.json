@@ -1,0 +1,222 @@
+{
+ "rules": [
+  "Use one icon library per project. Mixing libraries mixes stroke widths, corner radii and optical sizes.",
+  "Match the icon's stroke weight to the text it sits beside: about 1.5 px for 400-weight text at 16 px, 2 px for 500-600 weight.",
+  "Size icons to the text cap-height or line-height: 16 px with 14-16 px text, 20 px with 18 px text, 24 px in toolbars and tab bars.",
+  "Icon-only controls need an accessible name; decorative icons next to text are aria-hidden.",
+  "Keep the hit area at least 24×24 CSS px (44 pt/48 dp on touch) even when the glyph is 16 px.",
+  "Use currentColor so icons inherit text colour and theme changes.",
+  "Import icons individually (tree-shaken components or an SVG sprite); never ship a whole icon font.",
+  "Brand logos are not icons: use the brand's official asset, not a lookalike glyph."
+ ],
+ "roles": [
+  {
+   "role": "navigation",
+   "examples": [
+    "home",
+    "menu",
+    "back",
+    "close",
+    "chevrons"
+   ],
+   "guidance": "Outline style at rest, filled for the selected tab on mobile. Chevrons mirror in RTL.",
+   "label": "Always pair with a visible text label in tab bars; icon-only only for universal back/close with aria-label."
+  },
+  {
+   "role": "action",
+   "examples": [
+    "edit",
+    "delete",
+    "share",
+    "download",
+    "copy"
+   ],
+   "guidance": "Same style as navigation. Destructive actions get text, not only a trash icon.",
+   "label": "Icon-only allowed in dense toolbars with aria-label plus tooltip; primary actions use text."
+  },
+  {
+   "role": "status",
+   "examples": [
+    "success",
+    "warning",
+    "error",
+    "info"
+   ],
+   "guidance": "Distinct shapes (check, triangle, octagon/circle-x, circle-i) so status never depends on colour.",
+   "label": "Pair with status text; aria-hidden on the icon when text is present."
+  },
+  {
+   "role": "object",
+   "examples": [
+    "file",
+    "folder",
+    "user",
+    "calendar",
+    "cart"
+   ],
+   "guidance": "Helps scanning in lists and menus; keep consistent per object type across the product.",
+   "label": "Decorative next to the object name: aria-hidden."
+  },
+  {
+   "role": "input affordance",
+   "examples": [
+    "search",
+    "eye (password)",
+    "calendar picker",
+    "clear"
+   ],
+   "guidance": "Inside fields at 16-20 px; the clear and reveal icons are buttons.",
+   "label": "Buttons inside fields need names (\"Show password\", \"Clear search\")."
+  },
+  {
+   "role": "media control",
+   "examples": [
+    "play",
+    "pause",
+    "mute",
+    "fullscreen"
+   ],
+   "guidance": "Filled glyphs read better at small sizes over video. Never mirror in RTL.",
+   "label": "Name reflects the current action (\"Pause video\") and updates on toggle."
+  },
+  {
+   "role": "data and charts",
+   "examples": [
+    "trend up/down",
+    "sort",
+    "filter"
+   ],
+   "guidance": "Arrows for change must also carry sign and number.",
+   "label": "Sort state goes in aria-sort, not only the arrow."
+  },
+  {
+   "role": "illustrative / marketing",
+   "examples": [
+    "feature icons"
+   ],
+   "guidance": "Larger (32-48 px) and may use a duotone of the same family; never a different library from the UI.",
+   "label": "Decorative: aria-hidden, the heading carries the meaning."
+  }
+ ],
+ "libraries": [
+  {
+   "name": "Lucide",
+   "style": "outline, 2 px default stroke (adjustable), 24 px grid",
+   "fits": "general product UI, dashboards, marketing sites",
+   "stacks": [
+    "react",
+    "vue",
+    "svelte",
+    "astro",
+    "html",
+    "react-native",
+    "flutter"
+   ],
+   "license": "ISC"
+  },
+  {
+   "name": "Phosphor",
+   "style": "six weights (thin to fill, duotone) of one set",
+   "fits": "brands needing weight matching with type; illustrative + UI from one family",
+   "stacks": [
+    "react",
+    "vue",
+    "svelte",
+    "html",
+    "flutter",
+    "swiftui"
+   ],
+   "license": "MIT"
+  },
+  {
+   "name": "Heroicons",
+   "style": "outline 24, solid 24/20, mini 16",
+   "fits": "Tailwind projects; compact UI",
+   "stacks": [
+    "react",
+    "vue",
+    "html",
+    "tailwind"
+   ],
+   "license": "MIT"
+  },
+  {
+   "name": "Material Symbols",
+   "style": "variable font/SVG: weight, fill, grade, optical size axes",
+   "fits": "Material and Android-leaning products; Compose and Flutter",
+   "stacks": [
+    "compose",
+    "flutter",
+    "html",
+    "react"
+   ],
+   "license": "Apache-2.0"
+  },
+  {
+   "name": "SF Symbols",
+   "style": "weights and scales that match San Francisco text automatically",
+   "fits": "iOS/macOS native apps only (licence limits use to Apple platforms)",
+   "stacks": [
+    "swiftui"
+   ],
+   "license": "Apple licence"
+  },
+  {
+   "name": "Tabler Icons",
+   "style": "outline, 2 px stroke, large set",
+   "fits": "admin panels needing breadth",
+   "stacks": [
+    "react",
+    "vue",
+    "svelte",
+    "html"
+   ],
+   "license": "MIT"
+  },
+  {
+   "name": "Radix Icons",
+   "style": "15 px grid, crisp at small sizes",
+   "fits": "dense desktop tools",
+   "stacks": [
+    "react"
+   ],
+   "license": "MIT"
+  },
+  {
+   "name": "Dashicons / WordPress Icons",
+   "style": "WordPress admin set",
+   "fits": "WordPress admin and block editor UI only",
+   "stacks": [
+    "gutenberg"
+   ],
+   "license": "GPL-2.0+"
+  }
+ ],
+ "sizing": [
+  {
+   "text_px": 12,
+   "icon_px": 14,
+   "stroke": 1.5
+  },
+  {
+   "text_px": 14,
+   "icon_px": 16,
+   "stroke": 1.5
+  },
+  {
+   "text_px": 16,
+   "icon_px": 18,
+   "stroke": 1.75
+  },
+  {
+   "text_px": 18,
+   "icon_px": 20,
+   "stroke": 2
+  },
+  {
+   "text_px": 24,
+   "icon_px": 24,
+   "stroke": 2
+  }
+ ]
+}
