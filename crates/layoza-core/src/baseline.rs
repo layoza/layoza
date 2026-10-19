@@ -254,6 +254,31 @@ pub fn new_run_id(brief: &str) -> String {
     format!("{secs}-{:08x}", h as u32)
 }
 
+/// For each look in `recent` (oldest first): how many runs back its run is (0 = the newest run)
+/// and its slot within that run (0 = direction A). Ages count runs, not ledger lines, so the three
+/// looks of one run are equally recent.
+pub fn run_slots(recent: &[Look]) -> Vec<(usize, usize)> {
+    let mut runs: Vec<&str> = Vec::new();
+    let mut slots: Vec<usize> = Vec::new();
+    let mut idx: Vec<usize> = Vec::with_capacity(recent.len());
+    for l in recent {
+        let i = runs.iter().position(|r| *r == l.run).unwrap_or_else(|| {
+            runs.push(&l.run);
+            slots.push(0);
+            runs.len() - 1
+        });
+        idx.push(i);
+    }
+    let total = runs.len();
+    idx.into_iter()
+        .map(|i| {
+            let s = slots[i];
+            slots[i] += 1;
+            (total - 1 - i, s)
+        })
+        .collect()
+}
+
 /// Looks from the last `runs` runs in the project's ledger, oldest first. Empty without a ledger.
 pub fn recent_looks(project: &Path, runs: usize) -> Vec<Look> {
     let Ok(raw) = fs::read(project.join(LOOK_LEDGER)) else { return Vec::new() };

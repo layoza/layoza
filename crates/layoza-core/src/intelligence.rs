@@ -1765,8 +1765,13 @@ pub fn recommend_design_avoiding(
         recent_body.push(b.to_string());
     }
     // Recent archetypes and palettes (newest first) steer the structure and colour deal.
-    let recent_archs: Vec<String> = recent.iter().rev().filter_map(|l| l.archetype.clone()).collect();
-    let recent_pals: Vec<String> = recent.iter().rev().filter_map(|l| l.palette.clone()).collect();
+    // Each pick carries its age in runs and its slot (A, B, C) in that run.
+    let ages = crate::baseline::run_slots(recent);
+    let picks = |f: fn(&crate::baseline::Look) -> Option<String>| -> Vec<(String, usize, usize)> {
+        recent.iter().zip(&ages).rev().filter_map(|(l, (age, slot))| Some((f(l)?, *age, *slot))).collect()
+    };
+    let recent_archs = picks(|l| l.archetype.clone());
+    let recent_pals = picks(|l| l.palette.clone());
     let mut best: Option<(usize, DesignRecommendation)> = None;
     for v in variant..variant + 6 {
         let rec = crate::directions::with_recent_faces(recent_display.clone(), recent_body.clone(), || {

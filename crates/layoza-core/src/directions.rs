@@ -918,14 +918,14 @@ pub(crate) fn with_recent_faces<T>(display: Vec<String>, body: Vec<String>, f: i
 }
 
 thread_local! {
-    /// Archetype and palette ids from the look ledger, newest first, set by [`with_recent_picks`].
-    static RECENT_PICKS: std::cell::RefCell<(Vec<String>, Vec<String>)> = const { std::cell::RefCell::new((Vec::new(), Vec::new())) };
+    /// Archetype and palette picks from the look ledger, newest first, set by [`with_recent_picks`].
+    static RECENT_PICKS: std::cell::RefCell<(Vec<RecentPick>, Vec<RecentPick>)> = const { std::cell::RefCell::new((Vec::new(), Vec::new())) };
 }
 
 /// Runs `f` with the ledger's recent archetypes and palettes (newest first) down-ranking those
 /// picks, so the same brief asked again is dealt a different structure and colour. Niche fit
 /// still gates the pool: a recent pick is only out-scored by the next-best fitting one.
-pub(crate) fn with_recent_picks<T>(archetypes: Vec<String>, palettes: Vec<String>, f: impl FnOnce() -> T) -> T {
+pub(crate) fn with_recent_picks<T>(archetypes: Vec<RecentPick>, palettes: Vec<RecentPick>, f: impl FnOnce() -> T) -> T {
     RECENT_PICKS.with(|r| *r.borrow_mut() = (archetypes, palettes));
     let out = f();
     RECENT_PICKS.with(|r| *r.borrow_mut() = (Vec::new(), Vec::new()));
@@ -935,14 +935,14 @@ pub(crate) fn with_recent_picks<T>(archetypes: Vec<String>, palettes: Vec<String
 /// Fit points below the best that still compete on freshness when the ledger steers a deal.
 const FIT_BAND: i32 = 9;
 
-/// Score cost of reusing `id` given ledger ids `newest_first`: the last run's picks cost most.
-fn recency_cost(newest_first: &[String], id: &str) -> i32 {
-    match newest_first.iter().position(|x| x == id) {
-        Some(d) if d < 6 => 5,
-        Some(d) if d < 15 => 3,
-        Some(_) => 1,
-        None => 0,
-    }
+/// A ledger pick: id, runs back (0 = the newest run) and slot in that run (0 = direction A).
+pub(crate) type RecentPick = (String, usize, usize);
+
+/// Score cost of reusing `id` in `slot`: the cost falls one point per two runs back, so among
+/// fitting picks the least recently used wins; the slot that used it last pays one more, so a
+/// direction never keeps re-taking its own last pick while the others rotate.
+fn recency_cost(newest_first: &[RecentPick], id: &str, slot: usize) -> i32 {
+    newest_first.iter().filter(|p| p.0 == id).map(|(_, age, s)| (6 - (*age / 2) as i32).max(1) + i32::from(*s == slot)).max().unwrap_or(0)
 }
 
 thread_local! {
@@ -1120,7 +1120,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let (recent_archs, recent_pals) = RECENT_PICKS.with(|r| r.borrow().clone());
     // The ledger's last looks were mostly pale grounds: lean this deal toward dark and colour fields.
     let pale_run = {
-        let last: Vec<Tone> = recent_pals.iter().take(6).filter_map(|id| pals.iter().find(|e| &e.palette.id == id)).map(|e| e.tone).collect();
+        let last: Vec<Tone> = recent_pals.iter().take(6).filter_map(|(id, _, _)| pals.iter().find(|e| &e.palette.id == id)).map(|e| e.tone).collect();
         last.len() >= 3 && last.iter().filter(|t| **t == Tone::Light).count() * 3 >= last.len() * 2
     };
     if let Some((t, p)) = industry {
@@ -1218,7 +1218,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 ranked.retain(|x| own(x.1));
             }
             for x in ranked.iter_mut() {
-                x.0 -= recency_cost(&recent_archs, x.1.key);
+                x.0 -= recency_cost(&recent_archs, x.1.key, slot as usize);
             }
         }
         ranked.sort_by(|x, y| y.0.cmp(&x.0).then_with(|| h(x.1.key).cmp(&h(y.1.key))));
@@ -1245,7 +1245,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
 
         // Type and palette: A at variant 0 keeps the matched industry's own.
         if slot == 0 && variant == 0 {
-            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p) && recency_cost(&recent_pals, &p.id) < 3) {
+            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p) && recency_cost(&recent_pals, &p.id, 0) < 3) {
                 let tone = Tone::of(p);
                 used_tones.push(tone);
                 let te = types.iter().find(|e| e.pairing.id == t.id || e.pairing.display_font == t.display_font);
@@ -1411,7 +1411,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             let top = pr.iter().map(|x| x.0).max().unwrap_or(0);
             pr.retain(|x| x.0 >= top - FIT_BAND);
             for x in pr.iter_mut() {
-                x.0 -= recency_cost(&recent_pals, &pals[x.1].palette.id);
+                x.0 -= recency_cost(&recent_pals, &pals[x.1].palette.id, slot as usize);
             }
         }
         pr.sort_by(|x, y| y.0.cmp(&x.0).then_with(|| h(&pals[x.1].palette.id).cmp(&h(&pals[y.1].palette.id))));

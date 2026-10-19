@@ -97,44 +97,44 @@ const fn o(id: &'static str, build: &'static str, fit: &'static [&'static str]) 
 const AXES: [&str; 6] = ["hero_frame", "flow", "section_head", "ground", "material", "labels"];
 
 const HERO_FRAMES: &[Opt] = &[
-    o("full-bleed-scene", "Full-bleed scene: one edge-to-edge image or rendered world, the headline set over it.", &["+showcase", "+venue", "+hero:photo", "+hero:video", "+hero:map", "+comp:full-bleed", "+bold"]),
+    o("full-bleed-scene", "Full-bleed scene: one edge-to-edge image or rendered world, the headline set over it.", &["+showcase", "+venue", "+hero:photo", "+hero:video", "+hero:map", "+comp:full-bleed", "+bold", "+commerce"]),
     o("poster-type", "Poster-scale type fills the first screen: words only, no image, no widget.", &["+showcase", "+editorial", "+hero:giant-type", "+comp:poster", "+bold", "-commerce", "-product-ui", "-devtool"]),
     o("split", "Split: headline on one half, the working object on the other, for a stated reason.", &["house", "+comp:split"]),
-    o("object-centre", "One object centre-stage at large scale; type tucked around or behind it.", &["+commerce", "+hero:object", "+hero:illustration", "+comp:object-wrap", "+comp:centred", "-devtool"]),
-    o("pinned-story", "Pinned scroll story: the first screen stays fixed while the subject assembles on scroll.", &["+showcase", "+product-ui", "+comp:sticky-stage", "+tier:heavy", "-tier:micro", "-solemn"]),
-    o("index-first", "Index first: the page opens on a list of real items with counts, no hero image.", &["+editorial", "+devtool", "+hero:document", "+hero:data-as-image"]),
+    o("object-centre", "One object centre-stage at large scale; type tucked around or behind it.", &["+commerce", "+hero:object", "+hero:illustration", "+comp:object-wrap", "+comp:centred", "-devtool", "+venue", "+product-ui"]),
+    o("pinned-story", "Pinned scroll story: the first screen stays fixed while the subject assembles on scroll.", &["+showcase", "+product-ui", "+comp:sticky-stage", "+tier:heavy", "-tier:micro", "-solemn", "+commerce", "+devtool"]),
+    o("index-first", "Index first: the page opens on a list of real items with counts, no hero image.", &["+editorial", "+devtool", "+hero:document", "+hero:data-as-image", "-commerce", "+product-ui"]),
     o("product-ui-bleed", "Product UI full-bleed: the live interface fills the screen; the headline sits inside it.", &["+product-ui", "+devtool", "+hero:live-ui", "+hero:code-output", "-venue", "-solemn", "-commerce", "-showcase", "-editorial", "-general"]),
-    o("collage", "Scattered collage: several real artefacts across the screen at different scales and angles.", &["+showcase", "+playful", "+hero:collage", "+hero:document", "-product-ui", "-devtool", "-solemn", "-commerce"]),
+    o("collage", "Scattered collage: several real artefacts across the screen at different scales and angles.", &["+showcase", "+playful", "+hero:collage", "+hero:document", "-product-ui", "-devtool", "-solemn", "-commerce", "+venue", "+editorial"]),
     o("work-strip", "Short headline above a full-width strip of real work or products running sideways.", &["+showcase", "+commerce", "+venue", "-devtool"]),
-    o("giant-figure", "One giant figure, date or price leads; the headline sits small beneath it, proof first.", &["+product-ui", "+commerce", "+hero:data-as-image", "-solemn", "-venue"]),
-    o("close-crop", "Extreme close-up crop of one detail fills the screen; headline tucked in one corner.", &["+venue", "+commerce", "+hero:photo", "+hero:object", "+calm", "-product-ui", "-devtool"]),
-    o("quiet-statement", "Centred quiet statement on open ground, one small image or mark below it.", &["+calm", "+solemn", "+trust", "+comp:centred", "-bold"]),
+    o("giant-figure", "One giant figure, date or price leads; the headline sits small beneath it, proof first.", &["+product-ui", "+commerce", "+hero:data-as-image", "-solemn", "-venue", "+devtool"]),
+    o("close-crop", "Extreme close-up crop of one detail fills the screen; headline tucked in one corner.", &["+venue", "+commerce", "+hero:photo", "+hero:object", "+calm", "-product-ui", "-devtool", "+editorial"]),
+    o("quiet-statement", "Centred quiet statement on open ground, one small image or mark below it.", &["+calm", "+solemn", "+trust", "+comp:centred", "-bold", "-commerce"]),
 ];
 
 const FLOWS: &[Opt] = &[
     o("stacked-bands", "Stacked full-width bands, each section its own band with its own rhythm.", &["house"]),
-    o("horizontal-chapters", "Horizontal chapters: one section scrolls sideways through panels, then the page continues down.", &["+showcase", "+commerce", "-tier:micro", "-solemn", "-devtool"]),
-    o("sticky-index", "Sticky index on one side; content panes scroll past it on the other side.", &["+product-ui", "+devtool", "+editorial"]),
+    o("horizontal-chapters", "Horizontal chapters: one section scrolls sideways through panels, then the page continues down.", &["+showcase", "+commerce", "-tier:micro", "-solemn", "-devtool", "+venue"]),
+    o("sticky-index", "Sticky index on one side; content panes scroll past it on the other side.", &["+product-ui", "+devtool", "+editorial", "+commerce"]),
     o("bento", "Bento mosaic: sections packed as unequal tiles in one grid, sized by importance.", &["+product-ui", "+commerce", "+devtool", "-solemn"]),
-    o("editorial-column", "Single editorial column (~65ch) with images breaking out full-width between passages.", &["+editorial", "+solemn", "+calm", "-commerce"]),
-    o("snap-slides", "Full-screen snap slides: one idea per viewport, scroll snaps between them.", &["+showcase", "+bold", "-product-ui", "-devtool", "-solemn", "-commerce"]),
-    o("staggered", "Asymmetric staggered blocks alternating edges and widths down the page.", &["+showcase", "+venue"]),
-    o("layered-deck", "Stacked deck: each section slides over the previous one as a sticky layer.", &["+showcase", "+product-ui", "-solemn"]),
+    o("editorial-column", "Single editorial column (~65ch) with images breaking out full-width between passages.", &["+editorial", "+solemn", "+calm", "-commerce", "+venue"]),
+    o("snap-slides", "Full-screen snap slides: one idea per viewport, scroll snaps between them.", &["+showcase", "+bold", "-product-ui", "-devtool", "-solemn", "-commerce", "+venue"]),
+    o("staggered", "Asymmetric staggered blocks alternating edges and widths down the page.", &["+showcase", "+venue", "+commerce"]),
+    o("layered-deck", "Stacked deck: each section slides over the previous one as a sticky layer.", &["+showcase", "+product-ui", "-solemn", "+commerce", "+venue"]),
     o("spreads", "Magazine spreads: each section a facing pair, a full image page beside a text page.", &["+editorial", "+venue", "+showcase", "-product-ui", "-devtool"]),
-    o("spine", "One continuous rail runs down the page; every section hangs off it in order.", &["+devtool", "+product-ui", "+solemn"]),
+    o("spine", "One continuous rail runs down the page; every section hangs off it in order.", &["+devtool", "+product-ui", "+solemn", "-commerce"]),
     o("product-shelves", "Product-first shelves: rows of real items with price and action lead every section.", &["+commerce", "-solemn", "-editorial", "-devtool", "-product-ui", "-showcase", "-venue", "-general"]),
-    o("drawer-rows", "Numbered rows that open in place to reveal each section, like a chapter index.", &["+calm", "+solemn", "+devtool", "+editorial", "+trust"]),
+    o("drawer-rows", "Numbered rows that open in place to reveal each section, like a chapter index.", &["+calm", "+solemn", "+devtool", "+editorial", "+trust", "-commerce"]),
 ];
 
 const SECTION_HEADS: &[Opt] = &[
     o("title-note", "Title left, short note right on one shared baseline.", &["house"]),
-    o("centred-overline", "Centred title with one small overline word above it; symmetric openings.", &["+calm", "+solemn", "+venue"]),
-    o("margin-numeral", "Giant section numeral in the left margin, the title small beside it.", &["+showcase", "+editorial", "+bold"]),
-    o("run-in", "Run-in heads: a bold title opens the first sentence of the section, no line break.", &["+editorial", "+calm", "+devtool"]),
-    o("outline-title", "Oversized outline title bleeding off the edge, filling solid as it scrolls in.", &["+showcase", "+bold", "-solemn", "-calm", "-trust"]),
+    o("centred-overline", "Centred title with one small overline word above it; symmetric openings.", &["+calm", "+solemn", "+venue", "+commerce"]),
+    o("margin-numeral", "Giant section numeral in the left margin, the title small beside it.", &["+showcase", "+editorial", "+bold", "+venue", "+product-ui", "+devtool"]),
+    o("run-in", "Run-in heads: a bold title opens the first sentence of the section, no line break.", &["+editorial", "+calm", "+devtool", "+venue", "+product-ui"]),
+    o("outline-title", "Oversized outline title bleeding off the edge, filling solid as it scrolls in.", &["+showcase", "+bold", "-solemn", "-calm", "-trust", "+commerce"]),
     o("no-heads", "No section heads: the content itself and a change of ground mark each section.", &["+showcase", "+commerce"]),
-    o("vertical-label", "Vertical label rotated along each section's edge; content starts at the top.", &["+showcase", "+editorial", "-solemn"]),
-    o("banner-rule", "Full-width title between hairline rules, set huge like a newspaper banner.", &["+editorial", "+bold"]),
+    o("vertical-label", "Vertical label rotated along each section's edge; content starts at the top.", &["+showcase", "+editorial", "-solemn", "+venue"]),
+    o("banner-rule", "Full-width title between hairline rules, set huge like a newspaper banner.", &["+editorial", "+bold", "+venue", "+devtool"]),
     o("question-heads", "Each head is a visitor's question in plain words; the answer starts right below.", &["+product-ui", "+devtool", "+solemn", "+calm", "+trust"]),
     o("tab-heads", "Heads sit as tabs on each section panel's top edge, like folder dividers.", &["+product-ui", "+devtool", "+commerce"]),
     o("inline-count", "Each head is one sentence carrying a live real number (\"212 jobs booked today\").", &["+product-ui", "+commerce", "-solemn"]),
@@ -149,29 +149,37 @@ const GROUNDS: &[Opt] = &[
     o("inverted-alternating", "Alternate ground and ink sections: palette background, then the foreground colour as ground.", &["+editorial", "+devtool"]),
     o("night-glow", "Dark ground lit by soft glow pools of the accent behind key objects.", &["+product-ui", "+devtool", "-tone:light", "-tone:field", "-solemn"]),
     o("tinted-field", "The palette's tinted field throughout; one darker band carries the main action.", &["-tone:light", "-tone:dark"]),
+    o("light-interlude", "Dark ground throughout, broken once by a bright paper interlude where the key proof or offer sits.", &["+showcase", "+commerce", "+editorial", "-tone:light", "-tone:field"]),
+    o("paper-grain", "Warm paper ground with a faint grain; sections part on torn or deckled edges, not boxes.", &["+editorial", "+calm", "+venue", "+playful", "-tone:dark", "-product-ui", "-devtool"]),
+    o("split-ground", "Each section split down the middle: one half on the palette ground, the other on its ink.", &["+editorial", "+showcase", "+commerce", "+product-ui", "-solemn", "-calm"]),
+    o("duotone-photo", "Photos washed into a two-colour duotone from the palette become the section grounds.", &["+venue", "+showcase", "+editorial", "+hero:photo", "-product-ui", "-devtool", "-solemn"]),
 ];
 
 const MATERIALS: &[Opt] = &[
-    o("flat-graphic", "Flat graphic shapes and solid colour blocks; no texture, shadow or photos.", &["+product-ui", "+devtool", "+showcase"]),
-    o("paper-print", "Paper and print artefacts: tickets, receipts, labels, stamps, folded sheets.", &["house", "+editorial", "+hero:document", "-devtool"]),
+    o("flat-graphic", "Flat graphic shapes and solid colour blocks; no texture, shadow or photos.", &["+product-ui", "+devtool", "+showcase", "+commerce"]),
+    o("paper-print", "Paper and print artefacts: tickets, receipts, labels, stamps, folded sheets.", &["house", "+editorial", "+hero:document", "-devtool", "+venue"]),
     o("glass-light", "Glass and light: translucent panels, blur, glow and refraction over a deep ground.", &["+product-ui", "+devtool", "+bold", "-solemn", "-trust"]),
     o("rendered-3d", "Rendered 3D objects of the trade, lit and shadowed, as the main visuals.", &["+commerce", "+showcase", "+bold", "+hero:object", "-solemn", "-devtool"]),
-    o("illustrated", "One illustration style (one hand, one line weight) across every section.", &["+playful", "+venue", "+general", "+hero:illustration"]),
-    o("typographic", "Typographic only: type, rules and numerals carry every section; no imagery.", &["+editorial", "+showcase", "+calm", "+hero:giant-type", "-commerce"]),
+    o("illustrated", "One illustration style (one hand, one line weight) across every section.", &["+playful", "+venue", "+general", "+hero:illustration", "+editorial"]),
+    o("typographic", "Typographic only: type, rules and numerals carry every section; no imagery.", &["+editorial", "+showcase", "+calm", "+hero:giant-type", "-commerce", "+venue", "+devtool"]),
     o("product-screens", "Real product screens and data states, cropped and annotated, as the visuals.", &["+product-ui", "+devtool", "+hero:live-ui", "+hero:code-output", "-venue", "-solemn"]),
-    o("photographic", "Photographic art direction: real-looking scenes of people, places and the work.", &["+venue", "+showcase", "+solemn", "+commerce", "+hero:photo", "+hero:video", "-devtool"]),
-    o("diagrammatic", "Diagrams and technical drawings: plans, exploded views, flow lines and callouts.", &["+devtool", "+product-ui", "+commerce", "+hero:data-as-image"]),
+    o("photographic", "Photographic art direction: real-looking scenes of people, places and the work.", &["+venue", "+showcase", "+solemn", "+commerce", "+hero:photo", "+hero:video", "-devtool", "+editorial"]),
+    o("diagrammatic", "Diagrams and technical drawings: plans, exploded views, flow lines and callouts.", &["+devtool", "+product-ui", "+commerce", "+hero:data-as-image", "+editorial"]),
     o("tactile", "Tactile surfaces sampled from the trade itself: fabric, stone, wood, metal grain.", &["+venue", "+solemn", "+calm", "-product-ui", "-devtool"]),
     o("shoppable", "Shoppable cut-outs on plain ground with price, variant and add-to-cart on each.", &["+commerce", "-solemn", "-editorial", "-devtool", "-product-ui", "-showcase", "-general"]),
 ];
 
 const LABELS: &[Opt] = &[
     o("mono-caps", "Monospace caps for labels, tags and metadata.", &["house", "+devtool"]),
-    o("small-caps", "True small caps from the body face for labels and metadata.", &["+editorial", "+solemn", "+calm"]),
-    o("sentence-case", "Sentence case only, body face; labels read as plain words, no caps anywhere.", &["+calm", "+solemn", "+commerce", "+product-ui", "+trust"]),
-    o("numbered", "Numbered labels (01, 02, §3) set in the display face's figures.", &["+showcase", "+editorial", "+devtool"]),
+    o("small-caps", "True small caps from the body face for labels and metadata.", &["+editorial", "+solemn", "+calm", "+venue", "+showcase"]),
+    o("sentence-case", "Sentence case only, body face; labels read as plain words, no caps anywhere.", &["+calm", "+solemn", "+commerce", "+product-ui", "+trust", "+venue", "+devtool"]),
+    o("numbered", "Numbered labels (01, 02, §3) set in the display face's figures.", &["+showcase", "+editorial", "+devtool", "+commerce", "+product-ui"]),
     o("pill-tags", "Labels as filled pill tags in the accent colour, sentence case.", &["+commerce", "+product-ui", "+playful", "-solemn"]),
-    o("italic-captions", "Italic labels in the display face, set like captions in a book.", &["+editorial", "+venue", "+solemn"]),
+    o("italic-captions", "Italic labels in the display face, set like captions in a book.", &["+editorial", "+venue", "+solemn", "+showcase"]),
+    o("stamped", "Labels as rubber-stamp marks in the accent ink, slightly rotated, like a tag or a receipt stamp.", &["+playful", "+venue", "+commerce", "-solemn", "-trust", "-devtool", "+showcase"]),
+    o("outline-tags", "Labels in hairline-outlined tags, no fill, in the body face.", &["+product-ui", "+devtool", "+commerce"]),
+    o("accent-dash", "A short accent dash before each label, body face semibold, sentence case.", &["+trust", "+calm", "+product-ui", "+solemn", "+devtool"]),
+    o("wide-caps", "Wide-tracked caps in the display face for labels; one size, one weight.", &["+showcase", "+bold", "+venue", "-solemn", "-devtool"]),
 ];
 
 fn pool(axis: usize) -> &'static [Opt] {
@@ -557,10 +565,11 @@ fn fit_score(fit: &[&str], ctx: &[String]) -> Option<i32> {
     Some(s)
 }
 
-/// Penalty for a value used `d` ledger entries back (0 = the newest): any recent use loses to an
-/// unused value; among used values the least recent wins.
-fn recency(d: Option<usize>) -> i32 {
-    d.map_or(0, |d| 200 - d.min(150) as i32)
+/// Penalty for a value last used `age` runs back (0 = the newest run) by `slot`: any recent use
+/// loses to an unused value; among used values the least recent run wins, and within one run the
+/// value another direction used beats the one this direction used, so each direction rotates.
+fn recency(last: Option<(usize, usize)>, slot: usize) -> i32 {
+    last.map_or(0, |(age, s)| 200 - 10 * age.min(15) as i32 + if s == slot { 5 } else { 0 })
 }
 
 /// Deals one page shape per direction: every axis differs across the directions (a pinned axis is
@@ -568,7 +577,8 @@ fn recency(d: Option<usize>) -> i32 {
 /// lose to unused ones.
 pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
     let recent = RECENT_SHAPES.with(|r| r.borrow().clone());
-    let newest_first: Vec<&Look> = recent.iter().rev().collect();
+    let ages = crate::baseline::run_slots(&recent);
+    let newest_first: Vec<(&Look, (usize, usize))> = recent.iter().zip(ages).rev().collect();
     let last_run = recent.last().map(|l| l.run.clone());
     let paper_last_run = recent.iter().any(|l| Some(&l.run) == last_run.as_ref() && l.material.as_deref() == Some("paper-print"));
     let pinned = b.pinned();
@@ -601,14 +611,16 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
                         .collect();
                     let mut ranked: Vec<i32> = fits.iter().map(|(f, _)| *f).collect();
                     ranked.sort_unstable_by(|a, b| b.cmp(a));
-                    // Enough values actively fit for every direction: neutral ones stay out.
-                    let floor = if ranked.iter().filter(|f| **f > 0).count() >= ins.len() { 1 } else { ranked.get(ins.len()).or(ranked.last()).copied().unwrap_or(0) };
+                    // Enough values actively fit for every direction: neutral ones stay out. The tables
+                    // give each surface five or more fitting values, so a repeated brief rotates.
+                    let active = ranked.iter().filter(|f| **f > 0).count();
+                    let floor = if active >= ins.len() { 1 } else { ranked.get(ins.len()).or(ranked.last()).copied().unwrap_or(0) };
                     let scored: Vec<(i32, &Opt)> = fits
                         .into_iter()
                         .filter(|(f, _)| *f >= floor)
                         .map(|(fit, o)| {
-                            let d = newest_first.iter().position(|l| axis_of(l, axis) == Some(o.id));
-                            (fit - recency(d) + jitter(&format!("{axis}|{i}|{}", o.id)), o)
+                            let last = newest_first.iter().find(|(l, _)| axis_of(l, axis) == Some(o.id)).map(|(_, a)| *a);
+                            (fit - recency(last, i) + jitter(&format!("{axis}|{i}|{}", o.id)), o)
                         })
                         .collect();
                     let fresh: Vec<&(i32, &Opt)> = scored.iter().filter(|(_, o)| !used.contains(&o.id)).collect();
@@ -648,8 +660,8 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
             .filter(usable)
             .filter_map(|x| {
                 let fit = fit_score(x.fit, ctx)?;
-                let d = newest_first.iter().position(|l| l.motion_signature.as_deref() == Some(x.id));
-                Some((fit - recency(d) + jitter(&format!("sig|{i}|{}", x.id)), x))
+                let last = newest_first.iter().find(|(l, _)| l.motion_signature.as_deref() == Some(x.id)).map(|(_, a)| *a);
+                Some((fit - recency(last, i) + jitter(&format!("sig|{i}|{}", x.id)), x))
             })
             .collect();
         let fresh: Vec<&(i32, &Tech)> = scored.iter().filter(|(_, x)| !used_sigs.contains(&x.id)).collect();
@@ -679,7 +691,7 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
                 .filter(|t| tool_ok(t))
                 .enumerate()
                 .max_by_key(|(k, t)| {
-                    let d = newest_first.iter().take(6).position(|l| l.motion_tools.iter().any(|u| u == t));
+                    let d = newest_first.iter().take(6).position(|(l, _)| l.motion_tools.iter().any(|u| u == t));
                     let mut s = -(*k as i32);
                     if mine.contains(t) {
                         s -= 6;
