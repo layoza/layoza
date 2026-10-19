@@ -191,8 +191,39 @@ pub struct Look {
     pub hero: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub layout: Option<String>,
+    /// Every mechanic id dealt in this look (all slots), for the deal's recent-use penalty.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub mechanics: Vec<String>,
+    /// Page furniture and slot picks, recorded per slot so the next deal can check each one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub nav: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub footer: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub transition: Option<String>,
+    /// Section mechanics (the signature moves), in page order.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub sections: Vec<String>,
+    /// Direction archetype id (design-system runs).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub archetype: Option<String>,
+    /// Seconds since the Unix epoch when the look was recorded.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub at: Option<u64>,
+}
+
+/// Ledger entries a new deal checks, per slot, for repeats (override with `window` / `--window`).
+pub const UNIQUENESS_WINDOW: usize = 20;
+/// Largest accepted window.
+pub const MAX_UNIQUENESS_WINDOW: usize = 200;
+
+/// The last `n` ledger entries (lines), oldest first. Empty without a ledger.
+pub fn recent_entries(project: &Path, n: usize) -> Vec<Look> {
+    let Ok(raw) = fs::read(project.join(LOOK_LEDGER)) else { return Vec::new() };
+    let text = String::from_utf8_lossy(&raw);
+    let looks: Vec<Look> = text.lines().filter_map(|l| serde_json::from_str(l).ok()).collect();
+    let start = looks.len().saturating_sub(n);
+    looks[start..].to_vec()
 }
 
 /// A run id: seconds since the epoch plus a hash of the brief (stable sort, distinct per brief).
@@ -225,8 +256,13 @@ pub fn record_looks(project: &Path, looks: &[Look]) -> Result<PathBuf, String> {
     }
     let old = fs::read(&path).map(|b| String::from_utf8_lossy(&b).into_owned()).unwrap_or_default();
     let mut lines: Vec<String> = old.lines().filter(|l| !l.trim().is_empty()).map(String::from).collect();
+    let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).ok();
     for l in looks {
-        lines.push(serde_json::to_string(l).map_err(|e| e.to_string())?);
+        let mut l = l.clone();
+        if l.at.is_none() {
+            l.at = now;
+        }
+        lines.push(serde_json::to_string(&l).map_err(|e| e.to_string())?);
     }
     let start = lines.len().saturating_sub(MAX_LEDGER_LINES);
     let body = lines[start..].join("\n") + "\n";
@@ -512,6 +548,9 @@ mod tests {
         let recent = recent_looks(&dir, 3);
         assert_eq!(recent.iter().map(|l| l.run.as_str()).collect::<Vec<_>>(), ["r5", "r6", "r7"]);
         assert_eq!(recent[2].hero.as_deref(), Some("hero-é7"));
+        let last = recent_entries(&dir, 2);
+        assert_eq!(last.iter().map(|l| l.run.as_str()).collect::<Vec<_>>(), ["r6", "r7"]);
+        assert!(last[1].at.is_some());
         let _ = fs::remove_dir_all(&dir);
     }
 }

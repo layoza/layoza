@@ -17,6 +17,7 @@ pub mod intelligence;
 pub mod mechanics;
 pub mod process;
 pub mod qa;
+pub mod uniqueness;
 pub mod verifier;
 
 #[cfg(test)]

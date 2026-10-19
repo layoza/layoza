@@ -95,6 +95,52 @@ pub struct CreativeDirection {
     /// giant type). The three directions are never all pure typography.
     #[serde(default)]
     pub hero_material: String,
+    /// Corner-radius language of this direction (sharp-0, soft-12, ticket-notch, cut-corner...).
+    #[serde(default)]
+    pub radius: String,
+    /// Direction archetype id (layout composition + hero material + look family + corners).
+    #[serde(default)]
+    pub archetype: String,
+    /// Page furniture for a new site: this direction's navigation mechanic (never shared with
+    /// another direction of the same run).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub nav: Option<crate::mechanics::MechanicRef>,
+    /// Page furniture for a new site: this direction's footer mechanic (never shared).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub footer: Option<crate::mechanics::MechanicRef>,
+    /// Type scale tokens built from the pairing's ratio, with the floors enforced: body text never
+    /// below 1rem (16px), labels and captions never below 0.75rem (12px).
+    #[serde(default)]
+    pub type_tokens: std::collections::BTreeMap<String, String>,
+}
+
+/// Smallest body size, in rem (16px at the default root size).
+pub const BODY_FLOOR_REM: f64 = 1.0;
+/// Smallest label / caption size, in rem (12px).
+pub const LABEL_FLOOR_REM: f64 = 0.75;
+
+/// Type scale tokens from a ratio label such as `1.250 (Major Third)`. Steps are rounded to 3
+/// decimals; body and label sizes are clamped to their floors whatever the ratio says.
+pub fn type_tokens(scale_ratio: &str) -> std::collections::BTreeMap<String, String> {
+    let r: f64 = scale_ratio.split_whitespace().next().and_then(|s| s.parse().ok()).filter(|r: &f64| (1.05..=2.0).contains(r)).unwrap_or(1.25);
+    let rem = |v: f64| {
+        let s = format!("{:.3}", v);
+        format!("{}rem", s.trim_end_matches('0').trim_end_matches('.'))
+    };
+    let body = BODY_FLOOR_REM;
+    let label = (body / r).max(LABEL_FLOOR_REM).min(body);
+    let mut t = std::collections::BTreeMap::new();
+    t.insert("label".to_string(), rem(label));
+    t.insert("caption".to_string(), rem(label));
+    t.insert("small".to_string(), rem(((body + label) / 2.0).max(LABEL_FLOOR_REM)));
+    t.insert("body".to_string(), rem(body));
+    t.insert("lead".to_string(), rem(body * r));
+    t.insert("h3".to_string(), rem(body * r.powi(2)));
+    t.insert("h2".to_string(), rem(body * r.powi(3)));
+    t.insert("h1".to_string(), rem(body * r.powi(4)));
+    t.insert("display".to_string(), format!("clamp({}, 6vw, {})", rem(body * r.powi(4)), rem(body * r.powi(6))));
+    t.insert("ratio".to_string(), format!("{}", r));
+    t
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -130,6 +176,10 @@ pub struct DesignRecommendation {
     /// The user's recorded taste (from `.layoza/taste.md`), word for word.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub taste: Vec<String>,
+    /// Per-slot fresh / repeat report against the project's look ledger (set by the CLI and MCP
+    /// server, which own the ledger).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub uniqueness: Option<crate::uniqueness::Uniqueness>,
 }
 
 /// Brief-derived guidance that pushes a design away from category defaults toward the brand's own world.
@@ -263,6 +313,7 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &
     let mut used_compositions: Vec<String> = Vec::new();
     let mut used_looks: Vec<String> = Vec::new();
     let mut materials: Vec<String> = Vec::new();
+    let mut used_furniture: Vec<String> = Vec::new();
     for (i, d) in directions.iter_mut().enumerate() {
         let deal = deal_mechanics_with(&DealOptions {
             brief: query.to_string(),
@@ -282,8 +333,13 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &
             // No two directions share a look family, and the last is never a third pure-type hero.
             exclude_look_families: used_looks.clone(),
             avoid_giant_type: !materials.is_empty() && materials.iter().all(|m| m == "giant-type"),
+            // No two directions share a nav or a footer.
+            exclude_ids: used_furniture.clone(),
             ..Default::default()
         });
+        d.nav = deal.nav.as_ref().map(MechanicRef::from);
+        d.footer = deal.footer.as_ref().map(MechanicRef::from);
+        used_furniture.extend(deal.nav.iter().chain(&deal.footer).map(|m| m.id.clone()));
         used_looks.extend(deal.hero.iter().map(|h| h.look_family.clone()).filter(|f| !f.is_empty()));
         materials.extend(deal.hero.iter().map(|h| h.hero_material.clone()));
         d.mechanics = deal.hero.iter().chain(&deal.signature).map(MechanicRef::from).collect();
@@ -491,6 +547,32 @@ const NICHE_LEXICON: &[(&str, &str)] = &[
     ("exhibition", "civic"),
     ("luxury", "luxe"), ("watch", "luxe"), ("watches", "luxe"), ("jewellery", "luxe"), ("jewelry", "luxe"),
     ("perfume", "luxe"), ("couture", "luxe"),
+    ("funeral", "memorial"), ("funerals", "memorial"), ("memorial", "memorial"), ("cremation", "memorial"),
+    ("crematorium", "memorial"), ("cemetery", "memorial"), ("obituary", "memorial"), ("undertaker", "memorial"),
+    ("bereavement", "memorial"), ("remembrance", "memorial"), ("burial", "memorial"),
+    ("tattoo", "ink"), ("tattoos", "ink"), ("tattooist", "ink"), ("tattooing", "ink"), ("piercing", "ink"),
+    ("flash sheet", "ink"), ("printmaking", "ink"), ("letterpress", "ink"), ("calligraphy", "ink"),
+    ("utility", "infrastructure"), ("utilities", "infrastructure"), ("infrastructure", "infrastructure"),
+    ("water supply", "infrastructure"), ("grid", "infrastructure"), ("electricity", "infrastructure"),
+    ("broadband", "infrastructure"), ("transit", "infrastructure"), ("railway", "infrastructure"),
+    ("wastewater", "infrastructure"), ("pipeline", "infrastructure"), ("outage", "infrastructure"),
+    ("wedding", "celebration"), ("weddings", "celebration"), ("bride", "celebration"), ("bridal", "celebration"),
+    ("celebration", "celebration"), ("party", "celebration"), ("anniversary", "celebration"),
+    ("banquet", "celebration"), ("engagement", "celebration"), ("gala", "celebration"),
+    ("camp", "play"), ("summer camp", "play"), ("day camp", "play"), ("holiday club", "play"),
+    ("scouts", "play"), ("playgroup", "play"),
+    ("plumber", "trades"), ("plumbing", "trades"), ("electrician", "trades"), ("roofer", "trades"),
+    ("roofing", "trades"), ("joiner", "trades"), ("carpenter", "trades"), ("builder", "trades"),
+    ("handyman", "trades"), ("hvac", "trades"), ("boiler", "trades"), ("locksmith", "trades"),
+    ("contractor", "trades"), ("tradesman", "trades"),
+    ("freight", "data"), ("shipping", "data"), ("warehouse", "data"), ("fleet", "data"),
+    ("courier", "data"), ("haulage", "data"), ("supply chain", "data"), ("dispatch", "data"),
+    ("bookshop", "literary"), ("bookstore", "literary"), ("bookseller", "literary"), ("books", "literary"),
+    ("literary", "literary"), ("poetry", "literary"), ("publisher", "literary"), ("novel", "literary"),
+    ("reading", "literary"),
+    ("invoicing", "finance"), ("invoice", "finance"), ("invoices", "finance"), ("accounting", "finance"),
+    ("bookkeeping", "finance"), ("payroll", "finance"), ("fintech", "finance"), ("bank", "finance"),
+    ("banking", "finance"), ("tax", "finance"), ("budget", "finance"), ("payments", "finance"),
 ];
 
 /// True when the brief names a right-to-left language or direction (Arabic, Hebrew, Persian/Farsi,
@@ -1590,7 +1672,13 @@ pub fn looks_of(rec: &DesignRecommendation, run: &str) -> Vec<crate::baseline::L
             typography: Some(d.typography.id.clone()),
             hero: d.mechanics.iter().find(|m| m.kind == crate::mechanics::MechanicKind::Hero).map(|m| m.id.clone()),
             layout: Some(d.style_family.clone()),
-            mechanics: d.mechanics.iter().map(|m| m.id.clone()).collect(),
+            mechanics: d.mechanics.iter().chain(&d.nav).chain(&d.footer).map(|m| m.id.clone()).collect(),
+            nav: d.nav.as_ref().map(|m| m.id.clone()),
+            footer: d.footer.as_ref().map(|m| m.id.clone()),
+            sections: d.mechanics.iter().filter(|m| m.kind != crate::mechanics::MechanicKind::Hero).map(|m| m.id.clone()).collect(),
+            archetype: (!d.archetype.is_empty()).then(|| d.archetype.clone()),
+            transition: None,
+            at: None,
         })
         .collect()
 }
@@ -1610,19 +1698,9 @@ pub fn recommend_design_avoiding(
     if recent.is_empty() {
         return recommend_design_variant(raw_query, mode, existing_dna, override_dials, variant);
     }
-    let mut ids: Vec<String> = recent.iter().flat_map(|l| l.mechanics.iter().cloned().chain(l.hero.clone())).collect();
-    ids.sort();
-    ids.dedup();
-    let overlap = |rec: &DesignRecommendation| -> usize {
-        rec.directions
-            .iter()
-            .map(|d| {
-                recent.iter().filter(|l| l.palette.as_deref() == Some(d.palette.id.as_str())).count().min(1)
-                    + recent.iter().filter(|l| l.typography.as_deref() == Some(d.typography.id.as_str())).count().min(1)
-                    + recent.iter().filter(|l| l.layout.as_deref() == Some(d.style_family.as_str())).count().min(1)
-            })
-            .sum()
-    };
+    let ids = crate::uniqueness::recent_mechanic_ids(recent);
+    // Every slot counts: palette, type, archetype, nav, hero, sections and footer.
+    let overlap = |rec: &DesignRecommendation| -> usize { crate::uniqueness::check(&looks_of(rec, "candidate"), recent, recent.len(), true).repeats };
     let mut best: Option<(usize, DesignRecommendation)> = None;
     for v in variant..variant + 6 {
         let rec = recommend_design_steered(raw_query, mode, existing_dna, override_dials.clone(), v, &ids);
@@ -1637,7 +1715,7 @@ pub fn recommend_design_avoiding(
     let (o, mut rec) = best.expect("at least one variant");
     let runs: std::collections::BTreeSet<&str> = recent.iter().map(|l| l.run.as_str()).collect();
     rec.workflow_guidance.push(format!(
-        "LOOK LEDGER: steered away from {} look(s) in this project's last {} run(s) (.layoza/looks.jsonl); {} palette/type/layout repeat(s) remain. Pass ledger=false (CLI --no-ledger) to ignore it.",
+        "LOOK LEDGER: steered away from {} look(s) in this project's last {} run(s) (.layoza/looks.jsonl); {} slot repeat(s) remain (see `uniqueness`). Pass ledger=false (CLI --no-ledger) to ignore it.",
         recent.len(),
         runs.len(),
         o
@@ -1820,6 +1898,11 @@ pub fn recommend_design_steered(
         let letter = ['A', 'B', 'C'][i];
         directions.push(CreativeDirection {
             hero_material: String::new(),
+            radius: d.radius.to_string(),
+            archetype: d.arch.key.to_string(),
+            nav: None,
+            footer: None,
+            type_tokens: type_tokens(&d.typography.scale_ratio),
             index: i as u8 + 1,
             title: format!("Direction {letter} — {} ({})", best_industry.name, d.arch.name),
             style_family: d.arch.style_family.into(),
@@ -1938,6 +2021,11 @@ pub fn recommend_design_steered(
     for (d, m) in directions.iter_mut().zip(crate::process::hero_materials(&heroes)) {
         d.hero_material = m;
     }
+    for (d, dealt) in directions.iter_mut().zip(&dealt) {
+        if d.hero_material.trim().is_empty() {
+            d.hero_material = dealt.arch.hero_material.to_string();
+        }
+    }
     let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
     let component = crate::process::is_component_brief(raw_query);
     let custom_route = if new_look && !component {
@@ -1974,6 +2062,7 @@ pub fn recommend_design_steered(
         custom_route,
         rotation: None,
         taste: Vec::new(),
+        uniqueness: None,
         mode,
         query: raw_query.to_string(),
         distinctiveness: distinctiveness_for(query, &best_industry.slug, &signals),

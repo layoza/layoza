@@ -244,16 +244,17 @@ fn walk(root: &Path, dir: &Path, depth: usize, out: &mut Vec<Stamp>) {
     }
 }
 
-/// Recent looks from `.layoza/looks.jsonl`, or rebuilt from CSS stamps when the ledger is missing.
-pub fn recent_looks_or_stamps(root: &Path, runs: usize) -> Vec<Look> {
-    let looks = crate::baseline::recent_looks(root, runs);
+/// The last `entries` looks from `.layoza/looks.jsonl`, or rebuilt from CSS stamps when the ledger
+/// is missing.
+pub fn recent_looks_or_stamps(root: &Path, entries: usize) -> Vec<Look> {
+    let looks = crate::baseline::recent_entries(root, entries);
     if !looks.is_empty() || root.join(crate::baseline::LOOK_LEDGER).exists() {
         return looks;
     }
     find_stamps(root)
         .into_iter()
         .filter(|s| s.scope.as_deref() != Some("component"))
-        .take(runs)
+        .take(entries)
         .map(|s| Look {
             run: format!("stamp:{}", s.file),
             source: "stamp".into(),
@@ -262,6 +263,7 @@ pub fn recent_looks_or_stamps(root: &Path, runs: usize) -> Vec<Look> {
             hero: s.hero.clone(),
             layout: s.structure,
             mechanics: s.hero.into_iter().collect(),
+            ..Default::default()
         })
         .collect()
 }
