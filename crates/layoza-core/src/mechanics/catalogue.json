@@ -62,7 +62,7 @@
     "avoid": "Halves offset far enough to make the word unreadable, a seam that hides the x-height of every letter, mismatched copies that ghost at sub-pixel offsets, colour pairs failing contrast on one side of the split.",
     "stack_notes": {
       "css": "Stack three spans in one grid cell. Animate a registered @property --seam angle and --slip length with animation-timeline: view(), feeding clip-path polygon() points and translate. The ribbon is a rotated flex row with a CSS keyframe marquee.",
-      "js": "rAF maps section progress to seam angle and slip, writing CSS variables on the wrapper so the copies share one source of truth. WAAPI plays the load-in seam draw. Remove listeners and cancel animations on unmount; re-measure on font load. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands."
+      "js": "rAF maps section progress to seam angle and slip, writing CSS variables on the wrapper so the copies share one source of truth. WAAPI plays the load-in seam draw. Remove listeners and cancel animations on unmount; re-measure on font load. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps."
     }
   },
   {
@@ -197,7 +197,7 @@
     "a11y": "The visible word remains a real h1; the video is muted, aria-hidden, and has a pause control reachable by keyboard. Reduced motion: still poster in letters, no scaling. Outline stroke guarantees letter shapes when footage is dark.",
     "avoid": "Footage too busy for letters to read, autoplaying sound, letters scaling past the viewport so the word breaks, a blank frame before the video loads (use poster), relying on background-clip in browsers lacking it.",
     "stack_notes": {
-      "css": "Wrapper with background video replaced by background-clip: text on an animated image, or an SVG mask with text element over a video element. Scale and outer fade via animation-timeline: view(). Provide @supports fallback to solid text. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Wrapper with background video replaced by background-clip: text on an animated image, or an SVG mask with text element over a video element. Scale and outer fade via animation-timeline: view(). Provide @supports fallback to solid text.",
       "js": "IntersectionObserver plays and pauses the video only when visible; rAF maps progress to mask scale for browsers without scroll timelines. Honour Save-Data and matchMedia reduced motion; release the video source on unmount."
     }
   },
@@ -754,7 +754,7 @@
     "a11y": "Board is a nav with a list of in-page anchor links; the active one gets aria-current location. Focus ring on each link is clearly visible against felt. Reduced motion removes the arrow slide but keeps the highlight swap.",
     "avoid": "Highlight lagging behind or jumping two items, services only discoverable by hovering the board, a board taller than the viewport, and felt-board text below 4.5:1 contrast at the dim state.",
     "stack_notes": {
-      "css": "position: sticky board; each entry defines view-timeline-name, hoisted with timeline-scope on the section so board rows animate against their entry's view timeline (range contain). Fallback: IntersectionObserver with rootMargin -50% 0 sets aria-current. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "position: sticky board; each entry defines view-timeline-name, hoisted with timeline-scope on the section so board rows animate against their entry's view timeline (range contain). Fallback: IntersectionObserver with rootMargin -50% 0 sets aria-current.",
       "js": "IntersectionObserver on entries with a centre band rootMargin toggles a data-active attribute; scrollIntoView with block nearest keeps mobile chips aligned. Clicking a row uses native smooth anchor scrolling, respecting reduced motion."
     }
   },
@@ -905,7 +905,7 @@
     "avoid": "Receipt height changes that shift the controls column, numbers rolling so long they misreport the price, hidden fees appearing only on the receipt, and sliders with no visible value.",
     "stack_notes": {
       "css": "Native inputs plus :has() to show or hide add-on rows; line entry via @starting-style height and translate transitions; totals require JS unless pre-computed per state. Use steps() timing for the stepped print.",
-      "js": "Compute totals in a small pure function; render rows with keyed DOM; WAAPI for print-in and tear-off; number roll via per-digit translateY spans. Format with Intl.NumberFormat for currency."
+      "js": "Compute totals in a small pure function; render rows with keyed DOM; WAAPI for print-in and tear-off; number roll via per-digit translateY spans. Format with Intl.NumberFormat for currency. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands."
     }
   },
   {
@@ -936,7 +936,7 @@
     "a11y": "Use table, th scope col/row, caption. Billing toggle is a radio group. Price changes announced via aria-live polite. Reduced motion skips the rule draw and digit roll. Column highlight must not be the only selection cue.",
     "avoid": "Fake tables made of divs, prices that jump layout width when toggling (use tabular figures and fixed widths), hover-only details, and greyed rows dropping below 4.5:1.",
     "stack_notes": {
-      "css": ":has(input[value=annual]:checked) swaps price spans; :has(td:nth-child(3):hover) highlights a column via a shared class trick or col elements; rules draw with scaleX transitions under @starting-style or an in-view view() timeline.",
+      "css": ":has(input[value=annual]:checked) swaps price spans; :has(td:nth-child(3):hover) highlights a column via a shared class trick or col elements; rules draw with scaleX transitions under @starting-style or an in-view view() timeline. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
       "js": "Minimal: a click handler on the billing toggle to update prices and the live region; IntersectionObserver adds a ruled class once. Optional per-digit roll with spans translated by WAAPI."
     }
   },
@@ -1089,7 +1089,7 @@
     "avoid": "Dots that never settle during readable windows, numbers baked only into the canvas, misleading units, frame drops on low-end devices (cap at around 20k points), and a black canvas while initializing.",
     "stack_notes": {
       "css": "Fallback: five pre-rendered SVG or AVIF frames in a sticky stage, crossfaded by view() timelines on caption blocks. Waffle and bars can be pure CSS grid of small spans if counts are under a few hundred.",
-      "js": "WebGL points with per-vertex start and target attributes; vertex shader mixes positions by a uniform eased t per stage. Precompute targets with layout functions. Canvas2D works below 5k dots. Dispose buffers and stop rAF when off-screen. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands."
+      "js": "WebGL points with per-vertex start and target attributes; vertex shader mixes positions by a uniform eased t per stage. Precompute targets with layout functions. Canvas2D works below 5k dots. Dispose buffers and stop rAF when off-screen. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps."
     }
   },
   {
@@ -1278,7 +1278,7 @@
     "a11y": "Letter is an article with a heading and signature as text; margin notes are aside elements in reading order. Photo has alt text. Reduced motion shows the fully fanned state and signature at once.",
     "avoid": "Paper textures that reduce text contrast, notes covering letter text, cursive body copy, and rotating the main letter itself so lines tilt.",
     "stack_notes": {
-      "css": "animation-timeline: view() on the section drives back-sheet transforms; per-note view() timelines for fades; signature SVG stroke-dashoffset with animation-range exit. IntersectionObserver fallback adds fanned class. Use transform-origin at the bottom corner of each sheet. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "animation-timeline: view() on the section drives back-sheet transforms; per-note view() timelines for fades; signature SVG stroke-dashoffset with animation-range exit. IntersectionObserver fallback adds fanned class. Use transform-origin at the bottom corner of each sheet.",
       "js": "Only needed for fallback: IntersectionObserver with multiple thresholds sets a --p custom property; CSS maps --p to rotations. No other script. Disconnect the observer once fully fanned and on unmount."
     }
   },
@@ -1339,7 +1339,7 @@
     "a11y": "Tabs are a real radio group inside a fieldset with a legend, so arrow keys switch day-parts. Panels use hidden states, not opacity alone. Reduced motion swaps the eraser and write-in for an instant swap. Chalk text keeps at least 7:1 contrast on the slate.",
     "avoid": "Chalk script fonts that are illegible at small sizes, texture so heavy it lowers contrast, prices baked into an image, defaulting to breakfast at 8pm, or layout jump when lists of different lengths swap.",
     "stack_notes": {
-      "css": "Radio inputs plus :has(#lunch:checked) toggle panel visibility; @starting-style gives the write-in clip-path entry; a grid-template-areas stack keeps all panels in one cell so height is the max of the three and nothing shifts. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Radio inputs plus :has(#lunch:checked) toggle panel visibility; @starting-style gives the write-in clip-path entry; a grid-template-areas stack keeps all panels in one cell so height is the max of the three and nothing shifts.",
       "js": "A few lines read new Date().getHours() to preselect the day-part; optional WAAPI animates clip-path for older engines. Any framework tab component works if it renders all three lists in the DOM and only toggles visibility."
     }
   },
@@ -1370,7 +1370,7 @@
     "a11y": "Chips are checkbox inputs with visible focus rings. Filtered rows get a visually hidden note saying contains nuts rather than being removed. The allergen key is a definition list. Reduced motion skips the strike draw. A live region announces the matching dish count.",
     "avoid": "Removing filtered dishes so the card jumps, relying on colour alone for allergens, leaders that break onto two lines, tiny superscripts below 0.7rem, or chips that claim safety without a kitchen note about cross-contact.",
     "stack_notes": {
-      "css": "Checkboxes plus :has() selectors such as .menu:has(#nuts:checked) .dish[data-n] apply the dim and strike; the strike is a pseudo-element scaled on the x axis with a transition; leaders use flex-grow and a dotted border-bottom. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Checkboxes plus :has() selectors such as .menu:has(#nuts:checked) .dish[data-n] apply the dim and strike; the strike is a pseudo-element scaled on the x axis with a transition; leaders use flex-grow and a dotted border-bottom.",
       "js": "Optional: a tiny script counts visible matches into an aria-live element and syncs chips to the URL hash. Data can come from any CMS as dish rows with allergen data attributes; no library required."
     }
   },
@@ -1587,7 +1587,7 @@
     "a11y": "Content is a nav with lists under headings, not a table. The barcode is aria-hidden. Reduced motion shows the receipt fully printed. Links have clear focus outlines and 44px tall rows. Newsletter input has a real label.",
     "avoid": "A reveal that never completes for short pages, monospace lines overflowing at small widths, faux prices next to links that confuse, low-contrast thermal grey text, or the torn edge clipping the legal line.",
     "stack_notes": {
-      "css": "animation-timeline: view() with animation-range entry 0% to cover 40%, using steps(12) on clip-path inset; the zigzag edge is a mask-image of a repeating conic or linear gradient; dotted spacers via flex and border-bottom. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "animation-timeline: view() with animation-range entry 0% to cover 40%, using steps(12) on clip-path inset; the zigzag edge is a mask-image of a repeating conic or linear gradient; dotted spacers via flex and border-bottom.",
       "js": "Fallback: IntersectionObserver adds a printing class that runs a CSS keyframe once. Short pages where the footer is already in view get printed state immediately. No library needed."
     }
   },
@@ -1620,7 +1620,7 @@
     "a11y": "The wordmark is a real text element, aria-hidden only if the brand name already appears as text in the footer. Reduced motion shows it fully risen with a flat colour fill. Fill images keep the letters above 3:1 contrast against the ground.",
     "avoid": "Busy fill images that make letters unreadable, a wordmark cropped so much the name is lost, mask edges that leave the page bottom empty at short scroll, or sitemap text placed over the giant type.",
     "stack_notes": {
-      "css": "mask-image linear-gradient with mask-position animated by animation-timeline: view(); background-clip: text with a background-image per state toggled by :has(a[data-work=x]:hover) on the footer; translate the background on the same timeline. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame.",
+      "css": "mask-image linear-gradient with mask-position animated by animation-timeline: view(); background-clip: text with a background-image per state toggled by :has(a[data-work=x]:hover) on the footer; translate the background on the same timeline. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame.",
       "js": "IntersectionObserver fallback adds a risen class with a 900ms transition. Optional WAAPI or any existing library can scrub the mask position by measured progress for engines without scroll timelines."
     }
   },
@@ -1809,7 +1809,7 @@
     "avoid": "A map that pans with fixed timing and lands mid-leg, passes overlapping the map on narrow screens, invented airport codes that look real but are wrong, tiny stamp text as the only info, or a blank map before the first pass.",
     "stack_notes": {
       "css": "Sticky map with an SVG route; each leg path animates stroke-dashoffset on a named view-timeline set on its pass via view-timeline-name and timeline-scope; transform on the map group pans with the same timelines.",
-      "js": "IntersectionObserver picks the active pass; rAF maps its local progress to route drawing and a viewBox interpolation between leg bounds. A tile-map library the project already uses can replace the SVG, reading the same progress. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame."
+      "js": "IntersectionObserver picks the active pass; rAF maps its local progress to route drawing and a viewBox interpolation between leg bounds. A tile-map library the project already uses can replace the SVG, reading the same progress. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame."
     }
   },
   {
@@ -1840,7 +1840,7 @@
     "a11y": "Under reduced motion segments render at final width with no growth. The bar has a visually hidden table (category, percentage) as its accessible source and the graphic is aria-hidden. Gift chips are a native radio group with visible focus rings; the sentence card is an aria-live polite region.",
     "avoid": "Segments under 4% with labels crammed inside them, percentages that do not sum to 100, growth that replays on every scroll, colour as the only label, and vague sentences that name no concrete thing a gift buys.",
     "stack_notes": {
-      "css": "Segments are flex children with flex-basis set from a custom property; animation-timeline: view() with animation-range entry 0% entry 40% scales them from scaleX(0) with transform-origin left. Chip state uses :has(input:checked) to swap the sentence and set overlay widths. IntersectionObserver adds an in-view class where view timelines are unsupported. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
+      "css": "Segments are flex children with flex-basis set from a custom property; animation-timeline: view() with animation-range entry 0% entry 40% scales them from scaleX(0) with transform-origin left. Chip state uses :has(input:checked) to swap the sentence and set overlay widths. IntersectionObserver adds an in-view class where view timelines are unsupported. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
       "js": "Optional: read the allocation from JSON, set custom properties, and update the overlay widths on radio change with WAAPI. Any chart library the project already ships can draw the bar, as long as the hidden table stays the source of truth."
     }
   },
@@ -2125,7 +2125,7 @@
     "a11y": "The digit strips are aria-hidden; a visually hidden span holds the full formatted value and updates via aria-live polite, debounced so sliders do not spam announcements. Reduced motion swaps values instantly with tabular numerals.",
     "avoid": "Width jumps from proportional digits, rolling through every intermediate value on large jumps, announcing every slider tick, formatting that drops currency, or a roll so long the value lags the input.",
     "stack_notes": {
-      "css": "Register --d as an integer at-property per digit and transition it; translate the strip by calc(var(--d) * -1lh); font-variant-numeric tabular-nums; direction class picks up or down travel.",
+      "css": "Register --d as an integer at-property per digit and transition it; translate the strip by calc(var(--d) * -1lh); font-variant-numeric tabular-nums; direction class picks up or down travel. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
       "js": "Format with Intl.NumberFormat, split into characters, set --d per digit cell, and update the hidden live text after a 400ms debounce. WAAPI can replace the transition for older engines."
     }
   },
@@ -2480,7 +2480,7 @@
     "avoid": "Pinned area taller than the viewport, sheets resting half-turned, fake case numbers, tiny exhibit text, changing scroll speed.",
     "stack_notes": {
       "css": "Scroll-driven animation with view-timeline on a 300vh track and a position: sticky stage; rotateY on each sheet with transform-origin left.",
-      "js": "GSAP ScrollTrigger pin with snap: 1 / (sheets - 1), inside gsap.matchMedia with the reduced-motion and size guards; kill on unmount. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: keep transform-style: preserve-3d on every wrapper between the perspective root and the moving planes; one flat wrapper collapses the depth."
+      "js": "GSAP ScrollTrigger pin with snap: 1 / (sheets - 1), inside gsap.matchMedia with the reduced-motion and size guards; kill on unmount. Pitfall: keep transform-style: preserve-3d on every wrapper between the perspective root and the moving planes; one flat wrapper collapses the depth."
     }
   },
   {
@@ -2537,7 +2537,7 @@
     "a11y": "A real table with th scope=col; on mobile the list keeps the labels as text. Reduced motion: rules shown drawn.",
     "avoid": "Promising outcomes or durations the firm cannot stand behind, icon-step circles, carousels.",
     "stack_notes": {
-      "css": "Rule draw via background-size with animation-timeline: view() under the reduced-motion guard; static fallback. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Rule draw via background-size with animation-timeline: view() under the reduced-motion guard; static fallback.",
       "js": "IntersectionObserver adds a class once per row when scroll timelines are unsupported."
     }
   },
@@ -2566,7 +2566,7 @@
     "a11y": "The letter is an article with an ordered list of terms; margin notes are aside elements linked by aria-describedby. Accent notes keep at least 4.5:1 contrast.",
     "avoid": "Invented testimonials, star ratings, award badges without the award, a script signature as the only name.",
     "stack_notes": {
-      "css": "Grid with a margin column; notes use a one-time animation triggered by a view timeline or a class. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Grid with a margin column; notes use a one-time animation triggered by a view timeline or a class.",
       "js": "IntersectionObserver adds a class once per paragraph when scroll timelines are unsupported."
     }
   },
@@ -3008,7 +3008,7 @@
     "avoid": "Choosing a glyph with no counter (I, L, T), transform-origin off-centre so the fly-through misses the hole, pinning beyond 2.2 viewports, or the h1 placed on the photo fill where contrast varies.",
     "stack_notes": {
       "css": "Sticky stage plus animation-timeline: view() on the glyph's scale; transform-origin set from a custom property. Without scroll timelines the glyph stays at 1x and the section is not pinned. RTL: the h1 band anchors to inset-inline-start and slides on the block axis, so it needs no mirroring.",
-      "js": "Measure the counter's centre with a hidden SVG of the glyph (getBBox) and write it to --ox/--oy; rAF maps progress to scale. Disconnect observers on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: grow type with font-size or CSS zoom, not transform: scale, so glyphs stay sharp at the large end."
+      "js": "Measure the counter's centre with a hidden SVG of the glyph (getBBox) and write it to --ox/--oy; rAF maps progress to scale. Disconnect observers on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: grow type with font-size or CSS zoom, not transform: scale, so glyphs stay sharp at the large end."
     }
   },
   {
@@ -3200,7 +3200,7 @@
     "avoid": "Pigment drifting over body copy, simulations that never sleep and drain battery, colour pools so dark the ink h1 vanishes, or a generic rainbow fluid that has nothing to do with the trade's material.",
     "stack_notes": {
       "css": "Fallback poster: a static PNG stain behind the h1 with mask-image fade. Sizes reserved so the canvas swap causes no layout shift.",
-      "js": "WebGL2 stable-fluids at 256x256 sim resolution, letter mask from a 2D canvas fillText of the h1; stop rAF when off-screen or idle; dispose framebuffers and textures on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame."
+      "js": "WebGL2 stable-fluids at 256x256 sim resolution, letter mask from a 2D canvas fillText of the h1; stop rAF when off-screen or idle; dispose framebuffers and textures on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame."
     }
   },
   {
@@ -3834,7 +3834,7 @@
     "a11y": "List is an ol; struck rows add visually hidden text Finished. Reduced motion: rows present, strikes static. Server-render the day so it is right at first paint.",
     "avoid": "A stale sheet (no CMS hook), invented busy-ness, or typewriter character effects that delay reading.",
     "stack_notes": {
-      "css": "Rows via @starting-style opacity and translate; strike via a pseudo-element scaleX. RTL: strike draws from inline-start by swapping transform-origin under :dir(rtl). Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Rows via @starting-style opacity and translate; strike via a pseudo-element scaleX. RTL: strike draws from inline-start by swapping transform-origin under :dir(rtl).",
       "js": "A small script re-evaluates past rows each minute; interval cleared on unmount."
     }
   },
@@ -3867,7 +3867,7 @@
     "avoid": "Lines fitted with letter-spacing hacks instead of font size, hiding text until JS runs, or over 6 lines.",
     "stack_notes": {
       "css": "CSS fallback: each line sized with a precomputed clamp() per line and container query units (cqi). Vertical slides only, no RTL mirroring needed; fitting works for any script.",
-      "js": "Fit lines with a measure pass after document.fonts.ready and on ResizeObserver; reveal via IntersectionObserver plus WAAPI; cleanup on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands."
+      "js": "Fit lines with a measure pass after document.fonts.ready and on ResizeObserver; reveal via IntersectionObserver plus WAAPI; cleanup on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps."
     }
   },
   {
@@ -4373,7 +4373,7 @@
     "a11y": "One DOM h1, duplicate copy aria-hidden. Reduced motion: no parallax.",
     "avoid": "Object hiding letters so the word cannot be read, a cut-out with halo edges, or depth planes moving over 8%.",
     "stack_notes": {
-      "css": "Front copy with mask-image of the object's PNG silhouette; parallax via view() timelines on translate. Vertical motion only; RTL unaffected. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame.",
+      "css": "Front copy with mask-image of the object's PNG silhouette; parallax via view() timelines on translate. Vertical motion only; RTL unaffected. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame.",
       "js": "None required."
     }
   },
@@ -4437,7 +4437,7 @@
     "a11y": "Drawing aria-hidden, labels repeated in a caption. Reduced motion: drawing complete.",
     "avoid": "A drawing that does not register to the photo, filter-generated sketches, or labels too small to read.",
     "stack_notes": {
-      "css": "Paper via a semi-transparent background and an SVG mask edge; draw via @starting-style on stroke-dashoffset. Logical inset puts the paper at inline-start so RTL mirrors. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Paper via a semi-transparent background and an SVG mask edge; draw via @starting-style on stroke-dashoffset. Logical inset puts the paper at inline-start so RTL mirrors.",
       "js": "None required."
     }
   },
@@ -4597,7 +4597,7 @@
     "avoid": "Offsets so big the word blurs, more than 3 plates, or offsets on body text.",
     "stack_notes": {
       "css": "Plates as stacked copies with mix-blend-mode: multiply and translate from custom properties; static registered fallback. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
-      "js": "Pointermove sets offsets via rAF with spring decay; disable for coarse pointers; remove listeners on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands."
+      "js": "Pointermove sets offsets via rAF with spring decay; disable for coarse pointers; remove listeners on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps."
     }
   },
   {
@@ -5080,7 +5080,7 @@
     "a11y": "Each portrait figure has alt naming the person and the task. Reduced motion: no swap animation, still swaps on focus.",
     "avoid": "Headshots on grey, job titles like Ninja, or team grids of 12 identical squares.",
     "stack_notes": {
-      "css": "Flex row with align-items: end; swap via :hover and :focus-within opacity. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Flex row with align-items: end; swap via :hover and :focus-within opacity.",
       "js": "None required."
     }
   },
@@ -5391,7 +5391,7 @@
     "avoid": "Fake live data, flicker on every update, or status colour without words.",
     "stack_notes": {
       "css": "Server-rendered table first; flips via CSS rotateX on row change.",
-      "js": "Poll or SSE for updates; minute timer; clean up on unmount. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands. Pitfall: keep transform-style: preserve-3d on every wrapper between the perspective root and the moving planes; one flat wrapper collapses the depth."
+      "js": "Poll or SSE for updates; minute timer; clean up on unmount. Pitfall: keep transform-style: preserve-3d on every wrapper between the perspective root and the moving planes; one flat wrapper collapses the depth."
     }
   },
   {
@@ -6245,7 +6245,7 @@
     "a11y": "Real text; colour only. Reduced motion: full ink.",
     "avoid": "Tints under 3:1, applying it to body text, or filling by time.",
     "stack_notes": {
-      "css": "background-clip: text with a linear-gradient sized 200% and background-position scrubbed. RTL: fill direction runs from inline-start, flip gradient direction under :dir(rtl). Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "background-clip: text with a linear-gradient sized 200% and background-position scrubbed. RTL: fill direction runs from inline-start, flip gradient direction under :dir(rtl).",
       "js": "None required."
     }
   },
@@ -6504,7 +6504,7 @@
     "a11y": "Blockquotes with cite. Reduced motion: nothing to reduce.",
     "avoid": "Star widgets, carousels, or invented letters.",
     "stack_notes": {
-      "css": "Plain flow. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Plain flow.",
       "js": "None required."
     }
   },
@@ -7935,7 +7935,7 @@
     "a11y": "footer landmark; signature is text, not only an image. Keyboard: links in reading order. Reduced motion: nothing to reduce.",
     "avoid": "Fake warmth with no contact detail, signatures in a script font. Avoid the default fingerprint: 4 link columns plus a row of social icons.",
     "stack_notes": {
-      "css": "Plain flow; logical alignment. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Plain flow; logical alignment.",
       "js": "None required."
     }
   },
@@ -7968,7 +7968,7 @@
     "a11y": "nav aria-label Site index; letter headings are h2 or h3. Keyboard: jump row links to letters. Reduced motion: nothing to reduce.",
     "avoid": "Indexes with duplicates, dead links, or tiny 11px type. Avoid the default fingerprint: 4 link columns plus a row of social icons.",
     "stack_notes": {
-      "css": "CSS columns with break-inside: avoid on letter groups. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "CSS columns with break-inside: avoid on letter groups.",
       "js": "Generate from the sitemap at build time."
     }
   },
@@ -8480,7 +8480,7 @@
     "a11y": "Plain text. Reduced motion: nothing to reduce.",
     "avoid": "Numbers without method, invented stories, or rounding up.",
     "stack_notes": {
-      "css": "Plain flow. Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
+      "css": "Plain flow.",
       "js": "None required."
     }
   },
@@ -8508,7 +8508,7 @@
     "a11y": "Each field has a visible or visually hidden label that reads in sentence order; errors announced. Reduced motion: no nudge.",
     "avoid": "Sentences longer than 3 fields, or select menus with jokes.",
     "stack_notes": {
-      "css": "field-sizing: content where supported; logical nudge direction flips under :dir(rtl).",
+      "css": "field-sizing: content where supported; logical nudge direction flips under :dir(rtl). Pitfall: measure split or fitted text only after document.fonts.ready, or line breaks shift once the web font lands.",
       "js": "None required."
     }
   },
