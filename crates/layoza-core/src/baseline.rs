@@ -229,6 +229,8 @@ pub struct Look {
     pub motion_signature: Option<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub motion_tools: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub motif: Option<String>,
     /// Axes the brief pinned (exempt from the uniqueness check).
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub pinned: Vec<String>,

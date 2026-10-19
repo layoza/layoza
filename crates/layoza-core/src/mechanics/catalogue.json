@@ -10356,5 +10356,35 @@
       "css": "Two stacked images with clip-path driven by a custom property set from a range input.",
       "js": "Pointer and keyboard drive the custom property; remove listeners on unmount."
     }
+  },
+  {
+    "id": "hero-industrial-module-closeup",
+    "name": "The module, held up close",
+    "kind": "hero",
+    "role": "hero",
+    "family": "industrial-module-closeup",
+    "niches": [
+      "industrial"
+    ],
+    "moods": [
+      "technical",
+      "bold"
+    ],
+    "intensity": "wild",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "centred",
+    "hero_material": "physical-object",
+    "look_family": "brutal-flat",
+    "blueprint": "Centred hero for a maker whose product is built from parts: one real close-up photograph of the core part (an LED module face, a cabinet edge, a machined joint) sits centre-stage at large scale on a flat ground, with the h1 in two authored lines at clamp(2.5rem, 6vw, 6rem) set above it and one sentence, the quote button and a call link below. Two or three short callouts on hairline leaders name what the eye sees (pitch, depth, finish), using only the brief's real specs. The primary button carries the page's one motif.",
+    "motion": "The close-up settles from scale 1.06 to 1 over 900ms; leaders draw in 300ms each after it. Nothing loops.",
+    "still_check": "Any still shows the h1, the close-up, the callouts and both actions.",
+    "mobile": "At 375px the close-up fills the width, callouts become a short list under it, actions stay above the fold.",
+    "a11y": "One h1; alt names the part and its spec; callouts are real text, not baked into the image. Reduced motion: no scale, leaders drawn.",
+    "avoid": "Renders passed off as photos, invented specs, glow halos around the part.",
+    "stack_notes": {
+      "css": "Centred grid with absolutely placed leaders that collapse to a list.",
+      "js": "None required."
+    }
   }
 ]

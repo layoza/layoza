@@ -181,6 +181,15 @@ wait, and record `PICKED: <direction> (chosen by the user)`. `layoza audit` /
   stacked bands). Change an axis only when the user named it, or when it fails
   the subject test; record the change and the reason as `HERO:` / `SHAPE:` in
   `.layoza/direction.md`.
+- **One motif, one button, and restraint are binding too.** `page_shape.motif`
+  is the single device the page repeats: media frames, the primary button,
+  list bullets and one divider between chapters. It is drawn from one of the
+  trade's own objects, and nothing else decorates. `page_shape.button` decides
+  the button shape once for the whole page. `page_shape.restraint` lists what
+  the page leaves out (eyebrows, mono, index numerals, glow, icon cards, extra
+  typefaces...). Each rule already yields to what the brief asks for, so build
+  it as written. A premium page comes from one idea applied with discipline,
+  not from six decorative choices stacked on top of each other.
 
 ## 5. Contract and copy (before code)
 

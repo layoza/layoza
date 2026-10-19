@@ -453,8 +453,12 @@ pub fn niche_signal(brief: &str) -> Vec<String> {
     if niches.iter().any(|n| n == "industrial") {
         let toks = tokens(brief);
         let software = ["saas", "software", "app", "platform", "api", "dashboard"].iter().any(|w| toks.iter().any(|t| t == w));
+        // "3D" names the product ("3D LED displays") far more often than a 3D web build here.
+        let low = brief.to_lowercase();
+        let web_3d = ["webgl", "three.js", "threejs", "3d model", "3d viewer", "3d product viewer", "3d render", "3d scene", "3d configurator"].iter().any(|k| low.contains(k));
         niches.retain(|n| match n.as_str() {
             "saas" => software,
+            "3d" => web_3d,
             "events" | "education" | "venue" | "restaurant" | "hospitality" | "civic" | "memorial" | "health" | "retail" => false,
             _ => true,
         });

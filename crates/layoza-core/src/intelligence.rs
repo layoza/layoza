@@ -1936,6 +1936,7 @@ pub fn looks_of(rec: &DesignRecommendation, run: &str) -> Vec<crate::baseline::L
             labels: d.page_shape.as_ref().map(|p| p.labels.id.clone()),
             motion_signature: d.page_shape.as_ref().map(|p| p.motion_signature.clone()).filter(|s| !s.is_empty()),
             motion_tools: d.page_shape.as_ref().map(|p| p.motion_tools.clone()).unwrap_or_default(),
+            motif: d.page_shape.as_ref().map(|p| p.motif.id.clone()).filter(|s| !s.is_empty()),
             pinned: d.page_shape.as_ref().map(|p| p.pinned_by_prompt.clone()).unwrap_or_default(),
         })
         .collect()
@@ -2209,11 +2210,13 @@ pub fn recommend_design_steered(
         let ins: Vec<crate::directions::page_shape::ShapeIn> = dealt
             .iter()
             .zip(&directions)
-            .map(|(d, c)| crate::directions::page_shape::ShapeIn {
+            .enumerate()
+            .map(|(i, (d, c))| crate::directions::page_shape::ShapeIn {
                 hero_material: d.arch.hero_material,
                 composition: d.arch.composition,
                 tone: d.tone,
                 motion_dial: c.dials.motion_intensity,
+                object: subject.objects.get(i % subject.objects.len().max(1)).map_or("", String::as_str),
             })
             .collect();
         for (c, shape) in directions.iter_mut().zip(crate::directions::page_shape::deal_shapes(&shape_brief, &ins)) {
@@ -2465,7 +2468,12 @@ mod tests {
             assert!(!["stamped", "wide-caps"].contains(&s.labels.id.as_str()), "direction {}: {}", d.index, s.labels.id);
             assert_ne!(s.section_head.id, "margin-numeral");
             assert_ne!(s.motion.id, "micro", "prefers-reduced-motion is a fallback, not a ban");
+            // A supplier page is plain structure plus one product-born motif and restraint.
+            assert!(!["snap-slides", "editorial-column", "spreads"].contains(&s.flow.id.as_str()), "{}", s.flow.id);
+            assert!(!s.motif.id.is_empty() && !s.button.id.is_empty() && s.restraint.len() >= 8);
         }
+        let motifs: std::collections::HashSet<&str> = r.directions.iter().map(|d| d.page_shape.as_ref().unwrap().motif.id.as_str()).collect();
+        assert_eq!(motifs.len(), r.directions.len(), "one motif per direction");
         assert!(r.directions.iter().filter(|d| d.mechanics.first().is_some_and(|h| h.id.starts_with("hero-industrial-"))).count() >= 2);
     }
 
