@@ -205,7 +205,36 @@ function layozaRenderFacts() {
     }
     return out;
   };
+  // Craft: authored interaction states. For each rule naming :hover/:active/:focus-visible, keep the
+  // compound that carries the state (".btn" from ".btn:hover .arrow"); a button has the state when
+  // it matches one. Cross-origin sheets cannot be read and stay silent.
+  const stateSel = { hover: [], active: [], focus: [] };
+  const STATE_RE = { hover: /:hover/, active: /:active/, focus: /:focus-visible|:focus(?![-\w])/ };
+  const walkRules = (rules) => {
+    for (const r of rules || []) {
+      if (!r.selectorText) {
+        try { if (r.cssRules) walkRules(r.cssRules); } catch {}
+        continue;
+      }
+      for (const part of r.selectorText.split(/,(?![^(]*\))/)) {
+        const p = part.trim();
+        for (const k of Object.keys(STATE_RE)) {
+          const m = STATE_RE[k].exec(p);
+          if (!m) continue;
+          const subject = p.slice(0, m.index).replace(/:(hover|active|focus-visible|focus-within|focus)(?![-\w])/g, "");
+          stateSel[k].push(/^\s*$|[\s>+~]$/.test(subject) ? subject + "*" : subject);
+        }
+      }
+    }
+  };
+  for (const sh of document.styleSheets) {
+    try { walkRules(sh.cssRules); } catch {}
+  }
+  const hasState = (el, k) => stateSel[k].some((s) => { try { return el.matches(s); } catch { return false; } });
+  const GLYPH = /[←-⇿➔-➿⬀-⯿✓✔★☆›»]|[\u{1F300}-\u{1FAFF}]/u;
+
   const buttons = [];
+  const buttonEls = [];
   const all = [...document.body.querySelectorAll("*")].slice(0, 6000);
   for (const el of all) {
     if (SKIP.has(el.tagName) || !visible(el)) continue;
@@ -260,7 +289,18 @@ function layozaRenderFacts() {
       const mask = [st.maskImage || st.webkitMaskImage, before.maskImage || before.webkitMaskImage, after.maskImage || after.webkitMaskImage].find((c) => c && c !== "none") || null;
       // Primary: a filled link, submit or .btn (media toggles and menu buttons stay out)
       const primary = filled && (tag === "A" || (tag === "INPUT") || el.type === "submit" || /(^|\s)(btn|button|cta)([-_\s]|$)/i.test(cls));
-      if (buttons.length < 40) buttons.push({ el: sel(el), text: short(textOf(el), 30), radius: Math.round(radius * 10) / 10, height: Math.round(r.height), width: Math.round(r.width), clip, mask, filled, primary });
+      // Craft: proportions, label, icon kind, a lone accent side border, authored states
+      const bw = (s) => px(st["border" + s + "Width"]);
+      const edgeBar = [before, after].some((ps) => {
+        const c = parseColor(ps.backgroundColor);
+        return ps.content !== "none" && ps.position === "absolute" && !!c && c.a > 0.5 && px(ps.width) >= 2 && px(ps.width) <= 8 && px(ps.height) >= r.height * 0.6;
+      });
+      const insetEdge = /inset/.test(st.boxShadow || "") && /(^|[\s,(])-?[2-8](\.\d+)?px\s+0px\s+0px/.test(st.boxShadow);
+      const sideBorder = ((bw("Left") >= 2 || bw("Right") >= 2) && Math.abs(bw("Left") - bw("Right")) >= 1.5 && bw("Top") < 1.5) || edgeBar || insetEdge;
+      const icon = el.querySelector("svg, img, i[class*=icon], span[class*=icon]") ? "svg" : GLYPH.test(textOf(el)) ? "glyph" : null;
+      const states = { hover: hasState(el, "hover"), active: hasState(el, "active"), focus_visible: hasState(el, "focus") };
+      if (buttons.length < 40) buttonEls.push(el);
+      if (buttons.length < 40) buttons.push({ el: sel(el), text: short(textOf(el), 30), radius: Math.round(radius * 10) / 10, height: Math.round(r.height), width: Math.round(r.width), clip, mask, filled, primary, padding_x: Math.round(px(st.paddingLeft)), padding_y: Math.round(px(st.paddingTop)), font_px: Math.round(px(st.fontSize)), font_weight: parseInt(st.fontWeight, 10) || 400, side_border: sideBorder, icon, states });
     }
 
     // Motif hints
@@ -431,6 +471,167 @@ function layozaRenderFacts() {
     }
   }
 
+  // Craft: the header row(s) and height, utility bars above it included
+  const vh = window.innerHeight;
+  let headerFacts = null;
+  const hdr = [...document.querySelectorAll("header, [role=banner]")].find((h) => visible(h) && docRect(h).top < 120 && !h.closest("main article, section"))
+    || [...document.querySelectorAll("nav")].find((n) => visible(n) && docRect(n).top < 120);
+  if (hdr) {
+    const hr = docRect(hdr);
+    const parts = [hdr];
+    // Bars stacked above the header (siblings of it or of its wrappers) belong to the same chrome
+    for (let n = hdr; n && n !== document.body; n = n.parentElement) {
+      for (let s = n.previousElementSibling; s; s = s.previousElementSibling) {
+        if (!visible(s) || SKIP.has(s.tagName)) continue;
+        const r = docRect(s);
+        const sp = getComputedStyle(s).position;
+        if (sp === "absolute" || sp === "fixed" || /skip/i.test(typeof s.className === "string" ? s.className : "") || /^skip to/i.test(textOf(s))) continue;
+        if (r.height > 0 && r.height <= 80 && r.top >= 0 && r.bottom <= hr.top + 2 && r.top < 120 && textOf(s)) parts.push(s);
+      }
+    }
+    const bands = [];
+    for (const p of parts) {
+      for (const el of [p, ...p.querySelectorAll("a, button, img, svg, input, select, span, p, li, strong, small")]) {
+        if (!visible(el) || (el.tagName !== "IMG" && el.tagName !== "svg" && el.tagName !== "INPUT" && el.querySelector("a, button, img, svg, span, p, li"))) continue;
+        if (el === p && el.childElementCount) continue;
+        const r = docRect(el);
+        if (r.height < 4 || r.height > 160 || r.top > hr.bottom + 2 || r.left >= vw || r.right <= 0) continue;
+        bands.push([r.top, r.bottom, sel(el)]);
+      }
+    }
+    bands.sort((a, b) => a[0] - b[0]);
+    // Rows: bands of content that do not overlap vertically (a 4px touch still counts as one row)
+    let rows = 0;
+    let end = -Infinity;
+    const rowEls = [];
+    for (const [t, b, name] of bands) {
+      if (t >= end - 4) { rows++; end = b; rowEls.push(name + "@" + Math.round(t)); } else end = Math.max(end, b);
+    }
+    const top = Math.min(...parts.map((p) => docRect(p).top));
+    const pos = getComputedStyle(hdr).position;
+    headerFacts = { el: sel(hdr), height: Math.round(hr.bottom - Math.max(0, top)), rows, row_starts: rowEls.slice(0, 6), utility_bar: parts.length > 1, sticky: pos === "sticky" || pos === "fixed" };
+  }
+
+  // Craft: distinct type sizes (px with the characters they carry) and the h1's own style
+  const typeSizes = [...sizeChars.entries()].sort((a, b) => b[0] - a[0]).map(([size, chars]) => ({ px: size, chars }));
+  let h1Style = null;
+  if (h1s[0]) {
+    const st = getComputedStyle(h1s[0]);
+    const fs = px(st.fontSize);
+    h1Style = { font_px: Math.round(fs), tracking_em: Number(trackingEm(st).toFixed(3)), weight: parseInt(st.fontWeight, 10) || 400 };
+  }
+
+  // Craft: the longest prose line, in characters (paragraphs of three lines or more)
+  const measure = { max_chars: 0, el: null, sample: "", paragraphs: 0 };
+  for (const el of document.querySelectorAll("p, li, blockquote, dd, figcaption")) {
+    if (!visible(el) || el.querySelector("p, li, div, ul, ol")) continue;
+    const t = textOf(el);
+    if (t.length < 140) continue;
+    const st = getComputedStyle(el);
+    const fs = px(st.fontSize);
+    const lh = st.lineHeight === "normal" ? fs * 1.2 : px(st.lineHeight);
+    const h = el.getBoundingClientRect().height - px(st.paddingTop) - px(st.paddingBottom);
+    const lines = Math.round(h / Math.max(1, lh));
+    if (lines < 3) continue;
+    measure.paragraphs++;
+    const cpl = Math.round(t.length / lines);
+    if (cpl > measure.max_chars) { measure.max_chars = cpl; measure.el = sel(el); measure.sample = short(t, 50); }
+  }
+
+  // Craft: headings per section head (h1/h2 grouped by their nearest sectioning box)
+  const owners = new Map();
+  for (const h of document.querySelectorAll("h1, h2")) {
+    if (!visible(h) || h.closest("footer, nav, aside, dialog, [role=contentinfo]")) continue;
+    const owner = h.closest("section, article, header") || sections.find((s) => s.contains(h)) || document.body;
+    if (!owners.has(owner)) owners.set(owner, []);
+    owners.get(owner).push(short(textOf(h), 40));
+  }
+  const multiHeads = [...owners.entries()].filter(([, hs]) => hs.length > 1).map(([o, hs]) => ({ el: sel(o), count: hs.length, texts: hs.slice(0, 3) }));
+
+  // Craft: the first real picture (raster img, video, canvas or photo background at half the
+  // width or more) and what is drawn over the hero's largest picture
+  const media = [];
+  for (const el of all) {
+    if (!visible(el)) continue;
+    const r = docRect(el);
+    if (r.width < Math.min(vw * 0.45, 360) || r.height < 120) continue;
+    let ok = false;
+    if (el.tagName === "VIDEO" || el.tagName === "CANVAS") ok = true;
+    else if (el.tagName === "IMG") ok = !/\.svg(\?|#|$)|^data:image\/svg/i.test(el.currentSrc || el.src || "");
+    else {
+      const bg = getComputedStyle(el).backgroundImage;
+      ok = /url\(/.test(bg || "") && !/\.svg/i.test(bg);
+    }
+    if (ok) media.push({ el, r });
+  }
+  const firstMedia = media.slice().sort((a, b) => a.r.top - b.r.top)[0] || null;
+  const heroMedia = media.filter((m) => m.r.top < vh).sort((a, b) => b.r.width * b.r.height - a.r.width * a.r.height)[0] || null;
+  const overlays = [];
+  if (heroMedia) {
+    const m = heroMedia.r;
+    const mArea = m.width * m.height;
+    for (const el of all) {
+      if (el === heroMedia.el || el.contains(heroMedia.el) || heroMedia.el.contains(el) || !visible(el)) continue;
+      if (/^(IMG|VIDEO|CANVAS|PICTURE|SOURCE)$/.test(el.tagName) || el.closest("svg") !== null && el.tagName !== "svg") continue;
+      const st = getComputedStyle(el);
+      if (st.position !== "absolute" && st.position !== "fixed") continue;
+      if (textOf(el)) continue;
+      const r = docRect(el);
+      const drawing = el.tagName === "svg" && el.querySelectorAll("line, path, polyline, rect, circle").length >= 2;
+      if ((r.width * r.height >= mArea * 0.25 && !drawing) || r.width * r.height < 4) continue;
+      if (r.right <= m.left || r.left >= m.right || r.bottom <= m.top || r.top >= m.bottom) continue;
+      const bgc = parseColor(st.backgroundColor);
+      const pseudoPaint = ["::before", "::after"].some((pe) => { const ps = getComputedStyle(el, pe); const c = parseColor(ps.backgroundColor); return ps.content !== "none" && ((c && c.a > 0.1) || px(ps.borderTopWidth) > 0); });
+      const painted = el.tagName === "svg" || pseudoPaint || (bgc && bgc.a > 0.1) || px(st.borderTopWidth) + px(st.borderLeftWidth) + px(st.borderRightWidth) + px(st.borderBottomWidth) > 0 || st.backgroundImage !== "none";
+      if (painted && overlays.length < 20) overlays.push({ el: sel(el), w: Math.round(r.width), h: Math.round(r.height) });
+    }
+    // A drawn grid (repeating gradient lines) on the picture's own frame counts as an overlay too
+    let fr = heroMedia.el.parentElement;
+    for (let k = 0; fr && k < 3; k++, fr = fr.parentElement) {
+      const bs = getComputedStyle(fr);
+      if (/gradient/.test(bs.backgroundImage) && /\d+px/.test(bs.backgroundSize) && px(bs.backgroundSize) > 0 && px(bs.backgroundSize) <= 80) { overlays.push({ el: sel(fr), w: 0, h: 0, grid: true }); break; }
+    }
+  }
+
+  // Craft: text blocks in the hero's first viewport
+  let heroBlocks = null;
+  if (heroSection) {
+    heroBlocks = { count: 0, samples: [] };
+    for (const el of [heroSection, ...heroSection.querySelectorAll("*")]) {
+      if (!visible(el) || el.closest("nav")) continue;
+      const own = [...el.childNodes].some((n) => n.nodeType === 3 && /[\p{L}\p{N}]/u.test(n.nodeValue));
+      if (!own) continue;
+      // An inline run inside a block counts with its block
+      const disp = getComputedStyle(el).display;
+      if (/^inline/.test(disp) && el.tagName !== "A" && el.tagName !== "BUTTON" && el.parentElement && heroSection.contains(el.parentElement) && el.parentElement !== heroSection) continue;
+      if (docRect(el).top >= vh) continue;
+      heroBlocks.count++;
+      if (heroBlocks.samples.length < 30) heroBlocks.samples.push(short(textOf(el), 30));
+    }
+  }
+
+  // Craft: the hero's action pair (first primary in the hero and the next action beside it)
+  let heroPair = null;
+  if (heroSection) {
+    const i = buttons.findIndex((b, k) => b.primary && heroSection.contains(buttonEls[k]) && docRect(buttonEls[k]).top < vh);
+    if (i >= 0) {
+      const pe = buttonEls[i];
+      const pr = docRect(pe);
+      const j = buttons.findIndex((b, k) => k !== i && heroSection.contains(buttonEls[k]) && !buttonEls[k].contains(pe) && Math.abs(docRect(buttonEls[k]).top - pr.top) < 120 && pe.parentElement && (pe.parentElement.contains(buttonEls[k]) || (pe.parentElement.parentElement || pe).contains(buttonEls[k])));
+      heroPair = { primary: { text: buttons[i].text, height: buttons[i].height, padding_x: buttons[i].padding_x }, secondary: j >= 0 ? { text: buttons[j].text, height: buttons[j].height, padding_x: buttons[j].padding_x, filled: buttons[j].filled } : null };
+    }
+  }
+
+  // Craft: Unicode glyphs or emoji standing in for icons in links and buttons
+  const glyphs = { count: 0, samples: [] };
+  for (const el of document.querySelectorAll("a, button, [role=button]")) {
+    if (!visible(el)) continue;
+    const t = textOf(el);
+    if (!GLYPH.test(t)) continue;
+    glyphs.count++;
+    if (glyphs.samples.length < 5) glyphs.samples.push({ el: sel(el), text: short(t, 30) });
+  }
+
   // Live interaction and its no-JS fallback
   const controls = [];
   const addCtl = (kind, el) => { if (visible(el) && controls.length < 10) controls.push({ kind, el: sel(el) }); };
@@ -517,6 +718,17 @@ function layozaRenderFacts() {
     buttons,
     hero_ground: heroGround,
     motif,
+    viewport_height: vh,
+    header: headerFacts,
+    type_sizes: typeSizes,
+    h1_style: h1Style,
+    measure,
+    multi_heading_sections: multiHeads,
+    first_media: firstMedia ? { el: sel(firstMedia.el), top: Math.round(firstMedia.r.top), height: Math.round(firstMedia.r.height) } : null,
+    hero_overlays: heroMedia ? { media: sel(heroMedia.el), items: overlays } : null,
+    hero_blocks: heroBlocks,
+    glyph_icons: glyphs,
+    hero_pair: heroPair,
   };
 }
 
@@ -567,7 +779,9 @@ async function collectWithNode(pw, url) {
 /** Same collection through Python Playwright (falls back to installed Chrome/Edge). */
 function collectWithPython(url) {
   const pyCode = `
-import json, sys, asyncio
+import json, sys, asyncio, site
+# Run isolated (-I) yet still find a per-user Playwright install
+sys.path.append(site.getusersitepackages())
 from playwright.async_api import async_playwright
 
 url, raw_out, cfg_path = sys.argv[1:4]
@@ -618,7 +832,7 @@ asyncio.run(main())
   const rawPath = path.join(tmp, "raw.json");
   fs.writeFileSync(cfgPath, JSON.stringify({ widths: WIDTHS, fonts_ready: FONTS_READY, scroll: SCROLL_THROUGH, facts: FACTS_SCRIPT }), "utf8");
   try {
-    const res = spawnSync("python", ["-X", "utf8", "-c", pyCode, url, rawPath, cfgPath], { stdio: "inherit", env: { ...process.env, PYTHONIOENCODING: "utf-8", PYTHONUTF8: "1" } });
+    const res = spawnSync("python", ["-I", "-X", "utf8", "-c", pyCode, url, rawPath, cfgPath], { stdio: "inherit", env: { ...process.env, PYTHONIOENCODING: "utf-8", PYTHONUTF8: "1" } });
     if (res.error || res.status !== 0) {
       throw new Error(
         "Python Playwright fallback failed. Install Node Playwright (`npm i -D playwright && npx playwright install chromium`) " +

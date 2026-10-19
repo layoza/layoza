@@ -7,6 +7,7 @@
 //! where the brief names them") allows a little of it, never a page full of it. A fact the page
 //! did not yield is `unknown`, never a pass.
 
+use crate::craft::CraftTuning;
 use crate::directions::page_shape::PageShape;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -89,8 +90,15 @@ fn pass_if(rule: &str, ok: bool, evidence: String) -> ConformCheck {
     mk(rule, if ok { Status::Pass } else { Status::Fail }, evidence)
 }
 
-/// Checks `facts` (render facts at one or more widths) against `page_shape`.
+/// Checks `facts` (render facts at one or more widths) against `page_shape`, plus the craft
+/// floor at its default (corporate) tuning.
 pub fn check(page_shape: &PageShape, facts: &Value) -> Conformance {
+    check_with_registers(page_shape, facts, &[])
+}
+
+/// As [`check`], with the craft checks tuned to the brief's registers (strongest first, as
+/// `register::brief_registers` returns them).
+pub fn check_with_registers(page_shape: &PageShape, facts: &Value, registers: &[&str]) -> Conformance {
     let vps = viewports(facts);
     let mut checks: Vec<ConformCheck> = page_shape.restraint.iter().map(|r| check_restraint(r, &vps)).collect();
     if page_shape.ground.build.contains(HERO_DARK) {
@@ -102,11 +110,242 @@ pub fn check(page_shape: &PageShape, facts: &Value) -> Conformance {
     if !page_shape.motif.id.is_empty() {
         checks.push(check_motif(&page_shape.motif.id, &vps));
     }
+    checks.extend(craft_checks(facts, registers));
+    summarise(checks)
+}
+
+fn summarise(checks: Vec<ConformCheck>) -> Conformance {
     let passed = checks.iter().filter(|c| c.status == Status::Pass).count();
     let failed = checks.iter().filter(|c| c.status == Status::Fail).count();
     let unknown = checks.len() - passed - failed;
     let score = if passed + failed == 0 { 0 } else { ((passed as f64 * 100.0) / (passed + failed) as f64).round() as u8 };
     Conformance { score, passed, failed, unknown, checks }
+}
+
+/// The measurable craft-floor rules (`craft::craft_floor`) checked on the render, with numbers
+/// from `craft::tuning(registers)`. Every rule name starts `craft:`; a fact the render did not
+/// yield leaves its check unknown.
+pub fn craft_checks(facts: &Value, registers: &[&str]) -> Vec<ConformCheck> {
+    let t = crate::craft::tuning(registers);
+    let vps = viewports(facts);
+    let phones: Vec<&Value> = vps.iter().copied().filter(|v| is_phone(v)).collect();
+    let desk = desktop(&vps).filter(|v| v["width"].as_u64().unwrap_or(0) >= 768);
+    vec![
+        craft_header(&vps, &t),
+        craft_primary_button(&vps, &t),
+        craft_action_pair(&vps),
+        craft_button_states(&vps),
+        craft_type_scale(desk, &t),
+        craft_display_type(desk, &t),
+        craft_measure(&vps, &t),
+        craft_section_heads(&vps),
+        craft_hero_blocks(desk, &t),
+        craft_phone_picture(&phones),
+        craft_clean_media(&vps),
+        craft_glyph_icons(&vps),
+    ]
+}
+
+/// Runs `f` on every width that has the fact at `key`: unknown when none has it, the first
+/// failure's evidence, or every width's evidence joined.
+fn per_width(rule: &str, vps: &[&Value], key: &str, f: impl Fn(&Value, &Value) -> (bool, String)) -> ConformCheck {
+    let mut seen = Vec::new();
+    for vp in vps {
+        let fact = &vp[key];
+        if fact.is_null() {
+            continue;
+        }
+        let (ok, ev) = f(vp, fact);
+        if !ok {
+            return mk(rule, Status::Fail, format!("{}: {}", label(vp), ev));
+        }
+        seen.push(format!("{}: {}", label(vp), ev));
+    }
+    if seen.is_empty() {
+        mk(rule, Status::Unknown, format!("no {key} fact in the render"))
+    } else {
+        mk(rule, Status::Pass, seen.join("; "))
+    }
+}
+
+fn is_phone(vp: &Value) -> bool {
+    vp["width"].as_u64().is_some_and(|w| w < 768)
+}
+
+fn craft_header(vps: &[&Value], t: &CraftTuning) -> ConformCheck {
+    per_width("craft: header is one row of a sensible height", vps, "header", |vp, h| {
+        let rows = h["rows"].as_u64().unwrap_or(0);
+        let height = h["height"].as_f64().unwrap_or(0.0);
+        let cap = if is_phone(vp) { 80.0 } else { f64::from(t.header_px.1 + 4) };
+        let bar = h["utility_bar"].as_bool().unwrap_or(false);
+        let ok = rows <= 1 && !bar && (40.0..=cap).contains(&height);
+        let starts = h["row_starts"].as_array().map(|a| a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>().join(", ")).unwrap_or_default();
+        (ok, format!("{rows} row(s){} [{starts}], {height:.0}px tall (cap {cap:.0}px)", if bar { " under a utility bar" } else { "" }))
+    })
+}
+
+fn primary(vp: &Value) -> Option<&Value> {
+    vp["buttons"].as_array()?.iter().find(|b| b["primary"].as_bool() == Some(true))
+}
+
+fn craft_primary_button(vps: &[&Value], t: &CraftTuning) -> ConformCheck {
+    let rule = "craft: primary button proportions";
+    let mut ev = Vec::new();
+    for vp in vps {
+        let Some(b) = primary(vp).filter(|b| !b["padding_x"].is_null()) else { continue };
+        let h = b["height"].as_f64().unwrap_or(0.0);
+        let pad = b["padding_x"].as_f64().unwrap_or(0.0);
+        let font = b["font_px"].as_f64().unwrap_or(0.0);
+        let weight = b["font_weight"].as_f64().unwrap_or(400.0);
+        let text = b["text"].as_str().unwrap_or("");
+        let mut bad = Vec::new();
+        if h < f64::from(t.button_px.0.saturating_sub(4)) || h > f64::from(t.button_px.1 + 8) {
+            bad.push(format!("{h:.0}px tall (want {}-{})", t.button_px.0, t.button_px.1));
+        }
+        if !(16.0..=48.0).contains(&pad) {
+            bad.push(format!("padding-x {pad:.0}px"));
+        }
+        if !(14.0..=18.0).contains(&font) || weight < 500.0 {
+            bad.push(format!("label {font:.0}px at {weight:.0}"));
+        }
+        if b["side_border"].as_bool() == Some(true) {
+            bad.push("a coloured side edge".into());
+        }
+        if b["icon"].as_str() == Some("glyph") {
+            bad.push("a text glyph as its icon".into());
+        }
+        if !bad.is_empty() {
+            return mk(rule, Status::Fail, format!("{}: \"{text}\" {}", label(vp), bad.join(", ")));
+        }
+        ev.push(format!("{}: \"{text}\" {h:.0}px, padding {pad:.0}px, {font:.0}px at {weight:.0}", label(vp)));
+    }
+    if ev.is_empty() {
+        mk(rule, Status::Unknown, "no primary button with craft facts")
+    } else {
+        mk(rule, Status::Pass, ev.join("; "))
+    }
+}
+
+fn craft_action_pair(vps: &[&Value]) -> ConformCheck {
+    per_width("craft: hero actions are a matched pair", vps, "hero_pair", |_, p| {
+        let ph = p["primary"]["height"].as_f64().unwrap_or(0.0);
+        match p.get("secondary").filter(|s| !s.is_null()) {
+            None => (true, "one action".into()),
+            Some(s) => {
+                let sh = s["height"].as_f64().unwrap_or(0.0);
+                let sp = s["padding_x"].as_f64().unwrap_or(0.0);
+                let ok = (ph - sh).abs() <= 4.0 && sp >= 12.0;
+                (ok, format!("primary {ph:.0}px; secondary \"{}\" {sh:.0}px with {sp:.0}px padding", s["text"].as_str().unwrap_or("")))
+            }
+        }
+    })
+}
+
+fn craft_button_states(vps: &[&Value]) -> ConformCheck {
+    let rule = "craft: buttons have hover, :active and :focus-visible";
+    let mut seen = false;
+    for vp in vps {
+        for b in vp["buttons"].as_array().into_iter().flatten().filter(|b| b["primary"].as_bool() == Some(true) && !b["states"].is_null()) {
+            seen = true;
+            let missing: Vec<&str> = ["hover", "active", "focus_visible"].into_iter().filter(|k| b["states"][*k].as_bool() != Some(true)).collect();
+            if !missing.is_empty() {
+                return mk(rule, Status::Fail, format!("{}: \"{}\" has no {} rule", label(vp), b["text"].as_str().unwrap_or(""), missing.join(", ")));
+            }
+        }
+    }
+    if seen {
+        mk(rule, Status::Pass, "every primary button has all three")
+    } else {
+        mk(rule, Status::Unknown, "no button state facts")
+    }
+}
+
+fn craft_type_scale(desk: Option<&Value>, t: &CraftTuning) -> ConformCheck {
+    let rule = "craft: a short type scale";
+    let Some(sizes) = desk.and_then(|v| v["type_sizes"].as_array()) else {
+        return mk(rule, Status::Unknown, "no desktop type_sizes fact");
+    };
+    let total: f64 = sizes.iter().filter_map(|s| s["chars"].as_f64()).sum();
+    let carrying: Vec<String> = sizes
+        .iter()
+        .filter(|s| total > 0.0 && s["chars"].as_f64().unwrap_or(0.0) * 50.0 >= total)
+        .filter_map(|s| s["px"].as_f64().map(|p| format!("{p:.0}")))
+        .collect();
+    let n = carrying.len() as u32;
+    pass_if(rule, n <= t.max_type_sizes, format!("{n} sizes carry 2%+ of the text (cap {}): {}px", t.max_type_sizes, carrying.join("/")))
+}
+
+fn craft_display_type(desk: Option<&Value>, t: &CraftTuning) -> ConformCheck {
+    let rule = "craft: display and body type in range";
+    let Some(vp) = desk.filter(|v| !v["h1_style"].is_null()) else {
+        return mk(rule, Status::Unknown, "no desktop h1_style fact");
+    };
+    let h1 = vp["h1_style"]["font_px"].as_f64().unwrap_or(0.0);
+    let tr = vp["h1_style"]["tracking_em"].as_f64().unwrap_or(0.0);
+    let body = vp["body_px"].as_f64();
+    let mut bad = Vec::new();
+    if h1 > f64::from(t.h1_max_px) {
+        bad.push(format!("h1 {h1:.0}px over {}px", t.h1_max_px));
+    }
+    if h1 >= 48.0 && !(-0.05..=0.01).contains(&tr) {
+        bad.push(format!("h1 tracking {tr}em"));
+    }
+    if let Some(b) = body.filter(|b| *b < f64::from(t.body_px.0)) {
+        bad.push(format!("body {b:.0}px under {}px", t.body_px.0));
+    }
+    let ev = if bad.is_empty() { format!("h1 {h1:.0}px at {tr}em, body {}px", body.map(|b| format!("{b:.0}")).unwrap_or_else(|| "?".into())) } else { bad.join(", ") };
+    pass_if(rule, bad.is_empty(), ev)
+}
+
+fn craft_measure(vps: &[&Value], t: &CraftTuning) -> ConformCheck {
+    per_width("craft: prose measure", vps, "measure", |_, m| {
+        let n = m["max_chars"].as_u64().unwrap_or(0);
+        (n <= u64::from(t.measure_chars), format!("longest line {n} chars (cap {}) in {}", t.measure_chars, m["el"].as_str().unwrap_or("?")))
+    })
+}
+
+fn craft_section_heads(vps: &[&Value]) -> ConformCheck {
+    per_width("craft: one heading per section head", vps, "multi_heading_sections", |_, list| {
+        let n = len(list);
+        (n == 0, if n == 0 { "none doubled".into() } else { format!("{n} section(s) with 2+ headings: {}", samples(list, 2)) })
+    })
+}
+
+fn craft_hero_blocks(desk: Option<&Value>, t: &CraftTuning) -> ConformCheck {
+    let rule = "craft: a quiet hero";
+    let Some(hb) = desk.map(|v| &v["hero_blocks"]).filter(|h| !h.is_null()) else {
+        return mk(rule, Status::Unknown, "no desktop hero_blocks fact");
+    };
+    let n = hb["count"].as_u64().unwrap_or(0);
+    let some: Vec<String> = hb["samples"].as_array().into_iter().flatten().filter_map(|s| s.as_str()).take(6).map(|s| format!("\"{s}\"")).collect();
+    pass_if(rule, n <= u64::from(t.hero_blocks), format!("{n} text blocks in the first view (cap {}): {}", t.hero_blocks, some.join(", ")))
+}
+
+fn craft_phone_picture(phones: &[&Value]) -> ConformCheck {
+    let rule = "craft: a picture in the first phone view";
+    let Some(vp) = phones.iter().find(|v| v.get("first_media").is_some()) else {
+        return mk(rule, Status::Unknown, "no phone render with a first_media fact");
+    };
+    let vh = vp["viewport_height"].as_f64().unwrap_or(844.0);
+    match vp["first_media"]["top"].as_f64() {
+        None => mk(rule, Status::Fail, format!("{}: no picture on the page", label(vp))),
+        Some(top) => pass_if(rule, top + 120.0 <= vh, format!("{}: first picture starts at {top:.0}px of a {vh:.0}px view", label(vp))),
+    }
+}
+
+fn craft_clean_media(vps: &[&Value]) -> ConformCheck {
+    per_width("craft: nothing drawn over the hero picture", vps, "hero_overlays", |_, o| {
+        let n = len(&o["items"]);
+        let what = if n > 0 { format!(": {}", samples(&o["items"], 4)) } else { String::new() };
+        (n <= 1, format!("{n} overlay(s) on {}{what}", o["media"].as_str().unwrap_or("?")))
+    })
+}
+
+fn craft_glyph_icons(vps: &[&Value]) -> ConformCheck {
+    per_width("craft: drawn icons, not glyphs", vps, "glyph_icons", |_, g| {
+        let n = g["count"].as_u64().unwrap_or(0);
+        (n == 0, if n == 0 { "none".into() } else { format!("{n} links or buttons use a glyph: {}", samples(&g["samples"], 2)) })
+    })
 }
 
 fn check_restraint(rule: &str, vps: &[&Value]) -> ConformCheck {
@@ -435,6 +674,15 @@ fn check_motif(id: &str, vps: &[&Value]) -> ConformCheck {
 
 /// The page shape for `direction` (1-based) from what `--deal` points at: a `design-system --json`
 /// result, a direction object, a bare `page_shape`, or any JSON that holds `directions`.
+/// The registers a deal was dealt for: its `registers` list, else read from its brief (`query`).
+pub fn deal_registers(deal: &Value) -> Vec<String> {
+    let listed: Vec<String> = deal["registers"].as_array().into_iter().flatten().filter_map(|r| r.as_str().map(str::to_string)).collect();
+    if !listed.is_empty() {
+        return listed;
+    }
+    crate::register::brief_registers(deal["query"].as_str().unwrap_or("")).into_iter().map(str::to_string).collect()
+}
+
 pub fn page_shape_from_deal(deal: &Value, direction: usize) -> Result<PageShape, String> {
     let parse = |v: &Value| serde_json::from_value::<PageShape>(v.clone()).map_err(|e| format!("page_shape does not parse: {}", e));
     if deal.get("restraint").is_some() || deal.get("hero_frame").is_some() {
@@ -542,13 +790,86 @@ mod tests {
         })
     }
 
+    /// `clean_vp` plus the craft facts of a well-made page.
+    fn crafted_vp(width: u64) -> Value {
+        let mut vp = clean_vp(width);
+        let phone = width < 768;
+        let primary = json!({ "el": "a.btn", "text": "Get a quote", "radius": 999, "height": 52, "width": 170, "clip": null, "mask": null, "filled": true, "primary": true,
+            "padding_x": 24, "padding_y": 14, "font_px": 16, "font_weight": 600, "side_border": false, "icon": "svg", "states": { "hover": true, "active": true, "focus_visible": true } });
+        vp["buttons"] = json!([primary, { "el": "a.btn", "text": "See panels", "radius": 999, "height": 52, "width": 150, "clip": null, "mask": null, "filled": false, "primary": false, "padding_x": 24 }]);
+        vp["viewport_height"] = json!(if phone { 844 } else { 900 });
+        vp["header"] = json!({ "el": "header", "height": if phone { 64 } else { 72 }, "rows": 1, "row_starts": ["a.logo@12"], "utility_bar": false, "sticky": true });
+        vp["type_sizes"] = json!([{ "px": 17, "chars": 9000 }, { "px": 14, "chars": 900 }, { "px": 40, "chars": 400 }, { "px": 80, "chars": 300 }, { "px": 22, "chars": 600 }, { "px": 11, "chars": 20 }]);
+        vp["h1_style"] = json!({ "font_px": if phone { 44 } else { 88 }, "tracking_em": -0.03, "weight": 700 });
+        vp["measure"] = json!({ "max_chars": 66, "el": "p", "sample": "", "paragraphs": 5 });
+        vp["multi_heading_sections"] = json!([]);
+        vp["first_media"] = json!({ "el": "img", "top": if phone { 420 } else { 120 }, "height": 400 });
+        vp["hero_overlays"] = json!({ "media": "img", "items": [] });
+        vp["hero_blocks"] = json!({ "count": 6, "samples": ["Light that sells"] });
+        vp["glyph_icons"] = json!({ "count": 0, "samples": [] });
+        vp["hero_pair"] = json!({ "primary": { "text": "Get a quote", "height": 52, "padding_x": 24 }, "secondary": { "text": "See panels", "height": 52, "padding_x": 24, "filled": false } });
+        vp
+    }
+
     #[test]
     fn a_clean_render_passes_every_rule() {
-        let facts = json!({ "viewports": [clean_vp(1440), clean_vp(390)] });
+        let facts = json!({ "viewports": [crafted_vp(1440), crafted_vp(390)] });
         let c = check(&shape(RULES, "arch-top", "pill"), &facts);
         let fails: Vec<_> = c.checks.iter().filter(|k| k.status != Status::Pass).collect();
         assert!(fails.is_empty(), "{:#?}", fails);
-        assert_eq!((c.score, c.passed, c.failed), (100, 13, 0));
+        assert_eq!((c.score, c.passed, c.failed), (100, 25, 0));
+        assert_eq!(c.checks.iter().filter(|k| k.rule.starts_with("craft:")).count(), 12);
+    }
+
+    #[test]
+    fn amateur_craft_fails_each_measured_rule_with_evidence() {
+        let mut d = crafted_vp(1440);
+        let mut m = crafted_vp(390);
+        d["header"] = json!({ "el": "header", "height": 105, "rows": 2, "row_starts": ["span.place@6", "a.btn@46"], "utility_bar": false });
+        d["buttons"][0]["side_border"] = json!(true);
+        d["buttons"][0]["states"]["active"] = json!(false);
+        d["hero_pair"]["secondary"] = json!({ "text": "Explore →", "height": 44, "padding_x": 0, "filled": false });
+        d["type_sizes"] = json!((0..14).map(|i| json!({ "px": 10 + i * 4, "chars": 500 })).collect::<Vec<_>>());
+        d["h1_style"] = json!({ "font_px": 140, "tracking_em": -0.07, "weight": 800 });
+        d["measure"]["max_chars"] = json!(120);
+        d["multi_heading_sections"] = json!([{ "el": "section.flow", "count": 2, "texts": ["Displays", "for every room"] }]);
+        d["hero_blocks"]["count"] = json!(26);
+        d["hero_overlays"]["items"] = json!([{ "el": "svg" }, { "el": "button.stop" }, { "el": "div.sheet", "grid": true }]);
+        d["glyph_icons"] = json!({ "count": 3, "samples": [{ "el": "a", "text": "Explore →" }] });
+        m["first_media"]["top"] = json!(824);
+        let c = check(&shape(&[], "", ""), &json!({ "viewports": [d, m] }));
+        assert_eq!(c.checks.len(), 12);
+        let fails: Vec<_> = c.checks.iter().filter(|k| k.status != Status::Fail).collect();
+        assert!(fails.is_empty(), "{:#?}", fails);
+        let ev = |p: &str| c.checks.iter().find(|k| k.rule.starts_with(p)).unwrap().evidence.clone();
+        assert!(ev("craft: header").contains("2 row(s)"));
+        assert!(ev("craft: primary").contains("side edge"));
+        assert!(ev("craft: buttons have").contains("active"));
+        assert!(ev("craft: hero actions").contains("Explore"));
+        assert!(ev("craft: a short type").contains("14 sizes"));
+        assert!(ev("craft: display").contains("140px") && ev("craft: display").contains("-0.07"));
+        assert!(ev("craft: prose").contains("120 chars"));
+        assert!(ev("craft: one heading").contains("section.flow"));
+        assert!(ev("craft: a quiet").contains("26 text blocks"));
+        assert!(ev("craft: a picture").contains("824px"));
+        assert!(ev("craft: nothing drawn").contains("3 overlay"));
+        assert!(ev("craft: drawn icons").contains("Explore →"));
+    }
+
+    #[test]
+    fn craft_numbers_follow_the_register_and_old_facts_stay_unknown() {
+        let mut vp = crafted_vp(1440);
+        vp["header"]["height"] = json!(80);
+        vp["h1_style"]["font_px"] = json!(120);
+        let facts = json!({ "viewports": [vp] });
+        let status = |regs: &[&str], p: &str| craft_checks(&facts, regs).into_iter().find(|k| k.rule.starts_with(p)).unwrap().status;
+        assert_eq!(status(&["cinematic"], "craft: header"), Status::Pass);
+        assert_eq!(status(&["technical"], "craft: header"), Status::Fail);
+        assert_eq!(status(&["cinematic"], "craft: display"), Status::Pass);
+        assert_eq!(status(&["civic"], "craft: display"), Status::Fail);
+        let old = craft_checks(&json!({ "viewports": [clean_vp(1440), clean_vp(390)] }), &[]);
+        assert!(old.iter().all(|k| k.status == Status::Unknown), "{:#?}", old);
+        assert!(check_with_registers(&shape(&[], "", ""), &json!({}), &["premium"]).checks.iter().all(|k| k.status == Status::Unknown));
     }
 
     #[test]
@@ -591,11 +912,11 @@ mod tests {
         vp["eyebrows"] = json!([{ "text": "Indoor" }, { "text": "Outdoor" }]);
         vp["effects"]["glows"] = json!([{ "el": "div.panel", "blur_px": 30 }]);
         let few = check(&shape(&[eyebrow, light], "", ""), &json!({ "viewports": [vp.clone()] }));
-        assert!(few.checks.iter().all(|k| k.status == Status::Pass), "{:#?}", few.checks);
+        assert!(few.checks.iter().filter(|k| !k.rule.starts_with("craft:")).all(|k| k.status == Status::Pass), "{:#?}", few.checks);
         vp["eyebrows"] = json!([{ "text": "A" }, { "text": "B" }, { "text": "C" }]);
         vp["effects"]["gradients"] = json!([{ "el": "a" }, { "el": "b" }]);
         let many = check(&shape(&[eyebrow, light], "", ""), &json!({ "viewports": [vp] }));
-        assert!(many.checks.iter().all(|k| k.status == Status::Fail), "{:#?}", many.checks);
+        assert!(many.checks.iter().filter(|k| !k.rule.starts_with("craft:")).all(|k| k.status == Status::Fail), "{:#?}", many.checks);
     }
 
     #[test]
@@ -619,7 +940,7 @@ mod tests {
         assert_eq!(run(&dark, Some(0.02), 0.95).checks[0].status, Status::Pass);
         assert_eq!(run(&dark, None, 0.9).checks[0].status, Status::Pass);
         assert_eq!(run(&dark, Some(0.9), 0.02).checks[0].status, Status::Fail);
-        assert!(run(&shape(&[], "", ""), Some(0.9), 0.02).checks.is_empty());
+        assert!(run(&shape(&[], "", ""), Some(0.9), 0.02).checks.iter().all(|k| k.rule.starts_with("craft:")));
         assert_eq!(check(&dark, &json!({ "viewports": [clean_vp(1440)] })).checks[0].status, Status::Unknown);
     }
 

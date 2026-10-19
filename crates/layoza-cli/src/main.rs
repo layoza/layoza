@@ -224,6 +224,10 @@ fn main() {
                     out["avoid_recent"] = a.clone();
                 }
                 out["ledger"] = serde_json::json!(ledger);
+                let regs = layoza_core::register::brief_registers(&query);
+                out["registers"] = serde_json::json!(regs);
+                out["craft_floor"] = serde_json::json!(layoza_core::craft::craft_floor(&regs));
+                out["anti_slop"] = serde_json::json!(layoza_core::craft::anti_slop());
                 println!("{}", serde_json::to_string_pretty(&out).unwrap());
             } else {
                 println!("{}", layoza_core::intelligence::PURPOSE_LINE);
@@ -365,6 +369,12 @@ fn main() {
                         println!("{}", l);
                     }
                 }
+                let regs = layoza_core::register::brief_registers(&query);
+                println!("\nCraft floor (register: {}; every direction meets these numbers):", regs.join(", "));
+                for l in layoza_core::craft::craft_floor(&regs) {
+                    println!("  - {}", l);
+                }
+                println!("Never: {}", layoza_core::craft::anti_slop().join(" | "));
                 println!("Ledger: {}", ledger);
                 println!("\nMechanics: `layoza mechanics show <id>` prints a blueprint; `layoza mechanics deal \"<brief>\"` deals a full page.");
             }
@@ -499,7 +509,9 @@ fn main() {
             // Facts go to a private temp dir: the page under test is never written to
             let tmp = RunDir::new().unwrap_or_else(|e| exit_err(&e, json_flag));
             let facts = run_render_facts(&cwd, &run_target, &tmp.path().join("render-facts.json")).unwrap_or_else(|e| exit_err(&e, json_flag));
-            let result = layoza_core::conformance::check(&shape, &facts);
+            let regs = layoza_core::conformance::deal_registers(&deal);
+            let regs: Vec<&str> = regs.iter().map(String::as_str).collect();
+            let result = layoza_core::conformance::check_with_registers(&shape, &facts, &regs);
             if json_flag {
                 let out = serde_json::json!({ "target": target_arg, "direction": direction, "conformance": result, "facts": facts });
                 println!("{}", serde_json::to_string_pretty(&out).unwrap());

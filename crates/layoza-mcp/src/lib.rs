@@ -1067,6 +1067,11 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                     let off = ledger_off_reason(new_look, args, approved_root);
                     let mut out = serde_json::to_value(&rec).unwrap();
                     out["ledger"] = json!(uniqueness::ledger_status(written.as_ref().map(|w| w.0.as_path()), written.as_ref().map(|w| &w.1), off));
+                    // The craft floor: numbers every direction meets, tuned to the brief's register.
+                    let regs = layoza_core::register::brief_registers(query);
+                    out["registers"] = json!(regs);
+                    out["craft_floor"] = json!(layoza_core::craft::craft_floor(&regs));
+                    out["anti_slop"] = json!(layoza_core::craft::anti_slop());
                     if args.get("detail").and_then(|d| d.as_str()) != Some("full") {
                         if let Some(o) = out.as_object_mut() {
                             o.remove("matched_styles");
@@ -1561,7 +1566,9 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
             std::fs::create_dir_all(&dir).map_err(|e| format!("cannot create scratch directory: {}", e))?;
             let facts_path = dir.join("render-facts.json");
             let facts = run_render_facts(approved_root, &run_target, &facts_path).map_err(|e| sanitize_untrusted_content(&e))?;
-            let result = layoza_core::conformance::check(&shape, &facts);
+            let regs = layoza_core::conformance::deal_registers(&deal);
+            let regs: Vec<&str> = regs.iter().map(String::as_str).collect();
+            let result = layoza_core::conformance::check_with_registers(&shape, &facts, &regs);
             // Evidence quotes page text: treat it as data, never instructions
             let checks: Vec<Value> = result
                 .checks

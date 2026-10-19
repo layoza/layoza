@@ -5,6 +5,13 @@
 "needs": [],
 "density": "airy",
 "key": "type-architecture",
+"registers": [
+"craft",
+"premium",
+"editorial",
+"corporate",
+"technical"
+],
 "name": "Type Architecture",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -47,6 +54,10 @@
 "needs": [],
 "density": "airy",
 "key": "index-archive",
+"registers": [
+"editorial",
+"technical"
+],
 "name": "Catalogue Index",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -95,6 +106,11 @@
 "needs": [],
 "density": "airy",
 "key": "editorial-longread",
+"registers": [
+"craft",
+"editorial",
+"civic"
+],
 "name": "Long Read",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -135,7 +151,12 @@
 "needs": [],
 "density": "airy",
 "key": "specimen-object",
-"name": "Specimen Plate",
+"registers": [
+"premium",
+"craft",
+"editorial"
+],
+"name": "Object Study",
 "style_family": "atelier-minimalism",
 "surfaces": [
 "commerce",
@@ -160,16 +181,16 @@
 "hairline-2"
 ],
 "why": "one physical object can stand for the whole business when it is shown at scale and labelled",
-"structure": "one object at scale, headline wraps it, labelled callouts, further plates",
-"motion_hint": "callout leaders draw on entry",
-"mobile": "the object sits above the headline; callouts become a numbered list under it",
-"layout": "{big} as a specimen plate: {o1} drawn or photographed at scale on a plain ground, the headline wrapping its silhouette, labelled callouts to its details ({note}); {o2} and {o3} follow as further plates in the same callout system",
-"identity": "Museum-plate restraint: {display} for plate titles, {body} for callouts, hairline leaders; {pal}; the object supplies the only rich colour",
-"content": "Show the thing before saying anything: plates first, then '{act}', then the facts table",
-"motion_calm": "Callout leaders draw on entry ({t_in}ms); hover or focus on a callout highlights its detail; nothing moves on scroll",
-"motion_bold": "Scroll turns or zooms {o1} through its details while each callout lights in turn; the plate comes to rest with every label visible",
+"structure": "one object at scale, headline beside it, a clean detail column, further studies",
+"motion_hint": "the detail column reveals line by line",
+"mobile": "the object sits above the headline; the detail column follows as a numbered list",
+"layout": "{big} as an object study: {o1} lit and photographed at scale on a quiet ground, the headline set beside it, its details named in a clean numbered column next to the photograph, never drawn over it ({note}); {o2} and {o3} follow as further studies in the same system",
+"identity": "Studio product photography: {display} for product names, {body} for the detail column, nothing drawn over the photograph; {pal}; the object supplies the only rich colour",
+"content": "Show the thing before saying anything: the object first, then '{act}', then the facts table",
+"motion_calm": "The detail column reveals on entry ({t_in}ms); hover or focus on a detail brightens its number; nothing moves on scroll",
+"motion_bold": "Scroll turns or zooms {o1} through its details while the matching detail in the column lights in turn; it comes to rest with the photograph clean",
 "span_irregularity": "medium",
-"accent_placement": "callout markers on the object"
+"accent_placement": "the selected option and the primary button"
 },
 {
 "tags": [
@@ -182,6 +203,10 @@
 "needs": [],
 "density": "standard",
 "key": "map-wayfinding",
+"registers": [
+"civic",
+"playful"
+],
 "name": "Wayfinding Map",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -221,6 +246,9 @@
 "needs": [],
 "density": "standard",
 "key": "summary-ledger",
+"registers": [
+"technical"
+],
 "name": "Daily Ledger",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -257,6 +285,9 @@
 "needs": [],
 "density": "standard",
 "key": "reference-manual",
+"registers": [
+"technical"
+],
 "name": "Reference Manual",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -293,6 +324,13 @@
 "needs": [],
 "density": "standard",
 "key": "full-bleed-stage",
+"registers": [
+"premium",
+"cinematic",
+"corporate",
+"editorial",
+"craft"
+],
 "name": "Full-Bleed Stage",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -333,6 +371,11 @@
 "needs": [],
 "density": "standard",
 "key": "scroll-sequence",
+"registers": [
+"cinematic",
+"premium",
+"technical"
+],
 "name": "Scroll Sequence",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -378,6 +421,10 @@
 "needs": [],
 "density": "standard",
 "key": "colour-field-poster",
+"registers": [
+"playful",
+"editorial"
+],
 "name": "Colour-Field Poster",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -422,6 +469,11 @@
 "needs": [],
 "density": "standard",
 "key": "collage-board",
+"registers": [
+"playful",
+"craft",
+"editorial"
+],
 "name": "Pin-Board Collage",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -463,6 +515,9 @@
 "needs": [],
 "density": "dense",
 "key": "live-wall",
+"registers": [
+"technical"
+],
 "name": "Live Operations Wall",
 "style_family": "high-density-workbench",
 "surfaces": [
@@ -500,6 +555,9 @@
 "needs": [],
 "density": "standard",
 "key": "timeline-axis",
+"registers": [
+"technical"
+],
 "name": "Timeline Axis",
 "style_family": "high-density-workbench",
 "surfaces": [
@@ -537,6 +595,9 @@
 "needs": [],
 "density": "standard",
 "key": "transcript-replay",
+"registers": [
+"technical"
+],
 "name": "Session Replay",
 "style_family": "precision-terminal-craft",
 "surfaces": [
@@ -573,6 +634,12 @@
 "needs": [],
 "density": "standard",
 "key": "working-tool-first",
+"registers": [
+"corporate",
+"craft",
+"civic",
+"technical"
+],
 "name": "Working Tool First",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -613,6 +680,9 @@
 "needs": [],
 "density": "dense",
 "key": "workbench-split",
+"registers": [
+"technical"
+],
 "name": "Task Workbench",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -649,6 +719,9 @@
 "needs": [],
 "density": "standard",
 "key": "command-console",
+"registers": [
+"technical"
+],
 "name": "Command-First Console",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -686,6 +759,12 @@
 "needs": [],
 "density": "standard",
 "key": "configurator",
+"registers": [
+"premium",
+"corporate",
+"technical",
+"craft"
+],
 "name": "Configurator",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -714,7 +793,7 @@
 "motion_calm": "FLIP re-layout when filters change and {t_ui}ms swatch transitions; nothing moves on scroll",
 "motion_bold": "FLIP re-layout when filters change and {t_ui}ms swatch transitions; nothing moves on scroll",
 "span_irregularity": "medium",
-"accent_placement": "callout markers on the object"
+"accent_placement": "the selected option and the primary button"
 },
 {
 "tags": [],
@@ -722,6 +801,11 @@
 "needs": [],
 "density": "standard",
 "key": "booking-board",
+"registers": [
+"craft",
+"playful",
+"civic"
+],
 "name": "Booking-First Board",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -760,6 +844,9 @@
 "needs": [],
 "density": "standard",
 "key": "playground",
+"registers": [
+"technical"
+],
 "name": "Install-and-Try Playground",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -796,6 +883,10 @@
 "needs": [],
 "density": "standard",
 "key": "case-index",
+"registers": [
+"editorial",
+"corporate"
+],
 "name": "Sortable Case Index",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -832,6 +923,12 @@
 "needs": [],
 "density": "standard",
 "key": "guided-finder",
+"registers": [
+"civic",
+"corporate",
+"craft",
+"playful"
+],
 "name": "Guided Finder",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -874,6 +971,11 @@
 "needs": [],
 "density": "standard",
 "key": "bento-board",
+"registers": [
+"technical",
+"playful",
+"corporate"
+],
 "name": "Bento Board",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -911,7 +1013,7 @@
 "motion_calm": "Tiles settle in reading order once ({t_in}ms); hover or focus reveals a tile's detail ({t_ui}ms); nothing moves on scroll",
 "motion_bold": "Tiles assemble from the grid lines as the board scrolls into view, the largest tile last; every tile is complete at rest",
 "span_irregularity": "high",
-"accent_placement": "callout markers on the object"
+"accent_placement": "the selected option and the primary button"
 },
 {
 "tags": [],
@@ -923,6 +1025,10 @@
 "needs": [],
 "density": "standard",
 "key": "marquee-hero",
+"registers": [
+"playful",
+"editorial"
+],
 "name": "Marquee Statement",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -968,6 +1074,11 @@
 "needs": [],
 "density": "standard",
 "key": "stat-led",
+"registers": [
+"corporate",
+"technical",
+"civic"
+],
 "name": "Numbers Up Front",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -1016,6 +1127,11 @@
 "needs": [],
 "density": "airy",
 "key": "conversational-faq",
+"registers": [
+"civic",
+"corporate",
+"craft"
+],
 "name": "Questions Answered",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1059,6 +1175,10 @@
 "needs": [],
 "density": "standard",
 "key": "manifesto",
+"registers": [
+"editorial",
+"playful"
+],
 "name": "Manifesto Sheet",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1106,6 +1226,12 @@
 "needs": [],
 "density": "airy",
 "key": "photo-essay",
+"registers": [
+"premium",
+"editorial",
+"craft",
+"cinematic"
+],
 "name": "Photo Essay",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -1152,6 +1278,12 @@
 "needs": [],
 "density": "airy",
 "key": "quote-led",
+"registers": [
+"craft",
+"editorial",
+"civic",
+"premium"
+],
 "name": "Quote-Led Opening",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1195,6 +1327,10 @@
 "needs": [],
 "density": "standard",
 "key": "type-specimen",
+"registers": [
+"editorial",
+"playful"
+],
 "name": "Type Specimen",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -1240,6 +1376,10 @@
 "needs": [],
 "density": "airy",
 "key": "open-letter",
+"registers": [
+"civic",
+"editorial"
+],
 "name": "Open Letter",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1279,6 +1419,10 @@
 "needs": [],
 "density": "standard",
 "key": "index-page",
+"registers": [
+"editorial",
+"technical"
+],
 "name": "Plain Index Page",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -1327,6 +1471,11 @@
 "needs": [],
 "density": "standard",
 "key": "narrative-workflow",
+"registers": [
+"technical",
+"corporate",
+"civic"
+],
 "name": "Step-by-Step Workflow",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -1369,6 +1518,11 @@
 "needs": [],
 "density": "standard",
 "key": "split-studio",
+"registers": [
+"premium",
+"editorial",
+"corporate"
+],
 "name": "Split Studio",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -1407,6 +1561,10 @@
 "needs": [],
 "density": "standard",
 "key": "feature-stack",
+"registers": [
+"technical",
+"corporate"
+],
 "name": "Feature Stack",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -1446,6 +1604,12 @@
 "needs": [],
 "density": "standard",
 "key": "work-grid",
+"registers": [
+"premium",
+"editorial",
+"cinematic",
+"corporate"
+],
 "name": "Irregular Work Grid",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -1492,6 +1656,9 @@
 "needs": [],
 "density": "standard",
 "key": "system-diagram",
+"registers": [
+"technical"
+],
 "name": "System Diagram",
 "style_family": "precision-terminal-craft",
 "surfaces": [
@@ -1519,7 +1686,7 @@
 "motion_hint": "flows animate along their edges when a node is chosen",
 "mobile": "the diagram becomes a vertical flow with nodes as rows",
 "layout": "The {subj} as a labelled diagram: {o1}, {o2} and {o3} as nodes with the real flows between them ({note}); choosing a node opens its explanation; '{act}' sits at the diagram's output",
-"identity": "Engineering drawing: {mono} for labels, {display} for node names, {body} for explanations; {pal}; hairline connectors",
+"identity": "System map: {mono} for labels, {display} for node names, {body} for explanations; {pal}; connectors in one weight",
 "content": "How it works, part by part, with the real names and limits",
 "motion_calm": "Edges highlight on node focus ({t_ui}ms); nothing moves on scroll",
 "motion_bold": "Data travels along the edges in sequence as the diagram enters; scroll walks through the nodes one by one",
@@ -1532,6 +1699,9 @@
 "needs": [],
 "density": "standard",
 "key": "ecosystem-index",
+"registers": [
+"technical"
+],
 "name": "Ecosystem Index",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -1570,6 +1740,9 @@
 "needs": [],
 "density": "standard",
 "key": "component-playground",
+"registers": [
+"technical"
+],
 "name": "Component Playground",
 "style_family": "precision-terminal-craft",
 "surfaces": [
@@ -1609,6 +1782,12 @@
 "needs": [],
 "density": "standard",
 "key": "horizontal-rail",
+"registers": [
+"premium",
+"editorial",
+"craft",
+"cinematic"
+],
 "name": "Horizontal Rail",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -1652,6 +1831,11 @@
 "needs": [],
 "density": "standard",
 "key": "split-scroll",
+"registers": [
+"cinematic",
+"premium",
+"editorial"
+],
 "name": "Split Scroll",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -1694,6 +1878,10 @@
 "needs": [],
 "density": "standard",
 "key": "card-stack",
+"registers": [
+"playful",
+"craft"
+],
 "name": "Card Stack",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1739,6 +1927,11 @@
 "needs": [],
 "density": "standard",
 "key": "kinetic-type",
+"registers": [
+"cinematic",
+"editorial",
+"playful"
+],
 "name": "Kinetic Type Field",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -1784,6 +1977,10 @@
 "needs": [],
 "density": "airy",
 "key": "timeline-spine",
+"registers": [
+"editorial",
+"civic"
+],
 "name": "Timeline Spine",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1832,6 +2029,11 @@
 "needs": [],
 "density": "standard",
 "key": "neighbourhood-map",
+"registers": [
+"craft",
+"civic",
+"playful"
+],
 "name": "Neighbourhood Map",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -1876,6 +2078,10 @@
 "needs": [],
 "density": "airy",
 "key": "broadsheet",
+"registers": [
+"editorial",
+"civic"
+],
 "name": "Broadsheet Front Page",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -1921,6 +2127,10 @@
 "needs": [],
 "density": "airy",
 "key": "almanac",
+"registers": [
+"craft",
+"playful"
+],
 "name": "Seasonal Almanac",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -1971,6 +2181,11 @@
 "needs": [],
 "density": "airy",
 "key": "field-notebook",
+"registers": [
+"craft",
+"playful",
+"editorial"
+],
 "name": "Field Notebook",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -2018,6 +2233,9 @@
 "needs": [],
 "density": "standard",
 "key": "blueprint-sheet",
+"registers": [
+"technical"
+],
 "name": "Blueprint Sheet",
 "style_family": "precision-terminal-craft",
 "surfaces": [
@@ -2063,6 +2281,10 @@
 "needs": [],
 "density": "standard",
 "key": "price-board",
+"registers": [
+"craft",
+"civic"
+],
 "name": "Price Board",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -2106,6 +2328,11 @@
 "needs": [],
 "density": "standard",
 "key": "service-area",
+"registers": [
+"civic",
+"corporate",
+"craft"
+],
 "name": "Service-Area Check",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -2147,6 +2374,10 @@
 "needs": [],
 "density": "standard",
 "key": "status-board",
+"registers": [
+"technical",
+"civic"
+],
 "name": "Live Status Board",
 "style_family": "high-density-workbench",
 "surfaces": [
@@ -2194,6 +2425,9 @@
 ],
 "density": "airy",
 "key": "notices-register",
+"registers": [
+"civic"
+],
 "name": "Notices Register",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -2243,6 +2477,10 @@
 ],
 "density": "airy",
 "key": "quiet-room",
+"registers": [
+"premium",
+"cinematic"
+],
 "name": "Quiet Room",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -2268,7 +2506,7 @@
 "structure": "one low-lit photograph, one short line, generous dark space",
 "motion_hint": "slow fades only",
 "mobile": "the photograph sits above the line; nothing overlaps",
-"layout": "The {subj}{at} in a quiet room: one low-lit photograph of {o1} centred in dark space with a single short line beneath it; {o2} and {o3} follow slowly, one per screen; '{act}' is a calm text link and a phone number",
+"layout": "The {subj}{at} in a quiet room: one low-lit photograph of {o1} centred in dark space with a single short line beneath it; {o2} and {o3} follow slowly, one per screen; '{act}' is a quiet outline button beside a phone number",
 "identity": "Low light: {display} at modest size, {body} at 18px; {pal}; candle-warm accent used once",
 "content": "Few words, all practical and kind; prices and contact stated plainly ({note})",
 "motion_calm": "Slow fades on view ({t_in}ms); nothing moves on scroll",
@@ -2294,6 +2532,10 @@
 ],
 "density": "standard",
 "key": "flash-sheet",
+"registers": [
+"playful",
+"craft"
+],
 "name": "Flash Sheet",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -2337,6 +2579,10 @@
 "needs": [],
 "density": "standard",
 "key": "lookbook",
+"registers": [
+"premium",
+"editorial"
+],
 "name": "Lookbook",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -2385,6 +2631,9 @@
 ],
 "density": "airy",
 "key": "menu-card",
+"registers": [
+"craft"
+],
 "name": "Menu Card",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -2432,6 +2681,10 @@
 "needs": [],
 "density": "standard",
 "key": "ticket-stub",
+"registers": [
+"playful",
+"craft"
+],
 "name": "Ticket Stub",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -2481,6 +2734,10 @@
 ],
 "density": "airy",
 "key": "shelf-browser",
+"registers": [
+"craft",
+"editorial"
+],
 "name": "Shelf Browser",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -2513,7 +2770,7 @@
 "motion_calm": "Items tilt out on hover or focus ({t_ui}ms); nothing moves on scroll",
 "motion_bold": "The shelf slides past as the visitor scrolls; items tilt out at the centre",
 "span_irregularity": "high",
-"accent_placement": "callout markers on the object"
+"accent_placement": "the selected option and the primary button"
 },
 {
 "tags": [
@@ -2531,6 +2788,10 @@
 ],
 "density": "standard",
 "key": "week-grid",
+"registers": [
+"playful",
+"civic"
+],
 "name": "Week Grid",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -2576,6 +2837,10 @@
 ],
 "density": "standard",
 "key": "money-ledger",
+"registers": [
+"civic",
+"corporate"
+],
 "name": "Where the Money Goes",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -2614,6 +2879,9 @@
 "needs": [],
 "density": "standard",
 "key": "terminal-page",
+"registers": [
+"technical"
+],
 "name": "Terminal Page",
 "style_family": "precision-terminal-craft",
 "surfaces": [
@@ -2653,6 +2921,9 @@
 "needs": [],
 "density": "standard",
 "key": "request-explorer",
+"registers": [
+"technical"
+],
 "name": "Request Explorer",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -2690,6 +2961,9 @@
 "needs": [],
 "density": "airy",
 "key": "changelog-front",
+"registers": [
+"technical"
+],
 "name": "Changelog Front",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -2732,6 +3006,11 @@
 "needs": [],
 "density": "standard",
 "key": "before-after",
+"registers": [
+"corporate",
+"craft",
+"civic"
+],
 "name": "Before and After",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -2759,7 +3038,7 @@
 "motion_hint": "the divider follows drag or keys",
 "mobile": "the divider is draggable with a large handle; keys and buttons as an equal route",
 "layout": "{big}{at} opens on a before-and-after of {o1}: one photograph split by a draggable divider, the job's facts beside it ({note}); more jobs ({o2}, {o3}) follow; '{act}' under the comparison",
-"identity": "Job sheet: {display} for job titles, {body} for facts; {pal}",
+"identity": "Transformation proof: {display} for project titles, {body} for facts; {pal}; the photographs carry the colour",
 "content": "Real jobs with date, place, time taken and cost",
 "motion_calm": "The divider follows drag or arrow keys; nothing moves on scroll",
 "motion_bold": "The divider sweeps once on entry ({t_in}ms) then follows drag or keys",
@@ -2776,6 +3055,11 @@
 "needs": [],
 "density": "standard",
 "key": "salon-hang",
+"registers": [
+"premium",
+"editorial",
+"civic"
+],
 "name": "Salon Hang",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -2818,6 +3102,11 @@
 "needs": [],
 "density": "standard",
 "key": "generative-ground",
+"registers": [
+"technical",
+"cinematic",
+"editorial"
+],
 "name": "Generative Ground",
 "style_family": "spatial-webgl-stage",
 "surfaces": [
@@ -2873,6 +3162,9 @@
 ],
 "density": "standard",
 "key": "sticker-sheet",
+"registers": [
+"playful"
+],
 "name": "Sticker Sheet",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -2912,6 +3204,9 @@
 "needs": [],
 "density": "airy",
 "key": "morning-brief",
+"registers": [
+"technical"
+],
 "name": "Morning Brief",
 "style_family": "block-first-editorial",
 "surfaces": [
@@ -2948,6 +3243,9 @@
 "needs": [],
 "density": "standard",
 "key": "flow-board",
+"registers": [
+"technical"
+],
 "name": "Flow Board",
 "style_family": "crisp-product-workbench",
 "surfaces": [
@@ -2984,6 +3282,9 @@
 "needs": [],
 "density": "standard",
 "key": "docs-shell",
+"registers": [
+"technical"
+],
 "name": "Docs Shell",
 "style_family": "swiss-editorial-grid",
 "surfaces": [
@@ -3026,6 +3327,11 @@
 "needs": [],
 "density": "airy",
 "key": "arch-window",
+"registers": [
+"craft",
+"premium",
+"civic"
+],
 "name": "Arched Window",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -3070,6 +3376,10 @@
 "needs": [],
 "density": "standard",
 "key": "proof-sheet",
+"registers": [
+"editorial",
+"cinematic"
+],
 "name": "Contact Sheet",
 "style_family": "kinetic-editorial",
 "surfaces": [
@@ -3115,6 +3425,11 @@
 "needs": [],
 "density": "standard",
 "key": "kit-of-parts",
+"registers": [
+"premium",
+"technical",
+"corporate"
+],
 "name": "Kit of Parts",
 "style_family": "atelier-minimalism",
 "surfaces": [
@@ -3146,7 +3461,7 @@
 "motion_calm": "Labels draw once ({t_in}ms); nothing moves on scroll",
 "motion_bold": "The parts assemble into the finished object as the visitor scrolls",
 "span_irregularity": "medium",
-"accent_placement": "callout markers on the object"
+"accent_placement": "the selected option and the primary button"
 },
 {
 "tags": [
@@ -3161,6 +3476,11 @@
 "needs": [],
 "density": "standard",
 "key": "night-programme",
+"registers": [
+"playful",
+"cinematic",
+"editorial"
+],
 "name": "Night Programme",
 "style_family": "kinetic-editorial",
 "surfaces": [

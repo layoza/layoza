@@ -5,6 +5,7 @@ pub mod adapters;
 pub mod animation;
 pub mod baseline;
 pub mod benchmark;
+pub mod craft;
 pub mod design_md;
 pub mod directions;
 pub mod dna;

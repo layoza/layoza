@@ -21,21 +21,34 @@ const WORDS: &[(&str, &[&str])] = &[
 /// Registers a brief speaks in, strongest first. Never empty: a brief with no register words
 /// reads as `corporate` (the safe professional default).
 pub fn brief_registers(brief: &str) -> Vec<&'static str> {
-    let l = brief.to_lowercase();
+    let mut out = named_registers(brief);
+    if out.is_empty() {
+        out.push("corporate");
+    }
+    out
+}
+
+/// Registers the brief's own words name, strongest first; empty when it names none (an unusual
+/// trade the catalogue has no register word for), so a gate can stay open instead of defaulting.
+pub fn named_registers(brief: &str) -> Vec<&'static str> {
+    // What the brief rules out ("not a SaaS dashboard") names no register.
+    let affirmed = crate::intelligence::affirmed_brief(brief);
+    let l = if affirmed.trim().is_empty() { brief.to_lowercase() } else { affirmed.to_lowercase() };
     let hit = |w: &str| {
         l.match_indices(w).any(|(i, _)| {
             let before = l[..i].chars().next_back().is_none_or(|c| !c.is_alphanumeric());
-            let after = l[i + w.len()..].chars().next().is_none_or(|c| !c.is_alphanumeric());
+            let rest = &l[i + w.len()..];
+            let rest = rest.strip_prefix('s').unwrap_or(rest);
+            let after = rest.chars().next().is_none_or(|c| !c.is_alphanumeric());
             before && after
         })
     };
     let mut scored: Vec<(usize, &'static str)> = WORDS.iter().map(|(r, ws)| (ws.iter().filter(|w| hit(w)).count(), *r)).filter(|(n, _)| *n > 0).collect();
     scored.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| REGISTERS.iter().position(|r| *r == a.1).cmp(&REGISTERS.iter().position(|r| *r == b.1))));
-    let mut out: Vec<&'static str> = scored.into_iter().map(|(_, r)| r).collect();
-    if out.is_empty() {
-        out.push("corporate");
-    }
-    out
+    // Only the registers the brief leans on: a stray word ("local", "gallery") does not open a
+    // register's gimmicks. At least a third of the leader's hits, three registers at most. A plural ("quotes", "APIs") counts.
+    let top = scored.first().map_or(0, |s| s.0);
+    scored.into_iter().filter(|(n, _)| *n * 3 >= top).take(3).map(|(_, r)| r).collect()
 }
 
 /// True when an entry tagged `entry` fits a brief speaking `brief`. An untagged entry fits all.
@@ -54,6 +67,7 @@ mod tests {
         assert!(!led.contains(&"playful") && !led.contains(&"civic"));
         assert_eq!(brief_registers("a family-run bakery in the old town")[0], "craft");
         assert_eq!(brief_registers("something nice"), vec!["corporate"]);
+        assert!(named_registers("falconry centre flying hawks").is_empty());
         assert!(fits(&["premium", "editorial"], &led));
         assert!(!fits(&["playful"], &led));
         assert!(fits(&Vec::<String>::new(), &led));

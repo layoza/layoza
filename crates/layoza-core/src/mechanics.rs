@@ -143,6 +143,10 @@ pub struct Mechanic {
     /// phrases (a bilingual nav needs a brief that mentions languages). Empty means always eligible.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub requires_signal: Vec<String>,
+    /// Registers (`premium`, `corporate`, `playful`, ...) where this mechanic reads as
+    /// professional work; see `crate::register`. Empty means it fits every register.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub registers: Vec<String>,
     pub blueprint: String,
     /// What moves, mapped to scroll progress (never velocity).
     pub motion: String,
@@ -1165,11 +1169,18 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
 
     let seed = opts.seed.unwrap_or_else(|| fnv1a(&brief.to_lowercase()));
     let count = opts.count.clamp(2, 10);
+    // The brief's register: a mechanic that would read as a gimmick to this audience is dealt
+    // only when nothing that fits remains.
+    // A brief that names no register (an unusual trade) keeps every mechanic open.
+    let regs = crate::register::named_registers(brief);
+    let suits = |m: &Mechanic| regs.is_empty() || crate::register::fits(&m.registers, &regs);
 
     let allowed = |m: &Mechanic| -> bool {
         let fits_intensity = if intensity == Intensity::Calm { m.intensity == Intensity::Calm } else { m.intensity <= intensity };
         fits_intensity
-            && m.tier <= max_tier
+            // A new site's header and footer may use a small script (menu toggle, scroll state)
+            // even on a calm, CSS-tier deal: every professional header ships one.
+            && (m.tier <= max_tier || (opts.existing.is_none() && SLOT_ROLES.contains(&m.role.as_str()) && m.intensity == Intensity::Calm && m.tier <= Tier::Js))
             && !opts.exclude_ids.iter().any(|x| x.trim().eq_ignore_ascii_case(&m.id))
             && !opts.exclude_families.iter().any(|x| x == &m.family)
             && signal_met(m, &toks)
@@ -1194,6 +1205,9 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         }
         if m.niches.iter().any(|n| n == "any") {
             s += 2;
+        }
+        if !suits(m) {
+            s -= 40;
         }
         // A mechanic built around another trade's object (a shop shelf, a floor plan, an app screen)
         // reads as a template from the wrong business: push it down unless the brief names that trade
@@ -1309,8 +1323,12 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             fam.insert(m.family.clone());
             return Some(m.clone());
         }
-        // Only fresh picks rotate.
-        cands.retain(|m| fit_score(m) + FURNITURE_WINDOW >= top && !is_recent(m));
+        // Only fresh picks rotate. A register-gated pool thinner than four widens its window;
+        // off-register entries sit 40 points down, so they stay out.
+        cands.retain(|m| !is_recent(m));
+        let near = cands.iter().filter(|m| fit_score(m) + FURNITURE_WINDOW >= top).count();
+        let window = if near < 4 { 3 * FURNITURE_WINDOW } else { FURNITURE_WINDOW };
+        cands.retain(|m| fit_score(m) + window >= top);
         cands.sort_by(|a, b| fit_score(b).cmp(&fit_score(a)).then_with(|| a.id.cmp(&b.id)));
         cands.truncate(6);
         let i = (seed.wrapping_add(fnv1a(salt)) % cands.len() as u64) as usize;
@@ -1487,10 +1505,10 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
                     }
                 }
             }
-            let fitting = |m: &Mechanic| m.role == role && staged(m);
+            let fitting = |m: &Mechanic| m.role == role && staged(m) && suits(m);
             let is_role = |m: &Mechanic| m.role == role;
             // A cinematic brief's furniture comes from the staged looks first.
-            let scene = |m: &Mechanic| cinematic && m.role == role && STAGED_LOOKS.contains(&m.look_family.as_str());
+            let scene = |m: &Mechanic| cinematic && m.role == role && suits(m) && STAGED_LOOKS.contains(&m.look_family.as_str());
             take_rotated(&sections, &mut used_families, &scene, role)
                 .or_else(|| take_rotated(&wider, &mut used_families, &scene, role))
                 .or_else(|| take_rotated(&sections, &mut used_families, &fitting, role))

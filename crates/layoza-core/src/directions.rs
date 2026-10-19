@@ -190,6 +190,8 @@ struct RawArchetype {
     look_family: String,
     hero_material: String,
     radius: Vec<String>,
+    #[serde(default)]
+    registers: Vec<String>,
     tags: Vec<String>,
     avoid: Vec<String>,
     needs: Vec<String>,
@@ -287,6 +289,8 @@ pub(crate) struct Archetype {
     pub hero_material: &'static str,
     /// Corner languages it suits, best first.
     pub radius: &'static [&'static str],
+    /// Registers where this layout reads as world-class studio work (see `crate::register`).
+    pub registers: &'static [&'static str],
     /// Subjects it suits (scored), subjects it must not serve, subjects it requires (any one).
     pub tags: &'static [&'static str],
     pub avoid: &'static [&'static str],
@@ -339,6 +343,7 @@ pub(crate) fn ARCHETYPES() -> &'static [Archetype] {
                 look_family: leak(r.look_family),
                 hero_material: leak(r.hero_material),
                 radius: leak_all(r.radius),
+                registers: leak_all(r.registers),
                 tags: leak_all(r.tags),
                 avoid: leak_all(r.avoid),
                 needs: leak_all(r.needs),
@@ -977,6 +982,111 @@ pub(crate) fn with_recent_picks<T>(archetypes: Vec<RecentPick>, palettes: Vec<Re
 /// Fit points below the best that still compete on freshness when the ledger steers a deal.
 const FIT_BAND: i32 = 9;
 
+/// The register a brief speaks in, read for gating looks: its three strongest registers, and
+/// whether it is aspirational (premium or cinematic among them). A long brief names words from
+/// nearly every register, so only the strongest decide; an aspirational brief is offered looks
+/// made for premium or cinematic work first, never a document metaphor that merely fits a
+/// weaker register it also mentions.
+pub(crate) struct RegisterRead {
+    pub(crate) top: Vec<&'static str>,
+    pub(crate) aspire: bool,
+    /// The neighbour register added to a one-register read (widens archetypes only).
+    pub(crate) near: Option<&'static str>,
+}
+
+impl RegisterRead {
+    pub(crate) fn of(query: &str) -> Self {
+        use crate::register::{named_registers, REGISTERS};
+        let read = named_registers(query);
+        // A brief that names no register (an unusual trade) gates nothing: every register stays
+        // open, as before registers existed.
+        if read.is_empty() {
+            return Self { top: REGISTERS.to_vec(), aspire: false, near: None };
+        }
+        let mut top: Vec<&'static str> = read.into_iter().take(3).collect();
+        // A brief read as one register alone also takes its nearest neighbour, so a bakery can be
+        // an editorial index as well as a menu card; premium and cinematic only pair with each other.
+        let mut near = None;
+        if let [only] = top[..] {
+            let n = match only {
+                "craft" => "editorial",
+                "technical" => "corporate",
+                "premium" => "cinematic",
+                "cinematic" => "premium",
+                "playful" => "craft",
+                "civic" => "corporate",
+                "editorial" => "premium",
+                _ => "technical",
+            };
+            top.push(n);
+            near = Some(n);
+        }
+        // Aspirational only on a strong word (premium, luxury, cinematic...); a passing "launch"
+        // or "3D" leaves the brief's other registers in charge.
+        let l = query.to_lowercase();
+        let strong = ["premium", "luxury", "luxe", "high-end", "flagship", "cinematic", "immersive", "filmic", "award-winning", "awwwards", "sophisticated", "bespoke"];
+        let aspire = top.iter().any(|r| matches!(*r, "premium" | "cinematic")) && strong.iter().any(|w| l.contains(w));
+        Self { top, aspire, near }
+    }
+
+    /// The read without its neighbour register: motifs and buttons answer only to what the
+    /// brief itself names.
+    pub(crate) fn strict(&self) -> Self {
+        Self { top: self.top.iter().copied().filter(|r| Some(*r) != self.near).collect(), aspire: self.aspire, near: None }
+    }
+
+    /// Adds a register the trade implies (a solemn trade reads civic) to a named read.
+    pub(crate) fn with(mut self, extra: Option<&'static str>) -> Self {
+        if let Some(r) = extra.filter(|r| !self.top.contains(r)) {
+            self.top.push(r);
+        }
+        self
+    }
+
+    /// 2: made for the brief's aspirational register; 1: fits one of its top registers (or is
+    /// untagged); 0: foreign to the brief's register.
+    pub(crate) fn tier(&self, regs: &[&str]) -> u8 {
+        if regs.is_empty() {
+            return 1;
+        }
+        // An aspirational brief never takes a look also made for a playful or civic page it did
+        // not ask for.
+        if self.aspire && regs.iter().any(|r| matches!(*r, "playful" | "civic") && !self.top.contains(r)) {
+            return 0;
+        }
+        if self.aspire && regs.iter().any(|r| matches!(*r, "premium" | "cinematic") && self.top.contains(r)) {
+            2
+        } else if crate::register::fits(regs, &self.top) {
+            1
+        } else {
+            0
+        }
+    }
+
+    /// Gate a pool: keep the aspirational fits when at least `need` exist, else the register fits
+    /// when at least `need` exist; returns the kept items and a score bonus/penalty per item
+    /// (heavy penalty only when too few fit and the foreign ones had to stay).
+    pub(crate) fn gate<T: Copy>(&self, pool: &[T], need: usize, regs: impl Fn(T) -> &'static [&'static str], penalty: i32) -> Vec<(T, i32)> {
+        let tiers: Vec<u8> = pool.iter().map(|x| self.tier(regs(*x))).collect();
+        let n2 = tiers.iter().filter(|t| **t == 2).count();
+        let n1 = tiers.iter().filter(|t| **t >= 1).count();
+        let floor = if n2 >= need { 2 } else if n1 >= need { 1 } else { 0 };
+        pool.iter()
+            .zip(tiers)
+            .filter(|(_, t)| *t >= floor)
+            .map(|(x, t)| {
+                let adj = match (floor, t) {
+                    (1, 2) => 6,
+                    (0, 0) => penalty,
+                    (0, 2) => 6,
+                    _ => 0,
+                };
+                (*x, adj)
+            })
+            .collect()
+    }
+}
+
 /// A ledger pick: id, runs back (0 = the newest run) and slot in that run (0 = direction A).
 pub(crate) type RecentPick = (String, usize, usize);
 
@@ -1131,6 +1241,8 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         .iter()
         .any(|k| q.contains(k));
     let asks_cinematic = ["cinematic", "immersive", "film-like", "filmic"].iter().any(|k| q.contains(k));
+    // Solemn trades (law, care, memorial) read in the civic register too: plain, human, trusted.
+    let reg = RegisterRead::of(query).with(solemn.then_some("civic"));
     let place = signals.surface == S::Venue
         || script.is_some()
         || ["civic", "infrastructure", "trades"].iter().any(|t| has(t))
@@ -1190,14 +1302,36 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             .iter()
             .filter(|a| a.roles.contains(&role) && fits(a, signals.surface) && (a.needs.is_empty() || a.needs.iter().any(|n| has(n))))
             .collect();
+        // Register before novelty: only layouts that read as professional in the brief's register
+        // compete (while at least two fit); a foreign one stays only under a heavy penalty.
+        // A role with fewer than two layouts in the brief's register borrows fitting ones written
+        // for the other roles, rather than dealing a foreign look under a penalty.
+        let pool = if pool.iter().filter(|a| reg.tier(a.registers) >= 1).count() < 2 {
+            let borrowed: Vec<&'static Archetype> = ARCHETYPES()
+                .iter()
+                .filter(|a| fits(a, signals.surface) && (a.needs.is_empty() || a.needs.iter().any(|n| has(n))))
+                .filter(|a| reg.tier(a.registers) >= 1 && !used_families.contains(&a.look_family))
+                .collect();
+            if borrowed.len() >= 2 {
+                borrowed
+            } else {
+                pool
+            }
+        } else {
+            pool
+        };
+        let gated = reg.gate(&pool, 2, |a: &'static Archetype| a.registers, -40);
+        let reg_adj = |a: &Archetype| gated.iter().find(|(g, _)| g.key == a.key).map_or(0, |(_, j)| *j);
+        let pool: Vec<&'static Archetype> = gated.iter().map(|(a, _)| *a).collect();
         let fresh: Vec<&'static Archetype> = pool.iter().copied().filter(|a| !used_families.contains(&a.look_family)).collect();
         let pool = if fresh.len() >= 2 { fresh } else { pool };
         let mut ranked: Vec<(i32, &'static Archetype)> = pool
             .into_iter()
             .map(|a| {
+                let mut s = reg_adj(a);
                 // A structure made for this specific surface beats a general one; "general" briefs
                 // get no such bonus, so venue-only ideas (maps, booking boards) do not lead them.
-                let mut s = if a.surfaces.len() <= 2 && signals.surface != S::General { 4 } else { 2 };
+                s += if a.surfaces.len() <= 2 && signals.surface != S::General { 4 } else { 2 };
                 s += 2 * a.calm_bias as i32 * (mood("calm") as i32 - mood("bold") as i32);
                 if signals.motion_bias >= 4 && a.composition == "sticky-stage" {
                     s += 2;
@@ -1419,7 +1553,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     s -= 2;
                 }
                 let bf = family(&e.pairing.body_font);
-                s -= body_freq.get(&bf).copied().unwrap_or(0) / 4;
+                s -= body_freq.get(&bf).copied().unwrap_or(0) / 3;
                 s += (h(&bf) % 3) as i32;
                 if used_bodies.contains(&bf) {
                     s -= 4;
