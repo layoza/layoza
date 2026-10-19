@@ -1,0 +1,5561 @@
+[
+{
+"id": "syne-plus-jakarta-kinetic",
+"display": "Syne",
+"body": "Plus Jakarta Sans",
+"mono": "JetBrains Mono",
+"mood": "Kinetic, bold, flagship launch",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "unbounded-onest",
+"display": "Unbounded",
+"body": "Onest",
+"mono": "JetBrains Mono",
+"mood": "Wide, loud, poster-like",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Onest:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "dela-gothic-figtree",
+"display": "Dela Gothic One",
+"body": "Figtree",
+"mono": "Space Mono",
+"mood": "Heavy, graphic, street-poster energy",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "display",
+"tags": [
+"night",
+"earth",
+"bold",
+"ink"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Figtree:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "instrument-serif-inter-tight",
+"display": "Instrument Serif",
+"body": "Inter Tight",
+"mono": "IBM Plex Mono",
+"mood": "Cinematic, editorial contrast",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "cinematic-dark",
+"display_style": "serif",
+"tags": [
+"botanical",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": true,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "dm-serif-work-sans",
+"display": "DM Serif Display",
+"body": "Work Sans",
+"mono": "DM Mono",
+"mood": "Salt-weathered, confident, maritime signage",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "serif",
+"tags": [
+"marine",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "young-serif-instrument-sans",
+"display": "Young Serif",
+"body": "Instrument Sans",
+"mono": "Space Mono",
+"mood": "Warm, hand-made, oven-lit",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"warm-grain",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": true,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "bodoni-moda-jost",
+"display": "Bodoni Moda",
+"body": "Jost",
+"mono": "DM Mono",
+"mood": "High-fashion, editorial, tailored",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"textile",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Jost:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "barlow-condensed-plex",
+"display": "Barlow Condensed",
+"body": "IBM Plex Sans",
+"mono": "IBM Plex Mono",
+"mood": "Control-room, legible at a glance",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "condensed",
+"tags": [
+"data",
+"industrial",
+"night",
+"infrastructure"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "geist-terminal",
+"display": "Geist",
+"body": "Geist",
+"mono": "Geist Mono",
+"mood": "Terminal-native, exacting, transcript-led",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"code",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono&display=swap"
+},
+{
+"id": "bricolage-ibm-plex",
+"display": "Bricolage Grotesque",
+"body": "IBM Plex Sans",
+"mono": "IBM Plex Mono",
+"mood": "Engineered, interactive, utility-first",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"data",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "archivo-atkinson",
+"display": "Archivo",
+"body": "Atkinson Hyperlegible",
+"mono": "JetBrains Mono",
+"mood": "Plain-spoken, legible, practical",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"industrial",
+"data",
+"care",
+"bold",
+"trades"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "manrope-dm-mono",
+"display": "Manrope",
+"body": "Manrope",
+"mono": "DM Mono",
+"mood": "Calm, precise, product-like",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"botanical",
+"care",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "space-grotesk-public-sans",
+"display": "Space Grotesk",
+"body": "Public Sans",
+"mono": "Space Mono",
+"mood": "Technical, friendly, modular",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"code",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": true,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Public+Sans:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "libre-franklin-source-sans",
+"display": "Libre Franklin",
+"body": "Source Sans 3",
+"mono": "Source Code Pro",
+"mood": "Clear, nautical-chart precise",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "hairline-newspaper",
+"display_style": "sans",
+"tags": [
+"marine",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "zilla-slab-source-sans",
+"display": "Zilla Slab",
+"body": "Source Sans 3",
+"mono": "Source Code Pro",
+"mood": "Sturdy, ledger-like, kitchen-board",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "retro-print",
+"display_style": "slab",
+"tags": [
+"warm-grain",
+"data",
+"earth",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "cormorant-hanken",
+"display": "Cormorant Garamond",
+"body": "Hanken Grotesk",
+"mono": "DM Mono",
+"mood": "Quiet, tactile, swatch-book",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"textile",
+"calm",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Hanken+Grotesk:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "schibsted-albert-fira",
+"display": "Schibsted Grotesk",
+"body": "Albert Sans",
+"mono": "Fira Code",
+"mood": "Docs-grade, plain, copy-paste ready",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"code",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@700&family=Albert+Sans:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "gloock-figtree",
+"display": "Gloock",
+"body": "Figtree",
+"mono": "IBM Plex Mono",
+"mood": "Sharp-serifed, authoritative, letterpress",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"legal",
+"civic",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "libre-baskerville-source-sans",
+"display": "Libre Baskerville",
+"body": "Source Sans 3",
+"mono": "Source Code Pro",
+"mood": "Bookish, sober, legible at length",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"legal",
+"civic",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "spectral-plex-sans",
+"display": "Spectral",
+"body": "IBM Plex Sans",
+"mono": "IBM Plex Mono",
+"mood": "Screen-first serif, documentary",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"legal",
+"civic",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Spectral:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "literata-inter",
+"display": "Literata",
+"body": "Inter",
+"mono": "JetBrains Mono",
+"mood": "Long-read, warm, unhurried",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"civic",
+"care",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": true,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Literata:wght@700&family=Inter:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "fredoka-nunito",
+"display": "Fredoka",
+"body": "Nunito",
+"mono": "Space Mono",
+"mood": "Round, friendly, chunky",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "baloo2-atkinson",
+"display": "Baloo 2",
+"body": "Atkinson Hyperlegible",
+"mono": "DM Mono",
+"mood": "Soft, legible for young and old readers",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play",
+"care"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "bebas-neue-barlow",
+"display": "Bebas Neue",
+"body": "Barlow",
+"mono": "Roboto Mono",
+"mood": "Condensed caps, stencil-and-signage",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "condensed",
+"tags": [
+"industrial",
+"night",
+"kinetic",
+"sport"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "anton-work-sans",
+"display": "Anton",
+"body": "Work Sans",
+"mono": "Space Mono",
+"mood": "Poster-loud, tight, shouty",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "condensed",
+"tags": [
+"kinetic",
+"night",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "big-shoulders-chivo",
+"display": "Big Shoulders Display",
+"body": "Chivo",
+"mono": "Chivo Mono",
+"mood": "Dockside signage, condensed and civic",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "condensed",
+"tags": [
+"industrial",
+"marine",
+"data",
+"infrastructure"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Chivo:wght@400;700&family=Chivo+Mono&display=swap"
+},
+{
+"id": "archivo-black-narrow",
+"display": "Archivo Black",
+"body": "Archivo Narrow",
+"mono": "JetBrains Mono",
+"mood": "Heavy grotesk, newsprint punch",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"bold",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "condensed",
+"url": "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "epilogue-mono",
+"display": "Epilogue",
+"body": "Epilogue",
+"mono": "JetBrains Mono",
+"mood": "Geometric-grotesk, systematic",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"data",
+"code"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "familjen-public",
+"display": "Familjen Grotesk",
+"body": "Public Sans",
+"mono": "DM Mono",
+"mood": "Clean, quietly characterful",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"textile",
+"botanical",
+"care"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@700&family=Public+Sans:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "red-hat-family",
+"display": "Red Hat Display",
+"body": "Red Hat Text",
+"mono": "Red Hat Mono",
+"mood": "Open, technical, even-handed",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"code",
+"care",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Red+Hat+Text:wght@400;700&family=Red+Hat+Mono&display=swap"
+},
+{
+"id": "sora-rubik",
+"display": "Sora",
+"body": "Rubik",
+"mono": "Roboto Mono",
+"mood": "Rounded-geometric, approachable",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "playful-color-block",
+"display_style": "sans",
+"tags": [
+"play",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "alegreya-sans",
+"display": "Alegreya",
+"body": "Source Sans 3",
+"mono": "Space Mono",
+"mood": "Calligraphic, humane, organic",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"botanical",
+"earth",
+"warm-grain"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Source+Sans+3:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "crimson-pro-work-sans",
+"display": "Crimson Pro",
+"body": "Work Sans",
+"mono": "DM Mono",
+"mood": "Old-style, quiet, crafted",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"textile",
+"warm-grain",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "oswald-source-serif",
+"display": "Oswald",
+"body": "Source Serif 4",
+"mono": "Source Code Pro",
+"mood": "Condensed headings over a reading serif",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "hairline-newspaper",
+"display_style": "condensed",
+"tags": [
+"marine",
+"industrial",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Source+Serif+4:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "eb-garamond-hanken",
+"display": "EB Garamond",
+"body": "Hanken Grotesk",
+"mono": "DM Mono",
+"mood": "Classical, restrained, archival",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"civic",
+"textile"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Hanken+Grotesk:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "italiana-manrope",
+"display": "Italiana",
+"body": "Manrope",
+"mono": "DM Mono",
+"mood": "Hairline display, couture",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"textile",
+"celebration"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "chivo-workshop",
+"display": "Chivo",
+"body": "Chivo",
+"mono": "Chivo Mono",
+"mood": "Workshop-plain, sturdy",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "brutalist-raw",
+"display_style": "sans",
+"tags": [
+"industrial",
+"code",
+"trades"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Chivo+Mono&display=swap"
+},
+{
+"id": "plex-serif-sans",
+"display": "IBM Plex Serif",
+"body": "IBM Plex Sans",
+"mono": "IBM Plex Mono",
+"mood": "Corporate-precise, documentary",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "technical-blueprint",
+"display_style": "serif",
+"tags": [
+"data",
+"legal",
+"code",
+"finance"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "cormorant-garamond-lora",
+"display": "Cormorant Garamond",
+"body": "Lora",
+"mono": "Fragment Mono",
+"mood": "Hushed, candlelit, an order-of-service voice",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"memorial",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lora:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "cardo-source-sans-3",
+"display": "Cardo",
+"body": "Source Sans 3",
+"mono": "Source Code Pro",
+"mood": "Engraved, plain-spoken remembrance",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"memorial",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "petrona-karla",
+"display": "Petrona",
+"body": "Karla",
+"mono": "Inconsolata",
+"mood": "Gentle, unhurried, family-first",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"memorial",
+"care",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Petrona:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "libre-caslon-display-libre-caslon-text",
+"display": "Libre Caslon Display",
+"body": "Libre Caslon Text",
+"mono": "Courier Prime",
+"mood": "Stone-cut caps over a book face",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"memorial",
+"literary",
+"legal"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "marcellus-gelasio",
+"display": "Marcellus",
+"body": "Gelasio",
+"mono": "Reddit Mono",
+"mood": "Inscriptional, dignified, sparse",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"memorial",
+"calm",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Marcellus&family=Gelasio:wght@400;700&family=Reddit+Mono&display=swap"
+},
+{
+"id": "brygada-1918-assistant",
+"display": "Brygada 1918",
+"body": "Assistant",
+"mono": "Noto Sans Mono",
+"mood": "Commemorative serif, quiet sans",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"memorial",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Assistant:wght@400;700&family=Noto+Sans+Mono&display=swap"
+},
+{
+"id": "rubik-mono-one-archivo",
+"display": "Rubik Mono One",
+"body": "Archivo",
+"mono": "Space Mono",
+"mood": "Stencilled caps, flash-sheet loud",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "display",
+"tags": [
+"ink",
+"bold",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Archivo:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "shrikhand-work-sans",
+"display": "Shrikhand",
+"body": "Work Sans",
+"mono": "Courier Prime",
+"mood": "Sign-painter swagger",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "display",
+"tags": [
+"ink",
+"bold",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Shrikhand&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "rye-rokkitt",
+"display": "Rye",
+"body": "Rokkitt",
+"mono": "Courier Prime",
+"mood": "Western-saloon woodtype",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "display",
+"tags": [
+"ink",
+"earth",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "slab",
+"url": "https://fonts.googleapis.com/css2?family=Rye&family=Rokkitt:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "abril-fatface-karla",
+"display": "Abril Fatface",
+"body": "Karla",
+"mono": "Space Mono",
+"mood": "Fat-face headline, poster ink",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "serif",
+"tags": [
+"ink",
+"literary",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Karla:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "permanent-marker-barlow",
+"display": "Permanent Marker",
+"body": "Barlow",
+"mono": "Victor Mono",
+"mood": "Hand-marked, live-session energy",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "hand",
+"tags": [
+"ink",
+"kinetic",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "hand",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Barlow:wght@400;700&family=Victor+Mono&display=swap"
+},
+{
+"id": "alfa-slab-one-libre-franklin",
+"display": "Alfa Slab One",
+"body": "Libre Franklin",
+"mono": "Courier Prime",
+"mood": "Heavy slab, parlour signboard",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "slab",
+"tags": [
+"ink",
+"trades",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "ultra-arvo",
+"display": "Ultra",
+"body": "Arvo",
+"mono": "Courier Prime",
+"mood": "Wood-type slab, menu-board",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "slab",
+"tags": [
+"ink",
+"food",
+"warm-grain"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "slab",
+"url": "https://fonts.googleapis.com/css2?family=Ultra&family=Arvo:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "playfair-display-source-sans-3",
+"display": "Playfair Display",
+"body": "Source Sans 3",
+"mono": "DM Mono",
+"mood": "Formal invitation contrast",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"celebration",
+"luxe",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "bodoni-moda-karla",
+"display": "Bodoni Moda",
+"body": "Karla",
+"mono": "Fragment Mono",
+"mood": "Couture headline, quiet sans",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"celebration",
+"textile",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Karla:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "italiana-petrona",
+"display": "Italiana",
+"body": "Petrona",
+"mono": "Reddit Mono",
+"mood": "Hairline capitals, garden-party calm",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"celebration",
+"botanical",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Italiana&family=Petrona:wght@400;700&family=Reddit+Mono&display=swap"
+},
+{
+"id": "yeseva-one-nunito",
+"display": "Yeseva One",
+"body": "Nunito",
+"mono": "Space Mono",
+"mood": "Round-bodied display, festive",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "serif",
+"tags": [
+"celebration",
+"play",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Yeseva+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "cinzel-gelasio",
+"display": "Cinzel",
+"body": "Gelasio",
+"mono": "Inconsolata",
+"mood": "Roman capitals, estate and vineyard",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"celebration",
+"earth",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Gelasio:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "gambetta-satoshi",
+"display": "Gambetta",
+"body": "Satoshi",
+"mono": "IBM Plex Mono",
+"mood": "Soft-sharp serif over a modern sans. Display and body from Fontshare; load IBM Plex Mono from Google Fonts",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"celebration",
+"literary",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=gambetta@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "boska-general-sans",
+"display": "Boska",
+"body": "General Sans",
+"mono": "Fira Code",
+"mood": "Calligraphic-cut display. Display and body from Fontshare; load Fira Code from Google Fonts",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"celebration",
+"luxe",
+"textile"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=boska@700&f[]=general-sans@400,700&display=swap"
+},
+{
+"id": "eb-garamond-libre-franklin",
+"display": "EB Garamond",
+"body": "Libre Franklin",
+"mono": "Courier Prime",
+"mood": "Bookish and familiar, a shop that reads",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "newsreader-public-sans",
+"display": "Newsreader",
+"body": "Public Sans",
+"mono": "IBM Plex Mono",
+"mood": "Newspaper-reading serif",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"literary",
+"civic",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "vollkorn-karla",
+"display": "Vollkorn",
+"body": "Karla",
+"mono": "Victor Mono",
+"mood": "Dark, hearty book face",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&family=Karla:wght@400;700&family=Victor+Mono&display=swap"
+},
+{
+"id": "libre-caslon-text-work-sans",
+"display": "Libre Caslon Text",
+"body": "Work Sans",
+"mono": "Courier Prime",
+"mood": "Colonial-printshop Caslon",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"legal"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "crimson-pro-figtree",
+"display": "Crimson Pro",
+"body": "Figtree",
+"mono": "Inconsolata",
+"mood": "Old-style serif, friendly sans",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "spectral-karla",
+"display": "Spectral",
+"body": "Karla",
+"mono": "Space Mono",
+"mood": "Screen serif, essayist",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"literary",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Spectral:wght@700&family=Karla:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "erode-switzer",
+"display": "Erode",
+"body": "Switzer",
+"mono": "Spline Sans Mono",
+"mood": "Chunky book serif, modern sans. Display and body from Fontshare; load Spline Sans Mono from Google Fonts",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"warm-grain"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=erode@700&f[]=switzer@400,700&display=swap"
+},
+{
+"id": "zodiak-supreme",
+"display": "Zodiak",
+"body": "Supreme",
+"mono": "JetBrains Mono",
+"mood": "Display serif, magazine cover. Display and body from Fontshare; load JetBrains Mono from Google Fonts",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"literary",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=zodiak@700&f[]=supreme@400,700&display=swap"
+},
+{
+"id": "piazzolla-hanken-grotesk",
+"display": "Piazzolla",
+"body": "Hanken Grotesk",
+"mono": "Martian Mono",
+"mood": "Compact news serif for dense pages",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"literary",
+"civic",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Piazzolla:wght@700&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap"
+},
+{
+"id": "merriweather-source-sans-3",
+"display": "Merriweather",
+"body": "Source Sans 3",
+"mono": "Source Code Pro",
+"mood": "Sturdy screen serif, public-notice clear",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"civic",
+"care",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "public-sans-solo",
+"display": "Public Sans",
+"body": "Public Sans",
+"mono": "IBM Plex Mono",
+"mood": "Government-plain, neutral, unbranded",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "hairline-newspaper",
+"display_style": "sans",
+"tags": [
+"civic",
+"infrastructure",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "atkinson-hyperlegible-solo",
+"display": "Atkinson Hyperlegible",
+"body": "Atkinson Hyperlegible",
+"mono": "IBM Plex Mono",
+"mood": "Low-vision legible, notice-board",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"civic",
+"care",
+"infrastructure"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "commissioner-solo",
+"display": "Commissioner",
+"body": "Commissioner",
+"mono": "Fira Code",
+"mood": "Flexible civic grotesk",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"civic",
+"infrastructure",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Commissioner:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "sofia-sans-condensed-sofia-sans",
+"display": "Sofia Sans Condensed",
+"body": "Sofia Sans",
+"mono": "Victor Mono",
+"mood": "Wayfinding-condensed, meter-legible",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "condensed",
+"tags": [
+"infrastructure",
+"data",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@700&family=Sofia+Sans:wght@400;700&family=Victor+Mono&display=swap"
+},
+{
+"id": "encode-sans-solo",
+"display": "Encode Sans",
+"body": "Encode Sans",
+"mono": "Martian Mono",
+"mood": "Engineering-plain, width axis for tables",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"infrastructure",
+"industrial"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;700&family=Martian+Mono&display=swap"
+},
+{
+"id": "lexend-solo",
+"display": "Lexend",
+"body": "Lexend",
+"mono": "Red Hat Mono",
+"mood": "Reading-ease geometric",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"civic",
+"care",
+"play"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Red+Hat+Mono&display=swap"
+},
+{
+"id": "antonio-libre-franklin",
+"display": "Antonio",
+"body": "Libre Franklin",
+"mono": "Azeret Mono",
+"mood": "Platform-signage condensed",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "condensed",
+"tags": [
+"infrastructure",
+"transit",
+"civic",
+"sport"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Libre+Franklin:wght@400;700&family=Azeret+Mono&display=swap"
+},
+{
+"id": "saira-condensed-barlow",
+"display": "Saira Condensed",
+"body": "Barlow",
+"mono": "Azeret Mono",
+"mood": "Dial-and-gauge condensed",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "condensed",
+"tags": [
+"infrastructure",
+"industrial",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700&family=Barlow:wght@400;700&family=Azeret+Mono&display=swap"
+},
+{
+"id": "staatliches-barlow",
+"display": "Staatliches",
+"body": "Barlow",
+"mono": "Kode Mono",
+"mood": "Van-livery caps",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "condensed",
+"tags": [
+"trades",
+"industrial",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Staatliches&family=Barlow:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "big-shoulders-display-atkinson-hyperlegible",
+"display": "Big Shoulders Display",
+"body": "Atkinson Hyperlegible",
+"mono": "Space Mono",
+"mood": "Yard-sign condensed, legible body",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "condensed",
+"tags": [
+"trades",
+"industrial",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "archivo-narrow-archivo",
+"display": "Archivo Narrow",
+"body": "Archivo",
+"mono": "JetBrains Mono",
+"mood": "Quote-sheet narrow, job-ticket clear",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "condensed",
+"tags": [
+"trades",
+"data",
+"industrial"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@700&family=Archivo:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "oswald-karla",
+"display": "Oswald",
+"body": "Karla",
+"mono": "Inconsolata",
+"mood": "Workwear condensed",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "condensed",
+"tags": [
+"trades",
+"sport",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "bitter-rubik",
+"display": "Bitter",
+"body": "Rubik",
+"mono": "Roboto Mono",
+"mood": "Friendly slab, trustworthy tradesman",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "slab",
+"tags": [
+"trades",
+"care",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "zilla-slab-work-sans",
+"display": "Zilla Slab",
+"body": "Work Sans",
+"mono": "Kode Mono",
+"mood": "Slab job-board",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "retro-print",
+"display_style": "slab",
+"tags": [
+"trades",
+"warm-grain",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Work+Sans:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "rokkitt-figtree",
+"display": "Rokkitt",
+"body": "Figtree",
+"mono": "Sometype Mono",
+"mood": "Menu-slab with a friendly sans",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "retro-print",
+"display_style": "slab",
+"tags": [
+"food",
+"earth",
+"warm-grain"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Rokkitt:wght@700&family=Figtree:wght@400;700&family=Sometype+Mono&display=swap"
+},
+{
+"id": "fraunces-albert-sans",
+"display": "Fraunces",
+"body": "Albert Sans",
+"mono": "Space Mono",
+"mood": "Soft, wonky, bakery-window",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"food",
+"warm-grain",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": true,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Albert+Sans:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "lilita-one-nunito",
+"display": "Lilita One",
+"body": "Nunito",
+"mono": "Space Mono",
+"mood": "Bold, round, snack-bar",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "display",
+"tags": [
+"food",
+"play",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "tilt-warp-outfit",
+"display": "Tilt Warp",
+"body": "Outfit",
+"mono": "Kode Mono",
+"mood": "Squashed display, street food",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "display",
+"tags": [
+"food",
+"kinetic",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Tilt+Warp&family=Outfit:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "chillax-satoshi",
+"display": "Chillax",
+"body": "Satoshi",
+"mono": "IBM Plex Mono",
+"mood": "Rounded modern, cafe-counter. Display and body from Fontshare; load IBM Plex Mono from Google Fonts",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"food",
+"play",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=chillax@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "cabinet-grotesk-satoshi",
+"display": "Cabinet Grotesk",
+"body": "Satoshi",
+"mono": "Fira Code",
+"mood": "Characterful grotesk headline. Display and body from Fontshare; load Fira Code from Google Fonts",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"bold",
+"kinetic",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "teko-rajdhani",
+"display": "Teko",
+"body": "Rajdhani",
+"mono": "JetBrains Mono",
+"mood": "Scoreboard condensed",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "condensed",
+"tags": [
+"sport",
+"kinetic",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "condensed",
+"url": "https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Rajdhani:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "big-shoulders-display-barlow",
+"display": "Big Shoulders Display",
+"body": "Barlow",
+"mono": "Kode Mono",
+"mood": "Stadium-stand condensed",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "condensed",
+"tags": [
+"sport",
+"bold",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Barlow:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "barlow-condensed-barlow",
+"display": "Barlow Condensed",
+"body": "Barlow",
+"mono": "Space Mono",
+"mood": "Kit-number condensed",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "condensed",
+"tags": [
+"sport",
+"data",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "krona-one-manrope",
+"display": "Krona One",
+"body": "Manrope",
+"mono": "Azeret Mono",
+"mood": "Wide, fast, track-side",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"sport",
+"kinetic",
+"modernist"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Krona+One&family=Manrope:wght@400;700&family=Azeret+Mono&display=swap"
+},
+{
+"id": "exo-2-solo",
+"display": "Exo 2",
+"body": "Exo 2",
+"mono": "Fira Code",
+"mood": "Fast-tech, esports",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "sans",
+"tags": [
+"sport",
+"kinetic",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "syncopate-work-sans",
+"display": "Syncopate",
+"body": "Work Sans",
+"mono": "Space Mono",
+"mood": "Extended caps, architecture-show",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"modernist",
+"bold",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "michroma-inter-tight",
+"display": "Michroma",
+"body": "Inter Tight",
+"mono": "Azeret Mono",
+"mood": "Instrument-panel extended",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"industrial",
+"kinetic",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Michroma&family=Inter+Tight:wght@400;700&family=Azeret+Mono&display=swap"
+},
+{
+"id": "orbitron-chakra-petch",
+"display": "Orbitron",
+"body": "Chakra Petch",
+"mono": "Victor Mono",
+"mood": "Sci-fi readout",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "cinematic-dark",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"night",
+"code"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Chakra+Petch:wght@400;700&family=Victor+Mono&display=swap"
+},
+{
+"id": "tomorrow-solo",
+"display": "Tomorrow",
+"body": "Tomorrow",
+"mono": "Kode Mono",
+"mood": "Squared, terminal-adjacent",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"code",
+"data",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Tomorrow:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "chakra-petch-ibm-plex-sans",
+"display": "Chakra Petch",
+"body": "IBM Plex Sans",
+"mono": "IBM Plex Mono",
+"mood": "Cut-corner grotesk, device UI",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"code",
+"industrial",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "jetbrains-mono-ibm-plex-sans",
+"display": "JetBrains Mono",
+"body": "IBM Plex Sans",
+"mono": "JetBrains Mono",
+"mood": "Mono headings, dev-native",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "mono",
+"tags": [
+"code",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "mono",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=IBM+Plex+Sans:wght@400;700&display=swap"
+},
+{
+"id": "martian-mono-hanken-grotesk",
+"display": "Martian Mono",
+"body": "Hanken Grotesk",
+"mono": "Martian Mono",
+"mood": "Wide mono headings, API-first",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "mono",
+"tags": [
+"code",
+"finance",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "mono",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@700&family=Hanken+Grotesk:wght@400;700&display=swap"
+},
+{
+"id": "space-mono-karla",
+"display": "Space Mono",
+"body": "Karla",
+"mono": "Space Mono",
+"mood": "Raw monospaced voice",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "brutalist-raw",
+"display_style": "mono",
+"tags": [
+"code",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "mono",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&family=Karla:wght@400;700&display=swap"
+},
+{
+"id": "azeret-mono-albert-sans",
+"display": "Azeret Mono",
+"body": "Albert Sans",
+"mono": "Azeret Mono",
+"mood": "Ledger mono with a calm sans",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "mono",
+"tags": [
+"finance",
+"data",
+"code"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "mono",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@700&family=Albert+Sans:wght@400;700&display=swap"
+},
+{
+"id": "schibsted-grotesk-solo",
+"display": "Schibsted Grotesk",
+"body": "Schibsted Grotesk",
+"mono": "Reddit Mono",
+"mood": "Newsroom grotesk for figures",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "hairline-newspaper",
+"display_style": "sans",
+"tags": [
+"finance",
+"data",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&family=Reddit+Mono&display=swap"
+},
+{
+"id": "hanken-grotesk-solo",
+"display": "Hanken Grotesk",
+"body": "Hanken Grotesk",
+"mono": "Sometype Mono",
+"mood": "Neutral, tabular-friendly",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"finance",
+"data",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&family=Sometype+Mono&display=swap"
+},
+{
+"id": "red-hat-display-source-sans-3",
+"display": "Red Hat Display",
+"body": "Source Sans 3",
+"mono": "Red Hat Mono",
+"mood": "Statement-clear, open apertures",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"finance",
+"data",
+"care"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Source+Sans+3:wght@400;700&family=Red+Hat+Mono&display=swap"
+},
+{
+"id": "switzer-solo",
+"display": "Switzer",
+"body": "Switzer",
+"mono": "JetBrains Mono",
+"mood": "Neo-grotesk, invoice-plain. Display and body from Fontshare; load JetBrains Mono from Google Fonts",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"finance",
+"modernist",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=switzer@400,700&display=swap"
+},
+{
+"id": "general-sans-solo",
+"display": "General Sans",
+"body": "General Sans",
+"mono": "IBM Plex Mono",
+"mood": "Plain modern grotesk. Display and body from Fontshare; load IBM Plex Mono from Google Fonts",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"modernist",
+"data",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=general-sans@400,700&display=swap"
+},
+{
+"id": "supreme-satoshi",
+"display": "Supreme",
+"body": "Satoshi",
+"mono": "Fira Code",
+"mood": "Geometric-grotesk product voice. Display and body from Fontshare; load Fira Code from Google Fonts",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"code",
+"data",
+"modernist"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=supreme@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "clash-display-switzer",
+"display": "Clash Display",
+"body": "Switzer",
+"mono": "Martian Mono",
+"mood": "Sharp display, launch-night. Display and body from Fontshare; load Martian Mono from Google Fonts",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"bold",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=clash-display@700&f[]=switzer@400,700&display=swap"
+},
+{
+"id": "clash-grotesk-general-sans",
+"display": "Clash Grotesk",
+"body": "General Sans",
+"mono": "Spline Sans Mono",
+"mood": "Condensed-grotesk punch. Display and body from Fontshare; load Spline Sans Mono from Google Fonts",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=clash-grotesk@700&f[]=general-sans@400,700&display=swap"
+},
+{
+"id": "panchang-satoshi",
+"display": "Panchang",
+"body": "Satoshi",
+"mono": "JetBrains Mono",
+"mood": "Super-wide, slab-ish display. Display and body from Fontshare; load JetBrains Mono from Google Fonts",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "sans",
+"tags": [
+"bold",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=panchang@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "tanker-switzer",
+"display": "Tanker",
+"body": "Switzer",
+"mono": "IBM Plex Mono",
+"mood": "Heavy, rough display. Display and body from Fontshare; load IBM Plex Mono from Google Fonts",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "display",
+"tags": [
+"bold",
+"kinetic",
+"ink"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=tanker@400&f[]=switzer@400,700&display=swap"
+},
+{
+"id": "stardom-author",
+"display": "Stardom",
+"body": "Author",
+"mono": "Fira Code",
+"mood": "Decorative display, showbill. Display and body from Fontshare; load Fira Code from Google Fonts",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "display",
+"tags": [
+"celebration",
+"bold",
+"y2k"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=stardom@400&f[]=author@400,700&display=swap"
+},
+{
+"id": "gambarino-author",
+"display": "Gambarino",
+"body": "Author",
+"mono": "Martian Mono",
+"mood": "Soft serif display, letter-like. Display and body from Fontshare; load Martian Mono from Google Fonts",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"calm",
+"celebration"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=author@400,700&display=swap"
+},
+{
+"id": "sentient-satoshi",
+"display": "Sentient",
+"body": "Satoshi",
+"mono": "Spline Sans Mono",
+"mood": "Gentle serif, wellness. Display and body from Fontshare; load Spline Sans Mono from Google Fonts",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"care",
+"calm",
+"botanical"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=sentient@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "bespoke-serif-supreme",
+"display": "Bespoke Serif",
+"body": "Supreme",
+"mono": "JetBrains Mono",
+"mood": "Refined, high-contrast serif. Display and body from Fontshare; load JetBrains Mono from Google Fonts",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=bespoke-serif@700&f[]=supreme@400,700&display=swap"
+},
+{
+"id": "excon-satoshi",
+"display": "Excon",
+"body": "Satoshi",
+"mono": "IBM Plex Mono",
+"mood": "Squarish engineered sans. Display and body from Fontshare; load IBM Plex Mono from Google Fonts",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"data",
+"code",
+"industrial"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=excon@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "synonym-solo",
+"display": "Synonym",
+"body": "Synonym",
+"mono": "Fira Code",
+"mood": "Humanist, soft, plain. Display and body from Fontshare; load Fira Code from Google Fonts",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"care",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=synonym@400,700&display=swap"
+},
+{
+"id": "ranade-satoshi",
+"display": "Ranade",
+"body": "Satoshi",
+"mono": "Martian Mono",
+"mood": "Light, airy humanist. Display and body from Fontshare; load Martian Mono from Google Fonts",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"care",
+"calm",
+"botanical"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "geometric",
+"url": "https://api.fontshare.com/v2/css?f[]=ranade@700&f[]=satoshi@400,700&display=swap"
+},
+{
+"id": "author-solo",
+"display": "Author",
+"body": "Author",
+"mono": "Spline Sans Mono",
+"mood": "Book-grotesk, quiet. Display and body from Fontshare; load Spline Sans Mono from Google Fonts",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "hairline-newspaper",
+"display_style": "sans",
+"tags": [
+"literary",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "ITF Free Font License (Fontshare)",
+"source": "fontshare",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://api.fontshare.com/v2/css?f[]=author@400,700&display=swap"
+},
+{
+"id": "bricolage-grotesque-hanken-grotesk",
+"display": "Bricolage Grotesque",
+"body": "Hanken Grotesk",
+"mono": "IBM Plex Mono",
+"mood": "Bouncy grotesk, workshop-bright",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "sans",
+"tags": [
+"play",
+"kinetic",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Hanken+Grotesk:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "grandstander-nunito",
+"display": "Grandstander",
+"body": "Nunito",
+"mono": "Space Mono",
+"mood": "Bouncy display, kids-party",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play",
+"celebration"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Grandstander:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "righteous-outfit",
+"display": "Righteous",
+"body": "Outfit",
+"mono": "Kode Mono",
+"mood": "Retro-arcade rounded",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "display",
+"tags": [
+"play",
+"y2k",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Righteous&family=Outfit:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "rammetto-one-lexend",
+"display": "Rammetto One",
+"body": "Lexend",
+"mono": "Kode Mono",
+"mood": "Puffy display, sticker-sheet",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "display",
+"tags": [
+"play",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Rammetto+One&family=Lexend:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "bowlby-one-work-sans",
+"display": "Bowlby One",
+"body": "Work Sans",
+"mono": "Space Mono",
+"mood": "Fat, cartoon-loud",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "display",
+"tags": [
+"play",
+"bold",
+"sport"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bowlby+One&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "bungee-rubik",
+"display": "Bungee",
+"body": "Rubik",
+"mono": "Kode Mono",
+"mood": "Blocky signage, kids coding camp",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "display",
+"tags": [
+"play",
+"code",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "pixelify-sans-lexend",
+"display": "Pixelify Sans",
+"body": "Lexend",
+"mono": "Kode Mono",
+"mood": "Pixel display, maker-lab",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "mono",
+"tags": [
+"play",
+"code",
+"y2k"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "pixel",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=Lexend:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "silkscreen-karla",
+"display": "Silkscreen",
+"body": "Karla",
+"mono": "VT323",
+"mood": "8-bit headings, retro terminal",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "mono",
+"tags": [
+"code",
+"play",
+"y2k"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "pixel",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Silkscreen:wght@700&family=Karla:wght@400;700&family=VT323&display=swap"
+},
+{
+"id": "vt323-ibm-plex-sans",
+"display": "VT323",
+"body": "IBM Plex Sans",
+"mono": "VT323",
+"mood": "Green-screen readout",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "technical-blueprint",
+"display_style": "mono",
+"tags": [
+"code",
+"night",
+"y2k"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "pixel",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Sans:wght@400;700&display=swap"
+},
+{
+"id": "caveat-nunito",
+"display": "Caveat",
+"body": "Nunito",
+"mono": "Space Mono",
+"mood": "Hand-written notes, chalkboard",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "soft-organic",
+"display_style": "hand",
+"tags": [
+"play",
+"care",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "hand",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "gabarito-solo",
+"display": "Gabarito",
+"body": "Gabarito",
+"mono": "Kode Mono",
+"mood": "Chunky geometric, summer-camp",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "sans",
+"tags": [
+"play",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&family=Kode+Mono&display=swap"
+},
+{
+"id": "mitr-sarabun",
+"display": "Mitr",
+"body": "Sarabun",
+"mono": "Space Mono",
+"mood": "Round, friendly (Thai-ready)",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play",
+"care"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"thai"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Mitr:wght@700&family=Sarabun:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "outfit-solo",
+"display": "Outfit",
+"body": "Outfit",
+"mono": "Spline Sans Mono",
+"mood": "Soft geometric, clinic-calm",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"care",
+"calm",
+"botanical"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Spline+Sans+Mono&display=swap"
+},
+{
+"id": "urbanist-solo",
+"display": "Urbanist",
+"body": "Urbanist",
+"mono": "Spline Sans Mono",
+"mood": "Low-contrast geometric",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"modernist",
+"calm",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&family=Spline+Sans+Mono&display=swap"
+},
+{
+"id": "plus-jakarta-sans-solo",
+"display": "Plus Jakarta Sans",
+"body": "Plus Jakarta Sans",
+"mono": "JetBrains Mono",
+"mood": "Friendly product sans",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"care",
+"data",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "albert-sans-solo",
+"display": "Albert Sans",
+"body": "Albert Sans",
+"mono": "Fira Code",
+"mood": "Scandinavian geometric",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"modernist",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "karla-solo",
+"display": "Karla",
+"body": "Karla",
+"mono": "Inconsolata",
+"mood": "Quirky grotesk, warm",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "soft-organic",
+"display_style": "sans",
+"tags": [
+"care",
+"botanical",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "darker-grotesque-karla",
+"display": "Darker Grotesque",
+"body": "Karla",
+"mono": "Inconsolata",
+"mood": "Tall-contrast grotesk display",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "cinematic-dark",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"night",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "josefin-sans-lora",
+"display": "Josefin Sans",
+"body": "Lora",
+"mono": "Space Mono",
+"mood": "Art-deco geometric over a book serif",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "sans",
+"tags": [
+"luxe",
+"textile",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Lora:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "poiret-one-jost",
+"display": "Poiret One",
+"body": "Jost",
+"mono": "Fragment Mono",
+"mood": "Deco hairline, cocktail-bar",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "sans",
+"tags": [
+"luxe",
+"celebration"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Poiret+One&family=Jost:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "limelight-gelasio",
+"display": "Limelight",
+"body": "Gelasio",
+"mono": "Courier Prime",
+"mood": "Cinema-marquee deco",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "cinematic-dark",
+"display_style": "display",
+"tags": [
+"luxe",
+"night",
+"celebration"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Limelight&family=Gelasio:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "tenor-sans-lora",
+"display": "Tenor Sans",
+"body": "Lora",
+"mono": "Fragment Mono",
+"mood": "Humanist caps, spa",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "sans",
+"tags": [
+"luxe",
+"care",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "sans",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Lora:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "forum-commissioner",
+"display": "Forum",
+"body": "Commissioner",
+"mono": "Fragment Mono",
+"mood": "Roman inscriptional",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Forum&family=Commissioner:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "prata-jost",
+"display": "Prata",
+"body": "Jost",
+"mono": "DM Mono",
+"mood": "Didone-lite, boutique",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"textile"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Prata&family=Jost:wght@400;700&family=DM+Mono&display=swap"
+},
+{
+"id": "dm-serif-display-albert-sans",
+"display": "DM Serif Display",
+"body": "Albert Sans",
+"mono": "Martian Mono",
+"mood": "Fat didone, film-poster",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "cinematic-dark",
+"display_style": "serif",
+"tags": [
+"night",
+"luxe",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Albert+Sans:wght@400;700&family=Martian+Mono&display=swap"
+},
+{
+"id": "gloock-karla",
+"display": "Gloock",
+"body": "Karla",
+"mono": "Martian Mono",
+"mood": "Ink-trap serif, noir",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "cinematic-dark",
+"display_style": "serif",
+"tags": [
+"night",
+"ink",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Gloock&family=Karla:wght@400;700&family=Martian+Mono&display=swap"
+},
+{
+"id": "playfair-display-inter-tight",
+"display": "Playfair Display",
+"body": "Inter Tight",
+"mono": "Space Mono",
+"mood": "High-contrast headline, after-dark",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "cinematic-dark",
+"display_style": "serif",
+"tags": [
+"night",
+"kinetic",
+"luxe"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter+Tight:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "bodoni-moda-hanken-grotesk",
+"display": "Bodoni Moda",
+"body": "Hanken Grotesk",
+"mono": "Fragment Mono",
+"mood": "Couture didone after dark",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "cinematic-dark",
+"display_style": "serif",
+"tags": [
+"night",
+"luxe",
+"textile"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Hanken+Grotesk:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "old-standard-tt-pt-sans",
+"display": "Old Standard TT",
+"body": "PT Sans",
+"mono": "Courier Prime",
+"mood": "19th-century broadsheet",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"literary",
+"legal",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "sans",
+"url": "https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@700&family=PT+Sans:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "pt-serif-pt-sans",
+"display": "PT Serif",
+"body": "PT Sans",
+"mono": "Fira Code",
+"mood": "Public-type, multilingual press",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"civic",
+"literary",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "sans",
+"url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&family=PT+Sans:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "lora-karla",
+"display": "Lora",
+"body": "Karla",
+"mono": "Inconsolata",
+"mood": "Brushed serif, garden-notebook",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"botanical",
+"care",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "gelasio-figtree",
+"display": "Gelasio",
+"body": "Figtree",
+"mono": "Inconsolata",
+"mood": "Georgia-metric serif, practical",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"legal",
+"earth",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Gelasio:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "aleo-karla",
+"display": "Aleo",
+"body": "Karla",
+"mono": "Space Mono",
+"mood": "Soft slab, farm-shop",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "slab",
+"tags": [
+"earth",
+"warm-grain"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Aleo:wght@700&family=Karla:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "arvo-work-sans",
+"display": "Arvo",
+"body": "Work Sans",
+"mono": "Courier Prime",
+"mood": "Geometric slab, feed-store",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "retro-print",
+"display_style": "slab",
+"tags": [
+"earth",
+"trades",
+"warm-grain"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap"
+},
+{
+"id": "roboto-slab-inter-tight",
+"display": "Roboto Slab",
+"body": "Inter Tight",
+"mono": "Roboto Mono",
+"mood": "Engineered slab",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "slab",
+"tags": [
+"data",
+"industrial"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter+Tight:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "rufina-albert-sans",
+"display": "Rufina",
+"body": "Albert Sans",
+"mono": "Fragment Mono",
+"mood": "Sharp-wedge serif, chambers",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"legal",
+"luxe",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Rufina:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "castoro-hanken-grotesk",
+"display": "Castoro",
+"body": "Hanken Grotesk",
+"mono": "Martian Mono",
+"mood": "Dutch-old-style, considered",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"legal",
+"literary",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Castoro&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap"
+},
+{
+"id": "newsreader-libre-franklin",
+"display": "Newsreader",
+"body": "Libre Franklin",
+"mono": "Sometype Mono",
+"mood": "Brief-and-ledger, newsprint sober",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"legal",
+"finance",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Libre+Franklin:wght@400;700&family=Sometype+Mono&display=swap"
+},
+{
+"id": "source-serif-4-source-sans-3",
+"display": "Source Serif 4",
+"body": "Source Sans 3",
+"mono": "Source Code Pro",
+"mood": "Matched superfamily, documentary",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"legal",
+"data",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+},
+{
+"id": "cardo-hanken-grotesk",
+"display": "Cardo",
+"body": "Hanken Grotesk",
+"mono": "Martian Mono",
+"mood": "Scholarly serif, case notes",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"legal",
+"literary",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap"
+},
+{
+"id": "bitter-source-sans-3",
+"display": "Bitter",
+"body": "Source Sans 3",
+"mono": "Victor Mono",
+"mood": "Chart-slab, tide tables",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "slab",
+"tags": [
+"marine",
+"data",
+"infrastructure"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "slab",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Source+Sans+3:wght@400;700&family=Victor+Mono&display=swap"
+},
+{
+"id": "libre-franklin-solo",
+"display": "Libre Franklin",
+"body": "Libre Franklin",
+"mono": "Fira Code",
+"mood": "Harbour-signage grotesk",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"marine",
+"civic",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "petrona-figtree",
+"display": "Petrona",
+"body": "Figtree",
+"mono": "Reddit Mono",
+"mood": "Coastal-cafe serif",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"marine",
+"calm",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Petrona:wght@700&family=Figtree:wght@400;700&family=Reddit+Mono&display=swap"
+},
+{
+"id": "alegreya-karla",
+"display": "Alegreya",
+"body": "Karla",
+"mono": "Victor Mono",
+"mood": "Field-guide serif",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"botanical",
+"earth",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Karla:wght@400;700&family=Victor+Mono&display=swap"
+},
+{
+"id": "brygada-1918-albert-sans",
+"display": "Brygada 1918",
+"body": "Albert Sans",
+"mono": "Fragment Mono",
+"mood": "Herbarium-label serif",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"botanical",
+"textile",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "crimson-pro-sora",
+"display": "Crimson Pro",
+"body": "Sora",
+"mono": "Spline Sans Mono",
+"mood": "Soft serif, wellness-room",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"care",
+"calm",
+"botanical"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Sora:wght@400;700&family=Spline+Sans+Mono&display=swap"
+},
+{
+"id": "fraunces-karla",
+"display": "Fraunces",
+"body": "Karla",
+"mono": "Fragment Mono",
+"mood": "Wonky soft serif, craft-fair",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"textile",
+"warm-grain",
+"play"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": true,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Karla:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "cormorant-garamond-albert-sans",
+"display": "Cormorant Garamond",
+"body": "Albert Sans",
+"mono": "Fragment Mono",
+"mood": "Atelier Garamond",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"textile",
+"luxe",
+"earth"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap"
+},
+{
+"id": "vollkorn-albert-sans",
+"display": "Vollkorn",
+"body": "Albert Sans",
+"mono": "Inconsolata",
+"mood": "Hearty serif, harvest-table",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"earth",
+"warm-grain",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&family=Albert+Sans:wght@400;700&family=Inconsolata&display=swap"
+},
+{
+"id": "eczar-hind",
+"display": "Eczar",
+"body": "Hind",
+"mono": "Space Mono",
+"mood": "Spirited serif (Devanagari-ready)",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"earth",
+"food",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Eczar:wght@700&family=Hind:wght@400;700&family=Space+Mono&display=swap"
+},
+{
+"id": "rozha-one-mukta",
+"display": "Rozha One",
+"body": "Mukta",
+"mono": "Roboto Mono",
+"mood": "Fat didone (Devanagari-ready)",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "serif",
+"tags": [
+"celebration",
+"bold",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "martel-mukta",
+"display": "Martel",
+"body": "Mukta",
+"mono": "Fira Code",
+"mood": "Devanagari serif with a matching sans",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"civic",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Martel:wght@700&family=Mukta:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "tiro-devanagari-hindi-hind",
+"display": "Tiro Devanagari Hindi",
+"body": "Hind",
+"mono": "Roboto Mono",
+"mood": "Book-tradition Devanagari",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Hind:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "baloo-2-mukta",
+"display": "Baloo 2",
+"body": "Mukta",
+"mono": "Roboto Mono",
+"mood": "Round, bilingual-friendly (Devanagari-ready)",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Mukta:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "teko-hind",
+"display": "Teko",
+"body": "Hind",
+"mono": "JetBrains Mono",
+"mood": "Scoreboard condensed (Devanagari-ready)",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "condensed",
+"tags": [
+"sport",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"devanagari"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Hind:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "reem-kufi-ibm-plex-sans-arabic",
+"display": "Reem Kufi",
+"body": "IBM Plex Sans Arabic",
+"mono": "IBM Plex Mono",
+"mood": "Geometric Kufi with a plain Arabic sans",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"civic",
+"modernist",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "amiri-noto-naskh-arabic",
+"display": "Amiri",
+"body": "Noto Naskh Arabic",
+"mono": "Noto Sans Mono",
+"mood": "Classical Naskh, book-quality Arabic",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"legal",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "serif",
+"url": "https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Mono&display=swap"
+},
+{
+"id": "cairo-tajawal",
+"display": "Cairo",
+"body": "Tajawal",
+"mono": "Fira Code",
+"mood": "Contemporary Arabic sans for products",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"data",
+"finance",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Tajawal:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "el-messiri-readex-pro",
+"display": "El Messiri",
+"body": "Readex Pro",
+"mono": "IBM Plex Mono",
+"mood": "Elegant Arabic display, hospitality",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"celebration",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "geometric",
+"url": "https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=Readex+Pro:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "lalezar-vazirmatn",
+"display": "Lalezar",
+"body": "Vazirmatn",
+"mono": "Roboto Mono",
+"mood": "Heavy Arabic poster display",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "display",
+"tags": [
+"food",
+"bold",
+"play"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "changa-cairo",
+"display": "Changa",
+"body": "Cairo",
+"mono": "Fira Code",
+"mood": "Condensed-feel Arabic, sport and events",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "dark-single-accent",
+"display_style": "sans",
+"tags": [
+"sport",
+"kinetic",
+"night"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Changa:wght@700&family=Cairo:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "markazi-text-ibm-plex-sans-arabic",
+"display": "Markazi Text",
+"body": "IBM Plex Sans Arabic",
+"mono": "IBM Plex Mono",
+"mood": "Arabic text serif, newsroom",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"civic",
+"literary",
+"legal"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"arabic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Markazi+Text:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "frank-ruhl-libre-assistant",
+"display": "Frank Ruhl Libre",
+"body": "Assistant",
+"mono": "Roboto Mono",
+"mood": "Hebrew book serif with a plain sans",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"legal",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"hebrew"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&family=Assistant:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "suez-one-heebo",
+"display": "Suez One",
+"body": "Heebo",
+"mono": "Roboto Mono",
+"mood": "Heavy Hebrew slab display",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "serif",
+"tags": [
+"food",
+"bold",
+"ink"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"hebrew"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "secular-one-rubik",
+"display": "Secular One",
+"body": "Rubik",
+"mono": "Roboto Mono",
+"mood": "Hebrew grotesk display",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"bold",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"hebrew"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+},
+{
+"id": "david-libre-alef",
+"display": "David Libre",
+"body": "Alef",
+"mono": "Noto Sans Mono",
+"mood": "Quiet Hebrew serif",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"memorial",
+"civic",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"hebrew"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=David+Libre:wght@700&family=Alef:wght@400;700&family=Noto+Sans+Mono&display=swap"
+},
+{
+"id": "bellefair-ibm-plex-sans-hebrew",
+"display": "Bellefair",
+"body": "IBM Plex Sans Hebrew",
+"mono": "IBM Plex Mono",
+"mood": "Hairline Hebrew and Latin display",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"celebration"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"hebrew"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bellefair&family=IBM+Plex+Sans+Hebrew:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "shippori-mincho-zen-kaku-gothic-new",
+"display": "Shippori Mincho",
+"body": "Zen Kaku Gothic New",
+"mono": "M PLUS 1 Code",
+"mood": "Mincho headings over a modern gothic",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"calm",
+"ink"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"japanese"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&family=M+PLUS+1+Code&display=swap"
+},
+{
+"id": "zen-old-mincho-biz-udpgothic",
+"display": "Zen Old Mincho",
+"body": "BIZ UDPGothic",
+"mono": "M PLUS 1 Code",
+"mood": "Old-style Mincho, legible gothic body",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"civic",
+"memorial",
+"calm"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"japanese"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700&family=BIZ+UDPGothic:wght@400;700&family=M+PLUS+1+Code&display=swap"
+},
+{
+"id": "dela-gothic-one-m-plus-1p",
+"display": "Dela Gothic One",
+"body": "M PLUS 1p",
+"mono": "M PLUS 1 Code",
+"mood": "Heavy gothic poster (Japanese-ready)",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "display",
+"tags": [
+"ink",
+"kinetic",
+"bold"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"japanese"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+1p:wght@400;700&family=M+PLUS+1+Code&display=swap"
+},
+{
+"id": "kaisei-decol-zen-maru-gothic",
+"display": "Kaisei Decol",
+"body": "Zen Maru Gothic",
+"mono": "M PLUS 1 Code",
+"mood": "Soft decorative Mincho, rounded body",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"food",
+"care",
+"play"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"japanese"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&family=Zen+Maru+Gothic:wght@400;700&family=M+PLUS+1+Code&display=swap"
+},
+{
+"id": "dotgothic16-ibm-plex-sans-jp",
+"display": "DotGothic16",
+"body": "IBM Plex Sans JP",
+"mono": "M PLUS 1 Code",
+"mood": "Dot-matrix display (Japanese-ready)",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "retro-print",
+"display_style": "mono",
+"tags": [
+"code",
+"play",
+"y2k"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"japanese"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "pixel",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=DotGothic16&family=IBM+Plex+Sans+JP:wght@400;700&family=M+PLUS+1+Code&display=swap"
+},
+{
+"id": "gowun-batang-gowun-dodum",
+"display": "Gowun Batang",
+"body": "Gowun Dodum",
+"mono": "Nanum Gothic Coding",
+"mood": "Soft Korean serif and sans",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "soft-organic",
+"display_style": "serif",
+"tags": [
+"calm",
+"care",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"korean"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Gowun+Dodum&family=Nanum+Gothic+Coding&display=swap"
+},
+{
+"id": "nanum-myeongjo-nanum-gothic",
+"display": "Nanum Myeongjo",
+"body": "Nanum Gothic",
+"mono": "Nanum Gothic Coding",
+"mood": "Korean book serif",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"civic",
+"memorial"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"korean"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap"
+},
+{
+"id": "hahmlet-ibm-plex-sans-kr",
+"display": "Hahmlet",
+"body": "IBM Plex Sans KR",
+"mono": "IBM Plex Mono",
+"mood": "Contemporary Korean serif",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"civic",
+"data",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"korean"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Hahmlet:wght@700&family=IBM+Plex+Sans+KR:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "black-han-sans-nanum-gothic",
+"display": "Black Han Sans",
+"body": "Nanum Gothic",
+"mono": "Nanum Gothic Coding",
+"mood": "Heavy Korean display",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "expressive",
+"look_family": "brutalist-raw",
+"display_style": "display",
+"tags": [
+"bold",
+"kinetic",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"korean"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "display",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap"
+},
+{
+"id": "do-hyeon-ibm-plex-sans-kr",
+"display": "Do Hyeon",
+"body": "IBM Plex Sans KR",
+"mono": "Nanum Gothic Coding",
+"mood": "Friendly Korean signboard",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "sans",
+"tags": [
+"play",
+"food",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"korean"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;700&family=Nanum+Gothic+Coding&display=swap"
+},
+{
+"id": "noto-serif-sc-noto-sans-sc",
+"display": "Noto Serif SC",
+"body": "Noto Sans SC",
+"mono": "Noto Sans Mono",
+"mood": "Simplified Chinese serif and sans",
+"ratio": "1.414 (Augmented Fourth)",
+"voice": "editorial",
+"look_family": "hairline-newspaper",
+"display_style": "serif",
+"tags": [
+"civic",
+"literary",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"chinese-simplified"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap"
+},
+{
+"id": "zcool-xiaowei-noto-sans-sc",
+"display": "ZCOOL XiaoWei",
+"body": "Noto Sans SC",
+"mono": "Noto Sans Mono",
+"mood": "Delicate Chinese display",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"calm",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"chinese-simplified"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap"
+},
+{
+"id": "zcool-kuaile-noto-sans-sc",
+"display": "ZCOOL KuaiLe",
+"body": "Noto Sans SC",
+"mono": "Noto Sans Mono",
+"mood": "Playful Chinese display",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"chinese-simplified"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap"
+},
+{
+"id": "chonburi-sarabun",
+"display": "Chonburi",
+"body": "Sarabun",
+"mono": "IBM Plex Mono",
+"mood": "Thai-Latin didone display",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"celebration",
+"food"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"thai"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Chonburi&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "trirong-ibm-plex-sans-thai",
+"display": "Trirong",
+"body": "IBM Plex Sans Thai",
+"mono": "IBM Plex Mono",
+"mood": "Thai serif with a plain sans",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"calm",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"thai"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Trirong:wght@700&family=IBM+Plex+Sans+Thai:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "kanit-sarabun",
+"display": "Kanit",
+"body": "Sarabun",
+"mono": "IBM Plex Mono",
+"mood": "Thai geometric display",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"bold",
+"sport",
+"kinetic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"thai"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Kanit:wght@700&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "bai-jamjuree-sarabun",
+"display": "Bai Jamjuree",
+"body": "Sarabun",
+"mono": "IBM Plex Mono",
+"mood": "Engineered Thai sans",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "technical-blueprint",
+"display_style": "sans",
+"tags": [
+"data",
+"code",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"thai"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap"
+},
+{
+"id": "gfs-didot-commissioner",
+"display": "GFS Didot",
+"body": "Commissioner",
+"mono": "Fira Code",
+"mood": "Greek Didot over a flexible sans",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"civic",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=GFS+Didot&family=Commissioner:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "literata-commissioner",
+"display": "Literata",
+"body": "Commissioner",
+"mono": "Fira Code",
+"mood": "Greek and Cyrillic long-read",
+"ratio": "1.250 (Major Third)",
+"voice": "editorial",
+"look_family": "warm-paper-serif",
+"display_style": "serif",
+"tags": [
+"literary",
+"civic",
+"care"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"greek"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "serif",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Literata:wght@700&family=Commissioner:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "unbounded-golos-text",
+"display": "Unbounded",
+"body": "Golos Text",
+"mono": "JetBrains Mono",
+"mood": "Wide Cyrillic-ready display",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "sans",
+"tags": [
+"kinetic",
+"bold",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "geometric",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "prata-golos-text",
+"display": "Prata",
+"body": "Golos Text",
+"mono": "JetBrains Mono",
+"mood": "Didone with Cyrillic, boutique",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "editorial",
+"look_family": "luxury-sparse",
+"display_style": "serif",
+"tags": [
+"luxe",
+"literary"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "yeseva-one-onest",
+"display": "Yeseva One",
+"body": "Onest",
+"mono": "JetBrains Mono",
+"mood": "Ball-terminal display, Cyrillic-ready",
+"ratio": "1.5 (Perfect Fifth)",
+"voice": "expressive",
+"look_family": "playful-color-block",
+"display_style": "serif",
+"tags": [
+"celebration",
+"play"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "didone",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Yeseva+One&family=Onest:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "oswald-golos-text",
+"display": "Oswald",
+"body": "Golos Text",
+"mono": "JetBrains Mono",
+"mood": "Condensed, Cyrillic-ready",
+"ratio": "1.333 (Perfect Fourth)",
+"voice": "expressive",
+"look_family": "swiss-grid",
+"display_style": "condensed",
+"tags": [
+"sport",
+"industrial",
+"civic"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "condensed",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap"
+},
+{
+"id": "arsenal-solo",
+"display": "Arsenal",
+"body": "Arsenal",
+"mono": "Fira Code",
+"mood": "Ukrainian-designed grotesk, Cyrillic-native",
+"ratio": "1.200 (Minor Third)",
+"voice": "utility",
+"look_family": "swiss-grid",
+"display_style": "sans",
+"tags": [
+"civic",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic"
+],
+"licence": "SIL Open Font License 1.1",
+"source": "google",
+"overused": false,
+"display_class": "grotesk",
+"body_class": "grotesk",
+"url": "https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Fira+Code&display=swap"
+},
+{
+"id": "rubik-solo",
+"display": "Rubik",
+"body": "Rubik",
+"mono": "Roboto Mono",
+"mood": "Soft-cornered sans (Hebrew and Cyrillic)",
+"ratio": "1.250 (Major Third)",
+"voice": "utility",
+"look_family": "playful-color-block",
+"display_style": "rounded",
+"tags": [
+"play",
+"care",
+"data"
+],
+"scripts": [
+"latin",
+"latin-ext",
+"cyrillic",
+"hebrew"
+],
+"licence": "Apache-2.0 and SIL OFL 1.1",
+"source": "google",
+"overused": false,
+"display_class": "round",
+"body_class": "round",
+"url": "https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+}
+]

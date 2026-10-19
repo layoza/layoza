@@ -1,0 +1,3197 @@
+[
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "type-architecture",
+"name": "Type Architecture",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"devtool",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "stacked",
+"calm_bias": 0,
+"look_family": "swiss-grid",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "the brief's own words and the trade's notation can carry the first screen without stock imagery",
+"structure": "headline as architecture, notation grid, ruled sections stepping down one scale",
+"motion_hint": "lines settle in turn; rules draw once",
+"mobile": "headline reflows to 3-4 lines at 12vw; the notation grid becomes a single ruled column",
+"layout": "{big}{at} set as architecture: the headline at poster scale spans the full measure and the grid is drawn from the trade's notation ({note}); {o1} sits inside the type (between lines or in a counter), not beside it; sections step down a strict {ratio} scale with ruled dividers instead of cards",
+"identity": "{display} does the image work at display sizes over {body} for reading; {pal}; rules, numbers and labels from the trade are the only ornament",
+"content": "One sentence that says what this {subj} does, then '{act}' working in the first viewport; specifics as ruled tables of {note}; no big-number stat blocks",
+"motion_calm": "Type-led load: headline lines settle in turn ({t_in}ms ease-out), rules draw once on entry, {t_ui}ms hover and focus states; nothing moves on scroll",
+"motion_bold": "Headline lines enter on load ({t_in}ms stagger), then scroll progress shifts the type's weight or tracking through the first section while {o1} moves within the lettering; every frame stays readable",
+"span_irregularity": "low",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "index-archive",
+"name": "Catalogue Index",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"product-ui",
+"commerce",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "document",
+"radius": [
+"sharp-0",
+"hairline-2",
+"mixed"
+],
+"why": "the subject has many comparable items, and browsing them is the main job",
+"structure": "ruled index first, filters on top, rows open in place",
+"motion_hint": "rows expand in place; filters re-order with FLIP",
+"mobile": "rows collapse to two lines (name and number); filters move into a bottom sheet",
+"layout": "{big} as a catalogue: the first screen is a ruled index of {o1}, {o2} and {o3} with the trade's own numbers ({note}) in the first column; filters across the top, rows open in place, no hero-image slot",
+"identity": "Archive vocabulary: {display} for headings, {body} for rows, {mono} for numbers; {pal}; colour only where an entry needs attention",
+"content": "Browse first: visitors find their own way into the {subj} through the index, then '{act}' from any row",
+"motion_calm": "Rows expand in place ({t_ui}ms) and filters re-order with FLIP ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Rows reveal in scroll order and the active row's preview of {o1} grows into a pinned panel as the list scrolls ({t_in}ms hand-offs)",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"memorial",
+"literary",
+"legal",
+"care",
+"civic"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "editorial-longread",
+"name": "Long Read",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "trust is earned by explaining (who, how, why) before asking for the action",
+"structure": "one 60-70ch column, chapter plates, margin notes, docked action",
+"motion_hint": "chapter openers fade up once; reading-progress rule",
+"mobile": "margin notes fold under their paragraph; plates go full width; the docked action becomes a bottom bar",
+"layout": "The {subj}{at} told as a long read: a centred 60-70ch column opens on {o1} as a full-width plate, then chapters on {o2} and {o3} with pull quotes and margin notes; '{act}' is an inline link at each chapter end and a docked bar",
+"identity": "{display} headlines at book-jacket scale with {body} set for long reading and captions in {mono}; {pal}; photographs of the real subject only",
+"content": "Narrative first: why this {subj} exists, how it works, who it is for; the facts ({note}) sit in margin notes beside the story",
+"motion_calm": "Chapter openers fade up once ({t_in}ms) and a thin rule shows reading progress; nothing moves on scroll beyond that",
+"motion_bold": "Each chapter plate grows from inset to full width as it scrolls in; margin notes slide in beside the paragraph they annotate ({t_in}ms)",
+"span_irregularity": "low",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "specimen-object",
+"name": "Specimen Plate",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "object-wrap",
+"calm_bias": 1,
+"look_family": "luxury-sparse",
+"hero_material": "object",
+"radius": [
+"sharp-0",
+"stamp-circle",
+"hairline-2"
+],
+"why": "one physical object can stand for the whole business when it is shown at scale and labelled",
+"structure": "one object at scale, headline wraps it, labelled callouts, further plates",
+"motion_hint": "callout leaders draw on entry",
+"mobile": "the object sits above the headline; callouts become a numbered list under it",
+"layout": "{big} as a specimen plate: {o1} drawn or photographed at scale on a plain ground, the headline wrapping its silhouette, labelled callouts to its details ({note}); {o2} and {o3} follow as further plates in the same callout system",
+"identity": "Museum-plate restraint: {display} for plate titles, {body} for callouts, hairline leaders; {pal}; the object supplies the only rich colour",
+"content": "Show the thing before saying anything: plates first, then '{act}', then the facts table",
+"motion_calm": "Callout leaders draw on entry ({t_in}ms); hover or focus on a callout highlights its detail; nothing moves on scroll",
+"motion_bold": "Scroll turns or zooms {o1} through its details while each callout lights in turn; the plate comes to rest with every label visible",
+"span_irregularity": "medium",
+"accent_placement": "callout markers on the object"
+},
+{
+"tags": [
+"civic",
+"play",
+"marine",
+"celebration"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "map-wayfinding",
+"name": "Wayfinding Map",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"venue",
+"general"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "swiss-grid",
+"hero_material": "map",
+"radius": [
+"stamp-circle",
+"tool-6",
+"sharp-0"
+],
+"why": "a visit is the conversion, so where things are and how to get there leads",
+"structure": "illustrated plan, numbered points, point panels, key with the action",
+"motion_hint": "markers pulse once; panels slide in",
+"mobile": "the map becomes a pannable frame with a list of numbered points under it",
+"layout": "{big}{at} as a map: the first screen is an illustrated plan (rooms, route or neighbourhood) with {o1}, {o2} and {o3} as numbered points; choosing a point opens its panel; '{act}' is pinned to the map key",
+"identity": "Wayfinding system: {display} as signage, {body} for panels, numbered markers and colour-coded zones; {pal}",
+"content": "Orientation first: where things are, when they open and how to get there, then '{act}'",
+"motion_calm": "Markers pulse once on load and panels slide in {t_ui}ms; nothing moves on scroll",
+"motion_bold": "Scroll walks the route across the map zone by zone, opening each stop's panel ({t_in}ms); the whole map is visible at the end",
+"span_irregularity": "high",
+"accent_placement": "the visitor's chosen point"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "summary-ledger",
+"name": "Daily Ledger",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"product-ui"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "data-as-image",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "a task UI is read once a day as a summary before anyone acts on it",
+"structure": "one summary sentence, full ruled table by owner, sticky totals, side drawer",
+"motion_hint": "row updates and drawer slides only",
+"mobile": "the table becomes grouped cards per owner; totals stay in a sticky footer",
+"layout": "{big} as one ruled daily ledger: a one-sentence summary of today at the top, then the full table of {o1} grouped by owner with totals in a sticky footer; {o2} as flagged rows; detail opens in a side drawer",
+"identity": "Bookkeeping clarity: {display} for the summary sentence, {body} with tabular figures for rows, {mono} for codes; {pal}; state colour only on cells that need action",
+"content": "Read the day in one sentence, then scan the table; every number links to the rows behind it ({note})",
+"motion_calm": "{t_ui}ms row updates and drawer slides only; no scroll-triggered choreography",
+"motion_bold": "{t_ui}ms row updates and drawer slides only; no scroll-triggered choreography",
+"span_irregularity": "low",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "reference-manual",
+"name": "Reference Manual",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"devtool"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "document",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "developers judge a tool by how fast they can find the exact command and its output",
+"structure": "install line, synopsis, manual sections, sticky contents",
+"motion_hint": "copy confirmations and a contents highlight",
+"mobile": "the contents become a jump menu at the top; code blocks scroll sideways inside their own frame",
+"layout": "The {subj} as a reference manual: install line and a one-paragraph synopsis at the top, then NAME, SYNOPSIS, COMMANDS, EXAMPLES and EXIT CODES with a sticky table of contents; every example shows {o1}",
+"identity": "Manual typography: {display} for section heads, {body} for prose, {mono} for every command; {pal}; no illustrations, the examples are the pictures",
+"content": "Answer 'what does it do and how do I call it' in the first screen, then the full reference ({note})",
+"motion_calm": "{t_ui}ms copy confirmations and a table-of-contents highlight that follows the reading position; nothing moves on scroll",
+"motion_bold": "{t_ui}ms copy confirmations and a table-of-contents highlight that follows the reading position; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "full-bleed-stage",
+"name": "Full-Bleed Stage",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "full-bleed",
+"calm_bias": -1,
+"look_family": "cinematic-dark",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "atmosphere sells it: the place, the product or the work has to be felt before it is read",
+"structure": "one subject image edge to edge, headline in its quiet area, full-width cuts, docked action",
+"motion_hint": "slow cross-fades; plates hand off on scroll",
+"mobile": "the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+"layout": "Full-bleed stage for the {subj}{at}: {o1} fills the first screen edge to edge with the headline set into its quiet area; later sections cut between {o2} and {o3} at full width; '{act}' stays docked and usable at every scroll position",
+"identity": "Cinematic contrast: {display} at stage scale over {body}; {pal}; real photography or drawn art of the subject, never stock",
+"content": "Atmosphere first, then what is available now ({note}), then '{act}'",
+"motion_calm": "Slow cross-fades between plates on view ({t_in}ms); the docked action never animates away; nothing moves on scroll",
+"motion_bold": "Plates pin and hand off as you scroll ({t_in}ms cross-fades keyed to scroll progress) while {o1} drifts slowly; the action bar stays fixed",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "scroll-sequence",
+"name": "Scroll Sequence",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"devtool",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "sticky-stage",
+"calm_bias": -1,
+"look_family": "cinematic-dark",
+"hero_material": "video",
+"radius": [
+"hairline-2",
+"sharp-0"
+],
+"why": "the subject has a process worth watching step by step",
+"structure": "pinned scene, 3-4 copy steps change it, normal sections after",
+"motion_hint": "scene scrubbed by scroll; each quarter is a complete frame",
+"mobile": "the pin is dropped; each step becomes its own frame with the image above the copy",
+"layout": "A pinned sequence about the {subj}: the first screen holds {o1} while 3-4 steps of copy pass over it, each step changing the scene ({o2}, then {o3}); normal sections follow",
+"identity": "{display} for step headlines, {body} for captions; {pal}; the subject's own process is the story, not abstract shapes",
+"content": "Process as story: each step is one true fact about how this {subj} works, ending on '{act}'",
+"motion_calm": "Steps cross-fade in place on click or arrow keys ({t_in}ms); nothing moves on scroll",
+"motion_bold": "The scene is scrubbed by scroll progress (CSS scroll-driven animations or a scroll library): frames at 25/50/75% are each complete; the last frame hands off to '{act}'",
+"span_irregularity": "medium",
+"accent_placement": "the progress marker"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"care",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "colour-field-poster",
+"name": "Colour-Field Poster",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"devtool",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "field",
+"voice": "expressive",
+"composition": "poster",
+"calm_bias": -1,
+"look_family": "playful-color-block",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"round-play"
+],
+"why": "the brand needs one loud, memorable message per screen more than detail",
+"structure": "run of full colour fields, one statement and one image each",
+"motion_hint": "colour wipes between fields",
+"mobile": "each poster keeps one statement at 14vw; the image drops below it at full width",
+"layout": "The {subj} as a run of posters: each section is one full colour field with one large statement and one image ({o1}, then {o2}, then {o3}); the first poster carries '{act}' as a large button",
+"identity": "Poster print: {display} set huge, {body} small and tight; {pal}; colour owns whole sections, no gradients",
+"content": "One message per screen in the visitor's words, ending on '{act}'; details ({note}) in a compact closing section",
+"motion_calm": "Posters change on view with a {t_in}ms colour wipe; nothing moves on scroll",
+"motion_bold": "Each colour field wipes into the next with scroll progress while the headline and image move at different speeds",
+"span_irregularity": "medium",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "collage-board",
+"name": "Pin-Board Collage",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "field",
+"voice": "expressive",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "retro-print",
+"hero_material": "collage",
+"radius": [
+"sharp-0",
+"ticket-notch",
+"stamp-circle"
+],
+"why": "personality and the trade's many small artefacts matter more than a single hero object",
+"structure": "overlapping cut-outs, notes and tickets; the headline stuck on as a label",
+"motion_hint": "pieces settle once; lift on hover",
+"mobile": "the board becomes a vertical stack of 3-4 pieces with slight rotation; nothing overlaps text",
+"layout": "A pin-board collage for the {subj}{at}: {o1}, {o2} and {o3} as overlapping cut-outs, notes and tickets on one layered first screen with the headline stuck on like a label; below, the same pieces open into sections",
+"identity": "Hand-assembled: {display} on labels, {body} on notes, tape and shadow as the only depth; {pal}; textures from the trade's own material ({mat})",
+"content": "Personality first: the pieces show what this {subj} is like, then '{act}'",
+"motion_calm": "Pieces settle onto the board once on load ({t_in}ms, slight rotation) and lift on hover; nothing moves on scroll",
+"motion_bold": "Pieces drift apart at different scroll speeds to open each section, then pin again at rest; the headline stays readable in every frame",
+"span_irregularity": "high",
+"accent_placement": "one cut-out per screen"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "dense",
+"key": "live-wall",
+"name": "Live Operations Wall",
+"style_family": "high-density-workbench",
+"surfaces": [
+"product-ui"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "utility",
+"composition": "full-bleed",
+"calm_bias": 0,
+"look_family": "technical-blueprint",
+"hero_material": "data-as-image",
+"radius": [
+"hairline-2",
+"sharp-0",
+"tool-6"
+],
+"why": "the team watches the numbers all day on a shared screen and acts on exceptions",
+"structure": "full-width time axis, pinned exceptions rail, drill-down drawers",
+"motion_hint": "value tweens on update; FLIP row insert",
+"mobile": "the wall becomes the exceptions list first, with the time axis as a swipeable strip",
+"layout": "Full-width live wall for the {subj}: {o1} on a horizontal time axis as the hero, {o2} as an exceptions rail pinned to the side, drill-down drawers instead of page changes",
+"identity": "Control-room surface: {display} condensed numerals over {body} with tabular figures; {pal}; state colour (on track, late, short) is the only decoration",
+"content": "Exceptions first: what is late, short or wrong right now and who owns it, then the plan, then history ({note})",
+"motion_calm": "Data-driven only: {t_ui}ms value tweens on update and FLIP row insert or remove; no scroll-triggered choreography; reduced-motion swaps tweens for instant updates",
+"motion_bold": "Data-driven only: {t_ui}ms value tweens on update and FLIP row insert or remove; no scroll-triggered choreography; reduced-motion swaps tweens for instant updates",
+"span_irregularity": "medium",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "timeline-axis",
+"name": "Timeline Axis",
+"style_family": "high-density-workbench",
+"surfaces": [
+"product-ui"
+],
+"roles": [
+"B",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "sticky-stage",
+"calm_bias": 0,
+"look_family": "swiss-grid",
+"hero_material": "data-as-image",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "the work is scheduled, so time is the axis everything else hangs on",
+"structure": "hours down the page, blocks on the axis, now-line, side editor",
+"motion_hint": "the now-line moves with the clock; blocks snap",
+"mobile": "one day per screen with the now-line pinned; the editor opens as a full-height sheet",
+"layout": "The {subj} on a vertical day timeline: hours run down the page, {o1} and {o3} sit as blocks on the axis, a now-line marks the current time and conflicts are flagged; a side panel edits the selected block",
+"identity": "Schedule clarity: {display} for times, {body} for block labels, {mono} for codes; {pal}",
+"content": "Time first: what happens next, what overlaps, then the detail ({note})",
+"motion_calm": "The now-line moves with the clock and edited blocks snap in {t_ui}ms; no scroll-triggered choreography",
+"motion_bold": "The now-line moves with the clock and edited blocks snap in {t_ui}ms; no scroll-triggered choreography",
+"span_irregularity": "medium",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "transcript-replay",
+"name": "Session Replay",
+"style_family": "precision-terminal-craft",
+"surfaces": [
+"devtool"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "utility",
+"composition": "sticky-stage",
+"calm_bias": -1,
+"look_family": "dark-single-accent",
+"hero_material": "code-output",
+"radius": [
+"hairline-2",
+"sharp-0"
+],
+"why": "a real session on real input is the only proof developers trust",
+"structure": "install command, real run, diagram, reproducible benchmarks",
+"motion_hint": "transcript paced to reading speed with skip",
+"mobile": "the transcript wraps at 40 columns with a horizontal-scroll fallback for wide output",
+"layout": "A real session as the hero for the {subj}: the install command, then the tool running on real input ({o1}), ending on {o2}; then a labelled architecture diagram, then reproducible benchmarks with the method beside the numbers",
+"identity": "Session surface: {mono} only for commands and output, {display} for claims, {body} for prose; {pal}; colour reserved for pass, warn, fail and diff states",
+"content": "Show it working on real input first, then how it works, then proof (method, licence, release cadence, changelog); no invented testimonials or counters",
+"motion_calm": "Transcript steps appear as they come into view ({t_ui}ms per line) with a skip control; nothing moves on scroll beyond that",
+"motion_bold": "Transcript replay paced to reading speed with pause and skip, plus scroll-linked step progress; reduced-motion renders the complete transcript statically",
+"span_irregularity": "medium",
+"accent_placement": "pass, warn and fail states"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "working-tool-first",
+"name": "Working Tool First",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 0,
+"look_family": "soft-organic",
+"hero_material": "live-ui",
+"radius": [
+"soft-12",
+"tool-6"
+],
+"why": "the visitor's question (price, time, fit, availability) can be answered by a small tool on the first screen",
+"structure": "a working control on the first screen with the headline as its label",
+"motion_hint": "state changes on input only",
+"mobile": "the tool takes the full first screen with thumb-sized inputs; results appear under it, not in a modal",
+"layout": "The {subj} opens on the tool itself, centred: a small working control for '{act}' (a picker, calculator or short form built around {o1}) above the fold with the headline as its label; then sections built from {o2} and {o3}",
+"identity": "Controls redrawn in the trade's own material ({mat}): {display} for labels, {body} for help text; {pal}; one accent for actions",
+"content": "Interactive proof: the visitor gets an answer (price, time, fit, availability) before reading any marketing copy",
+"motion_calm": "{t_ui}ms state changes on input, results update in place; nothing moves on scroll",
+"motion_bold": "{t_ui}ms state changes on input, results update in place; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "dense",
+"key": "workbench-split",
+"name": "Task Workbench",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"product-ui"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "split",
+"calm_bias": 1,
+"look_family": "technical-blueprint",
+"hero_material": "live-ui",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "editing and seeing the consequence must happen side by side (the one case a split is earned)",
+"structure": "editable table beside a live consequence panel, command-bar filters",
+"motion_hint": "state transitions only",
+"mobile": "the consequence panel becomes a sticky summary strip above the table",
+"layout": "Split workbench for the {subj}, because editing and its consequence must be seen at once: the editable table of {o1} (keyboard-navigable cells, bulk actions) on one side, a live consequence panel ({o3}, totals, capacity) on the other; filters as a command bar",
+"identity": "Quiet light surface: {display} for panel heads, {body} with tabular figures; {pal}; semantic colours for state only",
+"content": "Change a quantity or date and watch the plan and its consequences recalculate in place ({note})",
+"motion_calm": "{t_ui}ms state transitions only; zero decorative motion",
+"motion_bold": "{t_ui}ms state transitions only; zero decorative motion",
+"span_irregularity": "medium",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "command-console",
+"name": "Command-First Console",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"product-ui",
+"devtool"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "swiss-grid",
+"hero_material": "live-ui",
+"radius": [
+"tool-6",
+"cut-corner"
+],
+"why": "expert users repeat a few jobs many times a day and type faster than they click",
+"structure": "one command bar, suggestions, result panels, visible shortcuts",
+"motion_hint": "palette open and filter transitions",
+"mobile": "the command bar docks to the bottom above the keyboard; results stack full width",
+"layout": "The {subj} as a command-first console: one centred command bar with suggestions drawn from {o1} and {o2}; results open as panels beneath; shortcuts are shown on every action",
+"identity": "{mono} for commands, {body} for results, {display} sparingly for section heads; {pal}",
+"content": "Do the most common job ('{act}') in one typed line, then show the result ({note}) and the next likely action",
+"motion_calm": "{t_ui}ms palette open, filter and result transitions; nothing moves on scroll",
+"motion_bold": "{t_ui}ms palette open, filter and result transitions; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "configurator",
+"name": "Configurator",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"commerce"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "split",
+"calm_bias": 0,
+"look_family": "soft-organic",
+"hero_material": "object",
+"radius": [
+"soft-12",
+"mixed"
+],
+"why": "the product has options, and price, stock and delivery must update beside the product",
+"structure": "product large beside its options; price, stock, delivery update in place",
+"motion_hint": "FLIP re-layout and swatch transitions",
+"mobile": "the product image stays sticky at 40vh while options scroll under it",
+"layout": "Configurator for the {subj}, split because the product and its options must stay in view together: {o1} large on one side, size, colour or material choices on the other with price, stock and delivery updating in place; then a filterable catalogue with real facts ({note})",
+"identity": "Swatch-book controls: real material swatches ({mat}) as inputs, {display} for product names, {body} for facts; {pal}",
+"content": "Decision support first: sizing help, comparison and returns policy beside '{act}'",
+"motion_calm": "FLIP re-layout when filters change and {t_ui}ms swatch transitions; nothing moves on scroll",
+"motion_bold": "FLIP re-layout when filters change and {t_ui}ms swatch transitions; nothing moves on scroll",
+"span_irregularity": "medium",
+"accent_placement": "callout markers on the object"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "booking-board",
+"name": "Booking-First Board",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"venue",
+"general"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 0,
+"look_family": "retro-print",
+"hero_material": "document",
+"radius": [
+"ticket-notch",
+"hairline-2",
+"tool-6"
+],
+"why": "most visitors arrive to book or check availability, often on a phone",
+"structure": "slots above the fold over today's board; location and hours as a ruled table",
+"motion_hint": "slot-selection micro-interactions",
+"mobile": "slots become a horizontal day strip and a 2-column time grid with 48px targets",
+"layout": "Booking-first board for the {subj}{at}: date and time slots (with party size where it applies) working above the fold, stacked over today's board ({o1}, {o2}, with prices or availability); location, hours and access follow as a ruled table",
+"identity": "The venue's own board, ticket or label as the visual system: {display} for the board, {body} at large sizes for phones; {pal}",
+"content": "Utility first: can I {act}, what is on today, how do I get there",
+"motion_calm": "Slot-selection micro-interactions only ({t_ui}ms); nothing moves on scroll; reduced-motion removes them",
+"motion_bold": "Slot-selection micro-interactions only ({t_ui}ms); nothing moves on scroll; reduced-motion removes them",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "playground",
+"name": "Install-and-Try Playground",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"devtool"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 0,
+"look_family": "technical-blueprint",
+"hero_material": "live-ui",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "time to first success decides adoption",
+"structure": "copyable install with tabs, working playground, quickstart, reference",
+"motion_hint": "copy, tab and run states only",
+"mobile": "the playground shows input and output as tabs instead of side by side",
+"layout": "Install-and-try for the {subj}: a copyable install command with package-manager tabs, centred above a working playground (edit the input, run, see {o1}); then quickstart steps, a searchable command reference and {o3} examples",
+"identity": "Docs-grade surface: {display} for headings, {body} for prose, {mono} for code with AA-contrast syntax colours; {pal}",
+"content": "Time to first success: install, first command, expected output, troubleshooting; then the full reference ({note})",
+"motion_calm": "{t_ui}ms copy confirmations, tab switches and run states only; nothing moves on scroll",
+"motion_bold": "{t_ui}ms copy confirmations, tab switches and run states only; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "case-index",
+"name": "Sortable Case Index",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"showcase"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "video",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "clients want to find work like theirs fast, not scroll a reel",
+"structure": "filterable index of work, hover previews, cases open on process",
+"motion_hint": "preview loops on hover or focus; FLIP filter re-layout",
+"mobile": "previews become tap-to-play thumbnails beside each row",
+"layout": "The {subj}'s work as a sortable index: filter by discipline, client and year; focus or hover previews a loop of {o1}; each case opens on {o2} before the final shot",
+"identity": "Archive vocabulary: catalogue numbers in {mono}, titles in {display}, ruled rows in {body}; {pal}; the work is the only colour",
+"content": "Proof by browsing: visitors sort the work themselves, then see process and credits ({note})",
+"motion_calm": "Preview loops on hover or focus (paused under reduced motion) and {t_ui}ms FLIP filter re-layout; nothing moves on scroll",
+"motion_bold": "Preview loops on hover or focus (paused under reduced motion) and {t_ui}ms FLIP filter re-layout; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "the progress marker"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "guided-finder",
+"name": "Guided Finder",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"general",
+"commerce",
+"venue",
+"editorial"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 0,
+"look_family": "soft-organic",
+"hero_material": "illustration",
+"radius": [
+"soft-12",
+"round-play",
+"tool-6"
+],
+"why": "visitors arrive unsure which service or product fits them",
+"structure": "three short questions lead to one specific answer",
+"motion_hint": "question-to-question slides",
+"mobile": "one question per screen with large tappable option cards",
+"layout": "A guided finder for the {subj}, centred: three short questions (about {o1}, about {o2}, and when) lead to one specific answer and '{act}'; the answer page then explains {o3} with real details",
+"identity": "Friendly forms: {display} for the questions, {body} for options as large tappable cards; {pal}",
+"content": "Answer the visitor's actual question first; everything else is one tap away",
+"motion_calm": "Question-to-question slides ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Question-to-question slides ({t_ui}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [],
+"avoid": [
+"memorial"
+],
+"needs": [],
+"density": "standard",
+"key": "bento-board",
+"name": "Bento Board",
+"style_family": "block-first-editorial",
+"surfaces": [
+"product-ui",
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"devtool",
+"general"
+],
+"roles": [
+"A",
+"B",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "playful-color-block",
+"hero_material": "object",
+"radius": [
+"soft-12",
+"tool-6",
+"round-play"
+],
+"why": "the subject has several small proofs of different shapes, and one glance should show them all",
+"structure": "one irregular grid of unequal tiles, each tile one real fact or object",
+"motion_hint": "tiles settle once; hover lifts a tile's detail",
+"mobile": "tiles re-order by importance into one column; the largest tile stays first",
+"layout": "{big}{at} as a bento board: one irregular grid where the largest tile holds {o1}, mid tiles hold {o2} and {o3}, and small tiles hold single facts from the trade ({note}); '{act}' owns its own tile, never a floating button",
+"identity": "Tile system: {display} for tile headlines, {body} inside tiles; {pal}; tiles differ in size and fill, not in drop shadow",
+"content": "Each tile proves one thing with a real number, photo or object; no tile is decoration",
+"motion_calm": "Tiles settle in reading order once ({t_in}ms); hover or focus reveals a tile's detail ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Tiles assemble from the grid lines as the board scrolls into view, the largest tile last; every tile is complete at rest",
+"span_irregularity": "high",
+"accent_placement": "callout markers on the object"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"care",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "marquee-hero",
+"name": "Marquee Statement",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "field",
+"voice": "expressive",
+"composition": "full-bleed",
+"calm_bias": -1,
+"look_family": "brutalist-raw",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"cut-corner"
+],
+"why": "the business has one phrase worth repeating, and repetition is the brand",
+"structure": "a band of the brief's own phrase runs across the first screen; still headline and action sit under it",
+"motion_hint": "the band runs slowly and stops on hover or focus",
+"mobile": "the band shrinks to 18vw type; the still headline and action come first in the reading order",
+"layout": "{big} under a marquee: a full-width band of the {subj}'s own phrase runs across the first screen, cut by {o1} as a still image; the static headline and '{act}' sit beneath the band so nothing depends on the motion; later bands carry {o2} and {o3}",
+"identity": "Raw print: {display} at band scale, {body} plain beneath; {pal}; hard edges, no shadows, one band of colour",
+"content": "One phrase, repeated; then three plain facts ({note}) and the action",
+"motion_calm": "The band is set still (no running text) with the phrase repeated twice across the width; {t_ui}ms hover states; nothing moves on scroll",
+"motion_bold": "The band runs at reading speed and pauses on hover or focus; scroll nudges its speed; reduced-motion shows it still",
+"span_irregularity": "medium",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [
+"infrastructure",
+"civic",
+"finance",
+"data"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "stat-led",
+"name": "Numbers Up Front",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"product-ui",
+"commerce",
+"venue",
+"editorial",
+"general",
+"devtool"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "swiss-grid",
+"hero_material": "data-as-image",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "three true numbers from the trade answer the visitor's doubt faster than any sentence",
+"structure": "three sourced numbers at display size, each with its unit and source",
+"motion_hint": "numbers set once; no counters",
+"mobile": "the three numbers stack, each with its unit and source on the same line",
+"layout": "{big}{at} opens on three real numbers from the trade ({note}) at display size, each with its unit, date and source in small type beside it; {o1} follows as the first full section, then {o2} and {o3}; '{act}' sits under the numbers",
+"identity": "Numeric grid: {display} numerals with tabular figures, {body} for sources, {mono} for units; {pal}; no icons beside the numbers",
+"content": "Only numbers that can be checked, each with its source and date; no rounded vanity counters or animated tickers",
+"motion_calm": "Numbers render in their final state; rules draw once ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Each number's bar or chart draws as it enters ({t_in}ms); the figure itself never counts up",
+"span_irregularity": "low",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [
+"care",
+"memorial",
+"legal",
+"civic",
+"finance",
+"trades"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "conversational-faq",
+"name": "Questions Answered",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"editorial",
+"general"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "soft-organic",
+"hero_material": "document",
+"radius": [
+"soft-12",
+"hairline-2"
+],
+"why": "visitors arrive with the same few worried questions, and answering them is the sale",
+"structure": "the real questions as headings, short answers, the action after the third answer",
+"motion_hint": "answers open in place",
+"mobile": "every answer is visible (no accordion trap); a question index jumps down the page",
+"layout": "The {subj}{at} as answered questions: the first screen asks the visitor's most pressing question in their words and answers it in two sentences beside {o1}; the next questions cover {o2} and {o3}; '{act}' follows the third answer",
+"identity": "Plain-spoken: {display} for questions, {body} for answers at 18px; {pal}; one illustration or photo per answer at most",
+"content": "Real questions from the trade (prices, timing, what happens next) with exact answers ({note}); no 'we are passionate' copy",
+"motion_calm": "Answers open in place ({t_ui}ms); the question index highlights the current question; nothing moves on scroll",
+"motion_bold": "Answers open in place ({t_ui}ms); the question index highlights the current question; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"care"
+],
+"needs": [],
+"density": "standard",
+"key": "manifesto",
+"name": "Manifesto Sheet",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"devtool",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "poster",
+"calm_bias": -1,
+"look_family": "brutalist-raw",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0"
+],
+"why": "the business stands for something specific, and saying it plainly is the differentiator",
+"structure": "numbered beliefs at poster scale, each with one proof",
+"motion_hint": "points set one by one",
+"mobile": "one belief per screen; the proof sits directly under it",
+"layout": "The {subj} as a manifesto: the first screen states one belief at poster scale, numbered; points 2-5 follow, each a sentence with one proof ({o1}, {o2}, {o3}); '{act}' closes the sheet",
+"identity": "Typewritten conviction: {display} for the points, {body} for proofs; {pal}; numbers and rules only",
+"content": "Five specific beliefs, each tied to a real practice ({note}); no generic values words",
+"motion_calm": "Points render set; a rule draws under the active point ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Each point slams in at full size as it scrolls into view ({t_in}ms, transform only) and holds; reduced-motion shows the sheet set",
+"span_irregularity": "medium",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [
+"textile",
+"marine",
+"earth",
+"botanical",
+"food",
+"memorial"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "photo-essay",
+"name": "Photo Essay",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "full-bleed",
+"calm_bias": 1,
+"look_family": "luxury-sparse",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "honest photographs of the real place or work persuade more than any copy",
+"structure": "a sequence of real photographs at varied scale, each with one caption",
+"motion_hint": "photographs reveal on view",
+"mobile": "every photograph runs full width with its caption under it",
+"layout": "The {subj}{at} as a photo essay: the first screen is one photograph of {o1} with a single caption line; then a sequence alternates full-bleed and inset frames of {o2} and {o3}, each captioned with a fact ({note}); '{act}' sits after the third frame and in the header",
+"identity": "Gallery margins: {display} for captions set large, {body} small; {pal}; photographs are the colour",
+"content": "Captions name who, where and when; no stock, no filters, no 'lifestyle' shots",
+"motion_calm": "Frames fade in once on view ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Inset frames grow to full bleed as they cross the centre of the viewport; captions stay still and readable",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"memorial",
+"care",
+"literary",
+"legal",
+"celebration"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "quote-led",
+"name": "Quote-Led Opening",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "what one real client or visitor said carries more trust than the business describing itself",
+"structure": "one attributed quote at display size, then the evidence behind it",
+"motion_hint": "quote sets once",
+"mobile": "the quote sits at 8vw with its attribution directly under it",
+"layout": "The {subj}{at} opens on one real quote from a client at display size, attributed with name and date; under it, {o1} as the evidence for the quote, then {o2} and {o3}; '{act}' follows the evidence",
+"identity": "Letterpress calm: {display} for the quote with hanging punctuation, {body} for the rest; {pal}",
+"content": "Real, attributed words only, with permission; then the facts that back them ({note})",
+"motion_calm": "The quote is set on load; nothing moves on scroll",
+"motion_bold": "The quote's lines set one after another ({t_in}ms), then the evidence slides up beneath; every line readable in each frame",
+"span_irregularity": "low",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [],
+"avoid": [
+"memorial"
+],
+"needs": [],
+"density": "standard",
+"key": "type-specimen",
+"name": "Type Specimen",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"commerce",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "poster",
+"calm_bias": 0,
+"look_family": "retro-print",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"stamp-circle"
+],
+"why": "the trade's own lettering (signs, labels, stamps) is the strongest piece of its identity",
+"structure": "the display face shown as a specimen sheet built from the trade's words",
+"motion_hint": "weights or sizes shift as the visitor hovers",
+"mobile": "the specimen shows one line per size; the action follows the first line",
+"layout": "{big} as a type specimen sheet: the trade's own words ({note}) set at five sizes down the first screen, with {o1} set into the largest line; specimen labels name size and weight; {o2} and {o3} follow as specimen pages",
+"identity": "Specimen sheet: {display} shown big and named, {body} for running text; {pal}; ink colour only",
+"content": "The words of the trade are the pictures; '{act}' sits in a specimen label",
+"motion_calm": "Hover or focus on a line shows its weight change ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Scroll runs a weight or width axis through the largest line; every frame readable",
+"span_irregularity": "medium",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [
+"memorial",
+"care",
+"legal",
+"civic",
+"literary"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "open-letter",
+"name": "Open Letter",
+"style_family": "block-first-editorial",
+"surfaces": [
+"venue",
+"editorial",
+"showcase",
+"general"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "document",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "a person-to-person letter fits a business whose first contact is personal or difficult",
+"structure": "a signed letter as the first screen, then the practical facts",
+"motion_hint": "none beyond focus states",
+"mobile": "the letter reads at 18px with generous line height; the signature and action stay together",
+"layout": "The {subj}{at} opens as a signed letter from the people who run it: a salutation, three short paragraphs about {o1} and {o2}, a real signature and '{act}' as the postscript; below, {o3} and the plain facts ({note})",
+"identity": "Correspondence: {display} for the letterhead, {body} for the letter; {pal}; a signature and a date are the only ornament",
+"content": "Written in the first person, plain and warm; prices and next steps stated, not implied",
+"motion_calm": "No entrance motion; focus and hover states only ({t_ui}ms)",
+"motion_bold": "The letter unfolds as the page loads ({t_in}ms) and stays still after; reduced-motion shows it open",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "index-page",
+"name": "Plain Index Page",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"product-ui",
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"devtool",
+"general"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "brutalist-raw",
+"hero_material": "document",
+"radius": [
+"sharp-0"
+],
+"why": "the visitor knows what they want, and a fast plain list of links gets them there",
+"structure": "a plain list of every page and fact, set like a directory",
+"motion_hint": "none",
+"mobile": "identical to desktop: one column of links at 18px",
+"layout": "{big} as a plain index page: one column of links and facts set like a directory (name, number, date), with {o1}, {o2} and {o3} as the first entries and '{act}' as the top line; no images above the fold",
+"identity": "Raw HTML honesty: {body} for everything, {display} only for the name; {pal}; underlined links, visible focus",
+"content": "Every fact the visitor came for on one page ({note}); nothing hidden behind a click",
+"motion_calm": "No motion; focus and hover underline only",
+"motion_bold": "No motion; focus and hover underline only",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"trades",
+"care",
+"finance",
+"code",
+"infrastructure"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "narrative-workflow",
+"name": "Step-by-Step Workflow",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"product-ui",
+"commerce",
+"venue",
+"showcase",
+"devtool",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "sticky-stage",
+"calm_bias": 0,
+"look_family": "technical-blueprint",
+"hero_material": "illustration",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "the visitor's worry is what happens and in what order, so the steps are the page",
+"structure": "numbered steps pinned beside a diagram that changes per step",
+"motion_hint": "the diagram advances with each step",
+"mobile": "the diagram sits above each step instead of pinned beside it",
+"layout": "The {subj} as a numbered workflow: the first screen shows step 1 of 4 beside a drawn diagram of {o1}; each later step ({o2}, then {o3}) changes the diagram; the last step is '{act}'",
+"identity": "Process drawing: {display} for step numbers, {body} for instructions, {mono} for timings; {pal}; line drawings in one weight",
+"content": "What happens, who does it and how long it takes, in order ({note})",
+"motion_calm": "Steps change on click or arrow keys ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "The diagram is pinned and advances with scroll progress; each step's frame is complete on its own",
+"span_irregularity": "medium",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "split-studio",
+"name": "Split Studio",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"showcase",
+"commerce",
+"venue"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "split",
+"calm_bias": 0,
+"look_family": "luxury-sparse",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"arched"
+],
+"why": "the work and the notes about it must be read together, so one side shows and the other explains",
+"structure": "the work on one side, the maker's notes on the other, scrolling at different speeds",
+"motion_hint": "the two sides scroll at different rates",
+"mobile": "the work and the note interleave in one column, note under each piece",
+"layout": "Split studio for the {subj}: {o1} on one side at full height, the maker's notes and {note} on the other; each pair of work and note scrolls together, then {o2} and {o3}; '{act}' sits at the foot of the notes column",
+"identity": "Studio wall: {display} for titles, {body} for notes; {pal}; generous margins",
+"content": "Each piece with what it is, how it was made and what it costs or who it was for",
+"motion_calm": "Both sides scroll together; images fade in once ({t_in}ms)",
+"motion_bold": "The notes column scrolls faster than the work column, so each note meets its piece at the centre; reduced-motion scrolls them together",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "feature-stack",
+"name": "Feature Stack",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"product-ui",
+"commerce",
+"devtool",
+"general"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 0,
+"look_family": "swiss-grid",
+"hero_material": "live-ui",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "the product does a handful of distinct jobs and each one is best shown working",
+"structure": "one full-width section per job, each with the real screen doing it",
+"motion_hint": "each screen plays its job once on view",
+"mobile": "each job keeps its screen above its sentence",
+"layout": "The {subj} as a stack of jobs: the first screen states the main job and shows {o1} doing it; then one full-width section per job ({o2}, {o3}) each with a real screen and one sentence; '{act}' after every second section",
+"identity": "Product-honest: {display} for job names, {body} for sentences, {mono} for values; {pal}",
+"content": "Jobs named in the visitor's words, each with a real before and after ({note}); no icon trios",
+"motion_calm": "Each screen shows its end state; {t_ui}ms hover states; nothing moves on scroll",
+"motion_bold": "Each screen plays its job once when it enters ({t_in}ms per step) and rests on the result",
+"span_irregularity": "low",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "work-grid",
+"name": "Irregular Work Grid",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"showcase",
+"commerce",
+"editorial",
+"venue"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "dark-single-accent",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "the volume and range of the work is the argument",
+"structure": "an irregular grid of real work at mixed spans; captions under each",
+"motion_hint": "work previews on hover; grid reflows on filter",
+"mobile": "the grid becomes two columns with every third item full width",
+"layout": "{big}'s work as an irregular grid: {o1} takes the largest span on the first screen, the rest of the work at mixed spans with captions ({note}); filters for {o2} and {o3}; '{act}' in the header and after the grid",
+"identity": "Dark gallery: {display} for titles, {body} for captions; {pal}; one accent for the active filter",
+"content": "The work first, the words after; every piece captioned with year and client",
+"motion_calm": "Grid reflows with FLIP on filter ({t_ui}ms); previews on hover or focus only",
+"motion_bold": "Rows of work drift at slightly different speeds as the grid scrolls; filters reflow with FLIP",
+"span_irregularity": "high",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"code",
+"infrastructure",
+"data",
+"finance",
+"trades"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "system-diagram",
+"name": "System Diagram",
+"style_family": "precision-terminal-craft",
+"surfaces": [
+"product-ui",
+"devtool",
+"general",
+"commerce"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "technical-blueprint",
+"hero_material": "illustration",
+"radius": [
+"hairline-2",
+"tool-6"
+],
+"why": "how the parts connect is the question, so a labelled diagram leads",
+"structure": "a labelled diagram of the system; each node opens its explanation",
+"motion_hint": "flows animate along their edges when a node is chosen",
+"mobile": "the diagram becomes a vertical flow with nodes as rows",
+"layout": "The {subj} as a labelled diagram: {o1}, {o2} and {o3} as nodes with the real flows between them ({note}); choosing a node opens its explanation; '{act}' sits at the diagram's output",
+"identity": "Engineering drawing: {mono} for labels, {display} for node names, {body} for explanations; {pal}; hairline connectors",
+"content": "How it works, part by part, with the real names and limits",
+"motion_calm": "Edges highlight on node focus ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Data travels along the edges in sequence as the diagram enters; scroll walks through the nodes one by one",
+"span_irregularity": "high",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "ecosystem-index",
+"name": "Ecosystem Index",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"devtool",
+"general",
+"commerce"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "swiss-grid",
+"hero_material": "document",
+"radius": [
+"tool-6",
+"mixed"
+],
+"why": "the product works with many other tools, and finding your own in the list is the conversion",
+"structure": "searchable directory of integrations or partners grouped by kind",
+"motion_hint": "search filters in place",
+"mobile": "search stays sticky; groups collapse to headed lists",
+"layout": "The {subj}'s ecosystem as a searchable index: a search field first, then every integration grouped by kind, each with status, version and a link ({note}); {o1} and {o2} lead their groups; '{act}' sits under the search",
+"identity": "Directory clarity: {display} for group heads, {body} for entries, {mono} for versions; {pal}",
+"content": "Find yours in two keystrokes; every entry says what works today and what does not",
+"motion_calm": "Results filter in place ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Results filter in place ({t_ui}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "component-playground",
+"name": "Component Playground",
+"style_family": "precision-terminal-craft",
+"surfaces": [
+"devtool",
+"product-ui"
+],
+"roles": [
+"C"
+],
+"tone": "dark",
+"voice": "utility",
+"composition": "split",
+"calm_bias": 0,
+"look_family": "dark-single-accent",
+"hero_material": "live-ui",
+"radius": [
+"tool-6",
+"cut-corner"
+],
+"why": "options and their live result must be seen together (props on one side, the rendered piece on the other)",
+"structure": "controls beside a live preview, code under both",
+"motion_hint": "preview updates instantly; code diff highlights",
+"mobile": "controls become a bottom sheet over the preview",
+"layout": "Component playground for the {subj}, split because each control and its live result must be read together: controls for {o1} on one side, the live result on the other, the generated code beneath both; {o2} and {o3} as presets",
+"identity": "Dark bench: {mono} for code and controls, {display} for preset names, {body} for help; {pal}; one accent for changed values",
+"content": "Try it, see it, copy the code; limits and defaults stated beside each control ({note})",
+"motion_calm": "Preview updates instantly; changed lines in the code highlight for {t_ui}ms",
+"motion_bold": "Preview updates instantly; changed lines in the code highlight for {t_ui}ms",
+"span_irregularity": "medium",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "horizontal-rail",
+"name": "Horizontal Rail",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "sticky-stage",
+"calm_bias": 0,
+"look_family": "soft-organic",
+"hero_material": "photo",
+"radius": [
+"soft-12",
+"arched"
+],
+"why": "the subject is a sequence (rooms, courses, seasons, pieces) best walked through sideways",
+"structure": "a pinned horizontal rail of panels the visitor moves through",
+"motion_hint": "vertical scroll drives the rail sideways",
+"mobile": "the rail becomes a swipeable carousel with visible next-panel edge and arrow buttons",
+"layout": "The {subj}{at} as a horizontal rail: the first screen pins a rail of panels ({o1}, {o2}, {o3}) that the visitor moves through sideways, each with one fact ({note}); '{act}' is the last panel and also in the header",
+"identity": "Gallery walk: {display} for panel titles, {body} for facts; {pal}; panels separated by space, not borders",
+"content": "A sequence with a beginning and an end, each panel one thing",
+"motion_calm": "Arrow buttons and keys move the rail ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Vertical scroll drives the rail sideways (pinned), with keyboard arrows as an equal route; reduced-motion shows the panels as a vertical list",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "split-scroll",
+"name": "Split Scroll",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "split",
+"calm_bias": -1,
+"look_family": "cinematic-dark",
+"hero_material": "photo",
+"radius": [
+"sharp-0"
+],
+"why": "each chapter has an image and a text that must be read at the same moment",
+"structure": "image column pinned, text column scrolls; images change with chapters",
+"motion_hint": "images swap as each chapter reaches the centre",
+"mobile": "image above each chapter; nothing pinned",
+"layout": "Split scroll for the {subj}{at}, split because each image must sit beside the chapter it proves: the image column pins {o1}, then {o2}, then {o3} as the text column scrolls through their chapters; '{act}' at the end of the text column",
+"identity": "Night print: {display} for chapter heads, {body} for text; {pal}",
+"content": "Three chapters, each one image and one claim with its proof ({note})",
+"motion_calm": "Images cross-fade when a chapter reaches the centre ({t_in}ms)",
+"motion_bold": "Images cross-fade and scale slightly as chapters pass the centre; scroll-linked, readable at every frame",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "card-stack",
+"name": "Card Stack",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B",
+"C"
+],
+"tone": "field",
+"voice": "expressive",
+"composition": "stacked",
+"calm_bias": 0,
+"look_family": "playful-color-block",
+"hero_material": "illustration",
+"radius": [
+"soft-12",
+"round-play"
+],
+"why": "the offer splits into a few clear choices that read best as a deck to flip through",
+"structure": "a deck of coloured cards, one choice each, stacked on scroll",
+"motion_hint": "cards stack over each other as the page scrolls",
+"mobile": "cards stack the same way with a smaller offset; each card fits one screen",
+"layout": "The {subj}'s choices as a card stack: the first card carries the headline and {o1}; the next cards ({o2}, {o3}) slide over it, each one colour and one choice with its price or time ({note}); '{act}' on every card",
+"identity": "Deck of colours: {display} for card titles, {body} for details; {pal}; each card one flat colour from the palette",
+"content": "One choice per card, compared on the same three facts",
+"motion_calm": "Cards render stacked with a visible offset; {t_ui}ms hover lift; nothing moves on scroll",
+"motion_bold": "Each card pins and the next slides over it with scroll progress; reduced-motion shows them as a plain list",
+"span_irregularity": "low",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"legal",
+"care"
+],
+"needs": [],
+"density": "standard",
+"key": "kinetic-type",
+"name": "Kinetic Type Field",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"showcase",
+"general",
+"editorial",
+"venue"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "full-bleed",
+"calm_bias": -1,
+"look_family": "dark-single-accent",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"cut-corner"
+],
+"why": "the brand voice is energy, and moving type is the cheapest honest way to show it",
+"structure": "the headline fills the screen and reacts to the pointer or scroll",
+"motion_hint": "letters respond to scroll and pointer",
+"mobile": "the type responds to scroll only; size drops to 16vw",
+"layout": "{big} as a field of type: the headline fills the first screen edge to edge and reacts to the visitor; {o1} appears through the letter counters; below, {o2} and {o3} as plain sections and '{act}'",
+"identity": "{display} as the image, {body} quiet beneath; {pal}; one accent colour only",
+"content": "Few words, all true; details ({note}) in plain sections below the field",
+"motion_calm": "The headline is set still; letters thicken on hover ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Letters stretch and shift with scroll and pointer; the headline reads at rest and at every scroll position",
+"span_irregularity": "medium",
+"accent_placement": "one word of the headline"
+},
+{
+"tags": [
+"memorial",
+"civic",
+"earth",
+"literary",
+"celebration"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "timeline-spine",
+"name": "Timeline Spine",
+"style_family": "block-first-editorial",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "sticky-stage",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "document",
+"radius": [
+"hairline-2",
+"stamp-circle"
+],
+"why": "the business's history or the visitor's own timeline (plan, day, year) is the structure",
+"structure": "a vertical spine of dated entries; the current entry pinned",
+"motion_hint": "the spine fills as the visitor scrolls",
+"mobile": "the spine moves to the left edge; dates sit above entries",
+"layout": "The {subj}{at} on a timeline spine: dates run down a single rule, {o1} is the first entry, {o2} and {o3} later entries, each with a photograph or document; '{act}' marks the entry for today",
+"identity": "Archive register: {display} for dates, {body} for entries, {mono} for references; {pal}",
+"content": "Dated, specific entries ({note}); the present is marked, the future stated plainly",
+"motion_calm": "The spine is drawn; entries fade in once ({t_in}ms); nothing moves on scroll",
+"motion_bold": "The spine fills with scroll progress and the current date pins until the next entry arrives",
+"span_irregularity": "medium",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"marine",
+"food",
+"celebration",
+"earth",
+"trades",
+"civic"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "neighbourhood-map",
+"name": "Neighbourhood Map",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"venue",
+"general",
+"commerce"
+],
+"roles": [
+"B",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "full-bleed",
+"calm_bias": 0,
+"look_family": "soft-organic",
+"hero_material": "map",
+"radius": [
+"soft-12",
+"stamp-circle"
+],
+"why": "the place's surroundings (streets, coast, route) are part of what the visitor is choosing",
+"structure": "a full-width drawn map as the first screen, with the action floating on it",
+"motion_hint": "the map pans to each chosen place",
+"mobile": "the map is a fixed-height frame; a list of places sits under it",
+"layout": "{big}{at} on a full-width drawn map of its surroundings: {o1} marked first, {o2} and {o3} as nearby points; a floating card on the map holds '{act}' and opening hours",
+"identity": "Drawn cartography: {display} for place names, {body} for cards; {pal}; hand-drawn lines, flat fills",
+"content": "Where it is, what is near, how to arrive ({note}); then the action",
+"motion_calm": "The map pans to a chosen place ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Scroll pans the map from the wider area to the door; the card pins at the end",
+"span_irregularity": "medium",
+"accent_placement": "the visitor's chosen point"
+},
+{
+"tags": [
+"civic",
+"literary",
+"legal",
+"infrastructure"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "broadsheet",
+"name": "Broadsheet Front Page",
+"style_family": "block-first-editorial",
+"surfaces": [
+"editorial",
+"general",
+"venue",
+"commerce"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "photo",
+"radius": [
+"sharp-0"
+],
+"why": "there is news every week (notices, changes, events), so the page should read like a front page",
+"structure": "masthead, lead story, column grid of shorter items, dateline",
+"motion_hint": "none beyond hover",
+"mobile": "the column grid becomes one column ordered by date; the masthead shrinks to one line",
+"layout": "The {subj}{at} as a broadsheet front page: masthead with today's date, a lead story on {o1} with one photograph, then a column grid of shorter items on {o2} and {o3}; '{act}' sits in the masthead box",
+"identity": "Newsprint: {display} for the masthead and headlines, {body} in columns, hairline column rules; {pal}",
+"content": "Dated, bylined items with the facts ({note}); the newest first",
+"motion_calm": "No motion beyond {t_ui}ms hover underline",
+"motion_bold": "No motion beyond {t_ui}ms hover underline",
+"span_irregularity": "low",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"earth",
+"botanical",
+"celebration",
+"food",
+"play",
+"marine"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "almanac",
+"name": "Seasonal Almanac",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"venue",
+"general",
+"editorial",
+"commerce"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "retro-print",
+"hero_material": "illustration",
+"radius": [
+"stamp-circle",
+"ticket-notch",
+"sharp-0"
+],
+"why": "the business runs on seasons or dates, so the calendar is the page",
+"structure": "a twelve-month (or weekly) almanac grid with what happens when",
+"motion_hint": "the current period is marked; the grid scrolls to it",
+"mobile": "the grid becomes one month per screen, swipeable, today first",
+"layout": "{big}{at} as an almanac: the first screen is a calendar grid of the year with {o1} marked where it happens, the current season highlighted; {o2} and {o3} fill later months; '{act}' sits beside the current season",
+"identity": "Printed almanac: {display} for months, {body} for entries, small drawn icons for seasons; {pal}",
+"content": "When things happen and what to book now ({note})",
+"motion_calm": "The current season is marked on load; nothing moves on scroll",
+"motion_bold": "Scroll turns through the seasons; each season's colour washes the grid in turn",
+"span_irregularity": "low",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [
+"botanical",
+"earth",
+"play",
+"marine",
+"care"
+],
+"avoid": [
+"legal",
+"finance"
+],
+"needs": [],
+"density": "airy",
+"key": "field-notebook",
+"name": "Field Notebook",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"commerce",
+"venue",
+"showcase",
+"editorial",
+"general"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "layered",
+"calm_bias": 1,
+"look_family": "soft-organic",
+"hero_material": "illustration",
+"radius": [
+"soft-12",
+"hairline-2"
+],
+"why": "the subject is observed and made by hand, so notes, sketches and specimens tell it best",
+"structure": "notebook spreads with sketches, notes and taped specimens",
+"motion_hint": "sketches draw themselves once",
+"mobile": "one notebook page per screen; sketches above notes",
+"layout": "The {subj}{at} as a field notebook: the first spread shows a drawing of {o1} with handwritten-style labels and a taped photograph; later spreads cover {o2} and {o3}; '{act}' is written on the last page and pinned in the header",
+"identity": "Notebook: {display} for headings, {body} for notes, line drawings in one ink; {pal}",
+"content": "Observations with dates and places ({note}); then the action",
+"motion_calm": "Sketch lines draw once on entry ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Each spread turns with scroll, drawings completing as they arrive; every page readable when still",
+"span_irregularity": "high",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [
+"trades",
+"infrastructure",
+"industrial",
+"code"
+],
+"avoid": [
+"memorial"
+],
+"needs": [],
+"density": "standard",
+"key": "blueprint-sheet",
+"name": "Blueprint Sheet",
+"style_family": "precision-terminal-craft",
+"surfaces": [
+"commerce",
+"showcase",
+"devtool",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "dark",
+"voice": "utility",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "technical-blueprint",
+"hero_material": "illustration",
+"radius": [
+"sharp-0",
+"cut-corner"
+],
+"why": "the work is technical and precise, and a drawing with real dimensions proves it",
+"structure": "a drawn sheet with title block, dimensions and callouts",
+"motion_hint": "lines draw in like a plotter",
+"mobile": "the sheet crops to the main drawing; the title block becomes a table under it",
+"layout": "{big}{at} as a drawing sheet: {o1} drawn in line with real dimensions and callouts, a title block with the sheet number and date, {o2} and {o3} as details; '{act}' sits in the title block",
+"identity": "Drawing office: {mono} for dimensions, {display} for the title block, {body} for notes; {pal}; one line weight plus one accent",
+"content": "Specifications in the trade's units ({note}); then guarantees and the action",
+"motion_calm": "Lines draw once like a plotter ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Scroll draws the sheet detail by detail; each detail's callout lights as it completes",
+"span_irregularity": "high",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [
+"trades",
+"care",
+"food",
+"celebration"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "price-board",
+"name": "Price Board",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"venue",
+"commerce",
+"general"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "swiss-grid",
+"hero_material": "document",
+"radius": [
+"hairline-2",
+"tool-6"
+],
+"why": "price is the visitor's first question, and answering it openly beats a contact form",
+"structure": "a full price list as the first screen with a quote form under it",
+"motion_hint": "none beyond focus",
+"mobile": "the list stays a list; each line wraps price under the name",
+"layout": "{big}{at} opens on the price board: every common job or item with its price, time and what is included ({note}); {o1} first, {o2} and {o3} as worked examples; '{act}' as a short form directly under the board",
+"identity": "Board lettering: {display} for the board heading, {body} for items with tabular prices; {pal}",
+"content": "Real prices and call-out fees, what changes a price, and the guarantee",
+"motion_calm": "No motion beyond {t_ui}ms focus states",
+"motion_bold": "No motion beyond {t_ui}ms focus states",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"trades",
+"care",
+"civic",
+"infrastructure"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "service-area",
+"name": "Service-Area Check",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"general",
+"venue"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 0,
+"look_family": "soft-organic",
+"hero_material": "map",
+"radius": [
+"soft-12",
+"tool-6"
+],
+"why": "the visitor's first question is 'do you cover me and how soon', so a postcode check leads",
+"structure": "postcode field with an instant answer, area map, next free slot",
+"motion_hint": "the answer updates in place",
+"mobile": "the postcode field is the first thing on screen with a numeric keypad",
+"layout": "{big}{at} opens on a postcode check, centred: type a postcode and see whether it is covered, the next free slot and the call-out time; a small map of the area sits beside the answer; {o1}, {o2} and {o3} follow",
+"identity": "Dispatch clarity: {display} for the answer, {body} for details, {mono} for postcodes and times; {pal}",
+"content": "Coverage, response time and price first ({note}); then '{act}'",
+"motion_calm": "The answer updates in place ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "The answer updates in place ({t_ui}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "the visitor's chosen point"
+},
+{
+"tags": [
+"infrastructure",
+"civic",
+"data"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "status-board",
+"name": "Live Status Board",
+"style_family": "high-density-workbench",
+"surfaces": [
+"general",
+"product-ui"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "dark",
+"voice": "utility",
+"composition": "full-bleed",
+"calm_bias": 1,
+"look_family": "technical-blueprint",
+"hero_material": "data-as-image",
+"radius": [
+"hairline-2",
+"tool-6"
+],
+"why": "people come to check whether something is working now, so live status leads",
+"structure": "a live status strip and map, then planned work, then how to report",
+"motion_hint": "values update; no decoration",
+"mobile": "the status line is first; the map follows at half height",
+"layout": "{big}{at} opens on live status: one line says whether the service is normal, then a map or list of {o1} with current issues and planned work ({note}); {o2} and {o3} follow; '{act}' is a prominent report button",
+"identity": "Control room: {display} for the status line, {body} for details, {mono} for references and times; {pal}; status colours are the only colours",
+"content": "Is it working, where is it not, when will it be fixed, how do I report it",
+"motion_calm": "Values update in place ({t_ui}ms); no scroll-triggered choreography",
+"motion_bold": "Values update in place ({t_ui}ms); no scroll-triggered choreography",
+"span_irregularity": "medium",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [
+"memorial",
+"civic",
+"legal"
+],
+"avoid": [],
+"needs": [
+"memorial",
+"civic",
+"legal",
+"literary"
+],
+"density": "airy",
+"key": "notices-register",
+"name": "Notices Register",
+"style_family": "block-first-editorial",
+"surfaces": [
+"general",
+"venue",
+"editorial"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "document",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "families or residents come for one notice (a date, a time, a place), so the register leads",
+"structure": "a searchable register of current notices, then the service and the people",
+"motion_hint": "none",
+"mobile": "each notice is a two-line entry with its date first",
+"layout": "{big}{at} opens on its register: current notices listed with name, date, time and place, searchable; {o1} and {o2} follow as quiet sections; '{act}' sits above the register as a plain link and a phone number",
+"identity": "Register page: {display} for names, {body} for details; {pal}; no imagery above the register",
+"content": "Dates, times and places stated exactly ({note}); then how to arrange, what it costs and who to call",
+"motion_calm": "No motion; focus states only",
+"motion_bold": "No motion; focus states only",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"memorial",
+"luxe",
+"night",
+"earth"
+],
+"avoid": [],
+"needs": [
+"memorial",
+"luxe",
+"night",
+"earth"
+],
+"density": "airy",
+"key": "quiet-room",
+"name": "Quiet Room",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"venue",
+"general",
+"showcase",
+"commerce"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "cinematic-dark",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"arched"
+],
+"why": "the visit is emotional, and a dark, slow, quiet first screen respects that",
+"structure": "one low-lit photograph, one short line, generous dark space",
+"motion_hint": "slow fades only",
+"mobile": "the photograph sits above the line; nothing overlaps",
+"layout": "The {subj}{at} in a quiet room: one low-lit photograph of {o1} centred in dark space with a single short line beneath it; {o2} and {o3} follow slowly, one per screen; '{act}' is a calm text link and a phone number",
+"identity": "Low light: {display} at modest size, {body} at 18px; {pal}; candle-warm accent used once",
+"content": "Few words, all practical and kind; prices and contact stated plainly ({note})",
+"motion_calm": "Slow fades on view ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Slow fades on view ({t_in}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"ink",
+"kinetic",
+"textile"
+],
+"avoid": [
+"memorial",
+"legal"
+],
+"needs": [
+"ink",
+"kinetic",
+"textile",
+"y2k"
+],
+"density": "standard",
+"key": "flash-sheet",
+"name": "Flash Sheet",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"showcase",
+"commerce",
+"venue",
+"general"
+],
+"roles": [
+"B",
+"A"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "retro-print",
+"hero_material": "illustration",
+"radius": [
+"sharp-0",
+"stamp-circle"
+],
+"why": "the work is drawn, and a sheet of designs is how the trade has always shown it",
+"structure": "a sheet of drawn designs at mixed sizes, each numbered and priced",
+"motion_hint": "designs lift on hover",
+"mobile": "two designs per row, each with its number and price",
+"layout": "{big}{at} as a flash sheet: the first screen is a sheet of drawn designs ({o1}) at mixed sizes, each numbered with size and price; {o2} and {o3} follow; '{act}' sits in the sheet's corner box",
+"identity": "Shop sheet: {display} for numbers and the shop name, {body} for terms; {pal}; drawings in black line plus one colour",
+"content": "Designs, sizes, prices and the booking rules ({note})",
+"motion_calm": "Designs lift on hover or focus ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Designs drop onto the sheet as it scrolls in and settle; every design readable at rest",
+"span_irregularity": "high",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [
+"textile",
+"luxe"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "lookbook",
+"name": "Lookbook",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"commerce",
+"showcase"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "full-bleed",
+"calm_bias": 0,
+"look_family": "luxury-sparse",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"arched"
+],
+"why": "the pieces are sold by how they look worn or in use, so the look is the hero",
+"structure": "full-bleed looks, each with shoppable pieces listed beside",
+"motion_hint": "looks cross-fade; pieces list updates",
+"mobile": "each look is full screen with its pieces in a swipe-up sheet",
+"layout": "The {subj} as a lookbook: each screen is one look ({o1}, then {o2}, then {o3}) edge to edge, with its pieces listed in a narrow column with price and size; '{act}' on each piece",
+"identity": "Editorial fashion: {display} for look titles, {body} for piece details; {pal}; photography carries colour",
+"content": "Every look shoppable; fit and fabric notes ({note}) beside each piece",
+"motion_calm": "Looks cross-fade on view ({t_in}ms); nothing moves on scroll",
+"motion_bold": "Looks pin and hand off with scroll; the piece list updates as each look arrives",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"food",
+"warm-grain",
+"marine",
+"earth"
+],
+"avoid": [],
+"needs": [
+"food",
+"warm-grain",
+"marine",
+"earth",
+"celebration"
+],
+"density": "airy",
+"key": "menu-card",
+"name": "Menu Card",
+"style_family": "block-first-editorial",
+"surfaces": [
+"venue",
+"commerce",
+"general"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "document",
+"radius": [
+"sharp-0",
+"hairline-2",
+"arched"
+],
+"why": "what is on offer today, with prices, is what people actually came to read",
+"structure": "today's card centred like a printed menu, then the room and booking",
+"motion_hint": "none",
+"mobile": "the card reads as a single column at 18px; prices align right",
+"layout": "{big}{at} opens on today's card, centred like a printed menu: {o1} and every item with price ({note}); then {o2} and {o3}; '{act}' at the foot of the card and in the header",
+"identity": "Printed card: {display} for section heads, {body} for items, tabular prices; {pal}",
+"content": "The real card, dated today; allergens and prices stated",
+"motion_calm": "No motion; focus states only",
+"motion_bold": "No motion; focus states only",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"celebration",
+"kinetic",
+"play",
+"sport"
+],
+"avoid": [
+"memorial",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "ticket-stub",
+"name": "Ticket Stub",
+"style_family": "block-first-editorial",
+"surfaces": [
+"venue",
+"showcase",
+"general",
+"commerce"
+],
+"roles": [
+"C"
+],
+"tone": "field",
+"voice": "utility",
+"composition": "poster",
+"calm_bias": -1,
+"look_family": "playful-color-block",
+"hero_material": "document",
+"radius": [
+"ticket-notch"
+],
+"why": "the conversion is a ticket or a date, so the first screen is the ticket itself",
+"structure": "a large ticket with date, place and price, torn edge, buy button",
+"motion_hint": "the stub tears on purchase",
+"mobile": "the ticket fits one screen; the button is the stub",
+"layout": "{big}{at} as a ticket: the first screen is a large ticket with the date, place, price and {o1}; the stub is '{act}'; {o2} and {o3} follow as the back of the ticket",
+"identity": "Printed ticket: {display} for the date, {body} for terms, {mono} for serial numbers; {pal}",
+"content": "Date, place, price, what is included ({note}); then the action",
+"motion_calm": "The stub tears on purchase ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "The ticket slides in on load and the stub tears on purchase; nothing else moves",
+"span_irregularity": "medium",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"literary",
+"textile",
+"food",
+"earth"
+],
+"avoid": [],
+"needs": [
+"literary",
+"textile",
+"food",
+"earth",
+"warm-grain"
+],
+"density": "airy",
+"key": "shelf-browser",
+"name": "Shelf Browser",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"commerce",
+"general",
+"editorial",
+"venue"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "layered",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "object",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "browsing the real shelf is the pleasure, so the shelf is the interface",
+"structure": "a shelf of real items (spines, jars, bolts) the visitor runs along",
+"motion_hint": "items tilt out on hover",
+"mobile": "the shelf scrolls sideways with a visible edge; tapping an item opens it below",
+"layout": "{big}{at} as a shelf: the first screen is a row of {o1} the visitor can run along, each item tilting out to show its card; {o2} and {o3} as shelves below; '{act}' on every card",
+"identity": "Shop shelf: {display} for shelf labels, {body} for cards; {pal}; real photographs of the items",
+"content": "Staff notes on each item; prices and availability ({note})",
+"motion_calm": "Items tilt out on hover or focus ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "The shelf slides past as the visitor scrolls; items tilt out at the centre",
+"span_irregularity": "high",
+"accent_placement": "callout markers on the object"
+},
+{
+"tags": [
+"play",
+"sport",
+"care",
+"civic"
+],
+"avoid": [],
+"needs": [
+"play",
+"sport",
+"care",
+"civic"
+],
+"density": "standard",
+"key": "week-grid",
+"name": "Week Grid",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"general",
+"venue",
+"product-ui"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 0,
+"look_family": "playful-color-block",
+"hero_material": "document",
+"radius": [
+"round-play",
+"soft-12",
+"tool-6"
+],
+"why": "families and members plan by the week, so the timetable is the page",
+"structure": "a week grid of sessions coloured by age or level, with spaces left",
+"motion_hint": "filters update the grid",
+"mobile": "one day per screen with sessions as rows",
+"layout": "{big}{at} as a week grid: sessions of {o1} coloured by age or level, each with time and spaces left ({note}); filters above; '{act}' on each session",
+"identity": "Timetable: {display} for days, {body} for sessions, colour for age bands; {pal}",
+"content": "What is on, for whom, when, and how many spaces are left",
+"motion_calm": "Filters update the grid ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Filters update the grid ({t_ui}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"civic",
+"finance"
+],
+"avoid": [],
+"needs": [
+"civic",
+"finance"
+],
+"density": "standard",
+"key": "money-ledger",
+"name": "Where the Money Goes",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"general",
+"editorial"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "data-as-image",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "givers and payers want to see exactly where money goes before they commit",
+"structure": "one stacked bar of spending, then each line with its result",
+"motion_hint": "the bar draws once",
+"mobile": "the bar becomes a vertical list of lines with amounts",
+"layout": "{big}{at} opens on where the money goes: one stacked bar of last year's spending with real amounts, then each line with what it paid for ({o1}, {o2}, {o3}); '{act}' with suggested amounts and what each buys",
+"identity": "Annual-report clarity: {display} for amounts, {body} for lines; {pal}",
+"content": "Real amounts, dated and sourced ({note})",
+"motion_calm": "The bar draws once ({t_in}ms); nothing moves on scroll",
+"motion_bold": "The bar draws once ({t_in}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "terminal-page",
+"name": "Terminal Page",
+"style_family": "precision-terminal-craft",
+"surfaces": [
+"devtool"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 0,
+"look_family": "brutalist-raw",
+"hero_material": "code-output",
+"radius": [
+"sharp-0"
+],
+"why": "the audience lives in the terminal, so the page reads like one, honestly",
+"structure": "the page as a monospace document with real commands and output",
+"motion_hint": "none beyond copy states",
+"mobile": "lines wrap at 40 columns; commands copy on tap",
+"layout": "The {subj} as a terminal page: a monospace document with the real install command, {o1} as real output, then usage and {o2}; links are commands; '{act}' is the first line",
+"identity": "Monospace only: {mono} for everything, {display} only for the name; {pal}",
+"content": "Commands and their real output ({note}); no marketing paragraphs",
+"motion_calm": "{t_ui}ms copy confirmations only; nothing moves on scroll",
+"motion_bold": "{t_ui}ms copy confirmations only; nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "pass, warn and fail states"
+},
+{
+"tags": [
+"code",
+"finance",
+"data"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "request-explorer",
+"name": "Request Explorer",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"devtool",
+"general"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "centred",
+"calm_bias": 0,
+"look_family": "technical-blueprint",
+"hero_material": "code-output",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "an API is judged by one real request and its response",
+"structure": "a request builder with a real response under it",
+"motion_hint": "response appears in place",
+"mobile": "request and response stack; tabs switch languages",
+"layout": "The {subj} opens on a request explorer, centred: pick an endpoint, see the request in three languages and the real response ({o1}); then {o2}, {o3} and the reference; '{act}' beside the response",
+"identity": "API bench: {mono} for requests and responses, {display} for endpoint names, {body} for prose; {pal}",
+"content": "One real call, its response, limits and errors ({note})",
+"motion_calm": "The response appears in place ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "The response appears in place ({t_ui}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "pass, warn and fail states"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "changelog-front",
+"name": "Changelog Front",
+"style_family": "block-first-editorial",
+"surfaces": [
+"devtool",
+"product-ui"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "hairline-newspaper",
+"hero_material": "document",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "an active product proves itself by what shipped and when",
+"structure": "the latest release as the lead, older releases as a dated column",
+"motion_hint": "none",
+"mobile": "releases stack by date; each starts with its version",
+"layout": "The {subj} opens on its latest release: version, date and what changed ({o1}), then a dated column of earlier releases with {o2}; '{act}' beside the version",
+"identity": "Release notes: {display} for versions, {body} for notes, {mono} for code; {pal}",
+"content": "What shipped, when, and what it fixed ({note})",
+"motion_calm": "No motion; hover and focus states only",
+"motion_bold": "No motion; hover and focus states only",
+"span_irregularity": "low",
+"accent_placement": "links and the primary action"
+},
+{
+"tags": [
+"trades",
+"care",
+"earth",
+"industrial"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "before-after",
+"name": "Before and After",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"general",
+"commerce",
+"showcase",
+"venue"
+],
+"roles": [
+"B",
+"C"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "swiss-grid",
+"hero_material": "photo",
+"radius": [
+"hairline-2",
+"soft-12"
+],
+"why": "the result is visible, and comparing before with after is the proof",
+"structure": "a draggable before/after comparison of a real job",
+"motion_hint": "the divider follows drag or keys",
+"mobile": "the divider is draggable with a large handle; keys and buttons as an equal route",
+"layout": "{big}{at} opens on a before-and-after of {o1}: one photograph split by a draggable divider, the job's facts beside it ({note}); more jobs ({o2}, {o3}) follow; '{act}' under the comparison",
+"identity": "Job sheet: {display} for job titles, {body} for facts; {pal}",
+"content": "Real jobs with date, place, time taken and cost",
+"motion_calm": "The divider follows drag or arrow keys; nothing moves on scroll",
+"motion_bold": "The divider sweeps once on entry ({t_in}ms) then follows drag or keys",
+"span_irregularity": "high",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"civic",
+"luxe",
+"literary"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "salon-hang",
+"name": "Salon Hang",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"showcase",
+"venue",
+"commerce"
+],
+"roles": [
+"B"
+],
+"tone": "light",
+"voice": "expressive",
+"composition": "layered",
+"calm_bias": 1,
+"look_family": "luxury-sparse",
+"hero_material": "photo",
+"radius": [
+"sharp-0",
+"arched"
+],
+"why": "many pieces seen together in one wall tell the story better than one at a time",
+"structure": "a wall of framed pieces hung at different sizes, each labelled",
+"motion_hint": "pieces come forward on focus",
+"mobile": "the wall becomes a single column of frames in hanging order",
+"layout": "{big}{at} as a salon hang: one wall of framed pieces at different sizes, {o1} largest at eye height; each frame has a wall label; {o2} and {o3} as further walls; '{act}' on the wall label",
+"identity": "Gallery wall: {display} for wall titles, {body} for labels; {pal}",
+"content": "Each piece labelled with title, year and maker ({note})",
+"motion_calm": "Pieces come forward on focus ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "The wall pans slowly as the visitor scrolls; each piece comes forward as it reaches the centre",
+"span_irregularity": "high",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [],
+"avoid": [
+"memorial",
+"care",
+"legal"
+],
+"needs": [],
+"density": "standard",
+"key": "generative-ground",
+"name": "Generative Ground",
+"style_family": "spatial-webgl-stage",
+"surfaces": [
+"showcase",
+"general",
+"devtool",
+"editorial"
+],
+"roles": [
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "full-bleed",
+"calm_bias": -1,
+"look_family": "dark-single-accent",
+"hero_material": "procedural-texture",
+"radius": [
+"sharp-0",
+"hairline-2"
+],
+"why": "the subject has a pattern of its own (flow, growth, signal) worth drawing live",
+"structure": "a procedural texture drawn from the trade's own pattern behind a short headline",
+"motion_hint": "the texture drifts; pauses with reduced motion",
+"mobile": "the texture renders at lower resolution and stops when off screen",
+"layout": "{big} on a generative ground: a live procedural texture drawn from the pattern of {o1} fills the first screen behind a short headline and '{act}'; {o2} and {o3} follow in plain sections",
+"identity": "Signal and dark: {display} for the headline, {body} for sections; {pal}; the texture uses the accent only",
+"content": "Short and specific; the texture is the image, the words are facts ({note})",
+"motion_calm": "The texture is rendered as a still frame; nothing moves on scroll",
+"motion_bold": "The texture drifts and reacts to the pointer; it pauses off screen and under reduced motion",
+"span_irregularity": "medium",
+"accent_placement": "the texture itself, nowhere else"
+},
+{
+"tags": [
+"play",
+"celebration",
+"food",
+"sport"
+],
+"avoid": [
+"memorial",
+"legal",
+"care"
+],
+"needs": [
+"play",
+"celebration",
+"food",
+"sport",
+"kinetic",
+"y2k"
+],
+"density": "standard",
+"key": "sticker-sheet",
+"name": "Sticker Sheet",
+"style_family": "block-first-editorial",
+"surfaces": [
+"showcase",
+"commerce",
+"general",
+"venue"
+],
+"roles": [
+"B"
+],
+"tone": "field",
+"voice": "expressive",
+"composition": "layered",
+"calm_bias": -1,
+"look_family": "playful-color-block",
+"hero_material": "illustration",
+"radius": [
+"round-play",
+"stamp-circle"
+],
+"why": "the audience is young or playful, and stickers turn facts into things to collect",
+"structure": "drawn stickers carry the facts on a colour field",
+"motion_hint": "stickers peel on hover",
+"mobile": "stickers sit in two columns, none over text",
+"layout": "{big}{at} as a sticker sheet: on one colour field, drawn stickers of {o1}, {o2} and {o3} each carry one fact ({note}); the headline is the biggest sticker; '{act}' a big round button",
+"identity": "Play print: {display} for sticker words, {body} plain for details; {pal}",
+"content": "One fact per sticker; details in plain sections below",
+"motion_calm": "Stickers peel slightly on hover or focus ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Stickers slap onto the sheet as it scrolls in; every sticker readable at rest",
+"span_irregularity": "high",
+"accent_placement": "one drawn element per section"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "morning-brief",
+"name": "Morning Brief",
+"style_family": "block-first-editorial",
+"surfaces": [
+"product-ui"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "centred",
+"calm_bias": 1,
+"look_family": "warm-paper-serif",
+"hero_material": "data-as-image",
+"radius": [
+"hairline-2",
+"tool-6"
+],
+"why": "the team needs the day's story before the numbers",
+"structure": "a written summary with inline charts, then the tables behind it",
+"motion_hint": "charts draw once",
+"mobile": "the brief reads as text with small inline charts",
+"layout": "The {subj} as a morning brief: a short written summary of today with small inline charts of {o1} and {o2}, centred; the tables behind each sentence open below; {o3} as the closing section",
+"identity": "Written report: {display} for the date line, {body} for the brief, {mono} for values; {pal}",
+"content": "Three sentences that say what changed and what to do ({note})",
+"motion_calm": "Inline charts draw once ({t_ui}ms); no scroll-triggered choreography",
+"motion_bold": "Inline charts draw once ({t_ui}ms); no scroll-triggered choreography",
+"span_irregularity": "low",
+"accent_placement": "cells and rows that need action"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "flow-board",
+"name": "Flow Board",
+"style_family": "crisp-product-workbench",
+"surfaces": [
+"product-ui"
+],
+"roles": [
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "layered",
+"calm_bias": 0,
+"look_family": "playful-color-block",
+"hero_material": "live-ui",
+"radius": [
+"soft-12",
+"tool-6"
+],
+"why": "the work moves through stages and the team drags it forward",
+"structure": "columns of stages with cards, limits per column",
+"motion_hint": "cards move with FLIP",
+"mobile": "one stage per screen with a stage switcher",
+"layout": "The {subj} as a flow board: stages as columns with {o1} as cards, limits per column, {o2} flagged; dragging or keyboard moves a card; {o3} in a side panel",
+"identity": "Board: {display} for stage heads, {body} for cards; {pal}; colour by state only",
+"content": "What is stuck, where, and who owns it ({note})",
+"motion_calm": "Cards move with FLIP ({t_ui}ms); no scroll-triggered choreography",
+"motion_bold": "Cards move with FLIP ({t_ui}ms); no scroll-triggered choreography",
+"span_irregularity": "high",
+"accent_placement": "the active control and its result"
+},
+{
+"tags": [],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "docs-shell",
+"name": "Docs Shell",
+"style_family": "swiss-editorial-grid",
+"surfaces": [
+"devtool"
+],
+"roles": [
+"A"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "stacked",
+"calm_bias": 1,
+"look_family": "swiss-grid",
+"hero_material": "code-output",
+"radius": [
+"tool-6",
+"hairline-2"
+],
+"why": "developers arrive from search into a specific page and must find their place fast",
+"structure": "three panes (navigation, page, on-this-page) with a search bar on top",
+"motion_hint": "none beyond search",
+"mobile": "navigation moves into a drawer; on-this-page becomes a jump menu",
+"layout": "The {subj} as a docs shell: search on top, navigation on the left, the quickstart page in the centre with {o1}, and on-this-page links on the right; {o2} and {o3} linked from the quickstart",
+"identity": "Docs: {display} for page titles, {body} for prose, {mono} for code; {pal}",
+"content": "Quickstart first, then concepts, then reference ({note})",
+"motion_calm": "Search results appear in place ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Search results appear in place ({t_ui}ms); nothing moves on scroll",
+"span_irregularity": "low",
+"accent_placement": "pass, warn and fail states"
+},
+{
+"tags": [
+"celebration",
+"earth",
+"botanical",
+"care",
+"memorial"
+],
+"avoid": [],
+"needs": [],
+"density": "airy",
+"key": "arch-window",
+"name": "Arched Window",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"venue",
+"commerce",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "light",
+"voice": "editorial",
+"composition": "object-wrap",
+"calm_bias": 1,
+"look_family": "soft-organic",
+"hero_material": "photo",
+"radius": [
+"arched"
+],
+"why": "the place is the product, and framing it like a doorway invites the visitor in",
+"structure": "the photo framed in an arch with the headline wrapping it",
+"motion_hint": "the arch opens slightly on load",
+"mobile": "the arch narrows and sits above the headline",
+"layout": "{big}{at} framed in an arch: {o1} photographed through an arched window shape, the headline wrapping its curve; {o2} and {o3} in smaller arches below; '{act}' under the first arch",
+"identity": "Soft architecture: {display} for headings, {body} for text; {pal}; arches only on images, square elsewhere",
+"content": "The place first, then dates, capacity and prices ({note})",
+"motion_calm": "The arch image fades in ({t_in}ms); nothing moves on scroll",
+"motion_bold": "The arch widens as the visitor scrolls until the image fills the screen",
+"span_irregularity": "medium",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"kinetic",
+"ink",
+"night"
+],
+"avoid": [
+"memorial"
+],
+"needs": [],
+"density": "standard",
+"key": "proof-sheet",
+"name": "Contact Sheet",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"showcase",
+"editorial",
+"commerce",
+"venue",
+"general"
+],
+"roles": [
+"A",
+"B"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "stacked",
+"calm_bias": 0,
+"look_family": "cinematic-dark",
+"hero_material": "photo",
+"radius": [
+"sharp-0"
+],
+"why": "the raw frames (many takes, many angles) show the craft better than one polished hero",
+"structure": "a contact sheet of frames with marks, one circled",
+"motion_hint": "the circled frame grows into the hero",
+"mobile": "frames sit three across; the circled frame opens full width",
+"layout": "{big}{at} as a contact sheet: rows of frames of {o1} with frame numbers, one frame circled in grease pencil and enlarged beside the sheet; {o2} and {o3} as later sheets; '{act}' written in the margin",
+"identity": "Darkroom: {display} for sheet titles, {mono} for frame numbers, {body} for notes; {pal}",
+"content": "The process shown honestly; each sheet with date and place ({note})",
+"motion_calm": "The circled frame enlarges on click ({t_in}ms); nothing moves on scroll",
+"motion_bold": "The circled frame grows into a full-bleed hero as the visitor scrolls past the sheet",
+"span_irregularity": "low",
+"accent_placement": "the primary action only"
+},
+{
+"tags": [
+"trades",
+"industrial",
+"textile",
+"earth"
+],
+"avoid": [],
+"needs": [],
+"density": "standard",
+"key": "kit-of-parts",
+"name": "Kit of Parts",
+"style_family": "atelier-minimalism",
+"surfaces": [
+"commerce",
+"general",
+"showcase"
+],
+"roles": [
+"A",
+"C"
+],
+"tone": "light",
+"voice": "utility",
+"composition": "object-wrap",
+"calm_bias": 0,
+"look_family": "swiss-grid",
+"hero_material": "object",
+"radius": [
+"hairline-2",
+"tool-6"
+],
+"why": "the product is assembled from parts, and showing them laid out builds trust in the whole",
+"structure": "parts laid out flat and labelled around the finished object",
+"motion_hint": "parts assemble on scroll",
+"mobile": "the finished object first, the labelled parts list under it",
+"layout": "{big} as a kit of parts: {o1} shown finished at the centre, its parts laid out around it and labelled with material and size ({note}); {o2} and {o3} follow; '{act}' beside the finished object",
+"identity": "Exploded view: {display} for part names, {mono} for sizes, {body} for notes; {pal}",
+"content": "What it is made of and why ({note})",
+"motion_calm": "Labels draw once ({t_in}ms); nothing moves on scroll",
+"motion_bold": "The parts assemble into the finished object as the visitor scrolls",
+"span_irregularity": "medium",
+"accent_placement": "callout markers on the object"
+},
+{
+"tags": [
+"night",
+"kinetic",
+"celebration"
+],
+"avoid": [
+"memorial",
+"care"
+],
+"needs": [],
+"density": "standard",
+"key": "night-programme",
+"name": "Night Programme",
+"style_family": "kinetic-editorial",
+"surfaces": [
+"venue",
+"showcase",
+"general"
+],
+"roles": [
+"B",
+"A"
+],
+"tone": "dark",
+"voice": "expressive",
+"composition": "stacked",
+"calm_bias": -1,
+"look_family": "dark-single-accent",
+"hero_material": "giant-type",
+"radius": [
+"sharp-0",
+"ticket-notch"
+],
+"why": "the business runs on dated events, and the programme itself is the hero",
+"structure": "a giant dated list of what is on, each line a link",
+"motion_hint": "lines slide on hover",
+"mobile": "lines stack with date above title",
+"layout": "The {subj}{at} as a programme: a giant dated list of upcoming events with {o1} first, each line a link with time and price ({note}); {o2} and {o3} as sections below; '{act}' on each line",
+"identity": "Night bill: {display} for event names, {mono} for dates, {body} for details; {pal}",
+"content": "What is on, when, how much",
+"motion_calm": "Lines slide slightly on hover ({t_ui}ms); nothing moves on scroll",
+"motion_bold": "Lines enter in sequence as the programme scrolls into view; hover reveals a photograph behind the line",
+"span_irregularity": "low",
+"accent_placement": "one word of the headline"
+}
+]
