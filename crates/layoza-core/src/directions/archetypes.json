@@ -303,7 +303,7 @@
 "general"
 ],
 "roles": [
-"B"
+"A", "B"
 ],
 "tone": "dark",
 "voice": "expressive",

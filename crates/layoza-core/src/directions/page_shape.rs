@@ -143,7 +143,7 @@ const HERO_FRAMES: &[Opt] = &[
 const FLOWS: &[Opt] = &[
     o("stacked-bands", "Stacked full-width bands, each section its own band with its own rhythm.", &["house"]),
     o("horizontal-chapters", "Horizontal chapters: one section scrolls sideways through panels, then the page continues down.", &["+showcase", "+commerce", "-tier:micro", "-solemn", "-devtool", "+venue"]),
-    o("sticky-index", "Sticky index on one side; content panes scroll past it on the other side.", &["+product-ui", "+devtool", "+editorial", "+commerce", "+supplier"]),
+    o("sticky-index", "Sticky index on one side; content panes scroll past it on the other side. The index is never an empty column: it carries the section titles plus the live picture or figure of the pane in view, and under 1024px it folds into a top bar.", &["+product-ui", "+devtool", "+editorial", "+commerce", "+supplier"]),
     o("bento", "Bento mosaic: sections packed as unequal tiles in one grid, sized by importance.", &["+product-ui", "+commerce", "+devtool", "-solemn"]),
     o("editorial-column", "Single editorial column (~65ch) with images breaking out full-width between passages.", &["+editorial", "+solemn", "+calm", "-commerce", "+venue", "-supplier"]),
     o("snap-slides", "Full-screen snap slides: one idea per viewport, scroll snaps between them.", &["+showcase", "+bold", "-product-ui", "-devtool", "-solemn", "-commerce", "+venue", "-supplier"]),

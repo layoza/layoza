@@ -761,6 +761,10 @@ fn brief_color_roles(query: &str, colors: &[String]) -> std::collections::BTreeM
             roles.entry("text".to_string()).or_insert_with(|| hex.clone());
         }
     }
+    // The colour the brief labels primary (CTA, brand, main) leads the accents.
+    if let Some((h, _)) = labelled.iter().find(|(h, t)| Some(h) != ground && has(t, &["primary", "cta", "brand", "main"]) && !has(t, &["text", "ink", "copy"])) {
+        roles.insert("primary".to_string(), h.clone());
+    }
     // A dark band only makes sense on a light page: the first near-black colour named dark/navy/night.
     if ground.and_then(|g| lum(g)).is_some_and(|l| l > 0.5) {
         let band = labelled
@@ -2672,6 +2676,26 @@ mod tests {
         let r = rec("industrial pump maker, fonts Sora and Inter, colours #0B1F3A and #F4F6F8");
         assert!(["Sora", "Inter"].contains(&r.matched_industry.typography_pairing.display_font.as_str()), "{}", r.matched_industry.typography_pairing.display_font);
         assert_ne!(r.matched_industry.palette.id, catalog_industries().iter().find(|i| i.slug == r.matched_industry.slug).unwrap().palette.id);
+    }
+
+    #[test]
+    fn labelled_primary_leads_and_cinematic_asks_skip_document_looks() {
+        let r = rec("LED display supplier homepage, cinematic photography of video walls.
+Light background: #F6FAFF
+Primary color: #1769FF
+Deep Blue: #0647C8
+Dark Navy sections: #06142D
+Sky Blue: #5CC8FF
+Bright Cyan: #35DDF3
+White: #FFFFFF
+Text: #10203A");
+        let d = &r.directions[0];
+        assert_eq!(d.palette.primary_accent, "#1769FF");
+        assert!(d.palette.notes.contains("sparing light tints"), "{}", d.palette.notes);
+        assert!(!d.palette.notes.contains("#ffffff as accents") && !d.palette.notes.contains("#FFFFFF as accents"), "{}", d.palette.notes);
+        for d in &r.directions {
+            assert!(!["broadsheet", "system-diagram", "blueprint-sheet"].contains(&d.archetype.as_str()), "{}", d.archetype);
+        }
     }
 
     #[test]

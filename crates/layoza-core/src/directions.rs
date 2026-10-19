@@ -847,7 +847,16 @@ fn brand_ground(colors: &[String]) -> Option<&String> {
 /// are re-picked so both still clear AA on background and surface.
 fn brand_palette(colors: &[String], roles: &std::collections::BTreeMap<String, String>, base: &PaletteRecommendation) -> PaletteRecommendation {
     let ground = brand_ground(colors);
-    let accents: Vec<&String> = colors.iter().filter(|c| Some(*c) != ground && !roles.values().any(|r| r == *c)).collect();
+    let free: Vec<&String> = colors.iter().filter(|c| Some(*c) != ground && !roles.iter().any(|(k, r)| k != "primary" && r == *c)).collect();
+    // Near-white and near-black brief colours are surfaces and deep tones, not accents, while a
+    // mid-tone colour exists to carry the accent.
+    let mid = |c: &&String| luminance(c).is_some_and(|l| (0.03..=0.7).contains(&l));
+    let (mut accents, deep): (Vec<&String>, Vec<&String>) = if free.iter().any(mid) { free.iter().partition(|c| mid(c)) } else { (free.clone(), Vec::new()) };
+    if let Some(i) = roles.get("primary").and_then(|p| accents.iter().position(|c| *c == p)) {
+        let p = accents.remove(i);
+        accents.insert(0, p);
+    }
+    let tints: Vec<&String> = accents.iter().skip(2).copied().collect();
     let (bg, surface) = match ground.and_then(|g| rgb(g).map(|c| (g, c))) {
         Some((g, c)) => {
             let toward = if luminance(g).unwrap_or(0.0) < 0.5 { (255, 255, 255) } else { (0, 0, 0) };
@@ -883,9 +892,25 @@ fn brand_palette(colors: &[String], roles: &std::collections::BTreeMap<String, S
             Some(g) => format!("{g} is the ground"),
             None => format!("ground kept from {}", base.id),
         },
-        if accents.is_empty() { "accents kept from the base".to_string() } else { format!("{} as accents", accents.iter().map(|c| c.as_str()).collect::<Vec<_>>().join(" and ")) },
+        {
+            let mut a = if accents.is_empty() {
+                "accents kept from the base".to_string()
+            } else {
+                format!("{} as accents", accents.iter().take(2).map(|c| c.as_str()).collect::<Vec<_>>().join(" and "))
+            };
+            if !tints.is_empty() {
+                a += &format!("; {} only as sparing light tints", tints.iter().map(|c| c.as_str()).collect::<Vec<_>>().join(" and "));
+            }
+            if let Some(b) = roles.get("band") {
+                a += &format!("; dark chapters on {b} with white text, alternating with the light ground");
+            }
+            if !deep.is_empty() {
+                a += &format!("; {} as surfaces and deep tones, never accents", deep.iter().map(|c| c.as_str()).collect::<Vec<_>>().join(" and "));
+            }
+            a
+        },
         base.notes.split(" | ").next().unwrap_or("")
-    ) + &roles.get("band").map(|b| format!(" | dark chapters on {b} with white text; alternate them with the light ground")).unwrap_or_default();
+    );
     let mut p = palette(&format!("brand-{}-on-{}", hexes.join("-"), base.id), &bg, &surface, &fg, &muted, &primary, &secondary, 0.0, &notes);
     verify_palette(&mut p);
     p
@@ -1102,6 +1127,10 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     // A map hero needs a place to map: a venue, a named place, a service area or a location word.
     let words: Vec<&str> = q.split(|c: char| !c.is_alphanumeric()).collect();
     let heavy_tier = HEAVY_TIER.with(|h| h.get());
+    let asks_photo = ["photography", "photographs", "photo ", "photos", "footage", "cinematic", "film still", "video wall", "render"]
+        .iter()
+        .any(|k| q.contains(k));
+    let asks_cinematic = ["cinematic", "immersive", "film-like", "filmic"].iter().any(|k| q.contains(k));
     let place = signals.surface == S::Venue
         || script.is_some()
         || ["civic", "infrastructure", "trades"].iter().any(|t| has(t))
@@ -1233,6 +1262,24 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 }
                 if a.hero_material == "map" && !place {
                     s -= 10;
+                }
+                // A brief that asks for photography, footage or a cinematic scene wants the real
+                // subject first, not a drawing sheet or a figure wall.
+                // A cinematic or immersive ask reads as a staged scene, never as a newspaper, a
+                // drawing sheet or a paper page.
+                if asks_cinematic {
+                    if matches!(a.look_family, "cinematic-dark" | "luxury-sparse") {
+                        s += 6;
+                    } else if matches!(a.look_family, "hairline-newspaper" | "technical-blueprint" | "warm-paper-serif") {
+                        s -= 8;
+                    }
+                }
+                if asks_photo {
+                    if matches!(a.hero_material, "illustration" | "document" | "data-as-image" | "giant-type") {
+                        s -= 8;
+                    } else if matches!(a.hero_material, "photo" | "video" | "object") {
+                        s += 4;
+                    }
                 }
                 (s, a)
             })
