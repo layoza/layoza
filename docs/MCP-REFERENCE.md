@@ -203,7 +203,7 @@ Read-only. Deals specific, buildable page mechanics from Layoza's catalogue: 1 h
 | Input | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
 | `brief` | string | yes | The page brief, e.g. `neighbourhood bakery with a daily bread board`. |
-| `niche` | string |  | Optional niche hint (store, restaurant, local-business, saas, dashboard, agency, kinetic, 3d, editorial, portfolio, finance, health, education, events, real-estate, travel, nonprofit, docs, landing, professional, devtools); added after niches the brief names. |
+| `niche` | string |  | Optional niche hint (store, restaurant, local-business, saas, dashboard, agency, kinetic, 3d, editorial, portfolio, finance, health, education, events, real-estate, travel, nonprofit, docs, landing, professional, legal, museum, devtools, memorial, body-art, civic, venue, camp, winery, home-services, any); added after niches the brief names. |
 | `mood` | string |  | Optional comma-separated moods (calm, warm, playful, bold, luxe, technical, editorial, organic, brutal, dark, bright, trustworthy, experimental, minimal). |
 | `intensity` | string (`calm`, `bold`, `wild`) |  | Motion tier. New site: used only when the brief names none. Existing site: may only lower the site's own level. |
 | `count` | integer 2–10 |  | Section mechanics to deal (default 5). |

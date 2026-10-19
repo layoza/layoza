@@ -785,8 +785,11 @@ pub struct MechanicFit {
     pub reason: String,
 }
 
-/// Roles that sit at the page edges; they are suggested but never dealt as a signature.
-const EDGE_ROLES: &[&str] = &["footer", "faq", "cta", "contact"];
+/// Roles that sit at the page edges or are page furniture; they are suggested (or dealt into the
+/// `nav` / `footer` slots) but never dealt as a signature.
+const EDGE_ROLES: &[&str] = &["footer", "faq", "cta", "contact", "nav", "section-head", "proof"];
+/// Furniture with its own deal slot, so it never takes a section suggestion.
+const SLOT_ROLES: &[&str] = &["nav", "footer"];
 
 // ---------------------------------------------------------------------------------------------
 // Deal
@@ -864,6 +867,10 @@ pub struct DealOptions {
     /// Mechanic ids dealt in this project's recent runs (`.layoza/looks.jsonl`): still allowed, but
     /// scored down so a new deal steers away from them while anything comparable fits.
     pub recent_ids: Vec<String>,
+    /// Hero look families already used by another direction; skipped while any other hero fits.
+    pub exclude_look_families: Vec<String>,
+    /// Skip `giant-type` heroes while any other hero fits (set when every earlier direction is pure type).
+    pub avoid_giant_type: bool,
 }
 
 /// Seeds are u64; JSON numbers above 2^53 lose precision in JavaScript clients, so they travel as
@@ -916,6 +923,12 @@ pub struct MechanicDeal {
     /// Ideas for the remaining sections; use, adapt or replace with the content's own shape.
     pub suggestions: Vec<Mechanic>,
     pub transition: Option<Mechanic>,
+    /// Page furniture: a navigation mechanic for a new site (absent for existing sites, which keep theirs).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub nav: Option<Mechanic>,
+    /// Page furniture: a footer mechanic for a new site (absent for existing sites).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub footer: Option<Mechanic>,
     /// The brief's own nouns (heuristic noun phrases). Every dealt mechanic is rebuilt around these.
     #[serde(default)]
     pub brief_objects: Vec<String>,
@@ -1177,6 +1190,17 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         // the offset walks them so a re-deal shows a different first screen.
         let fresh: Vec<&'static Mechanic> = heroes.iter().copied().filter(|m| free_comp(m)).collect();
         let list: Vec<&'static Mechanic> = if fresh.is_empty() { heroes.clone() } else { fresh };
+        // Look diversity: never a second hero from a look family another direction already holds,
+        // and no pure-type hero when the earlier directions are all type, while anything else fits.
+        let other_look = |m: &&'static Mechanic| m.look_family.is_empty() || !opts.exclude_look_families.iter().any(|f| f == &m.look_family);
+        let not_type = |m: &&'static Mechanic| !opts.avoid_giant_type || m.hero_material != "giant-type";
+        let diverse: Vec<&'static Mechanic> = list.iter().copied().filter(other_look).filter(not_type).collect();
+        let list: Vec<&'static Mechanic> = if !diverse.is_empty() {
+            diverse
+        } else {
+            let some: Vec<&'static Mechanic> = list.iter().copied().filter(other_look).collect();
+            if some.is_empty() { list } else { some }
+        };
         let best = list.first().map(|m| score(m)).unwrap_or(0);
         // The caller's composition is a promise made to the reader (the direction says "centred"),
         // so a fitting hero of that composition wins outright when it is within 10 points of the
@@ -1206,8 +1230,22 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             }
             _ => window(&list, 6),
         };
+        // Seed rotation: with an explicit seed, rotate among the qualifying in-niche heroes (within
+        // 10 points of the best, at most 5) so different seeds open on different first screens; the
+        // in-niche bonus alone would otherwise win on every seed.
+        let rotation: Vec<&'static Mechanic> = if opts.seed.is_some() && !niches.is_empty() && opts.hero_offset == 0 {
+            let base: &[&'static Mechanic] = if matching.first().is_some_and(|m| score(m) + 10 >= best) { &matching } else { &list };
+            let top = base.first().map(|m| score(m)).unwrap_or(0);
+            base.iter().copied().filter(|m| fit_class(m, &niches).0 == FitClass::InNiche && score(m) + 10 >= top).take(5).collect()
+        } else {
+            Vec::new()
+        };
+        let rotating = rotation.len() > 1;
+        let near = if rotating { rotation } else { near };
         let pick = if niches.is_empty() && !near.is_empty() {
             ((fnv1a(&format!("{}:hero", brief.to_lowercase())) ^ seed) as usize).wrapping_add(opts.hero_offset) % near.len()
+        } else if rotating {
+            (fnv1a(&format!("{}:hero-rotate", seed)) % near.len() as u64) as usize
         } else if near.len() > 1 && opts.hero_offset > 0 {
             1 + (opts.hero_offset - 1) % (near.len() - 1)
         } else {
@@ -1241,11 +1279,12 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let mut suggestions = Vec::new();
     while signature.len() + suggestions.len() < count {
         let roles = used_roles.clone();
-        let new_role = |m: &Mechanic| !roles.contains(&m.role);
+        let new_role = |m: &Mechanic| !roles.contains(&m.role) && !SLOT_ROLES.contains(&m.role.as_str());
+        let not_slot = |m: &Mechanic| !SLOT_ROLES.contains(&m.role.as_str());
         let pick = take(&sections, &mut used_families, &new_role)
-            .or_else(|| take(&sections, &mut used_families, &|_| true))
+            .or_else(|| take(&sections, &mut used_families, &not_slot))
             .or_else(|| take(&wider, &mut used_families, &new_role))
-            .or_else(|| take(&wider, &mut used_families, &|_| true));
+            .or_else(|| take(&wider, &mut used_families, &not_slot));
         match pick {
             Some(m) => {
                 used_roles.insert(m.role.clone());
@@ -1263,6 +1302,16 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     }
     let (transitions, _) = ranked(MechanicKind::Transition);
     let transition = take(&transitions, &mut used_families, &|_| true);
+    // Page furniture slots, new sites only: an existing site keeps its own navigation and footer.
+    let (nav, footer) = if opts.existing.is_none() {
+        let mut slot = |role: &str| {
+            let is_role = |m: &Mechanic| m.role == role;
+            take(&sections, &mut used_families, &is_role).or_else(|| take(&wider, &mut used_families, &is_role))
+        };
+        (slot("nav"), slot("footer"))
+    } else {
+        (None, None)
+    };
 
     // Fit reasons, one per dealt mechanic
     let fit_reason = |m: &Mechanic, slot: &str| -> MechanicFit {
@@ -1302,6 +1351,8 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     fit.extend(signature.iter().map(|m| fit_reason(m, "signature")));
     fit.extend(suggestions.iter().map(|m| fit_reason(m, "suggestion")));
     fit.extend(transition.iter().map(|m| fit_reason(m, "transition")));
+    fit.extend(nav.iter().map(|m| fit_reason(m, "nav")));
+    fit.extend(footer.iter().map(|m| fit_reason(m, "footer")));
     let outside: Vec<&str> = fit.iter().filter(|f| f.fit == "outside-trade").map(|f| f.id.as_str()).collect();
     if !outside.is_empty() {
         notes.push(format!(
@@ -1336,6 +1387,8 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         signature,
         suggestions,
         transition,
+        nav,
+        footer,
         brief_objects: brief_objs,
         brief_action: brief_act,
         fit,
@@ -1357,6 +1410,12 @@ pub struct MechanicRef {
     /// Hero only: its first-screen composition.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub composition: String,
+    /// Hero only: what the first screen is made of (`real-photo`, `giant-type`, ...).
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub hero_material: String,
+    /// Hero only: its visual look family; no two directions share one.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub look_family: String,
 }
 
 impl From<&Mechanic> for MechanicRef {
@@ -1370,6 +1429,8 @@ impl From<&Mechanic> for MechanicRef {
             intensity: m.intensity,
             still_check: m.still_check.clone(),
             composition: m.composition.clone(),
+            hero_material: m.hero_material.clone(),
+            look_family: m.look_family.clone(),
         }
     }
 }
@@ -1439,10 +1500,10 @@ mod tests {
     }
 
     fn ids(d: &MechanicDeal) -> Vec<String> {
-        d.hero.iter().chain(&d.signature).chain(&d.suggestions).chain(&d.transition).map(|m| m.id.clone()).collect()
+        d.hero.iter().chain(&d.signature).chain(&d.suggestions).chain(&d.transition).chain(&d.nav).chain(&d.footer).map(|m| m.id.clone()).collect()
     }
     fn all(d: &MechanicDeal) -> Vec<&Mechanic> {
-        d.hero.iter().chain(&d.signature).chain(&d.suggestions).chain(&d.transition).collect()
+        d.hero.iter().chain(&d.signature).chain(&d.suggestions).chain(&d.transition).chain(&d.nav).chain(&d.footer).collect()
     }
 
     #[test]

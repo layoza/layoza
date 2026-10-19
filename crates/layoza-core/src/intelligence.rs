@@ -261,6 +261,8 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &
     let base = fnv1a(&query.to_lowercase()) ^ variant.wrapping_mul(0x9E37_79B9_7F4A_7C15);
     let mut used_families: Vec<String> = Vec::new();
     let mut used_compositions: Vec<String> = Vec::new();
+    let mut used_looks: Vec<String> = Vec::new();
+    let mut materials: Vec<String> = Vec::new();
     for (i, d) in directions.iter_mut().enumerate() {
         let deal = deal_mechanics_with(&DealOptions {
             brief: query.to_string(),
@@ -277,8 +279,13 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &
             // One niche signal: the deal reads the trade exactly as the design system did.
             niches: Some(niches.to_vec()),
             recent_ids: recent_ids.to_vec(),
+            // No two directions share a look family, and the last is never a third pure-type hero.
+            exclude_look_families: used_looks.clone(),
+            avoid_giant_type: !materials.is_empty() && materials.iter().all(|m| m == "giant-type"),
             ..Default::default()
         });
+        used_looks.extend(deal.hero.iter().map(|h| h.look_family.clone()).filter(|f| !f.is_empty()));
+        materials.extend(deal.hero.iter().map(|h| h.hero_material.clone()));
         d.mechanics = deal.hero.iter().chain(&deal.signature).map(MechanicRef::from).collect();
         used_families.extend(d.mechanics.iter().map(|m| m.family.clone()));
         used_compositions.extend(deal.hero.iter().map(|h| h.composition.clone()).filter(|c| !c.is_empty()));
@@ -1924,7 +1931,7 @@ pub fn recommend_design_steered(
             d.mechanics
                 .iter()
                 .find(|m| m.kind == crate::mechanics::MechanicKind::Hero)
-                .map(|m| (m.id.clone(), m.name.clone(), m.composition.clone()))
+                .map(|m| (m.id.clone(), format!("{} {}", m.hero_material, m.name), m.composition.clone()))
                 .unwrap_or_else(|| (d.style_family.clone(), d.layout_composition.clone(), String::new()))
         })
         .collect();

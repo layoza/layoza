@@ -106,6 +106,20 @@ pub fn names_checkable_facts(q: &str) -> bool {
 /// What a direction's hero is made of, read from its hero mechanic.
 pub fn hero_material(id: &str, name: &str, composition: &str) -> &'static str {
     let t = format!("{} {} {}", id, name, composition).to_lowercase();
+    // The catalogue's own `hero_material` code (passed at the start of `name`) wins over keywords.
+    for (code, label) in [
+        ("real-photo", "real photo or footage of the subject"),
+        ("video", "real photo or footage of the subject"),
+        ("generated-image", "generated image of the subject (label it as illustration)"),
+        ("data-image", "data as image (the trade's real numbers drawn large)"),
+        ("procedural", "procedural texture (SVG or canvas drawn from the subject)"),
+        ("physical-object", "physical object, photographed or modelled"),
+        ("giant-type", "giant type"),
+    ] {
+        if name.to_lowercase().starts_with(code) {
+            return label;
+        }
+    }
     let any = |ks: &[&str]| ks.iter().any(|k| t.contains(k));
     if any(&["photo", "image", "portrait", "gallery", "film", "video", "reel", "lens", "camera"]) {
         "real photo or footage of the subject"

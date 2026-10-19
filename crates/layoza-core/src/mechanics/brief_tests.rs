@@ -2,8 +2,8 @@
 use super::*;
 
 const UNUSUAL: &[&str] = &[
-    "funeral home helping families arrange services",
-    "municipal water utility where residents report leaks and pay bills",
+    "bell foundry casting church bells",
+    "falconry centre flying hawks and owls",
     "beekeeping supply co-op selling hive frames and smokers",
     "county records archive of land deeds and maps",
     "community tool library lending drills and ladders",
@@ -93,4 +93,58 @@ fn seeds_serialise_as_strings_and_read_either_form() {
     assert_eq!(seed_serde::from_json(&serde_json::json!("42")), Some(42));
     assert_eq!(seed_serde::from_json(&serde_json::json!(42)), Some(42));
     assert_eq!(seed_serde::from_json(&serde_json::json!(-1)), None);
+}
+
+#[test]
+fn funeral_home_and_water_utility_reach_their_own_niches() {
+    assert_eq!(deal("funeral home helping families arrange services").context.niches.first().map(String::as_str), Some("memorial"));
+    assert_eq!(deal("municipal water utility where residents report leaks and pay bills").context.niches.first().map(String::as_str), Some("civic"));
+}
+
+#[test]
+fn seeds_rotate_the_in_niche_hero() {
+    for brief in ["funeral home helping families arrange services", "municipal water utility where residents report leaks and pay bills"] {
+        let mut heroes = std::collections::BTreeSet::new();
+        for seed in 0..12u64 {
+            let d = deal_mechanics_with(&DealOptions { brief: brief.into(), count: 3, seed: Some(seed), ..Default::default() });
+            let h = d.hero.expect("hero");
+            assert!(h.niches.iter().any(|n| d.context.niches.contains(n)), "{brief} seed {seed}: {} is not in-niche", h.id);
+            heroes.insert(h.id);
+        }
+        // Rotation needs two qualifying in-niche heroes: memorial has two calm ones, civic only one.
+        let calm_in_niche = catalogue().iter().filter(|m| m.kind == MechanicKind::Hero && m.intensity == Intensity::Calm && m.niches.first() == deal(brief).context.niches.first()).count();
+        assert!(heroes.len() >= calm_in_niche.min(2), "{brief}: every seed dealt {heroes:?}");
+    }
+}
+
+#[test]
+fn furniture_has_its_own_slots_and_is_never_a_signature() {
+    let d = deal_mechanics_with(&DealOptions { brief: "funeral home helping families arrange services".into(), count: 4, seed: Some(1), ..Default::default() });
+    assert_eq!(d.nav.as_ref().map(|m| m.role.as_str()), Some("nav"));
+    assert_eq!(d.footer.as_ref().map(|m| m.role.as_str()), Some("footer"));
+    for m in &d.signature {
+        assert!(!["nav", "footer", "section-head", "proof"].contains(&m.role.as_str()), "furniture signature {}", m.id);
+    }
+    assert!(d.suggestions.iter().all(|m| m.role != "nav" && m.role != "footer"));
+    assert!(d.fit.iter().any(|f| f.slot == "nav") && d.fit.iter().any(|f| f.slot == "footer"));
+}
+
+#[test]
+fn look_family_and_pure_type_exclusions_are_honoured() {
+    let brief = "municipal water utility where residents report leaks and pay bills";
+    let first = deal_mechanics_with(&DealOptions { brief: brief.into(), count: 2, seed: Some(4), ..Default::default() }).hero.unwrap();
+    let second = deal_mechanics_with(&DealOptions {
+        brief: brief.into(),
+        count: 2,
+        seed: Some(4),
+        exclude_look_families: vec![first.look_family.clone()],
+        avoid_giant_type: true,
+        ..Default::default()
+    })
+    .hero
+    .unwrap();
+    assert_ne!(second.look_family, first.look_family);
+    assert_ne!(second.hero_material, "giant-type");
+    let r = MechanicRef::from(&second);
+    assert_eq!((r.hero_material.as_str(), r.look_family.as_str()), (second.hero_material.as_str(), second.look_family.as_str()));
 }

@@ -700,7 +700,7 @@ pub fn tool_definitions() -> Value {
                 "type": "object",
                 "properties": {
                     "brief": { "type": "string", "description": "The page brief, e.g. `neighbourhood bakery with a daily bread board`." },
-                    "niche": { "type": "string", "description": "Optional niche hint (store, restaurant, local-business, saas, dashboard, agency, kinetic, 3d, editorial, portfolio, finance, health, education, events, real-estate, travel, nonprofit, docs, landing, professional, devtools); added after niches the brief names." },
+                    "niche": { "type": "string", "description": "Optional niche hint (store, restaurant, local-business, saas, dashboard, agency, kinetic, 3d, editorial, portfolio, finance, health, education, events, real-estate, travel, nonprofit, docs, landing, professional, legal, museum, devtools, memorial, body-art, civic, venue, camp, winery, home-services, any); added after niches the brief names." },
                     "mood": { "type": "string", "description": "Optional comma-separated moods (calm, warm, playful, bold, luxe, technical, editorial, organic, brutal, dark, bright, trustworthy, experimental, minimal)." },
                     "intensity": { "type": "string", "enum": ["calm", "bold", "wild"], "description": "Motion tier. New site: used only when the brief names none. Existing site: may only lower the site's own level." },
                     "count": { "type": "integer", "minimum": 2, "maximum": 10, "description": "Section mechanics to deal (default 5)." },
