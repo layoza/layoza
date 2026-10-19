@@ -2173,7 +2173,17 @@ pub fn recommend_design_steered(
         }
         let text = crate::directions::write(d, &ctx, dials.motion_intensity);
         let mut motion = text.motion;
-        if heavy {
+        // A heavy ask the trade caps (a supplier sells on trust) gets one signature sequence, not
+        // scroll choreography everywhere; the text must agree with page_shape.motion.
+        let capped = heavy && shape_brief.tier(dials.motion_intensity) != crate::directions::page_shape::Tier::Heavy;
+        if capped {
+            for quiet in ["; nothing moves on scroll", "; zero decorative motion", "; no scroll-triggered choreography"] {
+                motion = motion.replace(quiet, "");
+            }
+            motion.push_str(
+                ". The brief asks for rich motion, but this trade sells on trust: motion stays at the dealt tier, with one signature sequence on the subject's own object carrying it (see page_shape.motion); every still frame stays readable and reduced-motion shows the complete content",
+            );
+        } else if heavy {
             // A quiet direction's "nothing moves on scroll" would contradict the brief.
             for quiet in ["; nothing moves on scroll", "; zero decorative motion", "; no scroll-triggered choreography"] {
                 motion = motion.replace(quiet, "");
