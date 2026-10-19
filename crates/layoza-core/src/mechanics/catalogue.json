@@ -7569,6 +7569,18 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
+    "requires_signal": [
+      "notice",
+      "notices",
+      "alerts",
+      "closures",
+      "outage",
+      "outages",
+      "announcements",
+      "service updates",
+      "disruption",
+      "disruptions"
+    ],
     "blueprint": "A notice strip above the nav carries one current, dated fact (Closed Monday 6 May, Water off on Elm Street until 16:00), 2.5rem tall in the accent tone, with a dismiss button 2.5rem square. Below it, a plain nav row. Once dismissed or scrolled past, the strip retracts into a small dot on the nav's notices link that reopens it. Text uses text-wrap: balance. Corner radius 0 on the strip; dot is a 0.5rem circle.",
     "motion": "Retract collapses height to 0 in 200ms and the dot scales in.",
     "still_check": "Any still shows the strip or the dot, never a half-collapsed strip.",
@@ -7744,6 +7756,13 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": false,
+    "requires_signal": [
+      "cli",
+      "command line",
+      "command-line",
+      "terminal",
+      "shell"
+    ],
     "blueprint": "A one-line prompt in the header styled like the tool's own CLI, 3rem tall in monospace at 0.9375rem: a prompt glyph then a typed path such as docs/getting-started; typing completes against real routes with a suggestion list 32rem wide, and Tab completes as in a shell. Next to it, 3 plain links (Docs, Changelog, GitHub) for people who do not type. Headings in the list use text-wrap: balance. Corner radius 2px on the prompt and list.",
     "motion": "Caret blinks at 1Hz only while focused; suggestions appear without animation.",
     "still_check": "Any still shows the prompt, the path and the plain links.",
@@ -7804,6 +7823,17 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
+    "requires_signal": [
+      "longform",
+      "long-form",
+      "long read",
+      "report",
+      "essay",
+      "guide",
+      "handbook",
+      "chapters",
+      "annual report"
+    ],
     "blueprint": "For long pages: a sticky strip 2.75rem tall under the header with each section as a segment whose width matches its length, labelled with a short name at 0.8125rem, and a fill line 2px tall showing reading progress inside the current segment. Labels use text-wrap: balance. Corner radius 0; segments separated by 1px gaps.",
     "motion": "Fill tracks scroll progress through each section via view() timelines.",
     "still_check": "Any still shows segment names and a filled position.",
@@ -7865,6 +7895,21 @@
     "intensity": "calm",
     "tier": "css",
     "headline_interlock": false,
+    "requires_signal": [
+      "bilingual",
+      "multilingual",
+      "languages",
+      "two languages",
+      "rtl",
+      "right-to-left",
+      "arabic",
+      "hebrew",
+      "urdu",
+      "persian",
+      "farsi",
+      "translated",
+      "translation"
+    ],
     "blueprint": "Navigation for sites in two scripts (Arabic and English, Hebrew and English, Urdu and English): the language switch shows each language in its own script, and switching mirrors the whole bar so the name sits at inline-start in either direction. Links use the language's own word lengths, so the bar is designed with 30% spare width. Labels use text-wrap: balance. Corner radius 4px on the switch's focus state only.",
     "motion": "On language change, a cross-document transition slides in the reading direction of the new language, 240ms.",
     "still_check": "Any still shows the bar correctly mirrored for its language.",
@@ -8080,6 +8125,14 @@
     "intensity": "bold",
     "tier": "js",
     "headline_interlock": false,
+    "requires_signal": [
+      "loop",
+      "looping",
+      "infinite",
+      "endless",
+      "experimental",
+      "immersive"
+    ],
     "blueprint": "Footer whose last band, 100vh tall, shows the top of the page again (the hero h1 at the same clamp(3rem, 9vw, 8rem), text-wrap: balance) so scrolling past the end returns to the start; above it, the contact block and legal links. A Back to top link is always present for keyboard users. Corner radius 0.",
     "motion": "When the band fills the viewport, the scroll position resets to the top seamlessly; scrolling up from the band does nothing special.",
     "still_check": "Any still shows the contact block or the hero copy complete.",
@@ -8541,6 +8594,1019 @@
     "stack_notes": {
       "css": "text-decoration-thickness transition; arrow translate flipped under :dir(rtl).",
       "js": "None required."
+    }
+  },
+  {
+    "id": "hero-civic-service-status-board",
+    "name": "Today's service status board",
+    "kind": "hero",
+    "role": "hero",
+    "family": "civic-status-board",
+    "niches": [
+      "civic"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "technical"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "hairline-newspaper",
+    "blueprint": "First screen is today's status for every public service, one row each at 1.0625rem: service name, a status word (Running, Delayed, Closed), the reason in plain words and when it was last checked, in tabular figures. The h1 above at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance states the date. Rows 3.25rem tall with 1px hairlines; corner radius 0.",
+    "motion": "None; rows update in place when the status feed changes.",
+    "still_check": "Any still shows every service, its status word and the check time.",
+    "mobile": "At 375px reason text wraps under the status word.",
+    "a11y": "A table with a caption; status in words, not colour alone. Reduced motion: nothing animates.",
+    "avoid": "Status dots without words, green ticks on every row by default, stale timestamps.",
+    "stack_notes": {
+      "css": "Plain table; status tones from colour tokens.",
+      "js": "Poll the status feed every 5 minutes; stop polling when the tab is hidden."
+    }
+  },
+  {
+    "id": "hero-civic-ward-map",
+    "name": "Your street on the ward map",
+    "kind": "hero",
+    "role": "hero",
+    "family": "civic-ward-map",
+    "niches": [
+      "civic"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "procedural",
+    "look_family": "soft-stone",
+    "blueprint": "A quiet drawn map of the district fills the first screen in two muted tones, with ward boundaries as 1px lines and a single postcode field 3rem tall with 4px corners laid over its emptiest area. Entering a postcode marks the street and lists its bin day, nearest library and councillor. The h1 at clamp(2rem, 5vw, 3.75rem) with text-wrap: balance reads Everything for your street. Corner radius 4px on the field and result card.",
+    "motion": "The result card fades in 150ms; the map does not move.",
+    "still_check": "Any still shows the map, the field and the heading.",
+    "mobile": "At 375px the field sits above a cropped map 16rem tall.",
+    "a11y": "Map aria-hidden; the field has a label and errors in text; results are a list with headings. Reduced motion: no fade.",
+    "avoid": "Interactive slippy maps for a postcode lookup, maps that block the field.",
+    "stack_notes": {
+      "css": "Static SVG map; result card positioned inside a relative wrapper.",
+      "js": "Lookup against a postcode table; no third-party map calls."
+    }
+  },
+  {
+    "id": "hero-civic-plain-notice",
+    "name": "One plain public notice",
+    "kind": "hero",
+    "role": "hero",
+    "family": "civic-plain-notice",
+    "niches": [
+      "civic"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy",
+      "brutal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "poster",
+    "hero_material": "giant-type",
+    "look_family": "brutal-flat",
+    "blueprint": "When there is something the public must know, the first screen is that notice set as a poster: the message at clamp(2.25rem, 7vw, 5.5rem) with text-wrap: balance (Tap water in Riverside is safe to drink again), then issued by, issued at, what to do and where to read more, each a labelled line at 1.0625rem. Plain sans, flat ground, 2px rule frame. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows the notice, its date and what to do.",
+    "mobile": "At 375px the message at clamp(1.75rem, 9vw, 2.5rem).",
+    "a11y": "The notice is the h1; labelled lines as a dl. Reduced motion: nothing animates.",
+    "avoid": "Notices with no issue time, marketing copy in the notice slot, notices left up after they expire.",
+    "stack_notes": {
+      "css": "Grid poster with a solid frame from border tokens.",
+      "js": "Expire the notice server side at its end time."
+    }
+  },
+  {
+    "id": "hero-memorial-single-light",
+    "name": "One light in a dark room",
+    "kind": "hero",
+    "role": "hero",
+    "family": "memorial-single-light",
+    "niches": [
+      "memorial"
+    ],
+    "moods": [
+      "calm",
+      "dark",
+      "warm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "centred",
+    "hero_material": "real-photo",
+    "look_family": "dark-single-accent",
+    "blueprint": "A deep, nearly black ground with one real photograph of a lit candle 18rem wide at the centre, its warm light the only accent on the page. Under it the h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance (We are here, day and night), the 24-hour phone line in tabular figures at 1.5rem, and a link to today's services. Corner radius 0; photo unframed.",
+    "motion": "None.",
+    "still_check": "Any still shows the candle, the heading and the phone number.",
+    "mobile": "At 375px the photo is 12rem wide.",
+    "a11y": "Phone is a tel: link; candle image alt describes it plainly. Contrast of all text on the dark ground at least 7:1. Reduced motion: nothing animates.",
+    "avoid": "Flickering animated flames, stock lilies, script fonts.",
+    "stack_notes": {
+      "css": "Dark ground and accent from colour tokens, never hard-coded.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-memorial-notices-column",
+    "name": "Funeral notices column",
+    "kind": "hero",
+    "role": "hero",
+    "family": "memorial-notices-column",
+    "niches": [
+      "memorial"
+    ],
+    "moods": [
+      "calm",
+      "editorial",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "hairline-newspaper",
+    "blueprint": "The first screen is the notices column as a good newspaper sets it: the h1 Funeral notices at clamp(1.5rem, 3vw, 2.25rem) with text-wrap: balance, then this week's services as entries at 1.0625rem with text-wrap: pretty, each with the full name in small caps, dates of life, service time and place, and a link to the family's notice. Single column 38rem wide between hairlines. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows each notice complete.",
+    "mobile": "Same at 375px.",
+    "a11y": "Entries are articles with h2 names. Reduced motion: nothing animates.",
+    "avoid": "Photo grids of the deceased by default, notices without the family's consent.",
+    "stack_notes": {
+      "css": "Plain flow with hairline borders.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-memorial-first-call",
+    "name": "What to do first",
+    "kind": "hero",
+    "role": "hero",
+    "family": "memorial-first-call",
+    "niches": [
+      "memorial"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "layered",
+    "hero_material": "real-photo",
+    "look_family": "quiet-civic",
+    "blueprint": "For someone whose relative has just died: a real photograph of the funeral home's own quiet front room as the back layer at 40% tone, and over it a solid panel 32rem wide with the h1 at clamp(1.75rem, 4vw, 2.75rem) with text-wrap: balance (Someone has died. Here is what happens next) and 3 numbered steps in plain words with the 24-hour number first. Corner radius 4px on the panel.",
+    "motion": "None.",
+    "still_check": "Any still shows the panel, steps and phone number.",
+    "mobile": "At 375px the photo becomes a 12rem band above the panel.",
+    "a11y": "Steps as an ordered list; phone as tel:. Reduced motion: nothing animates.",
+    "avoid": "Sales language, packages before the steps, or hiding the phone number.",
+    "stack_notes": {
+      "css": "Panel in a relative wrapper over the photo; tones from tokens. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-finance-redesigned-statement",
+    "name": "The statement, made readable",
+    "kind": "hero",
+    "role": "hero",
+    "family": "finance-statement-poster",
+    "niches": [
+      "finance"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy",
+      "editorial"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "poster",
+    "hero_material": "physical-object",
+    "look_family": "warm-paper-serif",
+    "blueprint": "The first screen shows a real customer statement page reset in a reading serif at 1.0625rem with text-wrap: pretty: balance, money in, money out, fees in plain words, beside the h1 at clamp(2rem, 5vw, 3.75rem) with text-wrap: balance (Your statement, in sentences). The page sits on a pale ground 28rem wide with a soft shadow. Corner radius 2px on the page.",
+    "motion": "None.",
+    "still_check": "Any still shows the page legible and the heading.",
+    "mobile": "At 375px the page sits under the heading at full width.",
+    "a11y": "Statement content is real text with headings. Reduced motion: nothing animates.",
+    "avoid": "Blurred fake statements, fees in small print.",
+    "stack_notes": {
+      "css": "Grid poster; page shadow from tokens.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-finance-rates-today",
+    "name": "Today's rates first",
+    "kind": "hero",
+    "role": "hero",
+    "family": "finance-rates-today",
+    "niches": [
+      "finance"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy",
+      "technical"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "quiet-civic",
+    "blueprint": "The h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance names the date, and under it the current rates table: product, rate in tabular figures at 1.5rem, the condition that applies and the date it last changed. 4 to 6 rows 3.5rem tall with 1px rules; a link to the full rate history. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows every rate with its date.",
+    "mobile": "At 375px each row becomes a two-line block.",
+    "a11y": "A real table with headers and a caption. Reduced motion: nothing animates.",
+    "avoid": "Teaser rates without conditions, rates with no change date.",
+    "stack_notes": {
+      "css": "Plain table; tabular-nums.",
+      "js": "Rates rendered at build time from the published rate sheet."
+    }
+  },
+  {
+    "id": "hero-finance-savings-stack",
+    "name": "Savings that stack as you set them",
+    "kind": "hero",
+    "role": "hero",
+    "family": "finance-savings-stack",
+    "niches": [
+      "finance"
+    ],
+    "moods": [
+      "bold",
+      "technical",
+      "dark"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "sticky-stage",
+    "hero_material": "procedural",
+    "look_family": "dark-single-accent",
+    "blueprint": "A drawn stack of coins on a dark ground at block-end grows as the visitor sets a monthly amount and a number of years with two sliders 3rem tall; the total at clamp(2.5rem, 7vw, 5rem) in tabular figures updates from a real compound-interest calculation at today's rate, stated beside it. The h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance. Corner radius 4px on slider thumbs.",
+    "motion": "Coins add one by one as the total grows, 20ms apart, derived from the current value rather than timers.",
+    "still_check": "Any still shows the stack, sliders and total for the current settings.",
+    "mobile": "At 375px sliders stack under the total; the stack is 12rem tall.",
+    "a11y": "Sliders are labelled range inputs with live output text. Reduced motion: stack redraws at the end state.",
+    "avoid": "Projections without the rate and its assumptions, promised returns.",
+    "stack_notes": {
+      "css": "Fallback: a static table of 3 example amounts.",
+      "js": "Render the stack from slider state each frame; cancel the frame loop on unmount."
+    }
+  },
+  {
+    "id": "hero-agency-work-wall",
+    "name": "Wall of the real work",
+    "kind": "hero",
+    "role": "hero",
+    "family": "agency-work-wall",
+    "niches": [
+      "agency"
+    ],
+    "moods": [
+      "bold",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "real-photo",
+    "look_family": "cinematic-film",
+    "blueprint": "The first screen is a wall of 9 to 12 stills from shipped projects at true aspect ratios, packed edge to edge with 4px gaps, with the h1 at clamp(2.25rem, 6vw, 5rem) with text-wrap: balance on a solid block set into the wall where a still would be. Each still names client and year on focus. Corner radius 0.",
+    "motion": "Columns drift at slightly different speeds on scroll (view() timeline), up to 6% of their height.",
+    "still_check": "Any still shows the wall and the heading block complete.",
+    "mobile": "At 375px the wall is 2 columns and does not drift.",
+    "a11y": "Stills are links with client names; heading first in DOM. Reduced motion: no drift.",
+    "avoid": "Mock-up devices floating on gradients, work that is not shipped.",
+    "stack_notes": {
+      "css": "Grid with dense packing; drifting columns over-scanned by the drift distance. Pitfall: over-scan each moving layer by its full travel plus a margin so its edges never enter the frame.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-agency-annotated-brief",
+    "name": "The brief with our notes on it",
+    "kind": "hero",
+    "role": "hero",
+    "family": "agency-annotated-brief",
+    "niches": [
+      "agency"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "layered",
+    "hero_material": "physical-object",
+    "look_family": "risograph-bright",
+    "blueprint": "A scanned client brief page (shared with permission) as the back layer, 36rem wide, with the studio's notes printed over it in a 2-colour overprint: circled phrases, a crossed-out line, a margin note that becomes the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance. Corner radius 0; the page has a deckled edge.",
+    "motion": "Notes draw on in 600ms total as the page enters view, in reading order.",
+    "still_check": "Any still shows the brief and all notes legible.",
+    "mobile": "At 375px the page crops to the annotated paragraph.",
+    "a11y": "Brief text summarised in real text; notes are real text. Reduced motion: notes shown drawn.",
+    "avoid": "Fake briefs, notes that cannot be read.",
+    "stack_notes": {
+      "css": "SVG annotations in a relative wrapper over the scan; ink colours from tokens. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-realestate-street-elevation",
+    "name": "The street, drawn front-on",
+    "kind": "hero",
+    "role": "hero",
+    "family": "realestate-street-elevation",
+    "niches": [
+      "real-estate"
+    ],
+    "moods": [
+      "calm",
+      "editorial"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "object-wrap",
+    "hero_material": "procedural",
+    "look_family": "soft-stone",
+    "blueprint": "A long front elevation drawing of one street, 100% wide and clamp(10rem, 22vh, 16rem) tall, with each house drawn in line and the ones for sale filled in the accent tone; the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance wraps around the rooflines. Each filled house links to its listing with price and bedrooms. Corner radius 0.",
+    "motion": "Filled houses lift 2px on hover.",
+    "still_check": "Any still shows the street, the heading and every marked house.",
+    "mobile": "At 375px the elevation scrolls sideways inside a labelled region.",
+    "a11y": "Marked houses are links with address and price as names. Reduced motion: no lift.",
+    "avoid": "Generic skyline clip art, houses not from the actual street.",
+    "stack_notes": {
+      "css": "SVG elevation; shape-outside for the heading wrap.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-realestate-room-through-day",
+    "name": "One room through the day",
+    "kind": "hero",
+    "role": "hero",
+    "family": "realestate-room-day",
+    "niches": [
+      "real-estate"
+    ],
+    "moods": [
+      "bold",
+      "warm"
+    ],
+    "intensity": "bold",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "sticky-stage",
+    "hero_material": "real-photo",
+    "look_family": "cinematic-film",
+    "blueprint": "One main room of the listing photographed from the same tripod at 5 times of day; scrolling the pinned stage moves through them with the time shown in tabular figures at 1.25rem, so buyers see where light falls. The h1 with address and price at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance. Corner radius 0.",
+    "motion": "Crossfade between photos follows scroll progress across 250vh.",
+    "still_check": "Any still shows one photo complete with its time label.",
+    "mobile": "At 375px the stage is not pinned; 5 photos stack with times.",
+    "a11y": "Each photo has alt naming time and room. Reduced motion: photos stack.",
+    "avoid": "Retouched skies, photos not from the same position.",
+    "stack_notes": {
+      "css": "Fallback: stacked photos.",
+      "js": "Progress from a scroll timeline drives opacity; derive state from progress, release on unmount. Pitfall: render each frame as a pure function of progress or time so seeking and scrolling back land on the same state; never chain setTimeout steps."
+    }
+  },
+  {
+    "id": "hero-legal-deadline-finder",
+    "name": "When is my deadline",
+    "kind": "hero",
+    "role": "hero",
+    "family": "legal-deadline-finder",
+    "niches": [
+      "legal"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "quiet-civic",
+    "blueprint": "First screen answers the question clients panic about: the h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance (Is it too late to act?), a select for matter type and a date field, each 3rem tall with 4px corners, and the general time limit for that matter shown with its legal source and a clear not-advice line and the call-back number. Corner radius 4px on fields.",
+    "motion": "None.",
+    "still_check": "Any still shows the question, fields and the general answer.",
+    "mobile": "Same at 375px.",
+    "a11y": "Labelled fields; the answer is a live region. Reduced motion: nothing animates.",
+    "avoid": "Answers without sources, promising outcomes.",
+    "stack_notes": {
+      "css": "Plain form; :has() for the answer state.",
+      "js": "Small lookup table of limitation periods; no data leaves the page."
+    }
+  },
+  {
+    "id": "hero-legal-file-spines",
+    "name": "Shelf of case file spines",
+    "kind": "hero",
+    "role": "hero",
+    "family": "legal-file-spines",
+    "niches": [
+      "legal"
+    ],
+    "moods": [
+      "bold",
+      "dark",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "poster",
+    "hero_material": "physical-object",
+    "look_family": "dark-single-accent",
+    "blueprint": "A row of 8 to 10 archive file spines photographed on a shelf, each labelled with a practice area at 1rem in a condensed face set vertically, on a dark ground with one accent spine for the current focus area. The h1 at clamp(2.25rem, 6vw, 5rem) with text-wrap: balance sits above. Each spine links to its area. Corner radius 2px on spines.",
+    "motion": "Focused spine slides out 1rem toward block-start in 150ms.",
+    "still_check": "Any still shows every spine label readable.",
+    "mobile": "At 375px spines become a list of horizontal labels.",
+    "a11y": "Spines are links with full area names. Reduced motion: no slide.",
+    "avoid": "Gavels, scales of justice, marble columns.",
+    "stack_notes": {
+      "css": "Flex row; vertical labels via writing-mode; accent from tokens.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-bodyart-healed-daylight",
+    "name": "Healed work in daylight",
+    "kind": "hero",
+    "role": "hero",
+    "family": "bodyart-healed-daylight",
+    "niches": [
+      "body-art"
+    ],
+    "moods": [
+      "calm",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "real-photo",
+    "look_family": "documentary-photo",
+    "blueprint": "A full-bleed daylight photograph of healed tattoo work on real skin, unretouched, with a caption block at block-end inline-start naming the artist, the piece and how long ago it was done, and the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows the photo and caption complete.",
+    "mobile": "At 375px the caption moves under the photo.",
+    "a11y": "Photo alt describes the piece and its placement. Reduced motion: nothing animates.",
+    "avoid": "Fresh glossy work only, filters that hide healing.",
+    "stack_notes": {
+      "css": "Caption in a relative wrapper over the photo; scrim from tokens.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-bodyart-open-books",
+    "name": "Whose books are open",
+    "kind": "hero",
+    "role": "hero",
+    "family": "bodyart-open-books",
+    "niches": [
+      "body-art"
+    ],
+    "moods": [
+      "bold",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "hairline-newspaper",
+    "blueprint": "The h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance, then one row per artist at 1.125rem: name, style in 3 words, books open or closed, next free month in tabular figures and a consult link. Rows 4rem tall between heavy 2px rules. Corner radius 0.",
+    "motion": "Open rows' status word underlines on hover.",
+    "still_check": "Any still shows every artist and status.",
+    "mobile": "At 375px rows become blocks.",
+    "a11y": "Table with caption; status in words. Reduced motion: no underline transition.",
+    "avoid": "Booking badges with no dates, stale status.",
+    "stack_notes": {
+      "css": "Plain table.",
+      "js": "Status from the studio's booking sheet at build time."
+    }
+  },
+  {
+    "id": "hero-venue-layout-capacity",
+    "name": "Layouts with real capacities",
+    "kind": "hero",
+    "role": "hero",
+    "family": "venue-layout-capacity",
+    "niches": [
+      "venue"
+    ],
+    "moods": [
+      "bold",
+      "technical"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "object-wrap",
+    "hero_material": "procedural",
+    "look_family": "technical-blueprint",
+    "blueprint": "A top-down floor plan of the main room, 34rem wide, redrawn as tables, stage and bar for each layout (Seated dinner 120, Standing 200, Ceremony rows 150) chosen with a 3-option segmented control 2.75rem tall with 4px corners. The h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance wraps the plan's outline. Corner radius 4px on the control.",
+    "motion": "Tables slide to new positions in 300ms when the layout changes.",
+    "still_check": "Any still shows one complete layout with its capacity.",
+    "mobile": "At 375px the plan sits under the heading at full width.",
+    "a11y": "Radio group for layouts; capacity in text. Reduced motion: instant swap.",
+    "avoid": "Plans without fire-safe capacities, decorative floor plans.",
+    "stack_notes": {
+      "css": "SVG plan; :has(:checked) swaps layouts.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-venue-ceremony-hour",
+    "name": "The lawn at ceremony hour",
+    "kind": "hero",
+    "role": "hero",
+    "family": "venue-ceremony-hour",
+    "niches": [
+      "venue"
+    ],
+    "moods": [
+      "calm",
+      "warm",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "real-photo",
+    "look_family": "documentary-photo",
+    "blueprint": "A full-bleed photograph of the grounds taken at the hour most ceremonies happen, with a solid block at block-end inline-start listing the next free Saturdays in tabular figures and a viewing-booking link, under the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance. Corner radius 0 on the block.",
+    "motion": "None.",
+    "still_check": "Any still shows the photo, dates and heading.",
+    "mobile": "At 375px the block sits under the photo.",
+    "a11y": "Dates as a list; photo alt names the place and time. Reduced motion: nothing animates.",
+    "avoid": "Stock couples, dates that are not live.",
+    "stack_notes": {
+      "css": "Block in a relative wrapper over the photo.",
+      "js": "Free dates rendered from the booking calendar at build time."
+    }
+  },
+  {
+    "id": "hero-camp-day-bag",
+    "name": "The day bag, laid out",
+    "kind": "hero",
+    "role": "hero",
+    "family": "camp-day-bag",
+    "niches": [
+      "camp"
+    ],
+    "moods": [
+      "calm",
+      "warm",
+      "playful"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "centred",
+    "hero_material": "physical-object",
+    "look_family": "soft-stone",
+    "blueprint": "A top-down photograph 32rem wide of exactly what a child brings for one day (named water bottle, lunch box, sun hat, a laptop for coding weeks), each item numbered with a small label, centred under the h1 at clamp(2rem, 5vw, 3.75rem) with text-wrap: balance. The numbered list repeats under the photo. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows the photo, labels and list.",
+    "mobile": "At 375px the photo is full width and labels move to the list only.",
+    "a11y": "List is real text; photo alt summarises it. Reduced motion: nothing animates.",
+    "avoid": "Stock kids jumping, kit lists only in a PDF.",
+    "stack_notes": {
+      "css": "Labels in a relative wrapper over the photo.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-camp-site-map-dropoff",
+    "name": "Site map with the drop-off gate",
+    "kind": "hero",
+    "role": "hero",
+    "family": "camp-site-map",
+    "niches": [
+      "camp"
+    ],
+    "moods": [
+      "bold",
+      "playful",
+      "trustworthy"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "layered",
+    "hero_material": "procedural",
+    "look_family": "quiet-civic",
+    "blueprint": "A drawn map of the camp site as the back layer with the drop-off gate, pick-up times and the parking route marked, and over it the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance and the week's dates on a solid card 26rem wide. Corner radius 4px on the card.",
+    "motion": "The route line draws from the road to the gate in 800ms on load.",
+    "still_check": "Any still shows the map, gate and card.",
+    "mobile": "At 375px the card sits above a cropped map.",
+    "a11y": "Map aria-hidden; gate address and times in text. Reduced motion: route shown drawn.",
+    "avoid": "Cartoon maps that are not to scale, missing pick-up times.",
+    "stack_notes": {
+      "css": "SVG map; card in a relative wrapper. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-winery-label-poster",
+    "name": "The label as a poster",
+    "kind": "hero",
+    "role": "hero",
+    "family": "winery-label-poster",
+    "niches": [
+      "winery"
+    ],
+    "moods": [
+      "calm",
+      "luxe",
+      "editorial"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "poster",
+    "hero_material": "physical-object",
+    "look_family": "soft-stone",
+    "blueprint": "The current release's actual bottle label photographed flat 24rem wide beside its notes set like a label: vintage at clamp(3rem, 8vw, 6rem) in tabular figures, grape, parcel, bottling date and number of bottles at 1rem with text-wrap: pretty, and an order link. The h1 names the wine with text-wrap: balance. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows the label and all notes.",
+    "mobile": "At 375px notes follow the label.",
+    "a11y": "Label alt names the wine. Reduced motion: nothing animates.",
+    "avoid": "Bottles on gradient splashes, tasting notes in purple prose.",
+    "stack_notes": {
+      "css": "Grid poster.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-winery-harvest-calendar",
+    "name": "Harvest calendar band",
+    "kind": "hero",
+    "role": "hero",
+    "family": "winery-harvest-calendar",
+    "niches": [
+      "winery"
+    ],
+    "moods": [
+      "bold",
+      "playful",
+      "organic"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "risograph-bright",
+    "blueprint": "The h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance, then a 12-month band printed in two flat inks showing what happens in the vineyard and cellar each month (pruning, flowering, harvest, bottling) with this month marked, and visitor events pinned to their dates. Band 100% wide, months 1fr each. Corner radius 0.",
+    "motion": "This month's column fills as the band enters view.",
+    "still_check": "Any still shows all 12 months and the current marker.",
+    "mobile": "At 375px the band becomes a list starting at this month.",
+    "a11y": "Months as a list with headings; events as links. Reduced motion: column shown filled.",
+    "avoid": "Calendars with no real events, months in icons only.",
+    "stack_notes": {
+      "css": "Grid with 12 columns; inks from tokens.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-homeservices-named-van",
+    "name": "The van and who is in it",
+    "kind": "hero",
+    "role": "hero",
+    "family": "homeservices-named-van",
+    "niches": [
+      "home-services"
+    ],
+    "moods": [
+      "bold",
+      "trustworthy",
+      "warm"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "real-photo",
+    "look_family": "documentary-photo",
+    "blueprint": "A full-bleed photograph of the actual van with the technician beside it, named, with a block at block-end inline-start showing today's remaining slots in tabular figures, the call-out fee and a call button 3rem tall with 4px corners, under the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance. Corner radius 4px on the button, 0 on the block.",
+    "motion": "None.",
+    "still_check": "Any still shows the photo, slots and button.",
+    "mobile": "At 375px the block sits under the photo and the call button is full width.",
+    "a11y": "Call button is tel:; slots as text. Reduced motion: nothing animates.",
+    "avoid": "Stock tradespeople with clipboards, slots that are not real.",
+    "stack_notes": {
+      "css": "Block in a relative wrapper over the photo.",
+      "js": "Slots fetched on load; show Call to check when unavailable."
+    }
+  },
+  {
+    "id": "hero-homeservices-price-board",
+    "name": "Fixed prices, painted large",
+    "kind": "hero",
+    "role": "hero",
+    "family": "homeservices-price-board",
+    "niches": [
+      "home-services"
+    ],
+    "moods": [
+      "calm",
+      "brutal",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "poster",
+    "hero_material": "data-image",
+    "look_family": "brutal-flat",
+    "blueprint": "A poster of the 4 most common jobs with fixed prices: each job name at 1.25rem and its price at clamp(2.5rem, 7vw, 5rem) in tabular figures, with what is included in one line at 0.9375rem with text-wrap: pretty. The h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance. Flat ground, heavy 3px rules. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows every job and price.",
+    "mobile": "At 375px jobs stack.",
+    "a11y": "Prices in text including tax. Reduced motion: nothing animates.",
+    "avoid": "From prices, hidden call-out fees.",
+    "stack_notes": {
+      "css": "Grid poster.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-store-true-size",
+    "name": "Product at true size",
+    "kind": "hero",
+    "role": "hero",
+    "family": "store-true-size",
+    "niches": [
+      "store"
+    ],
+    "moods": [
+      "bold",
+      "technical",
+      "minimal"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": true,
+    "composition": "object-wrap",
+    "hero_material": "physical-object",
+    "look_family": "technical-blueprint",
+    "blueprint": "The product photographed beside a drawn ruler and a hand for scale, cut out 30rem wide, with the h1 at clamp(2rem, 5vw, 4rem) and text-wrap: balance wrapping its outline and the real dimensions in tabular figures along the ruler. Price and add-to-bag 3rem tall with 4px corners under it. Corner radius 4px on the button.",
+    "motion": "Ruler ticks draw in 400ms on load.",
+    "still_check": "Any still shows product, ruler, dimensions and button.",
+    "mobile": "At 375px the heading sits above the product.",
+    "a11y": "Dimensions in text; image alt names the product. Reduced motion: ticks shown drawn.",
+    "avoid": "Products floating with no sense of size, fake scale.",
+    "stack_notes": {
+      "css": "shape-outside on the cut-out; ruler as SVG.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-kinetic-timecode-reel",
+    "name": "Reel scrubbed by timecode",
+    "kind": "hero",
+    "role": "hero",
+    "family": "kinetic-timecode-reel",
+    "niches": [
+      "kinetic"
+    ],
+    "moods": [
+      "experimental",
+      "dark",
+      "bold"
+    ],
+    "intensity": "wild",
+    "tier": "js",
+    "headline_interlock": false,
+    "composition": "full-bleed",
+    "hero_material": "video",
+    "look_family": "dark-single-accent",
+    "blueprint": "A full-bleed showreel paused on its strongest frame, with a large timecode at clamp(2rem, 6vw, 5rem) in tabular figures at block-end; scrolling scrubs the reel and the timecode, and the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance names the studio's discipline. Corner radius 0.",
+    "motion": "Scroll position maps to the video's currentTime across 300vh; the timecode is derived from the same value.",
+    "still_check": "Any still shows one complete frame and its timecode.",
+    "mobile": "At 375px the reel plays muted inline with controls instead of scrubbing.",
+    "a11y": "Video has captions and a play button; scrubbing is optional. Reduced motion: poster frame with a play button.",
+    "avoid": "Autoplaying sound, reels with no pause control.",
+    "stack_notes": {
+      "css": "Fallback: poster image with a link to the reel.",
+      "js": "Set currentTime from scroll progress on each frame; pause and release on unmount."
+    }
+  },
+  {
+    "id": "hero-travel-window-view",
+    "name": "The view from the room",
+    "kind": "hero",
+    "role": "hero",
+    "family": "travel-window-view",
+    "niches": [
+      "travel"
+    ],
+    "moods": [
+      "calm",
+      "luxe",
+      "organic"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "layered",
+    "hero_material": "real-photo",
+    "look_family": "soft-stone",
+    "blueprint": "A photograph taken from the actual room's window, framed by the window's own frame as the front layer, with the date it was taken, the room name and tonight's rate on a solid block at block-end inline-start, under the h1 at clamp(2rem, 5vw, 4rem) with text-wrap: balance. Corner radius 0.",
+    "motion": "The view behind the frame shifts 3% as the hero scrolls out.",
+    "still_check": "Any still shows the view, frame and block.",
+    "mobile": "At 375px the frame crops tighter and the block sits under it.",
+    "a11y": "Photo alt names room and view. Reduced motion: no shift.",
+    "avoid": "Views from other rooms, drone shots sold as room views.",
+    "stack_notes": {
+      "css": "Frame layer and view layer in a relative wrapper; view over-scanned by the shift. Pitfall: give the overlay stack an explicit positioning context (a shared grid cell or position: relative parent) so layers align at every size.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-health-next-appointments",
+    "name": "Next appointments by clinician",
+    "kind": "hero",
+    "role": "hero",
+    "family": "health-next-appointments",
+    "niches": [
+      "health"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "soft-stone",
+    "blueprint": "The h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance, then one row per clinician with photo 3rem square, name, what they treat in 4 words, and the next 3 free times as buttons 2.75rem tall with 4px corners. A line under it gives the phone number for urgent care. Corner radius 4px on time buttons, 0 on the photos.",
+    "motion": "None.",
+    "still_check": "Any still shows clinicians and times.",
+    "mobile": "At 375px times wrap under each name.",
+    "a11y": "Time buttons name clinician and time. Reduced motion: nothing animates.",
+    "avoid": "Booking flows before showing any times, stock doctors.",
+    "stack_notes": {
+      "css": "Plain list with flex rows.",
+      "js": "Times fetched from the booking system; fallback phone line."
+    }
+  },
+  {
+    "id": "hero-editorial-front-page",
+    "name": "Front page with a lead photo",
+    "kind": "hero",
+    "role": "hero",
+    "family": "editorial-front-page",
+    "niches": [
+      "editorial"
+    ],
+    "moods": [
+      "editorial",
+      "bold",
+      "brutal"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "poster",
+    "hero_material": "real-photo",
+    "look_family": "brutal-flat",
+    "blueprint": "A front page: the lead story's real photograph 60% wide, its headline at clamp(2.25rem, 6vw, 5rem) with text-wrap: balance, a standfirst at 1.125rem with text-wrap: pretty, and 3 secondary stories as headline plus one line beneath a heavy 4px rule. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows lead and secondary stories.",
+    "mobile": "At 375px secondary stories follow the lead.",
+    "a11y": "Stories are articles with links on headlines. Reduced motion: nothing animates.",
+    "avoid": "Card grids with excerpts cut mid-sentence.",
+    "stack_notes": {
+      "css": "Grid with named areas.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-restaurant-pass-ticket",
+    "name": "Tonight's ticket at the pass",
+    "kind": "hero",
+    "role": "hero",
+    "family": "restaurant-pass-ticket",
+    "niches": [
+      "restaurant"
+    ],
+    "moods": [
+      "bold",
+      "warm",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "centred",
+    "hero_material": "physical-object",
+    "look_family": "hairline-newspaper",
+    "blueprint": "A printed kitchen ticket photographed on the pass, centred 22rem wide, reset as live text: tonight's date, tables left in tabular figures, the dish the kitchen is proudest of tonight, and a book link. The h1 at clamp(2rem, 5vw, 3.75rem) with text-wrap: balance sits above it. Corner radius 0; ticket has a torn edge.",
+    "motion": "Ticket slides up 1rem on load in 300ms.",
+    "still_check": "Any still shows the ticket legible.",
+    "mobile": "Same at 375px with ticket full width.",
+    "a11y": "Ticket content is real text. Reduced motion: no slide.",
+    "avoid": "Fake scarcity, tickets that never change.",
+    "stack_notes": {
+      "css": "Torn edge via mask-image.",
+      "js": "Tables left from the booking system at request time."
+    }
+  },
+  {
+    "id": "hero-nonprofit-where-it-goes",
+    "name": "Where each pound goes",
+    "kind": "hero",
+    "role": "hero",
+    "family": "nonprofit-where-it-goes",
+    "niches": [
+      "nonprofit"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "stacked",
+    "hero_material": "data-image",
+    "look_family": "quiet-civic",
+    "blueprint": "The h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance, then one horizontal bar 100% wide and 3rem tall divided by last year's audited spend per pound (programmes, fundraising, running costs), each segment labelled in pence in tabular figures, with a link to the accounts. Corner radius 0.",
+    "motion": "None.",
+    "still_check": "Any still shows the bar and every label.",
+    "mobile": "At 375px labels sit under the bar as a list.",
+    "a11y": "Bar aria-hidden; a list states the same numbers. Reduced motion: nothing animates.",
+    "avoid": "Numbers without the year or source, rounding that hides costs.",
+    "stack_notes": {
+      "css": "Flex bar with flex-basis from data.",
+      "js": "None required."
+    }
+  },
+  {
+    "id": "hero-docs-one-command",
+    "name": "One command to start",
+    "kind": "hero",
+    "role": "hero",
+    "family": "docs-one-command",
+    "niches": [
+      "docs"
+    ],
+    "moods": [
+      "calm",
+      "technical",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "composition": "centred",
+    "hero_material": "data-image",
+    "look_family": "technical-blueprint",
+    "blueprint": "Centred h1 at clamp(1.75rem, 4vw, 3rem) with text-wrap: balance, and under it the one install command in monospace at 1.125rem inside a block 36rem wide with a Copy button 2.5rem tall, the current version and date, and 3 links (Quickstart, API, Examples). Corner radius 4px on the command block.",
+    "motion": "Copy shows Copied for 1.5s.",
+    "still_check": "Any still shows the command, version and links.",
+    "mobile": "At 375px the command wraps with a visible break marker.",
+    "a11y": "Copy button with live-region feedback. Reduced motion: no transition.",
+    "avoid": "Commands that are out of date, curl pipe sh without a checksum note.",
+    "stack_notes": {
+      "css": "Plain block; tokens for code background.",
+      "js": "navigator.clipboard with fallback select."
     }
   }
 ]

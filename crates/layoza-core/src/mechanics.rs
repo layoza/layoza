@@ -138,6 +138,10 @@ pub struct Mechanic {
     /// `hairline-newspaper`, ...). Families are fine; repeating one across a deal is not.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub look_family: String,
+    /// Conditional mechanics: dealt only when the brief contains at least one of these words or
+    /// phrases (a bilingual nav needs a brief that mentions languages). Empty means always eligible.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub requires_signal: Vec<String>,
     pub blueprint: String,
     /// What moves, mapped to scroll progress (never velocity).
     pub motion: String,
@@ -439,6 +443,11 @@ pub fn niche_signal(brief: &str) -> Vec<String> {
         niches.retain(|n| SURFACE_NICHES.contains(&n.as_str()) || !NARROW_TRADES.contains(&n.as_str()));
     }
     niches
+}
+
+/// A conditional mechanic is eligible only when the brief carries one of its signal words.
+fn signal_met(m: &Mechanic, brief_tokens: &[String]) -> bool {
+    m.requires_signal.is_empty() || m.requires_signal.iter().any(|w| hit(brief_tokens, w))
 }
 
 /// True when the word at `pos` follows `like` / `as` (optionally with an article): a comparison.
@@ -1077,6 +1086,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             && m.tier <= max_tier
             && !opts.exclude_ids.iter().any(|x| x.trim().eq_ignore_ascii_case(&m.id))
             && !opts.exclude_families.iter().any(|x| x == &m.family)
+            && signal_met(m, &toks)
     };
     let avoided: Vec<&str> = opts
         .exclude_ids
@@ -1596,6 +1606,44 @@ mod tests {
         assert_eq!(detect_niches("funeral home").first().map(String::as_str), Some("memorial"));
         assert_eq!(normalize_niche("funeral home"), "memorial");
         assert_eq!(normalize_niche("electrician"), "home-services");
+    }
+
+    #[test]
+    fn every_niche_has_hero_depth_and_look_spread() {
+        for n in NICHES.iter().filter(|n| **n != "any") {
+            let heroes: Vec<&Mechanic> =
+                catalogue().iter().filter(|m| m.kind == MechanicKind::Hero && m.niches.iter().any(|x| x == n)).collect();
+            let looks: HashSet<&str> = heroes.iter().map(|m| m.look_family.as_str()).collect();
+            assert!(heroes.len() >= 4 && looks.len() >= 2, "{n}: {} heroes, {} looks", heroes.len(), looks.len());
+        }
+        for n in ["civic", "memorial"] {
+            let calm: HashSet<&str> = catalogue()
+                .iter()
+                .filter(|m| m.kind == MechanicKind::Hero && m.intensity == Intensity::Calm && m.niches.iter().any(|x| x == n))
+                .map(|m| m.look_family.as_str())
+                .collect();
+            assert!(calm.len() >= 4, "{n}: calm heroes span only {} looks", calm.len());
+        }
+    }
+
+    #[test]
+    fn conditional_furniture_needs_its_signal() {
+        let bilingual = "nav-bilingual-mirrored";
+        assert!(!get_mechanic(bilingual).expect("entry").requires_signal.is_empty());
+        for m in catalogue() {
+            assert!(m.requires_signal.iter().all(|w| !w.trim().is_empty()), "{}: blank signal", m.id);
+        }
+        // Without the signal it is never dealt, whatever the seed or niche.
+        for brief in ["neighbourhood bakery", "municipal water utility", "seafood restaurant", "a website for my project"] {
+            for seed in 0..12 {
+                let d = deal_mechanics(brief, None, None, 6, seed);
+                let dealt = all(&d).into_iter().chain(&d.nav).chain(&d.footer).any(|m| !m.requires_signal.is_empty());
+                assert!(!dealt, "{brief} seed {seed}: conditional mechanic dealt without its signal");
+            }
+        }
+        // With the signal it is eligible, and some seed deals it as the nav.
+        let brief = "bilingual Arabic and English community centre";
+        assert!((0..24).any(|seed| deal_mechanics(brief, None, None, 4, seed).nav.is_some_and(|m| m.id == bilingual)));
     }
 
     #[test]
