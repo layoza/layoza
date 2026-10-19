@@ -20,3 +20,4 @@ vendor/
 
 # Local working notes (handoff, task list); never published
 .internal/
+.layoza/looks.jsonl

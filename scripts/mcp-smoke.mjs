@@ -117,7 +117,7 @@ try {
   else console.log(`prompts/get     ok  art-direct, ${ptext.split(/\s+/).length} words, UTF-8 intact`);
 
   // Read-only call: Layoza's mechanics catalogue, no files touched
-  const call = await request("tools/call", { name: "deal_mechanics", arguments: { brief: "seafood restaurant", count: 2 } });
+  const call = await request("tools/call", { name: "deal_mechanics", arguments: { brief: "seafood restaurant", count: 2, ledger: false } });
   const text = call.result?.content?.find((c) => c.type === "text")?.text;
   if (call.error || call.result?.isError || !text) fail(`tools/call deal_mechanics failed: ${JSON.stringify(call.error ?? call.result)}`);
   else console.log(`tools/call      ok  deal_mechanics returned ${text.length} chars`);
