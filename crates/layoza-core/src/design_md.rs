@@ -9,16 +9,33 @@ use crate::dna::SiteDna;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+/// The nine standard DESIGN.md sections in order (numbered headings such as `## 2. Color Palette
+/// & Roles` match too). Layoza's own sections (Motion, Variants, Brand, Decisions) follow them.
 pub const CANONICAL_SECTIONS: &[(&str, &[&str])] = &[
-    ("Overview", &["Overview", "Brand & Style"]),
-    ("Colors", &["Colors"]),
-    ("Typography", &["Typography"]),
-    ("Layout", &["Layout", "Layout & Spacing"]),
-    ("Elevation & Depth", &["Elevation & Depth", "Elevation"]),
-    ("Shapes", &["Shapes"]),
-    ("Components", &["Components"]),
+    ("Visual Theme & Atmosphere", &["Visual Theme & Atmosphere", "Overview", "Brand & Style"]),
+    ("Color Palette & Roles", &["Color Palette & Roles", "Colors", "Colours"]),
+    ("Typography Rules", &["Typography Rules", "Typography"]),
+    ("Component Stylings", &["Component Stylings", "Components"]),
+    ("Layout Principles", &["Layout Principles", "Layout", "Layout & Spacing"]),
+    ("Depth & Elevation", &["Depth & Elevation", "Elevation & Depth", "Elevation", "Shapes"]),
     ("Do's and Don'ts", &["Do's and Don'ts", "Dos and Donts"]),
+    ("Responsive Behavior", &["Responsive Behavior", "Responsive Behaviour", "Responsive"]),
+    ("Agent Prompt Guide", &["Agent Prompt Guide"]),
 ];
+
+/// The earlier eight-section order, still accepted so existing files do not start failing.
+const LEGACY_ORDER: &[&str] = &["Overview", "Colors", "Typography", "Layout", "Elevation & Depth", "Shapes", "Components", "Do's and Don'ts"];
+
+/// Strips a leading `N.` / `N)` number from a heading.
+fn heading_name(h: &str) -> &str {
+    let t = h.trim();
+    let rest = t.trim_start_matches(|c: char| c.is_ascii_digit());
+    if rest.len() < t.len() {
+        rest.trim_start_matches(['.', ')']).trim()
+    } else {
+        t
+    }
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DesignMdFinding {
@@ -134,75 +151,161 @@ pub fn generate_design_md(dna: &SiteDna) -> String {
     out.push_str("    padding: \"12px\"\n");
     out.push_str("---\n\n");
 
-    // Canonical 8 sections in strict order
-    out.push_str("## Overview\n\n");
+    out.push_str(&design_md_body(dna, &bg_key, &primary_key));
+    out
+}
+
+fn color_role_var(name: &str, role: &str) -> String {
+    let n = format!("{} {}", name, role).to_ascii_lowercase();
+    let r = if n.contains("bg") || n.contains("background") || n.contains("canvas") {
+        "background"
+    } else if n.contains("surface") || n.contains("card") || n.contains("panel") {
+        "surface"
+    } else if n.contains("muted") || n.contains("secondary text") || n.contains("mute") {
+        "text-muted"
+    } else if n.contains("accent") || n.contains("cta") || n.contains("brand") {
+        "accent"
+    } else if n.contains("border") || n.contains("line") || n.contains("rule") {
+        "border"
+    } else if n.contains("ink") || n.contains("text") || n.contains("fg") || n.contains("primary") {
+        "text"
+    } else {
+        "extra"
+    };
+    format!("--color-{}", if r == "extra" { sanitize_key(name) } else { r.to_string() })
+}
+
+/// The Markdown body: the nine standard sections in order, then Layoza's own sections.
+fn design_md_body(dna: &SiteDna, bg_key: &str, primary_key: &str) -> String {
+    let mut out = String::new();
+    let dl = &dna.dials;
+    let name = &dna.project_name;
+    let first_font = |role: &str| dna.typography.iter().find(|t| t.role.to_ascii_lowercase().contains(role)).map(|t| t.font_family.clone());
+    let display = first_font("h1").or_else(|| first_font("display")).or_else(|| dna.typography.first().map(|t| t.font_family.clone())).unwrap_or_else(|| "system-ui".into());
+    let body = first_font("body").unwrap_or_else(|| display.clone());
+
+    out.push_str("## 1. Visual Theme & Atmosphere\n\n");
+    let density = match dl.visual_density { 0..=3 => "airy, gallery-like spacing", 4..=6 => "balanced spacing", _ => "dense, information-first spacing" };
+    let variance = match dl.design_variance { 0..=3 => "a strict, symmetric grid", 4..=6 => "a measured grid with occasional breaks", _ => "asymmetric, editorial composition" };
+    let motion = match dl.motion_intensity { 0..=2 => "nearly still", 3..=6 => "purposeful transitions", _ => "choreographed, scroll-led motion" };
     out.push_str(&format!(
-        "`{}` uses the `{}` framework with Design Variance `{}/10`, Motion Intensity `{}/10`, and Visual Density `{}/10`. Preservation mode is `{}`.\n\n",
-        dna.project_name,
-        dna.framework,
-        dna.dials.design_variance,
-        dna.dials.motion_intensity,
-        dna.dials.visual_density,
-        dna.preservation_mode
+        "`{}` ({} framework) reads as {}, {} and {}. Display type is {}; body type is {}. Dials: variance {}/10, motion {}/10, density {}/10. Preservation mode: `{}`.\n\n",
+        name, dna.framework, variance, density, motion, display, body, dl.design_variance, dl.motion_intensity, dl.visual_density, dna.preservation_mode
     ));
 
-    out.push_str("## Colors\n\n");
+    out.push_str("## 2. Color Palette & Roles\n\n");
+    out.push_str("| Token | CSS variable | Hex | Role | Source |\n|---|---|---|---|---|\n");
     for c in &dna.colors {
-        out.push_str(&format!(
-            "- **{} (`{}`)**: {} _(Source: `{}`, Tier: `{:?}`)_\n",
-            c.name, c.value, c.role, c.source, c.tier
-        ));
+        out.push_str(&format!("| {} | `{}` | `{}` | {} | `{}` ({:?}) |\n", c.name, color_role_var(&c.name, &c.role), c.value, c.role, c.source, c.tier));
     }
-    out.push('\n');
+    out.push_str(&format!("\nText `{{colors.{}}}` on `{{colors.{}}}` is the base pair; every text pair keeps at least 4.5:1 contrast.\n\n", primary_key, bg_key));
 
-    out.push_str("## Typography\n\n");
+    out.push_str("## 3. Typography Rules\n\n");
     for t in &dna.typography {
         out.push_str(&format!(
             "- **{}**: `{}` at `{}` (weight `{}`, line-height `{}`, tracking `{}`)\n",
             t.role, t.font_family, t.font_size, t.font_weight, t.line_height, t.letter_spacing
         ));
     }
-    out.push('\n');
+    out.push_str("- Body measure 45-75 characters; multi-line display headings keep line-height at 1.04 or more; functional text never below 11px.\n\n");
 
-    out.push_str("## Layout\n\n");
+    out.push_str("## 4. Component Stylings\n\n");
+    let radius = dna.radii_scale.values().next().cloned().unwrap_or_else(|| "8px".into());
     out.push_str(&format!(
-        "- **Max Content Widths**: {}\n",
-        if dna.content_max_widths.is_empty() {
-            "`1280px`".to_string()
-        } else {
-            dna.content_max_widths.join(", ")
-        }
+        "- **button-primary**: `{{colors.{}}}` fill, `{{colors.{}}}` label, radius `{}`. States: hover (darken or lift 1 step), focus-visible (2px outline offset 2px, never removed), active (pressed, no layout shift), disabled (reduced contrast plus `aria-disabled`), loading (label kept, spinner beside it).\n",
+        primary_key, bg_key, radius
     ));
-    out.push_str(&format!(
-        "- **Grid Systems**: {}\n\n",
-        if dna.grid_systems.is_empty() {
-            "CSS Grid + Flexbox".to_string()
-        } else {
-            dna.grid_systems.join(", ")
-        }
-    ));
+    out.push_str("- **links**: underlined in body copy; hover and focus-visible change more than colour alone.\n");
+    out.push_str("- **inputs**: visible label, 44px target, error text tied with `aria-describedby`, error state not shown by colour alone.\n");
+    out.push_str("- **cards / panels**: one radius and one border or shadow style per surface level; no nested cards.\n\n");
 
-    out.push_str("## Elevation & Depth\n\n");
+    out.push_str("## 5. Layout Principles\n\n");
+    out.push_str(&format!("- **Max content widths**: {}\n", if dna.content_max_widths.is_empty() { "`1280px`".to_string() } else { dna.content_max_widths.join(", ") }));
+    out.push_str(&format!("- **Grid systems**: {}\n", if dna.grid_systems.is_empty() { "CSS Grid + Flexbox".to_string() } else { dna.grid_systems.join(", ") }));
+    out.push_str(&format!("- **Spacing scale**: {}\n", dna.spacing_scale.iter().map(|(k, v)| format!("{k} `{v}`")).collect::<Vec<_>>().join(", ")));
+    out.push_str("- Every gap and padding comes from the spacing scale; sections differ in rhythm on purpose, not by accident.\n\n");
+
+    out.push_str("## 6. Depth & Elevation\n\n");
+    if dna.shadows.is_empty() {
+        out.push_str("- Flat: depth comes from surface colour steps and borders, not shadows.\n");
+    }
     for (k, v) in &dna.shadows {
         out.push_str(&format!("- **{}**: `{}`\n", k, v));
     }
-    out.push('\n');
+    out.push_str(&format!("- **Radii**: {}\n\n", dna.radii_scale.iter().map(|(k, v)| format!("{k} `{v}`")).collect::<Vec<_>>().join(", ")));
 
-    out.push_str("## Shapes\n\n");
-    for (k, v) in &dna.radii_scale {
-        out.push_str(&format!("- **{}**: `{}`\n", k, v));
+    out.push_str("## 7. Do's and Don'ts\n\n");
+    out.push_str("- **Do**: reuse these tokens, spacing rhythm and component hierarchy for every new section or page.\n");
+    out.push_str("- **Do**: honour `prefers-reduced-motion: reduce` and WCAG 2.2 AA contrast; keep essential text visible without JavaScript.\n");
+    out.push_str("- **Don't**: add a second CSS framework, unrequested purple gradients, glass panels or nested cards.\n");
+    out.push_str("- **Don't**: invent statistics, reviews or client logos; use honest placeholders until real content exists.\n\n");
+
+    out.push_str("## 8. Responsive Behavior\n\n");
+    if dna.breakpoints.is_empty() {
+        out.push_str("- Breakpoints: 375px (phone), 768px (tablet), 1440px (desktop); fluid type with `clamp()` between them.\n");
+    } else {
+        out.push_str(&format!("- Breakpoints: {}\n", dna.breakpoints.iter().map(|(k, v)| format!("{k} `{v}`")).collect::<Vec<_>>().join(", ")));
     }
-    out.push('\n');
+    out.push_str("- No horizontal scroll at any width; touch targets at least 24px (44px for primary actions); navigation collapses into an accessible menu with focus trapping.\n");
+    out.push_str("- Right-to-left pages use logical properties (`margin-inline`, `inset-inline`, `text-align: start`) and mirror the layout.\n\n");
 
-    out.push_str("## Components\n\n");
-    out.push_str("- **button-primary**: Primary interactive call-to-action using brand accent and accessible foreground contrast.\n\n");
+    out.push_str("## 9. Agent Prompt Guide\n\n");
+    out.push_str(&format!(
+        "When asked to build or change UI for `{}`: read this file first, use only the tokens above (`{}` text on `{}` ground, {} / {}), reuse existing components before adding new ones, keep the motion level at {}/10, and verify with `layoza verify .` before handing back. Quick prompt: \"Build <section> for {} using DESIGN.md tokens, the {} type pairing and its component states; no new colours or fonts.\"\n\n",
+        name, primary_key, bg_key, display, body, dl.motion_intensity, name, display
+    ));
 
-    out.push_str("## Do's and Don'ts\n\n");
-    out.push_str("- **Do**: Preserve existing design tokens, spacing rhythm, and component hierarchy when adding sections or pages.\n");
-    out.push_str("- **Do**: Honor `prefers-reduced-motion: reduce` and maintain WCAG 2.2 AA contrast ratios.\n");
-    out.push_str("- **Don't**: Introduce conflicting CSS frameworks, unrequested SaaS purple gradients, or nested card clutter.\n");
-
+    // Layoza's own sections follow the nine standard ones.
+    out.push_str("## Motion\n\n");
+    out.push_str(&format!(
+        "- Intensity {}/10. Durations and easings live in MOTION.md when it exists. Every animation honours reduced motion and cleans up on unmount.\n\n",
+        dl.motion_intensity
+    ));
+    out.push_str("## Variants\n\n");
+    out.push_str("Token deltas from the base above; anything not listed stays the same.\n\n");
+    out.push_str(&format!(
+        "- **dark**: `{{colors.{bg}}}` becomes the text colour and `{{colors.{fg}}}` the ground; surfaces step up in lightness instead of using shadows; re-check every text pair at 4.5:1. Strategy found: {}.\n",
+        if dna.dark_mode_strategy.is_empty() { "none" } else { dna.dark_mode_strategy.as_str() },
+        bg = bg_key,
+        fg = primary_key
+    ));
+    out.push_str("- **light**: the base tokens.\n");
+    out.push_str("- **compact**: spacing scale x0.75, body line-height -0.1, control height 36px (targets stay at least 24px).\n");
+    out.push_str("- **comfortable**: spacing scale x1.25, body size +1px, control height 48px.\n\n");
+    out.push_str("## Brand\n\n");
+    out.push_str("- Logo, product images and UI screenshots are the brand's first assets; see BRAND.md and `.layoza/brand-spec.md` when they exist.\n\n");
+    out.push_str("## Decisions\n\n");
+    if dna.decisions.is_empty() {
+        out.push_str("- None recorded yet.\n");
+    }
+    for d in dna.decisions.iter().take(20) {
+        out.push_str(&format!("- {}\n", serde_json::to_string(d).unwrap_or_default().replace('\n', " ")));
+    }
     out
+}
+
+/// A per-project skill that loads this project's look in any future agent session.
+pub fn generate_project_skill_md(dna: &SiteDna) -> String {
+    let name = sanitize_key(&dna.project_name);
+    let name = if name.is_empty() { "project".to_string() } else { name };
+    let colors: Vec<String> = dna.colors.iter().take(8).map(|c| format!("`{}` {} ({})", c.name, c.value, c.role)).collect();
+    let fonts: Vec<String> = dna.typography.iter().take(4).map(|t| format!("{}: {}", t.role, t.font_family)).collect();
+    format!(
+        "---\nname: \"{name}-look\"\ndescription: \"Loads the {proj} visual system (tokens, type, components and motion level) before any UI work on this project.\"\n---\n\n\
+         # {proj} look\n\n\
+         Use this whenever you build or change UI for {proj}.\n\n\
+         1. Read DESIGN.md in the project root; it is the source of truth. This file is only a summary.\n\
+         2. Colours: {colors}.\n\
+         3. Type: {fonts}.\n\
+         4. Motion intensity {motion}/10; honour reduced motion.\n\
+         5. Reuse existing components; new values need a DESIGN.md entry first.\n\
+         6. Before handing back, run `layoza verify .` and fix or report every failure.\n",
+        name = name,
+        proj = dna.project_name.replace('"', "'"),
+        colors = if colors.is_empty() { "see DESIGN.md".into() } else { colors.join(", ") },
+        fonts = if fonts.is_empty() { "see DESIGN.md".into() } else { fonts.join(", ") },
+        motion = dna.dials.motion_intensity
+    )
 }
 
 fn sanitize_key(input: &str) -> String {
@@ -393,6 +496,9 @@ pub fn lint_design_md(content: &str) -> DesignMdLintReport {
     // Check duplicate headings & canonical section order
     let mut seen_headings = Vec::new();
     let mut last_canonical_idx: Option<usize> = None;
+    // Files in the earlier eight-section order stay valid.
+    let legacy_idx: Vec<usize> = parsed.headings.iter().filter_map(|h| LEGACY_ORDER.iter().position(|l| l.eq_ignore_ascii_case(heading_name(h)))).collect();
+    let legacy_order_ok = legacy_idx.len() >= 2 && legacy_idx.windows(2).all(|w| w[0] < w[1]);
     for h in &parsed.headings {
         if seen_headings.iter().any(|s: &String| s.eq_ignore_ascii_case(h)) {
             findings.push(DesignMdFinding {
@@ -403,13 +509,14 @@ pub fn lint_design_md(content: &str) -> DesignMdLintReport {
         }
         seen_headings.push(h.clone());
 
+        let h = heading_name(h);
         if let Some((canon_idx, (canon_name, _))) = CANONICAL_SECTIONS
             .iter()
             .enumerate()
             .find(|(_, (_, aliases))| aliases.iter().any(|a| a.eq_ignore_ascii_case(h)))
         {
             if let Some(prev) = last_canonical_idx {
-                if canon_idx < prev {
+                if canon_idx < prev && !legacy_order_ok {
                     findings.push(DesignMdFinding {
                         severity: "error".to_string(),
                         path: format!("sections.{}", h),
@@ -521,5 +628,36 @@ pub fn diff_design_md(before_content: &str, after_content: &str) -> DesignMdDiff
         before_summary: b_lint.summary,
         after_summary: a_lint.summary,
         regression,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn design_md_has_the_nine_standard_sections_in_order_then_layoza_extras() {
+        let dir = std::env::temp_dir().join(format!("layoza_dmd9_{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let (dna, _) = crate::inspector::inspect_project(&dir, None, false).unwrap();
+        let md = generate_design_md(&dna);
+        let mut last = 0;
+        for (name, _) in CANONICAL_SECTIONS {
+            let at = md.find(&format!(". {}\n", name)).unwrap_or_else(|| panic!("missing {name}"));
+            assert!(at > last, "{name} out of order");
+            last = at;
+        }
+        for extra in ["## Motion", "## Variants", "## Brand", "## Decisions"] {
+            assert!(md.find(extra).unwrap() > last, "{extra} must follow the standard sections");
+        }
+        assert!(md.contains("**dark**") && md.contains("**compact**") && md.contains("--color-"));
+        assert!(lint_design_md(&md).valid);
+        // Files in the earlier eight-section order stay valid.
+        let legacy = "---\ncolors:\n  ink: \"#111111\"\n---\n## Overview\n## Colors\n## Typography\n## Layout\n## Elevation & Depth\n## Shapes\n## Components\n## Do's and Don'ts\n";
+        assert!(lint_design_md(legacy).valid, "{:?}", lint_design_md(legacy).findings);
+        let skill = generate_project_skill_md(&dna);
+        assert!(skill.starts_with("---\nname: \"") && skill.contains("DESIGN.md"));
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }

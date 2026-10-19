@@ -14,6 +14,7 @@ pub mod installer;
 pub mod inspector;
 pub mod intelligence;
 pub mod mechanics;
+pub mod process;
 pub mod qa;
 pub mod verifier;
 

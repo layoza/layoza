@@ -91,6 +91,10 @@ pub struct CreativeDirection {
     /// Dealt mechanics for this direction: 1 hero + 2 signature sections (`layoza mechanics show <id>`).
     #[serde(default)]
     pub mechanics: Vec<crate::mechanics::MechanicRef>,
+    /// What the hero is made of (real photo, data as image, procedural texture, physical object,
+    /// giant type). The three directions are never all pure typography.
+    #[serde(default)]
+    pub hero_material: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -112,6 +116,20 @@ pub struct DesignRecommendation {
     pub preservation_enforced: bool,
     pub directions: Vec<CreativeDirection>,
     pub workflow_guidance: Vec<String>,
+    /// `page` or `component`. A component brief skips page-level steps (hero, three directions)
+    /// but keeps tokens, states, accessibility and motion rules.
+    #[serde(default)]
+    pub scope: String,
+    /// Set when no library pick fits a brief with strong creative intent: the made-to-measure
+    /// protocol to follow instead of forcing a library direction.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub custom_route: Option<String>,
+    /// Plain-words history of this project's recent looks and what this run picks from.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rotation: Option<String>,
+    /// The user's recorded taste (from `.layoza/taste.md`), word for word.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub taste: Vec<String>,
 }
 
 /// Brief-derived guidance that pushes a design away from category defaults toward the brand's own world.
@@ -233,7 +251,8 @@ pub fn wcag_contrast(fg: &str, bg: &str) -> Option<f64> {
 /// Replaces the hand-written contrast figure with the computed one and flags accents that are unsafe for text.
 /// Deals each direction its own hero + 2 signature mechanics, at the direction's motion dial and with
 /// no mechanism family shared between directions. Existing sites (Mode B/C) are capped by their DNA.
-fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, mode: OperatingMode, existing_dna: Option<&SiteDna>, variant: u64, compositions: &[&str]) {
+#[allow(clippy::too_many_arguments)]
+fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &[String], mode: OperatingMode, existing_dna: Option<&SiteDna>, variant: u64, compositions: &[&str], recent_ids: &[String]) {
     use crate::mechanics::{deal_mechanics_with, DealOptions, ExistingSite, Intensity, MechanicRef};
     let existing = match mode {
         OperatingMode::ExtendExisting | OperatingMode::ImproveExisting => existing_dna.map(|d| ExistingSite::from_dna(d, "SITE-DNA")),
@@ -255,6 +274,9 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, mode: Ope
             prefer_composition: compositions.get(i).map(|c| c.to_string()),
             exclude_compositions: used_compositions.clone(),
             hero_offset: variant as usize,
+            // One niche signal: the deal reads the trade exactly as the design system did.
+            niches: Some(niches.to_vec()),
+            recent_ids: recent_ids.to_vec(),
             ..Default::default()
         });
         d.mechanics = deal.hero.iter().chain(&deal.signature).map(MechanicRef::from).collect();
@@ -350,6 +372,16 @@ pub struct BriefSignals {
     /// directions' pairings are only fallbacks.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub brief_fonts: Vec<String>,
+    /// Catalogue niches the brief names (`mechanics::detect_niches`): the one niche signal shared by
+    /// `design-system` and `deal`, so both read the same trade. `niche_tags` are palette families only.
+    #[serde(default)]
+    pub niches: Vec<String>,
+    /// The brief's own nouns (heuristic noun phrases, no trade table). Map every mechanic onto them.
+    #[serde(default)]
+    pub brief_objects: Vec<String>,
+    /// The visitor's action as the brief words it; absent when the brief names none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub brief_action: Option<String>,
 }
 
 /// Families recognised when a brief names its own type. Longer names first so "Geist Mono" wins
@@ -454,6 +486,23 @@ const NICHE_LEXICON: &[(&str, &str)] = &[
     ("perfume", "luxe"), ("couture", "luxe"),
 ];
 
+/// True when the brief names a right-to-left language or direction (Arabic, Hebrew, Persian/Farsi,
+/// Urdu; `lang="ar|he|fa|ur"`, `dir="rtl"`, "RTL", "right-to-left").
+pub fn is_rtl_brief(query: &str) -> bool {
+    let q = query.to_lowercase();
+    let toks = tokenize(&q);
+    let words = ["arabic", "hebrew", "persian", "farsi", "urdu", "rtl", "right-to-left"];
+    let compact: String = q.chars().filter(|c| !c.is_whitespace() && *c != '"' && *c != '\'').collect();
+    words.iter().any(|w| keyword_hit(&toks, w))
+        || q.contains("right-to-left")
+        || compact.contains("dir=rtl")
+        || ["ar", "he", "fa", "ur"].iter().any(|l| {
+            [format!("lang={l}"), format!("lang:{l}"), format!("locale={l}"), format!("locale:{l}")].iter().any(|p| {
+                compact.match_indices(p.as_str()).any(|(i, _)| !compact[i + p.len()..].starts_with(|c: char| c.is_ascii_alphabetic()))
+            })
+        })
+}
+
 /// Reads surface, niche families, moods and named constraints from the brief.
 pub fn brief_signals(query: &str) -> BriefSignals {
     let tokens = tokenize(query);
@@ -557,10 +606,16 @@ pub fn brief_signals(query: &str) -> BriefSignals {
         constraints.push("task-ui (no scroll choreography)".into());
         cap(4);
     }
+    if is_rtl_brief(query) {
+        constraints.push("rtl (logical CSS properties, mirrored layout)".into());
+    }
 
     let brief_colors = brief_hex_colors(query);
     let brief_fonts = brief_font_names(query);
-    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_fonts }
+    let niches = crate::mechanics::niche_signal(query);
+    let brief_objects = crate::mechanics::brief_objects(query);
+    let brief_action = crate::mechanics::brief_action(query);
+    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_fonts, niches, brief_objects, brief_action }
 }
 
 /// Applies the brief's motion bias and ceiling to a direction's motion dial.
@@ -1513,6 +1568,86 @@ pub fn recommend_design_variant(
     override_dials: Option<DesignDials>,
     variant: u64,
 ) -> DesignRecommendation {
+    recommend_design_steered(raw_query, mode, existing_dna, override_dials, variant, &[])
+}
+
+/// The looks (palette, type, hero, layout, mechanics) of a recommendation's directions, for the
+/// project's look ledger.
+pub fn looks_of(rec: &DesignRecommendation, run: &str) -> Vec<crate::baseline::Look> {
+    rec.directions
+        .iter()
+        .map(|d| crate::baseline::Look {
+            run: run.to_string(),
+            source: "design-system".into(),
+            palette: Some(d.palette.id.clone()),
+            typography: Some(d.typography.id.clone()),
+            hero: d.mechanics.iter().find(|m| m.kind == crate::mechanics::MechanicKind::Hero).map(|m| m.id.clone()),
+            layout: Some(d.style_family.clone()),
+            mechanics: d.mechanics.iter().map(|m| m.id.clone()).collect(),
+        })
+        .collect()
+}
+
+/// [`recommend_design_variant`] steered away from `recent` looks (this project's last runs, from
+/// `.layoza/looks.jsonl`): the dealt mechanics avoid recent heroes and sections, and of variants
+/// `variant..variant+6` the one sharing the fewest palettes, type pairings and layouts with the
+/// recent runs is returned. A note in `workflow_guidance` says what was avoided.
+pub fn recommend_design_avoiding(
+    raw_query: &str,
+    mode: OperatingMode,
+    existing_dna: Option<&SiteDna>,
+    override_dials: Option<DesignDials>,
+    variant: u64,
+    recent: &[crate::baseline::Look],
+) -> DesignRecommendation {
+    if recent.is_empty() {
+        return recommend_design_variant(raw_query, mode, existing_dna, override_dials, variant);
+    }
+    let mut ids: Vec<String> = recent.iter().flat_map(|l| l.mechanics.iter().cloned().chain(l.hero.clone())).collect();
+    ids.sort();
+    ids.dedup();
+    let overlap = |rec: &DesignRecommendation| -> usize {
+        rec.directions
+            .iter()
+            .map(|d| {
+                recent.iter().filter(|l| l.palette.as_deref() == Some(d.palette.id.as_str())).count().min(1)
+                    + recent.iter().filter(|l| l.typography.as_deref() == Some(d.typography.id.as_str())).count().min(1)
+                    + recent.iter().filter(|l| l.layout.as_deref() == Some(d.style_family.as_str())).count().min(1)
+            })
+            .sum()
+    };
+    let mut best: Option<(usize, DesignRecommendation)> = None;
+    for v in variant..variant + 6 {
+        let rec = recommend_design_steered(raw_query, mode, existing_dna, override_dials.clone(), v, &ids);
+        let o = overlap(&rec);
+        if best.as_ref().is_none_or(|(b, _)| o < *b) {
+            best = Some((o, rec));
+        }
+        if o == 0 {
+            break;
+        }
+    }
+    let (o, mut rec) = best.expect("at least one variant");
+    let runs: std::collections::BTreeSet<&str> = recent.iter().map(|l| l.run.as_str()).collect();
+    rec.workflow_guidance.push(format!(
+        "LOOK LEDGER: steered away from {} look(s) in this project's last {} run(s) (.layoza/looks.jsonl); {} palette/type/layout repeat(s) remain. Pass ledger=false (CLI --no-ledger) to ignore it.",
+        recent.len(),
+        runs.len(),
+        o
+    ));
+    rec
+}
+
+/// [`recommend_design_variant`] that also steers the dealt mechanics away from `recent_ids`
+/// (heroes and sections used in this project's recent runs, from `.layoza/looks.jsonl`).
+pub fn recommend_design_steered(
+    raw_query: &str,
+    mode: OperatingMode,
+    existing_dna: Option<&SiteDna>,
+    override_dials: Option<DesignDials>,
+    variant: u64,
+    recent_ids: &[String],
+) -> DesignRecommendation {
     // Match on what the brief asks for, not on what it rules out.
     let affirmed = affirmed_brief(raw_query);
     let query: &str = if affirmed.trim().is_empty() { raw_query } else { &affirmed };
@@ -1524,7 +1659,25 @@ pub fn recommend_design_variant(
     let ranked = rank_industries(query, &industries);
     let match_score = ranked[0].0;
     let signals = brief_signals(query);
-    let subject = crate::directions::read_subject(query, &signals);
+    let mut subject = crate::directions::read_subject(query, &signals);
+    if !subject.from_trades {
+        // Unknown trade: the brief's own nouns and verbs, not a fixed fallback shared by every
+        // unknown brief. No verb in the brief means no guessed call to action.
+        let mut objects: Vec<String> = signals.brief_objects.iter().take(3).map(|o| format!("the {o}")).collect();
+        for fallback in &subject.objects {
+            if objects.len() >= 3 {
+                break;
+            }
+            if !objects.contains(fallback) {
+                objects.push(fallback.clone());
+            }
+        }
+        subject.objects = objects;
+        subject.action = signals
+            .brief_action
+            .clone()
+            .unwrap_or_else(|| "the visitor's next step (the brief names none: ask the user, do not assume booking)".into());
+    }
     let mut best_industry = if match_score > 0 {
         ranked[0].1.clone()
     } else {
@@ -1659,6 +1812,7 @@ pub fn recommend_design_variant(
         }
         let letter = ['A', 'B', 'C'][i];
         directions.push(CreativeDirection {
+            hero_material: String::new(),
             index: i as u8 + 1,
             title: format!("Direction {letter} — {} ({})", best_industry.name, d.arch.name),
             style_family: d.arch.style_family.into(),
@@ -1680,7 +1834,7 @@ pub fn recommend_design_variant(
     for d in &mut directions {
         verify_palette(&mut d.palette);
     }
-    attach_mechanics(&mut directions, query, mode, existing_dna, variant, &compositions);
+    attach_mechanics(&mut directions, query, &signals.niches, mode, existing_dna, variant, &compositions, recent_ids);
     // The direction and its hero must describe the same first screen. When no fitting hero of the
     // suggested composition exists, the direction takes the dealt hero's composition instead of
     // promising one layout and handing over another.
@@ -1730,6 +1884,22 @@ pub fn recommend_design_variant(
         ],
     };
 
+    if signals.constraints.iter().any(|c| c.starts_with("rtl")) {
+        workflow_guidance.insert(
+            0,
+            "RTL: the brief names a right-to-left language. Set `<html dir=\"rtl\" lang=\"..\">`, use logical CSS properties only (margin-inline-start, padding-inline, inset-inline-end, text-align: start, border-inline-start), mirror the layout and directional icons and motion (an entrance from the start edge comes from the right), keep numerals, code and brand marks LTR where they belong, and pick fonts that ship the script.".into(),
+        );
+    }
+    if match_score == 0 && matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign) {
+        workflow_guidance.insert(
+            0,
+            format!(
+                "BRIEF OBJECTS: no catalogue trade matched, so the subject is read from the brief's own words: {}. Map every direction and every dealt mechanic onto these objects (the hero shows one of them, sections are built from their real names, numbers and records), never onto the catalogue's example objects. Call to action: {}.",
+                if signals.brief_objects.is_empty() { "none read (ask the user what the page shows)".to_string() } else { signals.brief_objects.join(", ") },
+                signals.brief_action.clone().unwrap_or_else(|| "the brief names none; ask the user, do not assume booking or contact".into())
+            ),
+        );
+    }
     if !signals.brief_colors.is_empty() && matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign) {
         workflow_guidance.insert(
             0,
@@ -1748,7 +1918,55 @@ pub fn recommend_design_variant(
             ),
         );
     }
+    let heroes: Vec<(String, String, String)> = directions
+        .iter()
+        .map(|d| {
+            d.mechanics
+                .iter()
+                .find(|m| m.kind == crate::mechanics::MechanicKind::Hero)
+                .map(|m| (m.id.clone(), m.name.clone(), m.composition.clone()))
+                .unwrap_or_else(|| (d.style_family.clone(), d.layout_composition.clone(), String::new()))
+        })
+        .collect();
+    for (d, m) in directions.iter_mut().zip(crate::process::hero_materials(&heroes)) {
+        d.hero_material = m;
+    }
+    let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
+    let component = crate::process::is_component_brief(raw_query);
+    let custom_route = if new_look && !component {
+        crate::process::custom_route_reason(raw_query, match_score, signals.brief_objects.len()).map(|r| crate::process::custom_route_protocol(&r))
+    } else {
+        None
+    };
+    if new_look && !component {
+        workflow_guidance.push(
+            "DIRECTIONS: sketch more candidates than you need, from three strategies: (a) what the strongest designer for this subject would make with no budget limit; (b) a verified real reference in the same medium, screenshotted and studied (structure, not pixels); (c) a random roll from Layoza's libraries (these three directions, or `variant`). Keep the 3 that are strongest, most different from each other and not in the look ledger. One shared family (e.g. warm paper serif) is fine; three from the same family is the failure. At most one may be overcooked (the whole page as one prop or metaphor). Each names its `hero_material`; gather the images the content needs before designing. Present them and stop for the user's pick; record it in .layoza/direction-approved.md.".into(),
+        );
+        workflow_guidance.push("FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.".into());
+        workflow_guidance.push("COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.".into());
+        workflow_guidance.push(format!(
+            "SELF-CRITIQUE before QA: score {} from 1 to 5; any score below 3 means revise first. Put the stamp `{}` as the first line of the main CSS (your direction, structure, hero, palette, type and scores).",
+            crate::process::CRITIQUE_AXES.join(", "),
+            crate::process::stamp_line("<A|B|C>", "<style_family>", "<hero id>", "<palette id>", "<type id>", &[4, 4, 4, 4, 4, 4])
+        ));
+    }
+    if crate::process::names_checkable_facts(raw_query) {
+        workflow_guidance.insert(0, "FACT CHECK: the brief names products, versions, people or events. Verify each (web search) or ask the user before using it, and record it with its source in .layoza/product-facts.md. Never invent specs, dates or prices.".into());
+    }
+    if let Some(c) = &custom_route {
+        workflow_guidance.insert(0, c.clone());
+    }
+    if component {
+        workflow_guidance.insert(
+            0,
+            "COMPONENT SCOPE: the brief is one component, not a page. Skip page-level steps (hero, three directions, art loop); keep the project's tokens, every state (default, hover, focus-visible, active, disabled, loading, error, empty), keyboard and screen-reader behaviour, reduced-motion rules and RTL with logical properties. Stamp it with `scope: component`.".into(),
+        );
+    }
     DesignRecommendation {
+        scope: if component { "component".into() } else { "page".into() },
+        custom_route,
+        rotation: None,
+        taste: Vec::new(),
         mode,
         query: raw_query.to_string(),
         distinctiveness: distinctiveness_for(query, &best_industry.slug, &signals),
@@ -2035,5 +2253,81 @@ mod tests {
         assert_eq!(r.directions[0].typography.id, r.matched_industry.typography_pairing.id);
         assert_ne!(r.directions[1].typography.id, r.matched_industry.typography_pairing.id);
         assert_ne!(r.directions[2].typography.id, r.matched_industry.typography_pairing.id);
+    }
+
+    #[test]
+    fn design_system_and_deal_read_one_niche_signal() {
+        use crate::mechanics::{deal_mechanics_with, get_mechanic, DealOptions};
+        for q in ["vineyard wedding", "kids coding camp", "bakery dashboard", "law firm", "harbour seafood restaurant", "funeral home"] {
+            let r = rec(q);
+            let d = deal_mechanics_with(&DealOptions { brief: q.into(), count: 2, ..Default::default() });
+            assert_eq!(r.brief_signals.niches, d.context.niches, "{q}: design-system and deal disagree");
+            // Every direction's hero is dealt for those same niches: never another trade's own object.
+            for dir in &r.directions {
+                let hero = get_mechanic(&dir.mechanics[0].id).unwrap();
+                let primary = hero.niches.first().cloned().unwrap_or_default();
+                let narrow = ["store", "restaurant", "real-estate", "events", "travel", "legal", "museum"];
+                assert!(
+                    !narrow.contains(&primary.as_str()) || r.brief_signals.niches.contains(&primary) || hero.niches.iter().any(|n| r.brief_signals.niches.contains(n)),
+                    "{q}: hero {} belongs to {primary}",
+                    hero.id
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn unknown_trades_are_written_from_their_own_nouns_and_verbs() {
+        let funeral = rec("funeral home helping families arrange services");
+        let water = rec("municipal water utility where residents report leaks and pay bills");
+        let records = rec("county records archive of land deeds and maps");
+        for r in [&funeral, &water, &records] {
+            assert_eq!(r.matched_industry.slug, "brief-derived");
+            assert!(!r.matched_industry.layout_archetype.contains("make first contact"), "{}", r.matched_industry.layout_archetype);
+        }
+        assert!(funeral.matched_industry.layout_archetype.contains("funeral home"));
+        assert!(funeral.matched_industry.first_viewport_priority.contains("arrange services"));
+        assert!(water.matched_industry.first_viewport_priority.contains("report leaks"));
+        // No verb in the brief: no guessed booking, the agent is told to ask.
+        assert!(records.matched_industry.first_viewport_priority.contains("ask the user"));
+        assert!(!records.matched_industry.first_viewport_priority.contains("call, book"));
+        assert_ne!(funeral.matched_industry.layout_archetype, water.matched_industry.layout_archetype);
+        let heroes = |r: &DesignRecommendation| r.directions.iter().map(|d| d.mechanics[0].id.clone()).collect::<Vec<_>>();
+        assert_ne!(heroes(&funeral), heroes(&water));
+        assert_eq!(funeral.brief_signals.brief_objects[0], "funeral home");
+    }
+
+    #[test]
+    fn rtl_briefs_get_logical_properties_and_mirrored_layout() {
+        for q in ["Arabic bakery site in Riyadh", "law office, lang=\"he\"", "Urdu poetry journal", "bookshop with dir=rtl"] {
+            assert!(is_rtl_brief(q), "{q}");
+            let r = rec(q);
+            assert!(r.workflow_guidance.iter().any(|g| g.starts_with("RTL:") && g.contains("logical CSS")), "{q}");
+        }
+        for q in ["harbour seafood restaurant", "lang=\"en\" art gallery", "farm shop", "heron watching tours"] {
+            assert!(!is_rtl_brief(q), "{q}");
+        }
+    }
+
+    #[test]
+    fn the_look_ledger_steers_the_next_run_away_from_recent_looks() {
+        let dir = std::env::temp_dir().join(format!("layoza-ledger-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let q = "harbour seafood restaurant with a daily catch board";
+        assert!(crate::baseline::recent_looks(&dir, crate::baseline::RECENT_LOOK_RUNS).is_empty());
+        let first = rec(q);
+        crate::baseline::record_looks(&dir, &looks_of(&first, "run-1")).unwrap();
+        let recent = crate::baseline::recent_looks(&dir, crate::baseline::RECENT_LOOK_RUNS);
+        assert_eq!(recent.len(), first.directions.len());
+        let second = recommend_design_avoiding(q, OperatingMode::NewWebsite, None, None, 0, &recent);
+        let heroes = |r: &DesignRecommendation| r.directions.iter().map(|d| d.mechanics[0].id.clone()).collect::<Vec<_>>();
+        let palettes = |r: &DesignRecommendation| r.directions.iter().map(|d| d.palette.id.clone()).collect::<Vec<_>>();
+        assert_ne!(heroes(&first), heroes(&second));
+        assert_ne!(palettes(&first), palettes(&second));
+        assert!(second.workflow_guidance.iter().any(|g| g.starts_with("LOOK LEDGER")));
+        // Without a ledger the deal is the plain, reproducible one.
+        assert_eq!(heroes(&recommend_design_avoiding(q, OperatingMode::NewWebsite, None, None, 0, &[])), heroes(&first));
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }

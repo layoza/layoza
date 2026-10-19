@@ -15,6 +15,10 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use std::sync::OnceLock;
 
+#[cfg(test)]
+#[path = "mechanics/brief_tests.rs"]
+mod brief_tests;
+
 const CATALOGUE_JSON: &str = include_str!("mechanics/catalogue.json");
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
@@ -393,6 +397,16 @@ pub fn detect_niches(brief: &str) -> Vec<String> {
     out
 }
 
+/// The one niche signal for a brief, shared by `design-system` and `deal`: the niches it names, with
+/// a tool brief's storefront trades dropped ("bakery dashboard" is a dashboard, not a shop window).
+pub fn niche_signal(brief: &str) -> Vec<String> {
+    let mut niches = detect_niches(brief);
+    if niches.first().is_some_and(|n| SURFACE_NICHES.contains(&n.as_str())) {
+        niches.retain(|n| SURFACE_NICHES.contains(&n.as_str()) || !NARROW_TRADES.contains(&n.as_str()));
+    }
+    niches
+}
+
 /// True when the word at `pos` follows `like` / `as` (optionally with an article): a comparison.
 fn is_simile(toks: &[String], pos: usize) -> bool {
     let prev = |back: usize| pos.checked_sub(back).and_then(|i| toks.get(i)).map(String::as_str);
@@ -409,6 +423,167 @@ pub fn detect_moods(brief: &str) -> Vec<String> {
         }
     }
     out
+}
+
+/// Function words, page-type filler and generic quality adjectives. They break a noun phrase and
+/// never become a brief object. Grammar only: no trade's own words live here.
+const OBJECT_STOPWORDS: &[&str] = &[
+    "a", "an", "the", "this", "that", "these", "those", "its", "it", "our", "my", "your", "their", "his", "her", "we", "they",
+    "you", "i", "us", "them", "who", "whom", "which", "what", "where", "when", "while", "how", "why", "whose", "there", "here",
+    "and", "or", "but", "nor", "so", "yet", "also", "plus", "then", "than", "as", "like", "if", "because", "both", "either",
+    "for", "with", "without", "in", "on", "at", "by", "of", "to", "from", "into", "onto", "over", "under", "about", "around",
+    "near", "across", "through", "between", "after", "before", "during", "per", "via", "within", "behind", "above", "below",
+    "is", "are", "was", "were", "be", "been", "being", "am", "has", "have", "had", "do", "does", "did", "can", "could",
+    "will", "would", "should", "may", "might", "must", "shall", "let", "lets", "need", "needs", "want", "wants", "get", "gets",
+    "not", "no", "only", "just", "very", "really", "more", "most", "less", "much", "many", "some", "any", "all", "each",
+    "every", "other", "own", "same", "such", "new", "old", "one", "two", "three",
+    "website", "websites", "site", "sites", "page", "pages", "homepage", "landing", "web", "online", "app", "design",
+    "redesign", "build", "make", "create", "please", "section", "sections", "ui", "ux", "layout", "theme", "template",
+    "modern", "clean", "minimal", "minimalist", "simple", "beautiful", "elegant", "sleek", "stylish", "premium", "nice",
+    "good", "great", "best", "bold", "calm", "quiet", "warm", "cool", "fresh", "friendly", "professional", "trustworthy",
+    "dark", "light", "bright", "playful", "luxury", "luxurious", "high-end", "unique", "creative", "stunning", "animated",
+    "dynamic", "cinematic", "subtle", "responsive", "mobile-first", "accessible", "fast", "local", "small", "big", "large",
+];
+
+/// Verbs a visitor can do on a page, with forms that read as the same act. Generic web acts only.
+const ACTION_VERBS: &[&str] = &[
+    "book", "order", "buy", "shop", "donate", "give", "call", "visit", "apply", "register", "enrol", "enroll", "join",
+    "subscribe", "download", "install", "report", "pay", "request", "schedule", "plan", "arrange", "reserve", "rent",
+    "hire", "contact", "quote", "compare", "track", "find", "browse", "search", "learn", "try", "start", "sign", "volunteer",
+    "adopt", "sponsor", "vote", "submit", "upload", "check", "renew", "claim", "file", "send", "message", "chat", "read",
+    "listen", "watch", "explore", "locate", "pre-order", "preorder", "enquire", "inquire", "ask", "attend", "bid", "list",
+    "sell", "trade", "swap", "borrow", "return", "repair", "service", "collect", "deliver", "ship", "pick", "consult",
+    "commission", "tour", "taste", "sample", "train", "practise", "practice", "meet", "remember", "honour", "honor",
+    "share", "pledge", "petition", "lodge", "notify", "update", "manage", "monitor", "test", "print", "publish", "post",
+];
+
+fn verb_base(tok: &str) -> Option<&'static str> {
+    ACTION_VERBS.iter().copied().find(|v| {
+        tok == *v
+            || tok == format!("{v}s")
+            || tok == format!("{v}es")
+            || tok == format!("{v}ing")
+            || (v.ends_with('e') && tok == format!("{}ing", &v[..v.len() - 1]))
+            || (v.len() <= 4 && tok == format!("{v}{}ing", &v[v.len() - 1..]))
+    })
+}
+
+fn object_words(brief: &str) -> Vec<Vec<String>> {
+    // Clauses split on punctuation; words keep inner hyphens and apostrophes.
+    brief
+        .to_lowercase()
+        .split(|c: char| matches!(c, '.' | ',' | ';' | ':' | '!' | '?' | '(' | ')' | '\n' | '/' | '"' | '|'))
+        .map(|clause| {
+            clause
+                .split_whitespace()
+                .map(|w| w.trim_matches(|c: char| !c.is_alphanumeric()).replace('\u{2019}', "'"))
+                .map(|w| w.trim_end_matches("'s").to_string())
+                .filter(|w| !w.is_empty())
+                .collect()
+        })
+        .collect()
+}
+
+fn is_adverb(w: &str) -> bool {
+    ["ally", "ately", "ently", "fully", "ously", "ively", "lessly", "ingly"].iter().any(|e| w.len() > e.len() + 2 && w.ends_with(e))
+}
+
+/// The action verb at `i` when it reads as something someone does, not a noun modifier:
+/// "residents report leaks", "to arrange", "co-op selling", "Book a table" -> verb;
+/// "repair workshop", "book shop" -> noun.
+fn action_at(clause: &[String], i: usize) -> Option<&'static str> {
+    let w = clause[i].as_str();
+    let base = verb_base(w)?;
+    let inflected = w != base;
+    let prev = i.checked_sub(1).map(|j| clause[j].as_str());
+    let next = clause.get(i + 1).map(String::as_str);
+    let ok = match prev {
+        None => matches!(next, Some("a" | "an" | "the" | "your" | "our" | "up" | "in" | "online" | "now" | "today")),
+        Some("to" | "can" | "and" | "or" | "then" | "please" | "who" | "that" | "will" | "lets" | "let" | "help" | "helps" | "helping") => true,
+        Some(p) if OBJECT_STOPWORDS.contains(&p) => inflected,
+        // After a content word: a plural subject ("residents report") or an inflected verb ("co-op selling").
+        Some(p) if verb_base(p).is_some() => false,
+        Some(p) => inflected || (p.len() > 3 && p.ends_with('s') && !p.ends_with("ss")),
+    };
+    ok.then_some(base)
+}
+
+fn breaks_phrase(clause: &[String], i: usize, run_len: usize) -> bool {
+    let w = clause[i].as_str();
+    OBJECT_STOPWORDS.contains(&w)
+        || is_adverb(w)
+        || w.chars().all(|c| c.is_ascii_digit())
+        || action_at(clause, i).is_some()
+        // A participle after a noun starts a new clause ("library lending drills").
+        || (run_len > 0 && w.len() > 5 && w.ends_with("ing"))
+}
+
+/// The brief's own objects: noun phrases read heuristically (runs of content words between function
+/// words, verbs and quality adjectives; at most 3 words each), in the order the brief names them.
+/// No trade table: a funeral home and a water utility each get their own nouns back.
+pub fn brief_objects(brief: &str) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for clause in object_words(brief) {
+        let mut run: Vec<&str> = Vec::new();
+        let flush = |run: &mut Vec<&str>, out: &mut Vec<String>| {
+            if !run.is_empty() {
+                let keep = &run[run.len().saturating_sub(3)..];
+                let phrase = keep.join(" ");
+                if phrase.len() > 2 && !out.contains(&phrase) {
+                    out.push(phrase);
+                }
+                run.clear();
+            }
+        };
+        for (i, w) in clause.iter().enumerate() {
+            let participle = !run.is_empty() && w.len() > 5 && w.ends_with("ing");
+            if breaks_phrase(&clause, i, run.len()) {
+                flush(&mut run, &mut out);
+                if participle {
+                    continue;
+                }
+            } else {
+                run.push(w);
+            }
+        }
+        flush(&mut run, &mut out);
+    }
+    out.truncate(8);
+    out
+}
+
+/// The visitor's action as the brief states it: the first action verb with the noun phrase it takes
+/// ("lets residents report leaks" -> "report leaks"). `None` when the brief names no action; the
+/// caller must then ask, never guess a booking.
+pub fn brief_action(brief: &str) -> Option<String> {
+    for clause in object_words(brief) {
+        for i in 0..clause.len() {
+            let Some(base) = action_at(&clause, i) else { continue };
+            // "sign up", "check in", "pick up": keep the particle.
+            let mut verb = base.to_string();
+            let mut j = i + 1;
+            if let Some(p) = clause.get(j).filter(|p| matches!(p.as_str(), "up" | "in" | "out" | "off")) {
+                verb = format!("{verb} {p}");
+                j += 1;
+            }
+            let rest: Vec<String> = clause[j..]
+                .iter()
+                .skip_while(|t| matches!(t.as_str(), "a" | "an" | "the" | "your" | "their" | "our" | "my" | "for" | "on" | "at"))
+                .cloned()
+                .collect();
+            let object: Vec<&str> = rest
+                .iter()
+                .enumerate()
+                .take_while(|(k, t)| {
+                    !(OBJECT_STOPWORDS.contains(&t.as_str()) || is_adverb(t) || action_at(&rest, *k).is_some() || (*k > 0 && t.len() > 5 && t.ends_with("ing")))
+                })
+                .take(3)
+                .map(|(_, t)| t.as_str())
+                .collect();
+            return Some(if object.is_empty() { verb } else { format!("{verb} {}", object.join(" ")) });
+        }
+    }
+    None
 }
 
 /// Intensity the brief asks for in so many words, if any. Restraint wins over ambition.
@@ -632,6 +807,37 @@ pub struct DealOptions {
     /// Re-deal offset for the hero: 0 takes the best fit, n > 0 takes a different near-best fit,
     /// so asking for another variant changes the first screen too.
     pub hero_offset: usize,
+    /// The shared niche signal, already read from the brief (`intelligence::brief_signals`): used
+    /// verbatim so `design-system` and `deal` never disagree about the trade. `None` reads the brief.
+    pub niches: Option<Vec<String>>,
+    /// Mechanic ids dealt in this project's recent runs (`.layoza/looks.jsonl`): still allowed, but
+    /// scored down so a new deal steers away from them while anything comparable fits.
+    pub recent_ids: Vec<String>,
+}
+
+/// Seeds are u64; JSON numbers above 2^53 lose precision in JavaScript clients, so they travel as
+/// strings and are read back from either a string or a number.
+pub mod seed_serde {
+    use serde::{de, Deserialize, Deserializer, Serializer};
+    pub fn serialize<S: Serializer>(v: &u64, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(&v.to_string())
+    }
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<u64, D::Error> {
+        #[derive(Deserialize)]
+        #[serde(untagged)]
+        enum Either {
+            S(String),
+            N(u64),
+        }
+        match Either::deserialize(d)? {
+            Either::N(n) => Ok(n),
+            Either::S(t) => t.trim().parse().map_err(de::Error::custom),
+        }
+    }
+    /// Reads a seed argument from JSON: a non-negative integer or a decimal string.
+    pub fn from_json(v: &serde_json::Value) -> Option<u64> {
+        v.as_u64().or_else(|| v.as_str().and_then(|t| t.trim().parse().ok()))
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -645,6 +851,7 @@ pub struct DealContext {
     pub intensity_source: String,
     pub max_tier: Tier,
     pub framework: Option<String>,
+    #[serde(with = "seed_serde")]
     pub seed: u64,
 }
 
@@ -658,6 +865,12 @@ pub struct MechanicDeal {
     /// Ideas for the remaining sections; use, adapt or replace with the content's own shape.
     pub suggestions: Vec<Mechanic>,
     pub transition: Option<Mechanic>,
+    /// The brief's own nouns (heuristic noun phrases). Every dealt mechanic is rebuilt around these.
+    #[serde(default)]
+    pub brief_objects: Vec<String>,
+    /// The visitor's action as the brief words it; absent when the brief names none (ask, never guess).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub brief_action: Option<String>,
     /// One entry per dealt mechanic: how it fits the brief's niche, role, mood and intensity.
     #[serde(default)]
     pub fit: Vec<MechanicFit>,
@@ -688,8 +901,9 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let mut notes = Vec::new();
 
     // Niches: the brief's own words first, then the hint; the hint never displaces the brief.
-    let mut niches = detect_niches(brief);
+    let mut niches = opts.niches.clone().unwrap_or_else(|| detect_niches(brief));
     // A tool brief ("bakery dashboard"): the trade is the tool's content, not its storefront.
+    // (Idempotent, so a shared signal from `niche_signal` passes through unchanged.)
     if niches.first().is_some_and(|n| SURFACE_NICHES.contains(&n.as_str())) {
         let before = niches.len();
         niches.retain(|n| SURFACE_NICHES.contains(&n.as_str()) || !NARROW_TRADES.contains(&n.as_str()));
@@ -771,8 +985,16 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             (i, src, tier, Some(site.framework.clone()), "existing")
         }
     };
+    let brief_objs = brief_objects(brief);
+    let brief_act = brief_action(brief);
     if niches.is_empty() {
-        notes.push("No niche named in the brief: dealt from universal (`any`) and broadly-tagged mechanics; pass --niche for a sharper deal.".into());
+        notes.push(format!(
+            "No catalogue niche named in the brief: dealt broad mechanics, chosen by a hash of the whole brief. Map every mechanic onto the brief's own objects ({}) and rebuild its visual around them; pass --niche for a sharper deal.",
+            if brief_objs.is_empty() { "none read; ask the user what the page shows".to_string() } else { brief_objs.join(", ") }
+        ));
+        if brief_act.is_none() {
+            notes.push("The brief names no visitor action: ask the user what the primary call to action is; do not assume booking or contact.".into());
+        }
     }
     if intensity == Intensity::Calm {
         notes.push("Calm deal: every mechanic is a quiet, CSS-capable idea. Keep each section's distinct idea; do not add bold motion.".into());
@@ -850,8 +1072,13 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
                 s += 2;
             }
         }
+        if opts.recent_ids.iter().any(|x| x.eq_ignore_ascii_case(&m.id)) {
+            s -= 8;
+        }
         // Seeded jitter (0-3) so one seed is reproducible and another seed explores close candidates
-        s + (fnv1a(&format!("{}:{}", seed, m.id)) % 4) as i64
+        // With no niche the fit scores barely differ, so a wider jitter lets the whole brief decide.
+        let spread = if niches.is_empty() { 12 } else { 4 };
+        s + (fnv1a(&format!("{}:{}", seed, m.id)) % spread) as i64
     };
     // Pool by fit: in-niche and universal entries first; widen to related niches, then to broad
     // entries, only when too few fit at this intensity. Mechanics built around another trade's own
@@ -919,9 +1146,22 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         };
         let near: Vec<&'static Mechanic> = match matching.first() {
             Some(m) if score(m) + 10 >= best => window(&matching, 6),
+            // No niche: every broad hero is about equally (un)fitting, so a tiny score window must
+            // not decide. The whole brief picks among all of them, so different briefs diverge.
+            _ if niches.is_empty() => {
+                let recent = |m: &&'static Mechanic| opts.recent_ids.iter().any(|x| x.eq_ignore_ascii_case(&m.id));
+                let fresh: Vec<&'static Mechanic> = list.iter().copied().filter(|m| !recent(m)).collect();
+                if fresh.is_empty() { list.clone() } else { fresh }
+            }
             _ => window(&list, 6),
         };
-        let pick = if near.len() > 1 && opts.hero_offset > 0 { 1 + (opts.hero_offset - 1) % (near.len() - 1) } else { 0 };
+        let pick = if niches.is_empty() && !near.is_empty() {
+            ((fnv1a(&format!("{}:hero", brief.to_lowercase())) ^ seed) as usize).wrapping_add(opts.hero_offset) % near.len()
+        } else if near.len() > 1 && opts.hero_offset > 0 {
+            1 + (opts.hero_offset - 1) % (near.len() - 1)
+        } else {
+            0
+        };
         let chosen = near.get(pick).copied();
         let ordered: Vec<&'static Mechanic> = chosen.into_iter().chain(list.iter().copied()).collect();
         take(&ordered, &mut used_families, &|_| true)
@@ -1020,6 +1260,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     }
 
     let rules = vec![
+        "Map every dealt mechanic onto `brief_objects` (the brief's own nouns): the moving or featured thing is one of them, never the catalogue's example object.".into(),
         "Build the two `signature` mechanics verbatim in spirit: keep the mechanism and its still_check; adapt colour, type, copy and objects to the brand and the trade.".into(),
         "Scroll motion follows scroll progress, never velocity: screenshots at 25/50/75% of a pinned range must differ and each must be a complete, readable composition.".into(),
         "Every mechanic keeps real DOM text, honours prefers-reduced-motion with its listed end state, and restages at 375px as its `mobile` field says.".into(),
@@ -1044,6 +1285,8 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         signature,
         suggestions,
         transition,
+        brief_objects: brief_objs,
+        brief_action: brief_act,
         fit,
         notes,
         rules,

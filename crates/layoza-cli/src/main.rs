@@ -11,7 +11,8 @@ use layoza_core::{
     hooks::{check_edit, hook_command, hook_status, install_hook, settings_path, uninstall_hook, HookTarget},
     inspector::{inspect_project, is_dna_baseline_fresh, write_dna_artifacts},
     installer::{install_layoza, run_doctor, InstallScope},
-    intelligence::{catalog_industries, recommend_design_variant, OperatingMode},
+    baseline::{new_run_id, record_looks, RECENT_LOOK_RUNS},
+    intelligence::{catalog_industries, looks_of, recommend_design_avoiding, OperatingMode},
     mechanics::{
         catalogue, deal_mechanics_with, get_mechanic, list_mechanics, DealOptions, ExistingSite, Intensity, Mechanic,
         MechanicKind,
@@ -53,12 +54,19 @@ fn main() {
         }
     }
 
+    // Every flag is honoured or rejected: unknown flags, missing values and bad numbers are errors.
+    if subcommand != "check-edit" {
+        if let Err(e) = check_flags(&args) {
+            exit_err(&e, json_flag);
+        }
+    }
+
     match subcommand {
         "init" => {
-            let scope = if get_flag_value(&args, "--scope").as_deref() == Some("global") {
-                InstallScope::Global
-            } else {
-                InstallScope::Project
+            let scope = match get_flag_value(&args, "--scope").as_deref() {
+                Some("global") => InstallScope::Global,
+                None | Some("project") => InstallScope::Project,
+                Some(other) => exit_err(&format!("--scope must be project or global (got `{}`).", other), json_flag),
             };
             let agents: Vec<String> = get_flag_value(&args, "--agents")
                 .map(|s| s.split(',').map(|x| x.trim().to_string()).collect())
@@ -88,6 +96,10 @@ fn main() {
                 .iter()
                 .any(|a| a == "--write" || a == "-w" || a == "--write-artifacts");
             let screenshot_only = args.iter().any(|a| a == "--screenshot-only");
+            let export_skill = args.iter().any(|a| a == "--export-skill");
+            if export_skill && !write_flag {
+                exit_err("--export-skill writes a file, so it needs --write.", json_flag);
+            }
 
             match inspect_project(&target_path, None, screenshot_only) {
                 Ok((dna, inventory)) => {
@@ -96,6 +108,17 @@ fn main() {
                         match write_dna_artifacts(&target_path, &dna, &inventory) {
                             Ok(w) => written = w,
                             Err(e) => exit_err(&e, json_flag),
+                        }
+                        if export_skill {
+                            // A per-project skill so any later session can load this look again.
+                            let slug: String = dna.project_name.to_lowercase().chars().map(|c| if c.is_ascii_alphanumeric() { c } else { '-' }).collect();
+                            let rel = format!(".claude/skills/{}-look/SKILL.md", slug.trim_matches('-'));
+                            let full = target_path.join(&rel);
+                            if let Some(dir) = full.parent() {
+                                fs::create_dir_all(dir).unwrap_or_else(|e| exit_err(&e.to_string(), json_flag));
+                            }
+                            fs::write(&full, layoza_core::design_md::generate_project_skill_md(&dna).as_bytes()).unwrap_or_else(|e| exit_err(&e.to_string(), json_flag));
+                            written.push(rel);
                         }
                     }
                     if json_flag {
@@ -148,27 +171,23 @@ fn main() {
                 return;
             }
 
-            let query = positional_arg(&args, 1).unwrap_or_else(|| "saas-startup".to_string());
+            let query = positional_arg(&args, 1).filter(|q| !q.trim().is_empty()).unwrap_or_else(|| {
+                exit_err("Missing brief. Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign]", json_flag)
+            });
+            if query.chars().count() > MAX_BRIEF_CHARS {
+                exit_err(&format!("The brief is limited to {} characters.", MAX_BRIEF_CHARS), json_flag);
+            }
             let mode = match get_flag_value(&args, "--mode").as_deref() {
+                None | Some("new") | Some("a") => OperatingMode::NewWebsite,
                 Some("extend") | Some("b") => OperatingMode::ExtendExisting,
                 Some("improve") | Some("c") => OperatingMode::ImproveExisting,
                 Some("redesign") | Some("d") => OperatingMode::FullRedesign,
-                _ => OperatingMode::NewWebsite,
+                Some(other) => exit_err(&format!("--mode must be new, extend, improve or redesign (got `{}`).", other), json_flag),
             };
-            let dials = if get_flag_value(&args, "--variance").is_some()
-                || get_flag_value(&args, "--motion").is_some()
-                || get_flag_value(&args, "--density").is_some()
-            {
-                let v = get_flag_value(&args, "--variance")
-                    .and_then(|s| s.parse::<u8>().ok())
-                    .unwrap_or(5);
-                let m = get_flag_value(&args, "--motion")
-                    .and_then(|s| s.parse::<u8>().ok())
-                    .unwrap_or(5);
-                let d = get_flag_value(&args, "--density")
-                    .and_then(|s| s.parse::<u8>().ok())
-                    .unwrap_or(5);
-                Some(DesignDials::clamped(v, m, d))
+            let dial = |flag: &str| num_flag::<u8>(&args, flag, 0, 10, json_flag);
+            let (v, m, d) = (dial("--variance"), dial("--motion"), dial("--density"));
+            let dials = if v.is_some() || m.is_some() || d.is_some() {
+                Some(DesignDials::clamped(v.unwrap_or(5), m.unwrap_or(5), d.unwrap_or(5)))
             } else {
                 None
             };
@@ -177,8 +196,20 @@ fn main() {
                 OperatingMode::ExtendExisting | OperatingMode::ImproveExisting => load_site_dna(&cwd).map(|(d, _)| d),
                 _ => None,
             };
-            let variant = get_flag_value(&args, "--variant").and_then(|s| s.parse::<u64>().ok()).unwrap_or(0);
-            let rec = recommend_design_variant(&query, mode, existing_dna.as_ref(), dials, variant);
+            let variant = num_flag::<u64>(&args, "--variant", 0, 1000, json_flag).unwrap_or(0);
+            // Look ledger: only for new looks, only inside a project, and not with --no-ledger.
+            let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
+            let ledger_root = (new_look && !args.iter().any(|a| a == "--no-ledger") && looks_like_project(&cwd)).then(|| cwd.clone());
+            let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, RECENT_LOOK_RUNS)).unwrap_or_default();
+            // Asked for the same look again: keep it and change the knobs instead of rotating away.
+            let steer: &[layoza_core::baseline::Look] = if layoza_core::process::same_look_requested(&query) { &[] } else { &recent };
+            let mut rec = recommend_design_avoiding(&query, mode, existing_dna.as_ref(), dials, variant, steer);
+            layoza_core::process::apply_project_memory(&mut rec, ledger_root.as_deref(), &recent);
+            if let Some(root) = &ledger_root {
+                if let Err(e) = record_looks(root, &looks_of(&rec, &new_run_id(&query))) {
+                    eprintln!("Warning: look ledger not updated: {}", e);
+                }
+            }
             // New looks only: an existing site follows its own design, so no avoid list.
             let avoid = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign)
                 .then(layoza_core::history::avoid_recent);
@@ -292,9 +323,7 @@ fn main() {
         }
         "animate" => {
             let category = positional_arg(&args, 1);
-            let intensity = get_flag_value(&args, "--intensity")
-                .and_then(|s| s.parse::<u8>().ok())
-                .unwrap_or(6);
+            let intensity = num_flag::<u8>(&args, "--intensity", 0, 10, json_flag).unwrap_or(6);
             let recipe = get_flag_value(&args, "--recipe");
             let recipes = select_animations(category.as_deref(), recipe.as_deref(), intensity)
                 .unwrap_or_else(|e| exit_err(&e, json_flag));
@@ -358,12 +387,15 @@ fn main() {
                     Err(e) => exit_err(&e, json_flag),
                 }
             }
+            let gate_root = if target_path.is_file() { target_path.parent().unwrap_or(&cwd).to_path_buf() } else { target_path.clone() };
+            let gates = layoza_core::process::check_gates(&gate_root);
             match audit_project(&target_path, None, None, None, None) {
                 Ok(report) => {
                     if json_flag {
                         let out = serde_json::json!({
-                            "verified": report.passed_release_gate,
+                            "verified": report.passed_release_gate && gates.is_empty(),
                             "verification_status": report.verification_status,
+                            "process_gates": gates,
                             "repairs": repairs,
                             "audit": report
                         });
@@ -379,6 +411,15 @@ fn main() {
                         for f in &report.findings {
                             println!("  [{:?}][{}] {}: {}", f.severity, f.rule_id, f.file_or_selector, f.message);
                         }
+                        if !gates.is_empty() {
+                            println!("Process gates: {} unmet", gates.len());
+                            for g in &gates {
+                                println!("  [{}] {}: {} Fix: {}", g.rule, g.file, g.message, g.fix);
+                            }
+                        }
+                    }
+                    if !gates.is_empty() {
+                        process::exit(1);
                     }
                     exit_for_gate(&report);
                 }
@@ -560,7 +601,18 @@ fn main() {
                     }
                     Err(e) => exit_err(&e, json_flag),
                 },
-                _ => match is_dna_baseline_fresh(&cwd) {
+                "structure" => match layoza_core::process::redesign_structure_check(&cwd, &id) {
+                    Ok(checks) => {
+                        let same = checks.iter().filter(|c| c.same_structure).count();
+                        println!("{}", serde_json::to_string_pretty(&serde_json::json!({ "files": checks, "same_structure": same, "max_similarity": layoza_core::process::REDESIGN_MAX_SIMILARITY })).unwrap());
+                        if same > 0 {
+                            eprintln!("{} file(s) kept the old page skeleton; a redesign must change the structural fingerprint.", same);
+                            process::exit(1);
+                        }
+                    }
+                    Err(e) => exit_err(&e, json_flag),
+                },
+                "freshness" => match is_dna_baseline_fresh(&cwd) {
                     Ok((fresh, stored, current)) => {
                         println!(
                             "{}",
@@ -574,6 +626,7 @@ fn main() {
                     }
                     Err(e) => exit_err(&e, json_flag),
                 },
+                other => exit_err(&format!("Unknown baseline action `{}`: use create, rollback, structure or freshness.", other), json_flag),
             }
         }
         "benchmark" => {
@@ -582,7 +635,7 @@ fn main() {
                 println!("{}", serde_json::to_string_pretty(&report).unwrap());
             } else {
                 println!(
-                    "=== Layoza Benchmark Suite: {}/{} Passed ({:.1}%) ===",
+                    "=== Layoza pipeline regression checks: {}/{} passed ({:.1}%) — not a design-quality score ===",
                     report.passed_briefs, report.total_briefs, report.pass_rate_percent
                 );
                 for r in &report.results {
@@ -592,13 +645,16 @@ fn main() {
                     );
                 }
             }
+            if report.passed_briefs < report.total_briefs {
+                std::process::exit(1);
+            }
         }
         "deal" => {
             // Deals which candidate world to build: a stable hash of the candidate list picks one of
             // the top N, so runs stop converging on the model's safest first pick (idea: impeccable's
             // concept roll; Layoza's version is offline, reproducible, and bounded to the top N).
             let text = positional_arg(&args, 1).unwrap_or_else(|| exit_err("Usage: layoza deal \"<candidate list>\" [--top N]", json_flag));
-            let top: u64 = get_flag_value(&args, "--top").and_then(|v| v.parse().ok()).filter(|n| *n >= 1).unwrap_or(4);
+            let top: u64 = num_flag::<u64>(&args, "--top", 1, 1000, json_flag).unwrap_or(4);
             let mut h: u64 = 0xcbf29ce484222325;
             for b in text.trim().to_lowercase().bytes() {
                 h ^= b as u64;
@@ -669,14 +725,27 @@ fn main() {
                     let seed = get_flag_value(&args, "--seed").map(|s| {
                         s.parse::<u64>().unwrap_or_else(|_| exit_err("--seed must be a non-negative integer", json_flag))
                     });
-                    let existing_mode =
-                        matches!(get_flag_value(&args, "--mode").as_deref(), Some("extend" | "improve" | "b" | "c"));
+                    let existing_mode = match get_flag_value(&args, "--mode").as_deref() {
+                        None | Some("new" | "a" | "redesign" | "d") => false,
+                        Some("extend" | "improve" | "b" | "c") => true,
+                        Some(other) => exit_err(&format!("--mode must be new, extend, improve or redesign (got `{}`).", other), json_flag),
+                    };
+                    if brief.trim().is_empty() || brief.chars().count() > MAX_BRIEF_CHARS {
+                        exit_err(&format!("The brief must be 1-{} characters.", MAX_BRIEF_CHARS), json_flag);
+                    }
                     let existing = match get_flag_value(&args, "--existing") {
                         Some(p) => Some(existing_profile(&cwd.join(&p), json_flag)),
                         None if existing_mode => Some(existing_profile(&cwd, json_flag)),
                         None => None,
                     };
+                    // Look ledger: new looks inside a project steer away from recent heroes (not with --no-ledger).
+                    let ledger_root = (!existing_mode && !args.iter().any(|a| a == "--no-ledger") && looks_like_project(&cwd)).then(|| cwd.clone());
+                    let recent = ledger_root.as_deref().map(|r| layoza_core::process::recent_looks_or_stamps(r, RECENT_LOOK_RUNS)).unwrap_or_default();
+                    let same_look = layoza_core::process::same_look_requested(&brief);
+                    let recent_ids: Vec<String> = if same_look { Vec::new() } else { recent.iter().flat_map(|l| l.hero.iter().chain(l.mechanics.iter()).cloned()).collect() };
+                    let run_brief = brief.clone();
                     let deal = deal_mechanics_with(&DealOptions {
+                        recent_ids,
                         brief,
                         niche: get_flag_value(&args, "--niche"),
                         mood: get_flag_value(&args, "--mood"),
@@ -689,9 +758,32 @@ fn main() {
                             .unwrap_or_default(),
                         ..Default::default()
                     });
+                    let rotation = ledger_root.as_ref().map(|_| {
+                        let picking: Vec<String> = deal.hero.iter().map(|h| h.id.clone()).collect();
+                        layoza_core::process::rotation_statement(&recent, &picking, same_look)
+                    });
+                    if let Some(root) = &ledger_root {
+                        let look = layoza_core::baseline::Look {
+                            run: new_run_id(&run_brief),
+                            source: "deal".into(),
+                            hero: deal.hero.as_ref().map(|h| h.id.clone()),
+                            mechanics: deal.signature.iter().map(|m| m.id.clone()).collect(),
+                            ..Default::default()
+                        };
+                        if let Err(e) = record_looks(root, &[look]) {
+                            eprintln!("Warning: look ledger not updated: {}", e);
+                        }
+                    }
                     if json_flag {
-                        println!("{}", serde_json::to_string_pretty(&deal).unwrap());
+                        let mut v = serde_json::to_value(&deal).unwrap();
+                        if let Some(r) = &rotation {
+                            v["rotation"] = serde_json::json!(r);
+                        }
+                        println!("{}", serde_json::to_string_pretty(&v).unwrap());
                     } else {
+                        if let Some(r) = &rotation {
+                            println!("Rotation: {}", r);
+                        }
                         let c = &deal.context;
                         let or_dash = |v: &Vec<String>| if v.is_empty() { "-".to_string() } else { v.join(", ") };
                         println!("=== Layoza mechanics deal ({} site) ===", c.mode);
@@ -742,8 +834,9 @@ fn main() {
             let action = positional_arg(&args, 1).unwrap_or_else(|| "status".to_string());
             let target = match get_flag_value(&args, "--scope").as_deref() {
                 Some("global") => HookTarget::Global,
-                _ if args.iter().any(|a| a == "--local") => HookTarget::ProjectLocal,
-                _ => HookTarget::Project,
+                None | Some("project") if args.iter().any(|a| a == "--local") => HookTarget::ProjectLocal,
+                None | Some("project") => HookTarget::Project,
+                Some(other) => exit_err(&format!("--scope must be project or global (got `{}`).", other), json_flag),
             };
             let path = settings_path(&cwd, target).unwrap_or_else(|e| exit_err(&e, json_flag));
             let shown = path.to_string_lossy().replace('\\', "/");
@@ -862,6 +955,68 @@ const VALUE_FLAGS: &[&str] = &[
     "--niche", "--kind", "--count", "--seed", "--existing", "--mood", "--avoid", "--variant",
 ];
 
+/// Longest brief accepted by the CLI and the MCP server (characters).
+const MAX_BRIEF_CHARS: usize = 2000;
+
+/// Flags each command (or `mechanics <action>`) honours, besides `--json` and `--help`.
+fn allowed_flags(args: &[String]) -> &'static [&'static str] {
+    match args[0].as_str() {
+        "init" => &["--scope", "--agents"],
+        "inspect" => &["--path", "--write", "-w", "--write-artifacts", "--screenshot-only", "--export-skill"],
+        "design-system" => &["--lint", "--diff", "--mode", "--variance", "--motion", "--density", "--variant", "--no-ledger"],
+        "animate" => &["--recipe", "--intensity"],
+        "verify" => &["--repair", "--fix"],
+        "generate" => &["--framework", "--title", "--subtitle", "--cta", "--output"],
+        "baseline" => &["--file"],
+        "deal" => &["--top"],
+        "mechanics" => match positional_arg(args, 1).as_deref() {
+            Some("deal") => &["--count", "--seed", "--niche", "--mood", "--intensity", "--mode", "--existing", "--avoid", "--no-ledger"],
+            Some("show") => &[],
+            _ => &["--niche", "--kind", "--intensity"],
+        },
+        "hooks" => &["--scope", "--local"],
+        _ => &[],
+    }
+}
+
+/// Rejects flags the command does not honour and value flags given without a value, so nothing
+/// the user typed is silently dropped.
+fn check_flags(args: &[String]) -> Result<(), String> {
+    let allowed = allowed_flags(args);
+    let mut i = 1;
+    while i < args.len() {
+        let a = args[i].as_str();
+        if a.len() > 1 && a.starts_with('-') && a.parse::<f64>().is_err() {
+            let name = a.split('=').next().unwrap_or(a);
+            if !(name == "--json" || allowed.contains(&name)) {
+                return Err(format!("Unknown option `{}` for `layoza {}`. Run `layoza {} --help`.", name, args[0], args[0]));
+            }
+            if VALUE_FLAGS.contains(&name) && !a.contains('=') {
+                match args.get(i + 1) {
+                    Some(v) if !v.starts_with("--") => i += 1,
+                    _ => return Err(format!("`{}` needs a value.", name)),
+                }
+            }
+        }
+        i += 1;
+    }
+    Ok(())
+}
+
+/// A numeric flag in `[min, max]`; a non-number or out-of-range value is an error, never a default.
+fn num_flag<T: std::str::FromStr + PartialOrd + std::fmt::Display + Copy>(args: &[String], flag: &str, min: T, max: T, json_flag: bool) -> Option<T> {
+    let raw = get_flag_value(args, flag)?;
+    match raw.trim().parse::<T>() {
+        Ok(n) if n >= min && n <= max => Some(n),
+        _ => exit_err(&format!("{} must be a number from {} to {} (got `{}`).", flag, min, max, raw), json_flag),
+    }
+}
+
+/// True when `dir` looks like a project (so the look ledger may be written there).
+fn looks_like_project(dir: &Path) -> bool {
+    [".layoza", "package.json", "index.html", ".git", "Cargo.toml", "composer.json", "theme.json"].iter().any(|m| dir.join(m).exists())
+}
+
 /// All values of a repeatable flag (`--file a --file b`, `--file=a`).
 fn get_flag_values(args: &[String], flag: &str) -> Vec<String> {
     let mut out = Vec::new();
@@ -911,18 +1066,18 @@ fn positional_arg(args: &[String], idx: usize) -> Option<String> {
 fn subcommand_usage(cmd: &str) -> Option<&'static str> {
     Some(match cmd {
         "init" => "Usage: layoza init [--scope project|global] [--agents a,b,c] [--json]\n  Install Layoza skills, plugin and MCP configs for the selected agents.",
-        "inspect" => "Usage: layoza inspect [<path>|--path <path>] [--write] [--screenshot-only] [--json]\n  Extract Site DNA from a project directory (default `.`); --write writes DESIGN.md, BRAND.md, MOTION.md, SITE-DNA.json, COMPONENT-INVENTORY.json.",
-        "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--variant N] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives; --variant N re-deals fonts, palettes and mechanics for the same brief.",
+        "inspect" => "Usage: layoza inspect [<path>|--path <path>] [--write [--export-skill]] [--screenshot-only] [--json]\n  Extract Site DNA from a project directory (default `.`); --write writes DESIGN.md (the nine standard sections, then motion, variants, brand and decisions), BRAND.md, MOTION.md, SITE-DNA.json, COMPONENT-INVENTORY.json; --export-skill also writes .claude/skills/<project>-look/SKILL.md so later sessions load this look.",
+        "design-system" => "Usage: layoza design-system \"<brief or industry slug>\" [--mode new|extend|improve|redesign] [--variance N] [--motion N] [--density N] [--variant N] [--no-ledger] [--json]\n       layoza design-system --lint <DESIGN.md>\n       layoza design-system --diff <before.md> <after.md>\n  Recommend an industry profile, dials and 3 creative directions; prints match confidence and alternatives; --variant N re-deals fonts, palettes and mechanics for the same brief. In a project (package.json, index.html, .git, .layoza...), new/redesign runs record their looks in .layoza/looks.jsonl and steer away from the last 5 runs; --no-ledger skips both.",
         "animate" => "Usage: layoza animate [<category|id|engine>] [--recipe <id>] [--intensity 0-10] [--json]\n  Recommend animation recipes. Categories: hero_animation, section_animation, scroll_animation, interactive_effect, page_transition, three_experience. --recipe selects one recipe by id.",
         "audit" => "Usage: layoza audit [<path>] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails.",
-        "verify" => "Usage: layoza verify [<path>] [--repair] [--json]\n  Verify release gates; --repair applies bounded auto-repairs to a single HTML file.",
+        "verify" => "Usage: layoza verify [<path>] [--repair] [--json]\n  Verify release gates and the process gate files in .layoza/ (direction-approved.md, brand-spec.md, product-facts.md, self-critique stamp); exits 1 when any fails. --repair applies bounded auto-repairs to a single HTML file.",
         "qa" => "Usage: layoza qa [<url|file|dir>] [--json]\n  Headless Chromium multi-viewport QA (default index.html). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
         "doctor" => "Usage: layoza doctor [--json]\n  Validate agent installations, skill frontmatter, runtimes and smoke tests.",
         "generate" => "Usage: layoza generate [--framework <fw>] [--title <t>] [--subtitle <s>] [--cta <c>] [--output <dir>] [--json]\n  Generate a framework-native component from the project's Site DNA.",
-        "baseline" => "Usage: layoza baseline create [<id>] [--file <path>]...\n       layoza baseline rollback [<id>]\n       layoza baseline [freshness]\n  create without --file snapshots the project's UI sources (html/css/js/ts/tsx/jsx/vue/svelte/astro/liquid/php, theme JSON, DESIGN.md...), skipping node_modules, .git, target, dist, build, .layoza and hidden dirs (caps: 2000 files, 1 MB/file, 32 MB total); skipped paths are reported. --file is repeatable and errors on paths that cannot be snapshotted. rollback exits 1 if it restores nothing.",
-        "benchmark" => "Usage: layoza benchmark [--json]\n  Run the 32 reproducible evaluation briefs.",
+        "baseline" => "Usage: layoza baseline create [<id>] [--file <path>]...\n       layoza baseline rollback [<id>]\n       layoza baseline structure [<id>]\n       layoza baseline [freshness]\n  structure compares each page's skeleton with the baseline and exits 1 when a redesign kept it.\n  create without --file snapshots the project's UI sources (html/css/js/ts/tsx/jsx/vue/svelte/astro/liquid/php, theme JSON, DESIGN.md...), skipping node_modules, .git, target, dist, build, .layoza and hidden dirs (caps: 2000 files, 1 MB/file, 32 MB total); skipped paths are reported. --file is repeatable and errors on paths that cannot be snapshotted. rollback exits 1 if it restores nothing.",
+        "benchmark" => "Usage: layoza benchmark [--json]\n  Run 32 pipeline regression checks (no browser; not a design-quality score).",
         "deal" => "Usage: layoza deal \"<candidate list>\" [--top N] [--json]\n  Deterministically pick one of the top N (default 4) candidates from a stable hash of the list.",
-        "mechanics" => "Usage: layoza mechanics list [--niche X] [--kind hero|section|transition] [--intensity calm|bold|wild] [--json]\n       layoza mechanics deal \"<brief>\" [--count N] [--seed S] [--niche X] [--mood m] [--intensity calm|bold|wild] [--mode extend|improve] [--existing <dir>] [--avoid id1,id2] [--json]\n       layoza mechanics show <id> [--json]\n  Deal 1 hero + N section mechanics (2 signature + suggestions) + 1 transition, deterministic per seed. New sites follow the brief; --existing <dir> or --mode extend|improve caps the deal to the inspected site's motion intensity and stack (SITE-DNA.json, else a fresh inspect). --avoid skips mechanics used recently.",
+        "mechanics" => "Usage: layoza mechanics list [--niche X] [--kind hero|section|transition] [--intensity calm|bold|wild] [--json]\n       layoza mechanics deal \"<brief>\" [--count N] [--seed S] [--niche X] [--mood m] [--intensity calm|bold|wild] [--mode extend|improve] [--existing <dir>] [--avoid id1,id2] [--no-ledger] [--json]\n       layoza mechanics show <id> [--json]\n  Deal 1 hero + N section mechanics (2 signature + suggestions) + 1 transition, deterministic per seed. New sites follow the brief; --existing <dir> or --mode extend|improve caps the deal to the inspected site's motion intensity and stack (SITE-DNA.json, else a fresh inspect). --avoid skips mechanics used recently.",
         "hooks" => "Usage: layoza hooks on|off|status [--scope project|global] [--local] [--json]\n  Manage the Claude Code PostToolUse hook that checks UI files after each edit.",
         "check-edit" => "Usage: layoza check-edit < hook.json\n  Hook entry point: reads PostToolUse JSON on stdin and reports findings; never blocks.",
         "mcp" => "Usage: layoza mcp\n  Start the Layoza MCP stdio server.",
@@ -1001,7 +1156,7 @@ COMMANDS:
   doctor          Validate agent installations, skill frontmatter, runtimes, and smoke tests
   generate        Generate framework-native components/themes (--framework, --output)
   baseline        Manage reversible baselines (create, rollback, freshness)
-  benchmark       Run the 32 reproducible evaluation briefs
+  benchmark       Run 32 pipeline regression checks (not a quality score)
   deal            Pick one candidate from your top N by a stable hash: deal "<list>" [--top N]
   mechanics       Deal hero/section/transition mechanics for a page: mechanics list|deal|show
                   (--niche, --kind, --intensity calm|bold|wild, --count, --seed, --existing <dir>)
@@ -1049,6 +1204,16 @@ mod tests {
                 assert!(VALUE_FLAGS.contains(&flag), "`{}` takes a value but is missing from VALUE_FLAGS", flag);
             }
         }
+    }
+
+    #[test]
+    fn unknown_flags_and_missing_values_are_rejected() {
+        assert!(check_flags(&a(&["design-system", "bakery", "--mode", "new", "--no-ledger", "--json"])).is_ok());
+        assert!(check_flags(&a(&["design-system", "bakery", "--varaint", "2"])).unwrap_err().contains("--varaint"));
+        assert!(check_flags(&a(&["design-system", "bakery", "--mode"])).unwrap_err().contains("needs a value"));
+        assert!(check_flags(&a(&["mechanics", "list", "--seed", "4"])).is_err(), "list ignores --seed, so it must reject it");
+        assert!(check_flags(&a(&["mechanics", "deal", "bakery", "--seed=4"])).is_ok());
+        assert!(check_flags(&a(&["audit", ".", "--repair"])).is_err());
     }
 
     #[test]
