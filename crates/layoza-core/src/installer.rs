@@ -363,57 +363,6 @@ fn object_entry<'a>(
         })
 }
 
-#[cfg(test)]
-mod config_merge_tests {
-    use super::*;
-
-    fn tmp(name: &str, body: Option<&str>) -> std::path::PathBuf {
-        let dir = std::env::temp_dir().join(format!("layoza-merge-{}-{}", name, std::process::id()));
-        let _ = fs::remove_dir_all(&dir);
-        fs::create_dir_all(&dir).unwrap();
-        let p = dir.join("mcp.json");
-        if let Some(b) = body {
-            fs::write(&p, b).unwrap();
-        }
-        p
-    }
-
-    #[test]
-    fn keeps_other_servers() {
-        let p = tmp("keep", Some(r#"{"mcpServers":{"other":{"command":"x"}},"extra":1}"#));
-        merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap();
-        let v: serde_json::Value = serde_json::from_str(&fs::read_to_string(&p).unwrap()).unwrap();
-        assert!(v["mcpServers"]["other"].is_object());
-        assert!(v["mcpServers"]["layoza"].is_object());
-        assert_eq!(v["extra"], 1);
-    }
-
-    #[test]
-    fn creates_missing_file() {
-        let p = tmp("new", None);
-        merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap();
-        assert!(fs::read_to_string(&p).unwrap().contains("layoza"));
-    }
-
-    #[test]
-    fn refuses_to_overwrite_invalid_json() {
-        let body = "{ \"mcpServers\": { \"other\": {} }, // comment
- }";
-        let p = tmp("bad", Some(body));
-        let err = merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap_err();
-        assert!(err.contains("left it unchanged"), "{}", err);
-        assert_eq!(fs::read_to_string(&p).unwrap(), body);
-    }
-
-    #[test]
-    fn refuses_non_object_servers_key() {
-        let body = r#"{"mcpServers":[1,2]}"#;
-        let p = tmp("arr", Some(body));
-        assert!(merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).is_err());
-        assert_eq!(fs::read_to_string(&p).unwrap(), body);
-    }
-}
-
 /// Copies every Layoza skill folder from the bundle into `dest`, replacing older copies.
 /// Only `layoza*` folders are touched; the user's other skills stay as they are.
 fn install_skills(bundle: &Path, dest: &Path, written: &mut Vec<String>) -> Result<(), String> {
@@ -593,5 +542,56 @@ pub fn run_doctor(project_root: &Path) -> DoctorReport {
         agents,
         smoke_test_passed,
         issues,
+    }
+}
+
+#[cfg(test)]
+mod config_merge_tests {
+    use super::*;
+
+    fn tmp(name: &str, body: Option<&str>) -> std::path::PathBuf {
+        let dir = std::env::temp_dir().join(format!("layoza-merge-{}-{}", name, std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let p = dir.join("mcp.json");
+        if let Some(b) = body {
+            fs::write(&p, b).unwrap();
+        }
+        p
+    }
+
+    #[test]
+    fn keeps_other_servers() {
+        let p = tmp("keep", Some(r#"{"mcpServers":{"other":{"command":"x"}},"extra":1}"#));
+        merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&fs::read_to_string(&p).unwrap()).unwrap();
+        assert!(v["mcpServers"]["other"].is_object());
+        assert!(v["mcpServers"]["layoza"].is_object());
+        assert_eq!(v["extra"], 1);
+    }
+
+    #[test]
+    fn creates_missing_file() {
+        let p = tmp("new", None);
+        merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap();
+        assert!(fs::read_to_string(&p).unwrap().contains("layoza"));
+    }
+
+    #[test]
+    fn refuses_to_overwrite_invalid_json() {
+        let body = "{ \"mcpServers\": { \"other\": {} }, // comment
+ }";
+        let p = tmp("bad", Some(body));
+        let err = merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).unwrap_err();
+        assert!(err.contains("left it unchanged"), "{}", err);
+        assert_eq!(fs::read_to_string(&p).unwrap(), body);
+    }
+
+    #[test]
+    fn refuses_non_object_servers_key() {
+        let body = r#"{"mcpServers":[1,2]}"#;
+        let p = tmp("arr", Some(body));
+        assert!(merge_mcp_server_entry(&p, "mcpServers", &mut vec![]).is_err());
+        assert_eq!(fs::read_to_string(&p).unwrap(), body);
     }
 }

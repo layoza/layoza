@@ -1736,7 +1736,7 @@ pub fn recommend_design_avoiding(
     let overlap = |rec: &DesignRecommendation| -> usize { crate::uniqueness::check(&looks_of(rec, "candidate"), recent, recent.len(), true).repeats };
     let mut best: Option<(usize, DesignRecommendation)> = None;
     for v in variant..variant + 6 {
-        let rec = recommend_design_steered(raw_query, mode, existing_dna, override_dials.clone(), v, &ids);
+        let rec = recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids);
         let o = overlap(&rec);
         if best.as_ref().is_none_or(|(b, _)| o < *b) {
             best = Some((o, rec));
@@ -2469,5 +2469,43 @@ mod tests {
         // Without a ledger the deal is the plain, reproducible one.
         assert_eq!(heroes(&recommend_design_avoiding(q, OperatingMode::NewWebsite, None, None, 0, &[])), heroes(&first));
         let _ = std::fs::remove_dir_all(&dir);
+    }
+}
+
+#[cfg(test)]
+mod direction_uniqueness_tests {
+    use super::*;
+
+    #[test]
+    fn three_directions_share_no_nav_hero_footer_archetype_or_palette() {
+        for brief in [
+            "family funeral home with pre-planning",
+            "neighbourhood bakery with a daily bread board",
+            "b2b analytics saas dashboard",
+            "regional water utility outage and billing portal",
+            "tattoo studio booking and flash gallery",
+            "harbour seafood restaurant with daily catch menu",
+        ] {
+            for variant in [0, 3] {
+                let rec = recommend_design_variant(brief, OperatingMode::NewWebsite, None, None, variant);
+                let looks = looks_of(&rec, "t");
+                assert_eq!(looks.len(), 3, "{brief}");
+                type Get = fn(&crate::baseline::Look) -> Option<String>;
+                let slots: [(&str, Get); 5] = [
+                    ("nav", |l| l.nav.clone()),
+                    ("hero", |l| l.hero.clone()),
+                    ("footer", |l| l.footer.clone()),
+                    ("archetype", |l| l.archetype.clone()),
+                    ("palette", |l| l.palette.clone()),
+                ];
+                for (name, get) in slots {
+                    let ids: Vec<String> = looks.iter().filter_map(get).collect();
+                    let mut uniq = ids.clone();
+                    uniq.sort();
+                    uniq.dedup();
+                    assert_eq!(uniq.len(), ids.len(), "{brief} v{variant}: directions share a {name}: {ids:?}");
+                }
+            }
+        }
     }
 }

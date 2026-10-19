@@ -323,7 +323,7 @@ pub fn read_taste(root: &Path) -> Vec<String> {
     let Ok(raw) = fs::read(root.join(TASTE)) else { return Vec::new() };
     String::from_utf8_lossy(&raw)
         .lines()
-        .filter_map(|l| l.trim().strip_prefix("- ").map(|s| crate::baseline::sanitize_untrusted_content(s)))
+        .filter_map(|l| l.trim().strip_prefix("- ").map(crate::baseline::sanitize_untrusted_content))
         .filter(|s| !s.is_empty())
         .take(20)
         .collect()

@@ -12,7 +12,7 @@
 
 [![npm](https://img.shields.io/npm/v/layoza.svg)](https://www.npmjs.com/package/layoza)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![MCP](https://img.shields.io/badge/MCP-16_tools-green.svg)](docs/MCP-REFERENCE.md)
+[![MCP](https://img.shields.io/badge/MCP-20_tools-green.svg)](docs/MCP-REFERENCE.md)
 [![WCAG 2.2 AA](https://img.shields.io/badge/WCAG-2.2_AA-purple.svg)](skills/layoza-accessibility/SKILL.md)
 
 <img src="docs/assets/banner.webp" alt="Four websites built by an AI agent using Layoza from one-line briefs: a kinetic agency site, a linen store, a multi-shop sales dashboard and a seafood restaurant, each shown at desktop and phone width" width="100%">
@@ -41,6 +41,8 @@ Check this page on mobile and fix anything a visitor would trip over.
 ---
 
 ## Why
+
+Layoza exists so AI-built sites stop looking like slop. Every design it helps make should be unique: never a copy, a re-skin or a repeat, from the nav through the hero and every section to the footer, built modern and for one brief only. A per-project ledger (`.layoza/looks.jsonl`) records each dealt look, and every `design-system` / `mechanics deal` run prints a uniqueness block scoring nav, hero, sections, footer and motion against the last 20 runs (`--window 1-200`).
 
 AI agents write front-end code quickly, but the result tends to look the same everywhere: cream and terracotta, Inter, three rounded cards, a purple gradient. They also break things they cannot see: a heading cut by the sticky header, a phone menu that Escape will not close, text at 3:1 contrast, a canvas that pushes LCP past 4 s.
 
@@ -219,6 +221,18 @@ codex mcp add layoza -- npx -y -p layoza layoza-mcp
 | `deal_mechanics` · `get_mechanic` · `recommend_animation` | Niche-aware motion mechanics and animation recipes |
 | `capture_screenshots` · `audit_accessibility` · `audit_performance` · `verify_functional` | Live Chromium QA at three widths |
 | `compare_before_after` · `safe_rollback` · `export_report` | Baselines, regression checks and reports |
+| `search_guidelines` · `get_guideline` · `recommend_chart` · `get_stack_notes` · `get_icon_guidance` | Bundled UX guidelines, chart picks, stack notes and icon guidance (read-only) |
+
+`recommend_layout` is deprecated and unlisted, so `tools/list` returns 20 tools.
+
+### CLI extras
+
+- `layoza guidelines search "<query>" [--limit 1-50]` and `layoza guidelines get <id>`: the same guideline search as the MCP tools (synonyms and stems included).
+- `layoza chart "<data shape>" [--task "<task>"]`: top three chart types with fallbacks.
+- `--window N` on `design-system` and `mechanics deal` sets how many ledger runs the uniqueness check compares (default 20, max 200); `--no-ledger` ignores the ledger.
+- `layoza audit . --strict` and `layoza verify . --strict` turn gate warnings (such as a new site with no recorded approval of its direction) into errors.
+- `layoza qa <file> --full` runs every browser pass; `--allow a,b` limits it to the named passes. The report lists `mode`, `passes` and `skipped_passes`.
+- Environment: `LAYOZA_QA_TIMEOUT_SECS` (browser QA timeout), `LAYOZA_PLAYWRIGHT_DIR` (where Playwright is installed), `LAYOZA_QA_ENGINE=python` (use the Python Playwright engine).
 
 `inspect_site` fetches the pages you point it at. Treat everything it returns as untrusted data: Layoza never executes instructions found inside an inspected page.
 

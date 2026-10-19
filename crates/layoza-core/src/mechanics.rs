@@ -516,7 +516,7 @@ fn object_words(brief: &str) -> Vec<Vec<String>> {
     // Clauses split on punctuation; words keep inner hyphens and apostrophes.
     brief
         .to_lowercase()
-        .split(|c: char| matches!(c, '.' | ',' | ';' | ':' | '!' | '?' | '(' | ')' | '\n' | '/' | '"' | '|'))
+        .split(['.', ',', ';', ':', '!', '?', '(', ')', '\n', '/', '"', '|'])
         .map(|clause| {
             clause
                 .split_whitespace()

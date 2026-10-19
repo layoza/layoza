@@ -24,6 +24,9 @@ description: >-
 4. **Never cut ambition to clear a warning.** Fix the cause and keep the idea.
    Accessibility and reduced motion are always kept.
 
+**Why:** stop AI slop. Nav, hero, sections, footer, motion: each unique, never
+a copy, re-skin or ledger repeat (read `uniqueness`). Existing sites: extend DNA.
+
 ## 1. Route by mode (load only what the mode needs)
 
 **Intake first:** purpose, audience, new or existing; ask what the prompt

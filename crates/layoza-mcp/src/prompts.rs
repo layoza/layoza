@@ -126,7 +126,7 @@ pub fn get(params: &Value) -> Result<Value, String> {
     if !ctx.mode.is_empty() && !matches!(ctx.mode.as_str(), "new_website" | "extend_existing" | "improve_existing" | "full_redesign") {
         return Err("`mode` must be new_website, extend_existing, improve_existing or full_redesign.".into());
     }
-    if !ctx.url.is_empty() && !(ctx.url.starts_with("http://") || ctx.url.starts_with("https://")) {
+    if !ctx.url.is_empty() && !ctx.url.starts_with("http://") && !ctx.url.starts_with("https://") {
         return Err("`url` must be an http(s) URL.".into());
     }
     Ok(json!({

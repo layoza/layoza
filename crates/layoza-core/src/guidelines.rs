@@ -233,39 +233,114 @@ const STOPWORDS: &[&str] = &[
     "should", "do", "i", "my", "over", "vs", "best", "use", "using",
 ];
 
-fn terms(query: &str) -> Vec<String> {
-    query
-        .to_ascii_lowercase()
-        .split(|c: char| !(c.is_ascii_alphanumeric() || c == '-' || c == '.'))
+/// Words a searcher uses for the same thing. A query word in a group also matches the others,
+/// at one point less than a direct hit.
+const SYNONYMS: &[&[&str]] = &[
+    &["modal", "dialog", "popup", "lightbox", "overlay"],
+    &["nav", "navigation", "menu", "navbar"],
+    &["button", "cta", "call-to-action"],
+    &["color", "colour"],
+    &["font", "typography", "typeface", "text-size"],
+    &["motion", "animation", "animate", "transition"],
+    &["mobile", "phone", "small-screen"],
+    &["touch", "tap"],
+    &["form", "input", "field"],
+    &["image", "img", "photo", "picture"],
+    &["loading", "spinner", "skeleton", "progress"],
+    &["error", "validation", "invalid"],
+    &["a11y", "accessibility", "accessible", "screen-reader", "wcag"],
+    &["toast", "snackbar", "notification"],
+    &["dark-mode", "dark", "theme"],
+    &["icon", "glyph", "pictogram"],
+    &["performance", "perf", "speed", "vitals"],
+    &["spacing", "whitespace", "padding", "margin"],
+    &["rtl", "right-to-left", "bidi"],
+    &["keyboard", "focus"],
+    &["chart", "graph", "visualization", "dataviz"],
+];
+
+/// Strips one common English suffix: "targets" -> "target", "animated" -> "animat",
+/// "loading" -> "load". Roots shorter than 4 letters are left alone.
+fn stem(t: &str) -> String {
+    for suf in ["ations", "ation", "ings", "ing", "ies", "ers", "ed", "es", "er", "ly", "s"] {
+        if let Some(root) = t.strip_suffix(suf) {
+            // "tapping" -> "tapp" -> "tap": undo a doubled final consonant.
+            let b = root.as_bytes();
+            let undoubled = matches!(suf, "ing" | "ings" | "ed" | "er" | "ers")
+                && b.len() >= 4
+                && b[b.len() - 1] == b[b.len() - 2]
+                && !matches!(b[b.len() - 1], b's' | b'l' | b'e' | b'o');
+            if undoubled {
+                return root[..root.len() - 1].to_string();
+            }
+            if root.len() >= 4 && !(suf == "s" && root.ends_with('s')) {
+                return if suf == "ies" { format!("{root}y") } else { root.to_string() };
+            }
+        }
+    }
+    t.to_string()
+}
+
+/// Multi-word names searched as one word.
+const PHRASES: &[(&str, &str)] = &[
+    ("screen reader", "screen-reader"),
+    ("right to left", "right-to-left"),
+    ("call to action", "call-to-action"),
+    ("dark mode", "dark-mode"),
+    ("small screen", "small-screen"),
+    ("text size", "text-size"),
+];
+
+/// One query word with its alternatives: (text, weight penalty). The word and its stem cost 0,
+/// synonyms cost 1.
+type Term = Vec<(String, u32)>;
+
+fn terms(query: &str) -> Vec<Term> {
+    let mut q = query.to_ascii_lowercase();
+    for (from, to) in PHRASES {
+        q = q.replace(from, to);
+    }
+    q.split(|c: char| !(c.is_ascii_alphanumeric() || c == '-' || c == '.'))
         .map(|t| t.trim_matches(|c| c == '-' || c == '.'))
         .filter(|t| !t.is_empty() && !STOPWORDS.contains(t))
         .map(|t| {
-            // light stemming: "targets" -> "target", "modals" -> "modal"
-            if t.len() > 4 && t.ends_with('s') && !t.ends_with("ss") {
-                t[..t.len() - 1].to_string()
-            } else {
-                t.to_string()
+            let root = stem(t);
+            let mut alts: Term = vec![(t.to_string(), 0)];
+            if root != t {
+                alts.push((root.clone(), 0));
             }
+            for group in SYNONYMS {
+                if group.iter().any(|w| *w == t || *w == root || stem(w) == root) {
+                    for w in group.iter() {
+                        if !alts.iter().any(|(a, _)| a == w) {
+                            alts.push((w.to_string(), 1));
+                        }
+                    }
+                }
+            }
+            alts
         })
         .collect()
 }
 
-/// Scores weighted fields: each term earns the best weight among fields that contain it.
-/// Short terms (<= 2 chars) must match a whole word to avoid noise.
-fn score(fields: &[(u32, String)], terms: &[String]) -> u32 {
+fn field_has(f: &str, t: &str) -> bool {
+    if t.len() <= 2 {
+        f.split(|c: char| !c.is_ascii_alphanumeric()).any(|w| w == t)
+    } else {
+        f.contains(t)
+    }
+}
+
+/// Scores weighted fields: each query word earns the best weight among fields that contain it
+/// or one of its alternatives (minus the alternative's penalty). Short alternatives (<= 2 chars)
+/// must match a whole word to avoid noise.
+fn score(fields: &[(u32, String)], terms: &[Term]) -> u32 {
     let mut total = 0;
     let mut matched = 0;
-    for t in terms {
-        let best = fields
+    for alts in terms {
+        let best = alts
             .iter()
-            .filter(|(_, f)| {
-                if t.len() <= 2 {
-                    f.split(|c: char| !c.is_ascii_alphanumeric()).any(|w| w == t)
-                } else {
-                    f.contains(t.as_str())
-                }
-            })
-            .map(|(w, _)| *w)
+            .flat_map(|(t, pen)| fields.iter().filter(move |(_, f)| field_has(f, t)).map(move |(w, _)| w.saturating_sub(*pen).max(1)))
             .max()
             .unwrap_or(0);
         if best > 0 {
@@ -274,7 +349,7 @@ fn score(fields: &[(u32, String)], terms: &[String]) -> u32 {
         total += best;
     }
     if terms.len() > 1 && matched == terms.len() {
-        total += 4; // every term found
+        total += 4; // every word found
     }
     total
 }
@@ -441,6 +516,30 @@ fn shape_alias(s: &str) -> String {
     }
 }
 
+/// The data shape of a free-text description ("monthly revenue over two years" -> time-series):
+/// the whole phrase first, then each word, with period words read as time.
+fn infer_shape(s: &str) -> String {
+    let known = |sh: &str| charts().iter().any(|c| c.data_shape == sh);
+    let full = shape_alias(s);
+    if known(&full) {
+        return full;
+    }
+    for w in s.to_ascii_lowercase().split(|c: char| !c.is_ascii_alphanumeric()).filter(|w| !w.is_empty()) {
+        let root = stem(w);
+        let sh = match root.as_str() {
+            "hour" | "hourly" | "day" | "daily" | "week" | "weekly" | "month" | "monthly" | "quarter" | "quarterly"
+            | "year" | "yearly" | "annual" | "timeline" | "history" | "historical" => "time-series".to_string(),
+            "percent" | "percentage" | "breakdown" | "split" | "mix" => "part-to-whole".to_string(),
+            "country" | "countries" | "region" | "postcode" | "zip" => "geospatial".to_string(),
+            _ => shape_alias(&root),
+        };
+        if known(&sh) {
+            return sh;
+        }
+    }
+    full
+}
+
 fn task_alias(t: &str) -> String {
     let n = norm(t);
     match n.as_str() {
@@ -460,7 +559,7 @@ fn task_alias(t: &str) -> String {
 /// Best charts for a data shape and (optional) task, best first. Exact shape + task matches win;
 /// keyword and situation matches fill in so free-text inputs ("money over months") still work.
 pub fn chart_for(data_shape: &str, task: Option<&str>) -> Vec<&'static Chart> {
-    let shape = shape_alias(data_shape);
+    let shape = infer_shape(data_shape);
     let task = task.map(task_alias).filter(|t| !t.is_empty());
     let mut scored: Vec<(u32, &'static Chart)> = charts()
         .iter()
@@ -494,6 +593,34 @@ pub fn chart_for(data_shape: &str, task: Option<&str>) -> Vec<&'static Chart> {
 mod tests {
     use super::*;
     use std::collections::HashSet;
+
+    #[test]
+    fn synonyms_and_stems_find_what_people_mean() {
+        let top = |q: &str| search(q, None, None, 3).into_iter().map(|h| h.id).collect::<Vec<_>>();
+        for (q, any_of) in [
+            ("popup close button", &["OVL-05"][..]),
+            ("colour contrast", &["A11Y-01"]),
+            ("loading spinner", &["LEE-01", "LEE-02", "FDBK-10"]),
+            ("right-to-left layout", &["I18N-02"]),
+            ("typeface size", &["COPY-04"]),
+            ("graph for trends", &["line-trend"]),
+            ("tapping small buttons", &["TOUCH-01", "TOUCH-02"]),
+            ("screen reader labels", &["A11Y-06", "OVL-02"]),
+            ("navbar on phones", &["NAV-04"]),
+        ] {
+            let got = top(q);
+            assert!(any_of.iter().any(|id| got.iter().any(|g| g == id)), "`{q}` top 3 was {got:?}, wanted one of {any_of:?}");
+        }
+        assert_eq!(stem("tapping"), "tap");
+        assert_eq!(stem("targets"), "target");
+        assert_eq!(stem("class"), "class");
+        assert_eq!(stem("dialogs"), "dialog");
+        // Free-text data shapes resolve through their words.
+        let first = |q: &str| chart_for(q, None).first().map(|c| c.data_shape.clone());
+        assert_eq!(first("monthly revenue over two years").as_deref(), Some("time-series"));
+        assert_eq!(first("percentage of visitors by browser").as_deref(), Some("part-to-whole"));
+        assert_eq!(first("sales per country").as_deref(), Some("geospatial"));
+    }
 
     pub const EXPECTED_STACKS: &[&str] = &[
         "html", "react", "nextjs", "astro", "vue", "nuxt", "sveltekit", "gutenberg", "elementor", "bricks",

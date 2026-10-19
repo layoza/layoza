@@ -1340,6 +1340,24 @@ Run `layoza <COMMAND> --help` for that command's options.
     );
 }
 
+/// Human-readable release gate status.
+fn gate_label(report: &layoza_core::verifier::AuditReport) -> String {
+    match report.verification_status.as_str() {
+        "passed" => "PASSED (defects only; this gate cannot judge whether the design is good)".to_string(),
+        "unverified" => "UNVERIFIED (no objective errors, but Core Web Vitals were not measured; run `layoza qa` first)".to_string(),
+        _ => "FAILED".to_string(),
+    }
+}
+
+/// Exit code for the release gate: 0 passed, 1 failed, 2 unverified.
+fn exit_for_gate(report: &layoza_core::verifier::AuditReport) {
+    match report.verification_status.as_str() {
+        "passed" => {}
+        "unverified" => process::exit(2),
+        _ => process::exit(1),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1422,23 +1440,5 @@ mod tests {
         ] {
             assert!(subcommand_usage(cmd).is_some(), "{}", cmd);
         }
-    }
-}
-
-/// Human-readable release gate status.
-fn gate_label(report: &layoza_core::verifier::AuditReport) -> String {
-    match report.verification_status.as_str() {
-        "passed" => "PASSED (defects only; this gate cannot judge whether the design is good)".to_string(),
-        "unverified" => "UNVERIFIED (no objective errors, but Core Web Vitals were not measured; run `layoza qa` first)".to_string(),
-        _ => "FAILED".to_string(),
-    }
-}
-
-/// Exit code for the release gate: 0 passed, 1 failed, 2 unverified.
-fn exit_for_gate(report: &layoza_core::verifier::AuditReport) {
-    match report.verification_status.as_str() {
-        "passed" => {}
-        "unverified" => process::exit(2),
-        _ => process::exit(1),
     }
 }

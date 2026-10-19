@@ -207,7 +207,7 @@ fn design_md_body(dna: &SiteDna, bg_key: &str, primary_key: &str) -> String {
             t.role, t.font_family, t.font_size, t.font_weight, t.line_height, t.letter_spacing
         ));
     }
-    out.push_str("- Body measure 45-75 characters; multi-line display headings keep line-height at 1.04 or more; functional text never below 11px.\n\n");
+    out.push_str("- Body measure 45-75 characters; multi-line display headings keep line-height at 1.04 or more; body text never below 16px and labels or captions never below 12px.\n\n");
 
     out.push_str("## 4. Component Stylings\n\n");
     let radius = dna.radii_scale.values().next().cloned().unwrap_or_else(|| "8px".into());
@@ -299,12 +299,13 @@ pub fn generate_project_skill_md(dna: &SiteDna) -> String {
          3. Type: {fonts}.\n\
          4. Motion intensity {motion}/10; honour reduced motion.\n\
          5. Reuse existing components; new values need a DESIGN.md entry first.\n\
-         6. Before handing back, run `layoza verify .` and fix or report every failure.\n",
+         6. Before handing back, run `layoza verify .` and fix or report every failure.\n\n         ## Why Layoza\n\n         {purpose}\n         On this project, unique means authored by this site's own team: extend its look, never import one from the ledger or another site.\n",
         name = name,
         proj = dna.project_name.replace('"', "'"),
         colors = if colors.is_empty() { "see DESIGN.md".into() } else { colors.join(", ") },
         fonts = if fonts.is_empty() { "see DESIGN.md".into() } else { fonts.join(", ") },
-        motion = dna.dials.motion_intensity
+        motion = dna.dials.motion_intensity,
+        purpose = crate::intelligence::purpose_markdown()
     )
 }
 
@@ -574,6 +575,22 @@ pub fn lint_design_md(content: &str) -> DesignMdLintReport {
         }
     }
 
+    // Type floors: body 16px (1rem), any functional text 12px (0.75rem).
+    for (role, spec) in &parsed.typography {
+        let size = spec.split(';').find_map(|kv| kv.strip_prefix("fontSize=")).and_then(css_px);
+        if let Some(px) = size {
+            let body = role.to_ascii_lowercase().contains("body");
+            let floor = if body { 16.0 } else { 12.0 };
+            if px + 0.01 < floor {
+                findings.push(DesignMdFinding {
+                    severity: "warning".to_string(),
+                    path: format!("typography.{}", role),
+                    message: format!("fontSize {}px is below the {}px floor for {} text.", px, floor, if body { "body" } else { "functional" }),
+                });
+            }
+        }
+    }
+
     let errors = findings.iter().filter(|f| f.severity == "error").count();
     let warnings = findings.iter().filter(|f| f.severity == "warning").count();
     let infos = findings.iter().filter(|f| f.severity == "info").count();
@@ -587,6 +604,18 @@ pub fn lint_design_md(content: &str) -> DesignMdLintReport {
             infos,
         },
     }
+}
+
+/// A plain px or rem size in px (16px root); clamp() and other expressions are not judged.
+fn css_px(v: &str) -> Option<f64> {
+    let v = v.trim();
+    if let Some(n) = v.strip_suffix("px") {
+        return n.trim().parse().ok();
+    }
+    if let Some(n) = v.strip_suffix("rem") {
+        return n.trim().parse::<f64>().ok().map(|r| r * 16.0);
+    }
+    None
 }
 
 fn diff_maps(before: &BTreeMap<String, String>, after: &BTreeMap<String, String>) -> TokenDelta {
@@ -658,6 +687,22 @@ mod tests {
         assert!(lint_design_md(legacy).valid, "{:?}", lint_design_md(legacy).findings);
         let skill = generate_project_skill_md(&dna);
         assert!(skill.starts_with("---\nname: \"") && skill.contains("DESIGN.md"));
+        assert!(skill.contains("## Why Layoza") && skill.contains("never a copy"));
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn lint_warns_on_type_below_the_body_and_label_floors() {
+        let doc = |body: &str, label: &str| {
+            format!(
+                "---\ntypography:\n  body:\n    fontFamily: \"Inter\"\n    fontSize: \"{body}\"\n  label:\n    fontFamily: \"Inter\"\n    fontSize: \"{label}\"\n  display:\n    fontSize: \"clamp(2rem, 5vw, 4rem)\"\n---\n## Overview\n## Colors\n## Typography\n"
+            )
+        };
+        let floor = |md: &str| lint_design_md(md).findings.into_iter().filter(|f| f.message.contains("floor")).map(|f| f.path).collect::<Vec<_>>();
+        assert!(floor(&doc("16px", "0.75rem")).is_empty());
+        assert_eq!(floor(&doc("14px", "12px")), vec!["typography.body".to_string()]);
+        assert_eq!(floor(&doc("1rem", "11px")), vec!["typography.label".to_string()]);
+        assert_eq!(css_px("0.875rem"), Some(14.0));
+        assert_eq!(css_px("clamp(1rem, 2vw, 2rem)"), None);
     }
 }

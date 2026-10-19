@@ -451,6 +451,68 @@ impl HookConfig {
     }
 }
 
+/// Exemption tokens that are about the whole document (a reduced-motion media query, a
+/// color-scheme declaration) and so count anywhere in the file.
+const FILE_WIDE_EXEMPTIONS: &[&str] = &["prefers-reduced-motion", "color-scheme"];
+/// Lines either side of a hit that its exemption may sit on (a `<label>` just above an input).
+const EXEMPTION_LINES: usize = 2;
+/// Hits looked at per pattern before the rule is reported anyway.
+const MAX_HITS_PER_PATTERN: usize = 200;
+
+/// Whitespace-free, lower-case lines plus each line's start offset in `joined` (lines joined by '\n').
+struct Squashed {
+    joined: String,
+    starts: Vec<usize>,
+    whole: String,
+}
+
+fn squash(content: &str) -> Squashed {
+    let lines: Vec<String> = content.lines().map(|l| l.chars().filter(|c| !c.is_whitespace()).collect::<String>().to_ascii_lowercase()).collect();
+    let mut starts = Vec::with_capacity(lines.len());
+    let mut joined = String::new();
+    for l in &lines {
+        starts.push(joined.len());
+        joined.push_str(l);
+        joined.push('\n');
+    }
+    let whole = lines.concat();
+    Squashed { joined, starts, whole }
+}
+
+/// True when every hit of `pattern` has one of `unless` in its own element or rule block
+/// (`<...>` or `{...}`) or within EXEMPTION_LINES lines of it. Document-level tokens count
+/// anywhere. A pattern that only appears across a line break is judged on the whole file.
+fn every_hit_exempt(sq: &Squashed, pattern: &str, unless: &[String]) -> bool {
+    if unless.is_empty() {
+        return false;
+    }
+    if unless.iter().any(|u| FILE_WIDE_EXEMPTIONS.contains(&u.as_str()) && sq.whole.contains(u.as_str())) {
+        return true;
+    }
+    let j = &sq.joined;
+    let mut seen = 0;
+    for (p, _) in j.match_indices(pattern) {
+        seen += 1;
+        if seen > MAX_HITS_PER_PATTERN {
+            return false;
+        }
+        let line = sq.starts.partition_point(|s| *s <= p).saturating_sub(1);
+        let lo = sq.starts[line.saturating_sub(EXEMPTION_LINES)];
+        let hi = sq.starts.get(line + EXEMPTION_LINES + 1).copied().unwrap_or(j.len());
+        let open = j[..p].rfind(['{', '<']).unwrap_or(0);
+        let close = j[p + pattern.len()..].find(['}', '>']).map(|c| p + pattern.len() + c + 1).unwrap_or(j.len());
+        let near = |a: usize, b: usize| unless.iter().any(|u| j[a..b].contains(u.as_str()));
+        if !(near(open, close) || near(lo, hi)) {
+            return false;
+        }
+    }
+    if seen == 0 {
+        // Only matched with line breaks removed: fall back to the file-level check.
+        return unless.iter().any(|u| sq.whole.contains(u.as_str()));
+    }
+    true
+}
+
 /// Runs the opted-in guideline pattern rules on one file until `deadline_ms` after `start`.
 /// Returns the findings and how many active rules were skipped because the budget ran out.
 pub fn guideline_findings(
@@ -460,7 +522,8 @@ pub fn guideline_findings(
     start: Instant,
     deadline_ms: u64,
 ) -> (Vec<AuditFinding>, usize) {
-    let squashed: String = content.chars().filter(|c| !c.is_whitespace()).collect::<String>().to_ascii_lowercase();
+    let sq = squash(content);
+    let squashed = &sq.whole;
     let mut out = Vec::new();
     let mut skipped = 0;
     for (g, rule) in guidelines::hook_rules() {
@@ -471,8 +534,9 @@ pub fn guideline_findings(
             skipped += 1;
             continue;
         }
-        let hit = rule.patterns.iter().any(|p| squashed.contains(p.as_str()));
-        if !hit || rule.unless.iter().any(|u| squashed.contains(u.as_str())) {
+        // A rule fires when some hit has no exemption in its own element, block or line window.
+        let fires = rule.patterns.iter().any(|p| squashed.contains(p.as_str()) && !every_hit_exempt(&sq, p, &rule.unless));
+        if !fires {
             continue;
         }
         let severity = match g.severity.as_str() {
@@ -626,7 +690,7 @@ pub fn check_edit(input: &str, project_dir_env: Option<&Path>, cwd: &Path, now_m
     let mut state = load_state(&project_root);
     let key = rate_key(&file);
     if let Some(&last) = state.checked.get(&key) {
-        let unchanged = state.hashes.get(&key).map_or(true, |h| *h == hash);
+        let unchanged = state.hashes.get(&key).is_none_or(|h| *h == hash);
         if unchanged && now_ms.saturating_sub(last) < RATE_LIMIT_MS {
             return None;
         }
@@ -997,6 +1061,31 @@ mod hook_tests {
         // Exemptions apply: dvh present means 100vh fallback is fine.
         let (found, _) = guideline_findings("a.css", ".h{min-height:100vh;min-height:100dvh}", &cfg, start, 10_000);
         assert!(found.iter().all(|f| f.rule_id != "TOUCH-05"), "{:?}", found);
+    }
+
+    #[test]
+    fn exemptions_only_cover_their_own_element_or_nearby_lines() {
+        let cfg = HookConfig::default();
+        let start = Instant::now();
+        let fired = |css: &str, id: &str| guideline_findings("a.css", css, &cfg, start, 10_000).0.iter().any(|f| f.rule_id == id);
+        // Same block, across lines: exempt.
+        assert!(!fired(".hero {\n  min-height: 100vh;\n  min-height: 100dvh;\n}", "TOUCH-05"));
+        // A dvh far away in another block does not excuse this 100vh.
+        let far = format!(".hero {{ min-height: 100vh; }}\n{}.panel {{ height: 50dvh; }}", ".x { color: red; }\n".repeat(8));
+        assert!(fired(&far, "TOUCH-05"), "distant dvh must not exempt");
+        // Two hits, one exempt and one not: still reported.
+        let mixed = format!(".a {{ height: 100vh; height: 100dvh; }}\n{}.b {{ height: 100vh; }}", ".x { color: red; }\n".repeat(8));
+        assert!(fired(&mixed, "TOUCH-05"));
+        // HTML: aria-label on the same input exempts; one on a distant element does not.
+        let ok = r#"<input placeholder="Email" aria-label="Email">"#;
+        assert!(guideline_findings("a.html", ok, &cfg, start, 10_000).0.iter().all(|f| f.rule_id != "FORM-01"));
+        let label_above = "<label for=\"e\">Email</label>\n<input id=\"e\" placeholder=\"you@example.com\">";
+        assert!(guideline_findings("a.html", label_above, &cfg, start, 10_000).0.iter().all(|f| f.rule_id != "FORM-01"), "label on the line above counts");
+        let distant = format!("<input placeholder=\"Email\">\n{}<button aria-label=\"Close\">x</button>", "<p>text</p>\n".repeat(8));
+        assert!(guideline_findings("a.html", &distant, &cfg, start, 10_000).0.iter().any(|f| f.rule_id == "FORM-01"));
+        // Document-level exemptions still count anywhere in the file.
+        let rm = format!("html {{ scroll-behavior: smooth; }}\n{}@media (prefers-reduced-motion: reduce) {{ html {{ scroll-behavior: auto; }} }}", ".x { color: red; }\n".repeat(20));
+        assert!(!fired(&rm, "NAV-09"));
     }
 
     #[test]

@@ -121,6 +121,20 @@ try {
   const text = call.result?.content?.find((c) => c.type === "text")?.text;
   if (call.error || call.result?.isError || !text) fail(`tools/call deal_mechanics failed: ${JSON.stringify(call.error ?? call.result)}`);
   else console.log(`tools/call      ok  deal_mechanics returned ${text.length} chars`);
+  if (text && !(/"uniqueness"/.test(text) && /"ledger"/.test(text))) fail("deal_mechanics: response lacks the uniqueness block or the ledger line");
+  else if (text) console.log("uniqueness      ok  deal_mechanics carries uniqueness and ledger");
+  if (Array.isArray(tools) && tools.length !== 20) fail(`tools/list: expected 20 tools, got ${tools.length}`);
+
+  // Guideline tools: read-only lookups into the bundled data
+  for (const [name, args, want] of [
+    ["search_guidelines", { query: "touch targets on mobile", limit: 3 }, /TOUCH-/],
+    ["recommend_chart", { data_shape: "monthly revenue over two years" }, /line/i],
+  ]) {
+    const r = await request("tools/call", { name, arguments: args });
+    const t = r.result?.content?.find((c) => c.type === "text")?.text ?? "";
+    if (r.error || r.result?.isError || !want.test(t)) fail(`tools/call ${name} failed: ${JSON.stringify(r.error ?? t.slice(0, 120))}`);
+    else console.log(`tools/call      ok  ${name} returned ${t.length} chars`);
+  }
 
   // Bad input must come back as an actionable tool error, not a crash
   const range = await request("tools/call", { name: "deal_mechanics", arguments: { brief: "x", count: 99 } });

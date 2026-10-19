@@ -40,9 +40,32 @@ copy or secrets.
   `direction.md` when the user asked for the same look.
 - `LAYOZA_NO_HISTORY=1` turns the ledger off (nothing read or written).
 
-## Tools (15 listed) and prompts (7)
+## Project look ledger and `uniqueness`
 
-`tools/list` returns 15 tools. `recommend_layout` is deprecated and no longer listed, but still answers
+`get_design_system` (new and redesign modes) and `deal_mechanics` also read and append the project
+ledger `<project>/.layoza/looks.jsonl`. Both take `window` (1-200, default 20: how many recent runs to
+compare) and `ledger` (default true). Each response carries:
+
+- `uniqueness`: `ledger`, `window`, `entries_compared`, `slots` (nav, hero, sections, footer, motion,
+  palette and so on, each with `id` and `status` fresh or repeat), `fresh`, `repeats`, `score` (0-100)
+  and `verdict`.
+- `ledger`: always present, one of `written <path>`, `not written (<error>)` or `off (<reason>)`.
+
+When a niche's pool is exhausted inside the window (for example, a funeral home has five calm navs),
+the dealer falls back to the least recently used option and reports it as a repeat.
+
+## QA scope arguments
+
+`capture_screenshots`, `audit_accessibility`, `verify_functional` and `audit_performance` take
+`full` (run every browser pass) and `allow` (list of pass names to run); responses include `qa_mode`
+with the mode, the passes run and `skipped_passes`. `audit_accessibility` and `verify_functional`
+also take `strict` (gate warnings, such as an unapproved direction, become errors). The server reads `LAYOZA_QA_TIMEOUT_SECS`,
+`LAYOZA_PLAYWRIGHT_DIR` and `LAYOZA_QA_ENGINE=python`. Live URLs must resolve to a public address;
+private, link-local and metadata ranges are refused, while `localhost` stays allowed.
+
+## Tools (20 listed) and prompts (7)
+
+`tools/list` returns 20 tools. `recommend_layout` is deprecated and no longer listed, but still answers
 `tools/call` for older clients; use `get_design_system` instead. Every call is checked against the tool's
 schema first: unknown arguments, wrong types, out-of-range numbers, empty briefs and over-long strings
 are rejected with a clear error. `prompts/list` returns seven workflow prompts: `art-direct`, `critique`,
@@ -74,6 +97,11 @@ directions never share a hero look family.
 | [`deal_mechanics`](#deal_mechanics) | No | Deals specific, buildable page mechanics from Layoza's catalogue: 1 hero + `count` section mechanics (2 `signature` to build verbatim in spirit, the rest `suggestions`) + 1 transition, never two of one mechanism family, deterministic per `seed`. |
 | [`get_mechanic`](#get_mechanic) | No | Returns one mechanic from Layoza's catalogue by id (from `deal_mechanics` or `layoza mechanics list`) with its full blueprint, motion, still_check, mobile, a11y, avoid and CSS/JS stack notes. |
 | [`safe_rollback`](#safe_rollback) | Only with `write_approved: true` | Creates or restores a reversible project baseline snapshot (requires write_approved=true). |
+| `search_guidelines` | No | Searches bundled UX guidelines, chart notes and stack notes by keyword (synonyms and stems included); `get_guideline` returns one in full. |
+| `get_guideline` | No | Returns one guideline, chart or stack note by id, or `icons` for the icon guidance. |
+| `recommend_chart` | No | Recommends chart types for a data shape with encoding, when to avoid each, volume limits and an accessible fallback. |
+| `get_stack_notes` | No | Returns notes for one stack: conventions, pitfalls, where tokens and motion live. |
+| `get_icon_guidance` | No | Returns icon guidance: sets, sizing, stroke, labels and accessibility. |
 
 ---
 
