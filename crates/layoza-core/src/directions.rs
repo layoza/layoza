@@ -120,6 +120,9 @@ pub(crate) struct TypeEntry {
     pub licence: &'static str,
     /// CSS fallback stacks for display and body, matched to each face's class.
     pub fallbacks: &'static str,
+    /// Stylesheet for the mono face when it is not in the main URL (Fontshare pairings load their
+    /// mono from Google Fonts); empty when the main URL already carries it.
+    pub mono_url: &'static str,
 }
 
 /// One palette with the axes the dealer scores on.
@@ -153,6 +156,8 @@ struct RawType {
     display_class: String,
     body_class: String,
     url: String,
+    #[serde(default)]
+    mono_url: String,
 }
 
 #[derive(Deserialize)]
@@ -236,6 +241,7 @@ pub(crate) fn type_pool() -> &'static [TypeEntry] {
                     source: leak(r.source),
                     licence: leak(r.licence),
                     fallbacks,
+                    mono_url: leak(r.mono_url),
                 }
             })
             .collect()
@@ -705,6 +711,8 @@ pub(crate) struct Dealt {
     pub type_entry: Option<&'static TypeEntry>,
     /// Brand notes: the brief's own colours or fonts this direction is built around.
     pub brand: Vec<String>,
+    /// Second stylesheet for faces the main URL does not carry (a Google mono beside Fontshare faces).
+    pub extra_font_url: Option<String>,
 }
 
 fn fits(a: &Archetype, s: Surface) -> bool {
@@ -847,40 +855,53 @@ fn is_mono_name(f: &str) -> bool {
     l.contains("mono") || l.contains("code") || l.ends_with(" console")
 }
 
-/// Builds the type pairing around the brief's own fonts: they rotate through display and body per
-/// direction; a mono name fills the mono role. Fontshare families load from Fontshare.
-fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> TypographyPairing {
+/// Hero materials with no human presence; solemn briefs (funerals, care, law) avoid them.
+const COLD_HEROES: &[&str] = &["object", "illustration", "code-output", "data-as-image", "live-ui", "procedural-texture", "collage"];
+
+/// Commercial families a brief may name as its brand type. They are never linked to a free CDN:
+/// the direction says the brand must self-host them under its own licence.
+const PAID_FACES: &[&str] = &[
+    "neue montreal", "pp neue montreal", "helvetica neue", "helvetica", "graphik", "gt america", "gt walsheim", "gt sectra", "circular",
+    "founders grotesk", "sohne", "s\u{f6}hne", "aeonik", "suisse int'l", "akzidenz-grotesk", "futura pt", "proxima nova", "avenir",
+    "gotham", "brandon grotesque", "freight text", "tiempos", "canela",
+];
+
+pub(crate) fn is_paid_face(name: &str) -> bool {
+    PAID_FACES.contains(&name.to_lowercase().as_str())
+}
+
+/// The brief's own type: names rotate through display and body per direction; a mono name fills
+/// the mono role. Returns the pairing (main stylesheet), a second stylesheet when faces come from
+/// two sources (Fontshare faces with a Google mono), and notes for paid faces.
+fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> (TypographyPairing, Option<String>, Vec<String>) {
     let names: Vec<&String> = fonts.iter().filter(|f| !is_mono_name(f)).collect();
     let mono = fonts.iter().find(|f| is_mono_name(f)).cloned().unwrap_or_else(|| base.mono_font.clone());
     let (display, body) = match names.len() {
         0 => (base.display_font.clone(), base.body_font.clone()),
-        1 => {
-            // One named face leads display; body comes from the base so long text stays legible.
-            (names[0].clone(), if slot == 2 { names[0].clone() } else { base.body_font.clone() })
-        }
-        n => {
-            let d = names[slot as usize % n].clone();
-            let b = names[(slot as usize + 1) % n].clone();
-            (d, b)
-        }
+        // One named face leads display; body comes from the base so long text stays legible.
+        1 => (names[0].clone(), if slot == 2 { names[0].clone() } else { base.body_font.clone() }),
+        n => (names[slot as usize % n].clone(), names[(slot as usize + 1) % n].clone()),
     };
     let fontshare = |f: &str| type_pool().iter().any(|e| e.source == "fontshare" && (e.pairing.display_font == f || e.pairing.body_font == f));
-    let fams: Vec<&String> = {
-        let mut v = vec![&display, &body, &mono];
-        v.dedup();
-        v
-    };
-    let google: Vec<String> = fams.iter().filter(|f| !fontshare(f)).map(|f| format!("family={}", f.replace(' ', "+"))).collect();
-    let shared: Vec<String> = fams.iter().filter(|f| fontshare(f)).map(|f| format!("f[]={}@400,700", f.to_lowercase().replace(' ', "-"))).collect();
-    let url = if shared.is_empty() {
-        format!("https://fonts.googleapis.com/css2?{}&display=swap", google.join("&"))
-    } else if google.is_empty() {
-        format!("https://api.fontshare.com/v2/css?{}&display=swap", shared.join("&"))
-    } else {
-        format!("https://api.fontshare.com/v2/css?{}&display=swap (and https://fonts.googleapis.com/css2?{}&display=swap)", shared.join("&"), google.join("&"))
+    let mut fams: Vec<&String> = vec![&display, &body, &mono];
+    fams.dedup();
+    let paid: Vec<String> = fams
+        .iter()
+        .filter(|f| is_paid_face(f))
+        .map(|f| format!("{f} is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN"))
+        .collect();
+    let free: Vec<&String> = fams.iter().copied().filter(|f| !is_paid_face(f)).collect();
+    let google: Vec<String> = free.iter().filter(|f| !fontshare(f)).map(|f| format!("family={}", f.replace(' ', "+"))).collect();
+    let shared: Vec<String> = free.iter().filter(|f| fontshare(f)).map(|f| format!("f[]={}@400,700", f.to_lowercase().replace(' ', "-"))).collect();
+    let g_url = (!google.is_empty()).then(|| format!("https://fonts.googleapis.com/css2?{}&display=swap", google.join("&")));
+    let f_url = (!shared.is_empty()).then(|| format!("https://api.fontshare.com/v2/css?{}&display=swap", shared.join("&")));
+    let (url, extra) = match (f_url, g_url) {
+        (Some(f), g) => (f, g),
+        (None, Some(g)) => (g, None),
+        (None, None) => (String::new(), None),
     };
     let slug = |s: &str| s.to_lowercase().replace(' ', "-");
-    pairing(
+    let p = pairing(
         &format!("brand-{}-{}", slug(&display), slug(&body)),
         &display,
         &body,
@@ -888,7 +909,8 @@ fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> Typograph
         &format!("The brief's own type ({}); scale and roles from {}", fonts.join(", "), base.id),
         &base.scale_ratio,
         &url,
-    )
+    );
+    (p, extra, paid)
 }
 
 /// The brief's tag weights: niche tags and moods the brief states (+4) and subject tags read from
@@ -925,6 +947,9 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let solemn = has("memorial") || (has("legal") && !has("kinetic")) || (has("care") && !has("play"));
     let playful = has("play") || has("celebration") || has("sport");
     let script = brief_script(query);
+    // Display gimmicks (sci-fi, pixel, arcade, novelty scripts) only when the brief asks for that register.
+    let gimmick_ok = ["kinetic", "night", "y2k", "play", "celebration", "70s", "sport", "ink"].iter().any(|t| has(t))
+        || ["retro", "arcade", "game", "gaming", "sci-fi", "scifi", "futuristic", "neon", "pixel", "space", "cyber"].iter().any(|k| q.contains(k));
     // Nothing matched at all: seed the pick from the brief itself so unrelated briefs spread over
     // the whole pool instead of all landing on the same top-scored entries.
     let no_match = industry.is_none() && !subject.from_trades;
@@ -997,6 +1022,14 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 if solemn && a.calm_bias < 0 {
                     s -= 4;
                 }
+                // Solemn briefs want human presence (people, places, letters), not cold kit or UI.
+                if solemn {
+                    if COLD_HEROES.contains(&a.hero_material) {
+                        s -= 8;
+                    } else if matches!(a.hero_material, "photo" | "document" | "video") {
+                        s += 3;
+                    }
+                }
                 (s, a)
             })
             .collect();
@@ -1060,6 +1093,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     script: script.filter(|s| te.is_some_and(|e| e.scripts.contains(s))),
                     type_entry: te,
                     brand: Vec::new(),
+                    extra_font_url: te.filter(|e| e.pairing.display_font == t.display_font && !e.mono_url.is_empty()).map(|e| e.mono_url.to_string()),
                 });
                 continue;
             }
@@ -1095,6 +1129,15 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 if !playful && matches!(e.display_style, "rounded" | "hand") && solemn {
                     s -= 4;
                 }
+                if !gimmick_ok && e.tags.contains(&"novelty") {
+                    s -= 12;
+                }
+                // Variety: a face nothing in the brief asks for loses to one it does, and a small
+                // brief-seeded jitter stops the same generalist face winning unrelated briefs.
+                if !e.tags.iter().any(|t| w(t) > 0) {
+                    s -= 2;
+                }
+                s += (h(&e.pairing.display_font) % 4) as i32;
                 (s, i)
             })
             .collect();
@@ -1174,6 +1217,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             script: script.filter(|s| te.scripts.contains(s)),
             type_entry: Some(te),
             brand: Vec::new(),
+            extra_font_url: (!te.mono_url.is_empty()).then(|| te.mono_url.to_string()),
         });
     }
     // Brand first: the brief's own colours and fonts replace the dealt ones in every direction;
@@ -1185,7 +1229,10 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             d.brand.push(format!("palette built around the brief's colours ({})", signals.brief_colors.join(", ")));
         }
         if !signals.brief_fonts.is_empty() {
-            d.typography = brand_type(&signals.brief_fonts, d.slot, &d.typography);
+            let (t, extra, paid) = brand_type(&signals.brief_fonts, d.slot, &d.typography);
+            d.typography = t;
+            d.extra_font_url = extra;
+            d.brand.extend(paid);
             d.brand.push(format!("type built from the brief's fonts ({})", signals.brief_fonts.join(", ")));
         }
     }
@@ -1258,11 +1305,15 @@ pub(crate) fn write(d: &Dealt, ctx: &Ctx, motion: u8) -> DirectionText {
     );
     let fallbacks = d.type_entry.filter(|e| e.pairing.display_font == d.typography.display_font).map(|e| e.fallbacks);
     let identity = format!(
-        "{}; corners: {} ({}); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum{}",
+        "{}; corners: {} ({}); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum{}{}",
         fill(a.identity),
         radius_text(d.radius),
         d.radius,
-        fallbacks.map(|f| format!("; fallbacks {f}")).unwrap_or_default()
+        fallbacks.map(|f| format!("; fallbacks {f}")).unwrap_or_default(),
+        d.extra_font_url
+            .as_ref()
+            .map(|u| format!("; {} loads from a second stylesheet: {u}", d.typography.mono_font))
+            .unwrap_or_default()
     );
     let content = fill(a.content);
     let motion_text = fill(if calm { a.motion_calm } else { a.motion_bold });

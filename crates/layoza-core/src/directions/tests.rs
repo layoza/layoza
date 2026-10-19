@@ -1,5 +1,5 @@
 use super::*;
-use crate::intelligence::{brief_signals, recommend_design, wcag_contrast, OperatingMode};
+use crate::intelligence::{brief_signals, recommend_design, recommend_design_variant, wcag_contrast, OperatingMode};
 use std::collections::HashSet;
 
 fn oklab(hex: &str) -> (f64, f64, f64) {
@@ -282,4 +282,82 @@ fn unmatched_briefs_spread_over_the_pool() {
         })
         .collect();
     assert!(picks.len() >= 4, "{picks:?}");
+}
+
+fn novelty(face: &str) -> bool {
+    type_pool().iter().any(|e| e.pairing.display_font == face && e.tags.contains(&"novelty"))
+}
+
+#[test]
+fn sober_briefs_never_get_display_gimmicks() {
+    let sober = ["B2B invoicing API", "accounting firm", "payments platform for banks", "law firm", "payroll SaaS for mid-size companies", "developer API for identity checks"];
+    for q in sober {
+        for v in 0..4 {
+            for d in recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v).directions {
+                assert!(!novelty(&d.typography.display_font), "{q} v{v}: novelty face {}", d.typography.display_font);
+            }
+        }
+    }
+    // The register still reaches briefs that ask for it.
+    let q = "retro arcade bar with neon signs";
+    let any = (0..4).flat_map(|v| recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v).directions).any(|d| novelty(&d.typography.display_font));
+    assert!(any, "{q}: no novelty face in four variants");
+}
+
+#[test]
+fn solemn_briefs_get_human_presence_not_cold_kit() {
+    for q in ["funeral home", "hospice care", "cemetery and memorial gardens", "law firm", "bereavement counselling"] {
+        for v in 0..3 {
+            for d in recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v).directions {
+                let a = arch_of(&d.title);
+                assert!(!COLD_HEROES.contains(&a.hero_material), "{q} v{v}: cold hero {} in {}", a.hero_material, d.title);
+            }
+        }
+    }
+}
+
+#[test]
+fn unrelated_briefs_do_not_share_display_faces() {
+    let faces: Vec<String> = EIGHT
+        .iter()
+        .flat_map(|q| recommend_design(q, OperatingMode::NewWebsite, None, None).directions)
+        .map(|d| d.typography.display_font)
+        .collect();
+    let distinct: HashSet<_> = faces.iter().collect();
+    assert!(faces.len() == distinct.len(), "{} repeats over {} faces: {faces:?}", faces.len() - distinct.len(), faces.len());
+}
+
+#[test]
+fn every_face_is_free_to_use_and_mono_links_stand_alone() {
+    let allowed = ["SIL Open Font License 1.1", "ITF Free Font License (Fontshare)", "Apache-2.0 and SIL OFL 1.1"];
+    for e in type_pool() {
+        let p = &e.pairing;
+        assert!(allowed.contains(&e.licence), "{}: licence {}", p.id, e.licence);
+        for f in [&p.display_font, &p.body_font, &p.mono_font] {
+            assert!(!is_paid_face(f), "{}: commercial face {f}", p.id);
+        }
+        assert!(!p.google_fonts_url.contains(' '), "{}: joined url {}", p.id, p.google_fonts_url);
+        if e.source == "fontshare" {
+            assert!(p.google_fonts_url.starts_with("https://api.fontshare.com/v2/css?"), "{}", p.id);
+            let mono = p.mono_font.replace(' ', "+");
+            assert!(!p.google_fonts_url.contains(&mono), "{}: mono inside fontshare url", p.id);
+            assert!(e.mono_url.starts_with("https://fonts.googleapis.com/css2?family=") && e.mono_url.contains(&mono), "{}: mono_url {}", p.id, e.mono_url);
+        } else {
+            assert!(e.mono_url.is_empty(), "{}: google pairing carries mono_url", p.id);
+        }
+    }
+}
+
+#[test]
+fn paid_brief_fonts_are_never_linked_to_a_cdn() {
+    let q = "design studio portfolio, fonts Neue Montreal and Inter";
+    let sig = brief_signals(q);
+    assert!(sig.brief_fonts.iter().any(|f| f == "Neue Montreal"), "{:?}", sig.brief_fonts);
+    let mut noted = false;
+    for d in deal(&sig, q, 0, None) {
+        assert!(!d.typography.google_fonts_url.to_lowercase().contains("neue"), "{}", d.typography.google_fonts_url);
+        assert!(!d.extra_font_url.as_deref().unwrap_or("").to_lowercase().contains("neue"));
+        noted |= d.brand.iter().any(|b| b.contains("Neue Montreal") && b.contains("self-host"));
+    }
+    assert!(noted, "no self-host note for Neue Montreal");
 }

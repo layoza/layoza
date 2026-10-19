@@ -22,7 +22,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "unbounded-onest",
@@ -48,7 +49,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Onest:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Onest:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "dela-gothic-figtree",
@@ -75,7 +77,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Figtree:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Figtree:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "instrument-serif-inter-tight",
@@ -100,7 +103,8 @@
 "overused": true,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "dm-serif-work-sans",
@@ -125,7 +129,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "young-serif-instrument-sans",
@@ -150,7 +155,8 @@
 "overused": true,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bodoni-moda-jost",
@@ -175,7 +181,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Jost:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Jost:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "barlow-condensed-plex",
@@ -202,7 +209,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "geist-terminal",
@@ -228,7 +236,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bricolage-ibm-plex",
@@ -253,7 +262,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "archivo-atkinson",
@@ -281,7 +291,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "manrope-dm-mono",
@@ -309,7 +320,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "space-grotesk-public-sans",
@@ -335,7 +347,8 @@
 "overused": true,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Public+Sans:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Public+Sans:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "libre-franklin-source-sans",
@@ -360,7 +373,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "zilla-slab-source-sans",
@@ -387,7 +401,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "cormorant-hanken",
@@ -413,7 +428,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Hanken+Grotesk:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Hanken+Grotesk:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "schibsted-albert-fira",
@@ -438,7 +454,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@700&family=Albert+Sans:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@700&family=Albert+Sans:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "gloock-figtree",
@@ -464,7 +481,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "libre-baskerville-source-sans",
@@ -490,7 +508,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "spectral-plex-sans",
@@ -517,7 +536,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Spectral:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Spectral:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "literata-inter",
@@ -545,7 +565,8 @@
 "overused": true,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Literata:wght@700&family=Inter:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Literata:wght@700&family=Inter:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "fredoka-nunito",
@@ -569,7 +590,8 @@
 "overused": false,
 "display_class": "round",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "baloo2-atkinson",
@@ -594,7 +616,8 @@
 "overused": false,
 "display_class": "round",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bebas-neue-barlow",
@@ -621,7 +644,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "anton-work-sans",
@@ -647,7 +671,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "big-shoulders-chivo",
@@ -674,7 +699,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Chivo:wght@400;700&family=Chivo+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Chivo:wght@400;700&family=Chivo+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "archivo-black-narrow",
@@ -700,7 +726,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "condensed",
-"url": "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "epilogue-mono",
@@ -725,7 +752,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "familjen-public",
@@ -751,7 +779,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@700&family=Public+Sans:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@700&family=Public+Sans:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "red-hat-family",
@@ -777,7 +806,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Red+Hat+Text:wght@400;700&family=Red+Hat+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Red+Hat+Text:wght@400;700&family=Red+Hat+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "sora-rubik",
@@ -802,7 +832,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "alegreya-sans",
@@ -830,7 +861,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Source+Sans+3:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Source+Sans+3:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "crimson-pro-work-sans",
@@ -856,7 +888,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "oswald-source-serif",
@@ -883,7 +916,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Source+Serif+4:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Source+Serif+4:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "eb-garamond-hanken",
@@ -909,7 +943,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Hanken+Grotesk:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Hanken+Grotesk:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "italiana-manrope",
@@ -935,7 +970,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "chivo-workshop",
@@ -961,7 +997,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Chivo+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Chivo+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "plex-serif-sans",
@@ -989,7 +1026,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "cormorant-garamond-lora",
@@ -1015,7 +1053,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lora:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lora:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "cardo-source-sans-3",
@@ -1042,7 +1081,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "petrona-karla",
@@ -1068,7 +1108,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Petrona:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Petrona:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "libre-caslon-display-libre-caslon-text",
@@ -1094,7 +1135,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "marcellus-gelasio",
@@ -1120,7 +1162,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Marcellus&family=Gelasio:wght@400;700&family=Reddit+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Marcellus&family=Gelasio:wght@400;700&family=Reddit+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "brygada-1918-assistant",
@@ -1146,7 +1189,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Assistant:wght@400;700&family=Noto+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Assistant:wght@400;700&family=Noto+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "rubik-mono-one-archivo",
@@ -1161,7 +1205,8 @@
 "tags": [
 "ink",
 "bold",
-"night"
+"night",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -1172,7 +1217,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Archivo:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Archivo:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "shrikhand-work-sans",
@@ -1187,7 +1233,8 @@
 "tags": [
 "ink",
 "bold",
-"food"
+"food",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -1198,7 +1245,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Shrikhand&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Shrikhand&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "rye-rokkitt",
@@ -1213,7 +1261,8 @@
 "tags": [
 "ink",
 "earth",
-"night"
+"night",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -1224,7 +1273,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "slab",
-"url": "https://fonts.googleapis.com/css2?family=Rye&family=Rokkitt:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rye&family=Rokkitt:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "abril-fatface-karla",
@@ -1250,7 +1300,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Karla:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Karla:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "permanent-marker-barlow",
@@ -1265,7 +1316,8 @@
 "tags": [
 "ink",
 "kinetic",
-"night"
+"night",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -1276,7 +1328,8 @@
 "overused": false,
 "display_class": "hand",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Barlow:wght@400;700&family=Victor+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Barlow:wght@400;700&family=Victor+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "alfa-slab-one-libre-franklin",
@@ -1302,7 +1355,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "ultra-arvo",
@@ -1328,7 +1382,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "slab",
-"url": "https://fonts.googleapis.com/css2?family=Ultra&family=Arvo:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Ultra&family=Arvo:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "playfair-display-source-sans-3",
@@ -1355,7 +1410,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bodoni-moda-karla",
@@ -1381,7 +1437,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Karla:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Karla:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "italiana-petrona",
@@ -1407,7 +1464,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Italiana&family=Petrona:wght@400;700&family=Reddit+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Italiana&family=Petrona:wght@400;700&family=Reddit+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "yeseva-one-nunito",
@@ -1434,7 +1492,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Yeseva+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Yeseva+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "cinzel-gelasio",
@@ -1460,7 +1519,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Gelasio:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Gelasio:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "gambetta-satoshi",
@@ -1486,7 +1546,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=gambetta@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=gambetta@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap"
 },
 {
 "id": "boska-general-sans",
@@ -1512,7 +1573,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=boska@700&f[]=general-sans@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=boska@700&f[]=general-sans@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
 },
 {
 "id": "eb-garamond-libre-franklin",
@@ -1538,7 +1600,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "newsreader-public-sans",
@@ -1564,7 +1627,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "vollkorn-karla",
@@ -1589,7 +1653,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&family=Karla:wght@400;700&family=Victor+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&family=Karla:wght@400;700&family=Victor+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "libre-caslon-text-work-sans",
@@ -1614,7 +1679,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "crimson-pro-figtree",
@@ -1639,7 +1705,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "spectral-karla",
@@ -1664,7 +1731,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Spectral:wght@700&family=Karla:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Spectral:wght@700&family=Karla:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "erode-switzer",
@@ -1689,7 +1757,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=erode@700&f[]=switzer@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=erode@700&f[]=switzer@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap"
 },
 {
 "id": "zodiak-supreme",
@@ -1714,7 +1783,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=zodiak@700&f[]=supreme@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=zodiak@700&f[]=supreme@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
 },
 {
 "id": "piazzolla-hanken-grotesk",
@@ -1740,7 +1810,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Piazzolla:wght@700&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Piazzolla:wght@700&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "merriweather-source-sans-3",
@@ -1767,7 +1838,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "public-sans-solo",
@@ -1793,7 +1865,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "atkinson-hyperlegible-solo",
@@ -1819,7 +1892,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "commissioner-solo",
@@ -1847,7 +1921,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Commissioner:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Commissioner:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "sofia-sans-condensed-sofia-sans",
@@ -1875,7 +1950,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@700&family=Sofia+Sans:wght@400;700&family=Victor+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@700&family=Sofia+Sans:wght@400;700&family=Victor+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "encode-sans-solo",
@@ -1900,7 +1976,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;700&family=Martian+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;700&family=Martian+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "lexend-solo",
@@ -1926,7 +2003,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Red+Hat+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Red+Hat+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "antonio-libre-franklin",
@@ -1953,7 +2031,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Libre+Franklin:wght@400;700&family=Azeret+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Libre+Franklin:wght@400;700&family=Azeret+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "saira-condensed-barlow",
@@ -1979,7 +2058,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700&family=Barlow:wght@400;700&family=Azeret+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700&family=Barlow:wght@400;700&family=Azeret+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "staatliches-barlow",
@@ -2005,7 +2085,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Staatliches&family=Barlow:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Staatliches&family=Barlow:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "big-shoulders-display-atkinson-hyperlegible",
@@ -2031,7 +2112,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "archivo-narrow-archivo",
@@ -2057,7 +2139,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@700&family=Archivo:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@700&family=Archivo:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "oswald-karla",
@@ -2083,7 +2166,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "bitter-rubik",
@@ -2110,7 +2194,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "zilla-slab-work-sans",
@@ -2136,7 +2221,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Work+Sans:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Work+Sans:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "rokkitt-figtree",
@@ -2162,7 +2248,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Rokkitt:wght@700&family=Figtree:wght@400;700&family=Sometype+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rokkitt:wght@700&family=Figtree:wght@400;700&family=Sometype+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "fraunces-albert-sans",
@@ -2188,7 +2275,8 @@
 "overused": true,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Albert+Sans:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Albert+Sans:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "lilita-one-nunito",
@@ -2203,7 +2291,8 @@
 "tags": [
 "food",
 "play",
-"bold"
+"bold",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2214,7 +2303,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "tilt-warp-outfit",
@@ -2229,7 +2319,8 @@
 "tags": [
 "food",
 "kinetic",
-"bold"
+"bold",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2240,7 +2331,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Tilt+Warp&family=Outfit:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Tilt+Warp&family=Outfit:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "chillax-satoshi",
@@ -2266,7 +2358,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=chillax@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=chillax@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap"
 },
 {
 "id": "cabinet-grotesk-satoshi",
@@ -2292,7 +2385,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
 },
 {
 "id": "teko-rajdhani",
@@ -2319,7 +2413,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "condensed",
-"url": "https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Rajdhani:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Rajdhani:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "big-shoulders-display-barlow",
@@ -2345,7 +2440,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Barlow:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Barlow:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "barlow-condensed-barlow",
@@ -2371,7 +2467,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "krona-one-manrope",
@@ -2386,7 +2483,8 @@
 "tags": [
 "sport",
 "kinetic",
-"modernist"
+"modernist",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2397,7 +2495,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Krona+One&family=Manrope:wght@400;700&family=Azeret+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Krona+One&family=Manrope:wght@400;700&family=Azeret+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "exo-2-solo",
@@ -2412,7 +2511,8 @@
 "tags": [
 "sport",
 "kinetic",
-"night"
+"night",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2424,7 +2524,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "syncopate-work-sans",
@@ -2439,7 +2540,8 @@
 "tags": [
 "modernist",
 "bold",
-"kinetic"
+"kinetic",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2450,7 +2552,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "michroma-inter-tight",
@@ -2465,7 +2568,8 @@
 "tags": [
 "industrial",
 "kinetic",
-"night"
+"night",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2476,7 +2580,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Michroma&family=Inter+Tight:wght@400;700&family=Azeret+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Michroma&family=Inter+Tight:wght@400;700&family=Azeret+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "orbitron-chakra-petch",
@@ -2491,7 +2596,8 @@
 "tags": [
 "kinetic",
 "night",
-"code"
+"code",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2502,7 +2608,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Chakra+Petch:wght@400;700&family=Victor+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Chakra+Petch:wght@400;700&family=Victor+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "tomorrow-solo",
@@ -2517,7 +2624,8 @@
 "tags": [
 "code",
 "data",
-"night"
+"night",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2528,7 +2636,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Tomorrow:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Tomorrow:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "chakra-petch-ibm-plex-sans",
@@ -2543,7 +2652,8 @@
 "tags": [
 "code",
 "industrial",
-"data"
+"data",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -2554,7 +2664,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "jetbrains-mono-ibm-plex-sans",
@@ -2581,7 +2692,8 @@
 "overused": false,
 "display_class": "mono",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=IBM+Plex+Sans:wght@400;700&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=IBM+Plex+Sans:wght@400;700&display=swap",
+"mono_url": ""
 },
 {
 "id": "martian-mono-hanken-grotesk",
@@ -2607,7 +2719,8 @@
 "overused": false,
 "display_class": "mono",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@700&family=Hanken+Grotesk:wght@400;700&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@700&family=Hanken+Grotesk:wght@400;700&display=swap",
+"mono_url": ""
 },
 {
 "id": "space-mono-karla",
@@ -2632,7 +2745,8 @@
 "overused": false,
 "display_class": "mono",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&family=Karla:wght@400;700&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&family=Karla:wght@400;700&display=swap",
+"mono_url": ""
 },
 {
 "id": "azeret-mono-albert-sans",
@@ -2658,7 +2772,8 @@
 "overused": false,
 "display_class": "mono",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@700&family=Albert+Sans:wght@400;700&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@700&family=Albert+Sans:wght@400;700&display=swap",
+"mono_url": ""
 },
 {
 "id": "schibsted-grotesk-solo",
@@ -2684,7 +2799,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&family=Reddit+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&family=Reddit+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "hanken-grotesk-solo",
@@ -2710,7 +2826,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&family=Sometype+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&family=Sometype+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "red-hat-display-source-sans-3",
@@ -2736,7 +2853,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Source+Sans+3:wght@400;700&family=Red+Hat+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700&family=Source+Sans+3:wght@400;700&family=Red+Hat+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "switzer-solo",
@@ -2762,7 +2880,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=switzer@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=switzer@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
 },
 {
 "id": "general-sans-solo",
@@ -2788,7 +2907,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=general-sans@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=general-sans@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap"
 },
 {
 "id": "supreme-satoshi",
@@ -2814,7 +2934,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=supreme@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=supreme@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
 },
 {
 "id": "clash-display-switzer",
@@ -2840,7 +2961,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=clash-display@700&f[]=switzer@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=clash-display@700&f[]=switzer@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Martian+Mono&display=swap"
 },
 {
 "id": "clash-grotesk-general-sans",
@@ -2865,7 +2987,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=clash-grotesk@700&f[]=general-sans@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=clash-grotesk@700&f[]=general-sans@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap"
 },
 {
 "id": "panchang-satoshi",
@@ -2890,7 +3013,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=panchang@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=panchang@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
 },
 {
 "id": "tanker-switzer",
@@ -2916,7 +3040,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=tanker@400&f[]=switzer@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=tanker@400&f[]=switzer@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap"
 },
 {
 "id": "stardom-author",
@@ -2942,7 +3067,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=stardom@400&f[]=author@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=stardom@400&f[]=author@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
 },
 {
 "id": "gambarino-author",
@@ -2968,7 +3094,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=author@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=gambarino@400&f[]=author@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Martian+Mono&display=swap"
 },
 {
 "id": "sentient-satoshi",
@@ -2994,7 +3121,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=sentient@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=sentient@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap"
 },
 {
 "id": "bespoke-serif-supreme",
@@ -3019,7 +3147,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=bespoke-serif@700&f[]=supreme@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=bespoke-serif@700&f[]=supreme@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
 },
 {
 "id": "excon-satoshi",
@@ -3045,7 +3174,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=excon@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=excon@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap"
 },
 {
 "id": "synonym-solo",
@@ -3070,7 +3200,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=synonym@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=synonym@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
 },
 {
 "id": "ranade-satoshi",
@@ -3096,7 +3227,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "geometric",
-"url": "https://api.fontshare.com/v2/css?f[]=ranade@700&f[]=satoshi@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=ranade@700&f[]=satoshi@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Martian+Mono&display=swap"
 },
 {
 "id": "author-solo",
@@ -3121,7 +3253,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://api.fontshare.com/v2/css?f[]=author@400,700&display=swap"
+"url": "https://api.fontshare.com/v2/css?f[]=author@400,700&display=swap",
+"mono_url": "https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap"
 },
 {
 "id": "bricolage-grotesque-hanken-grotesk",
@@ -3147,7 +3280,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Hanken+Grotesk:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Hanken+Grotesk:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "grandstander-nunito",
@@ -3172,7 +3306,8 @@
 "overused": false,
 "display_class": "round",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Grandstander:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Grandstander:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "righteous-outfit",
@@ -3187,7 +3322,8 @@
 "tags": [
 "play",
 "y2k",
-"bold"
+"bold",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3198,7 +3334,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Righteous&family=Outfit:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Righteous&family=Outfit:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "rammetto-one-lexend",
@@ -3212,7 +3349,8 @@
 "display_style": "display",
 "tags": [
 "play",
-"bold"
+"bold",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3223,7 +3361,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Rammetto+One&family=Lexend:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rammetto+One&family=Lexend:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bowlby-one-work-sans",
@@ -3238,7 +3377,8 @@
 "tags": [
 "play",
 "bold",
-"sport"
+"sport",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3249,7 +3389,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bowlby+One&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bowlby+One&family=Work+Sans:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bungee-rubik",
@@ -3264,7 +3405,8 @@
 "tags": [
 "play",
 "code",
-"bold"
+"bold",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3275,7 +3417,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "pixelify-sans-lexend",
@@ -3290,7 +3433,8 @@
 "tags": [
 "play",
 "code",
-"y2k"
+"y2k",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3301,7 +3445,8 @@
 "overused": false,
 "display_class": "pixel",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=Lexend:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=Lexend:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "silkscreen-karla",
@@ -3316,7 +3461,8 @@
 "tags": [
 "code",
 "play",
-"y2k"
+"y2k",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3327,7 +3473,8 @@
 "overused": false,
 "display_class": "pixel",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Silkscreen:wght@700&family=Karla:wght@400;700&family=VT323&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Silkscreen:wght@700&family=Karla:wght@400;700&family=VT323&display=swap",
+"mono_url": ""
 },
 {
 "id": "vt323-ibm-plex-sans",
@@ -3342,7 +3489,8 @@
 "tags": [
 "code",
 "night",
-"y2k"
+"y2k",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3353,7 +3501,8 @@
 "overused": false,
 "display_class": "pixel",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Sans:wght@400;700&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Sans:wght@400;700&display=swap",
+"mono_url": ""
 },
 {
 "id": "caveat-nunito",
@@ -3380,7 +3529,8 @@
 "overused": false,
 "display_class": "hand",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "gabarito-solo",
@@ -3405,7 +3555,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&family=Kode+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&family=Kode+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "mitr-sarabun",
@@ -3431,7 +3582,8 @@
 "overused": false,
 "display_class": "round",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Mitr:wght@700&family=Sarabun:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Mitr:wght@700&family=Sarabun:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "outfit-solo",
@@ -3457,7 +3609,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Spline+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Spline+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "urbanist-solo",
@@ -3483,7 +3636,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&family=Spline+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&family=Spline+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "plus-jakarta-sans-solo",
@@ -3509,7 +3663,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "albert-sans-solo",
@@ -3535,7 +3690,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "karla-solo",
@@ -3561,7 +3717,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "darker-grotesque-karla",
@@ -3587,7 +3744,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "josefin-sans-lora",
@@ -3613,7 +3771,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Lora:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Lora:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "poiret-one-jost",
@@ -3627,7 +3786,8 @@
 "display_style": "sans",
 "tags": [
 "luxe",
-"celebration"
+"celebration",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3639,7 +3799,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Poiret+One&family=Jost:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Poiret+One&family=Jost:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "limelight-gelasio",
@@ -3654,7 +3815,8 @@
 "tags": [
 "luxe",
 "night",
-"celebration"
+"celebration",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -3665,7 +3827,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Limelight&family=Gelasio:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Limelight&family=Gelasio:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "tenor-sans-lora",
@@ -3692,7 +3855,8 @@
 "overused": false,
 "display_class": "sans",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Lora:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Lora:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "forum-commissioner",
@@ -3719,7 +3883,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Forum&family=Commissioner:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Forum&family=Commissioner:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "prata-jost",
@@ -3745,7 +3910,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Prata&family=Jost:wght@400;700&family=DM+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Prata&family=Jost:wght@400;700&family=DM+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "dm-serif-display-albert-sans",
@@ -3771,7 +3937,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Albert+Sans:wght@400;700&family=Martian+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Albert+Sans:wght@400;700&family=Martian+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "gloock-karla",
@@ -3797,7 +3964,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Gloock&family=Karla:wght@400;700&family=Martian+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Gloock&family=Karla:wght@400;700&family=Martian+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "playfair-display-inter-tight",
@@ -3824,7 +3992,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter+Tight:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter+Tight:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bodoni-moda-hanken-grotesk",
@@ -3850,7 +4019,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Hanken+Grotesk:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Hanken+Grotesk:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "old-standard-tt-pt-sans",
@@ -3877,7 +4047,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "sans",
-"url": "https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@700&family=PT+Sans:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@700&family=PT+Sans:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "pt-serif-pt-sans",
@@ -3904,7 +4075,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "sans",
-"url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&family=PT+Sans:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&family=PT+Sans:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "lora-karla",
@@ -3930,7 +4102,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "gelasio-figtree",
@@ -3956,7 +4129,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Gelasio:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Gelasio:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "aleo-karla",
@@ -3981,7 +4155,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Aleo:wght@700&family=Karla:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Aleo:wght@700&family=Karla:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "arvo-work-sans",
@@ -4007,7 +4182,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap",
+"mono_url": ""
 },
 {
 "id": "roboto-slab-inter-tight",
@@ -4034,7 +4210,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter+Tight:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter+Tight:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "rufina-albert-sans",
@@ -4060,7 +4237,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Rufina:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rufina:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "castoro-hanken-grotesk",
@@ -4086,7 +4264,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Castoro&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Castoro&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "newsreader-libre-franklin",
@@ -4112,7 +4291,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Libre+Franklin:wght@400;700&family=Sometype+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Libre+Franklin:wght@400;700&family=Sometype+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "source-serif-4-source-sans-3",
@@ -4140,7 +4320,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
+"mono_url": ""
 },
 {
 "id": "cardo-hanken-grotesk",
@@ -4166,7 +4347,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cardo:wght@700&family=Hanken+Grotesk:wght@400;700&family=Martian+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bitter-source-sans-3",
@@ -4193,7 +4375,8 @@
 "overused": false,
 "display_class": "slab",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Source+Sans+3:wght@400;700&family=Victor+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Source+Sans+3:wght@400;700&family=Victor+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "libre-franklin-solo",
@@ -4219,7 +4402,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "petrona-figtree",
@@ -4245,7 +4429,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Petrona:wght@700&family=Figtree:wght@400;700&family=Reddit+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Petrona:wght@700&family=Figtree:wght@400;700&family=Reddit+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "alegreya-karla",
@@ -4271,7 +4456,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Karla:wght@400;700&family=Victor+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Karla:wght@400;700&family=Victor+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "brygada-1918-albert-sans",
@@ -4297,7 +4483,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "crimson-pro-sora",
@@ -4323,7 +4510,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Sora:wght@400;700&family=Spline+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Sora:wght@400;700&family=Spline+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "fraunces-karla",
@@ -4349,7 +4537,8 @@
 "overused": true,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Karla:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Karla:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "cormorant-garamond-albert-sans",
@@ -4375,7 +4564,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "vollkorn-albert-sans",
@@ -4401,7 +4591,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&family=Albert+Sans:wght@400;700&family=Inconsolata&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&family=Albert+Sans:wght@400;700&family=Inconsolata&display=swap",
+"mono_url": ""
 },
 {
 "id": "eczar-hind",
@@ -4428,7 +4619,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Eczar:wght@700&family=Hind:wght@400;700&family=Space+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Eczar:wght@700&family=Hind:wght@400;700&family=Space+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "rozha-one-mukta",
@@ -4455,7 +4647,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "martel-mukta",
@@ -4481,7 +4674,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Martel:wght@700&family=Mukta:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Martel:wght@700&family=Mukta:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "tiro-devanagari-hindi-hind",
@@ -4508,7 +4702,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Hind:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Hind:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "baloo-2-mukta",
@@ -4534,7 +4729,8 @@
 "overused": false,
 "display_class": "round",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Mukta:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Mukta:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "teko-hind",
@@ -4560,7 +4756,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Hind:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Hind:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "reem-kufi-ibm-plex-sans-arabic",
@@ -4587,7 +4784,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "amiri-noto-naskh-arabic",
@@ -4614,7 +4812,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "serif",
-"url": "https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "cairo-tajawal",
@@ -4641,7 +4840,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Tajawal:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Tajawal:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "el-messiri-readex-pro",
@@ -4668,7 +4868,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=Readex+Pro:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=Readex+Pro:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "lalezar-vazirmatn",
@@ -4695,7 +4896,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "changa-cairo",
@@ -4722,7 +4924,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Changa:wght@700&family=Cairo:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Changa:wght@700&family=Cairo:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "markazi-text-ibm-plex-sans-arabic",
@@ -4749,7 +4952,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Markazi+Text:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Markazi+Text:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "frank-ruhl-libre-assistant",
@@ -4776,7 +4980,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&family=Assistant:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&family=Assistant:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "suez-one-heebo",
@@ -4803,7 +5008,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "secular-one-rubik",
@@ -4830,7 +5036,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "david-libre-alef",
@@ -4857,7 +5064,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=David+Libre:wght@700&family=Alef:wght@400;700&family=Noto+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=David+Libre:wght@700&family=Alef:wght@400;700&family=Noto+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bellefair-ibm-plex-sans-hebrew",
@@ -4883,7 +5091,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bellefair&family=IBM+Plex+Sans+Hebrew:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bellefair&family=IBM+Plex+Sans+Hebrew:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "shippori-mincho-zen-kaku-gothic-new",
@@ -4910,7 +5119,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&family=M+PLUS+1+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&family=M+PLUS+1+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "zen-old-mincho-biz-udpgothic",
@@ -4937,7 +5147,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700&family=BIZ+UDPGothic:wght@400;700&family=M+PLUS+1+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700&family=BIZ+UDPGothic:wght@400;700&family=M+PLUS+1+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "dela-gothic-one-m-plus-1p",
@@ -4964,7 +5175,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+1p:wght@400;700&family=M+PLUS+1+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+1p:wght@400;700&family=M+PLUS+1+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "kaisei-decol-zen-maru-gothic",
@@ -4991,7 +5203,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&family=Zen+Maru+Gothic:wght@400;700&family=M+PLUS+1+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&family=Zen+Maru+Gothic:wght@400;700&family=M+PLUS+1+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "dotgothic16-ibm-plex-sans-jp",
@@ -5006,7 +5219,8 @@
 "tags": [
 "code",
 "play",
-"y2k"
+"y2k",
+"novelty"
 ],
 "scripts": [
 "latin",
@@ -5018,7 +5232,8 @@
 "overused": false,
 "display_class": "pixel",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=DotGothic16&family=IBM+Plex+Sans+JP:wght@400;700&family=M+PLUS+1+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=DotGothic16&family=IBM+Plex+Sans+JP:wght@400;700&family=M+PLUS+1+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "gowun-batang-gowun-dodum",
@@ -5045,7 +5260,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Gowun+Dodum&family=Nanum+Gothic+Coding&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Gowun+Dodum&family=Nanum+Gothic+Coding&display=swap",
+"mono_url": ""
 },
 {
 "id": "nanum-myeongjo-nanum-gothic",
@@ -5072,7 +5288,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap",
+"mono_url": ""
 },
 {
 "id": "hahmlet-ibm-plex-sans-kr",
@@ -5099,7 +5316,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Hahmlet:wght@700&family=IBM+Plex+Sans+KR:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Hahmlet:wght@700&family=IBM+Plex+Sans+KR:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "black-han-sans-nanum-gothic",
@@ -5126,7 +5344,8 @@
 "overused": false,
 "display_class": "display",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap",
+"mono_url": ""
 },
 {
 "id": "do-hyeon-ibm-plex-sans-kr",
@@ -5153,7 +5372,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;700&family=Nanum+Gothic+Coding&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;700&family=Nanum+Gothic+Coding&display=swap",
+"mono_url": ""
 },
 {
 "id": "noto-serif-sc-noto-sans-sc",
@@ -5180,7 +5400,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "zcool-xiaowei-noto-sans-sc",
@@ -5207,7 +5428,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "zcool-kuaile-noto-sans-sc",
@@ -5233,7 +5455,8 @@
 "overused": false,
 "display_class": "round",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "chonburi-sarabun",
@@ -5260,7 +5483,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Chonburi&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Chonburi&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "trirong-ibm-plex-sans-thai",
@@ -5287,7 +5511,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Trirong:wght@700&family=IBM+Plex+Sans+Thai:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Trirong:wght@700&family=IBM+Plex+Sans+Thai:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "kanit-sarabun",
@@ -5314,7 +5539,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Kanit:wght@700&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Kanit:wght@700&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "bai-jamjuree-sarabun",
@@ -5341,7 +5567,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Sarabun:wght@400;700&family=IBM+Plex+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "gfs-didot-commissioner",
@@ -5368,7 +5595,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=GFS+Didot&family=Commissioner:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=GFS+Didot&family=Commissioner:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "literata-commissioner",
@@ -5396,7 +5624,8 @@
 "overused": false,
 "display_class": "serif",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Literata:wght@700&family=Commissioner:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Literata:wght@700&family=Commissioner:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "unbounded-golos-text",
@@ -5423,7 +5652,8 @@
 "overused": false,
 "display_class": "geometric",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "prata-golos-text",
@@ -5449,7 +5679,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "yeseva-one-onest",
@@ -5475,7 +5706,8 @@
 "overused": false,
 "display_class": "didone",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Yeseva+One&family=Onest:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Yeseva+One&family=Onest:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "oswald-golos-text",
@@ -5502,7 +5734,8 @@
 "overused": false,
 "display_class": "condensed",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Golos+Text:wght@400;700&family=JetBrains+Mono&display=swap",
+"mono_url": ""
 },
 {
 "id": "arsenal-solo",
@@ -5528,7 +5761,8 @@
 "overused": false,
 "display_class": "grotesk",
 "body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Fira+Code&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Fira+Code&display=swap",
+"mono_url": ""
 },
 {
 "id": "rubik-solo",
@@ -5556,6 +5790,7 @@
 "overused": false,
 "display_class": "round",
 "body_class": "round",
-"url": "https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Mono&display=swap"
+"url": "https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Roboto+Mono&display=swap",
+"mono_url": ""
 }
 ]
