@@ -206,7 +206,7 @@ const SCROLL_PASS_SCRIPT = `(async () => {
     for (let n = walker.nextNode(); n && count < 2000; n = walker.nextNode()) {
       if (!(n.nodeValue || "").trim()) continue;
       const el = n.parentElement;
-      if (!el || el.closest("script, style, noscript, template, [hidden], dialog:not([open])") || inBar(el) || eff(el) < 0.35) continue;
+      if (!el || el.closest("script, style, noscript, template, [hidden], [inert], dialog, [popover], details:not([open]) > :not(summary)") || inBar(el) || eff(el) < 0.35) continue;
       const range = document.createRange();
       range.selectNodeContents(n);
       for (const r of range.getClientRects()) { if (r.width > 2 && r.bottom > 0 && r.top < H) { mark(visibleBox(el, r)); count++; } }
@@ -230,8 +230,7 @@ const SCROLL_PASS_SCRIPT = `(async () => {
       const t = (n.nodeValue || "").trim();
       if (t.length < 2) continue;
       const el = n.parentElement;
-      if (!el || el.closest("script, style, noscript, template, svg, [aria-hidden='true'], [hidden], dialog:not([open])")) continue;
-      if (el.closest("details:not([open])") && !el.closest("summary")) continue;
+      if (!el || el.closest("script, style, noscript, template, svg, [aria-hidden='true'], [hidden], [inert], dialog, [popover], details:not([open]) > :not(summary)")) continue;
       const o = eff(el);
       if (o < 0.35) continue;
       const range = document.createRange();
@@ -248,7 +247,7 @@ const SCROLL_PASS_SCRIPT = `(async () => {
     if (floats.length < 6) {
       const ctrls = [...document.querySelectorAll("button, a[href], [role='button']")].filter((c) => {
         const L = layerOf(c);
-        if (!L || c.closest("[aria-hidden='true'], [hidden], dialog:not([open])")) return false;
+        if (!L || c.closest("[aria-hidden='true'], [hidden], [inert], dialog, [popover], details:not([open]) > :not(summary)")) return false;
         const lr = L.getBoundingClientRect(), cr = c.getBoundingClientRect();
         // floating = its own small layer, or a wide bar whose background is see-through (a hidden or transparent header)
         const floating = L === c || (lr.width < window.innerWidth * 0.4 && lr.height < window.innerHeight * 0.4) || barOpacity(c.parentElement, L) < 0.5;
@@ -317,7 +316,7 @@ const SCROLL_PASS_SCRIPT = `(async () => {
     await new Promise((r) => setTimeout(r, 700));
     for (const h of document.querySelectorAll("h1, h2, h3")) {
       const txt = (h.textContent || "").trim();
-      if (!txt || h.closest("[aria-hidden='true'], [hidden], dialog:not([open])")) continue;
+      if (!txt || h.closest("[aria-hidden='true'], [hidden], [inert], dialog:not([open]), details:not([open]) > :not(summary)")) continue;
       const r = h.getBoundingClientRect();
       if (r.width < 4 || r.height < 4 || r.top < 0 || r.bottom > window.innerHeight) continue;
       headingFit(h, y);
@@ -785,6 +784,27 @@ const DOM_EVAL_SCRIPT = `(() => {
   }
   const CLEAR = [0, 0, 0, 0];
   const WHITE = [255, 255, 255, 1];
+  // The page canvas behind every layer: Chromium paints it dark only for a dark-only color-scheme
+  const CANVAS = (() => {
+    const sch = (getComputedStyle(document.documentElement).colorScheme || "").toLowerCase();
+    return sch.includes("dark") && !sch.includes("light") ? [18, 18, 18, 1] : WHITE;
+  })();
+  // Why a text backdrop could not be measured: { reason: count }. Unmeasured is never a pass or a fail.
+  const unmeasurable = {};
+  let unmeasuredReason = null;
+  const why = (k) => { unmeasurable[k] = (unmeasurable[k] || 0) + 1; };
+  // Colour stops of a gradient-only background-image ([] = none, null = an image or a colour space we cannot read)
+  function gradientStops(bi) {
+    if (!bi || bi === "none") return [];
+    const low = bi.toLowerCase();
+    if (["url(", "image-set(", "element(", "cross-fade(", "paint(", "oklch(", "oklab(", "lab(", "lch(", "hwb(", "hsl(", "hsla(", "color("].some((t) => low.includes(t))) return null;
+    const out = [];
+    for (let i = low.indexOf("rgb"); i >= 0 && out.length < 8; i = low.indexOf("rgb", i + 3)) {
+      const c = parseColor(low.slice(i, low.indexOf(")", i) + 1));
+      if (c) out.push(c);
+    }
+    return out.length ? out : null;
+  }
   function withAlpha(c, k) {
     return [c[0], c[1], c[2], c[3] * k];
   }
@@ -861,7 +881,7 @@ const DOM_EVAL_SCRIPT = `(() => {
       txt = withAlpha(txt, o);
       bgc = withAlpha(bgc, o);
     }
-    return { fg: over(txt, WHITE), bg: over(bgc, WHITE) };
+    return { fg: over(txt, CANVAS), bg: over(bgc, CANVAS) };
   }
   // Reads the paint stack under the text's centre with elementsFromPoint (the caller makes every
   // element hit-testable and scrolls the point into view) and composites the backgrounds beneath
@@ -873,25 +893,41 @@ const DOM_EVAL_SCRIPT = `(() => {
     const stack = document.elementsFromPoint(x, y);
     // The point must hit the text's own element (clip-path, masks or 3D transforms can move the hit)
     const start = stack.indexOf(el);
-    if (start < 0) return null;
-    let acc = CLEAR;
+    if (start < 0) { unmeasuredReason = "text box covered or moved (clip/mask/transform)"; return null; }
+    // One running backdrop per gradient stop combination: gradients are read stop by stop, never guessed
+    let accs = [CLEAR];
+    let viaGradient = false;
+    const opaque = () => accs.every((a) => a[3] >= 0.999);
     for (const n of stack.slice(start)) {
       if (n !== el && el.contains(n)) continue;
       const cs = getComputedStyle(n);
-      if (cs.mixBlendMode !== "normal") return null;
+      if (cs.mixBlendMode !== "normal") { unmeasuredReason = "blend mode"; return null; }
       for (const ps of coveringPseudos(n)) {
-        if (ps.image) return null;
-        acc = over(acc, ps.color);
+        if (ps.image) { unmeasuredReason = "image"; return null; }
+        accs = accs.map((a) => over(a, ps.color));
       }
-      if (acc[3] >= 0.999) break;
-      if (/^(IMG|PICTURE|VIDEO|CANVAS|SVG|IFRAME|EMBED|OBJECT)$/i.test(n.tagName)) return null;
-      if (cs.backgroundImage && cs.backgroundImage !== "none") return null;
+      if (opaque()) break;
+      if (/^(IMG|PICTURE|VIDEO|CANVAS|SVG|IFRAME|EMBED|OBJECT)$/i.test(n.tagName)) { unmeasuredReason = "image/media"; return null; }
+      const k = n === el ? 1 : parseFloat(cs.opacity);
+      const stops = gradientStops(cs.backgroundImage);
+      if (stops === null) { unmeasuredReason = "image"; return null; }
       const c = parseColor(cs.backgroundColor);
-      if (c && c[3] > 0) acc = over(acc, withAlpha(c, n === el ? 1 : parseFloat(cs.opacity)));
-      if (acc[3] >= 0.999) break;
+      const base = c && c[3] > 0 ? withAlpha(c, k) : CLEAR;
+      if (stops.length) {
+        viaGradient = true;
+        const next = [];
+        for (const a of accs) for (const s of stops) next.push(over(a, over(withAlpha(s, k), base)));
+        accs = next.slice(0, 64);
+      } else if (base[3] > 0) accs = accs.map((a) => over(a, base));
+      if (opaque()) break;
     }
-    const bg = over(acc, WHITE);
-    return { fg: over(withAlpha(fg, op), bg), bg };
+    const pairs = accs.map((a) => {
+      const bg = over(a, CANVAS);
+      const f = over(withAlpha(fg, op), bg);
+      return { fg: f, bg, r: contrast(f, bg) };
+    }).sort((p, q) => p.r - q.r);
+    const worst = pairs[0], best = pairs[pairs.length - 1];
+    return { fg: worst.fg, bg: worst.bg, gradient: viaGradient, best: viaGradient ? best : null };
   }
   // Nearest ancestor below <html>/<body> that clips horizontal overflow (carousels, scrollers, masks)
   function clipAncestor(el) {
@@ -1159,7 +1195,8 @@ const DOM_EVAL_SCRIPT = `(() => {
       unlabeledControls++;
       issue("unlabeled-control", "error", "<" + el.tagName.toLowerCase() + "> has no accessible name");
     }
-    rects.push({ el, r });
+    // Inert subtrees take no input; an open dialog or popover is an overlay above the page by design
+    if (!el.closest("[inert]")) rects.push({ el, r, overlay: el.closest("dialog, [popover]") });
   }
   // WCAG 2.5.8 spacing exception: an undersized target passes only when a 24px-diameter circle
   // centred on its bounding box intersects neither another target's box nor another undersized
@@ -1188,7 +1225,7 @@ const DOM_EVAL_SCRIPT = `(() => {
   for (let i = 0; i < rects.length; i++) {
     for (let j = i + 1; j < rects.length; j++) {
       const a = rects[i], b = rects[j];
-      if (a.el.contains(b.el) || b.el.contains(a.el)) continue;
+      if (a.el.contains(b.el) || b.el.contains(a.el) || a.overlay !== b.overlay) continue;
       const inside = (x, y) => x.left >= y.left - 1 && x.right <= y.right + 1 && x.top >= y.top - 1 && x.bottom <= y.bottom + 1;
       if (inside(a.r, b.r) || inside(b.r, a.r)) continue;
       // Compare per-line fragments so multi-line inline links in running text don't count as overlapping
@@ -1217,12 +1254,14 @@ const DOM_EVAL_SCRIPT = `(() => {
   let contrastChecked = 0;
   let contrastIndeterminate = 0;
   const contrastSamples = [];
-  const scoreContrast = (el, cs, px, decorative) => {
-    const ratio = contrast(px.fg, px.bg);
+  const requiredRatio = (cs) => {
     const sizePx = parseFloat(cs.fontSize) || 16;
     const bold = parseInt(cs.fontWeight, 10) >= 700;
-    const large = sizePx >= 24 || (bold && sizePx >= 18.66);
-    const required = large ? 3 : 4.5;
+    return sizePx >= 24 || (bold && sizePx >= 18.66) ? 3 : 4.5;
+  };
+  const scoreContrast = (el, cs, px, decorative) => {
+    const ratio = contrast(px.fg, px.bg);
+    const required = requiredRatio(cs);
     contrastChecked++;
     minContrast = minContrast === null ? ratio : Math.min(minContrast, ratio);
     if (ratio < required && decorative) {
@@ -1250,6 +1289,7 @@ const DOM_EVAL_SCRIPT = `(() => {
     }
     if (!px || px === "uncertain") {
       contrastIndeterminate++;
+      why(!fg ? "unreadable colour" : el.closest("svg") ? "svg text" : "blend mode or running animation");
       continue;
     }
     scoreContrast(el, cs, px, decorative);
@@ -1278,9 +1318,19 @@ const DOM_EVAL_SCRIPT = `(() => {
           y = r.top + r.height / 2;
         }
         const x = r.left + r.width / 2;
+        unmeasuredReason = "off screen";
         const px = x >= 0 && x < window.innerWidth && y >= 0 && y < window.innerHeight ? sampledColors(d.el, d.fg, x, y) : null;
-        if (px) scoreContrast(d.el, d.cs, px, d.decorative);
-        else contrastIndeterminate++;
+        const need = requiredRatio(d.cs);
+        // A gradient that passes under some stops and fails under others depends on where the glyphs sit:
+        // say so instead of reporting the worst stop as a measured failure
+        if (px && px.best && px.best.r >= need && contrast(px.fg, px.bg) < need) {
+          contrastIndeterminate++;
+          why("gradient (passes on some stops, fails on others)");
+        } else if (px) scoreContrast(d.el, d.cs, px, d.decorative);
+        else {
+          contrastIndeterminate++;
+          why(unmeasuredReason || "unknown");
+        }
       }
     } finally {
       window.scrollTo({ left: sx, top: sy, behavior: "instant" });
@@ -1705,6 +1755,7 @@ const DOM_EVAL_SCRIPT = `(() => {
     decorativeSamples,
     contrastChecked,
     contrastIndeterminate,
+    contrastUnmeasurable: unmeasurable,
     contrastSamples,
     headingProblems,
     hasMainLandmark: Boolean(document.querySelector("main, [role='main']")),
@@ -3044,7 +3095,11 @@ function layozaCraftCritique() {
           if (hasBg || bv[2]) vSides.push(2);
           if ((hasBg && !fullBleed) || bv[3]) hSides.push(3);
           if ((hasBg && !fullBleed) || bv[1]) hSides.push(1);
-          const pads = sides.map((k) => num(s["padding" + k]));
+          // Judge the box the eye sees: background-clip:content-box paints no colour under the padding,
+          // so with no border that padding is not visible space inside the box
+          const clipToContent = hasBg && !bv.some(Boolean) && s.backgroundClip === "content-box";
+          const pads = sides.map((k) => (clipToContent ? 0 : num(s["padding" + k])));
+          if (clipToContent) sides.forEach((k, i) => { insets[i] -= num(s["padding" + k]); });
           const minOver = (list, f) => list.reduce((m, i) => Math.min(m, f(i)), Infinity);
           const vMin = minOver(vSides, (i) => pads[i]), hMin = minOver(hSides, (i) => pads[i]);
           const vInset = minOver(vSides, (i) => insets[i]), hInset = minOver(hSides, (i) => insets[i]);
@@ -4906,6 +4961,1256 @@ function layozaInterfaceChecks() {
 }
 const INTERFACE_EVAL_SCRIPT = "(" + layozaInterfaceChecks.toString() + ")()";
 
+/**
+ * Layoza quality sweep: Layoza's own rule set for generic-default tells, shipping slips and
+ * brief-blind style habits. Every finding carries the rule id, a selector, the measured value, why
+ * it matters and a fix hint. Severity "warning" is objective (feeds the verifier as a warning, never
+ * as a release-blocking error); "critique" is advisory taste and never gates.
+ *
+ * Style habits (gradient surfaces, glass, resting shadows, hard offset shadows, mono running text,
+ * pill controls, floating pill nav) are judged against the brief, never banned: each is a critique
+ * that the project silences by naming it in DESIGN.md/BRAND.md (passed as --allow by `layoza qa`),
+ * with `--allow <id|group>`, or with <meta name="layoza-brand-allow" content="rule:<id>">.
+ */
+function layozaQualitySweep(opts) {
+  "use strict";
+  opts = opts || {};
+  const D = document;
+  const vw = window.innerWidth || 0;
+  const vh = window.innerHeight || 0;
+  const issues = [];
+  const suppressed = [];
+  const errors = [];
+  if (!D.body) return { issues, suppressed, errors };
+
+  // Rule registry: id -> [severity, category, group, why, fix]. Groups name the brief-aware styles.
+  const RULES = {
+    "title-missing": ["warning", "content", "", "Tabs, bookmarks, history and search results show the document title; without one the page is anonymous.", "Write a <title> that names the page first and the brand second."],
+    "duplicate-id": ["warning", "accessibility", "", "Labels, aria references and in-page links resolve to the first element with an id, so later duplicates are unreachable or mislabelled.", "Give every id one owner; generate unique ids for repeated components."],
+    "positive-tabindex": ["warning", "accessibility", "", "A tabindex above 0 pulls the element ahead of the document order, so keyboard users jump around the page.", "Use tabindex=\"0\" or none, and order the DOM the way it should be read."],
+    "placeholder-copy": ["warning", "content", "", "Template filler left in a shipped page tells visitors nobody finished it.", "Replace the filler with real copy, or remove the block."],
+    "font-load-failed": ["warning", "typography", "", "A declared web font failed to load, so the page renders in a fallback face the design was never checked in.", "Fix the font URL/format or self-host the file; keep a metric-matched fallback in the stack."],
+    "autoplay-sound": ["warning", "accessibility", "", "Media that starts playing with sound startles people and talks over screen readers (WCAG 1.4.2).", "Add muted to autoplaying media, or start playback only on a user action."],
+    "video-blank-start": ["warning", "media", "", "A video that does not autoplay and has no poster shows an empty or black frame until someone presses play.", "Add a poster image that previews the footage."],
+    "alt-is-filename": ["warning", "accessibility", "", "Screen readers read the alt text aloud; a file name or a bare word like \"image\" says nothing about the picture.", "Describe what the image shows, or use alt=\"\" when it is decorative."],
+    "raster-oversized": ["warning", "performance", "", "The browser downloads and decodes far more pixels than the slot shows, which slows LCP on phones.", "Serve srcset/sizes candidates close to the rendered width (x device pixel ratio)."],
+    "focus-ring-missing": ["warning", "accessibility", "", "With :focus-visible matched, the control looks identical focused and unfocused, so keyboard users lose their place (WCAG 2.4.7).", "Give :focus-visible a ring that differs from the resting state: outline 2px+ with an offset, in a colour with 3:1 contrast."],
+    "blend-mode-text": ["warning", "accessibility", "", "Text painted with difference/exclusion blending takes its colour from whatever is behind it, so its contrast changes from pixel to pixel.", "Use a plain colour for text that must be read; keep blend modes for decoration."],
+    "rtl-dir-missing": ["warning", "i18n", "", "The page language is written right to left but the document direction is still left to right, so text, punctuation and layout run the wrong way.", "Set dir=\"rtl\" on <html> (or on the RTL section)."],
+    "rtl-physical-props": ["warning", "i18n", "", "Right-to-left pages mirror the layout; physical left/right properties stay pinned to the wrong side.", "Use logical properties: margin-inline-start, padding-inline-end, inset-inline-start, text-align: start, border-inline-start."],
+    "sidebar-vanishes": ["warning", "navigation", "", "At this width the sidebar navigation disappears completely and nothing else on screen carries its links.", "Collapse the sidebar to an icon rail with labels on hover/focus, or move its links into a visible menu."],
+    "reduced-motion-hides-text": ["warning", "accessibility", "", "With reduced motion requested the reveal animations never run, so this text stays invisible for exactly the people who asked for less motion.", "Under prefers-reduced-motion: reduce, show the end state immediately instead of skipping the animation that reveals it."],
+    "straggler-line": ["critique", "typography", "", "A single short word alone on the last line of a heading or paragraph breaks the shape of the block and reads as an accident.", "Add text-wrap: pretty to running text, or text-wrap: balance to headings."],
+    "heading-unbalanced": ["critique", "typography", "", "A multi-line heading with one long line and one short line reads lopsided.", "Set text-wrap: balance on headings, or adjust the max-width so the lines are even."],
+    "pill-everything": ["critique", "style", "pill", "When every button, chip and field is a fully rounded pill, nothing signals hierarchy and the page looks like a default kit.", "Reserve the pill for one role (tags or the primary action) and give the others a radius that matches the system."],
+    "hard-offset-shadow": ["critique", "style", "offset-shadow", "Zero-blur offset shadows on many boxes are a recognisable stock look; fine when the brief asks for it, noise when it does not.", "Keep the offset shadow for the elements the brief wants to pop, or name the style in DESIGN.md."],
+    "fx-gradient-surfaces": ["critique", "style", "gradient", "Several large surfaces carry decorative gradients; without a reason in the brief they read as filler rather than identity.", "Use flat surfaces and let content (photos, product, data) carry the colour, or declare the gradient in DESIGN.md."],
+    "fx-glass": ["critique", "style", "glass", "Frosted translucent panels on many boxes cost GPU time and muddy text contrast; it is a default look, not a decision.", "Use solid panels unless the brief calls for glass; if it does, keep it to one layer (nav or overlay)."],
+    "fx-resting-shadows": ["critique", "style", "shadow", "Most cards float on large soft shadows at rest, which flattens the hierarchy because everything is lifted.", "Reserve elevation for things that sit above the page (menus, dialogs, dragged items); separate cards with space or a quiet border."],
+    "fx-text-shadow": ["critique", "style", "glow", "Text shadows and glows on many text blocks blur the letterforms and look like effects for their own sake.", "Remove text-shadow from running text; if text sits on an image, use a scrim behind it instead."],
+    "mono-running-text": ["critique", "typography", "mono", "Paragraphs set in a monospace face are slower to read; mono works for code, figures and short labels.", "Set running text in a proportional face and keep mono for code and data."],
+    "nav-floating-pill": ["critique", "style", "pill", "A detached rounded navigation capsule floating over the page is a stock template move.", "Dock the navigation to the edge, or name the floating nav in DESIGN.md when the brief wants it."],
+    "imagery-scarce": ["critique", "content", "imagery", "A long page with no photographs, product shots or real artwork shows nothing of the subject; it reads as a template.", "Show the actual objects of the trade: product, place, people, work samples, data."],
+    "font-size-sprawl": ["critique", "typography", "", "Many unrelated font sizes mean there is no type scale; hierarchy becomes guesswork.", "Pick 5-7 sizes from a ratio-based scale and map every text role to one of them."],
+    "radius-sprawl": ["critique", "style", "", "Many different corner radii on boxes of the same kind look unplanned.", "Define 2-4 radius tokens (control, card, overlay) and use only those."],
+    "link-default-blue": ["critique", "style", "", "Links still use the browser default blue/purple, which clashes with the palette and looks unfinished.", "Style links from the palette with an underline or other non-colour cue."],
+    "emoji-icons": ["critique", "style", "emoji", "Emoji used as interface icons render differently on every platform and look like a placeholder.", "Use one consistent icon set (SVG), sized and coloured from the system."],
+    "figures-proportional": ["critique", "typography", "", "Columns of numbers in proportional figures do not line up, so values are hard to compare.", "Set font-variant-numeric: tabular-nums on numeric cells and data."],
+    "numbers-left-aligned": ["critique", "typography", "", "Left-aligned numbers put the units digit in a different place on every row.", "Right-align numeric columns (and their headers)."],
+    "skip-link-missing": ["critique", "accessibility", "", "Keyboard users have to tab through every header link before reaching the content.", "Add a \"Skip to content\" link as the first focusable element, pointing at <main>."],
+    "cta-competition": ["critique", "layout", "", "Several equally loud filled buttons on the first screen compete; the visitor cannot tell which action matters.", "Keep one filled primary action per screen; make the others secondary (outline or text)."],
+    "row-heights-ragged": ["critique", "layout", "", "Cards in the same row end at different heights, so the grid looks broken.", "Let the cards stretch to the row height (align-items: stretch, grid) and pin their actions to the bottom."],
+    "scroller-hidden": ["critique", "interaction", "", "A horizontal scroller hides its scrollbar and offers no buttons, so most visitors never discover the rest of the items.", "Show part of the next item at the edge, keep a visible scrollbar or add previous/next buttons."],
+    "text-below-floor": ["error", "typography", "", "Running text under 14px or interface labels under 12px are hard to read on phones and for anyone with low vision; zoom is not a substitute.", "Set body copy to at least 14px (16px is the safe web default) and labels, buttons and fields to at least 12px."],
+    "eyebrow-on-most-headings": ["warning", "template-tell", "eyebrow", "A small all-caps label sits above most section headings; repeated on every section it stops labelling anything and reads as a template habit.", "Keep a label only where it carries information (a category, a date); let most headings stand alone."],
+    "numbered-non-sequence": ["warning", "template-tell", "numbering", "Cards numbered 01, 02, 03 imply an order or a process; on content that is not a sequence the numbers are decoration that suggests steps that do not exist.", "Drop the numbers, or rewrite the cards as real steps if the order matters."],
+    "illustrated-people": ["warning", "template-tell", "illustration", "Generic vector people standing in for the subject are a stock look; they show no real customer, product or place.", "Use photographs of the real people, work or product, or drop the figure."],
+    "violet-blue-hero": ["warning", "template-tell", "gradient", "A violet-to-blue gradient behind the first screen is the most common generated-site backdrop; it says nothing about this subject.", "Build the first screen from the subject's own colours or imagery."],
+    "logo-wall-unverified": ["warning", "trust", "", "A row of client logos that look generic or placeholder suggests endorsements that may not exist. Verify this is real.", "Use only logos you have permission to show, with real names in the alt text, or remove the row."],
+    "testimonial-unsourced": ["warning", "trust", "", "Testimonials with stock names or no company, role or link cannot be checked and read as invented. Verify this is real.", "Attribute each quote to a real, named person with their role and organisation, ideally with a link or photo they approved."],
+    "hover-scale-uniform": ["warning", "motion", "hover-scale", "The same hover zoom on many unrelated elements (cards, buttons, images, logos) is a blanket effect, not feedback designed for each control.", "Give each kind of control its own small, purposeful hover change, and leave non-interactive boxes still."],
+    "hover-effects-stacked": ["warning", "motion", "", "A hover that changes three or more things at once (lift, shadow, colour, border, filter) is noisy and slows the eye.", "Pick one or two hover signals per control and keep them consistent across the system."],
+    "layout-property-animated": ["warning", "performance", "", "Animating width, height, top/left or margin/padding re-runs layout every frame, which janks on phones and can shift the page.", "Animate transform and opacity instead (scale, translate), or use grid-template-rows / interpolate-size for expanding panels."],
+    "focus-ring-animated": ["warning", "accessibility", "", "A focus indicator that fades or grows in is briefly invisible, so keyboard users lose their place while tabbing quickly.", "Show the focus ring instantly: exclude outline and box-shadow from the transition on :focus-visible."],
+    "auto-rotate-no-pause": ["warning", "accessibility", "", "Content that moves on its own for more than five seconds needs a way to pause it (WCAG 2.2.2); people reading slowly lose the slide.", "Add a visible pause button, pause on hover and focus, and do not auto-rotate under prefers-reduced-motion."],
+    "disabled-unstyled": ["warning", "interaction", "", "A disabled control looks exactly like an enabled one, so people press it and nothing happens.", "Style :disabled / [aria-disabled=true] with reduced contrast and a not-allowed cursor, and explain why it is unavailable."],
+    "field-states-missing": ["warning", "forms", "", "The form has no styles for invalid or error states, so a rejected field looks identical to a valid one.", "Style :user-invalid or [aria-invalid=true] with a colour plus an icon or message, and reserve space so the message does not shift the layout."],
+    "motion-ignores-reduce": ["warning", "motion", "", "Animations keep running when the visitor has asked the system to reduce motion, which can trigger nausea and vestibular symptoms.", "Wrap decorative keyframes and transforms in @media (prefers-reduced-motion: no-preference), or stop them under reduce."],
+    "placeholder-names": ["warning", "trust", "", "Stock names, example.com addresses or 555 phone numbers are template filler. Verify this is real.", "Replace them with the real contact details and names, or remove the block."],
+    "claim-unsourced": ["warning", "trust", "", "Headline claims like \"10x faster\" or \"trusted by 50,000+\" with no source nearby read as invented. Verify this is real.", "Link each claim to its source (study, case study, public count) or soften it to what you can prove."],
+    "mock-device-chrome": ["warning", "template-tell", "mockup", "Fake browser windows (three coloured dots and a URL pill) or drawn phone frames around screenshots are a template prop.", "Show the real product screenshot on its own, cropped to the part that matters."],
+    "neutrals-untinted": ["critique", "color", "neutral", "Every grey on the page is pure (zero chroma); greys tinted toward the brand hue make the palette feel considered.", "Give neutrals a slight tint of the brand hue (chroma about 0.005-0.02 in OKLCH)."],
+    "accent-flood": ["critique", "color", "accent", "Saturated accent fill covers a large share of the first screen, so the accent stops pointing at anything.", "Keep the accent to the primary action and a few highlights (roughly 5% of the screen) unless the brief calls for a colour-block look."],
+    "measure-narrow": ["warning", "typography", "", "Running text set in very narrow columns breaks into choppy lines and too many hyphen-free ragged ends.", "Widen the column to about 45-75 characters per line (max-width: 65ch) for body copy."],
+    "caps-display-tight": ["warning", "typography", "", "Multi-line all-caps display text with line-height under 1.0 makes the rows touch or collide.", "Set line-height to at least 1.0-1.1 for uppercase display type."],
+    "sticky-under-header": ["warning", "layout", "", "A sticky element pinned at top: 0 slides under the fixed header, so its top is hidden while it is stuck.", "Set its top to the header height (top: var(--header-h)) or use scroll-margin/scroll-padding."],
+    "nav-default-layout": ["warning", "template-tell", "structure", "Wordmark left, four or five centred links and one button right is the default generated navigation; it gives the brand nothing of its own.", "Shape the navigation around how this audience moves through the site (fewer links, a search, a booking entry, a different placement)."],
+    "footer-default-columns": ["warning", "template-tell", "structure", "A footer with Product / Company / Resources / Legal columns is the stock template footer.", "Group the footer by what visitors here actually look for (opening hours, locations, contact, cases) and drop empty categories."],
+    "page-template-sequence": ["warning", "template-tell", "structure", "Hero, then three equal feature cards, then a call-to-action band, then the footer is the default landing-page outline.", "Order the page around the subject's own story; vary section forms (a list, a table, a case, a timeline)."],
+    "lcp-image-lazy": ["warning", "performance", "", "The largest image on the first screen is lazy-loaded, so the browser waits to fetch it and LCP slips.", "Remove loading=lazy from the hero image and add fetchpriority=high."],
+    "hero-video-no-poster": ["warning", "performance", "", "An autoplay hero video with no poster shows nothing until the video decodes, which delays the first paint of the hero.", "Add a poster image (the first frame, compressed) and preload=metadata."],
+    "icon-sets-mixed": ["warning", "style", "", "Two or more icon libraries on one page bring different stroke widths, grids and corner styles.", "Use one icon set throughout, or redraw the odd icons to match."],
+    "graphic-unhidden": ["warning", "accessibility", "", "Decorative canvas or svg graphics without aria-hidden or a label are announced as unlabeled images by some screen readers.", "Add aria-hidden=\"true\" to decorative graphics, or role=img with an aria-label when they carry meaning."],
+    "overflow-at-width": ["error", "layout", "", "The page scrolls sideways at this width, so content is cut off and the whole page wobbles on touch.", "Find the element wider than the viewport (fixed widths, 100vw plus padding, long words, wide media) and constrain it with max-width: 100%, minmax(0, 1fr) or overflow-wrap."],
+    "stats-too-round": ["warning", "trust", "", "Several headline numbers that are all suspiciously round (10K+, 100%, 500+) read as placeholders. Verify this is real.", "Show the real figure with its source and date, or remove the stat."],
+  };
+
+  const allowSet = new Set((opts.allow || []).map((x) => String(x).toLowerCase().trim()).filter(Boolean));
+  D.querySelectorAll('meta[name="layoza-brand-allow" i]').forEach((m) =>
+    (m.getAttribute("content") || "").split(",").forEach((p) => {
+      const v = p.trim().toLowerCase();
+      if (v.startsWith("rule:")) allowSet.add(v.slice(5).trim());
+      else if (v.startsWith("style:")) allowSet.add(v.slice(6).trim());
+    })
+  );
+  const counts = {};
+  const emit = (id, el, measured, detail) => {
+    const r = RULES[id];
+    if (!r) return;
+    counts[id] = (counts[id] || 0) + 1;
+    if (counts[id] > 6) return;
+    const sel = el ? selectorOf(el) : "document";
+    if (allowSet.has(id) || (r[2] && allowSet.has(r[2]))) {
+      if (counts[id] === 1) suppressed.push({ rule: id, detail: "allowed by the brief (" + (allowSet.has(id) ? id : r[2]) + ")" });
+      return;
+    }
+    issues.push({
+      rule: id,
+      severity: r[0],
+      category: r[1],
+      selector: sel,
+      measured: String(measured).slice(0, 160),
+      why: r[3],
+      fix: r[4],
+      detail: (sel + ": " + (detail || measured) + ". " + r[4]).replace(/\s+/g, " ").slice(0, 320),
+    });
+  };
+  const run = (id, fn) => {
+    try {
+      fn();
+    } catch (e) {
+      if (errors.length < 20) errors.push(id + ": " + (e && e.message ? e.message : String(e)));
+    }
+  };
+  function selectorOf(el) {
+    const parts = [];
+    for (let cur = el, depth = 0; cur && cur.nodeType === 1 && depth < 3; cur = cur.parentElement, depth++) {
+      let p = cur.tagName.toLowerCase();
+      if (cur.id && /^[A-Za-z][\w-]*$/.test(cur.id)) { parts.unshift(p + "#" + cur.id); break; }
+      const cls = (cur.getAttribute("class") || "").trim().split(/\s+/).filter((c) => /^[A-Za-z_][\w-]*$/.test(c)).slice(0, 2);
+      if (cls.length) p += "." + cls.join(".");
+      else if (cur.parentElement) {
+        const same = Array.from(cur.parentElement.children).filter((c) => c.tagName === cur.tagName);
+        if (same.length > 1) p += ":nth-of-type(" + (same.indexOf(cur) + 1) + ")";
+      }
+      parts.unshift(p);
+      if (cur === D.body) break;
+    }
+    return parts.join(" > ");
+  }
+  const cs = (el) => getComputedStyle(el);
+  const px = (v) => parseFloat(v) || 0;
+  const shown = (el) => {
+    if (!el || el.closest("[hidden], [inert], dialog:not([open]), template, details:not([open]) > :not(summary)")) return false;
+    if (typeof el.checkVisibility === "function" && !el.checkVisibility({ opacityProperty: true, visibilityProperty: true })) return false;
+    const r = el.getBoundingClientRect();
+    return r.width >= 2 && r.height >= 2;
+  };
+  const rgba = (v) => {
+    const m = /rgba?\(\s*([\d.]+)[ ,]+([\d.]+)[ ,]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?/.exec(v || "");
+    if (!m) return null;
+    const a = m[4] === undefined ? 1 : m[4].endsWith("%") ? parseFloat(m[4]) / 100 : parseFloat(m[4]);
+    return [+m[1], +m[2], +m[3], a];
+  };
+  const textOf = (el) => (el.textContent || "").replace(/\s+/g, " ").trim();
+  const ownText = (el) => Array.from(el.childNodes).some((n) => n.nodeType === 3 && n.nodeValue.trim().length > 0);
+  const all = Array.from(D.body.querySelectorAll("*")).slice(0, 6000);
+  const docH = D.documentElement.scrollHeight;
+  const pageTop = window.scrollY;
+  const absTop = (el) => el.getBoundingClientRect().top + pageTop;
+  const controls = Array.from(D.querySelectorAll("a[href], button, input:not([type=hidden]), select, textarea, [role='button'], [tabindex]"));
+
+  // ---- Shipping slips -------------------------------------------------------------------------
+  run("title-missing", () => {
+    if (!(D.title || "").trim()) emit("title-missing", D.documentElement, "<title> empty or absent");
+  });
+
+  run("duplicate-id", () => {
+    const seen = new Map();
+    for (const el of D.querySelectorAll("[id]")) {
+      const id = el.id;
+      if (!id) continue;
+      seen.set(id, (seen.get(id) || 0) + 1);
+    }
+    for (const [id, n] of seen) {
+      if (n < 2) continue;
+      const esc = window.CSS && CSS.escape ? CSS.escape(id) : id;
+      const referenced = D.querySelector('[for="' + esc + '"], [aria-labelledby~="' + esc + '"], [aria-describedby~="' + esc + '"], [aria-controls~="' + esc + '"], a[href="#' + esc + '"]');
+      emit("duplicate-id", D.getElementById(id), 'id="' + id + '" on ' + n + " elements" + (referenced ? " (referenced by " + referenced.tagName.toLowerCase() + ")" : ""));
+    }
+  });
+
+  run("positive-tabindex", () => {
+    for (const el of D.querySelectorAll("[tabindex]")) {
+      const t = parseInt(el.getAttribute("tabindex"), 10);
+      if (t > 0) emit("positive-tabindex", el, "tabindex=" + t);
+    }
+  });
+
+  run("placeholder-copy", () => {
+    const FILLER = /\b(lorem ipsum|dolor sit amet|consectetur adipisc|placeholder text|sample text|your (?:headline|title|text|tagline|company|logo) here|insert (?:text|copy|image|content) here|coming soon\.{3}|todo:|tbd\b|xxx+\b|\[(?:company|name|city|product|insert)[^\]]*\])/i;
+    const walker = D.createTreeWalker(D.body, NodeFilter.SHOW_TEXT);
+    let hits = 0;
+    for (let n = walker.nextNode(); n && hits < 6; n = walker.nextNode()) {
+      const el = n.parentElement;
+      if (!el || el.closest("script, style, noscript, template, code, pre, textarea")) continue;
+      const m = FILLER.exec(n.nodeValue || "");
+      if (m && shown(el)) {
+        hits++;
+        emit("placeholder-copy", el, '"' + m[0] + '"');
+      }
+    }
+    for (const el of D.querySelectorAll("img[src], a[href]")) {
+      const v = el.getAttribute("src") || el.getAttribute("href") || "";
+      if (/placehold\.(?:co|it)|via\.placeholder|dummyimage\.com|picsum\.photos|placekitten|^#$/.test(v) && shown(el) && el.tagName === "IMG") emit("placeholder-copy", el, "stock placeholder image " + v.slice(0, 60));
+    }
+  });
+
+  run("font-load-failed", () => {
+    if (!D.fonts) return;
+    const failed = new Set();
+    D.fonts.forEach((f) => {
+      if (f.status === "error") failed.add(String(f.family).replace(/["']/g, ""));
+    });
+    if (!failed.size) return;
+    const users = all.filter((el) => ownText(el) && failed.has((cs(el).fontFamily.split(",")[0] || "").replace(/["']/g, "").trim()));
+    for (const fam of failed) {
+      const el = users.find((u) => cs(u).fontFamily.includes(fam));
+      emit("font-load-failed", el || D.body, '"' + fam + '" status error' + (el ? ", used by " + users.filter((u) => cs(u).fontFamily.includes(fam)).length + " text element(s)" : ""));
+    }
+  });
+
+  run("media", () => {
+    for (const m of D.querySelectorAll("video, audio")) {
+      const auto = m.autoplay || m.hasAttribute("autoplay");
+      const silent = m.muted || m.hasAttribute("muted") || m.volume === 0;
+      if (auto && !silent && !(m.tagName === "VIDEO" && m.readyState >= 1 && m.mozHasAudio === false)) emit("autoplay-sound", m, "autoplay without muted");
+      if (m.tagName === "VIDEO" && !auto && !m.getAttribute("poster") && shown(m)) emit("video-blank-start", m, "no poster, no autoplay, preload=" + (m.getAttribute("preload") || "auto"));
+    }
+  });
+
+  run("images", () => {
+    const dpr = window.devicePixelRatio || 1;
+    for (const img of D.querySelectorAll("img")) {
+      const alt = img.getAttribute("alt");
+      if (alt && (/\.(?:png|jpe?g|webp|gif|svg|avif|bmp|tiff?)$/i.test(alt.trim()) || /^(?:img|image|photo|picture|pic|dsc|screenshot)[\s_-]*\d*$/i.test(alt.trim()))) emit("alt-is-filename", img, 'alt="' + alt.slice(0, 40) + '"');
+      if (!img.complete || !img.naturalWidth || !shown(img)) continue;
+      const r = img.getBoundingClientRect();
+      const fit = cs(img).objectFit;
+      const need = Math.max(r.width, fit === "cover" ? r.height * (img.naturalWidth / img.naturalHeight) : 0) * Math.max(dpr, 1);
+      if (img.naturalWidth >= 1600 && need > 0 && img.naturalWidth > need * 2.5 && r.width >= 40) {
+        emit("raster-oversized", img, img.naturalWidth + "x" + img.naturalHeight + " source for a " + Math.round(r.width) + "x" + Math.round(r.height) + " slot (" + (img.naturalWidth / need).toFixed(1) + "x the pixels needed at " + dpr + "dppx)");
+      }
+    }
+  });
+
+  run("blend-mode-text", () => {
+    for (const el of all) {
+      const mb = cs(el).mixBlendMode;
+      if (!/difference|exclusion|overlay|screen|color-dodge|lighten|darken/.test(mb)) continue;
+      if (textOf(el).length >= 3 && shown(el) && !el.closest("[aria-hidden='true']")) emit("blend-mode-text", el, "mix-blend-mode: " + mb);
+    }
+  });
+
+  run("focus-ring-missing", () => {
+    if (!D.hasFocus || opts.skipFocus) return;
+    const prev = D.activeElement;
+    const freeze = D.createElement("style");
+    freeze.textContent = "*, *::before, *::after { transition: none !important; animation-play-state: paused !important; }";
+    D.head.appendChild(freeze);
+    const sx = window.scrollX, sy = window.scrollY;
+    const PROPS = ["outlineStyle", "outlineWidth", "outlineColor", "boxShadow", "borderTopColor", "borderBottomColor", "borderBottomWidth", "backgroundColor", "color", "textDecorationLine", "transform"];
+    const snap = (el) => {
+      const s = cs(el);
+      const before = getComputedStyle(el, "::before"), after = getComputedStyle(el, "::after");
+      return PROPS.map((p) => s[p]).join("|") + "|" + before.content + before.opacity + before.backgroundColor + "|" + after.content + after.opacity + after.backgroundColor;
+    };
+    let checked = 0;
+    try {
+      for (const el of controls) {
+        if (checked >= 14) break;
+        if (!shown(el) || el.disabled || el.getAttribute("tabindex") === "-1") continue;
+        const rest = snap(el);
+        const parentRest = el.parentElement ? snap(el.parentElement) : "";
+        el.focus({ preventScroll: true });
+        if (D.activeElement !== el) continue;
+        if (!el.matches(":focus-visible")) { el.blur(); continue; }
+        checked++;
+        const focused = snap(el);
+        const parentFocused = el.parentElement ? snap(el.parentElement) : "";
+        el.blur();
+        if (focused === rest && parentFocused === parentRest) emit("focus-ring-missing", el, "no computed style change between resting and :focus-visible (outline, shadow, border, background, colour, pseudo-elements)");
+      }
+    } finally {
+      freeze.remove();
+      if (prev && prev.focus && prev !== D.body) prev.focus({ preventScroll: true });
+      else if (D.activeElement && D.activeElement.blur) D.activeElement.blur();
+      window.scrollTo(sx, sy);
+    }
+  });
+
+  run("rtl", () => {
+    const lang = (D.documentElement.getAttribute("lang") || "").toLowerCase();
+    const rtlLang = /^(ar|he|iw|fa|ur|ps|sd|ug|yi|dv|ckb)(-|$)/.test(lang);
+    const dir = (D.documentElement.getAttribute("dir") || D.body.getAttribute("dir") || "").toLowerCase();
+    if (rtlLang && dir !== "rtl") emit("rtl-dir-missing", D.documentElement, 'lang="' + lang + '", dir="' + (dir || "unset") + '"');
+    const rtlPage = dir === "rtl" || rtlLang || cs(D.body).direction === "rtl";
+    if (!rtlPage) return;
+    const PHYS = /(?:^|[;\s{])(margin-(?:left|right)|padding-(?:left|right)|border-(?:left|right)(?:-[a-z]+)?|(?:left|right)\s*:|text-align\s*:\s*(?:left|right)|float\s*:\s*(?:left|right))/i;
+    const found = [];
+    let n = 0;
+    const walk = (rules) => {
+      for (const r of Array.from(rules || [])) {
+        if (r.cssRules && !r.selectorText) { walk(r.cssRules); continue; }
+        if (!r.selectorText || !r.style) continue;
+        if (/\[dir=["']?ltr|:dir\(ltr\)/i.test(r.selectorText)) continue;
+        const txt = r.style.cssText;
+        const m = PHYS.exec(" " + txt);
+        if (m) {
+          n++;
+          if (found.length < 4) found.push(r.selectorText.slice(0, 40) + " { " + m[1].replace(/\s*:$/, "") + " }");
+        }
+      }
+    };
+    for (const sh of Array.from(D.styleSheets)) {
+      try { walk(sh.cssRules); } catch (e) { /* cross-origin sheet */ }
+    }
+    if (n >= 3) emit("rtl-physical-props", D.documentElement, n + " rule(s) with physical left/right properties", n + " CSS rule(s) use physical left/right on a right-to-left page, e.g. " + found.join("; "));
+  });
+
+  run("sidebar-vanishes", () => {
+    if (vw < 700 || vw >= 1280) return;
+    const cands = Array.from(D.querySelectorAll("aside, nav, [class*='sidebar' i], [class*='side-nav' i], [class*='sidenav' i]")).filter((el) => {
+      if (el.parentElement && el.parentElement.closest("aside, [class*='sidebar' i]")) return false;
+      return el.querySelectorAll("a[href]").length >= 4 && !el.closest("header, footer, [role='banner'], [role='contentinfo']");
+    });
+    for (const el of cands) {
+      const links = Array.from(el.querySelectorAll("a[href]"));
+      const r = el.getBoundingClientRect();
+      const s = cs(el);
+      const gone = s.display === "none" || s.visibility === "hidden" || r.width < 8 || r.right <= 0 || r.left >= vw || links.every((a) => !shown(a));
+      if (!gone) continue;
+      const hrefs = new Set(links.map((a) => a.getAttribute("href")));
+      const elsewhere = Array.from(D.querySelectorAll("a[href]")).some((a) => !el.contains(a) && hrefs.has(a.getAttribute("href")) && shown(a));
+      if (elsewhere) continue;
+      emit("sidebar-vanishes", el, links.length + " sidebar links hidden at " + vw + "px, no icon rail and no other copy of the links visible");
+    }
+  });
+
+  // ---- Typography -------------------------------------------------------------------------------
+  run("line-shape", () => {
+    let seen = 0;
+    for (const el of D.querySelectorAll("h1, h2, h3, p, li, blockquote, figcaption")) {
+      if (seen > 160) break;
+      if (!shown(el) || el.closest("nav, header, footer, button, a, [aria-hidden='true']")) continue;
+      const txt = textOf(el);
+      const heading = /^H[1-3]$/.test(el.tagName);
+      if (txt.length < (heading ? 12 : 60) || txt.split(" ").length < 4) continue;
+      const s = cs(el);
+      const wrap = (s.textWrap || s.textWrapStyle || "") + " " + (s.textWrapStyle || "");
+      if (/balance|pretty/.test(wrap)) continue;
+      seen++;
+      const range = D.createRange();
+      range.selectNodeContents(el);
+      const rects = Array.from(range.getClientRects()).filter((q) => q.width > 1 && q.height > 1);
+      // Merge fragments into lines by baseline band
+      const lines = [];
+      for (const q of rects) {
+        const line = lines.find((l) => Math.abs(l.top - q.top) < q.height * 0.5);
+        if (line) { line.left = Math.min(line.left, q.left); line.right = Math.max(line.right, q.right); }
+        else lines.push({ top: q.top, left: q.left, right: q.right });
+      }
+      if (lines.length < 2 || lines.length > (heading ? 5 : 14)) continue;
+      lines.sort((a, b) => a.top - b.top);
+      const widths = lines.map((l) => l.right - l.left);
+      const longest = Math.max(...widths);
+      const last = widths[widths.length - 1];
+      const lastWords = txt.split(" ").slice(-2);
+      const lastWordW = (() => {
+        const tw = D.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        let lastNode = null;
+        for (let n = tw.nextNode(); n; n = tw.nextNode()) if (n.nodeValue.trim()) lastNode = n;
+        if (!lastNode) return null;
+        const v = lastNode.nodeValue.replace(/\s+$/, "");
+        const i = v.lastIndexOf(" ");
+        const rr = D.createRange();
+        rr.setStart(lastNode, i + 1);
+        rr.setEnd(lastNode, v.length);
+        return rr.getBoundingClientRect().width;
+      })();
+      if (lastWordW !== null && Math.abs(last - lastWordW) < 2 && last < longest * 0.25) {
+        emit("straggler-line", el, '"' + lastWords[lastWords.length - 1] + '" alone on line ' + lines.length + " (" + Math.round(last) + "px of " + Math.round(longest) + "px)");
+      } else if (heading && lines.length <= 4 && last < longest * 0.45) {
+        emit("heading-unbalanced", el, lines.length + " lines, last line " + Math.round((last / longest) * 100) + "% of the longest");
+      }
+    }
+  });
+
+  run("font-size-sprawl", () => {
+    const sizes = new Map();
+    for (const el of all) {
+      if (!ownText(el) || !shown(el) || el.closest("svg, code, pre, [aria-hidden='true']")) continue;
+      const k = Math.round(px(cs(el).fontSize) * 2) / 2;
+      if (!sizes.has(k)) sizes.set(k, el);
+    }
+    if (sizes.size > 10) emit("font-size-sprawl", D.body, sizes.size + " distinct text sizes: " + Array.from(sizes.keys()).sort((a, b) => a - b).join("/") + "px");
+  });
+
+  run("mono-running-text", () => {
+    const hits = Array.from(D.querySelectorAll("p, li, dd, blockquote")).filter((el) => shown(el) && !el.closest("pre, code, kbd, samp, table") && textOf(el).length >= 90 && /mono|courier|consolas|menlo|monaco/i.test(cs(el).fontFamily));
+    if (hits.length >= 2) emit("mono-running-text", hits[0], hits.length + " paragraph(s) of 90+ characters in " + cs(hits[0]).fontFamily.split(",")[0]);
+  });
+
+  run("figures", () => {
+    for (const table of Array.from(D.querySelectorAll("table")).slice(0, 8)) {
+      if (!shown(table)) continue;
+      const cells = Array.from(table.querySelectorAll("td")).filter((td) => /^[\s$€£¥+\-−(]*[\d.,]+\s*%?[)]?\s*[A-Za-z]{0,3}$/.test(textOf(td)) && textOf(td).length >= 2);
+      if (cells.length < 6) continue;
+      const prop = cells.filter((td) => !/tabular-nums/.test(cs(td).fontVariantNumeric) && !/mono/i.test(cs(td).fontFamily));
+      if (prop.length >= cells.length * 0.6) emit("figures-proportional", table, prop.length + " of " + cells.length + " numeric cells in proportional figures");
+      const left = cells.filter((td) => /^(left|start|-webkit-left)$/.test(cs(td).textAlign) && cs(D.documentElement).direction !== "rtl");
+      if (left.length >= cells.length * 0.6) emit("numbers-left-aligned", table, left.length + " of " + cells.length + " numeric cells left-aligned");
+    }
+  });
+
+  // ---- Style habits (brief-aware) -------------------------------------------------------------
+  const boxes = all.filter((el) => {
+    const r = el.getBoundingClientRect();
+    return r.width >= 120 && r.height >= 80 && r.width < vw * 0.98 && shown(el);
+  });
+  run("fx-gradient-surfaces", () => {
+    const g = boxes.filter((el) => {
+      const s = cs(el);
+      return /gradient\(/.test(s.backgroundImage) && !/\btext\b/.test(s.backgroundClip + " " + s.webkitBackgroundClip) && !/url\(/.test(s.backgroundImage);
+    });
+    const big = g.filter((el) => { const r = el.getBoundingClientRect(); return r.width * r.height >= 40000; });
+    if (big.length >= 3) emit("fx-gradient-surfaces", big[0], big.length + " surfaces of 200x200px+ painted with gradients");
+  });
+  run("fx-glass", () => {
+    const g = all.filter((el) => {
+      const s = cs(el);
+      const bf = s.backdropFilter || s.webkitBackdropFilter || "";
+      const bg = rgba(s.backgroundColor);
+      return /blur\(\s*[1-9]/.test(bf) && bg && bg[3] < 0.9 && shown(el);
+    });
+    if (g.length >= 3) emit("fx-glass", g[0], g.length + " translucent blurred panels (backdrop-filter blur, background alpha < 0.9)");
+  });
+  // Box-shadow layers: [x, y, blur, spread, inset]
+  const shadowLayers = (v) => {
+    if (!v || v === "none") return [];
+    return v.split(/,(?![^(]*\))/).map((layer) => {
+      const nums = (layer.replace(/rgba?\([^)]*\)|#[0-9a-f]+|[a-z-]+\([^)]*\)/gi, "").match(/-?[\d.]+px|\b0\b/g) || []).map(px);
+      const c = rgba((/rgba?\([^)]*\)/i.exec(layer) || [""])[0]);
+      return { x: nums[0] || 0, y: nums[1] || 0, blur: nums[2] || 0, spread: nums[3] || 0, inset: /inset/.test(layer), alpha: c ? c[3] : 1 };
+    });
+  };
+  run("fx-shadows", () => {
+    const cards = boxes.filter((el) => {
+      const s = cs(el);
+      const bg = rgba(s.backgroundColor);
+      return (bg && bg[3] > 0.5) || px(s.borderTopLeftRadius) >= 4 || s.boxShadow !== "none";
+    });
+    const soft = cards.filter((el) => shadowLayers(cs(el).boxShadow).some((l) => !l.inset && l.blur >= 24 && l.alpha >= 0.06));
+    if (cards.length >= 4 && soft.length >= 4 && soft.length / cards.length >= 0.5) emit("fx-resting-shadows", soft[0], soft.length + " of " + cards.length + " boxes carry a soft shadow (blur >= 24px) at rest");
+    const hard = all.filter((el) => shown(el) && shadowLayers(cs(el).boxShadow).some((l) => !l.inset && l.blur === 0 && l.spread === 0 && Math.max(Math.abs(l.x), Math.abs(l.y)) >= 3 && l.alpha >= 0.5));
+    if (hard.length >= 3) emit("hard-offset-shadow", hard[0], hard.length + " elements with zero-blur offset shadows (" + cs(hard[0]).boxShadow.slice(0, 48) + ")");
+  });
+  run("fx-text-shadow", () => {
+    const t = all.filter((el) => ownText(el) && shown(el) && cs(el).textShadow !== "none" && textOf(el).length >= 3);
+    if (t.length >= 4) emit("fx-text-shadow", t[0], t.length + " text elements with text-shadow (" + cs(t[0]).textShadow.slice(0, 48) + ")");
+  });
+  run("pills", () => {
+    const ctl = Array.from(D.querySelectorAll("button, a[class*='btn' i], a[class*='button' i], [role='button'], input[type=submit], input[type=button], input[type=text], input[type=email], input[type=search], select, .tag, .chip, .badge")).filter((el) => {
+      const r = el.getBoundingClientRect();
+      return shown(el) && r.height >= 20 && r.height <= 72 && r.width >= 40;
+    });
+    if (ctl.length >= 5) {
+      const pill = ctl.filter((el) => px(cs(el).borderTopLeftRadius) >= el.getBoundingClientRect().height / 2 - 1);
+      const kinds = new Set(pill.map((el) => (el.tagName === "INPUT" || el.tagName === "SELECT" ? "field" : /tag|chip|badge/i.test(el.className) ? "chip" : "button")));
+      if (pill.length / ctl.length >= 0.75 && kinds.size >= 2) emit("pill-everything", pill[0], pill.length + " of " + ctl.length + " controls fully rounded across " + Array.from(kinds).join(", "));
+    }
+    const nav = Array.from(D.querySelectorAll("header, nav, [role='banner']")).find((el) => {
+      const s = cs(el);
+      const r = el.getBoundingClientRect();
+      return /fixed|sticky/.test(s.position) && shown(el) && r.top >= 8 && r.width < vw * 0.92 && r.height <= 96 && px(s.borderTopLeftRadius) >= r.height / 2 - 2;
+    });
+    if (nav) emit("nav-floating-pill", nav, "detached " + cs(nav).position + " nav, radius " + cs(nav).borderTopLeftRadius + ", " + Math.round(nav.getBoundingClientRect().width) + "px wide");
+  });
+  run("radius-sprawl", () => {
+    const radii = new Map();
+    for (const el of boxes) {
+      const r = Math.round(px(cs(el).borderTopLeftRadius));
+      if (r > 0 && r < 999 && r < el.getBoundingClientRect().height / 2 - 1) radii.set(r, (radii.get(r) || 0) + 1);
+    }
+    const used = Array.from(radii.entries()).filter(([, n]) => n >= 1);
+    if (used.length >= 7) emit("radius-sprawl", D.body, used.length + " different radii on boxes: " + used.map(([r]) => r).sort((a, b) => a - b).join("/") + "px");
+  });
+  run("link-default-blue", () => {
+    const blue = Array.from(D.querySelectorAll("a[href]")).filter((a) => shown(a) && /^rgb\((0, 0, 238|85, 26, 139|0, 0, 255)\)$/.test(cs(a).color) && textOf(a).length > 1);
+    if (blue.length >= 2) emit("link-default-blue", blue[0], blue.length + " link(s) in " + cs(blue[0]).color);
+  });
+  run("emoji-icons", () => {
+    const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F000}-\u{1F2FF}]/u;
+    const hits = Array.from(D.querySelectorAll("h2, h3, h4, li, button, a, .icon, [class*='icon' i], span, div")).filter((el) => {
+      if (!ownText(el) || !shown(el)) return false;
+      const t = Array.from(el.childNodes).filter((n) => n.nodeType === 3).map((n) => n.nodeValue).join("").trim();
+      return EMOJI.test(t.slice(0, 3)) && !el.closest("blockquote, [class*='review' i], [class*='comment' i]");
+    });
+    if (hits.length >= 3) emit("emoji-icons", hits[0], hits.length + " elements start with an emoji glyph (" + textOf(hits[0]).slice(0, 2) + ")");
+  });
+
+  // ---- Layout and content -----------------------------------------------------------------------
+  run("imagery-scarce", () => {
+    if (docH < vh * 3 || D.querySelector('meta[name="layoza-surface"][content="app" i]')) return;
+    const media = Array.from(D.querySelectorAll("img, picture, video, canvas, svg, iframe, [style*='background-image']")).filter((m) => {
+      if (m.parentElement && m.parentElement.closest("svg")) return false;
+      const r = m.getBoundingClientRect();
+      return r.width >= 160 && r.height >= 120 && shown(m);
+    });
+    const bgArt = boxes.filter((el) => /url\(/.test(cs(el).backgroundImage)).length;
+    if (media.length + bgArt === 0) emit("imagery-scarce", D.body, "page " + Math.round(docH / vh) + " screens tall with no image, video, canvas or artwork of 160x120px+");
+  });
+  run("cta-competition", () => {
+    const pageBg = rgba(cs(D.body).backgroundColor) || [255, 255, 255, 1];
+    const filled = Array.from(D.querySelectorAll("a[href], button, [role='button']")).filter((el) => {
+      const r = el.getBoundingClientRect();
+      if (!shown(el) || r.top + pageTop > vh || r.height < 36 || r.width < 80 || el.closest("nav, header")) return false;
+      const bg = rgba(cs(el).backgroundColor);
+      return bg && bg[3] > 0.8 && Math.abs(bg[0] - pageBg[0]) + Math.abs(bg[1] - pageBg[1]) + Math.abs(bg[2] - pageBg[2]) > 90;
+    });
+    const looks = new Set(filled.map((el) => cs(el).backgroundColor));
+    if (filled.length >= 3 && looks.size <= 2) emit("cta-competition", filled[0], filled.length + " filled buttons on the first screen");
+  });
+  run("row-heights-ragged", () => {
+    let flagged = 0;
+    for (const parent of all) {
+      if (flagged >= 3) break;
+      const s = cs(parent);
+      if (!/grid|flex/.test(s.display) || (s.display.includes("flex") && /column/.test(s.flexDirection))) continue;
+      const kids = Array.from(parent.children).filter((c) => shown(c));
+      if (kids.length < 3) continue;
+      const rows = new Map();
+      for (const k of kids) {
+        const r = k.getBoundingClientRect();
+        if (r.width < 140 || r.height < 120) continue;
+        const key = Math.round(r.top / 4);
+        if (!rows.has(key)) rows.set(key, []);
+        rows.get(key).push({ k, r });
+      }
+      for (const row of rows.values()) {
+        if (row.length < 3) continue;
+        const painted = row.filter(({ k }) => { const ks = cs(k); const bg = rgba(ks.backgroundColor); return (bg && bg[3] > 0.3) || px(ks.borderTopWidth) > 0 || ks.boxShadow !== "none"; });
+        if (painted.length < 3) continue;
+        const hs = painted.map((x) => x.r.height);
+        if (Math.max(...hs) > Math.min(...hs) * 1.15 && Math.max(...hs) - Math.min(...hs) > 24) {
+          flagged++;
+          emit("row-heights-ragged", parent, painted.length + " cards in one row, heights " + Math.round(Math.min(...hs)) + "-" + Math.round(Math.max(...hs)) + "px");
+          break;
+        }
+      }
+    }
+  });
+  run("scroller-hidden", () => {
+    for (const el of all) {
+      const s = cs(el);
+      if (!/auto|scroll/.test(s.overflowX) || el.scrollWidth <= el.clientWidth + 40 || !shown(el) || el === D.body || el === D.documentElement) continue;
+      const hiddenBar = s.scrollbarWidth === "none" || el.offsetHeight - el.clientHeight === 0;
+      if (!hiddenBar) continue;
+      const host = el.parentElement || el;
+      const buttons = host.querySelectorAll("button, [role='button']").length;
+      if (buttons === 0) emit("scroller-hidden", el, Math.round(el.scrollWidth - el.clientWidth) + "px of hidden horizontal content, no scrollbar, no buttons");
+    }
+  });
+  run("skip-link-missing", () => {
+    const main = D.querySelector("main, [role='main']");
+    if (!main) return;
+    const headerLinks = Array.from(D.querySelectorAll("a[href], button")).filter((a) => shown(a) && main.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_PRECEDING);
+    if (headerLinks.length < 6) return;
+    const first = Array.from(D.querySelectorAll("a[href]")).slice(0, 3);
+    if (!first.some((a) => /^#./.test(a.getAttribute("href") || "") && /skip|main|content/i.test(textOf(a) + " " + a.getAttribute("href")))) emit("skip-link-missing", D.body, headerLinks.length + " focusable items before <main>, no skip link");
+  });
+
+  // ---- Legibility floors ------------------------------------------------------------------------
+  run("text-below-floor", () => {
+    const SKIP = "footer, small, sub, sup, code, kbd, samp, pre, [aria-hidden='true'], [class*='legal' i], [class*='copyright' i], [class*='fine' i], [class*='disclaimer' i]";
+    let body = null, bodyN = 0, label = null, labelN = 0;
+    for (const el of D.body.querySelectorAll("p, li, dd, blockquote, td")) {
+      if (!ownText(el) || !shown(el) || el.closest(SKIP) || textOf(el).length < 60) continue;
+      const f = px(cs(el).fontSize);
+      if (f > 0 && f < 14) { bodyN++; if (!body || f < px(cs(body).fontSize)) body = el; }
+    }
+    for (const el of D.body.querySelectorAll("label, button, input:not([type=hidden]), select, textarea, nav a, [role='button'], [role='tab'], legend, th")) {
+      if (!shown(el) || el.closest(SKIP)) continue;
+      const hasText = el.matches("input, select, textarea") || textOf(el).length >= 2;
+      const f = px(cs(el).fontSize);
+      if (hasText && f > 0 && f < 12) { labelN++; if (!label || f < px(cs(label).fontSize)) label = el; }
+    }
+    if (body) emit("text-below-floor", body, bodyN + " running-text block(s) under 14px, smallest " + cs(body).fontSize);
+    if (label) emit("text-below-floor", label, labelN + " label/control(s) under 12px, smallest " + cs(label).fontSize);
+  });
+
+  // ---- Template decoration ------------------------------------------------------------------------
+  const capsLabel = (el, headingPx) => {
+    if (!el || !shown(el)) return false;
+    const t = textOf(el);
+    if (t.length < 2 || t.length > 40 || el.querySelector("h1, h2, h3, img, svg, button")) return false;
+    const s = cs(el);
+    const upper = s.textTransform === "uppercase" || (t === t.toUpperCase() && t !== t.toLowerCase());
+    return upper && px(s.fontSize) <= headingPx * 0.6;
+  };
+  run("eyebrow-on-most-headings", () => {
+    const hs = Array.from(D.body.querySelectorAll("h2")).filter((h) => shown(h) && textOf(h).length > 2);
+    if (hs.length < 3) return;
+    const with_ = hs.filter((h) => {
+      const hp = px(cs(h).fontSize);
+      let prev = h.previousElementSibling;
+      if (!prev && h.parentElement) prev = h.parentElement.previousElementSibling;
+      return capsLabel(prev, hp);
+    });
+    if (with_.length / hs.length > 0.6) emit("eyebrow-on-most-headings", with_[0], with_.length + " of " + hs.length + " h2 headings carry an all-caps label above them");
+  });
+  run("numbered-non-sequence", () => {
+    const STEP = /\b(step|steps|stage|phase|process|how it works|first|then|next|finally|timeline|roadmap|journey|day \d|week \d|round|chapter|part)\b/i;
+    const seen = new Set();
+    for (const parent of all) {
+      const kids = Array.from(parent.children).filter(shown);
+      if (kids.length < 3 || seen.has(parent)) continue;
+      // Zero-padded "01", "02", "03" leading each of the first cards, in order
+      const lead = kids.map((k) => { const m = /^\s*0([1-9])(?=[\s.):]|$)/.exec(textOf(k)); return m ? Number(m[1]) : null; });
+      const seq = [];
+      for (const n of lead) { if (n !== seq.length + 1) break; seq.push(n); }
+      if (seq.length < 3) continue;
+      seen.add(parent);
+      const section = parent.closest("section, article, main") || parent;
+      const head = section.querySelector("h1, h2, h3");
+      const context = (head ? textOf(head) : "") + " " + textOf(parent).slice(0, 600);
+      if (STEP.test(context) || parent.closest("ol")) continue;
+      emit("numbered-non-sequence", parent, kids.length + " cards numbered 01-" + String(seq.length).padStart(2, "0") + " with no step or process wording nearby");
+    }
+  });
+  run("illustrated-people", () => {
+    const WORD = /\b(person|people|man|woman|user|team|character|avatar|illustration|humaaan|figure|worker)\b/i;
+    const hits = Array.from(D.body.querySelectorAll("svg, img[src$='.svg' i]")).filter((el) => {
+      if (!shown(el)) return false;
+      const r = el.getBoundingClientRect();
+      if (r.width < 160 || r.height < 160) return false;
+      const label = [el.getAttribute("aria-label"), el.getAttribute("alt"), el.getAttribute("class"), el.getAttribute("src"), el.querySelector && el.querySelector("title") ? textOf(el.querySelector("title")) : ""].join(" ");
+      if (!WORD.test(label)) return false;
+      if (el.tagName.toLowerCase() === "svg") return el.querySelectorAll("path").length >= 12;
+      return true;
+    });
+    if (hits.length) emit("illustrated-people", hits[0], hits.length + " large vector figure(s) of people (" + Math.round(hits[0].getBoundingClientRect().width) + "px)");
+  });
+  run("violet-blue-hero", () => {
+    const hueOf = (rgb) => {
+      const [r, g, b] = rgb.map((v) => v / 255);
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+      if (d < 0.12) return null;
+      let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      return (h * 60 + 360) % 360;
+    };
+    const stopsOf = (bi) => {
+      const out = [];
+      for (let i = bi.indexOf("rgb"); i >= 0 && out.length < 8; i = bi.indexOf("rgb", i + 3)) {
+        const inner = bi.slice(bi.indexOf("(", i) + 1, bi.indexOf(")", i)).split(/[ ,/]+/).filter(Boolean).slice(0, 3).map(Number);
+        if (inner.length === 3 && inner.every((n) => n >= 0)) out.push(inner);
+      }
+      return out;
+    };
+    for (const el of [D.body, ...all]) {
+      const r = el.getBoundingClientRect();
+      if (r.top > vh * 0.5 || r.width < vw * 0.6 || r.height < vh * 0.4 || !shown(el)) continue;
+      const bi = cs(el).backgroundImage || "";
+      if (bi.indexOf("gradient") < 0) continue;
+      const hues = stopsOf(bi).map(hueOf).filter((h) => h !== null);
+      const violet = hues.some((h) => h >= 255 && h <= 320), blue = hues.some((h) => h >= 190 && h < 255);
+      if (violet && blue) { emit("violet-blue-hero", el, "first-screen gradient through hues " + hues.map((h) => Math.round(h)).join("/") + "°"); return; }
+    }
+  });
+
+  // ---- Fabricated-content heuristics (phrased as "verify this is real") ---------------------------
+  run("logo-wall-unverified", () => {
+    const GENERIC = /(^|[^a-z])(logo[ _-]?\d+|company[ _-]?\d*|client[ _-]?\d+|brand[ _-]?\d+|partner[ _-]?\d+|acme|placeholder|lorem|logoipsum|your[ _-]?logo|sample)([^a-z]|$)/i;
+    for (const parent of all) {
+      const imgs = Array.from(parent.children).map((c) => (c.matches("img, svg") ? c : c.querySelector("img, svg"))).filter((m) => m && shown(m));
+      if (imgs.length < 4) continue;
+      const hs = imgs.map((m) => Math.round(m.getBoundingClientRect().height));
+      if (Math.max(...hs) > 120) continue;
+      const names = imgs.map((m) => [m.getAttribute("alt"), m.getAttribute("src"), m.getAttribute("aria-label")].join(" "));
+      const generic = names.filter((n) => GENERIC.test(n)).length;
+      const blank = imgs.filter((m) => m.tagName === "IMG" && !(m.getAttribute("alt") || "").trim()).length;
+      if (generic >= 2 || (blank === imgs.length && /logo|client|partner|trusted|brand/i.test(parent.className + " " + textOf(parent.parentElement || parent).slice(0, 200)))) {
+        emit("logo-wall-unverified", parent, imgs.length + " logos, " + generic + " generic/placeholder name(s), " + blank + " without alt text");
+        return;
+      }
+    }
+  });
+  run("testimonial-unsourced", () => {
+    const STOCK = /\b(john|jane) (doe|smith)\b|\b(sarah johnson|mike johnson|emily (davis|chen)|alex (morgan|johnson)|david (lee|kim)|lisa (wong|park)|happy customer|satisfied (client|customer)|anonymous)\b/i;
+    const cards = Array.from(D.body.querySelectorAll("blockquote, figure, [class*='testimonial' i], [class*='review' i], [class*='quote' i]")).filter((el) => shown(el) && textOf(el).length > 40 && !el.parentElement.closest("[class*='testimonial' i], [class*='review' i], blockquote"));
+    if (!cards.length) return;
+    const stock = cards.filter((c) => STOCK.test(textOf(c)));
+    const bare = cards.filter((c) => !c.querySelector("cite, a[href], img, [class*='role' i], [class*='company' i], [class*='title' i], [class*='org' i]") && !/,|—|–|\|/.test(textOf(c).slice(-60)));
+    if (stock.length) emit("testimonial-unsourced", stock[0], stock.length + " testimonial(s) attributed to stock names");
+    else if (bare.length >= 2) emit("testimonial-unsourced", bare[0], bare.length + " of " + cards.length + " testimonials have no role, company, link or photo");
+  });
+  run("stats-too-round", () => {
+    const STAT = /^\s*[$€£]?\s*(\d{1,4})(?:[.,](\d+))?\s*([kKmMbB]|%|x)?\s*\+?\s*$/;
+    const vals = [];
+    for (const el of all) {
+      if (!ownText(el) || !shown(el)) continue;
+      const t = textOf(el);
+      if (t.length > 8) continue;
+      const m = STAT.exec(t);
+      if (!m || px(cs(el).fontSize) < 28) continue;
+      const n = Number(m[1]);
+      const round = !m[2] && (n % 10 === 0 || n === 99 || n === 24 || n === 7 || (m[3] && n < 10)) && (t.includes("+") || m[3]);
+      vals.push({ el, t, round });
+    }
+    if (vals.length >= 3 && vals.filter((v) => v.round).length / vals.length >= 0.75) emit("stats-too-round", vals[0].el, vals.map((v) => v.t).slice(0, 5).join(", "));
+  });
+
+  // ---- Stylesheet-driven motion and state checks ------------------------------------------------
+  const cssRules = [];
+  const walkRules = (list, media) => {
+    for (const r of Array.from(list || [])) {
+      if (cssRules.length > 8000) return;
+      if (r.cssRules && !r.selectorText && r.type !== 7) walkRules(r.cssRules, media || (r.conditionText || (r.media && r.media.mediaText) || ""));
+      else cssRules.push({ r, media: media || "" });
+    }
+  };
+  for (const sh of Array.from(D.styleSheets)) { try { walkRules(sh.cssRules, ""); } catch (e) { /* cross-origin sheet */ } }
+  const reduceMedia = (m) => /prefers-reduced-motion/.test(m);
+  run("hover-motion", () => {
+    const scaleBy = new Map();
+    const stacked = [];
+    for (const { r, media } of cssRules) {
+      const sel = r.selectorText || "";
+      if (sel.indexOf(":hover") < 0 || !r.style || reduceMedia(media)) continue;
+      const tf = r.style.getPropertyValue("transform") || r.style.getPropertyValue("scale");
+      const m = /scale\(\s*([\d.]+)/.exec(tf) || (/^\s*[\d.]+\s*$/.test(r.style.getPropertyValue("scale")) ? [0, r.style.getPropertyValue("scale").trim()] : null);
+      if (m && Number(m[1]) !== 1) {
+        const key = Number(m[1]).toFixed(3);
+        const set = scaleBy.get(key) || new Set();
+        sel.split(",").forEach((s) => set.add(s.trim()));
+        scaleBy.set(key, set);
+      }
+      const kinds = new Set();
+      for (let i = 0; i < r.style.length; i++) {
+        const p = r.style[i];
+        if (/^(transform|translate|scale|rotate)$/.test(p)) kinds.add("move");
+        else if (/shadow/.test(p)) kinds.add("shadow");
+        else if (/^background/.test(p)) kinds.add("fill");
+        else if (p === "color") kinds.add("text");
+        else if (/^border.*color$|^outline-color$/.test(p)) kinds.add("edge");
+        else if (p === "filter" || p === "backdrop-filter") kinds.add("filter");
+        else if (p === "opacity") kinds.add("fade");
+      }
+      if (kinds.size >= 3) stacked.push(sel.slice(0, 60) + " (" + Array.from(kinds).join("+") + ")");
+    }
+    for (const [k, set] of scaleBy) {
+      if (set.size < 4) continue;
+      const targets = Array.from(set).map((s) => s.replace(/:hover.*$/, "")).filter(Boolean);
+      let hits = 0;
+      for (const t of targets) { try { if (D.querySelector(t)) hits++; } catch (e) { /* invalid selector */ } }
+      if (hits >= 4) { emit("hover-scale-uniform", D.body, "scale(" + Number(k) + ") on hover for " + hits + " different selectors (" + targets.slice(0, 4).join(", ") + ")"); break; }
+    }
+    if (stacked.length >= 2) emit("hover-effects-stacked", D.body, stacked.length + " hover rules change 3+ things at once, e.g. " + stacked.slice(0, 2).join("; "));
+  });
+  run("layout-property-animated", () => {
+    const LAYOUT = /^(width|height|top|left|right|bottom|inset|margin|margin-(top|right|bottom|left)|padding|padding-(top|right|bottom|left)|max-height|min-height)$/;
+    const hits = [];
+    for (const { r, media } of cssRules) {
+      if (reduceMedia(media) || r.type !== 7) continue;
+      const props = new Set();
+      for (const f of Array.from(r.cssRules || [])) for (let i = 0; i < f.style.length; i++) if (LAYOUT.test(f.style[i])) props.add(f.style[i]);
+      if (props.size && Array.from(D.getAnimations ? D.getAnimations() : []).some((a) => a.animationName === r.name)) hits.push("@keyframes " + r.name + " (" + Array.from(props).join(", ") + ")");
+    }
+    let el0 = null;
+    for (const el of all) {
+      const s = cs(el);
+      if (!s.transitionProperty || s.transitionProperty === "all" || s.transitionDuration === "0s") continue;
+      const props = s.transitionProperty.split(",").map((p) => p.trim()).filter((p) => LAYOUT.test(p));
+      const durs = s.transitionDuration.split(",").map((d) => parseFloat(d) || 0);
+      if (props.length && Math.max(...durs) > 0) { if (!el0) el0 = el; if (hits.length < 6) hits.push(selectorOf(el) + " transition: " + props.join(", ")); }
+    }
+    if (hits.length) emit("layout-property-animated", el0 || D.body, hits.length + " animation(s) on layout properties", hits.slice(0, 3).join("; "));
+  });
+  run("focus-ring-animated", () => {
+    for (const { r } of cssRules) {
+      const sel = r.selectorText || "";
+      if (!/:focus(-visible)?/.test(sel) || !r.style) continue;
+      if (!(r.style.getPropertyValue("outline") || r.style.getPropertyValue("outline-width") || r.style.getPropertyValue("outline-style") || r.style.getPropertyValue("box-shadow"))) continue;
+      let el = null;
+      try { el = D.querySelector(sel.split(",")[0].replace(/:focus(-visible|-within)?/g, "")); } catch (e) { el = null; }
+      if (!el || !shown(el)) continue;
+      const s = cs(el);
+      const props = s.transitionProperty.split(",").map((p) => p.trim());
+      const durs = s.transitionDuration.split(",").map((d) => parseFloat(d) || 0);
+      const i = props.findIndex((p) => p === "all" || p.startsWith("outline") || p === "box-shadow");
+      const dur = i >= 0 ? durs[i % durs.length] : 0;
+      if (dur >= 0.05) { emit("focus-ring-animated", el, "focus style transitions in over " + Math.round(dur * 1000) + "ms (" + props[i] + ")"); return; }
+    }
+  });
+  run("auto-rotate-no-pause", () => {
+    const auto = D.querySelector("[data-autoplay]:not([data-autoplay='false']), [data-ride='carousel'], [data-bs-ride='carousel'], [data-swiper-autoplay], [data-flickity*='autoPlay'], [data-slick*='autoplay\":true'], [data-splide*='autoplay'], [data-glide-autoplay]");
+    let host = auto;
+    if (!host) {
+      for (const a of D.getAnimations ? D.getAnimations() : []) {
+        const t = a.effect && a.effect.target;
+        if (!t || !t.children || t.children.length < 3 || a.effect.getComputedTiming().iterations !== Infinity) continue;
+        const r = t.getBoundingClientRect();
+        if (r.width > vw * 0.5 && textOf(t).length > 30) { host = t; break; }
+      }
+    }
+    if (!host) return;
+    const scope = host.closest("section, [class*='carousel' i], [class*='slider' i], [class*='marquee' i]") || host.parentElement || host;
+    const pause = Array.from(scope.querySelectorAll("button, [role='button']")).some((b) => /pause|stop|play/i.test(textOf(b) + " " + (b.getAttribute("aria-label") || "") + " " + (b.getAttribute("class") || "")));
+    const hoverPause = cssRules.some(({ r }) => /:hover|:focus-within/.test(r.selectorText || "") && r.style && /paused/.test(r.style.getPropertyValue("animation-play-state") + r.style.getPropertyValue("animation")));
+    if (!pause && !hoverPause) emit("auto-rotate-no-pause", host, "auto-moving content with " + host.children.length + " items and no pause control or hover/focus pause");
+  });
+  run("control-states", () => {
+    const disabled = Array.from(D.querySelectorAll("button:disabled, input:disabled, select:disabled, [aria-disabled='true']")).filter(shown);
+    for (const d of disabled.slice(0, 6)) {
+      const peer = Array.from(D.querySelectorAll(d.tagName)).find((p) => p !== d && !p.disabled && p.getAttribute("aria-disabled") !== "true" && shown(p) && (p.className === d.className));
+      if (!peer) continue;
+      const a = cs(d), b = cs(peer);
+      if (a.opacity === b.opacity && a.color === b.color && a.backgroundColor === b.backgroundColor && a.cursor === b.cursor) { emit("disabled-unstyled", d, "disabled " + d.tagName.toLowerCase() + " matches its enabled twin (opacity " + a.opacity + ", colour " + a.color + ")"); break; }
+    }
+    const fields = Array.from(D.querySelectorAll("form input:not([type=hidden]):not([type=submit]):not([type=button]), form textarea, form select")).filter(shown);
+    if (fields.length >= 2) {
+      const errorStyled = cssRules.some(({ r }) => /:invalid|:user-invalid|aria-invalid|\.(is-)?(error|invalid|has-error)|\[data-error|:has\([^)]*invalid/i.test(r.selectorText || ""));
+      if (!errorStyled) emit("field-states-missing", fields[0].form || fields[0], fields.length + " form fields, no :user-invalid / [aria-invalid] / .error style in any stylesheet");
+    }
+  });
+
+  // ---- Content honesty -----------------------------------------------------------------------------
+  const bodyText = (D.body.innerText || "").slice(0, 60000);
+  run("placeholder-names", () => {
+    const m = /\b(john doe|jane doe|john smith|jane smith|acme (corp|inc|co)\b|[\w.]+@example\.(com|org)|\(?555\)?[-. ]\d{3}[-. ]?\d{4}|123 main st)/i.exec(bodyText);
+    if (m) emit("placeholder-names", D.body, '"' + m[0] + '" in the page text');
+  });
+  run("claim-unsourced", () => {
+    const RE = /\b(\d+(?:\.\d+)?x (?:faster|more|better|cheaper|growth|roi)|trusted by (?:over |more than )?[\d.,]+\s*[kKmM]?\+?|\d{2,3}% (?:faster|more|less|increase|growth|of (?:customers|users|teams))|#1 (?:rated|choice|platform))/i;
+    for (const el of all) {
+      if (!ownText(el) || !shown(el)) continue;
+      const t = Array.from(el.childNodes).filter((n) => n.nodeType === 3).map((n) => n.nodeValue).join(" ");
+      const m = RE.exec(t);
+      if (!m) continue;
+      const box = el.closest("section, article, li, div") || el;
+      if (box.querySelector("sup, cite, a[href*='source' i], a[href*='study' i], a[href*='case' i], [class*='source' i], [class*='footnote' i]") || /source:|according to|\bstudy\b|survey of/i.test(textOf(box))) continue;
+      emit("claim-unsourced", el, '"' + m[0] + '" with no source nearby');
+      return;
+    }
+  });
+  run("mock-device-chrome", () => {
+    for (const el of all) {
+      const kids = Array.from(el.children);
+      if (kids.length < 3 || kids.length > 4) continue;
+      const dots = kids.slice(0, 3).filter((k) => { const r = k.getBoundingClientRect(); const s = cs(k); return r.width >= 6 && r.width <= 16 && Math.abs(r.width - r.height) <= 1 && px(s.borderTopLeftRadius) >= r.width / 2 - 1 && s.backgroundColor !== "rgba(0, 0, 0, 0)"; });
+      if (dots.length === 3 && shown(el)) { emit("mock-device-chrome", el, "three " + Math.round(dots[0].getBoundingClientRect().width) + "px window dots drawn in CSS"); return; }
+    }
+    for (const el of all) {
+      const r = el.getBoundingClientRect();
+      const s = cs(el);
+      if (r.height < 300 || r.width < 140) continue;
+      const ratio = r.width / r.height;
+      if (ratio > 0.42 && ratio < 0.56 && px(s.borderTopLeftRadius) >= 28 && px(s.borderTopWidth) >= 6 && el.querySelector("img, video") && shown(el)) { emit("mock-device-chrome", el, "drawn phone frame " + Math.round(r.width) + "x" + Math.round(r.height) + "px, " + s.borderTopWidth + " bezel"); return; }
+    }
+  });
+
+  // ---- Colour, type and layout measures -----------------------------------------------------------
+  const rgbOf = (c) => { const m = /rgba?\(([^)]+)\)/.exec(c || ""); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return p.length >= 3 && (p.length < 4 || p[3] > 0.05) ? p : null; };
+  run("neutrals-untinted", () => {
+    let grey = 0, tinted = 0;
+    for (const el of all.slice(0, 2500)) {
+      if (!shown(el)) continue;
+      const s = cs(el);
+      for (const c of [s.backgroundColor, ownText(el) ? s.color : null]) {
+        const p = rgbOf(c);
+        if (!p) continue;
+        const mx = Math.max(p[0], p[1], p[2]), mn = Math.min(p[0], p[1], p[2]);
+        if (mx - mn > 24 || mx > 250 || mn < 6) continue;
+        if (mx === mn) grey++; else tinted++;
+      }
+    }
+    if (grey >= 8 && tinted === 0) emit("neutrals-untinted", D.body, grey + " grey fills/text colours, all exactly r=g=b");
+  });
+  run("accent-flood", () => {
+    let area = 0;
+    for (const el of all) {
+      const r = el.getBoundingClientRect();
+      if (r.top >= vh || r.bottom <= 0 || r.width * r.height < 400 || el.matches("img, video, canvas, svg, picture") || !shown(el)) continue;
+      const p = rgbOf(cs(el).backgroundColor);
+      if (!p) continue;
+      const mx = Math.max(p[0], p[1], p[2]) / 255, mn = Math.min(p[0], p[1], p[2]) / 255;
+      if (mx - mn < 0.45 || mx < 0.35) continue;
+      const parent = el.parentElement ? rgbOf(cs(el.parentElement).backgroundColor) : null;
+      if (parent && parent.slice(0, 3).join() === p.slice(0, 3).join()) continue;
+      const h = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)), w = Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0));
+      area += h * w;
+    }
+    const share = vw && vh ? area / (vw * vh) : 0;
+    if (share > 0.25) emit("accent-flood", D.body, Math.round(share * 100) + "% of the first screen is saturated accent fill");
+  });
+  run("measure-narrow", () => {
+    if (vw < 900) return;
+    for (const el of D.body.querySelectorAll("p")) {
+      const t = textOf(el);
+      if (t.length < 280 || !shown(el)) continue;
+      const range = D.createRange();
+      range.selectNodeContents(el);
+      const tops = new Set(Array.from(range.getClientRects()).map((r) => Math.round(r.top)));
+      const perLine = tops.size ? t.length / tops.size : 0;
+      if (tops.size >= 5 && perLine < 38) { emit("measure-narrow", el, "about " + Math.round(perLine) + " characters per line over " + tops.size + " lines at " + vw + "px"); return; }
+    }
+  });
+  run("caps-display-tight", () => {
+    for (const el of D.body.querySelectorAll("h1, h2, h3, [class*='display' i], [class*='hero' i] > *")) {
+      if (!ownText(el) || !shown(el)) continue;
+      const s = cs(el);
+      const fs = px(s.fontSize), lh = s.lineHeight === "normal" ? fs * 1.15 : px(s.lineHeight);
+      const t = textOf(el);
+      const upper = s.textTransform === "uppercase" || (t === t.toUpperCase() && /[A-Z]/.test(t));
+      if (!upper || fs < 32 || !lh) continue;
+      const lines = Math.round(el.getBoundingClientRect().height / lh);
+      if (lines >= 2 && lh / fs < 1.0) { emit("caps-display-tight", el, "uppercase " + Math.round(fs) + "px over " + lines + " lines at line-height " + (lh / fs).toFixed(2)); return; }
+    }
+  });
+  run("sticky-under-header", () => {
+    const header = all.find((el) => { const s = cs(el); const r = el.getBoundingClientRect(); return (s.position === "fixed" || s.position === "sticky") && r.top <= 1 && r.height >= 40 && r.height < vh * 0.3 && r.width > vw * 0.8 && shown(el); });
+    if (!header) return;
+    const hh = header.getBoundingClientRect().height;
+    const under = all.find((el) => el !== header && !header.contains(el) && !el.contains(header) && cs(el).position === "sticky" && px(cs(el).top) < hh - 4 && el.getBoundingClientRect().height > 20 && shown(el) && cs(el).top !== "auto");
+    if (under) emit("sticky-under-header", under, "sticky top " + cs(under).top + " under a " + Math.round(hh) + "px " + cs(header).position + " header");
+  });
+
+  // ---- Structural fingerprints -----------------------------------------------------------------------
+  run("structure", () => {
+    const nav = D.querySelector("header nav, header [role='navigation'], body > nav");
+    const header = nav && (nav.closest("header") || nav.parentElement);
+    if (header && vw >= 1024 && shown(header)) {
+      const hr = header.getBoundingClientRect();
+      const links = Array.from(header.querySelectorAll("a[href], button")).filter((a) => shown(a) && a.getBoundingClientRect().height < 80);
+      const ctas = links.filter((a) => { const s = cs(a); return rgbOf(s.backgroundColor) && px(s.paddingLeft) >= 10; });
+      const plain = links.filter((a) => !ctas.includes(a) && !a.querySelector("img, svg") && textOf(a).length > 1);
+      const logo = links.find((a) => a.getBoundingClientRect().left < hr.left + hr.width * 0.2);
+      if (logo && plain.length >= 4 && plain.length <= 6 && ctas.length === 1 && ctas[0].getBoundingClientRect().right > hr.left + hr.width * 0.8) {
+        const mid = (Math.min(...plain.map((a) => a.getBoundingClientRect().left)) + Math.max(...plain.map((a) => a.getBoundingClientRect().right))) / 2;
+        if (Math.abs(mid - (hr.left + hr.width / 2)) < hr.width * 0.12) emit("nav-default-layout", header, "logo left, " + plain.length + " centred links, 1 button right");
+      }
+    }
+    const footer = D.querySelector("footer");
+    if (footer) {
+      const heads = Array.from(footer.querySelectorAll("h2, h3, h4, h5, h6, strong, [class*='title' i], [class*='heading' i]")).map((h) => textOf(h).toLowerCase());
+      const stock = ["product", "company", "resources", "legal", "support", "solutions", "about"].filter((w) => heads.includes(w));
+      if (stock.length >= 3) emit("footer-default-columns", footer, "footer columns titled " + stock.join(" / "));
+    }
+    const main = D.querySelector("main") || D.body;
+    const secs = Array.from(main.children).filter((s) => shown(s) && s.getBoundingClientRect().height > 120 && !s.matches("header, footer, nav, script, style"));
+    if (secs.length >= 3 && secs.length <= 5) {
+      const cards = (s) => { for (const el of s.querySelectorAll("*")) { const k = Array.from(el.children).filter(shown); if (k.length === 3 && k.every((c) => { const r = c.getBoundingClientRect(); const r0 = k[0].getBoundingClientRect(); return Math.abs(r.width - r0.width) < 4 && Math.abs(r.top - r0.top) < 4 && r.width > 150; })) return true; } return false; };
+      const ctaBand = (s) => s.querySelectorAll("a[href], button").length <= 3 && s.querySelector("h2, h3") && textOf(s).length < 400;
+      if (cards(secs[1]) && ctaBand(secs[secs.length - 1])) emit("page-template-sequence", main, secs.length + " sections: hero, 3 equal cards, call-to-action band");
+    }
+  });
+
+  // ---- Media, icons and graphics ---------------------------------------------------------------------
+  run("hero-media", () => {
+    const first = Array.from(D.images).filter((im) => { const r = im.getBoundingClientRect(); return r.top < vh && r.bottom > 0 && r.width * r.height > 0.15 * vw * vh && shown(im); });
+    const lazy = first.find((im) => (im.getAttribute("loading") || "").toLowerCase() === "lazy");
+    if (lazy) { const r = lazy.getBoundingClientRect(); emit("lcp-image-lazy", lazy, "loading=lazy on a " + Math.round(r.width) + "x" + Math.round(r.height) + "px first-screen image"); }
+    const vid = Array.from(D.querySelectorAll("video[autoplay]")).find((v) => { const r = v.getBoundingClientRect(); return r.top < vh && r.width * r.height > 0.2 * vw * vh && !v.getAttribute("poster"); });
+    if (vid) emit("hero-video-no-poster", vid, "autoplay video " + Math.round(vid.getBoundingClientRect().width) + "px wide with no poster");
+  });
+  run("icon-sets-mixed", () => {
+    const SETS = { "font-awesome": "[class*='fa-'], .fa, .fas, .far, .fab", material: ".material-icons, .material-symbols-outlined, .material-symbols-rounded, [class*='material-icons']", bootstrap: "[class^='bi-'], [class*=' bi-']", lucide: "[class*='lucide'], [data-lucide]", heroicons: "[class*='heroicon']", feather: "[class*='feather'], [data-feather]", phosphor: "[class^='ph-'], [class*=' ph-'], .ph", remix: "[class^='ri-'], [class*=' ri-']", tabler: "[class^='ti-'], [class*=' ti-'], [class*='tabler']", ionicons: "ion-icon", iconify: "iconify-icon, .iconify" };
+    const used = Object.entries(SETS).filter(([, q]) => { try { return D.querySelectorAll(q).length >= 2; } catch (e) { return false; } }).map(([k]) => k);
+    if (used.length >= 2) emit("icon-sets-mixed", D.body, used.join(" + "));
+  });
+  run("graphic-unhidden", () => {
+    const bad = Array.from(D.querySelectorAll("canvas, svg")).filter((g) => {
+      if (g.parentElement && g.parentElement.closest("svg")) return false;
+      if (g.closest("[aria-hidden='true'], [role='presentation'], [role='none']")) return false;
+      if (g.getAttribute("role") === "img" || g.getAttribute("aria-label") || g.getAttribute("aria-labelledby") || (g.tagName.toLowerCase() === "svg" && g.querySelector("title"))) return false;
+      if (g.closest("a, button, [role='button']")) return false;
+      const r = g.getBoundingClientRect();
+      return r.width >= 24 && r.height >= 24 && shown(g) && !(g.tagName === "CANVAS" && textOf(g));
+    });
+    if (bad.length) emit("graphic-unhidden", bad[0], bad.length + " canvas/svg graphic(s) with neither aria-hidden nor a label");
+  });
+
+  return { issues, suppressed, errors, allow: Array.from(allowSet), rule_count: Object.keys(RULES).length };
+}
+
+const QUALITY_EVAL = (opts) =>
+  "(async () => { try { if (document.fonts) await document.fonts.ready; } catch (e) {} " +
+  "const t0 = performance.now(); " +
+  "while (performance.now() - t0 < 1500) { const busy = (document.getAnimations ? document.getAnimations() : []).filter((a) => a.playState === 'running' && a.effect && isFinite(a.effect.getComputedTiming().endTime)); if (!busy.length) break; await new Promise((r) => setTimeout(r, 100)); } " +
+  "return (" + layozaQualitySweep.toString() + ")(" + JSON.stringify(opts || {}) + "); })()";
+
+/**
+ * Lists text that is invisible after a scroll through the page (opacity chain < 0.1 or visibility
+ * hidden). Run twice on desktop, once normally and once with prefers-reduced-motion: reduce; text
+ * hidden only in the reduced run is a reveal that reduced motion skips without showing the end state.
+ */
+async function layozaHiddenTextProbe() {
+  const H = window.innerHeight;
+  const total = document.documentElement.scrollHeight;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  for (let y = 0; y < total && y < H * 14; y += Math.round(H * 0.8)) {
+    window.scrollTo({ top: y, left: 0, behavior: "instant" });
+    await wait(140);
+  }
+  await wait(500);
+  const sel = (el) => {
+    const parts = [];
+    for (let c = el, d = 0; c && c.nodeType === 1 && d < 3; c = c.parentElement, d++) {
+      let p = c.tagName.toLowerCase();
+      if (c.id) { parts.unshift(p + "#" + c.id); break; }
+      const cls = (c.getAttribute("class") || "").trim().split(/\s+/).filter(Boolean).slice(0, 2);
+      if (cls.length) p += "." + cls.join(".");
+      else if (c.parentElement) {
+        const same = Array.from(c.parentElement.children).filter((x) => x.tagName === c.tagName);
+        if (same.length > 1) p += ":nth-of-type(" + (same.indexOf(c) + 1) + ")";
+      }
+      parts.unshift(p);
+    }
+    return parts.join(" > ");
+  };
+  const out = [];
+  for (const el of document.querySelectorAll("h1, h2, h3, h4, p, li, blockquote, figcaption, a, button")) {
+    if (out.length >= 40) break;
+    const txt = (el.textContent || "").replace(/\s+/g, " ").trim();
+    if (txt.length < 3) continue;
+    if (el.closest("[aria-hidden='true'], [hidden], [inert], dialog, [popover], details:not([open]) > :not(summary), nav, [role='menu'], [role='tooltip'], [role='tabpanel']")) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) continue;
+    let op = 1, vis = true, gone = false;
+    for (let c = el; c && c.nodeType === 1; c = c.parentElement) {
+      const s = getComputedStyle(c);
+      if (s.display === "none") { gone = true; break; }
+      if (s.visibility === "hidden") vis = false;
+      op *= parseFloat(s.opacity);
+    }
+    if (gone || (vis && op >= 0.1)) continue;
+    out.push({ selector: sel(el), text: txt.slice(0, 40), opacity: Number(op.toFixed(2)), visibility: vis ? "visible" : "hidden" });
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  return out;
+}
+const HIDDEN_TEXT_PROBE = "(" + layozaHiddenTextProbe.toString() + ")()";
+/** Long or endless animations still running (used under prefers-reduced-motion: reduce). */
+function layozaRunningMotion() {
+  return (document.getAnimations ? document.getAnimations() : [])
+    .filter((a) => {
+      if (a.playState !== "running" || !a.effect || !a.effect.target) return false;
+      const t = a.effect.getComputedTiming();
+      return t.iterations === Infinity || (Number(t.duration) || 0) > 1000;
+    })
+    .slice(0, 40)
+    .map((a) => {
+      const el = a.effect.target;
+      const cls = typeof el.className === "string" ? el.className.trim().split(" ")[0] : "";
+      return (el.tagName || "").toLowerCase() + (el.id ? "#" + el.id : cls ? "." + cls : "") + " " + (a.animationName || a.transitionProperty || "script animation");
+    });
+}
+const RUNNING_MOTION_PROBE = "(" + layozaRunningMotion.toString() + ")()";
+const OVERFLOW_PROBE = "(() => Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth))()";
+/** Widths checked for sideways scroll on top of the three main viewports (320 is the WCAG reflow width). */
+const EXTRA_WIDTHS = [320, 1024, 1920];
+
+/**
+ * Look fingerprint, part 1 (in page): the coarse layout of the first three screens as two 24x18
+ * occupancy grids (text runs, media boxes), in page coordinates so scroll position does not matter.
+ */
+function layozaLayoutVector() {
+  const W = document.documentElement.clientWidth || window.innerWidth;
+  const H = Math.min(document.documentElement.scrollHeight, window.innerHeight * 3);
+  const cols = 24, rows = 18;
+  const text = new Array(cols * rows).fill(0), media = new Array(cols * rows).fill(0);
+  const y0 = window.scrollY;
+  const mark = (grid, r) => {
+    const top = r.top + y0, bottom = r.bottom + y0;
+    if (bottom <= 0 || top >= H || r.right <= 0 || r.left >= W) return;
+    const cx0 = Math.max(0, Math.floor((r.left / W) * cols)), cx1 = Math.min(cols - 1, Math.floor(((r.right - 1) / W) * cols));
+    const ry0 = Math.max(0, Math.floor((top / H) * rows)), ry1 = Math.min(rows - 1, Math.floor(((bottom - 1) / H) * rows));
+    for (let y = ry0; y <= ry1; y++) for (let x = cx0; x <= cx1; x++) grid[y * cols + x] = 1;
+  };
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n = 0;
+  for (let t = walker.nextNode(); t && n < 3000; t = walker.nextNode()) {
+    if (!(t.nodeValue || "").trim()) continue;
+    const el = t.parentElement;
+    if (!el || el.closest("script, style, noscript, template, [hidden], [aria-hidden='true']")) continue;
+    const range = document.createRange();
+    range.selectNodeContents(t);
+    for (const r of range.getClientRects()) if (r.width > 2 && r.height > 2) { mark(text, r); n++; }
+  }
+  for (const m of document.querySelectorAll("img, picture, video, canvas, svg, iframe")) {
+    if (m.parentElement && m.parentElement.closest("svg")) continue;
+    const r = m.getBoundingClientRect();
+    if (r.width >= 24 && r.height >= 24) mark(media, r);
+  }
+  // Hero summary: the first-screen headline and how much of the first screen is media
+  const h1 = document.querySelector("h1");
+  const vhPx = window.innerHeight || 1;
+  const firstRows = Math.max(1, Math.round((vhPx / H) * rows));
+  let mediaCells = 0;
+  for (let i = 0; i < firstRows * cols; i++) mediaCells += media[i] || 0;
+  const hero = {
+    headline: h1 ? (h1.textContent || "").replace(/\s+/g, " ").trim().slice(0, 90) : null,
+    headline_px: h1 ? Math.round(parseFloat(getComputedStyle(h1).fontSize) || 0) : null,
+    media_share: Number((mediaCells / (firstRows * cols)).toFixed(3)),
+  };
+  return { cols, rows, height_px: Math.round(H), text, media, hero };
+}
+const LAYOUT_VECTOR_SCRIPT = "(" + layozaLayoutVector.toString() + ")()";
+
+/**
+ * Look fingerprint, part 2 (in page, on a screenshot): dominant palette as OKLab k-means clusters
+ * (k <= 6, pixel shares), seeded deterministically from a lightness-sorted sample so runs repeat.
+ */
+async function layozaPalette(dataUrl) {
+  const img = new Image();
+  await new Promise((res, rej) => { img.onload = res; img.onerror = () => rej(new Error("screenshot decode failed")); img.src = dataUrl; });
+  const w = 120, h = Math.max(1, Math.round((img.height / img.width) * 120));
+  const c = document.createElement("canvas");
+  c.width = w; c.height = h;
+  const g = c.getContext("2d", { willReadFrequently: true });
+  g.drawImage(img, 0, 0, w, h);
+  const d = g.getImageData(0, 0, w, h).data;
+  const lin = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const toLab = (r, gg, b) => {
+    const R = lin(r), G = lin(gg), B = lin(b);
+    const l = Math.cbrt(0.4122214708 * R + 0.5363325363 * G + 0.0514459929 * B);
+    const m = Math.cbrt(0.2119034982 * R + 0.6806995451 * G + 0.1073969566 * B);
+    const s = Math.cbrt(0.0883024619 * R + 0.2817188376 * G + 0.6299787005 * B);
+    return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s];
+  };
+  const pts = [];
+  for (let i = 0; i < d.length; i += 4) pts.push(toLab(d[i], d[i + 1], d[i + 2]).concat([d[i], d[i + 1], d[i + 2]]));
+  const K = Math.min(6, pts.length);
+  const sorted = pts.slice().sort((a, b) => a[0] - b[0]);
+  let cent = Array.from({ length: K }, (_, i) => sorted[Math.floor(((i + 0.5) / K) * sorted.length)].slice(0, 3));
+  const dist = (a, b) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2;
+  let assign = new Array(pts.length).fill(0);
+  for (let it = 0; it < 12; it++) {
+    for (let i = 0; i < pts.length; i++) {
+      let best = 0, bd = Infinity;
+      for (let k = 0; k < K; k++) { const dd = dist(pts[i], cent[k]); if (dd < bd) { bd = dd; best = k; } }
+      assign[i] = best;
+    }
+    const sum = Array.from({ length: K }, () => [0, 0, 0, 0]);
+    for (let i = 0; i < pts.length; i++) { const s = sum[assign[i]]; s[0] += pts[i][0]; s[1] += pts[i][1]; s[2] += pts[i][2]; s[3]++; }
+    cent = cent.map((c0, k) => (sum[k][3] ? [sum[k][0] / sum[k][3], sum[k][1] / sum[k][3], sum[k][2] / sum[k][3]] : c0));
+  }
+  const rgbSum = Array.from({ length: K }, () => [0, 0, 0, 0]);
+  for (let i = 0; i < pts.length; i++) { const s = rgbSum[assign[i]]; s[0] += pts[i][3]; s[1] += pts[i][4]; s[2] += pts[i][5]; s[3]++; }
+  const hex = (v) => Math.round(v).toString(16).padStart(2, "0");
+  return cent
+    .map((c0, k) => ({
+      hex: rgbSum[k][3] ? "#" + hex(rgbSum[k][0] / rgbSum[k][3]) + hex(rgbSum[k][1] / rgbSum[k][3]) + hex(rgbSum[k][2] / rgbSum[k][3]) : null,
+      oklab: c0.map((v) => Number(v.toFixed(4))),
+      share: Number((rgbSum[k][3] / pts.length).toFixed(4)),
+    }))
+    .filter((x) => x.share > 0)
+    .sort((a, b) => b.share - a.share);
+}
+const PALETTE_SCRIPT = layozaPalette.toString();
+
+/**
+ * Re-skin verdict between two look fingerprints. layout_similarity: cosine of the text+media grids;
+ * palette_distance: share-weighted nearest-cluster OKLab distance, averaged both ways. Same layout
+ * (>= 0.85) with a different palette (>= 0.08) is a re-skin; same layout and palette is a near
+ * duplicate; anything else is distinct.
+ */
+function compareFingerprints(a, b) {
+  if (!a || !b || !a.layout || !b.layout || !a.palette || !b.palette) return { verdict: "unmeasured", reason: "a report has no look_fingerprint" };
+  const va = a.layout.text.concat(a.layout.media), vb = b.layout.text.concat(b.layout.media);
+  let dot = 0, na = 0, nb = 0;
+  for (let i = 0; i < Math.min(va.length, vb.length); i++) { dot += va[i] * vb[i]; na += va[i] * va[i]; nb += vb[i] * vb[i]; }
+  const layout = na && nb ? dot / Math.sqrt(na * nb) : 0;
+  const near = (p, q) => p.reduce((s, c) => s + c.share * Math.min(...q.map((o) => Math.hypot(c.oklab[0] - o.oklab[0], c.oklab[1] - o.oklab[1], c.oklab[2] - o.oklab[2]))), 0) / Math.max(1e-9, p.reduce((s, c) => s + c.share, 0));
+  const palette = (near(a.palette, b.palette) + near(b.palette, a.palette)) / 2;
+  const verdict = layout >= 0.85 ? (palette >= 0.08 ? "re-skin" : "near-duplicate") : "distinct";
+  return { verdict, layout_similarity: Number(layout.toFixed(3)), palette_distance: Number(palette.toFixed(4)), thresholds: { layout_same: 0.85, palette_different: 0.08 } };
+}
+
+// Lab throttling profile for the slow-device pass (CDP; network emulation does not slow file:// loads)
+const THROTTLE = { cpu: 4, latency_ms: 150, down_bytes_s: 200000, up_bytes_s: 93750 };
+
+/** Throttled lab load on the mobile viewport (Node runner). */
+async function throttledPerfNode(browser, url) {
+  const vp = VIEWPORTS.find((v) => v.label === "mobile");
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+  try {
+    await ctx.addInitScript(PERF_INIT_SCRIPT);
+    const page = await ctx.newPage();
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send("Network.enable");
+    await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: THROTTLE.latency_ms, downloadThroughput: THROTTLE.down_bytes_s, uploadThroughput: THROTTLE.up_bytes_s });
+    await cdp.send("Emulation.setCPUThrottlingRate", { rate: THROTTLE.cpu });
+    const t0 = Date.now();
+    await page.goto(url, { waitUntil: "load", timeout: 60000 });
+    const loadMs = Date.now() - t0;
+    await page.waitForTimeout(2500);
+    for (let i = 0; i < 3; i++) await page.keyboard.press("Tab");
+    await page.waitForTimeout(300);
+    return { ...(await page.evaluate(PERF_READ_SCRIPT)), load_event_ms: loadMs };
+  } catch (e) {
+    return { error: String(e.message || e).split("\n")[0] };
+  } finally {
+    await ctx.close();
+  }
+}
+
+/** Reduced-motion hidden-text run on the desktop viewport (Node runner). */
+async function reducedMotionNode(browser, url) {
+  const vp = VIEWPORTS[0];
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, reducedMotion: "reduce" });
+  try {
+    const page = await ctx.newPage();
+    await page.goto(url, { waitUntil: "load", timeout: 30000 });
+    await page.waitForTimeout(1200);
+    const hidden = await page.evaluate(HIDDEN_TEXT_PROBE);
+    const running = await page.evaluate(RUNNING_MOTION_PROBE).catch(() => []);
+    const widths = [];
+    for (const w of EXTRA_WIDTHS) {
+      await page.setViewportSize({ width: w, height: 900 });
+      await page.waitForTimeout(300);
+      widths.push({ width: w, overflow_px: await page.evaluate(OVERFLOW_PROBE) });
+    }
+    return { hidden, running, widths };
+  } catch (e) {
+    return { hidden: [], error: String(e.message || e).split("\n")[0] };
+  } finally {
+    await ctx.close();
+  }
+}
+
+/** Palette + layout fingerprint of the current page (Node runner, desktop). */
+async function fingerprintNode(page, vp) {
+  try {
+    const layout = await page.evaluate(LAYOUT_VECTOR_SCRIPT);
+    const shot = await page.screenshot({ fullPage: true, clip: { x: 0, y: 0, width: vp.width, height: Math.max(1, layout.height_px) } });
+    const palette = await page.evaluate("(" + PALETTE_SCRIPT + ")(" + JSON.stringify("data:image/png;base64," + shot.toString("base64")) + ")");
+    return { palette, layout };
+  } catch (e) {
+    return { error: String(e.message || e).split("\n")[0] };
+  }
+}
+
 /*
  * ---------------------------------------------------------------------------------------------
  * Design-system conformance (design-system-color / -font / -radius / -font-size)
@@ -5208,6 +6513,8 @@ function parseArgs(argv) {
     out: ".layoza/qa-snapshot.json",
     screenshotDir: null,
     designTokens: null,
+    allow: [],
+    compare: null,
   };
   let outGiven = false;
   for (let i = 2; i < argv.length; i++) {
@@ -5217,8 +6524,11 @@ function parseArgs(argv) {
     else if (k === "--out" && argv[i + 1]) { args.out = argv[++i]; outGiven = true; }
     else if (k === "--screenshots" && argv[i + 1]) args.screenshotDir = argv[++i];
     else if (k === "--design-tokens" && argv[i + 1]) args.designTokens = argv[++i];
+    else if (k === "--allow" && argv[i + 1]) args.allow.push(...argv[++i].split(",").map((s) => s.trim()).filter(Boolean));
+    else if (k === "--compare" && argv[i + 1] && argv[i + 2]) args.compare = [argv[++i], argv[++i]];
     else if (k.startsWith("--")) console.error(`Unknown flag ignored: ${k}`);
   }
+  args.outGiven = outGiven;
   // Keep screenshots beside the report so QA of one page never overwrites the repo's own captures.
   if (!args.screenshotDir) {
     args.screenshotDir = outGiven ? path.join(path.dirname(args.out), "screenshots") : ".layoza/screenshots";
@@ -5577,6 +6887,12 @@ async function collectWithNode(pw, args, shotDir) {
       } catch (e) {
         ui = { issues: [], errors: [`interface evaluation failed: ${e.message || e}`] };
       }
+      let quality;
+      try {
+        quality = await page.evaluate(QUALITY_EVAL({ allow: args.allow, skipFocus: vp.label !== "desktop" }));
+      } catch (e) {
+        quality = { issues: [], suppressed: [], errors: [`quality sweep failed: ${e.message || e}`] };
+      }
       let design = null;
       if (args.designEval) {
         try {
@@ -5585,8 +6901,10 @@ async function collectWithNode(pw, args, shotDir) {
           design = { issues: [], errors: [`design-system evaluation failed: ${e.message || e}`] };
         }
       }
+      const fingerprint = vp.label === "desktop" ? await fingerprintNode(page, vp) : null;
 
       const art = await artOverTextNode(page, vp);
+      const hiddenText = vp.label === "desktop" ? await page.evaluate(HIDDEN_TEXT_PROBE).catch(() => null) : null;
 
       // Scripted interactions (keyboard, then the mobile-menu click below) feed Event Timing for the
       // lab interaction proxy; it is read only after every interaction has run
@@ -5627,9 +6945,10 @@ async function collectWithNode(pw, args, shotDir) {
       const perf = loadPerf && inputPerf ? { ...loadPerf, inp_proxy_ms: inputPerf.inp_proxy_ms, event_entries: inputPerf.event_entries } : null;
       // Motion density + pinned stages last, on a fresh load, so nothing above is disturbed
       const motion = vp.label === "desktop" ? await motionPassNode(page, args.url) : null;
-      raw.push({ ...vp, dom, craft, design, ui, perf, menu, art, motion, consoleErrors, screenshot, heroShot, settle });
+      raw.push({ ...vp, dom, craft, design, ui, quality, fingerprint, hiddenText, perf, menu, art, motion, consoleErrors, screenshot, heroShot, settle });
       await context.close();
     }
+    raw.extra = { reduced: await reducedMotionNode(browser, args.url), throttled: await throttledPerfNode(browser, args.url) };
   } finally {
     await browser.close();
   }
@@ -5741,6 +7060,18 @@ with sync_playwright() as p:
             ui = page.evaluate(cfg["interface_eval"])
         except Exception as e:
             ui = {"issues": [], "errors": ["interface evaluation failed: " + str(e).splitlines()[0]]}
+        try:
+            quality = page.evaluate(cfg["quality_desktop"] if vp["label"] == "desktop" else cfg["quality_other"])
+        except Exception as e:
+            quality = {"issues": [], "suppressed": [], "errors": ["quality sweep failed: " + str(e).splitlines()[0]]}
+        fingerprint = None
+        if vp["label"] == "desktop":
+            try:
+                layout = page.evaluate(cfg["layout_vector"])
+                png = page.screenshot(full_page=True, clip={"x": 0, "y": 0, "width": vp["width"], "height": max(1, layout["height_px"])})
+                fingerprint = {"layout": layout, "palette": page.evaluate(cfg["palette"], "data:image/png;base64," + base64.b64encode(png).decode("ascii"))}
+            except Exception as e:
+                fingerprint = {"error": str(e).splitlines()[0]}
         design = None
         if cfg.get("design_eval"):
             try:
@@ -5806,6 +7137,12 @@ with sync_playwright() as p:
         except Exception as e:
             art["errors"].append(str(e).splitlines()[0])
         art["ms"] = round((time.time() - art_t0) * 1000)
+        hidden_text = None
+        if vp["label"] == "desktop":
+            try:
+                hidden_text = page.evaluate(cfg["hidden_text"])
+            except Exception:
+                hidden_text = None
 
         for _ in range(3):
             page.keyboard.press("Tab")
@@ -5859,12 +7196,56 @@ with sync_playwright() as p:
                 page.evaluate(cfg["art_scroll"], 0)
             except Exception as e:
                 motion["errors"].append(str(e).splitlines()[0])
-        raw.append({**vp, "dom": dom, "craft": craft, "design": design, "ui": ui, "perf": perf, "menu": menu, "art": art, "motion": motion, "consoleErrors": console_errors, "screenshot": shot, "heroShot": hero_shot, "settle": settle_info})
+        raw.append({**vp, "dom": dom, "craft": craft, "design": design, "ui": ui, "quality": quality, "fingerprint": fingerprint, "hiddenText": hidden_text, "perf": perf, "menu": menu, "art": art, "motion": motion, "consoleErrors": console_errors, "screenshot": shot, "heroShot": hero_shot, "settle": settle_info})
         ctx.close()
+
+    extra = {"reduced": {"hidden": []}, "throttled": None}
+    # Reduced-motion run (desktop): text hidden only here is a reveal that reduce skips without its end state
+    d_vp = cfg["viewports"][0]
+    rctx = browser.new_context(viewport={"width": d_vp["width"], "height": d_vp["height"]}, reduced_motion="reduce")
+    try:
+        rpage = rctx.new_page()
+        rpage.goto(url, wait_until="load", timeout=30000)
+        rpage.wait_for_timeout(1200)
+        hidden = rpage.evaluate(cfg["hidden_text"])
+        running = rpage.evaluate(cfg["running_motion"])
+        widths = []
+        for w in cfg["extra_widths"]:
+            rpage.set_viewport_size({"width": w, "height": 900})
+            rpage.wait_for_timeout(300)
+            widths.append({"width": w, "overflow_px": rpage.evaluate(cfg["overflow_probe"])})
+        extra["reduced"] = {"hidden": hidden, "running": running, "widths": widths}
+    except Exception as e:
+        extra["reduced"] = {"hidden": [], "error": str(e).splitlines()[0]}
+    finally:
+        rctx.close()
+    # Throttled lab load (mobile): CPU 4x + network emulation over CDP
+    m_vp = next(v for v in cfg["viewports"] if v["label"] == "mobile")
+    tctx = browser.new_context(viewport={"width": m_vp["width"], "height": m_vp["height"]})
+    try:
+        tctx.add_init_script(cfg["perf_init"])
+        tpage = tctx.new_page()
+        cdp = tctx.new_cdp_session(tpage)
+        th = cfg["throttle"]
+        cdp.send("Network.enable")
+        cdp.send("Network.emulateNetworkConditions", {"offline": False, "latency": th["latency_ms"], "downloadThroughput": th["down_bytes_s"], "uploadThroughput": th["up_bytes_s"]})
+        cdp.send("Emulation.setCPUThrottlingRate", {"rate": th["cpu"]})
+        t0 = time.time()
+        tpage.goto(url, wait_until="load", timeout=60000)
+        load_ms = round((time.time() - t0) * 1000)
+        tpage.wait_for_timeout(2500)
+        for _ in range(3):
+            tpage.keyboard.press("Tab")
+        tpage.wait_for_timeout(300)
+        extra["throttled"] = {**(tpage.evaluate(cfg["perf_read"]) or {}), "load_event_ms": load_ms}
+    except Exception as e:
+        extra["throttled"] = {"error": str(e).splitlines()[0]}
+    finally:
+        tctx.close()
     browser.close()
 
 with open(raw_out, "w", encoding="utf-8") as f:
-    json.dump(raw, f)
+    json.dump({"viewports": raw, "extra": extra}, f)
 `;
 
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "layoza-qa-"));
@@ -5910,18 +7291,30 @@ with open(raw_out, "w", encoding="utf-8") as f:
       tg_max_per_position: TG_MAX_PER_POSITION,
       tg_max_total: TG_MAX_TOTAL,
       tg_max_positions: TG_MAX_POSITIONS,
+      quality_desktop: QUALITY_EVAL({ allow: args.allow, skipFocus: false }),
+      quality_other: QUALITY_EVAL({ allow: args.allow, skipFocus: true }),
+      layout_vector: LAYOUT_VECTOR_SCRIPT,
+      palette: PALETTE_SCRIPT,
+      hidden_text: HIDDEN_TEXT_PROBE,
+      running_motion: RUNNING_MOTION_PROBE,
+      overflow_probe: OVERFLOW_PROBE,
+      extra_widths: EXTRA_WIDTHS,
+      throttle: THROTTLE,
     }),
     "utf8"
   );
   try {
-    const res = spawnSync("python", ["-c", pyCode, args.url, rawPath, shotDir, cfgPath], { stdio: "inherit" });
+    // UTF-8 everywhere: Windows consoles default to cp1252, which cannot encode page text
+    const res = spawnSync("python", ["-X", "utf8", "-c", pyCode, args.url, rawPath, shotDir, cfgPath], { stdio: "inherit", env: { ...process.env, PYTHONIOENCODING: "utf-8", PYTHONUTF8: "1" } });
     if (res.error || res.status !== 0) {
       throw new Error(
         "Python Playwright fallback failed. Install Node Playwright (`npm i -D playwright && npx playwright install chromium`) " +
           "or Python Playwright (`pip install playwright && playwright install chromium`)."
       );
     }
-    const raw = JSON.parse(fs.readFileSync(rawPath, "utf8"));
+    const parsed = JSON.parse(fs.readFileSync(rawPath, "utf8"));
+    const raw = parsed.viewports;
+    raw.extra = parsed.extra;
     // Fold the Python runner's raw text-over-graphic samples with the same rules as the Node runner
     for (const v of raw) {
       const t = v.art && v.art.tg;
@@ -6128,6 +7521,53 @@ function assembleReport(url, engine, raw, tokens) {
     issues.push(...((v.design && v.design.issues) || []));
     // Objective interface hygiene (warning; zoom-blocked is an error), Layoza-original
     issues.push(...((v.ui && v.ui.issues) || []));
+    // Layoza quality sweep: warnings are objective, critiques are brief-aware style advice
+    issues.push(...((v.quality && v.quality.issues) || []));
+    // Text that stays invisible only when the visitor asks for reduced motion: the reveal skipped its end state
+    if (v.label === "desktop" && raw.extra && raw.extra.reduced && Array.isArray(raw.extra.reduced.hidden) && Array.isArray(v.hiddenText)) {
+      const normal = new Set(v.hiddenText.map((h) => h.selector));
+      const only = raw.extra.reduced.hidden.filter((h) => !normal.has(h.selector));
+      if (only.length) {
+        issues.push({
+          rule: "reduced-motion-hides-text",
+          severity: "warning",
+          category: "motion",
+          selector: only[0].selector,
+          measured: `${only.length} text block(s) at opacity ${only[0].opacity} / visibility ${only[0].visibility} under prefers-reduced-motion: reduce`,
+          why: "Visitors who turn motion off never see this text: the reveal animation is skipped but its final visible state is never applied.",
+          fix: "Inside @media (prefers-reduced-motion: reduce), set the end state directly (opacity:1; transform:none) instead of only removing the animation.",
+          detail: only.slice(0, 5).map((h) => `${h.selector} "${h.text}"`).join("; "),
+        });
+      }
+    }
+    if (v.label === "desktop" && raw.extra && raw.extra.reduced) {
+      const red = raw.extra.reduced;
+      if (Array.isArray(red.running) && red.running.length) {
+        issues.push({
+          rule: "motion-ignores-reduce",
+          severity: "warning",
+          category: "motion",
+          selector: red.running[0].split(" ")[0],
+          measured: `${red.running.length} long or endless animation(s) still running under prefers-reduced-motion: reduce`,
+          why: "Animations keep running when the visitor has asked the system to reduce motion, which can trigger nausea and vestibular symptoms.",
+          fix: "Wrap decorative keyframes and transforms in @media (prefers-reduced-motion: no-preference), or stop them under reduce.",
+          detail: red.running.slice(0, 5).join("; "),
+        });
+      }
+      for (const w of red.widths || []) {
+        if (!(w.overflow_px > 2)) continue;
+        issues.push({
+          rule: "overflow-at-width",
+          severity: "error",
+          category: "layout",
+          selector: "html",
+          measured: `${w.overflow_px}px of sideways scroll at ${w.width}px wide`,
+          why: "The page scrolls sideways at this width, so content is cut off and the whole page wobbles on touch.",
+          fix: "Find the element wider than the viewport (fixed widths, 100vw plus padding, long words, wide media) and constrain it with max-width: 100%, minmax(0, 1fr) or overflow-wrap.",
+          detail: `${w.overflow_px}px horizontal overflow at ${w.width}px (extra width sweep)`,
+        });
+      }
+    }
     return {
       label: v.label,
       width: v.width,
@@ -6204,6 +7644,52 @@ function assembleReport(url, engine, raw, tokens) {
   // their screenshots and checks may show mid-animation frames ("motion did not settle")
   report.motion_unsettled_viewports = raw.filter((v) => v.settle && !v.settle.settled).map((v) => v.label);
   Object.assign(report, craftSummary(raw));
+  // Why some text contrast could not be measured (image, gradient, blend...): never scored as pass or fail
+  const reasons = {};
+  for (const v of raw) for (const [k, n] of Object.entries(v.dom.contrastUnmeasurable || {})) reasons[k] = Math.max(reasons[k] || 0, n);
+  report.contrast_unmeasurable_reasons = reasons;
+  report.contrast_unmeasurable_note = Object.keys(reasons).length ? "contrast unmeasurable (image/gradient) for some text: no ratio is reported for it" : null;
+  const qs = raw.map((v) => v.quality).filter(Boolean);
+  report.quality_summary = {
+    rule_count: qs.length ? qs[0].rule_count || 0 : 0,
+    issues: raw.reduce((n, v) => n + ((v.quality && v.quality.issues && v.quality.issues.length) || 0), 0),
+    suppressed: [...new Set(qs.flatMap((q) => q.suppressed || []))],
+    allow: qs.length ? qs[0].allow || [] : [],
+    errors: raw.flatMap((v) => ((v.quality && v.quality.errors) || []).map((e) => `${v.label}: ${e}`)),
+  };
+  // Brief-aware silencing also covers the advisory craft notes that only describe a style choice
+  // (the brief asked for monospace labels, glow, an eyebrow...). Defects are never silenced by group.
+  const CRAFT_STYLE = {
+    "mono-meta-labels": "mono", "hero-eyebrow-chip": "eyebrow", "kicker-above-heading": "eyebrow", "caps-dash-label": "eyebrow",
+    "numbered-section-labels": "numbering", "dark-glow": "glow", "radial-halo": "glow", "radial-spotlight-glow": "glow",
+    "gradient-text": "gradient", "shape-assembled-illustration": "illustration", "uniform-radius": "pill",
+    "gpt-thin-border-wide-shadow": "shadow", "card-kit": "structure", "italic-serif-display": "type",
+  };
+  const allowSet = new Set(report.quality_summary.allow.map((a) => String(a).toLowerCase()));
+  if (allowSet.size) {
+    for (const v of report.viewports || []) {
+      v.issues = (v.issues || []).filter((i) => {
+        const id = String(i.rule || "").replace(/^craft-/, "");
+        if (i.severity !== "critique" || !(allowSet.has(id) || allowSet.has(i.rule) || allowSet.has(CRAFT_STYLE[id]))) return true;
+        if (!report.quality_summary.suppressed.some((s) => s.rule === i.rule))
+          report.quality_summary.suppressed.push({ rule: i.rule, detail: "allowed by the brief (" + (allowSet.has(CRAFT_STYLE[id]) ? CRAFT_STYLE[id] : id) + ")" });
+        return false;
+      });
+    }
+  }
+  report.look_fingerprint = desktop.fingerprint && !desktop.fingerprint.error ? desktop.fingerprint : null;
+  const mobile = raw.find((v) => v.label === "mobile");
+  const thr = raw.extra && raw.extra.throttled;
+  report.lab_perf = {
+    methodology: "laboratory_synthetic",
+    viewport: "mobile",
+    unthrottled: mobile && mobile.perf ? { lcp_ms: mobile.perf.lcp_ms, cls: mobile.perf.cls } : null,
+    throttled: thr && !thr.error ? { lcp_ms: thr.lcp_ms ?? null, cls: thr.cls ?? null, load_event_ms: thr.load_event_ms ?? null } : null,
+    throttled_error: thr && thr.error ? thr.error : null,
+    profile: THROTTLE,
+    inp: "lab interaction proxy only (scripted key presses), not field INP",
+    note: url.startsWith("file:") ? "file:// loads bypass the network, so only the CPU throttle applies; serve over http for network-throttled numbers" : "CDP network emulation + CPU slowdown; Lab data, not field (CrUX) data",
+  };
   report.unmeasured = Object.entries(report)
     .filter(([, v]) => v === null)
     .map(([k]) => k);
@@ -6215,9 +7701,20 @@ function assembleReport(url, engine, raw, tokens) {
 }
 
 async function main() {
+  const t0 = Date.now();
   const args = parseArgs(process.argv);
+  if (args.compare) {
+    const [a, b] = args.compare.map((p) => {
+      const r = JSON.parse(fs.readFileSync(p, "utf8").replace(/^\uFEFF/, ""));
+      return r.look_fingerprint || null;
+    });
+    const verdict = compareFingerprints(a, b);
+    console.log(JSON.stringify(verdict, null, 2));
+    if (args.outGiven) fs.writeFileSync(path.resolve(args.out), JSON.stringify(verdict, null, 2), "utf8");
+    process.exit(verdict.verdict === "re-skin" ? 2 : 0);
+  }
   if (!args.url) {
-    console.error("Usage: node scripts/browser-qa.mjs (--url <http-url> | --file <html-path>) [--out <json-path>] [--screenshots <dir>] [--design-tokens <json-path>]");
+    console.error("Usage: node scripts/browser-qa.mjs (--url <http-url> | --file <html-path>) [--out <json-path>] [--screenshots <dir>] [--design-tokens <json-path>] [--allow rule-or-group,...] | --compare <a.json> <b.json>");
     process.exit(1);
   }
   const outPath = path.resolve(args.out);
@@ -6257,10 +7754,12 @@ async function main() {
   const engine = pw ? "node-playwright" : "python-playwright";
   const raw = pw ? await collectWithNode(pw, args, shotDir) : collectWithPython(args, shotDir);
   const report = assembleReport(args.url, engine, raw, tokens);
+  report.runtime_ms = Date.now() - t0;
 
   fs.writeFileSync(outPath, JSON.stringify(report, null, 2), "utf8");
   console.log(`Layoza Browser QA report written to ${outPath} (${engine}, real Chromium, ${raw.length} viewports)`);
   if (report.unmeasured.length) console.log(`Unmeasured: ${report.unmeasured.join(", ")}`);
+  console.log(`Quality sweep: ${report.quality_summary.rule_count} rules, ${report.quality_summary.issues} finding(s); runtime ${(report.runtime_ms / 1000).toFixed(1)}s`);
 }
 
 main().catch((err) => {

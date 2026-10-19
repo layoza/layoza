@@ -56,9 +56,28 @@ pub struct CoreWebVitalsEvaluation {
 pub struct AccessibilityReport {
     pub target_standard: String,
     pub automated_violations: usize,
+    /// True only when a fresh browser QA report was ingested and it, plus the static scan, found no
+    /// accessibility errors. A static scan alone never passes: it cannot see the rendered page.
     pub passes_automated_wcag22_aa: bool,
     pub manual_review_required: Vec<String>,
+    /// What the verdict rests on: "static checks only" or "browser report (<path>) + static checks".
+    #[serde(default)]
+    pub evidence_basis: String,
+    /// Checks a static source scan cannot make; empty when a browser report was ingested.
+    #[serde(default)]
+    pub needs_browser: Vec<String>,
 }
+
+/// Checks that need a rendered page. A static audit lists them as not checked instead of passing them.
+pub const NEEDS_BROWSER: &[&str] = &[
+    "Text contrast against the real backdrop (composited alpha, images, gradients) at computed font sizes",
+    "Target size (WCAG 2.5.8), overlap, occlusion and sideways overflow from 320px to 1920px",
+    "Focus visibility, focus order and keyboard reach of every control",
+    "Core Web Vitals (Lab LCP and CLS, throttled and unthrottled; INP proxy)",
+    "Motion under prefers-reduced-motion and text left hidden by animations",
+    "Legibility floors after the cascade (body text under 14px, labels under 12px)",
+    "Look fingerprint and re-skin detection",
+];
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisualRegressionComparison {
@@ -130,9 +149,12 @@ pub fn audit_project(
     }
 
     for file_path in &files_to_scan {
-        let Ok(content) = fs::read_to_string(file_path) else {
+        // Read bytes and decode leniently: one stray non-UTF-8 byte must not hide a whole file
+        let Ok(bytes) = fs::read(file_path) else {
             continue;
         };
+        let content = String::from_utf8_lossy(&bytes);
+        let content = content.trim_start_matches('\u{feff}');
         let label = file_path
             .strip_prefix(project_root)
             .unwrap_or(file_path)
@@ -286,7 +308,17 @@ pub fn audit_project(
         accessibility: AccessibilityReport {
             target_standard: "WCAG 2.2 Level AA".to_string(),
             automated_violations: a11y_violations,
-            passes_automated_wcag22_aa: a11y_violations == 0,
+            passes_automated_wcag22_aa: a11y_violations == 0 && !browser_cwv_source.is_empty(),
+            evidence_basis: if browser_cwv_source.is_empty() {
+                "static checks only: no fresh browser QA report, so the automated WCAG 2.2 AA result is not a pass".to_string()
+            } else {
+                format!("browser report ({}) + static checks", browser_cwv_source)
+            },
+            needs_browser: if browser_cwv_source.is_empty() {
+                NEEDS_BROWSER.iter().map(|s| s.to_string()).collect()
+            } else {
+                Vec::new()
+            },
             manual_review_required: vec![
                 "Verify keyboard Tab/Shift+Tab focus order matches visual reading sequence across 375px, 768px, and 1280px viewports (WCAG 2.4.3).".to_string(),
                 "Verify focus appearance and non-obscuration when sticky headers or dialogs are active (WCAG 2.4.11 / 2.4.13).".to_string(),
@@ -320,9 +352,10 @@ fn collect_auditable_files(current: &Path, out: &mut Vec<std::path::PathBuf>, de
             collect_auditable_files(&p, out, depth + 1);
         } else {
             let ext = p.extension().and_then(|e| e.to_str()).unwrap_or("");
+            // .blade.php templates are covered by "php"
             if matches!(
                 ext,
-                "html" | "css" | "tsx" | "jsx" | "astro" | "vue" | "svelte"
+                "html" | "htm" | "css" | "tsx" | "jsx" | "astro" | "vue" | "svelte" | "php" | "liquid"
             ) {
                 out.push(p);
             }
@@ -989,7 +1022,7 @@ fn ingest_browser_report(val: &serde_json::Value, source: &str, findings: &mut V
         let vp_label = vp.get("label").and_then(|l| l.as_str()).unwrap_or("viewport");
         let location = format!("{} ({})", source, vp_label);
         // One finding per (rule, severity) per viewport
-        let mut grouped: Vec<(String, String, Vec<String>)> = Vec::new();
+        let mut grouped: Vec<(String, String, Vec<String>, &serde_json::Value)> = Vec::new();
         for issue in vp.get("issues").and_then(|i| i.as_array()).into_iter().flatten() {
             let field = |k: &str| issue.get(k).and_then(|r| r.as_str()).unwrap_or("").to_string();
             let (rule, severity, detail) = (field("rule"), field("severity"), field("detail"));
@@ -1012,12 +1045,12 @@ fn ingest_browser_report(val: &serde_json::Value, source: &str, findings: &mut V
                 }
                 continue;
             }
-            match grouped.iter_mut().find(|(r, s, _)| *r == rule && *s == severity) {
-                Some((_, _, details)) => details.push(detail),
-                None => grouped.push((rule, severity, vec![detail])),
+            match grouped.iter_mut().find(|(r, s, _, _)| *r == rule && *s == severity) {
+                Some((_, _, details, _)) => details.push(detail),
+                None => grouped.push((rule, severity, vec![detail], issue)),
             }
         }
-        for (rule, severity, details) in grouped {
+        for (rule, severity, details, first) in grouped {
             let more = if details.len() > 1 { format!(" (+{} more)", details.len() - 1) } else { String::new() };
             // Ported impeccable design critique: advisory only, never part of the release gate
             if severity == "critique" {
@@ -1026,6 +1059,23 @@ fn ingest_browser_report(val: &serde_json::Value, source: &str, findings: &mut V
             }
             let (rule_id, category, remediation) = browser_rule(&rule);
             let sev = if severity == "error" { Severity::Error } else { Severity::Warning };
+            // Quality-sweep issues carry their own why / fix / measured value: keep them, under QA-<RULE>
+            let text = |k: &str| first.get(k).and_then(|v| v.as_str()).unwrap_or("").trim().to_string();
+            if rule_id == "BROWSER-ISSUE" && !text("fix").is_empty() {
+                let category = if text("category").is_empty() { "browser-qa".to_string() } else { text("category") };
+                let selector = text("selector");
+                findings.push(AuditFinding {
+                    rule_id: format!("QA-{}", rule.to_ascii_uppercase()),
+                    kind: FindingKind::DeterministicObjective,
+                    severity: sev,
+                    category,
+                    file_or_selector: if selector.is_empty() { location.clone() } else { format!("{} {}", location, selector) },
+                    message: format!("{} at {}: measured {}. {}{}", rule, vp_label, text("measured"), text("why"), more),
+                    remediation: text("fix"),
+                    auto_repairable: false,
+                });
+                continue;
+            }
             findings.push(browser_finding(
                 rule_id,
                 sev,
@@ -1058,6 +1108,23 @@ fn ingest_browser_report(val: &serde_json::Value, source: &str, findings: &mut V
         findings.push(design_system_finding(&d, source));
     }
 
+    let unmeasurable: Vec<String> = val
+        .get("contrast_unmeasurable_reasons")
+        .and_then(|r| r.as_object())
+        .into_iter()
+        .flatten()
+        .map(|(k, n)| format!("{} x{}", k, n.as_f64().unwrap_or(0.0)))
+        .collect();
+    if !unmeasurable.is_empty() {
+        findings.push(browser_finding(
+            "A11Y-CONTRAST-UNMEASURABLE",
+            Severity::Info,
+            "accessibility",
+            source,
+            format!("contrast unmeasurable (image/gradient) for some text, so no ratio is claimed: {}", unmeasurable.join(", ")),
+            "Check these by eye or give the text a solid backing (a scrim or a solid panel) so contrast can be measured.",
+        ));
+    }
     if let Some(fails) = num("contrast_failures").filter(|n| *n > 0.0) {
         let samples = strings("contrast_failure_samples");
         findings.push(browser_finding(
@@ -1257,6 +1324,9 @@ pub fn audit_file_content(
         });
     }
 
+    // 5b. Static subset of the browser QA rules: markup in every template language, plus CSS
+    audit_static_subset(file_label, content, findings);
+
     // 6. Context-sensitive Subjective Critique (never blocks existing brand DNA!)
     let brand_uses_purple = existing_dna
         .map(|dna| {
@@ -1276,6 +1346,588 @@ pub fn audit_file_content(
             remediation: "Consider using an industry-calibrated palette from `DESIGN.md` unless explicitly requested by the brand.".into(),
             auto_repairable: false,
         });
+    }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Static subset: the browser QA rules that source text can decide on its own
+// ---------------------------------------------------------------------------------------------
+
+fn is_markup_file(label: &str) -> bool {
+    let l = label.to_ascii_lowercase();
+    [".html", ".htm", ".vue", ".svelte", ".astro", ".jsx", ".tsx", ".php", ".liquid"]
+        .iter()
+        .any(|e| l.ends_with(e))
+}
+
+/// Opening tags (`<name ...>`) in lowercased markup.
+fn markup_tags(lower: &str) -> Vec<&str> {
+    let b = lower.as_bytes();
+    let mut out = Vec::new();
+    let mut i = 0;
+    while i + 1 < b.len() {
+        if b[i] == b'<' && b[i + 1].is_ascii_alphabetic() {
+            match lower[i..].find('>') {
+                Some(e) => {
+                    out.push(&lower[i..=i + e]);
+                    i += e + 1;
+                    continue;
+                }
+                None => break,
+            }
+        }
+        i += 1;
+    }
+    out
+}
+
+fn tag_name(tag: &str) -> &str {
+    let t = &tag[1..];
+    let end = t.find(|c: char| !(c.is_ascii_alphanumeric() || c == '-')).unwrap_or(t.len());
+    &t[..end]
+}
+
+/// Value of attribute `name` in a lowercased tag: `Some("")` for a bare boolean attribute. Handles
+/// quoted values, JSX `{...}` values and Vue/Svelte `:name` bindings.
+fn attr_value<'a>(tag: &'a str, name: &str) -> Option<&'a str> {
+    let mut i = 0;
+    while let Some(p) = tag[i..].find(name) {
+        let s = i + p;
+        i = s + name.len();
+        let before_ok = tag[..s].chars().last().map_or(false, |c| c.is_whitespace() || c == ':');
+        let rest = &tag[s + name.len()..];
+        let after_ok = rest.chars().next().map_or(true, |c| c.is_whitespace() || c == '=' || c == '>' || c == '/');
+        if !before_ok || !after_ok {
+            continue;
+        }
+        let Some(v) = rest.trim_start().strip_prefix('=') else { return Some("") };
+        let v = v.trim_start();
+        let close = match v.chars().next()? {
+            '"' => '"',
+            '\'' => '\'',
+            '{' => '}',
+            _ => {
+                let end = v.find(|c: char| c.is_whitespace() || c == '>').unwrap_or(v.len());
+                return Some(&v[..end]);
+            }
+        };
+        let body = &v[1..];
+        return body.find(close).map(|end| body[..end].trim_matches(|c| c == '"' || c == '\''));
+    }
+    None
+}
+
+fn static_finding(rule: &str, severity: Severity, category: &str, file: &str, message: String, fix: &str) -> AuditFinding {
+    AuditFinding {
+        rule_id: rule.into(),
+        kind: FindingKind::DeterministicObjective,
+        severity,
+        category: category.into(),
+        file_or_selector: file.into(),
+        message,
+        remediation: fix.into(),
+        auto_repairable: false,
+    }
+}
+
+fn audit_static_subset(file_label: &str, content: &str, findings: &mut Vec<AuditFinding>) {
+    let lower = content.to_ascii_lowercase();
+    let is_css = file_label.to_ascii_lowercase().ends_with(".css");
+    if is_markup_file(file_label) {
+        audit_static_markup(file_label, &lower, findings);
+    }
+    let css = if is_css { lower.clone() } else { style_blocks(&lower) };
+    if !css.trim().is_empty() {
+        audit_static_css(file_label, &css, findings);
+    }
+}
+
+/// Text inside `<style>` blocks (any template language).
+fn style_blocks(lower: &str) -> String {
+    let mut out = String::new();
+    let mut i = 0;
+    while let Some(p) = lower[i..].find("<style") {
+        let s = i + p;
+        let Some(open_end) = lower[s..].find('>') else { break };
+        let body_start = s + open_end + 1;
+        let Some(close) = lower[body_start..].find("</style") else { break };
+        out.push_str(&lower[body_start..body_start + close]);
+        out.push('\n');
+        i = body_start + close;
+    }
+    out
+}
+
+fn audit_static_markup(file: &str, lower: &str, findings: &mut Vec<AuditFinding>) {
+    let is_plain_html = file.ends_with(".html") || file.ends_with(".htm");
+    let tags = markup_tags(lower);
+
+    // Placeholder copy and stock names: say "verify", never "fake"
+    let text_only: String = {
+        let mut s = String::new();
+        let mut depth = 0i32;
+        for c in lower.chars() {
+            match c {
+                '<' => depth += 1,
+                '>' => {
+                    depth = (depth - 1).max(0);
+                    s.push(' ');
+                }
+                _ if depth == 0 => s.push(c),
+                _ => {}
+            }
+        }
+        s
+    };
+    if let Some(hit) = ["lorem ipsum", "dolor sit amet", "your text here", "placeholder text"].iter().find(|p| text_only.contains(*p)) {
+        findings.push(static_finding(
+            "QA-STATIC-PLACEHOLDER-COPY",
+            Severity::Warning,
+            "content",
+            file,
+            format!("Placeholder copy \"{}\" in visible text. Verify this is real before release.", hit),
+            "Replace filler with the real copy, or mark the section as unfinished so it cannot ship.",
+        ));
+    }
+    let stock = ["john doe", "jane doe", "john smith", "acme corp", "acme inc", "@example.com", "123 main st", "(555) 555", "555-01"];
+    let hits: Vec<&str> = stock.iter().copied().filter(|p| text_only.contains(p)).collect();
+    if !hits.is_empty() {
+        findings.push(static_finding(
+            "QA-STATIC-PLACEHOLDER-NAMES",
+            Severity::Warning,
+            "content",
+            file,
+            format!("Stock placeholder people, companies or contacts ({}). Verify this is real.", hits.join(", ")),
+            "Use the client's real names and contact details, or clearly labelled sample data in demos.",
+        ));
+    }
+
+    let mut positive_tab = 0;
+    let mut ids: Vec<&str> = Vec::new();
+    let mut dup_ids: Vec<&str> = Vec::new();
+    let mut alt_files: Vec<&str> = Vec::new();
+    let (mut autoplay_loud, mut no_poster) = (0, 0);
+    let mut zoom_blocked = false;
+    for tag in &tags {
+        let name = tag_name(tag);
+        if let Some(v) = attr_value(tag, "tabindex") {
+            if v.trim().parse::<i32>().map_or(false, |n| n > 0) {
+                positive_tab += 1;
+            }
+        }
+        if let Some(id) = attr_value(tag, "id") {
+            let literal = !id.is_empty() && !id.contains(|c: char| matches!(c, '{' | '$' | '<' | '%' | '`' | '+'));
+            if literal {
+                if ids.contains(&id) {
+                    if !dup_ids.contains(&id) {
+                        dup_ids.push(id);
+                    }
+                } else {
+                    ids.push(id);
+                }
+            }
+        }
+        match name {
+            "img" => {
+                if let Some(alt) = attr_value(tag, "alt") {
+                    let a = alt.trim();
+                    let ext = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif", ".svg"].iter().any(|e| a.ends_with(e));
+                    let camera = ["img_", "img-", "dsc_", "dsc0", "pxl_", "screenshot"].iter().any(|p| a.starts_with(p))
+                        && a.chars().any(|c| c.is_ascii_digit());
+                    if !a.is_empty() && (ext || camera) {
+                        alt_files.push(a);
+                    }
+                }
+            }
+            "video" | "audio" => {
+                if attr_value(tag, "autoplay").is_some() && attr_value(tag, "muted").is_none() {
+                    autoplay_loud += 1;
+                }
+                if name == "video" && attr_value(tag, "poster").is_none() {
+                    no_poster += 1;
+                }
+            }
+            "meta" if attr_value(tag, "name") == Some("viewport") => {
+                let c: String = attr_value(tag, "content").unwrap_or("").chars().filter(|c| !c.is_whitespace()).collect();
+                let max_scale = c
+                    .split(',')
+                    .find_map(|p| p.strip_prefix("maximum-scale="))
+                    .and_then(|v| v.parse::<f64>().ok());
+                zoom_blocked = c.contains("user-scalable=no") || c.contains("user-scalable=0") || max_scale.map_or(false, |m| m < 2.0);
+            }
+            _ => {}
+        }
+    }
+    if positive_tab > 0 {
+        findings.push(static_finding(
+            "A11Y-TABINDEX-POSITIVE",
+            Severity::Error,
+            "accessibility",
+            file,
+            format!("{} element(s) with a positive tabindex: keyboard order no longer follows the page (WCAG 2.4.3).", positive_tab),
+            "Use tabindex=\"0\" (or none) and put elements in the DOM in reading order.",
+        ));
+    }
+    if !dup_ids.is_empty() {
+        // In a component the same literal id can sit in exclusive branches, so it is a warning there
+        findings.push(static_finding(
+            "A11Y-DUPLICATE-ID",
+            if is_plain_html { Severity::Error } else { Severity::Warning },
+            "accessibility",
+            file,
+            format!("Duplicate id value(s): {}. Labels, aria references and anchors then point at the wrong element.", dup_ids.iter().take(5).cloned().collect::<Vec<_>>().join(", ")),
+            "Give every id a unique value; generate ids per instance in reusable components.",
+        ));
+    }
+    if !alt_files.is_empty() {
+        findings.push(static_finding(
+            "A11Y-ALT-FILENAME",
+            Severity::Error,
+            "accessibility",
+            file,
+            format!("{} image alt text(s) are file names (e.g. \"{}\"), which say nothing to a screen reader (WCAG 1.1.1).", alt_files.len(), alt_files[0]),
+            "Describe what the image shows and why it is there, or use alt=\"\" if it is decorative.",
+        ));
+    }
+    if autoplay_loud > 0 {
+        findings.push(static_finding(
+            "MEDIA-AUTOPLAY-UNMUTED",
+            Severity::Warning,
+            "media",
+            file,
+            format!("{} autoplaying media element(s) without `muted`: browsers block them, and sound that starts on its own fails WCAG 1.4.2 after 3s.", autoplay_loud),
+            "Add `muted` (and `playsinline`) to autoplaying video, or start playback only on a user action.",
+        ));
+    }
+    if no_poster > 0 {
+        findings.push(static_finding(
+            "MEDIA-VIDEO-NO-POSTER",
+            Severity::Warning,
+            "performance",
+            file,
+            format!("{} <video> element(s) without a poster: the box is blank until the video decodes, and it may be the LCP element.", no_poster),
+            "Add a `poster` image sized like the video (a compressed first frame).",
+        ));
+    }
+    if zoom_blocked {
+        findings.push(static_finding(
+            "A11Y-ZOOM-DISABLED",
+            Severity::Error,
+            "accessibility",
+            file,
+            "The viewport meta blocks pinch zoom (user-scalable=no or maximum-scale under 2), so text cannot be enlarged to 200% (WCAG 1.4.4).".into(),
+            "Use `width=device-width, initial-scale=1` and drop user-scalable / maximum-scale.",
+        ));
+    }
+}
+
+/// One CSS style rule with the @media context it sits in ("" at top level).
+#[derive(Debug, Clone)]
+struct CssRule {
+    media: String,
+    selector: String,
+    decls: Vec<(String, String)>,
+}
+
+fn strip_css_comments(css: &str) -> String {
+    let mut out = String::with_capacity(css.len());
+    let mut rest = css;
+    while let Some(s) = rest.find("/*") {
+        out.push_str(&rest[..s]);
+        match rest[s + 2..].find("*/") {
+            Some(e) => rest = &rest[s + 2 + e + 2..],
+            None => return out,
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
+fn parse_decls(body: &str) -> Vec<(String, String)> {
+    body.split(';')
+        .filter_map(|d| {
+            let (k, v) = d.split_once(':')?;
+            let k = k.trim();
+            let v = v.trim().trim_end_matches("!important").trim();
+            (!k.is_empty() && !k.contains(|c: char| c == '{' || c == '}')).then(|| (k.to_string(), v.to_string()))
+        })
+        .collect()
+}
+
+/// Splits a stylesheet into style rules (each tagged with its @media context, contexts never merged)
+/// and @keyframes declaration lists.
+fn parse_css(css: &str, media: &str, rules: &mut Vec<CssRule>, keyframes: &mut Vec<(String, Vec<(String, String)>)>, depth: usize) {
+    if depth > 8 {
+        return;
+    }
+    let mut i = 0;
+    let b = css.as_bytes();
+    while i < b.len() {
+        let Some(rel) = css[i..].find(|c| c == '{' || c == ';' || c == '}') else { break };
+        let at = i + rel;
+        if b[at] != b'{' {
+            i = at + 1;
+            continue;
+        }
+        let prelude = css[i..at].trim().to_string();
+        let mut d = 0usize;
+        let mut end = css.len();
+        for (k, c) in css[at..].char_indices() {
+            match c {
+                '{' => d += 1,
+                '}' => {
+                    d -= 1;
+                    if d == 0 {
+                        end = at + k;
+                        break;
+                    }
+                }
+                _ => {}
+            }
+        }
+        let body = &css[at + 1..end.min(css.len())];
+        if let Some(cond) = prelude.strip_prefix("@media") {
+            let cond = cond.trim();
+            let ctx = if media.is_empty() { cond.to_string() } else { format!("{} and {}", media, cond) };
+            parse_css(body, &ctx, rules, keyframes, depth + 1);
+        } else if prelude.contains("keyframes") {
+            let name = prelude.split_whitespace().nth(1).unwrap_or("").to_string();
+            let mut frames = Vec::new();
+            let mut inner = Vec::new();
+            parse_css(body, media, &mut inner, &mut Vec::new(), depth + 1);
+            for r in inner {
+                frames.extend(r.decls);
+            }
+            keyframes.push((name, frames));
+        } else if prelude.starts_with("@supports") || prelude.starts_with("@layer") || prelude.starts_with("@container") {
+            parse_css(body, media, rules, keyframes, depth + 1);
+        } else if !prelude.starts_with('@') {
+            let own = body.split('{').next().unwrap_or("");
+            // With nesting, the text after the last ';' before the first '{' is a nested selector
+            let own = if body.contains('{') { own.rsplit_once(';').map_or("", |(a, _)| a) } else { own };
+            let selector = prelude.split_whitespace().collect::<Vec<_>>().join(" ");
+            rules.push(CssRule { media: media.to_string(), selector: selector.clone(), decls: parse_decls(own) });
+            if body.contains('{') {
+                // Native CSS nesting: nested rules are checked as their own rules
+                parse_css(&body[own.len()..], media, rules, keyframes, depth + 1);
+            }
+        }
+        i = end + 1;
+    }
+}
+
+/// Parses #rgb(a), #rrggbb(aa), rgb()/rgba() (comma or space syntax), white, black, transparent.
+fn parse_css_color(v: &str) -> Option<[f64; 4]> {
+    let v = v.trim();
+    match v {
+        "white" => return Some([255.0, 255.0, 255.0, 1.0]),
+        "black" => return Some([0.0, 0.0, 0.0, 1.0]),
+        "transparent" => return Some([0.0, 0.0, 0.0, 0.0]),
+        _ => {}
+    }
+    if let Some(h) = v.strip_prefix('#') {
+        let h: Vec<u8> = h.bytes().collect();
+        let hex = |s: &[u8]| u8::from_str_radix(std::str::from_utf8(s).ok()?, 16).ok().map(|n| n as f64);
+        return match h.len() {
+            3 | 4 => {
+                let d = |i: usize| hex(&[h[i], h[i]]);
+                let a = if h.len() == 4 { d(3)? / 255.0 } else { 1.0 };
+                Some([d(0)?, d(1)?, d(2)?, a])
+            }
+            6 | 8 => {
+                let a = if h.len() == 8 { hex(&h[6..8])? / 255.0 } else { 1.0 };
+                Some([hex(&h[0..2])?, hex(&h[2..4])?, hex(&h[4..6])?, a])
+            }
+            _ => None,
+        };
+    }
+    let inner = v.strip_prefix("rgba(").or_else(|| v.strip_prefix("rgb("))?.strip_suffix(')')?;
+    let parts: Vec<&str> = inner.split(|c: char| c == ',' || c == '/' || c.is_whitespace()).filter(|p| !p.is_empty()).collect();
+    if parts.len() < 3 {
+        return None;
+    }
+    let chan = |p: &str| -> Option<f64> {
+        if let Some(pc) = p.strip_suffix('%') { pc.parse::<f64>().ok().map(|n| n * 2.55) } else { p.parse::<f64>().ok() }
+    };
+    let a = match parts.get(3) {
+        Some(p) => match p.strip_suffix('%') {
+            Some(pc) => pc.parse::<f64>().ok()? / 100.0,
+            None => p.parse::<f64>().ok()?,
+        },
+        None => 1.0,
+    };
+    Some([chan(parts[0])?, chan(parts[1])?, chan(parts[2])?, a])
+}
+
+fn rel_luminance(c: [f64; 4]) -> f64 {
+    let lin = |v: f64| {
+        let s = v / 255.0;
+        if s <= 0.04045 { s / 12.92 } else { ((s + 0.055) / 1.055).powf(2.4) }
+    };
+    0.2126 * lin(c[0]) + 0.7152 * lin(c[1]) + 0.0722 * lin(c[2])
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum StaticBg {
+    Unset,
+    Solid([f64; 4]),
+    /// Image, gradient, translucent or unknown (var(), currentColor...): no ratio is claimed
+    Unmeasurable,
+}
+
+/// Applies declarations in order. A `background:` shorthand resets the colour: with only an image the
+/// backdrop becomes unmeasurable, never the earlier `background-color`.
+fn resolve_pair(decls: &[&(String, String)]) -> (Option<[f64; 4]>, StaticBg) {
+    let mut fg = None;
+    let mut bg = StaticBg::Unset;
+    for (k, v) in decls {
+        match k.as_str() {
+            "color" => fg = parse_css_color(v),
+            "background-color" => {
+                bg = match parse_css_color(v) {
+                    Some(c) if c[3] >= 0.999 => StaticBg::Solid(c),
+                    Some(c) if c[3] <= 0.001 => StaticBg::Unset,
+                    _ => StaticBg::Unmeasurable,
+                }
+            }
+            "background-image" if v.trim() != "none" => bg = StaticBg::Unmeasurable,
+            "background" => {
+                let v = v.trim();
+                bg = if v.contains("url(") || v.contains("gradient(") || v.contains("var(") || v.contains("image-set(") {
+                    StaticBg::Unmeasurable
+                } else {
+                    match v.split_whitespace().rev().find_map(parse_css_color).or_else(|| parse_css_color(v)) {
+                        Some(c) if c[3] >= 0.999 => StaticBg::Solid(c),
+                        Some(c) if c[3] <= 0.001 => StaticBg::Unset,
+                        Some(_) => StaticBg::Unmeasurable,
+                        None => StaticBg::Unset,
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+    (fg, bg)
+}
+
+fn audit_static_css(file: &str, css: &str, findings: &mut Vec<AuditFinding>) {
+    let css = strip_css_comments(css);
+    let mut rules = Vec::new();
+    let mut keyframes = Vec::new();
+    parse_css(&css, "", &mut rules, &mut keyframes, 0);
+
+    // transition: all
+    let trans_all = rules
+        .iter()
+        .filter(|r| {
+            r.decls.iter().any(|(k, v)| {
+                (k == "transition" || k == "transition-property")
+                    && v.split(',').any(|part| part.split_whitespace().next() == Some("all"))
+            })
+        })
+        .map(|r| r.selector.as_str())
+        .collect::<Vec<_>>();
+    if !trans_all.is_empty() {
+        findings.push(static_finding(
+            "UI-TRANSITION-ALL",
+            Severity::Warning,
+            "performance",
+            file,
+            format!("`transition: all` on {} rule(s), e.g. `{}`.", trans_all.len(), trans_all[0]),
+            "Name the properties that should move (`transform`, `opacity`, `color`, `background-color`); `all` also animates layout and every future change.",
+        ));
+    }
+
+    // Keyframes that animate layout properties
+    let layout_props = ["width", "height", "top", "left", "right", "bottom", "margin", "padding", "inset"];
+    let layout_kf: Vec<String> = keyframes
+        .iter()
+        .filter_map(|(name, decls)| {
+            decls
+                .iter()
+                .find(|(k, _)| layout_props.iter().any(|p| k == p || k.starts_with(&format!("{}-", p))))
+                .map(|(k, _)| format!("{} ({})", name, k))
+        })
+        .collect();
+    if !layout_kf.is_empty() {
+        findings.push(static_finding(
+            "MOTION-LAYOUT-KEYFRAMES",
+            Severity::Warning,
+            "performance",
+            file,
+            format!("@keyframes animate layout properties: {}. Each frame re-runs layout and can jank and shift content.", layout_kf.join(", ")),
+            "Animate `transform` and `opacity` instead (scale/translate), or clip-path for reveals.",
+        ));
+    }
+
+    // Static contrast: only colour pairs both known in one cascade context. A @media block sees the
+    // top-level rules plus its own, never another @media block's.
+    let mut selectors: Vec<&str> = rules.iter().map(|r| r.selector.as_str()).collect();
+    selectors.sort_unstable();
+    selectors.dedup();
+    let (mut unmeasurable, mut reported) = (0usize, 0usize);
+    for sel in selectors {
+        let mine: Vec<&CssRule> = rules.iter().filter(|r| r.selector == sel).collect();
+        let mut contexts: Vec<&str> = mine.iter().map(|r| r.media.as_str()).collect();
+        contexts.sort_unstable();
+        contexts.dedup();
+        if !contexts.contains(&"") {
+            contexts.insert(0, "");
+        }
+        let mut done = false;
+        let mut sel_unmeasurable = false;
+        for ctx in contexts {
+            let decls: Vec<&(String, String)> = mine
+                .iter()
+                .filter(|r| r.media.is_empty())
+                .chain(mine.iter().filter(|r| !ctx.is_empty() && r.media == ctx))
+                .flat_map(|r| r.decls.iter())
+                .collect();
+            let (fg, bg) = resolve_pair(&decls);
+            let Some(fg) = fg else { continue };
+            match bg {
+                StaticBg::Unmeasurable => sel_unmeasurable = true,
+                StaticBg::Solid(b) if !done && fg[3] >= 0.999 => {
+                    let (l1, l2) = (rel_luminance(fg), rel_luminance(b));
+                    let ratio = (l1.max(l2) + 0.05) / (l1.min(l2) + 0.05);
+                    if ratio < 4.5 {
+                        done = true;
+                        reported += 1;
+                        if reported > 6 {
+                            continue;
+                        }
+                        let where_ = if ctx.is_empty() { String::new() } else { format!(" inside @media {}", ctx) };
+                        let (sev, note) = if ratio < 3.0 {
+                            (Severity::Error, "fails WCAG 1.4.3 at any text size")
+                        } else {
+                            (Severity::Warning, "fails for normal text, passes only for large text; `layoza qa` measures the real size")
+                        };
+                        findings.push(static_finding(
+                            "A11Y-STATIC-CONTRAST",
+                            sev,
+                            "accessibility",
+                            &format!("{} {}", file, sel),
+                            format!("Text on its own declared background measures {:.2}:1{} ({}).", ratio, where_, note),
+                            "Darken or lighten the text or background until normal text reaches 4.5:1 and large text 3:1.",
+                        ));
+                    }
+                }
+                _ => {}
+            }
+        }
+        if sel_unmeasurable {
+            unmeasurable += 1;
+        }
+    }
+    if unmeasurable > 0 {
+        findings.push(static_finding(
+            "A11Y-CONTRAST-UNMEASURABLE",
+            Severity::Info,
+            "accessibility",
+            file,
+            format!("contrast unmeasurable (image/gradient) for {} rule(s) with text on an image, gradient or translucent background: static checks claim no ratio.", unmeasurable),
+            "Run `layoza qa` to composite the real backdrop, or give the text a solid backing.",
+        ));
     }
 }
 
@@ -1391,6 +2043,107 @@ pub fn auto_repair_html_file(file_path: &Path) -> Result<AutoRepairResult, Strin
         applied_repairs: applied,
         modified,
     })
+}
+
+#[cfg(test)]
+mod static_subset_tests {
+    use super::*;
+    use serde_json::json;
+
+    fn run(label: &str, src: &str) -> Vec<AuditFinding> {
+        let mut f = Vec::new();
+        audit_static_subset(label, src, &mut f);
+        f
+    }
+
+    fn ids(f: &[AuditFinding]) -> Vec<&str> {
+        f.iter().map(|x| x.rule_id.as_str()).collect()
+    }
+
+    #[test]
+    fn exclusive_media_blocks_are_never_merged() {
+        let f = run("a.css", "@media (max-width:600px){.a{color:#eee}} @media (min-width:601px){.a{background:#fff}}");
+        assert!(!ids(&f).contains(&"A11Y-STATIC-CONTRAST"), "{:?}", ids(&f));
+        // Top-level rules do apply inside a media block
+        let f = run("a.css", ".b{color:#eee} @media (min-width:601px){.b{background:#fff}}");
+        let hit = f.iter().find(|x| x.rule_id == "A11Y-STATIC-CONTRAST").expect("pair under media");
+        assert!(hit.message.contains("@media (min-width:601px)"));
+        assert_eq!(hit.severity, Severity::Error);
+    }
+
+    #[test]
+    fn background_shorthand_with_an_image_resets_the_colour() {
+        let f = run("a.css", ".c{background-color:#fff;color:#eee;background:url(x.png)}");
+        assert!(!ids(&f).contains(&"A11Y-STATIC-CONTRAST"));
+        assert!(ids(&f).contains(&"A11Y-CONTRAST-UNMEASURABLE"));
+        let f = run("a.css", ".d{color:#767676;background:#fff}");
+        assert!(!ids(&f).contains(&"A11Y-STATIC-CONTRAST"), "4.54:1 passes");
+        let f = run("a.css", ".e{color:#777;background:#fff none}");
+        assert_eq!(f.iter().find(|x| x.rule_id == "A11Y-STATIC-CONTRAST").unwrap().severity, Severity::Warning);
+    }
+
+    #[test]
+    fn same_rules_run_on_every_template_language() {
+        let src = r#"<template><img src="a.jpg" alt="IMG_1234.jpg"><button tabindex="3">x</button>
+            <video autoplay src="v.mp4"></video><style>.x{transition:all .2s}@keyframes grow{to{width:100%}}</style></template>"#;
+        for label in ["c.vue", "c.svelte", "c.astro", "c.jsx", "c.tsx", "p.php", "v.blade.php", "s.liquid", "i.html"] {
+            let f = run(label, src);
+            for want in ["A11Y-ALT-FILENAME", "A11Y-TABINDEX-POSITIVE", "MEDIA-AUTOPLAY-UNMUTED", "MEDIA-VIDEO-NO-POSTER", "UI-TRANSITION-ALL", "MOTION-LAYOUT-KEYFRAMES"] {
+                assert!(ids(&f).contains(&want), "{} missing {}: {:?}", label, want, ids(&f));
+            }
+        }
+        // JSX spelling and muted video
+        let f = run("c.tsx", r#"<video autoPlay muted playsInline poster="p.jpg" /><div tabIndex={0} />"#);
+        assert!(!ids(&f).contains(&"MEDIA-AUTOPLAY-UNMUTED") && !ids(&f).contains(&"A11Y-TABINDEX-POSITIVE"));
+    }
+
+    #[test]
+    fn markup_rules_catch_ids_zoom_and_placeholders() {
+        let f = run(
+            "i.html",
+            r#"<html><head><meta name="viewport" content="width=device-width, maximum-scale=1"></head>
+            <body><p id="a">Lorem ipsum dolor</p><p id="a">Call Jane Doe</p></body></html>"#,
+        );
+        for want in ["A11Y-ZOOM-DISABLED", "A11Y-DUPLICATE-ID", "QA-STATIC-PLACEHOLDER-COPY", "QA-STATIC-PLACEHOLDER-NAMES"] {
+            assert!(ids(&f).contains(&want), "missing {}", want);
+        }
+        assert!(f.iter().find(|x| x.rule_id == "QA-STATIC-PLACEHOLDER-COPY").unwrap().message.contains("Verify this is real"));
+        let ok = run("i.html", r#"<meta name="viewport" content="width=device-width, initial-scale=1"><p id="a">Real copy</p>"#);
+        assert!(ok.is_empty(), "{:?}", ids(&ok));
+    }
+
+    #[test]
+    fn static_audit_never_passes_wcag_without_a_browser_report() {
+        let dir = std::env::temp_dir().join(format!("layoza-honesty-{}", std::process::id()));
+        let _ = fs::create_dir_all(&dir);
+        fs::write(dir.join("index.html"), "<!doctype html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width\"></head><body><main><h1>Hi</h1></main></body></html>").unwrap();
+        fs::write(dir.join("t.liquid"), "<img src=\"a.png\" alt=\"a.png\">").unwrap();
+        let r = audit_project(&dir, None, None, None, None).unwrap();
+        assert!(!r.accessibility.passes_automated_wcag22_aa);
+        assert!(r.accessibility.evidence_basis.starts_with("static checks only"));
+        assert!(!r.accessibility.needs_browser.is_empty());
+        assert!(r.findings.iter().any(|f| f.rule_id == "A11Y-ALT-FILENAME" && f.file_or_selector == "t.liquid"));
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn quality_issues_keep_their_own_why_fix_and_measured_value() {
+        let report = json!({
+            "schema_version": "2.0.0",
+            "contrast_unmeasurable_reasons": { "gradient": 2 },
+            "viewports": [{ "label": "mobile", "issues": [
+                { "rule": "text-below-floor", "severity": "error", "category": "legibility", "selector": "p.fine",
+                  "measured": "12px body text", "why": "Too small to read.", "fix": "Set body text to 16px.", "detail": "p.fine: 12px" }
+            ]}]
+        });
+        let f = browser_report_findings(&report, "qa.json");
+        let q = f.iter().find(|x| x.rule_id == "QA-TEXT-BELOW-FLOOR").expect("generic QA finding");
+        assert_eq!(q.severity, Severity::Error);
+        assert_eq!(q.category, "legibility");
+        assert_eq!(q.remediation, "Set body text to 16px.");
+        assert!(q.message.contains("12px body text") && q.file_or_selector.ends_with("p.fine"));
+        assert!(f.iter().any(|x| x.rule_id == "A11Y-CONTRAST-UNMEASURABLE" && x.message.contains("gradient")));
+    }
 }
 
 #[cfg(test)]
