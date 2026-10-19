@@ -74,8 +74,7 @@ On demand:
 
 Read [`references/what-wins.md`](references/what-wins.md) before building and tick it before
 shipping: brief fidelity, main action in reach at 375px, no voids, colour restraint,
-real-feeling data, phone tables, the dealt `page_shape` built as dealt (its one `motif`, its
-`button` and its `restraint` list included), the `micro-css-polish`
+real-feeling data, phone tables, the dealt `page_shape` built as dealt, the `micro-css-polish`
 motion floor on every page (even static ones), and 0 errors + 0 warnings on the final file.
 Deal hero and section mechanics with `layoza mechanics deal "<brief>"` (MCP `deal_mechanics`); see
 [`references/mechanics.md`](references/mechanics.md).
