@@ -17,7 +17,7 @@ use layoza_core::{
         catalogue, deal_mechanics_with, get_mechanic, list_mechanics, DealOptions, ExistingSite, Intensity, Mechanic,
         MechanicKind,
     },
-    qa::run_browser_qa,
+    qa::{compare_look_fingerprints, run_browser_qa},
     verifier::{audit_project, auto_repair_html_file, browser_report_findings, Severity},
 };
 use std::env;
@@ -351,10 +351,7 @@ fn main() {
                         println!("Objective Errors       : {}", report.objective_error_count);
                         println!("Objective Warnings     : {}", report.objective_warning_count);
                         println!("Subjective Critique    : {} (non-blocking)", report.subjective_critique_notes);
-                        println!(
-                            "WCAG 2.2 AA Automated  : {}",
-                            if report.accessibility.passes_automated_wcag22_aa { "PASS" } else { "FAIL" }
-                        );
+                        println!("WCAG 2.2 AA Automated  : {}", wcag_line(&report.accessibility));
                         let cwv = &report.core_web_vitals;
                         let fmt = |v: Option<f64>, digits: usize, unit: &str| {
                             v.map(|x| format!("{:.*}{}", digits, x, unit)).unwrap_or_else(|| "not measured".to_string())
@@ -427,6 +424,32 @@ fn main() {
             }
         }
         "qa" => {
+            // `qa --compare <a.json> <b.json>`: re-skin verdict between two saved QA reports; exit 2 on a re-skin.
+            if let Some(i) = args.iter().position(|a| a == "--compare") {
+                let (Some(a), Some(b)) = (args.get(i + 1), args.get(i + 2)) else {
+                    exit_err("`qa --compare` needs two report files: layoza qa --compare <a.json> <b.json>", json_flag)
+                };
+                let verdict = compare_qa_reports(&cwd.join(a), &cwd.join(b)).unwrap_or_else(|e| exit_err(&e, json_flag));
+                let v = verdict["verdict"].as_str().unwrap_or("unmeasured").to_string();
+                if json_flag {
+                    println!("{}", serde_json::to_string_pretty(&verdict).unwrap());
+                } else {
+                    println!("=== Layoza Look Compare: {} vs {} ===", a, b);
+                    println!("Verdict                : {}", v);
+                    println!("Layout similarity      : {}", verdict["layout_similarity"]);
+                    println!("Palette distance       : {}", verdict["palette_distance"]);
+                    if let Some(r) = verdict["reason"].as_str() {
+                        println!("Reason                 : {}", r);
+                    }
+                    if v == "re-skin" {
+                        println!("Same skeleton in new colours: this is a re-skin, not a new direction.");
+                    }
+                }
+                if v == "re-skin" {
+                    process::exit(2);
+                }
+                return;
+            }
             let target_arg = positional_arg(&args, 1).unwrap_or_else(|| "index.html".to_string());
             let is_url = target_arg.starts_with("http://") || target_arg.starts_with("https://");
             let target_path = cwd.join(&target_arg);
@@ -949,6 +972,25 @@ fn get_flag_value(args: &[String], flag: &str) -> Option<String> {
 
 /// Every flag that takes a value. `positional_arg` skips the token after any of these, and a unit
 /// test checks that every flag read through `get_flag_value(s)` is listed here.
+/// The WCAG line never says PASS on a static scan: it names what the verdict rests on.
+fn wcag_line(a: &layoza_core::verifier::AccessibilityReport) -> String {
+    if a.evidence_basis.is_empty() || a.evidence_basis.starts_with("static checks only") {
+        "unverified (static checks only)".to_string()
+    } else {
+        format!("{} ({})", if a.passes_automated_wcag22_aa { "pass" } else { "fail" }, a.evidence_basis)
+    }
+}
+
+/// Reads two saved QA reports (or bare look fingerprints) and compares their looks.
+fn compare_qa_reports(a: &Path, b: &Path) -> Result<serde_json::Value, String> {
+    let read = |p: &Path| -> Result<serde_json::Value, String> {
+        let text = fs::read_to_string(p).map_err(|e| format!("cannot read {}: {}", p.display(), e))?;
+        let v: serde_json::Value = serde_json::from_str(&text).map_err(|e| format!("{} is not JSON: {}", p.display(), e))?;
+        Ok(v.get("look_fingerprint").cloned().unwrap_or(v))
+    };
+    Ok(compare_look_fingerprints(&read(a)?, &read(b)?))
+}
+
 const VALUE_FLAGS: &[&str] = &[
     "--scope", "--agents", "--mode", "--variance", "--motion", "--density", "--lint", "--intensity", "--recipe",
     "--framework", "--title", "--subtitle", "--cta", "--output", "--file", "--snapshot", "--path", "--top",
@@ -1071,7 +1113,7 @@ fn subcommand_usage(cmd: &str) -> Option<&'static str> {
         "animate" => "Usage: layoza animate [<category|id|engine>] [--recipe <id>] [--intensity 0-10] [--json]\n  Recommend animation recipes. Categories: hero_animation, section_animation, scroll_animation, interactive_effect, page_transition, three_experience. --recipe selects one recipe by id.",
         "audit" => "Usage: layoza audit [<path>] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails.",
         "verify" => "Usage: layoza verify [<path>] [--repair] [--json]\n  Verify release gates and the process gate files in .layoza/ (direction-approved.md, brand-spec.md, product-facts.md, self-critique stamp); exits 1 when any fails. --repair applies bounded auto-repairs to a single HTML file.",
-        "qa" => "Usage: layoza qa [<url|file|dir>] [--json]\n  Headless Chromium multi-viewport QA (default index.html). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
+        "qa" => "Usage: layoza qa [<url|file|dir>] [--json] | layoza qa --compare <a.json> <b.json>\n  Headless Chromium multi-viewport QA (default index.html). --compare reads two saved browser-qa-report.json files and exits 2 on a re-skin (same skeleton, new colours). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
         "doctor" => "Usage: layoza doctor [--json]\n  Validate agent installations, skill frontmatter, runtimes and smoke tests.",
         "generate" => "Usage: layoza generate [--framework <fw>] [--title <t>] [--subtitle <s>] [--cta <c>] [--output <dir>] [--json]\n  Generate a framework-native component from the project's Site DNA.",
         "baseline" => "Usage: layoza baseline create [<id>] [--file <path>]...\n       layoza baseline rollback [<id>]\n       layoza baseline structure [<id>]\n       layoza baseline [freshness]\n  structure compares each page's skeleton with the baseline and exits 1 when a redesign kept it.\n  create without --file snapshots the project's UI sources (html/css/js/ts/tsx/jsx/vue/svelte/astro/liquid/php, theme JSON, DESIGN.md...), skipping node_modules, .git, target, dist, build, .layoza and hidden dirs (caps: 2000 files, 1 MB/file, 32 MB total); skipped paths are reported. --file is repeatable and errors on paths that cannot be snapshotted. rollback exits 1 if it restores nothing.",
@@ -1178,6 +1220,36 @@ mod tests {
 
     fn a(v: &[&str]) -> Vec<String> {
         v.iter().map(|s| s.to_string()).collect()
+    }
+
+    #[test]
+    fn wcag_line_never_passes_a_static_scan() {
+        let mut acc = layoza_core::verifier::AccessibilityReport {
+            target_standard: "WCAG 2.2 Level AA".into(),
+            automated_violations: 0,
+            passes_automated_wcag22_aa: false,
+            manual_review_required: Vec::new(),
+            evidence_basis: "static checks only: no fresh browser QA report".into(),
+            needs_browser: Vec::new(),
+        };
+        assert_eq!(wcag_line(&acc), "unverified (static checks only)");
+        acc.evidence_basis = "browser report (qa/browser-qa-report.json) + static checks".into();
+        acc.passes_automated_wcag22_aa = true;
+        assert!(wcag_line(&acc).starts_with("pass (browser report"));
+    }
+
+    #[test]
+    fn qa_compare_reads_reports_and_names_a_reskin() {
+        let dir = std::env::temp_dir().join("layoza_cli_compare_test");
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let fp = |l: f64, c: f64| serde_json::json!({ "look_fingerprint": { "layout": { "text": [1.0, l, 0.0], "media": [0.0, 1.0, 0.0] }, "palette": [{ "oklab": [c, 0.1, 0.0], "share": 1.0 }] } });
+        fs::write(dir.join("a.json"), fp(0.5, 0.2).to_string()).unwrap();
+        fs::write(dir.join("b.json"), fp(0.5, 0.9).to_string()).unwrap();
+        let v = compare_qa_reports(&dir.join("a.json"), &dir.join("b.json")).unwrap();
+        assert_eq!(v["verdict"], "re-skin");
+        assert!(compare_qa_reports(&dir.join("a.json"), &dir.join("missing.json")).is_err());
+        let _ = fs::remove_dir_all(&dir);
     }
 
     #[test]

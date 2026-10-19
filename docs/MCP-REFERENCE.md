@@ -40,7 +40,21 @@ copy or secrets.
   `direction.md` when the user asked for the same look.
 - `LAYOZA_NO_HISTORY=1` turns the ledger off (nothing read or written).
 
-## Tools (16)
+## Tools (15 listed) and prompts (7)
+
+`tools/list` returns 15 tools. `recommend_layout` is deprecated and no longer listed, but still answers
+`tools/call` for older clients; use `get_design_system` instead. Every call is checked against the tool's
+schema first: unknown arguments, wrong types, out-of-range numbers, empty briefs and over-long strings
+are rejected with a clear error. `prompts/list` returns seven workflow prompts: `art-direct`, `critique`,
+`anti-slop-review`, `extend-site`, `improve-site`, `redesign`, `study`.
+
+`deal_mechanics` returns, for a new site, `nav` and `footer` slots (page furniture, never a signature) and
+hero refs carry `hero_material` and `look_family`. A given `seed` rotates among the in-niche heroes that fit;
+directions never share a hero look family.
+
+`capture_screenshots` takes `compare_with` (an earlier `browser-qa-report.json` in the project) and returns
+`look_compare` with the verdict `re-skin`, `near-duplicate` or `distinct`. The CLI equivalent is
+`layoza qa --compare <a.json> <b.json>`, which exits 2 on a re-skin.
 
 | Tool | Writes to disk | Summary |
 | :--- | :--- | :--- |
@@ -48,7 +62,7 @@ copy or secrets.
 | [`inspect_site`](#inspect_site) | No | Loads a live http(s) URL in headless Chromium (desktop/tablet/mobile) and returns its rendered Site DNA (palette, fonts, type scale, radii, CSS custom properties, framework and motion hints) plus measured accessibility, layout, and lab Core Web Vitals. |
 | [`extract_site_dna`](#extract_site_dna) | Only with `write_approved: true` | Extracts Site DNA and writes DESIGN.md, BRAND.md, MOTION.md, SITE-DNA.json, COMPONENT-INVENTORY.json, and DESIGN-DECISIONS.md (requires write_approved=true). |
 | [`get_design_system`](#get_design_system) | No | Design system for a brief or a project. |
-| [`recommend_layout`](#recommend_layout) | No | Recommends layout archetypes, typography, color palettes, and 3 distinct creative directions for Modes A/B/C/D. |
+| [`recommend_layout`](#recommend_layout) (deprecated, unlisted) | No | Recommends layout archetypes, typography, color palettes, and 3 distinct creative directions for Modes A/B/C/D. |
 | [`recommend_animation`](#recommend_animation) | No | Recommends accessible GSAP, Motion, WAAPI, Three.js/R3F, or conditional Lenis animation recipes with reduced-motion and cleanup guarantees. |
 | [`discover_components`](#discover_components) | No | Discovers existing project UI components and generates framework-native component patterns. |
 | [`capture_screenshots`](#capture_screenshots) | Only with `write_approved: true` | Loads a local HTML file or http(s) URL in headless Chromium at 1440x900, 768x1024 and 375x812, waits for motion to settle, saves full-page, 1:1 mobile-hero and menu-open screenshots, and returns a compact summary: verdict and counts, lab LCP/CLS/INP proxy and minimum contrast first, then findings deduplicated across viewports (one line per rule with the viewports and a short example), then screenshot paths. |

@@ -19,7 +19,7 @@ use layoza_core::{
     intelligence::{catalog_industries, catalog_styles, looks_of, recommend_design, recommend_design_avoiding, OperatingMode},
     mechanics::{deal_mechanics_with, get_mechanic, seed_serde, DealOptions, ExistingSite, Intensity},
     process::{apply_project_memory, check_gates, recent_looks_or_stamps, redesign_structure_check, rotation_statement, same_look_requested},
-    qa::{compact_qa_summary, motion_unsettled_note, run_browser_qa},
+    qa::{compact_qa_summary, compare_look_fingerprints, motion_unsettled_note, run_browser_qa},
     verifier::{
         audit_project, auto_repair_html_file, browser_report_findings, verify_before_after, AuditFinding, AuditReport,
         Severity,
@@ -625,7 +625,8 @@ pub fn tool_definitions() -> Value {
                     "allow_private_network": { "type": "boolean", "description": "Allow a private-network host. localhost is always allowed." },
                     "write_approved": { "type": "boolean", "description": "Local files only: true writes screenshots and the report into `<dir>/qa/` inside the project and returns the merged release-gate audit. Default false writes to a scratch directory." },
                     "sketch": { "type": "boolean", "description": "true returns only the screenshot paths per viewport plus error/warning counts (no findings, metrics, Site DNA or release-gate audit); the full report is still saved as `browser-qa-report.json` in `screenshot_dir`. Use it to show direction sketches cheaply. Default false." },
-                    "detail": { "type": "string", "enum": ["summary", "full"], "description": "\"summary\" (default) returns the compact result and writes the full detail to `capture-full.json`; \"full\" returns the full verbose report inline (quality, every finding, the live Chromium report and, with `write_approved`, the release-gate audit)." }
+                    "detail": { "type": "string", "enum": ["summary", "full"], "description": "\"summary\" (default) returns the compact result and writes the full detail to `capture-full.json`; \"full\" returns the full verbose report inline (quality, every finding, the live Chromium report and, with `write_approved`, the release-gate audit)." },
+                    "compare_with": { "type": "string", "description": "Optional earlier `browser-qa-report.json` inside the project (for example another direction's). Returns `look_compare` with verdict re-skin / near-duplicate / distinct; a re-skin means the same skeleton in new colours." }
                 },
                 "required": ["target_url_or_file"]
             }
@@ -1088,9 +1089,25 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                 }
             };
             let report = run_browser_qa(approved_root, &run_target, &shot_dir.join("browser-qa-report.json"), &shot_dir)?;
+            let look_compare = match args.get("compare_with").and_then(|c| c.as_str()) {
+                Some(p) => {
+                    let file = validate_safe_project_path(approved_root, Path::new(p))?;
+                    let text = std::fs::read_to_string(&file).map_err(|e| format!("cannot read `compare_with`: {}", e))?;
+                    let earlier: Value = serde_json::from_str(&text).map_err(|e| format!("`compare_with` is not JSON: {}", e))?;
+                    let fp = |v: &Value| v.get("look_fingerprint").cloned().unwrap_or(Value::Null);
+                    Some(compare_look_fingerprints(&fp(&earlier), &fp(&report)))
+                }
+                None => None,
+            };
             let screenshots = screenshot_paths(&report);
+            let with_look = |mut v: Value| {
+                if let (Some(lc), Some(o)) = (&look_compare, v.as_object_mut()) {
+                    o.insert("look_compare".into(), lc.clone());
+                }
+                v
+            };
             if sketch {
-                return Ok(sketch_summary(target, &shot_dir, screenshots, &report));
+                return Ok(with_look(sketch_summary(target, &shot_dir, screenshots, &report)));
             }
             // Local files: the fresh report sits in `<dir>/qa/` and is merged with the static source audit
             let verification_report = match &audit_target {
@@ -1121,9 +1138,9 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                 "live_chromium_report": report
             });
             if full_detail {
-                return Ok(full);
+                return Ok(with_look(full));
             }
-            Ok(compact_capture(target, &report, &findings, screenshots, &shot_dir, gate, &full))
+            Ok(with_look(compact_capture(target, &report, &findings, screenshots, &shot_dir, gate, &full)))
         }
         "compare_before_after" => {
             let baseline_id = args
@@ -1443,6 +1460,49 @@ mod tests {
     use super::*;
     use std::fs;
 
+    fn rpc(body: &str, root: &Path) -> Value {
+        let r = handle_jsonrpc_message(body, root).unwrap();
+        serde_json::to_value(&r).unwrap()
+    }
+
+    #[test]
+    fn prompts_and_argument_validation_over_json_rpc() {
+        let root = std::env::temp_dir().join("layoza_mcp_rpc_test");
+        let _ = fs::remove_dir_all(&root);
+        fs::create_dir_all(&root).unwrap();
+        let init = rpc(r#"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}"#, &root);
+        assert!(init["result"]["capabilities"]["prompts"].is_object());
+        assert!(init["result"]["instructions"].as_str().is_some_and(|s| !s.is_empty()));
+        let list = rpc(r#"{"jsonrpc":"2.0","id":2,"method":"prompts/list"}"#, &root);
+        assert_eq!(list["result"]["prompts"].as_array().unwrap().len(), 7);
+        let got = rpc(r#"{"jsonrpc":"2.0","id":3,"method":"prompts/get","params":{"name":"art-direct","arguments":{"brief":"funeral home"}}}"#, &root);
+        assert!(got["result"]["messages"][0]["content"]["text"].as_str().unwrap().contains("deal_mechanics"));
+        let bad = rpc(r#"{"jsonrpc":"2.0","id":4,"method":"prompts/get","params":{"name":"nope"}}"#, &root);
+        assert_eq!(bad["error"]["code"], -32602);
+        let tool = |name: &str, args: &str| -> Value {
+            let v = rpc(&format!(r#"{{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{{"name":"{}","arguments":{}}}}}"#, name, args), &root);
+            v["result"].clone()
+        };
+        // Unknown args, empty briefs and private hosts are clear errors; a string seed is accepted.
+        assert_eq!(tool("deal_mechanics", r#"{"brief":"x","colour":"red"}"#)["isError"], true);
+        assert_eq!(tool("deal_mechanics", r#"{"brief":"   "}"#)["isError"], true);
+        assert_eq!(tool("deal_mechanics", r#"{"brief":"funeral home","seed":"42"}"#)["isError"], false);
+        assert_eq!(tool("inspect_site", r#"{"url":"http://192.168.1.1/"}"#)["isError"], true);
+        assert_eq!(tool("inspect_site", r#"{"url":"http://metadata.internal/"}"#)["isError"], true);
+        let _ = fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn versions_agree_across_manifests() {
+        let v = env!("CARGO_PKG_VERSION");
+        for (name, text) in [
+            ("package.json", include_str!("../../../package.json")),
+            ("server.json", include_str!("../../../server.json")),
+        ] {
+            assert!(text.contains(&format!("\"{}\"", v)), "{name} does not carry version {v}");
+        }
+    }
+
     #[test]
     fn test_mcp_initialize_and_tool_calls() {
         let root = std::env::temp_dir().join("layoza_mcp_test");
@@ -1471,7 +1531,7 @@ mod tests {
             .as_array()
             .unwrap()
             .len();
-        assert_eq!(tools, 16);
+        assert_eq!(tools, 15, "recommend_layout is hidden (deprecated) but still callable");
 
         // 3. write permission gate check (`extract_site_dna` without write_approved=true must error)
         let denied_resp = handle_jsonrpc_message(
@@ -1542,7 +1602,8 @@ mod tests {
         .unwrap();
         let anim = anim.result.unwrap();
         assert_eq!(anim.get("isError").unwrap().as_bool(), Some(true));
-        assert!(anim.to_string().contains("no recipe matched"));
+        // Schema validation rejects an unknown category before dispatch, naming the allowed values.
+        assert!(anim.to_string().contains("category"), "{anim}");
 
         let _ = fs::remove_dir_all(&root);
     }
@@ -1565,7 +1626,11 @@ mod tests {
         assert_eq!(deal["signature"].as_array().unwrap().len(), 2);
         assert_eq!(deal["suggestions"].as_array().unwrap().len(), 2);
         assert_eq!(deal["context"]["mode"], "new");
-        assert_eq!(deal["fit"].as_array().unwrap().len(), 6, "hero + 4 sections + transition each get a fit reason");
+        assert_eq!(deal["fit"].as_array().unwrap().len(), 8, "hero + 4 sections + transition + nav + footer each get a fit reason");
+        assert_eq!(deal["nav"]["role"], "nav");
+        assert_eq!(deal["footer"]["role"], "footer");
+        assert!(deal["hero"]["hero_material"].as_str().is_some_and(|m| !m.is_empty()));
+        assert!(deal["hero"]["look_family"].as_str().is_some_and(|m| !m.is_empty()));
         // avoid: recently used ids are never dealt again
         let hero_id = deal["hero"]["id"].as_str().unwrap().to_string();
         let again = call(&format!(r#"{{"brief":"neighbourhood bakery","count":4,"seed":3,"avoid":["{}"]}}"#, hero_id));

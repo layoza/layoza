@@ -86,6 +86,7 @@ try {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(r.protocolVersion ?? "")) fail(`initialize: bad protocolVersion ${r.protocolVersion}`);
     if (!r.serverInfo?.name || !r.serverInfo?.version) fail("initialize: serverInfo.name/version missing");
     if (!r.capabilities?.tools) fail("initialize: tools capability missing");
+    if (!r.capabilities?.prompts) fail("initialize: prompts capability missing");
     console.log(`initialize      ok  protocol ${r.protocolVersion}, server ${r.serverInfo?.name} ${r.serverInfo?.version} (${Date.now() - started} ms)`);
   }
 
@@ -105,6 +106,15 @@ try {
     }
     console.log(`tools/list      ok  ${tools.length} tools: ${tools.map((t) => t.name).join(", ")}`);
   }
+
+  const prompts = await request("prompts/list", {});
+  const pl = prompts.result?.prompts;
+  if (!Array.isArray(pl) || pl.length !== 7) fail(`prompts/list: expected 7 prompts, got ${JSON.stringify(prompts.error ?? pl?.length)}`);
+  else console.log(`prompts/list    ok  ${pl.map((p) => p.name).join(", ")}`);
+  const pg = await request("prompts/get", { name: "art-direct", arguments: { brief: "funeral home, Cafe – Zürich" } });
+  const ptext = pg.result?.messages?.[0]?.content?.text ?? "";
+  if (!ptext.includes("Zürich")) fail(`prompts/get: UTF-8 brief did not round-trip: ${JSON.stringify(pg.error ?? ptext.slice(0, 80))}`);
+  else console.log(`prompts/get     ok  art-direct, ${ptext.split(/\s+/).length} words, UTF-8 intact`);
 
   // Read-only call: Layoza's mechanics catalogue, no files touched
   const call = await request("tools/call", { name: "deal_mechanics", arguments: { brief: "seafood restaurant", count: 2 } });
