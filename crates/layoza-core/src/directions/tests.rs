@@ -317,14 +317,59 @@ fn solemn_briefs_get_human_presence_not_cold_kit() {
 }
 
 #[test]
-fn unrelated_briefs_do_not_share_display_faces() {
-    let faces: Vec<String> = EIGHT
-        .iter()
-        .flat_map(|q| recommend_design(q, OperatingMode::NewWebsite, None, None).directions)
-        .map(|d| d.typography.display_font)
-        .collect();
-    let distinct: HashSet<_> = faces.iter().collect();
-    assert!(faces.len() == distinct.len(), "{} repeats over {} faces: {faces:?}", faces.len() - distinct.len(), faces.len());
+fn unrelated_briefs_do_not_share_type_families() {
+    assert_eq!(family("Libre Caslon Display"), family("Libre Caslon Text"));
+    assert_eq!(family("Sofia Sans Condensed"), "sofia sans");
+    assert_eq!(family("Archivo Narrow"), "archivo");
+    let dirs: Vec<_> = EIGHT.iter().flat_map(|q| recommend_design(q, OperatingMode::NewWebsite, None, None).directions).collect();
+    let display: Vec<String> = dirs.iter().map(|d| family(&d.typography.display_font)).collect();
+    let distinct: HashSet<_> = display.iter().collect();
+    assert!(display.len() == distinct.len(), "display families repeat: {display:?}");
+    let mut body: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    for d in &dirs {
+        *body.entry(family(&d.typography.body_font)).or_default() += 1;
+    }
+    let worst = body.iter().max_by_key(|(_, n)| **n).unwrap();
+    assert!(*worst.1 <= 2, "body family {} used {} times over the eight briefs: {body:?}", worst.0, worst.1);
+}
+
+#[test]
+fn text_faces_never_set_display_type() {
+    for e in type_pool() {
+        assert!(display_capable(&e.pairing.display_font, &e.pairing.body_font), "{}: text face {} as display", e.pairing.id, e.pairing.display_font);
+    }
+    // Profiles can carry a text face (education uses Lora); the deal replaces it.
+    for q in EIGHT.iter().copied().chain(["online course platform for a university", "law firm", "independent bookshop"]) {
+        for v in 0..3 {
+            for d in recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v).directions {
+                assert!(display_capable(&d.typography.display_font, &d.typography.body_font), "{q} v{v}: text face {} as display", d.typography.display_font);
+            }
+        }
+    }
+}
+
+#[test]
+fn task_first_briefs_skip_posters_and_placeless_maps() {
+    let is_poster = |a: &Archetype| a.composition == "poster" || a.key == "manifesto";
+    for q in ["B2B invoicing API", "accounting firm", "municipal water utility", "payroll SaaS for mid-size companies", "plumbing contractor", "admin dashboard for a logistics company"] {
+        for v in 0..4 {
+            for d in recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v).directions {
+                assert!(!is_poster(arch_of(&d.title)), "{q} v{v}: poster layout {}", d.title);
+            }
+        }
+    }
+    for q in ["funeral home", "B2B invoicing API", "accounting firm", "independent bookshop", "payroll SaaS for mid-size companies"] {
+        for v in 0..4 {
+            for d in recommend_design_variant(q, OperatingMode::NewWebsite, None, None, v).directions {
+                assert_ne!(arch_of(&d.title).hero_material, "map", "{q} v{v}: map hero with no place: {}", d.title);
+            }
+        }
+    }
+    // The rules give way when the brief asks: a bold campaign can get a poster, a venue its map.
+    let poster = (0..4).flat_map(|v| recommend_design_variant("bold editorial campaign for a fintech launch", OperatingMode::NewWebsite, None, None, v).directions).any(|d| is_poster(arch_of(&d.title)));
+    assert!(poster, "bold campaign never got a poster");
+    let map = (0..4).flat_map(|v| recommend_design_variant("vineyard wedding venue", OperatingMode::NewWebsite, None, None, v).directions).any(|d| arch_of(&d.title).hero_material == "map");
+    assert!(map, "venue never got a map");
 }
 
 #[test]

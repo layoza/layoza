@@ -485,33 +485,6 @@
 "mono_url": ""
 },
 {
-"id": "libre-baskerville-source-sans",
-"display": "Libre Baskerville",
-"body": "Source Sans 3",
-"mono": "Source Code Pro",
-"mood": "Bookish, sober, legible at length",
-"ratio": "1.333 (Perfect Fourth)",
-"voice": "editorial",
-"look_family": "warm-paper-serif",
-"display_style": "serif",
-"tags": [
-"legal",
-"civic",
-"literary"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
-"mono_url": ""
-},
-{
 "id": "spectral-plex-sans",
 "display": "Spectral",
 "body": "IBM Plex Sans",
@@ -862,33 +835,6 @@
 "display_class": "serif",
 "body_class": "grotesk",
 "url": "https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Source+Sans+3:wght@400;700&family=Space+Mono&display=swap",
-"mono_url": ""
-},
-{
-"id": "crimson-pro-work-sans",
-"display": "Crimson Pro",
-"body": "Work Sans",
-"mono": "DM Mono",
-"mood": "Old-style, quiet, crafted",
-"ratio": "1.414 (Augmented Fourth)",
-"voice": "editorial",
-"look_family": "warm-paper-serif",
-"display_style": "serif",
-"tags": [
-"textile",
-"warm-grain",
-"earth"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Work+Sans:wght@400;700&family=DM+Mono&display=swap",
 "mono_url": ""
 },
 {
@@ -1657,58 +1603,6 @@
 "mono_url": ""
 },
 {
-"id": "libre-caslon-text-work-sans",
-"display": "Libre Caslon Text",
-"body": "Work Sans",
-"mono": "Courier Prime",
-"mood": "Colonial-printshop Caslon",
-"ratio": "1.250 (Major Third)",
-"voice": "editorial",
-"look_family": "warm-paper-serif",
-"display_style": "serif",
-"tags": [
-"literary",
-"legal"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@700&family=Work+Sans:wght@400;700&family=Courier+Prime&display=swap",
-"mono_url": ""
-},
-{
-"id": "crimson-pro-figtree",
-"display": "Crimson Pro",
-"body": "Figtree",
-"mono": "Inconsolata",
-"mood": "Old-style serif, friendly sans",
-"ratio": "1.414 (Augmented Fourth)",
-"voice": "editorial",
-"look_family": "warm-paper-serif",
-"display_style": "serif",
-"tags": [
-"literary",
-"calm"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap",
-"mono_url": ""
-},
-{
 "id": "spectral-karla",
 "display": "Spectral",
 "body": "Karla",
@@ -1839,60 +1733,6 @@
 "display_class": "serif",
 "body_class": "grotesk",
 "url": "https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;700&family=Source+Code+Pro&display=swap",
-"mono_url": ""
-},
-{
-"id": "public-sans-solo",
-"display": "Public Sans",
-"body": "Public Sans",
-"mono": "IBM Plex Mono",
-"mood": "Government-plain, neutral, unbranded",
-"ratio": "1.200 (Minor Third)",
-"voice": "utility",
-"look_family": "hairline-newspaper",
-"display_style": "sans",
-"tags": [
-"civic",
-"infrastructure",
-"data"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "grotesk",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap",
-"mono_url": ""
-},
-{
-"id": "atkinson-hyperlegible-solo",
-"display": "Atkinson Hyperlegible",
-"body": "Atkinson Hyperlegible",
-"mono": "IBM Plex Mono",
-"mood": "Low-vision legible, notice-board",
-"ratio": "1.250 (Major Third)",
-"voice": "utility",
-"look_family": "swiss-grid",
-"display_style": "sans",
-"tags": [
-"civic",
-"care",
-"infrastructure"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "grotesk",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono&display=swap",
 "mono_url": ""
 },
 {
@@ -3694,33 +3534,6 @@
 "mono_url": ""
 },
 {
-"id": "karla-solo",
-"display": "Karla",
-"body": "Karla",
-"mono": "Inconsolata",
-"mood": "Quirky grotesk, warm",
-"ratio": "1.200 (Minor Third)",
-"voice": "utility",
-"look_family": "soft-organic",
-"display_style": "sans",
-"tags": [
-"care",
-"botanical",
-"calm"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "grotesk",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Inconsolata&display=swap",
-"mono_url": ""
-},
-{
 "id": "darker-grotesque-karla",
 "display": "Darker Grotesque",
 "body": "Karla",
@@ -4048,88 +3861,6 @@
 "display_class": "serif",
 "body_class": "sans",
 "url": "https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@700&family=PT+Sans:wght@400;700&family=Courier+Prime&display=swap",
-"mono_url": ""
-},
-{
-"id": "pt-serif-pt-sans",
-"display": "PT Serif",
-"body": "PT Sans",
-"mono": "Fira Code",
-"mood": "Public-type, multilingual press",
-"ratio": "1.414 (Augmented Fourth)",
-"voice": "editorial",
-"look_family": "hairline-newspaper",
-"display_style": "serif",
-"tags": [
-"civic",
-"literary",
-"data"
-],
-"scripts": [
-"latin",
-"latin-ext",
-"cyrillic"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "sans",
-"url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&family=PT+Sans:wght@400;700&family=Fira+Code&display=swap",
-"mono_url": ""
-},
-{
-"id": "lora-karla",
-"display": "Lora",
-"body": "Karla",
-"mono": "Inconsolata",
-"mood": "Brushed serif, garden-notebook",
-"ratio": "1.333 (Perfect Fourth)",
-"voice": "editorial",
-"look_family": "soft-organic",
-"display_style": "serif",
-"tags": [
-"botanical",
-"care",
-"earth"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Karla:wght@400;700&family=Inconsolata&display=swap",
-"mono_url": ""
-},
-{
-"id": "gelasio-figtree",
-"display": "Gelasio",
-"body": "Figtree",
-"mono": "Inconsolata",
-"mood": "Georgia-metric serif, practical",
-"ratio": "1.250 (Major Third)",
-"voice": "editorial",
-"look_family": "warm-paper-serif",
-"display_style": "serif",
-"tags": [
-"legal",
-"earth",
-"calm"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Gelasio:wght@700&family=Figtree:wght@400;700&family=Inconsolata&display=swap",
 "mono_url": ""
 },
 {
@@ -4484,33 +4215,6 @@
 "display_class": "serif",
 "body_class": "geometric",
 "url": "https://fonts.googleapis.com/css2?family=Brygada+1918:wght@700&family=Albert+Sans:wght@400;700&family=Fragment+Mono&display=swap",
-"mono_url": ""
-},
-{
-"id": "crimson-pro-sora",
-"display": "Crimson Pro",
-"body": "Sora",
-"mono": "Spline Sans Mono",
-"mood": "Soft serif, wellness-room",
-"ratio": "1.333 (Perfect Fourth)",
-"voice": "editorial",
-"look_family": "soft-organic",
-"display_style": "serif",
-"tags": [
-"care",
-"calm",
-"botanical"
-],
-"scripts": [
-"latin",
-"latin-ext"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "geometric",
-"url": "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Sora:wght@400;700&family=Spline+Sans+Mono&display=swap",
 "mono_url": ""
 },
 {
@@ -4925,34 +4629,6 @@
 "display_class": "grotesk",
 "body_class": "grotesk",
 "url": "https://fonts.googleapis.com/css2?family=Changa:wght@700&family=Cairo:wght@400;700&family=Fira+Code&display=swap",
-"mono_url": ""
-},
-{
-"id": "markazi-text-ibm-plex-sans-arabic",
-"display": "Markazi Text",
-"body": "IBM Plex Sans Arabic",
-"mono": "IBM Plex Mono",
-"mood": "Arabic text serif, newsroom",
-"ratio": "1.250 (Major Third)",
-"voice": "editorial",
-"look_family": "hairline-newspaper",
-"display_style": "serif",
-"tags": [
-"civic",
-"literary",
-"legal"
-],
-"scripts": [
-"latin",
-"latin-ext",
-"arabic"
-],
-"licence": "SIL Open Font License 1.1",
-"source": "google",
-"overused": false,
-"display_class": "serif",
-"body_class": "grotesk",
-"url": "https://fonts.googleapis.com/css2?family=Markazi+Text:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;700&family=IBM+Plex+Mono&display=swap",
 "mono_url": ""
 },
 {

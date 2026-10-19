@@ -855,6 +855,39 @@ fn is_mono_name(f: &str) -> bool {
     l.contains("mono") || l.contains("code") || l.ends_with(" console")
 }
 
+/// Words that give a brief a place to map.
+const PLACE_WORDS: &[&str] = &[
+    "in", "near", "local", "map", "maps", "location", "locations", "city", "town", "village", "neighbourhood", "neighborhood", "district",
+    "region", "route", "routes", "trail", "trails", "venue", "visit", "tour", "tours", "campus", "park", "garden", "gardens", "estate", "branches", "camp", "camps", "school", "schools",
+];
+
+/// Faces drawn for running text. They never set display type, unless the pairing is one family
+/// with a display optical size (see `OPSZ_FACES`).
+const TEXT_ONLY_FACES: &[&str] = &[
+    "libre caslon text", "markazi text", "crimson pro", "crimson text", "pt serif", "pt sans", "gelasio", "lora", "atkinson hyperlegible",
+    "karla", "public sans", "source sans 3", "work sans", "ibm plex sans", "inter", "open sans", "roboto", "noto sans", "noto serif",
+    "libre baskerville", "nunito sans", "figtree", "dm sans",
+];
+
+/// Families with an optical-size axis that reaches display sizes.
+const OPSZ_FACES: &[&str] = &["literata", "source serif 4", "newsreader", "fraunces", "roboto serif", "piazzolla", "merriweather"];
+
+pub(crate) fn display_capable(display: &str, body: &str) -> bool {
+    let d = display.to_lowercase();
+    !TEXT_ONLY_FACES.contains(&d.as_str()) || (family(display) == family(body) && OPSZ_FACES.contains(&d.as_str()))
+}
+
+/// Family of a face: optical and width cuts ("Libre Caslon Display", "Libre Caslon Text",
+/// "Sofia Sans Condensed") belong to one family.
+pub(crate) fn family(face: &str) -> String {
+    const CUTS: &[&str] = &["display", "text", "condensed", "semi", "extra", "narrow", "sc", "caption", "headline", "deck", "micro", "subhead", "poster", "pro"];
+    let mut w: Vec<&str> = face.split_whitespace().collect();
+    while w.len() > 1 && CUTS.contains(&w[w.len() - 1].to_lowercase().as_str()) {
+        w.pop();
+    }
+    w.join(" ").to_lowercase()
+}
+
 /// Hero materials with no human presence; solemn briefs (funerals, care, law) avoid them.
 const COLD_HEROES: &[&str] = &["object", "illustration", "code-output", "data-as-image", "live-ui", "procedural-texture", "collage"];
 
@@ -950,6 +983,15 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     // Display gimmicks (sci-fi, pixel, arcade, novelty scripts) only when the brief asks for that register.
     let gimmick_ok = ["kinetic", "night", "y2k", "play", "celebration", "70s", "sport", "ink"].iter().any(|t| has(t))
         || ["retro", "arcade", "game", "gaming", "sci-fi", "scifi", "futuristic", "neon", "pixel", "space", "cyber"].iter().any(|k| q.contains(k));
+    // Task-first briefs (money, law, code, utilities, care, dashboards) read; posters only when asked.
+    let asks_bold = mood("bold") || ["editorial", "manifesto", "campaign", "poster", "bold"].iter().any(|k| q.contains(k));
+    let task_first = matches!(signals.surface, S::ProductUi | S::DevTool) || ["finance", "legal", "code", "infrastructure", "civic", "trades", "care"].iter().any(|t| has(t));
+    // A map hero needs a place to map: a venue, a named place, a service area or a location word.
+    let words: Vec<&str> = q.split(|c: char| !c.is_alphanumeric()).collect();
+    let place = signals.surface == S::Venue
+        || script.is_some()
+        || ["civic", "infrastructure", "trades"].iter().any(|t| has(t))
+        || words.iter().any(|w| PLACE_WORDS.contains(w));
     // Nothing matched at all: seed the pick from the brief itself so unrelated briefs spread over
     // the whole pool instead of all landing on the same top-scored entries.
     let no_match = industry.is_none() && !subject.from_trades;
@@ -960,11 +1002,17 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let (margin, min) = if no_match { (4, 5) } else { (2, 2) };
     let types = type_pool();
     let pals = palette_pool();
+    // How many pairings share each body family: the commonest (Karla, Source Sans) yield to rarer ones.
+    let mut body_freq: std::collections::HashMap<String, i32> = std::collections::HashMap::new();
+    for e in types {
+        *body_freq.entry(family(&e.pairing.body_font)).or_default() += 1;
+    }
     let ground_tone = brand_ground(&signals.brief_colors).map(|g| if luminance(g).unwrap_or(1.0) < 0.5 { Tone::Dark } else { Tone::Light });
 
     let mut out: Vec<Dealt> = Vec::new();
     let mut used_comp: Vec<&str> = Vec::new();
     let mut used_fonts: Vec<String> = Vec::new();
+    let mut used_bodies: Vec<String> = Vec::new();
     let mut used_pals: Vec<String> = Vec::new();
     let mut used_tones: Vec<Tone> = Vec::new();
     let mut used_families: Vec<&str> = Vec::new();
@@ -974,7 +1022,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let mut prev_axes: Option<(Tone, &str, &str, &str)> = None;
     if let Some((t, p)) = industry {
         // B and C never reuse the industry's own display face or palette, even when A re-deals.
-        used_fonts.push(t.display_font.clone());
+        used_fonts.push(family(&t.display_font));
         used_pals.push(p.id.clone());
     }
     for slot in 0..3u8 {
@@ -1030,6 +1078,12 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                         s += 3;
                     }
                 }
+                if task_first && !asks_bold && (a.composition == "poster" || a.key == "manifesto") {
+                    s -= 10;
+                }
+                if a.hero_material == "map" && !place {
+                    s -= 10;
+                }
                 (s, a)
             })
             .collect();
@@ -1062,9 +1116,14 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 used_tones.push(tone);
                 let te = types.iter().find(|e| e.pairing.id == t.id || e.pairing.display_font == t.display_font);
                 // A place or language the profile's type cannot set: keep the palette, deal the type.
-                let (t, te) = match script {
-                    Some(sc) if !te.is_some_and(|e| e.scripts.contains(&sc)) => {
-                        let best = types.iter().filter(|e| e.scripts.contains(&sc) && !used_fonts.contains(&e.pairing.display_font)).max_by_key(|e| {
+                // A text-only display face in the profile is re-dealt the same way.
+                let needs = script.filter(|sc| !te.is_some_and(|e| e.scripts.contains(sc)));
+                let (t, te) = match needs {
+                    _ if needs.is_some() || !display_capable(&t.display_font, &t.body_font) => {
+                        let best = types
+                            .iter()
+                            .filter(|e| needs.is_none_or(|sc| e.scripts.contains(&sc)) && !used_fonts.contains(&family(&e.pairing.display_font)))
+                            .max_by_key(|e| {
                             let mut s: i32 = e.tags.iter().map(|x| w(x)).sum();
                             s += if e.voice == arch.voice { 4 } else { 0 } + if e.look_family == arch.look_family { 2 } else { 0 };
                             s - if e.overused { 4 } else { 0 }
@@ -1076,7 +1135,8 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     }
                     _ => (t, te),
                 };
-                used_fonts.push(t.display_font.clone());
+                used_fonts.push(family(&t.display_font));
+                used_bodies.push(family(&t.body_font));
                 let pe = pals.iter().find(|e| e.palette.id == p.id);
                 prev_axes = Some((tone, pe.map_or("neutral", |e| e.accent_hue), pe.map_or("neutral", |e| e.warmth), te.map_or("", |e| e.display_style)));
                 out.push(Dealt {
@@ -1101,7 +1161,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         let mut tr: Vec<(i32, usize)> = types
             .iter()
             .enumerate()
-            .filter(|(_, e)| !used_fonts.contains(&e.pairing.display_font))
+            .filter(|(_, e)| !used_fonts.contains(&family(&e.pairing.display_font)) && display_capable(&e.pairing.display_font, &e.pairing.body_font))
             .map(|(i, e)| {
                 let mut s = if e.voice == arch.voice { 4 } else { 0 };
                 s += e.tags.iter().map(|t| if *t == "data" && signals.surface == S::ProductUi { 4 } else { w(t) }).sum::<i32>();
@@ -1138,6 +1198,16 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                     s -= 2;
                 }
                 s += (h(&e.pairing.display_font) % 4) as i32;
+                // A face picked only for a surface tag (code, data) yields to one on the brief's subject.
+                if !subject.tags.is_empty() && !e.tags.iter().any(|t| subject.tags.contains(t)) {
+                    s -= 2;
+                }
+                let bf = family(&e.pairing.body_font);
+                s -= body_freq.get(&bf).copied().unwrap_or(0) / 4;
+                s += (h(&bf) % 3) as i32;
+                if used_bodies.contains(&bf) {
+                    s -= 4;
+                }
                 (s, i)
             })
             .collect();
@@ -1199,7 +1269,8 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             }
         }
         let pe = &pals[pc[pick(pc.len())]];
-        used_fonts.push(te.pairing.display_font.clone());
+        used_fonts.push(family(&te.pairing.display_font));
+        used_bodies.push(family(&te.pairing.body_font));
         used_pals.push(pe.palette.id.clone());
         used_tones.push(pe.tone);
         prev_axes = Some((pe.tone, pe.accent_hue, pe.warmth, te.display_style));
