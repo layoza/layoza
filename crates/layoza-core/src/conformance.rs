@@ -656,6 +656,9 @@ fn check_motif(id: &str, vps: &[&Value]) -> ConformCheck {
         "arch-top" => ("arch-topped frames", n("arch_tops"), 1),
         "torn-edge" => ("torn edges (many-point polygons or edge masks on wide bands)", n("torn_edges"), 1),
         "round-mask" => ("circular media masks", n("round_masks"), 1),
+        "bezel-frame" => ("media in even, rounded bezel frames", n("bezel_frames"), 2),
+        "letterbox" => ("photographs or film cropped to about 2.39:1", n("letterbox_media"), 2),
+        "lit-ground" => ("wide bands lit by one gradient falloff", n("lit_grounds"), 2),
         _ => return mk(&rule, Status::Unknown, "no render hint for this motif"),
     };
     let mut ev = format!("{} {} found (want {}+)", found, hint, need);
@@ -966,7 +969,7 @@ mod tests {
 
     #[test]
     fn every_motif_has_a_hint_and_unknown_facts_stay_unknown() {
-        for id in ["stepped-corner", "seam-grid", "lit-edge", "cut-corner", "ruled-frame", "registration-marks", "notched-edge", "arch-top", "torn-edge", "round-mask"] {
+        for id in ["stepped-corner", "seam-grid", "lit-edge", "cut-corner", "ruled-frame", "registration-marks", "notched-edge", "arch-top", "torn-edge", "round-mask", "bezel-frame", "letterbox", "lit-ground"] {
             let c = check_motif(id, &[&json!({ "width": 1440, "motif": {} })]);
             assert_eq!(c.status, Status::Fail, "{id}");
         }

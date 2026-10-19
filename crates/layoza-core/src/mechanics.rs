@@ -856,6 +856,9 @@ const EDGE_ROLES: &[&str] = &["footer", "faq", "cta", "contact", "nav", "section
 const SLOT_ROLES: &[&str] = &["nav", "footer"];
 
 /// Look families that read as a document (newspaper, civic form, paper page, drawing sheet).
+/// Look families built on a dark ground.
+const DARK_LOOKS: &[&str] = &["cinematic-dark", "luxe-dark", "dark-single-accent"];
+
 const DOCUMENT_LOOKS: &[&str] = &["hairline-newspaper", "quiet-civic", "warm-paper-serif", "technical-blueprint"];
 
 /// Look families that read as a staged scene: dark, sparse, photographic.
@@ -870,6 +873,15 @@ fn brief_nav_family(brief_l: &str) -> Option<&'static str> {
         .any(|w| brief_l.contains(w));
     let settles = ["after scrolling", "on scroll", "after scroll", "when scrolling", "sticky"].iter().any(|w| brief_l.contains(w));
     (header && overlay && settles).then_some("nav-overlay-settle")
+}
+
+/// True when the brief describes a dark footer ("dark navy footer", "footer on black").
+fn brief_dark_footer(brief_l: &str) -> bool {
+    brief_l.match_indices("footer").any(|(i, _)| {
+        let lo = brief_l[..i].char_indices().rev().nth(40).map_or(0, |(j, _)| j);
+        let hi = brief_l[i..].char_indices().nth(48).map_or(brief_l.len(), |(j, _)| i + j);
+        ["dark", "navy", "black", "night", "charcoal"].iter().any(|w| brief_l[lo..hi].contains(w))
+    })
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1174,6 +1186,12 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     // A brief that names no register (an unusual trade) keeps every mechanic open.
     let regs = crate::register::named_registers(brief);
     let suits = |m: &Mechanic| regs.is_empty() || crate::register::fits(&m.registers, &regs);
+    // A cinematic brief (by its words or its register: 3D, video walls, launches) is staged, never
+    // dressed as a newspaper, civic form, paper page or drawing sheet.
+    let staged_brief = regs.contains(&"cinematic") || {
+        let b = brief.to_lowercase();
+        ["cinematic", "immersive", "filmic"].iter().any(|k| b.contains(k))
+    };
 
     let allowed = |m: &Mechanic| -> bool {
         let fits_intensity = if intensity == Intensity::Calm { m.intensity == Intensity::Calm } else { m.intensity <= intensity };
@@ -1208,6 +1226,12 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         }
         if !suits(m) {
             s -= 40;
+        }
+        if staged_brief && DOCUMENT_LOOKS.contains(&m.look_family.as_str()) {
+            s -= 20;
+        }
+        if staged_brief && SLOT_ROLES.contains(&m.role.as_str()) && STAGED_LOOKS.contains(&m.look_family.as_str()) {
+            s += 3;
         }
         // A mechanic built around another trade's object (a shop shelf, a floor plan, an app screen)
         // reads as a template from the wrong business: push it down unless the brief names that trade
@@ -1492,9 +1516,10 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
     let (nav, footer) = if opts.existing.is_none() {
         let brief_l = opts.brief.to_lowercase();
         // A cinematic or immersive brief never gets a newspaper, civic, paper or drawing-sheet header or footer.
-        let cinematic = ["cinematic", "immersive", "filmic"].iter().any(|k| brief_l.contains(k));
+        let cinematic = staged_brief;
         let staged = |m: &Mechanic| !cinematic || !DOCUMENT_LOOKS.contains(&m.look_family.as_str());
         let asked_nav = brief_nav_family(&brief_l);
+        let dark_footer = brief_dark_footer(&brief_l);
         let mut slot = |role: &str| {
             // The header the brief describes in words is dealt before any rotation.
             if role == "nav" {
@@ -1505,13 +1530,18 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
                     }
                 }
             }
+            // The dark footer the brief describes is dealt from the dark looks first.
+            if role == "footer" && dark_footer {
+                let dark = |m: &Mechanic| m.role == "footer" && suits(m) && DARK_LOOKS.contains(&m.look_family.as_str());
+                if let Some(m) = take_rotated(&sections, &mut used_families, &dark, role).or_else(|| take_rotated(&wider, &mut used_families, &dark, role)) {
+                    return Some(m);
+                }
+            }
             let fitting = |m: &Mechanic| m.role == role && staged(m) && suits(m);
             let is_role = |m: &Mechanic| m.role == role;
-            // A cinematic brief's furniture comes from the staged looks first.
-            let scene = |m: &Mechanic| cinematic && m.role == role && suits(m) && STAGED_LOOKS.contains(&m.look_family.as_str());
-            take_rotated(&sections, &mut used_families, &scene, role)
-                .or_else(|| take_rotated(&wider, &mut used_families, &scene, role))
-                .or_else(|| take_rotated(&sections, &mut used_families, &fitting, role))
+            // A cinematic brief's furniture leans to the staged looks through fit_score, so the
+            // rotation window still holds enough of them to vary between re-deals.
+            take_rotated(&sections, &mut used_families, &fitting, role)
                 .or_else(|| take_rotated(&wider, &mut used_families, &fitting, role))
                 .or_else(|| take_rotated(&sections, &mut used_families, &is_role, role))
                 .or_else(|| take_rotated(&wider, &mut used_families, &is_role, role))

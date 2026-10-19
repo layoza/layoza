@@ -157,7 +157,7 @@ function layozaRenderFacts() {
 
   // Effects, buttons and motif hints in one walk over visible elements (pseudo elements included)
   const effects = { gradients: [], scrims: 0, glows: [], backdrop: [], blobs: [] };
-  const motif = { stepped_polygons: 0, chamfer_polygons: 0, torn_edges: 0, other_clips: 0, radial_masks: 0, masks: 0, grid_lines: 0, hairline_grids: 0, single_side_borders: 0, edge_lines: 0, corner_marks: 0, side_dots: 0, rules: 0, ruled_starts: 0, arch_tops: 0, round_masks: 0, samples: [] };
+  const motif = { stepped_polygons: 0, chamfer_polygons: 0, torn_edges: 0, other_clips: 0, radial_masks: 0, masks: 0, grid_lines: 0, hairline_grids: 0, single_side_borders: 0, edge_lines: 0, corner_marks: 0, side_dots: 0, rules: 0, ruled_starts: 0, arch_tops: 0, round_masks: 0, bezel_frames: 0, letterbox_media: 0, lit_grounds: 0, samples: [] };
   const note = (k, el, extra) => { if (motif.samples.length < 12) motif.samples.push({ hint: k, el: sel(el), ...(extra || {}) }); };
   const polyPoints = (cp) => {
     const at = cp.indexOf("polygon(");
@@ -333,6 +333,15 @@ function layozaRenderFacts() {
     if (r.width >= 120 && r.height >= 120 && Math.min(rTL, rTR) >= Math.min(r.width * 0.35, 100) && rB <= 12) { motif.arch_tops++; note("arch-top", el); }
     if (r.width >= 120 && Math.abs(r.width - r.height) <= 4 && Math.min(rTL, rTR) >= r.width * 0.45 && rB >= r.width * 0.45 && isMediaFrame(el)) { motif.round_masks++; note("round-mask", el); }
     if (st.display.includes("grid") && (px(st.columnGap) >= 1 && px(st.columnGap) <= 2) && bgc && bgc.a > 0.5 && el.childElementCount >= 3) { motif.hairline_grids++; note("hairline-grid", el); }
+    // Bezel: a frame holding media with an even border or padding and one rounded radius
+    const pads = [px(st.paddingTop), px(st.paddingRight), px(st.paddingBottom), px(st.paddingLeft)];
+    const evenBorder = sides === 4 && Math.max(...bw) - Math.min(...bw) <= 0.5 && bw[0] >= 1;
+    const evenPad = Math.min(...pads) >= 4 && Math.max(...pads) - Math.min(...pads) <= 2 && Math.max(...pads) <= 32 && bgc && bgc.a > 0.3;
+    if (r.width >= 160 && Math.min(rTL, rTR, rB) >= 4 && (evenBorder || evenPad) && el.querySelector(":scope > img, :scope > picture, :scope > video, :scope > canvas")) { motif.bezel_frames++; note("bezel-frame", el); }
+    // Letterbox: a photograph or film cropped wide (about 2.39:1)
+    if (/^(IMG|VIDEO|PICTURE|CANVAS)$/.test(tag) && r.width >= vw * 0.4 && r.height > 0 && r.width / r.height >= 2.15 && r.width / r.height <= 2.7) { motif.letterbox_media++; note("letterbox", el); }
+    // Lit ground: a wide band lit by one soft gradient falloff
+    if (r.width >= vw * 0.8 && r.height >= 240 && /radial-gradient|linear-gradient/.test(st.backgroundImage || "") && !/repeating-/.test(st.backgroundImage || "")) { motif.lit_grounds++; note("lit-ground", el); }
     for (const pe of ["::before", "::after"]) {
       const ps = getComputedStyle(el, pe);
       if (!ps.content || ps.content === "none" || ps.display === "none") continue;
