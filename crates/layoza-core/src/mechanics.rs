@@ -134,8 +134,9 @@ pub struct Mechanic {
     /// can avoid a page that is all typography.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub hero_material: String,
-    /// Hero only: the visual look family (`warm-paper-serif`, `dark-single-accent`,
-    /// `hairline-newspaper`, ...). Families are fine; repeating one across a deal is not.
+    /// The visual look family (`warm-paper-serif`, `dark-single-accent`, `hairline-newspaper`, ...).
+    /// Every hero, nav, footer and section head carries one. Families are fine; repeating one
+    /// across a deal is not.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub look_family: String,
     /// Conditional mechanics: dealt only when the brief contains at least one of these words or
@@ -1623,6 +1624,27 @@ mod tests {
                 .map(|m| m.look_family.as_str())
                 .collect();
             assert!(calm.len() >= 4, "{n}: calm heroes span only {} looks", calm.len());
+        }
+    }
+
+    #[test]
+    fn every_niche_has_varied_furniture() {
+        // Unconditional furniture each niche can draw from: the universal pool plus its own entries.
+        for (role, need) in [("nav", 6), ("footer", 6), ("section-head", 4)] {
+            for m in catalogue().iter().filter(|m| m.role == role) {
+                assert!(!m.look_family.trim().is_empty(), "{}: no look_family", m.id);
+            }
+            for n in NICHES.iter().filter(|n| **n != "any") {
+                let pool: Vec<&Mechanic> = catalogue()
+                    .iter()
+                    .filter(|m| m.role == role && m.requires_signal.is_empty())
+                    .filter(|m| m.niches.iter().any(|x| x == "any" || x == n))
+                    .collect();
+                let looks: HashSet<&str> = pool.iter().map(|m| m.look_family.as_str()).collect();
+                assert!(pool.len() >= need && looks.len() >= 3, "{n} {role}: {} options, {} looks", pool.len(), looks.len());
+                let calm = pool.iter().filter(|m| m.intensity == Intensity::Calm).count();
+                assert!(calm >= 3, "{n} {role}: only {calm} calm options");
+            }
         }
     }
 
