@@ -963,19 +963,23 @@ mod hook_tests {
         let html = "<html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, maximum-scale=1, user-scalable=no\"></head>\
                     <body><main><p style=\"margin-left: 8px\">Hi</p><a href=\"/x\" tabindex=\"3\">x</a></main></body></html>";
         fs::write(&f, html).unwrap();
+        // A wide budget: under a loaded parallel test run the 300 ms default can run out before the
+        // guideline rules start, which would make this test about the machine, not the rules.
+        fs::create_dir_all(d.join(".layoza")).unwrap();
+        fs::write(d.join(".layoza").join("hooks.json"), r#"{"budget_ms":5000}"#).unwrap();
         let out = check_edit(&payload(&f, "g"), Some(&d), &d, 1).expect("findings");
         let ctx = context_of(&out);
         assert!(ctx.contains("TOUCH-03"), "zoom rule (default on): {}", ctx);
         assert!(ctx.contains("NAV-11"), "positive tabindex rule: {}", ctx);
         assert!(!ctx.contains("I18N-02"), "opt-in-only rule must stay off by default: {}", ctx);
-        assert!(ctx.contains("ms of 300 ms budget"), "timing reported: {}", ctx);
+        assert!(ctx.contains("ms of 5000 ms budget"), "timing reported: {}", ctx);
 
         // Project opts in to I18N-02 and disables NAV-11; a changed file is re-checked at once.
-        fs::write(d.join(".layoza").join("hooks.json"), r#"{"enable":["I18N-02"],"disable":["nav-11"],"budget_ms":250}"#).unwrap();
+        fs::write(d.join(".layoza").join("hooks.json"), r#"{"enable":["I18N-02"],"disable":["nav-11"],"budget_ms":4000}"#).unwrap();
         fs::write(&f, format!("{}\n", html)).unwrap();
         let ctx2 = context_of(&check_edit(&payload(&f, "g"), Some(&d), &d, 2).expect("changed file re-checked"));
         assert!(ctx2.contains("I18N-02") && !ctx2.contains("NAV-11"), "{}", ctx2);
-        assert!(ctx2.contains("250 ms budget"), "{}", ctx2);
+        assert!(ctx2.contains("4000 ms budget"), "{}", ctx2);
         // Unchanged within the window: still rate-limited.
         assert_eq!(check_edit(&payload(&f, "g"), Some(&d), &d, 3), None);
         let _ = fs::remove_dir_all(d);

@@ -967,7 +967,7 @@ const ENTRY_GRADE: i64 = 8;
 /// Fit points below the best in-niche hero that still join the seed rotation.
 const HERO_ROTATION_WINDOW: i64 = 10;
 /// Fit points below the best furniture pick that still join the seed rotation.
-const FURNITURE_WINDOW: i64 = 6;
+const FURNITURE_WINDOW: i64 = 10;
 
 fn fnv1a(text: &str) -> u64 {
     text.bytes().fold(0xcbf29ce484222325u64, |h, b| (h ^ b as u64).wrapping_mul(0x100000001b3))
@@ -1295,6 +1295,7 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
         let rotation: Vec<&'static Mechanic> = if opts.seed.is_some() && !niches.is_empty() && opts.hero_offset == 0 {
             let base: &[&'static Mechanic] = if matching.first().is_some_and(|m| score(m) + 10 >= best) { &matching } else { &list };
             let mut r: Vec<&'static Mechanic> = base.iter().copied().filter(|m| fit_class(m, &niches).0 == FitClass::InNiche).collect();
+            let all_in_niche: Vec<&'static Mechanic> = r.clone();
             let top = r.iter().map(|m| fit_score(m)).max().unwrap_or(0);
             let is_recent = |m: &Mechanic| opts.recent_ids.iter().chain(opts.recent_by_entry.iter().flatten()).any(|x| x.eq_ignore_ascii_case(&m.id));
             // Only fresh heroes rotate; once the best one is itself a repeat, no rotation (the
@@ -1302,6 +1303,13 @@ pub fn deal_mechanics_with(opts: &DealOptions) -> MechanicDeal {
             let top_fresh = r.iter().any(|m| fit_score(m) == top && !is_recent(m));
             r.retain(|m| fit_score(m) + HERO_ROTATION_WINDOW >= top && top_fresh && !is_recent(m));
             r.sort_by(|a, b| fit_score(b).cmp(&fit_score(a)).then_with(|| a.id.cmp(&b.id)));
+            // A thin window (composition filter, one dominant fit) still rotates over at least three
+            // fresh in-niche heroes when the niche has them: the nearest-fitting ones fill it.
+            if top_fresh && r.len() < 3 {
+                let mut more: Vec<&'static Mechanic> = all_in_niche.iter().copied().filter(|m| !is_recent(m) && !r.iter().any(|x| x.id == m.id)).collect();
+                more.sort_by(|a, b| fit_score(b).cmp(&fit_score(a)).then_with(|| a.id.cmp(&b.id)));
+                r.extend(more.into_iter().take(3 - r.len()));
+            }
             r.truncate(6);
             r
         } else {
@@ -1696,6 +1704,39 @@ mod tests {
                 .map(|m| m.look_family.as_str())
                 .collect();
             assert!(calm.len() >= 4, "{n}: calm heroes span only {} looks", calm.len());
+        }
+    }
+
+    /// Seeds 1-5 rotate the hero for every niche deep enough to rotate (4+ heroes), and the calm
+    /// furniture (nav, footer) for the same briefs.
+    #[test]
+    fn consecutive_seeds_rotate_hero_and_furniture() {
+        for n in NICHES.iter().filter(|n| **n != "any") {
+            // Eligible depth: the distinct in-niche heroes this brief can be dealt at all (intensity
+            // and signals filter some catalogue entries out), measured over 40 seeds.
+            let depth = (1..=40u64)
+                .filter_map(|s| deal_mechanics_with(&DealOptions { brief: format!("{n} website"), niches: Some(vec![n.to_string()]), seed: Some(s), count: 2, ..Default::default() }).hero)
+                .filter(|m| m.niches.iter().any(|x| x == n))
+                .map(|m| m.id)
+                .collect::<HashSet<String>>()
+                .len();
+            let deals: Vec<MechanicDeal> = (1..=5u64)
+                .map(|s| deal_mechanics_with(&DealOptions { brief: format!("{n} website"), niches: Some(vec![n.to_string()]), seed: Some(s), count: 2, ..Default::default() }))
+                .collect();
+            let distinct = |f: &dyn Fn(&MechanicDeal) -> Option<String>| deals.iter().filter_map(f).collect::<HashSet<String>>().len();
+            if depth >= 4 {
+                let h = distinct(&|d| d.hero.as_ref().map(|m| m.id.clone()));
+                let ids: Vec<String> = deals.iter().filter_map(|d| d.hero.as_ref().map(|m| m.id.clone())).collect();
+                assert!(h >= 3, "{n}: seeds 1-5 gave {h} distinct heroes: {ids:?}");
+            }
+            let nav = distinct(&|d| d.nav.as_ref().map(|m| m.id.clone()));
+            let footer = distinct(&|d| d.footer.as_ref().map(|m| m.id.clone()));
+            assert!(nav >= 3 && footer >= 3, "{n}: seeds 1-5 gave {nav} navs, {footer} footers");
+        }
+        for brief in ["family funeral home offering cremation", "municipal water utility where residents report leaks"] {
+            let heroes: HashSet<String> =
+                (1..=2u64).filter_map(|s| deal_mechanics_with(&DealOptions { brief: brief.into(), seed: Some(s), count: 2, ..Default::default() }).hero.map(|m| m.id)).collect();
+            assert_eq!(heroes.len(), 2, "{brief}: seeds 1 and 2 dealt the same hero");
         }
     }
 
