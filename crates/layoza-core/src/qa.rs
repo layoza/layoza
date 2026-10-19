@@ -14,10 +14,40 @@ use std::time::{Duration, Instant};
 /// Copy of `scripts/browser-qa.mjs` compiled into the binary so live QA works from any project directory.
 const EMBEDDED_QA_SCRIPT: &str = include_str!("../../../scripts/browser-qa.mjs");
 
+/// A private per-run scratch directory under the OS temp dir, removed when dropped (also on error
+/// and panic unwinds), so parallel QA runs never share or overwrite each other's files.
+pub struct RunDir(PathBuf);
+
+impl RunDir {
+    pub fn new() -> Result<RunDir, String> {
+        static SEQ: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+        let nanos = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_nanos())
+            .unwrap_or(0);
+        let seq = SEQ.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        let dir = std::env::temp_dir()
+            .join("layoza")
+            .join(format!("run-{}-{}-{}", std::process::id(), nanos, seq));
+        fs::create_dir_all(&dir).map_err(|e| format!("Cannot create `{}`: {}", dir.display(), e))?;
+        Ok(RunDir(dir))
+    }
+
+    pub fn path(&self) -> &Path {
+        &self.0
+    }
+}
+
+impl Drop for RunDir {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir_all(&self.0);
+    }
+}
+
 /// Finds the QA script: `LAYOZA_QA_SCRIPT`, then `<project>/scripts/browser-qa.mjs` only when the
 /// project is the Layoza repository itself (so a target project's own same-named script is never
-/// executed), then the embedded copy written to the OS temp directory.
-pub fn qa_script_path(project_root: &Path) -> Result<PathBuf, String> {
+/// executed), then the embedded copy written into this run's private `run_dir` (never a shared path).
+pub fn qa_script_path(project_root: &Path, run_dir: &Path) -> Result<PathBuf, String> {
     if let Ok(custom) = std::env::var("LAYOZA_QA_SCRIPT") {
         let p = PathBuf::from(custom);
         if p.is_file() {
@@ -28,14 +58,10 @@ pub fn qa_script_path(project_root: &Path) -> Result<PathBuf, String> {
     if is_layoza_repo(project_root) && local.is_file() {
         return Ok(local);
     }
-    let dir = std::env::temp_dir().join("layoza");
-    fs::create_dir_all(&dir).map_err(|e| format!("Cannot create `{}`: {}", dir.display(), e))?;
-    let path = dir.join(format!("browser-qa-{}.mjs", env!("CARGO_PKG_VERSION")));
-    let current = fs::read_to_string(&path).unwrap_or_default();
-    if current != EMBEDDED_QA_SCRIPT {
-        fs::write(&path, EMBEDDED_QA_SCRIPT)
-            .map_err(|e| format!("Cannot write embedded QA script to `{}`: {}", path.display(), e))?;
-    }
+    let path = run_dir.join(format!("browser-qa-{}.mjs", env!("CARGO_PKG_VERSION")));
+    // Rust strings are UTF-8, so the bytes written are UTF-8 on every platform
+    fs::write(&path, EMBEDDED_QA_SCRIPT.as_bytes())
+        .map_err(|e| format!("Cannot write embedded QA script to `{}`: {}", path.display(), e))?;
     Ok(path)
 }
 
@@ -128,7 +154,9 @@ fn output_with_timeout(cmd: &mut Command, timeout: Duration) -> Result<Output, S
 /// Runs headless Chromium QA on `target` (an http(s) URL or a local HTML file path) and returns
 /// the parsed report. Any runner failure is returned as an error, never as an empty pass.
 pub fn run_browser_qa(project_root: &Path, target: &str, out_json: &Path, screenshot_dir: &Path) -> Result<Value, String> {
-    let script = qa_script_path(project_root)?;
+    let started = Instant::now();
+    let run_dir = RunDir::new()?;
+    let script = qa_script_path(project_root, run_dir.path())?;
     let is_url = target.starts_with("http://") || target.starts_with("https://");
     if !is_url && !Path::new(target).is_file() {
         return Err(format!("QA target `{}` is neither an http(s) URL nor an existing HTML file.", target));
@@ -144,14 +172,18 @@ pub fn run_browser_qa(project_root: &Path, target: &str, out_json: &Path, screen
         .current_dir(project_root);
     // The project's own declared design system, when it has one, enables the design-system-* rules
     let tokens_file = discover_design_tokens(project_root, if is_url { None } else { Some(Path::new(target)) })
-        .and_then(|tokens| write_tokens_temp(&tokens).ok());
+        .and_then(|tokens| write_tokens_temp(&tokens, run_dir.path()).ok());
     if let Some(path) = &tokens_file {
         cmd.arg("--design-tokens").arg(path);
     }
-    let output = output_with_timeout(&mut cmd, qa_timeout());
-    if let Some(path) = &tokens_file {
-        let _ = fs::remove_file(path);
+    // Styles the brief asks for (DESIGN.md / BRAND.md) silence the matching brief-aware rules
+    let allow = discover_style_allow(project_root);
+    if !allow.is_empty() {
+        cmd.arg("--allow").arg(allow.join(","));
     }
+    cmd.env("PYTHONIOENCODING", "utf-8").env("PYTHONUTF8", "1");
+    let output = output_with_timeout(&mut cmd, qa_timeout());
+    drop(run_dir);
     let output = output?;
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
@@ -162,9 +194,209 @@ pub fn run_browser_qa(project_root: &Path, target: &str, out_json: &Path, screen
             tail.into_iter().rev().collect::<Vec<_>>().join(" | ")
         ));
     }
-    let raw = fs::read_to_string(out_json)
+    let bytes = fs::read(out_json)
         .map_err(|e| format!("Browser QA finished but `{}` is unreadable: {}", out_json.display(), e))?;
-    serde_json::from_str(&raw).map_err(|e| format!("Browser QA report is not valid JSON: {}", e))
+    let raw = String::from_utf8(bytes).map_err(|e| format!("Browser QA report is not UTF-8: {}", e))?;
+    let mut report: Value =
+        serde_json::from_str(raw.trim_start_matches('\u{feff}')).map_err(|e| format!("Browser QA report is not valid JSON: {}", e))?;
+    if let Some(obj) = report.as_object_mut() {
+        obj.insert("qa_runtime_ms".into(), json!(started.elapsed().as_millis() as u64));
+    }
+    if let Some(ledger) = record_look(project_root, target, &report) {
+        report["look_ledger"] = ledger;
+    }
+    let _ = fs::write(out_json, serde_json::to_string_pretty(&report).unwrap_or_default().as_bytes());
+    Ok(report)
+}
+
+// ---------------------------------------------------------------------------------------------
+// Brief-aware style allow list
+// ---------------------------------------------------------------------------------------------
+
+/// Style groups of the brief-aware QA rules and the words a brief uses to ask for them.
+const STYLE_KEYWORDS: &[(&str, &[&str])] = &[
+    ("pill", &["pill", "capsule", "fully rounded"]),
+    ("offset-shadow", &["neo-brutal", "neobrutal", "brutalis", "offset shadow", "hard shadow"]),
+    ("gradient", &["gradient"]),
+    ("glass", &["glassmorph", "frosted", "glass"]),
+    ("shadow", &["elevation", "soft shadow", "floating card"]),
+    ("glow", &["glow", "neon"]),
+    ("mono", &["monospace", "mono type", "terminal", "typewriter"]),
+    ("emoji", &["emoji"]),
+    ("imagery", &["text-only", "typographic only", "no imagery", "type-led"]),
+    ("eyebrow", &["eyebrow", "kicker", "overline"]),
+    ("numbering", &["numbered", "01 /", "index numbers"]),
+    ("illustration", &["illustration", "illustrated", "characters"]),
+    ("mockup", &["mockup", "device frame", "browser frame"]),
+    ("neutral", &["pure grey", "pure gray", "achromatic", "true black and white"]),
+    ("accent", &["colour block", "color block", "colour-block", "color-block", "bold colour", "bold color"]),
+    ("hover-scale", &["hover zoom", "hover scale"]),
+    ("structure", &["classic saas", "standard landing"]),
+];
+
+/// Reads DESIGN.md / BRAND.md (project root and `.layoza/`) and returns the style groups the brief
+/// explicitly asks for, plus any `layoza-allow: <rule-or-group>, ...` line. A line that negates the
+/// style ("no gradients", "avoid glass", "never ...") does not count.
+pub fn discover_style_allow(project_root: &Path) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for name in ["DESIGN.md", "BRAND.md", ".layoza/DESIGN.md", ".layoza/BRAND.md"] {
+        let Ok(bytes) = fs::read(project_root.join(name)) else { continue };
+        let text = String::from_utf8_lossy(&bytes).to_lowercase();
+        for groups in style_allow_from_text(&text) {
+            if !out.contains(&groups) {
+                out.push(groups);
+            }
+        }
+    }
+    out
+}
+
+fn style_allow_from_text(text: &str) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for line in text.lines() {
+        let l = line.trim();
+        if let Some(rest) = l.strip_prefix("layoza-allow:") {
+            for item in rest.split(',') {
+                let v = item.trim().trim_start_matches("rule:").trim_start_matches("style:").trim();
+                if !v.is_empty() && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '-') && !out.iter().any(|o| o == v) {
+                    out.push(v.to_string());
+                }
+            }
+            continue;
+        }
+        let negated = ["no ", "avoid", "never", "don't", "do not", "not ", "without", "ban", "forbid"]
+            .iter()
+            .any(|n| l.contains(n));
+        if negated {
+            continue;
+        }
+        for (group, words) in STYLE_KEYWORDS {
+            if words.iter().any(|w| l.contains(w)) && !out.iter().any(|o| o == group) {
+                out.push((*group).to_string());
+            }
+        }
+    }
+    out
+}
+
+// ---------------------------------------------------------------------------------------------
+// Look fingerprint: compare two pages, and the per-project look ledger
+// ---------------------------------------------------------------------------------------------
+
+/// Thresholds: layouts at or above `LAYOUT_SAME` cosine similarity count as the same skeleton;
+/// palettes at or above `PALETTE_DIFFERENT` (share-weighted OKLab distance) count as a new colourway.
+pub const LOOK_LAYOUT_SAME: f64 = 0.85;
+pub const LOOK_PALETTE_DIFFERENT: f64 = 0.08;
+
+fn layout_cells(fp: &Value) -> Option<Vec<f64>> {
+    let l = fp.get("layout").or_else(|| fp.get("layout_vector"))?;
+    let mut v: Vec<f64> = l.get("text")?.as_array()?.iter().map(|x| x.as_f64().unwrap_or(0.0)).collect();
+    v.extend(l.get("media")?.as_array()?.iter().map(|x| x.as_f64().unwrap_or(0.0)));
+    Some(v)
+}
+
+fn palette_points(fp: &Value) -> Option<Vec<([f64; 3], f64)>> {
+    let p = fp.get("palette")?.as_array()?;
+    let pts: Vec<([f64; 3], f64)> = p
+        .iter()
+        .filter_map(|c| {
+            let o = c.get("oklab")?.as_array()?;
+            let g = |i: usize| o.get(i).and_then(|x| x.as_f64()).unwrap_or(0.0);
+            Some(([g(0), g(1), g(2)], c.get("share").and_then(|s| s.as_f64()).unwrap_or(0.0)))
+        })
+        .collect();
+    (!pts.is_empty()).then_some(pts)
+}
+
+/// Compares two look fingerprints (`{layout:{text,media}, palette:[{oklab,share}]}`, as written in a
+/// QA report's `look_fingerprint` or a ledger entry). Verdicts: "re-skin" (same skeleton, new colours),
+/// "near-duplicate" (same skeleton and colours), "distinct", or "unmeasured".
+pub fn compare_look_fingerprints(a: &Value, b: &Value) -> Value {
+    let (Some(la), Some(lb), Some(pa), Some(pb)) = (layout_cells(a), layout_cells(b), palette_points(a), palette_points(b)) else {
+        return json!({ "verdict": "unmeasured", "reason": "a fingerprint is missing its layout or palette" });
+    };
+    let n = la.len().min(lb.len());
+    let (mut dot, mut na, mut nb) = (0.0, 0.0, 0.0);
+    for i in 0..n {
+        dot += la[i] * lb[i];
+        na += la[i] * la[i];
+        nb += lb[i] * lb[i];
+    }
+    let layout = if na > 0.0 && nb > 0.0 { dot / (na.sqrt() * nb.sqrt()) } else { 0.0 };
+    let near = |p: &[([f64; 3], f64)], q: &[([f64; 3], f64)]| {
+        let total: f64 = p.iter().map(|c| c.1).sum::<f64>().max(1e-9);
+        p.iter()
+            .map(|(c, s)| {
+                let d = q
+                    .iter()
+                    .map(|(o, _)| ((c[0] - o[0]).powi(2) + (c[1] - o[1]).powi(2) + (c[2] - o[2]).powi(2)).sqrt())
+                    .fold(f64::INFINITY, f64::min);
+                s * d
+            })
+            .sum::<f64>()
+            / total
+    };
+    let palette = (near(&pa, &pb) + near(&pb, &pa)) / 2.0;
+    let verdict = if layout >= LOOK_LAYOUT_SAME {
+        if palette >= LOOK_PALETTE_DIFFERENT { "re-skin" } else { "near-duplicate" }
+    } else {
+        "distinct"
+    };
+    let round = |x: f64, d: i32| (x * 10f64.powi(d)).round() / 10f64.powi(d);
+    json!({
+        "verdict": verdict,
+        "layout_similarity": round(layout, 3),
+        "palette_distance": round(palette, 4),
+        "thresholds": { "layout_same": LOOK_LAYOUT_SAME, "palette_different": LOOK_PALETTE_DIFFERENT }
+    })
+}
+
+/// Appends this run's look to `<project>/.layoza/looks.jsonl`
+/// (`{ts, target, palette, layout_vector, fonts, hero}`, one JSON object per line) and compares it with
+/// earlier entries for other targets. Returns `{entries_compared, flagged:[...]}`, or `None` when the
+/// report has no fingerprint or the ledger cannot be written.
+pub fn record_look(project_root: &Path, target: &str, report: &Value) -> Option<Value> {
+    let fp = report.get("look_fingerprint").filter(|v| !v.is_null())?;
+    let layout = fp.get("layout")?;
+    let entry = json!({
+        "ts": std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0),
+        "target": target,
+        "palette": fp.get("palette").cloned().unwrap_or(Value::Null),
+        "layout_vector": { "cols": layout.get("cols"), "rows": layout.get("rows"), "text": layout.get("text"), "media": layout.get("media") },
+        "fonts": report.get("font_families").cloned().unwrap_or(Value::Null),
+        "hero": layout.get("hero").cloned().unwrap_or(Value::Null),
+    });
+    let dir = project_root.join(".layoza");
+    let path = dir.join("looks.jsonl");
+    let earlier = fs::read(&path).map(|b| String::from_utf8_lossy(&b).into_owned()).unwrap_or_default();
+    let (compared, flagged) = compare_with_ledger(&entry, &earlier);
+    fs::create_dir_all(&dir).ok()?;
+    let mut line = serde_json::to_string(&entry).ok()?;
+    line.push('\n');
+    use std::io::Write;
+    fs::OpenOptions::new().create(true).append(true).open(&path).ok()?.write_all(line.as_bytes()).ok()?;
+    Some(json!({ "path": ".layoza/looks.jsonl", "entries_compared": compared, "flagged": flagged }))
+}
+
+/// Compares a ledger entry with each earlier JSONL line for a different target; returns how many were
+/// compared and the re-skin / near-duplicate matches.
+fn compare_with_ledger(entry: &Value, ledger: &str) -> (usize, Vec<Value>) {
+    let target = entry.get("target").and_then(|t| t.as_str()).unwrap_or("");
+    let mut compared = 0;
+    let mut flagged = Vec::new();
+    for line in ledger.lines().filter(|l| !l.trim().is_empty()) {
+        let Ok(prev) = serde_json::from_str::<Value>(line) else { continue };
+        if prev.get("target").and_then(|t| t.as_str()) == Some(target) {
+            continue;
+        }
+        compared += 1;
+        let v = compare_look_fingerprints(entry, &prev);
+        let verdict = v.get("verdict").and_then(|x| x.as_str()).unwrap_or("");
+        if verdict == "re-skin" || verdict == "near-duplicate" {
+            flagged.push(json!({ "ts": prev.get("ts"), "target": prev.get("target"), "comparison": v }));
+        }
+    }
+    (compared, flagged)
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -219,15 +451,9 @@ pub fn discover_design_tokens(project_root: &Path, target: Option<&Path>) -> Opt
     None
 }
 
-fn write_tokens_temp(tokens: &Value) -> Result<PathBuf, String> {
-    let dir = std::env::temp_dir().join("layoza");
-    fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
-    let nanos = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_nanos())
-        .unwrap_or(0);
-    let path = dir.join(format!("design-tokens-{}-{}.json", std::process::id(), nanos));
-    fs::write(&path, tokens.to_string()).map_err(|e| e.to_string())?;
+fn write_tokens_temp(tokens: &Value, run_dir: &Path) -> Result<PathBuf, String> {
+    let path = run_dir.join("design-tokens.json");
+    fs::write(&path, tokens.to_string().as_bytes()).map_err(|e| e.to_string())?;
     Ok(path)
 }
 
@@ -609,6 +835,64 @@ pub fn motion_unsettled_note(report: &Value) -> Option<String> {
             vps.join(", ")
         )
     })
+}
+
+#[cfg(test)]
+mod look_and_allow_tests {
+    use super::*;
+
+    fn fp(text: &[f64], oklab: [f64; 3]) -> Value {
+        json!({ "layout": { "text": text, "media": [0.0, 0.0] }, "palette": [{ "oklab": oklab, "share": 1.0 }] })
+    }
+
+    #[test]
+    fn same_skeleton_new_colours_is_a_reskin() {
+        let a = fp(&[1.0, 1.0, 0.0, 1.0], [0.9, 0.0, 0.0]);
+        let b = fp(&[1.0, 1.0, 0.0, 1.0], [0.5, 0.1, -0.1]);
+        assert_eq!(compare_look_fingerprints(&a, &b)["verdict"], "re-skin");
+        let c = fp(&[1.0, 1.0, 0.0, 1.0], [0.9, 0.0, 0.01]);
+        assert_eq!(compare_look_fingerprints(&a, &c)["verdict"], "near-duplicate");
+        let d = fp(&[0.0, 0.0, 1.0, 0.0], [0.5, 0.1, -0.1]);
+        assert_eq!(compare_look_fingerprints(&a, &d)["verdict"], "distinct");
+        assert_eq!(compare_look_fingerprints(&a, &json!({}))["verdict"], "unmeasured");
+    }
+
+    #[test]
+    fn ledger_skips_same_target_and_flags_reskins() {
+        let mut e = fp(&[1.0, 0.0, 1.0, 0.0], [0.9, 0.0, 0.0]);
+        e["target"] = json!("b.html");
+        let mut same = fp(&[1.0, 0.0, 1.0, 0.0], [0.4, 0.1, 0.1]);
+        same["target"] = json!("b.html");
+        let mut other = same.clone();
+        other["target"] = json!("a.html");
+        let ledger = format!("{}\n{}\nnot json\n", same, other);
+        let (n, flagged) = compare_with_ledger(&e, &ledger);
+        assert_eq!(n, 1);
+        assert_eq!(flagged.len(), 1);
+        assert_eq!(flagged[0]["comparison"]["verdict"], "re-skin");
+    }
+
+    #[test]
+    fn style_allow_reads_requests_and_ignores_negations() {
+        let got = style_allow_from_text("we use pill buttons\nno gradients anywhere\nneo-brutalist offset shadow cards\nlayoza-allow: rule:fx-glass, style:mono\n");
+        assert!(got.contains(&"pill".to_string()));
+        assert!(got.contains(&"offset-shadow".to_string()));
+        assert!(got.contains(&"fx-glass".to_string()));
+        assert!(got.contains(&"mono".to_string()));
+        assert!(!got.contains(&"gradient".to_string()));
+    }
+
+    #[test]
+    fn run_dirs_are_unique_and_removed_on_drop() {
+        let a = RunDir::new().unwrap();
+        let b = RunDir::new().unwrap();
+        assert_ne!(a.path(), b.path());
+        let script = qa_script_path(Path::new("does-not-exist"), a.path()).unwrap();
+        assert!(script.starts_with(a.path()));
+        let kept = a.path().to_path_buf();
+        drop(a);
+        assert!(!kept.exists());
+    }
 }
 
 #[cfg(test)]
