@@ -938,11 +938,12 @@ const FIT_BAND: i32 = 9;
 /// A ledger pick: id, runs back (0 = the newest run) and slot in that run (0 = direction A).
 pub(crate) type RecentPick = (String, usize, usize);
 
-/// Score cost of reusing `id` in `slot`: the cost falls one point per two runs back, so among
-/// fitting picks the least recently used wins; the slot that used it last pays one more, so a
-/// direction never keeps re-taking its own last pick while the others rotate.
+/// Score cost of reusing `id` in `slot`: last run's pick pays more than the whole fit band, so any
+/// other fitting pick beats it; the cost falls one point per run back, so among fitting picks the
+/// least recently used wins. The slot that used it last pays one more, so a direction never keeps
+/// re-taking its own last pick while the others rotate.
 fn recency_cost(newest_first: &[RecentPick], id: &str, slot: usize) -> i32 {
-    newest_first.iter().filter(|p| p.0 == id).map(|(_, age, s)| (6 - (*age / 2) as i32).max(1) + i32::from(*s == slot)).max().unwrap_or(0)
+    newest_first.iter().filter(|p| p.0 == id).map(|(_, age, s)| (FIT_BAND + 1 - *age as i32).max(1) + i32::from(*s == slot)).max().unwrap_or(0)
 }
 
 thread_local! {
@@ -1243,9 +1244,11 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             .unwrap_or("hairline-2");
         used_radius.push(radius);
 
-        // Type and palette: A at variant 0 keeps the matched industry's own.
+        // Type and palette: A at variant 0 keeps the matched industry's own on a first deal only.
+        // Once the ledger holds any look it is dealt fresh, so a run whose first look has aged out
+        // of memory cannot rebuild it from the pin.
         if slot == 0 && variant == 0 {
-            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p) && recency_cost(&recent_pals, &p.id, 0) < 3) {
+            if let Some((t, p)) = industry.filter(|(_, p)| pin_ok(p) && recent_pals.is_empty()) {
                 let tone = Tone::of(p);
                 used_tones.push(tone);
                 let te = types.iter().find(|e| e.pairing.id == t.id || e.pairing.display_font == t.display_font);
@@ -1410,8 +1413,18 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         if !recent_pals.is_empty() {
             let top = pr.iter().map(|x| x.0).max().unwrap_or(0);
             pr.retain(|x| x.0 >= top - FIT_BAND);
+            // Palettes a remembered look already wore with this archetype: dealing one again would
+            // rebuild that whole look, so it drops below every other fitting palette.
+            let worn: Vec<&str> = recent_archs
+                .iter()
+                .filter(|a| a.0 == arch.key)
+                .filter_map(|a| recent_pals.iter().find(|p| p.1 == a.1 && p.2 == a.2).map(|p| p.0.as_str()))
+                .collect();
             for x in pr.iter_mut() {
                 x.0 -= recency_cost(&recent_pals, &pals[x.1].palette.id, slot as usize);
+                if worn.contains(&pals[x.1].palette.id.as_str()) {
+                    x.0 -= 4 * FIT_BAND;
+                }
             }
         }
         pr.sort_by(|x, y| y.0.cmp(&x.0).then_with(|| h(&pals[x.1].palette.id).cmp(&h(&pals[y.1].palette.id))));

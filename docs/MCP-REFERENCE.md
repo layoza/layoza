@@ -43,7 +43,7 @@ copy or secrets.
 ## Project look ledger and `uniqueness`
 
 `get_design_system` (new and redesign modes) and `deal_mechanics` also read and append the project
-ledger `<project>/.layoza/looks.jsonl`. Both take `window` (1-200, default 20: how many recent runs to
+ledger `<project>/.layoza/looks.jsonl`. Both take `window` (1-200, default 36: how many recent runs to
 compare) and `ledger` (default true). Each response carries:
 
 - `uniqueness`: `ledger`, `window`, `entries_compared`, `slots` (nav, hero, sections, footer, motion,

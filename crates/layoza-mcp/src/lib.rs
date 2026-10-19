@@ -492,7 +492,7 @@ fn qa_mode(report: &Value) -> Value {
     })
 }
 
-/// Uniqueness window from tool args (default 20, 1-200).
+/// Uniqueness window from tool args (default 36, 1-200).
 fn window_arg(args: &Value) -> usize {
     uniqueness::window(args.get("window").and_then(|w| w.as_u64()))
 }
@@ -606,7 +606,7 @@ pub fn tool_definitions() -> Value {
                     "design_md_content": { "type": "string", "maxLength": 200000 },
                     "after_design_md_content": { "type": "string", "maxLength": 200000 },
                     "ledger": { "type": "boolean", "description": "Default true: inside a project, new looks steer away from the last `window` entries in `.layoza/looks.jsonl` (or the CSS stamps) and this run is recorded there. false skips both. `ledger` in the result always says `written <path>` or `off (<why>)`." },
-                    "window": { "type": "integer", "minimum": 1, "maximum": MAX_UNIQUENESS_WINDOW, "description": "Ledger entries to compare against (default 20, max 200). Every slot (palette, type, nav, hero, sections, footer, motion) of this run is checked against them; `uniqueness` names any repeat." },
+                    "window": { "type": "integer", "minimum": 1, "maximum": MAX_UNIQUENESS_WINDOW, "description": "Ledger entries to compare against (default 36, max 200). Every slot (palette, type, nav, hero, sections, footer, motion) of this run is checked against them; `uniqueness` names any repeat." },
                     "detail": { "type": "string", "enum": ["summary", "full"], "description": "\"summary\" (default) drops the style catalogue, alternative industries and the industry's long lists; \"full\" returns everything." }
                 }
             }
@@ -741,7 +741,7 @@ pub fn tool_definitions() -> Value {
                     "avoid": { "type": "array", "items": { "type": "string", "maxLength": 100 }, "maxItems": 50, "description": "Mechanic ids used recently (e.g. on the last projects); never dealt again." },
                     "path": { "type": "string", "description": PATH_DESC },
                     "ledger": { "type": "boolean", "description": "Default true: new looks inside a project steer every slot away from the last `window` entries in `.layoza/looks.jsonl` and record this deal. false skips both. `ledger` in the result always says `written <path>` or `off (<why>)`." },
-                    "window": { "type": "integer", "minimum": 1, "maximum": MAX_UNIQUENESS_WINDOW, "description": "Ledger entries to compare against (default 20, max 200). Every slot (palette, type, nav, hero, sections, footer, motion) of this run is checked against them; `uniqueness` names any repeat." }
+                    "window": { "type": "integer", "minimum": 1, "maximum": MAX_UNIQUENESS_WINDOW, "description": "Ledger entries to compare against (default 36, max 200). Every slot (palette, type, nav, hero, sections, footer, motion) of this run is checked against them; `uniqueness` names any repeat." }
                 },
                 "required": ["brief"]
             }

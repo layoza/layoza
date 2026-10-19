@@ -171,8 +171,9 @@ pub fn untrusted_field(input: &str) -> serde_json::Value {
 
 /// Project-relative ledger path.
 pub const LOOK_LEDGER: &str = ".layoza/looks.jsonl";
-/// Runs whose looks the next deal steers away from.
-pub const RECENT_LOOK_RUNS: usize = 5;
+/// Runs whose looks the next deal steers away from: enough that a brief repeated a dozen times
+/// never rebuilds an earlier whole look.
+pub const RECENT_LOOK_RUNS: usize = 12;
 /// Lines kept in the ledger; older ones are dropped on write.
 const MAX_LEDGER_LINES: usize = 300;
 
@@ -233,8 +234,9 @@ pub struct Look {
     pub pinned: Vec<String>,
 }
 
-/// Ledger entries a new deal checks, per slot, for repeats (override with `window` / `--window`).
-pub const UNIQUENESS_WINDOW: usize = 20;
+/// Ledger entries a new deal checks, per slot, for repeats (override with `window` / `--window`):
+/// RECENT_LOOK_RUNS runs of three directions, so the deal remembers as far back as the steering does.
+pub const UNIQUENESS_WINDOW: usize = RECENT_LOOK_RUNS * 3;
 /// Largest accepted window.
 pub const MAX_UNIQUENESS_WINDOW: usize = 200;
 

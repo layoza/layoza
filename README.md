@@ -229,7 +229,7 @@ codex mcp add layoza -- npx -y -p layoza layoza-mcp
 
 - `layoza guidelines search "<query>" [--limit 1-50]` and `layoza guidelines get <id>`: the same guideline search as the MCP tools (synonyms and stems included).
 - `layoza chart "<data shape>" [--task "<task>"]`: top three chart types with fallbacks.
-- `--window N` on `design-system` and `mechanics deal` sets how many ledger runs the uniqueness check compares (default 20, max 200); `--no-ledger` ignores the ledger.
+- `--window N` on `design-system` and `mechanics deal` sets how many ledger runs the uniqueness check compares (default 36, max 200); `--no-ledger` ignores the ledger.
 - `layoza audit . --strict` and `layoza verify . --strict` turn gate warnings (such as a new site with no recorded approval of its direction) into errors.
 - `layoza qa <file> --full` runs every browser pass; `--allow a,b` limits it to the named passes. The report lists `mode`, `passes` and `skipped_passes`.
 - Environment: `LAYOZA_QA_TIMEOUT_SECS` (browser QA timeout), `LAYOZA_PLAYWRIGHT_DIR` (where Playwright is installed), `LAYOZA_QA_ENGINE=python` (use the Python Playwright engine).

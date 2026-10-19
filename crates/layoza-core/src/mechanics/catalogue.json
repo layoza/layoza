@@ -9751,5 +9751,316 @@
       "css": "Form with role search; flex-wrap row for terms.",
       "js": "Plain GET form to the site search page; no script needed."
     }
+  },
+  {
+    "id": "nav-today-line",
+    "name": "Today line nav",
+    "kind": "section",
+    "role": "nav",
+    "family": "nav-today-line",
+    "niches": [
+      "restaurant",
+      "local-business",
+      "store",
+      "winery",
+      "venue"
+    ],
+    "moods": [
+      "warm",
+      "playful",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "warm-paper-serif",
+    "blueprint": "A single row 4.5rem tall: wordmark left, up to 4 links, and on the right a short line in the display face that names today's thing (Today: rye and fennel, out at 11) linking to the menu or shop. The today line sits on a ruled underline 2px in the accent, max-width min(28ch, 40vw), text-wrap: balance. A 1px hairline separates nav from page.",
+    "motion": "On load the accent underline draws left to right over 500ms once. Hover on links shifts the underline under the hovered link over 160ms. Nothing loops.",
+    "still_check": "Any still shows wordmark, links and the full today line with its underline drawn.",
+    "mobile": "At 375px the today line moves to a 2.5rem strip under the bar, full width, and links fold into a labelled Menu button with a 44px target.",
+    "a11y": "The today line is a real link with descriptive text; the underline is decorative. Reduced motion shows the underline drawn. Focus rings visible on every link.",
+    "avoid": "A today line that goes stale (needs a daily data field), script faces that harm legibility, or a line so long it wraps into the links. Avoid the default fingerprint: wordmark left, centred links, button right.",
+    "stack_notes": {
+      "css": "Flex row with gap clamp(1rem, 3vw, 2.5rem); underline via background-size transition on a linear-gradient; @starting-style for the first draw.",
+      "js": "Optional: read today's item from a data field at build or request time; no client script required."
+    }
+  },
+  {
+    "id": "nav-ticket-stubs",
+    "name": "Ticket stub tabs nav",
+    "kind": "section",
+    "role": "nav",
+    "family": "nav-ticket-stubs",
+    "niches": [
+      "events",
+      "venue",
+      "museum",
+      "restaurant",
+      "travel"
+    ],
+    "moods": [
+      "playful",
+      "bold",
+      "warm"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "risograph-bright",
+    "blueprint": "Links hang from the top edge as perforated ticket stubs, each 7rem wide and 3.25rem tall, with a dotted perforation line 0.5rem from the bottom and notched corners made with radial-gradient masks. The wordmark is a wider stub at the left. The active page stub is torn 0.5rem shorter and filled in the accent.",
+    "motion": "Hover drops a stub by 6px over 180ms with a slight 1deg swing that settles. Scroll does nothing; nothing loops.",
+    "still_check": "Any still shows every stub, its label and the active stub filled.",
+    "mobile": "At 375px the stubs become a horizontal scroll row with scroll-snap, the active stub scrolled into view, each at least 44px tall.",
+    "a11y": "A nav element with a list; the active stub uses aria-current=page and is not marked by colour alone (shorter tear plus bold label). Reduced motion removes drop and swing.",
+    "avoid": "Stubs too narrow for long labels, perforation dots colliding with text, or a swing that keeps moving. Avoid the default fingerprint: wordmark left, centred links, button right.",
+    "stack_notes": {
+      "css": "mask-image with radial-gradient notches; dotted border-bottom for the perforation; transform on :hover inside a prefers-reduced-motion: no-preference query.",
+      "js": "No script required; scrollIntoView the active stub on mobile after load."
+    }
+  },
+  {
+    "id": "nav-basket-ledger",
+    "name": "Search-led shop nav",
+    "kind": "section",
+    "role": "nav",
+    "family": "nav-basket-ledger",
+    "niches": [
+      "store"
+    ],
+    "moods": [
+      "trustworthy",
+      "calm",
+      "minimal"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "quiet-civic",
+    "blueprint": "Two rows. Row one 4rem: wordmark, a search field that takes most of the width (min(36rem, 50vw)) with a category select inside its left edge, an account link, and a basket button showing item count and running total in tabular figures. Row two 2.75rem: category chips as one scrollable line, the current one filled. No hamburger on desktop.",
+    "motion": "Adding to basket bumps the count badge with a 200ms scale 1 to 1.12 to 1 and the total cross-fades. The chips row hides on scroll down and returns on scroll up via a 220ms translate.",
+    "still_check": "Any still shows search, every visible chip, basket count and total.",
+    "mobile": "At 375px search drops into its own full-width row under the wordmark and basket, chips scroll horizontally with snap, and every target is at least 44px.",
+    "a11y": "Search is a real form with a label; the basket announces count changes via an aria-live polite region. Chips are links with aria-current. Reduced motion: no bump, chips stay fixed.",
+    "avoid": "A search field without a submit path, totals that disagree with the basket page, or a chips row that hides content under a sticky header. Avoid the default fingerprint: wordmark left, centred links, button right.",
+    "stack_notes": {
+      "css": "Grid with grid-template-columns: auto 1fr auto auto; font-variant-numeric: tabular-nums on the total; chips row overflow-x: auto with scroll-snap-type.",
+      "js": "A scroll direction listener throttled with requestAnimationFrame toggles a class; remove the listener on unmount."
+    }
+  },
+  {
+    "id": "nav-edge-spine",
+    "name": "Edge spine nav",
+    "kind": "section",
+    "role": "nav",
+    "family": "nav-edge-spine",
+    "niches": [
+      "agency",
+      "portfolio",
+      "editorial",
+      "store",
+      "restaurant",
+      "museum"
+    ],
+    "moods": [
+      "editorial",
+      "bold",
+      "experimental"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "hairline-newspaper",
+    "blueprint": "A fixed vertical spine 4rem wide on the left edge, full viewport height. The wordmark is set rotated to read bottom to top at clamp(1.25rem, 2vw, 1.75rem); links stack below it as short rotated labels with 1.5rem gaps. Page content gets a 4rem left margin. A 1px rule separates spine from page.",
+    "motion": "The current section label gains the accent and a 2px tick that slides to it over 240ms as sections enter. Nothing else moves.",
+    "still_check": "Any still shows the rotated wordmark, every link label and the tick on the current one.",
+    "mobile": "At 375px the spine becomes a 3.5rem top bar with horizontal labels; the tick turns into an underline. Targets at least 44px.",
+    "a11y": "Rotated text keeps its reading order in the DOM; links are a list inside nav. aria-current marks the section. Reduced motion jumps the tick.",
+    "avoid": "Rotated labels too long to fit, the spine covering content on narrow tablets, or low-contrast small rotated text. Avoid the default fingerprint: wordmark left, centred links, button right.",
+    "stack_notes": {
+      "css": "writing-mode: vertical-rl with transform: rotate(180deg); position: fixed; inset-block: 0; scroll-margin on sections.",
+      "js": "IntersectionObserver marks the current section; disconnect it on unmount."
+    }
+  },
+  {
+    "id": "nav-corner-index",
+    "name": "Corner index nav",
+    "kind": "section",
+    "role": "nav",
+    "family": "nav-corner-index",
+    "niches": [
+      "any"
+    ],
+    "moods": [
+      "minimal",
+      "calm",
+      "editorial"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "soft-stone",
+    "blueprint": "No bar. The wordmark sits in the top-left corner and a small Index control in the top-right corner, both at clamp(0.9rem, 1.2vw, 1rem) with 1.5rem inset on a small backing chip. Index opens a panel from the right edge, width min(26rem, 90vw), listing every page as numbered lines with one-line descriptions. The hero gets the whole first screen.",
+    "motion": "The panel slides in over 280ms with an ease-out and its lines fade in 30ms apart; Escape or the close control slides it back.",
+    "still_check": "Closed: wordmark and Index control are legible. Open: every numbered line and description is legible.",
+    "mobile": "At 375px the panel takes full width, numbers keep a fixed 2.5rem column, and the Index control is 44px.",
+    "a11y": "Index is a button with aria-expanded and aria-controls; the panel is a dialog that traps focus and returns it on close. Reduced motion: the panel appears without sliding.",
+    "avoid": "Corner labels lost on busy hero photographs (keep the backing chip), or a panel with no visible close. Avoid the default fingerprint: wordmark left, centred links, button right.",
+    "stack_notes": {
+      "css": "position: fixed corners; the panel uses a transform translateX transition; dialog element with ::backdrop.",
+      "js": "Toggle aria-expanded, trap focus and listen for Escape; remove listeners on unmount."
+    }
+  },
+  {
+    "id": "footer-week-hours",
+    "name": "Week hours footer",
+    "kind": "section",
+    "role": "footer",
+    "family": "footer-week-hours",
+    "niches": [
+      "local-business",
+      "restaurant",
+      "health",
+      "winery",
+      "venue",
+      "home-services"
+    ],
+    "moods": [
+      "warm",
+      "trustworthy",
+      "calm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "quiet-civic",
+    "blueprint": "The footer leads with a seven-column week strip, each day a cell at least 5.5rem wide showing the day name and opening hours in tabular figures; today's cell is filled in the accent with an Open now or Closed label. Under it, one row holds the address as a map link, the phone as a tel link and a short directions line. Site links and legal sit in one small final line. Block padding clamp(3rem, 7vw, 5rem).",
+    "motion": "Only today's cell moves: its fill fades in over 300ms when the footer enters.",
+    "still_check": "Any still shows all seven days with hours, today highlighted, address and phone.",
+    "mobile": "At 375px the week strip becomes a two-column list (day, hours) with today first, then the rest in order.",
+    "a11y": "The week strip is a list with day names spelled out for screen readers; status is text, not colour only. Reduced motion: fill shown at once.",
+    "avoid": "Hours that go stale on holidays (needs an exceptions field), or seven cramped cells overflowing at tablet widths. Avoid four equal link columns.",
+    "stack_notes": {
+      "css": "grid-template-columns: repeat(7, minmax(5.5rem, 1fr)); font-variant-numeric: tabular-nums.",
+      "js": "Compute today and open status in the business time zone; refresh each minute and clear the interval on unmount."
+    }
+  },
+  {
+    "id": "footer-recipe-card",
+    "name": "Recipe card footer",
+    "kind": "section",
+    "role": "footer",
+    "family": "footer-recipe-card",
+    "niches": [
+      "restaurant",
+      "local-business"
+    ],
+    "moods": [
+      "playful",
+      "warm",
+      "organic"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "warm-paper-serif",
+    "blueprint": "The footer is an index card, max-width min(44rem, 92vw), ruled every 1.75rem with a margin rule 3rem from the left. The card title is the business name; Ingredients lists the site links; Method lists three numbered steps (visit, order, say hello) that carry the address and phone. A small stain-shaped accent circle sits in one corner. The card tilts -1deg on the page ground.",
+    "motion": "As the footer enters the card settles from -3deg to -1deg over 500ms once. Link hover underlines in the accent.",
+    "still_check": "Any still shows the card with every link, the three steps, address and phone legible on the ruled lines.",
+    "mobile": "At 375px the card loses its tilt, takes full width minus 1rem gutters, and the ruled lines keep a 1.75rem rhythm.",
+    "a11y": "Ruled lines and stain are decorative backgrounds; content is headings with lists. Text on the card keeps at least 4.5:1 contrast. Reduced motion: card shown settled.",
+    "avoid": "Text drifting off the ruled lines, the stain under body text, or a tilt that blurs text on low-density screens. Avoid four equal link columns.",
+    "stack_notes": {
+      "css": "repeating-linear-gradient for the ruled lines; line-height locked to the rule; transform rotate with will-change removed after the settle.",
+      "js": "No script required; @starting-style or a one-shot IntersectionObserver class for the settle."
+    }
+  },
+  {
+    "id": "footer-oversize-signup",
+    "name": "Oversize signup footer",
+    "kind": "section",
+    "role": "footer",
+    "family": "footer-oversize-signup",
+    "niches": [
+      "any"
+    ],
+    "moods": [
+      "bold",
+      "playful",
+      "editorial"
+    ],
+    "intensity": "bold",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "brutal-flat",
+    "blueprint": "The footer is one oversized sentence at clamp(2.5rem, 7vw, 6rem) with an email field set into the line (Send me the [your email] news) whose underline is the field. A circular submit button 4.5rem across ends the line. Below, small site links in one row and legal at 0.85rem. Ground is the accent or inverted.",
+    "motion": "Typing grows the field with the text over 120ms; on submit the button turns its arrow once over 400ms and the sentence swaps to a thank-you line.",
+    "still_check": "Any still shows the full sentence with the field, the button and the link row.",
+    "mobile": "At 375px the sentence wraps onto three lines, the field becomes full width at 1.25rem text, and the button sits under it at 3.5rem.",
+    "a11y": "The field has a label for screen readers and autocomplete=email; results go to an aria-live region. Reduced motion: no turn, instant swap.",
+    "avoid": "A field too small to tap, a placeholder as the only label, or contrast loss on the accent ground. Avoid four equal link columns.",
+    "stack_notes": {
+      "css": "field-sizing: content where supported, else a ch-based width; the form posts without script.",
+      "js": "Progressive enhancement: submit with fetch, fall back to a normal post, and announce the result."
+    }
+  },
+  {
+    "id": "footer-category-shelf",
+    "name": "Category shelf footer",
+    "kind": "section",
+    "role": "footer",
+    "family": "footer-category-shelf",
+    "niches": [
+      "store",
+      "real-estate",
+      "travel"
+    ],
+    "moods": [
+      "calm",
+      "trustworthy",
+      "warm"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "soft-stone",
+    "blueprint": "The footer opens with a shelf of six category tiles, each 9rem square with a small photograph or drawing and the category name under it, standing on a 4px shelf line. Below the shelf: delivery and returns promises as three short lines with icons, then help links, payment method marks and legal in a final row.",
+    "motion": "Tiles lift 4px over 160ms on hover; nothing else moves.",
+    "still_check": "Any still shows every tile with its name, the three promises and the final row.",
+    "mobile": "At 375px the shelf becomes a horizontal scroll row with snap showing two and a half tiles; promises stack.",
+    "a11y": "Tiles are links with text labels; images have empty alt because the label names them. Reduced motion: no lift.",
+    "avoid": "Tiles that copy the main nav exactly, heavy footer images hurting load (lazy-load them), or invented payment marks that look like real brands. Avoid four equal link columns.",
+    "stack_notes": {
+      "css": "grid-auto-flow: column on mobile with scroll-snap; loading=lazy on tile images.",
+      "js": "No script required."
+    }
+  },
+  {
+    "id": "footer-postcard",
+    "name": "Postcard footer",
+    "kind": "section",
+    "role": "footer",
+    "family": "footer-postcard",
+    "niches": [
+      "any"
+    ],
+    "moods": [
+      "warm",
+      "calm",
+      "playful"
+    ],
+    "intensity": "calm",
+    "tier": "css",
+    "headline_interlock": false,
+    "look_family": "playful-cutout",
+    "blueprint": "The footer is a postcard, aspect-ratio 3 / 2 at max-width min(48rem, 94vw). Left half: a short note from the owner in the display face and a signature. Right half, behind a 1px vertical rule: a 5rem stamp square in the corner holding the social links, then the address on ruled lines, phone and email. Site links and legal sit under the card.",
+    "motion": "As the footer enters the card turns from rotateY 12deg to 0 over 450ms once. The stamp tilts 2deg once on hover.",
+    "still_check": "Any still shows the note, signature, stamp links and address legible.",
+    "mobile": "At 375px the card drops its aspect ratio, the note stacks above the address, and the rule turns horizontal.",
+    "a11y": "The note is real text, not an image; the stamp holds a labelled list of social links. Reduced motion: no turn or tilt.",
+    "avoid": "Script faces nobody can read, address lines too tight to tap phone or email, or a fixed ratio clipping long text. Avoid four equal link columns.",
+    "stack_notes": {
+      "css": "aspect-ratio with a min-height fallback; two-column grid; perspective on the parent for the turn.",
+      "js": "One-shot IntersectionObserver class; disconnect after it fires."
+    }
   }
 ]
