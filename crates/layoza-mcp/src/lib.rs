@@ -346,6 +346,8 @@ const SERVER_INSTRUCTIONS: &str = "Layoza designs, inspects and verifies website
 
 /// Longest string argument accepted unless a schema property sets its own `maxLength`.
 const MAX_STRING_ARG: usize = 2000;
+/// Longest design brief: a full client spec pasted as-is must still be read.
+const MAX_BRIEF_CHARS: usize = 40_000;
 
 /// Tools still callable for old clients but no longer listed in `tools/list`.
 fn hidden_tool_definitions() -> Value {
@@ -599,7 +601,7 @@ pub fn tool_definitions() -> Value {
                 "type": "object",
                 "properties": {
                     "action": { "type": "string", "enum": ["recommend", "lint", "diff", "generate"], "description": "`recommend` (default when `query` is set) builds the system from the brief; `generate` (default otherwise) derives DESIGN.md from the project at `path`; `lint` checks `design_md_content`; `diff` compares `design_md_content` (before) with `after_design_md_content`." },
-                    "query": { "type": "string", "description": "The design brief, e.g. `seafood restaurant on the harbour with daily catch menu`." },
+                    "query": { "type": "string", "maxLength": MAX_BRIEF_CHARS, "description": "The design brief (a full client spec may be pasted as-is, up to 40000 characters), e.g. `seafood restaurant on the harbour with daily catch menu`." },
                     "mode": { "type": "string", "enum": ["new_website", "extend_existing", "improve_existing", "full_redesign"] },
                     "variant": { "type": "integer", "minimum": 0, "maximum": 1000, "description": "0 (default) is the stable answer for this brief. Another number re-deals the directions' fonts, palettes and mechanics for the same brief; use it when the user wants different options." },
                     "path": { "type": "string", "description": PATH_DESC },
@@ -730,7 +732,7 @@ pub fn tool_definitions() -> Value {
             "inputSchema": {
                 "type": "object",
                 "properties": {
-                    "brief": { "type": "string", "description": "The page brief, e.g. `neighbourhood bakery with a daily bread board`." },
+                    "brief": { "type": "string", "maxLength": MAX_BRIEF_CHARS, "description": "The page brief (up to 40000 characters), e.g. `neighbourhood bakery with a daily bread board`." },
                     "niche": { "type": "string", "description": format!("Optional niche hint ({}); added after niches the brief names.", NICHES.join(", ")) },
                     "mood": { "type": "string", "description": "Optional comma-separated moods (calm, warm, playful, bold, luxe, technical, editorial, organic, brutal, dark, bright, trustworthy, experimental, minimal)." },
                     "intensity": { "type": "string", "enum": ["calm", "bold", "wild"], "description": "Motion tier. New site: used only when the brief names none. Existing site: may only lower the site's own level." },
@@ -1386,8 +1388,8 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                 .map(str::trim)
                 .filter(|b| !b.is_empty())
                 .ok_or_else(|| "Missing required parameter `brief`.".to_string())?;
-            if brief.len() > 2000 {
-                return Err("`brief` is limited to 2000 characters.".into());
+            if brief.chars().count() > MAX_BRIEF_CHARS {
+                return Err(format!("`brief` is limited to {} characters.", MAX_BRIEF_CHARS));
             }
             let str_arg = |k: &str| -> Result<Option<String>, String> {
                 match args.get(k) {

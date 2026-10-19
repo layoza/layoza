@@ -931,8 +931,8 @@ fn main() {
             match action.as_str() {
                 "search" => {
                     let q = positional_arg(&args, 2).filter(|q| !q.trim().is_empty()).unwrap_or_else(|| exit_err("Usage: layoza guidelines search \"<query>\" [--stack s] [--platform p] [--limit N]", json_flag));
-                    if q.chars().count() > MAX_BRIEF_CHARS {
-                        exit_err(&format!("The query is limited to {} characters.", MAX_BRIEF_CHARS), json_flag);
+                    if q.chars().count() > MAX_QUERY_CHARS {
+                        exit_err(&format!("The query is limited to {} characters.", MAX_QUERY_CHARS), json_flag);
                     }
                     let limit = num_flag::<usize>(&args, "--limit", 1, 50, json_flag).unwrap_or(10);
                     let hits = layoza_core::guidelines::search(&q, get_flag_value(&args, "--stack").as_deref(), get_flag_value(&args, "--platform").as_deref(), limit);
@@ -1127,7 +1127,10 @@ const VALUE_FLAGS: &[&str] = &[
 ];
 
 /// Longest brief accepted by the CLI and the MCP server (characters).
-const MAX_BRIEF_CHARS: usize = 2000;
+/// Longest brief accepted: a full client spec pasted as-is (tens of kilobytes) must still be read.
+const MAX_BRIEF_CHARS: usize = 40_000;
+/// Longest guideline search query.
+const MAX_QUERY_CHARS: usize = 2000;
 
 /// Flags each command (or `mechanics <action>`) honours, besides `--json` and `--help`.
 fn allowed_flags(args: &[String]) -> &'static [&'static str] {

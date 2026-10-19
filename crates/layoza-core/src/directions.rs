@@ -424,6 +424,8 @@ const TRADES: &[Trade] = &[
         ["the piece on the body", "the fit notes", "the look"], "choose a size and add to bag", "size charts, fit notes and care labels", &["textile"]),
     tr(&["kinetic", "motion", "animation", "showreel"], Some(S::Showcase),
         ["type in motion", "the frame sequence", "the edit timeline"], "open the reel or start a project", "frame numbers, timecodes and easing curves", &["kinetic"]),
+    tr(&["smd", "signage", "billboard", "billboards", "led screen", "led screens", "led display", "led displays", "led wall", "led walls", "video wall", "video walls", "jumbotron"], None,
+        ["the lit screen on its site", "the module and its pixel pitch", "the cabinet from the side"], "request a site survey or quote", "pixel pitch, nits, viewing distance and IP rating", &["industrial", "kinetic"]),
     tr(&["agency", "studio", "portfolio", "designer", "photographer"], Some(S::Showcase),
         ["the work itself", "the process sketches", "the client credits"], "open a case study or start a project", "project numbers, years and credits", &["generic"]),
     tr(&["cli", "sdk", "api", "devtool", "devtools", "dev tool", "dev tools", "developer", "developers", "terminal", "mcp", "compiler", "library"], Some(S::DevTool),
@@ -635,6 +637,17 @@ fn brief_nouns(query: &str) -> Vec<String> {
 }
 
 pub(crate) fn read_subject(query: &str, signals: &BriefSignals) -> Subject {
+    // A labelled trade line ("Industry: ...") names the subject better than a long spec's first line.
+    if let Some(focus) = crate::intelligence::focus_line(query) {
+        let s = read_subject_in(&focus, signals);
+        if s.from_trades {
+            return s;
+        }
+    }
+    read_subject_in(query, signals)
+}
+
+fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
     let tokens = tokenize(query);
     let pos = |w: &str| -> Option<usize> {
         let parts = tokenize(w);

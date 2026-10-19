@@ -304,12 +304,44 @@ pub(crate) fn keyword_hit(tokens: &[String], keyword: &str) -> bool {
     match parts.len() {
         0 => false,
         1 => tokens.iter().any(|t| *t == parts[0] || (parts[0].len() > 3 && *t == format!("{}s", parts[0]))),
-        n => tokens.windows(n).any(|w| w.iter().zip(&parts).all(|(a, b)| a == b)),
+        // The phrase's last word may be plural ("video wall" matches "video walls").
+        n => tokens.windows(n).any(|w| {
+            w.iter().zip(&parts).enumerate().all(|(i, (a, b))| a == b || (i == n - 1 && b.len() > 3 && *a == format!("{b}s")))
+        }),
     }
 }
 
-/// Scores every industry and returns them best-first as (score, rule).
+/// The value of a labelled line naming the trade ("Industry: SMD LED screens, video walls"), when
+/// the brief has one. A long client spec is mostly art direction and process; this line says what
+/// the business is, so the trade and industry are read from it before the rest of the text.
+pub(crate) fn focus_line(query: &str) -> Option<String> {
+    const LABELS: &[&str] = &["industry", "business", "sector", "niche", "trade", "category"];
+    // Lines or sentences: the affirmed brief joins its lines with ". ".
+    let found: Vec<String> = query
+        .split(['\n', '.', ';'])
+        .filter_map(|l: &str| {
+            let (label, value) = l.trim().trim_start_matches(['-', '*', '#', ' ']).split_once(':')?;
+            let label = label.trim().to_ascii_lowercase();
+            let value = value.trim();
+            (LABELS.contains(&label.as_str()) && value.len() > 2 && !value.contains("://")).then(|| value.to_string())
+        })
+        .collect();
+    (!found.is_empty()).then(|| found.join(". "))
+}
+
+/// Scores every industry and returns them best-first as (score, rule). A labelled trade line
+/// ([`focus_line`]) is scored on its own first; the whole brief is used when it matches nothing.
 fn rank_industries(query: &str, industries: &[IndustryRule]) -> Vec<(usize, IndustryRule)> {
+    if let Some(focus) = focus_line(query) {
+        let ranked = rank_industries_in(&focus, industries);
+        if ranked[0].0 > 0 {
+            return ranked;
+        }
+    }
+    rank_industries_in(query, industries)
+}
+
+fn rank_industries_in(query: &str, industries: &[IndustryRule]) -> Vec<(usize, IndustryRule)> {
     let tokens = tokenize(query);
     let mut ranked: Vec<(usize, IndustryRule)> = industries
         .iter()
@@ -1256,7 +1288,7 @@ fn raw_industries() -> Vec<IndustryRule> {
         IndustryRule {
             slug: "industrial-b2b".into(),
             name: "Industrial, Manufacturing, Logistics & Energy".into(),
-            keywords: vec!["industrial".into(), "manufacturing".into(), "logistics".into(), "robotics".into(), "energy".into(), "hardware".into(), "supply-chain".into()],
+            keywords: vec!["industrial".into(), "manufacturing".into(), "logistics".into(), "robotics".into(), "energy".into(), "hardware".into(), "supply-chain".into(), "smd".into(), "signage".into(), "led screen".into(), "led display".into(), "video wall".into(), "billboard".into()],
             recommended_styles: vec!["precision-terminal-craft".into(), "swiss-editorial-grid".into()],
             layout_archetype: "Technical Specification Grid + Telemetry & Capability Matrix".into(),
             first_viewport_priority: "Operational scale, technical tolerances/specs, RFQ/engineering contact path".into(),
@@ -2453,6 +2485,19 @@ mod tests {
         assert_eq!(r.directions[0].typography.id, r.matched_industry.typography_pairing.id);
         assert_ne!(r.directions[1].typography.id, r.matched_industry.typography_pairing.id);
         assert_ne!(r.directions[2].typography.id, r.matched_industry.typography_pairing.id);
+    }
+
+    #[test]
+    fn long_spec_is_read_from_its_labelled_industry_line() {
+        let brief = format!(
+            "PROJECT: ACME | HOMEPAGE\nAct as an award-winning UI/UX designer and creative director with a portfolio of studio work.\nIndustry: SMD LED screens, LED video walls and digital signage\nPrimary Market: Pakistan\n{}",
+            "Every section must feel cinematic, editorial and premium, with kinetic type and a showreel. ".repeat(40)
+        );
+        let rec = recommend_design(&brief, OperatingMode::NewWebsite, None, None);
+        assert_eq!(rec.matched_industry.slug, "industrial-b2b");
+        let subject = crate::directions::read_subject(&brief, &brief_signals(&brief));
+        assert!(subject.from_trades && subject.objects.iter().any(|o| o.contains("pixel pitch")), "{:?}", subject.objects);
+        assert_eq!(focus_line("Website: https://acme.pk/"), None);
     }
 
     #[test]
