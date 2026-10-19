@@ -1702,7 +1702,8 @@ pub fn looks_of(rec: &DesignRecommendation, run: &str) -> Vec<crate::baseline::L
             run: run.to_string(),
             source: "design-system".into(),
             palette: Some(d.palette.id.clone()),
-            typography: Some(d.typography.id.clone()),
+            // Families, not pairing ids: two pairings that share a display face are the same look.
+            typography: Some(crate::uniqueness::type_key(&d.typography.display_font, &d.typography.body_font)),
             hero: d.mechanics.iter().find(|m| m.kind == crate::mechanics::MechanicKind::Hero).map(|m| m.id.clone()),
             layout: Some(d.style_family.clone()),
             mechanics: d.mechanics.iter().chain(&d.nav).chain(&d.footer).map(|m| m.id.clone()).collect(),
@@ -1734,9 +1735,17 @@ pub fn recommend_design_avoiding(
     let ids = crate::uniqueness::recent_mechanic_ids(recent);
     // Every slot counts: palette, type, archetype, nav, hero, sections and footer.
     let overlap = |rec: &DesignRecommendation| -> usize { crate::uniqueness::check(&looks_of(rec, "candidate"), recent, recent.len(), true).repeats };
+    // Recent type families (ledger keys are `display/body`) steer the type deal itself.
+    let (mut recent_display, mut recent_body): (Vec<String>, Vec<String>) = (Vec::new(), Vec::new());
+    for (d, b) in recent.iter().filter_map(|l| l.typography.as_deref()?.split_once('/')) {
+        recent_display.push(d.to_string());
+        recent_body.push(b.to_string());
+    }
     let mut best: Option<(usize, DesignRecommendation)> = None;
     for v in variant..variant + 6 {
-        let rec = recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids);
+        let rec = crate::directions::with_recent_faces(recent_display.clone(), recent_body.clone(), || {
+            recommend_design_steered(raw_query, mode, existing_dna, override_dials, v, &ids)
+        });
         let o = overlap(&rec);
         if best.as_ref().is_none_or(|(b, _)| o < *b) {
             best = Some((o, rec));
@@ -2409,6 +2418,18 @@ mod tests {
     /// The subject phrase keeps the brief's last four content words, so "funeral home helping
     /// families arrange services" reads "helping families arrange services". The fix belongs in
     /// `directions::subject_phrase` (agent B's file); kept here, ignored, until it lands.
+    #[test]
+    fn ledger_type_families_are_not_dealt_again() {
+        let q = "independent brand and digital design agency";
+        let first = recommend_design(q, OperatingMode::NewWebsite, None, None);
+        let recent = looks_of(&first, "r1");
+        let next = recommend_design_avoiding("online store selling smartphones and phone accessories", OperatingMode::NewWebsite, None, None, 0, &recent);
+        let used: Vec<String> = first.directions.iter().map(|d| crate::directions::family(&d.typography.display_font)).collect();
+        for d in &next.directions {
+            assert!(!used.contains(&crate::directions::family(&d.typography.display_font)), "{} reused", d.typography.display_font);
+        }
+    }
+
     #[test]
     fn subject_phrase_keeps_the_trade_noun() {
         let funeral = rec("funeral home helping families arrange services");

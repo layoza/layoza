@@ -70,6 +70,20 @@ pub fn slots_of(look: &Look) -> Vec<(String, String)> {
     out
 }
 
+/// Ledger key for a type pairing: `display-family/body-family`, lowercased.
+pub fn type_key(display: &str, body: &str) -> String {
+    format!("{}/{}", crate::directions::family(display).to_lowercase(), crate::directions::family(body).to_lowercase())
+}
+
+/// Two type keys are the same look when their display families match (older ledger entries
+/// carry a pairing id instead, and match only on equality).
+fn same_type(a: &str, b: &str) -> bool {
+    match (a.split_once('/'), b.split_once('/')) {
+        (Some((da, _)), Some((db, _))) => da == db,
+        _ => a.eq_ignore_ascii_case(b),
+    }
+}
+
 /// True when `look` used `id` in a slot of the same kind (sections match any section or, for
 /// older entries, any recorded mechanic).
 fn used_in(look: &Look, kind: &str, id: &str) -> bool {
@@ -80,7 +94,7 @@ fn used_in(look: &Look, kind: &str, id: &str) -> bool {
         "footer" => eq(&look.footer),
         "transition" => eq(&look.transition),
         "palette" => eq(&look.palette),
-        "typography" => eq(&look.typography),
+        "typography" => look.typography.as_deref().is_some_and(|x| same_type(x, id)),
         "archetype" => eq(&look.archetype),
         _ => look.sections.iter().chain(&look.mechanics).any(|x| x.eq_ignore_ascii_case(id)),
     }
@@ -304,5 +318,18 @@ mod tests {
             let sections: std::collections::BTreeSet<String> = sets.iter().flat_map(|s| s.iter().filter(|(k, _)| k.starts_with("section-")).map(|(_, v)| v.clone())).collect();
             assert!(sections.len() >= 10, "{brief}: only {} distinct sections in 10 deals", sections.len());
         }
+    }
+}
+
+#[cfg(test)]
+mod type_key_tests {
+    use super::*;
+    #[test]
+    fn pairings_sharing_a_display_family_are_one_look() {
+        let a = type_key("Syne", "Plus Jakarta Sans");
+        let b = type_key("Syne", "Inter");
+        assert!(same_type(&a, &b));
+        assert!(!same_type(&a, &type_key("Fraunces", "Plus Jakarta Sans")));
+        assert!(same_type(&type_key("Libre Caslon Display", "Lora"), &type_key("Libre Caslon Text", "Karla")));
     }
 }

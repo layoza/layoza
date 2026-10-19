@@ -899,6 +899,22 @@ pub(crate) fn display_capable(display: &str, body: &str) -> bool {
     !TEXT_ONLY_FACES.contains(&d.as_str()) || (family(display) == family(body) && OPSZ_FACES.contains(&d.as_str()))
 }
 
+thread_local! {
+    /// Display and body families used in this project's recent runs (the look ledger), set by
+    /// [`with_recent_faces`] for the duration of one deal.
+    static RECENT_FACES: std::cell::RefCell<(Vec<String>, Vec<String>)> = const { std::cell::RefCell::new((Vec::new(), Vec::new())) };
+}
+
+/// Runs `f` with the ledger's recent display and body families steering the type deal: recent
+/// display families are never dealt again (unless the brief names them), recent bodies are
+/// down-ranked like a reuse within the brief.
+pub(crate) fn with_recent_faces<T>(display: Vec<String>, body: Vec<String>, f: impl FnOnce() -> T) -> T {
+    RECENT_FACES.with(|r| *r.borrow_mut() = (display, body));
+    let out = f();
+    RECENT_FACES.with(|r| *r.borrow_mut() = (Vec::new(), Vec::new()));
+    out
+}
+
 /// Family of a face: optical and width cuts ("Libre Caslon Display", "Libre Caslon Text",
 /// "Sofia Sans Condensed") belong to one family.
 pub(crate) fn family(face: &str) -> String {
@@ -1042,6 +1058,9 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let mut used_radius: Vec<&str> = Vec::new();
     // Axes of the previous direction: (tone, accent hue, warmth, display style).
     let mut prev_axes: Option<(Tone, &str, &str, &str)> = None;
+    let (recent_display, recent_body) = RECENT_FACES.with(|r| r.borrow().clone());
+    used_fonts.extend(recent_display.iter().cloned());
+    used_bodies.extend(recent_body.iter().cloned());
     if let Some((t, p)) = industry {
         // B and C never reuse the industry's own display face or palette, even when A re-deals.
         used_fonts.push(family(&t.display_font));
@@ -1141,7 +1160,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 // A text-only display face in the profile is re-dealt the same way.
                 let needs = script.filter(|sc| !te.is_some_and(|e| e.scripts.contains(sc)));
                 let (t, te) = match needs {
-                    _ if needs.is_some() || !display_capable(&t.display_font, &t.body_font) => {
+                    _ if needs.is_some() || !display_capable(&t.display_font, &t.body_font) || recent_display.contains(&family(&t.display_font)) => {
                         let best = types
                             .iter()
                             .filter(|e| needs.is_none_or(|sc| e.scripts.contains(&sc)) && !used_fonts.contains(&family(&e.pairing.display_font)))
