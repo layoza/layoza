@@ -12,6 +12,13 @@ All notable changes to Layoza are listed here. The format follows
   went from about 91 KB of JSON to 7 KB. `detail: "summary"` / `"full"` still return the JSON deal.
 - The art-direct prompt is five steps: brief, five-line plan, one-pass build, one screenshot
   review (three worst problems, at most two rounds), QA once. Dealt parts are ideas, not mandates.
+- The brief now opens with the signature moment: one subject-driven set piece the visitor drives by
+  scroll or hand, with a done-when check (start, middle and end frames, phone, no-JS final frame).
+  New taste rules for launch-style pacing and choreographed motion; new bans on zig-zag stacks and
+  pages assembled from stock parts. The art-direct plan names `SIGNATURE:` and builds it first.
+- The brief carries the look's tokens as a paste-ready `:root` CSS block.
+- `tools/list` shows the 13 tools the prompts use. Eight lookup tools stay callable and are listed
+  with `LAYOZA_TOOLS=all`.
 
 ### Added
 - Stated purpose (stop look-alike AI output) in the MCP server instructions, prompts, README,

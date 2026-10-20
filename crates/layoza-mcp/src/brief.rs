@@ -8,17 +8,18 @@ use std::fmt::Write as _;
 
 /// Taste rules every page meets. Short on purpose: one idea per line.
 pub const TASTE: &[&str] = &[
-    "Before code, write a 5-line plan: the one idea (it must fail if a rival business used it), the 4-6 colour tokens, the type pair, a one-line layout sentence per section, the one motion moment. Check it against the brief and rewrite anything generic.",
+    "Before code, write a 5-line plan: the signature moment, the 4-6 colour tokens, the type pair, a one-line layout sentence per section, what the rest of the page does to set up the signature. Check it against the brief and rewrite anything generic.",
     "The hero opens on the subject itself: the trade's own object, place, work or product at scale. Decoration never stands in for the subject.",
     "Every section is a claim plus its proof (a picture, a number with a source, a real name). A section with no proof gets cut, not padded.",
     "Type: one family or two clearly different ones, display 4-6x the body size, tight leading (0.9-1.05) and slight negative tracking on big type, body 16-20px at 45-75 characters a line, at most 6 sizes. No habitual default face for display.",
-    "Colour: one ground, one ink, one accent, plus at most 2-3 supporting tokens. Secondary text is a tint of the ground's hue, not neutral grey; body contrast 4.5:1 or more. Pick light or dark from where the page is read, not from the industry cliché.",
-    "Layout: a real grid with deliberate asymmetry, sections that change rhythm, more space above a heading than below, generous gaps between sections (96-200px desktop). Headlines at most 2-3 lines.",
-    "Every border, label, number and divider must carry information. Numbers only for real sequences; one radius and one rule weight across the page.",
+    "Colour: one ground, one ink, one accent, plus at most 2-3 supporting tokens. Secondary text is a tint of the ground's hue, not grey; body contrast 4.5:1 or more. Light or dark follows where the page is read, not the industry cliché.",
+    "Pacing like a product launch: one idea per screen near the top, 5-7 sections in all, rhythm that changes between full-bleed, contained and dense; at least one screen where type or the subject alone fills the view. Dark and light grounds follow the story, not a pattern.",
+    "Layout: a real grid with deliberate asymmetry, more space above a heading than below, generous gaps between sections (96-200px desktop). Headlines at most 2-3 lines.",
+    "Every border, label, number and divider carries information; one radius and one rule weight across the page.",
     "Copy in the customer's words: concrete nouns, real numbers, places, names. Buttons say the exact action ('Get a quote for my wall'). Sentence case.",
-    "Motion: one authored moment tied to the subject, plus quick feedback when the user acts. Strong ease-out, UI motion under 300ms, exits faster than entrances, only transform and opacity, hover only on (hover:hover). Content is visible before any script runs and under reduced motion.",
+    "Motion craft: the signature is driven by scroll position or the user's hand, not a timer, and is choreographed: parts arrive in a planned order (40-80ms staggers), one easing family, every move explains something. Outside it, motion stays quiet: UI feedback under 300ms with strong ease-out, exits faster than entrances, hover only on (hover:hover). Animate transform, opacity, clip-path or a canvas only. Without JS or under reduced motion show the final frame.",
     "Imagery: real or brand photos and footage of the subject; if none exist, a crafted render or diagram of the real object, never stock people, SVG people or emoji icons.",
-    "Finish: themed selection, focus ring, caret and scrollbar; tabular figures for data; hover, focus, active, disabled, empty and error states all designed.",
+    "Finish: themed selection, focus ring and scrollbar; tabular figures; every state (hover, focus, active, disabled, empty, error) designed.",
     "Mobile is designed, not squeezed: headline readable in 3 lines, main action above the fold at 390px, 44px tap targets, no sideways scroll.",
 ];
 
@@ -31,7 +32,8 @@ pub const AVOID: &[&str] = &[
     "Stock AI palettes: purple-to-pink, violet/indigo on dark, near-black with one neon accent, cream with serif and terracotta.",
     "Monospace as a 'tech' costume; middle-dot meta strings; arrows tacked onto every link and button.",
     "Coloured side borders thicker than 1px on cards, buttons or callouts.",
-    "The same fade-and-rise on every section; hover lifts on every card.",
+    "A page assembled from stock parts (hero, logo strip, feature cards, steps, testimonials, CTA) with no set piece, where the only motion is a fade-up on scroll and a hover lift.",
+    "Zig-zag stacks: picture left and text right, then swapped, repeated down the page.",
     "Invented proof: reviews, client logos, statistics or awards the brief did not give.",
     "Every section built from the same centred heading + subhead + grid.",
 ];
@@ -64,6 +66,33 @@ fn title(d: &Value) -> String {
     }
 }
 
+/// The look's tokens as a `:root` block the agent can paste straight into its CSS.
+fn tokens_css(m: &mut String, d: &Value) {
+    let (p, t, tt) = (&d["palette"], &d["typography"], &d["type_tokens"]);
+    let font = |k: &str| {
+        let f = s(t, k);
+        (!f.is_empty()).then(|| format!("\"{f}\", system-ui, sans-serif"))
+    };
+    let vars = [
+        ("ground", Some(s(p, "background").to_string())),
+        ("surface", Some(s(p, "surface").to_string())),
+        ("ink", Some(s(p, "foreground").to_string())),
+        ("muted", Some(s(p, "muted").to_string())),
+        ("accent", Some(s(p, "primary_accent").to_string())),
+        ("accent-2", Some(s(p, "secondary_accent").to_string())),
+        ("font-display", font("display_font")),
+        ("font-body", font("body_font")),
+        ("size-display", Some(s(tt, "display").to_string())),
+        ("size-h2", Some(s(tt, "h2").to_string())),
+        ("size-body", Some(s(tt, "body").to_string())),
+        ("size-small", Some(s(tt, "small").to_string())),
+    ];
+    let lines: Vec<String> = vars.into_iter().filter_map(|(k, v)| v.filter(|v| !v.is_empty()).map(|v| format!("  --{k}: {v};"))).collect();
+    if !lines.is_empty() {
+        let _ = writeln!(m, "\n```css\n:root {{\n{}\n}}\n```\n", lines.join("\n"));
+    }
+}
+
 /// Render the deal as a compact Markdown brief.
 pub fn markdown(out: &Value) -> String {
     let ub = &out["understood_brief"];
@@ -93,38 +122,29 @@ pub fn markdown(out: &Value) -> String {
     }
 
     if let Some(d) = dirs.first() {
-        let _ = writeln!(m, "\n## The look: {}", title(d));
-        let _ = writeln!(m, "One whole-page look. Build every section in it. The ideas below are a starting point: keep what fits this brief, change what does not, and the user's own asks always win.\n");
-        let _ = writeln!(m, "- Composition: {}", clip(s(d, "layout_composition"), 360));
-        let _ = writeln!(m, "- Content: {}", clip(s(d, "content_treatment"), 200));
-        let p = &d["palette"];
-        let _ = writeln!(
-            m,
-            "- Palette: ground {} · surface {} · ink {} · muted {} · accent {} · accent 2 {} (body contrast {}:1)",
-            s(p, "background"),
-            s(p, "surface"),
-            s(p, "foreground"),
-            s(p, "muted"),
-            s(p, "primary_accent"),
-            s(p, "secondary_accent"),
-            p["wcag_body_contrast"]
-        );
-        let t = &d["typography"];
-        let _ = writeln!(m, "- Type: {} for display, {} for body; scale {}. Fonts: {}", s(t, "display_font"), s(t, "body_font"), s(t, "scale_ratio"), s(t, "google_fonts_url"));
-        let tt = &d["type_tokens"];
-        if tt.is_object() {
-            let _ = writeln!(m, "- Sizes: display {} · h2 {} · body {} · small {}", s(tt, "display"), s(tt, "h2"), s(tt, "body"), s(tt, "small"));
+        let _ = writeln!(m, "\n## The signature moment (build this first)");
+        let _ = writeln!(m, "The one set piece the page is remembered for. Ask what this subject does or reveals that nothing else does (how it is made, used, moves, scales, or changes with distance, time or light) and stage it as a scene the visitor drives by scroll or hand, one to two screens long, built from the real subject. It must fail for a rival business.");
+        let lead = s(d, "motion_choreography");
+        if !lead.is_empty() {
+            let _ = writeln!(m, "- Starting idea: {}", clip(lead, 300));
         }
+        let _ = writeln!(m, "- Done when: start, middle and end frames each read as a poster, it is smooth on a phone, and the final frame works without JavaScript.");
+
+        let _ = writeln!(m, "\n## The look: {}", title(d));
+        let _ = writeln!(m, "One look that frames the signature. Tokens, type and shape are the system; the rest are raw ideas, kept only if they serve the signature. The user's own asks always win.\n");
+        let _ = writeln!(m, "- Composition: {}", clip(s(d, "layout_composition"), 260));
+        let _ = writeln!(m, "- Content: {}", clip(s(d, "content_treatment"), 200));
         let _ = writeln!(m, "- Shape: radius {}; hero material: {}", s(d, "radius"), s(d, "hero_material"));
+        let _ = writeln!(m, "- Fonts: {} (body contrast {}:1)", s(&d["typography"], "google_fonts_url"), d["palette"]["wcag_body_contrast"]);
+        tokens_css(&mut m, d);
         let ps = &d["page_shape"];
-        for (label, key) in [("Hero idea", "hero_frame"), ("Page flow", "flow"), ("Grounds", "ground"), ("Motif", "motif"), ("Labels", "labels")] {
+        for (label, key) in [("Hero idea", "hero_frame"), ("Grounds", "ground"), ("Motif", "motif")] {
             let b = s(&ps[key], "build");
             if !b.is_empty() {
                 let _ = writeln!(m, "- {label}: {}", clip(b, 220));
             }
         }
-        let _ = writeln!(m, "- Motion: {}", clip(s(d, "motion_choreography"), 300));
-        let nav = s(&d["nav"], "name");
+                let nav = s(&d["nav"], "name");
         let foot = s(&d["footer"], "name");
         if !nav.is_empty() || !foot.is_empty() {
             let _ = writeln!(m, "- Header idea: {nav}. Footer idea: {foot}.");
@@ -133,14 +153,10 @@ pub fn markdown(out: &Value) -> String {
         if !mech.is_empty() {
             let _ = writeln!(m, "- Section ideas: {}.", mech.join("; "));
         }
-        let pinned = list(&ub["pinned_by_prompt"]);
-        if !pinned.is_empty() {
-            let _ = writeln!(m, "- Pinned by the user's words: {}.", pinned.join(", "));
-        }
     }
 
     if dirs.len() > 1 {
-        let _ = writeln!(m, "\n## Other looks (only if the user wants options)");
+        let _ = writeln!(m, "\n## Other looks (if the user asks for options)");
         for d in &dirs[1..] {
             let _ = writeln!(m, "- {}: {} / {}, accent {}", title(d), s(&d["typography"], "display_font"), s(&d["typography"], "body_font"), s(&d["palette"], "primary_accent"));
         }
@@ -167,9 +183,9 @@ pub fn markdown(out: &Value) -> String {
     }
 
     let _ = writeln!(m, "\n## How to build");
-    let _ = writeln!(m, "1. Write the 5-line plan (first taste rule). Change any part of the look above that fights it; say what you changed.");
-    let _ = writeln!(m, "2. Build the page in one pass in the project's own framework, with real copy for this business.");
-    let _ = writeln!(m, "3. Screenshot at 1440px and 390px. Fix the three worst problems (generic, crowded, broken), at most two rounds.");
+    let _ = writeln!(m, "1. Write the 5-line plan (first taste rule), signature first. Change any part of the look above that fights it; say what you changed.");
+    let _ = writeln!(m, "2. Build the signature moment first, then the rest of the page around it in one pass, in the project's own framework, with real copy for this business.");
+    let _ = writeln!(m, "3. Screenshot the signature at three scroll positions, then the whole page at 1440px and 390px. Ask: could a template have made this? Fix the three worst problems (generic, crowded, broken), at most two rounds.");
     let _ = writeln!(m, "4. Run `capture_screenshots` (or `layoza qa <url>`) once and fix its errors. Done.");
     m
 }
@@ -191,7 +207,8 @@ mod tests {
         });
         let md = markdown(&out);
         assert!(md.starts_with("# Design brief: harbour bakery"));
-        assert!(md.contains("## The look: Counter") && md.contains("The morning board") && md.contains("Flour dust."));
+        assert!(md.contains("## The signature moment") && md.contains("## The look: Counter") && md.contains("The morning board") && md.contains("Flour dust."));
+        assert!(md.contains(":root {\n  --ground: #FFF;") && md.contains("--font-display: \"Fraunces\""));
         assert!(md.contains("- Map:") && md.contains("A.nav (nav-x)"));
         assert!(md.contains("…"), "long composition is clipped");
         assert!(md.len() < 6000, "{}", md.len());

@@ -259,7 +259,7 @@ pub fn handle_jsonrpc_message(raw_json: &str, approved_root: &Path) -> Option<Js
             jsonrpc: "2.0".into(),
             id,
             result: Some(json!({
-                "tools": tool_definitions()
+                "tools": listed_tools(std::env::var("LAYOZA_TOOLS").ok().as_deref())
             })),
             error: None,
         }),
@@ -353,6 +353,19 @@ const SERVER_INSTRUCTIONS: &str = "Layoza designs, inspects and verifies website
 const MAX_STRING_ARG: usize = 2000;
 /// Longest design brief: a full client spec pasted as-is must still be read.
 const MAX_BRIEF_CHARS: usize = 40_000;
+
+/// Lookup tools no prompt step needs. They stay callable; `LAYOZA_TOOLS=all` lists them too.
+/// A short tool list keeps the agent's choices obvious and its context small.
+const EXTRA_TOOLS: &[&str] = &["export_report", "get_mechanic", "search_guidelines", "get_guideline", "recommend_chart", "get_stack_notes", "get_icon_guidance", "check_deal_conformance"];
+
+/// The tools advertised in `tools/list`: the core set by default, everything with `all`.
+fn listed_tools(which: Option<&str>) -> Value {
+    let all = tool_definitions();
+    if which.is_some_and(|w| w.eq_ignore_ascii_case("all")) {
+        return all;
+    }
+    Value::Array(all.as_array().cloned().unwrap_or_default().into_iter().filter(|t| !EXTRA_TOOLS.iter().any(|n| t["name"] == *n)).collect())
+}
 
 /// Tools still callable for old clients but no longer listed in `tools/list`.
 fn hidden_tool_definitions() -> Value {
@@ -1743,7 +1756,8 @@ mod tests {
             .as_array()
             .unwrap()
             .len();
-        assert_eq!(tools, 21, "recommend_layout is hidden (deprecated) but still callable");
+        assert_eq!(tools, 21 - EXTRA_TOOLS.len(), "core tools only; recommend_layout is hidden (deprecated) but still callable");
+        assert_eq!(listed_tools(Some("all")).as_array().unwrap().len(), 21);
 
         // 3. write permission gate check (`extract_site_dna` without write_approved=true must error)
         let denied_resp = handle_jsonrpc_message(

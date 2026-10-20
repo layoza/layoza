@@ -262,11 +262,11 @@ fn art_direct(c: &Ctx) -> String {
 
          {facts}{memory}         1. Brief. Call `get_design_system` with query = the brief and mode `{mode}`. It returns a short design brief: one whole-page look, taste rules and what to avoid.
 
-         2. Plan in five lines in `.layoza/direction.md`: `PURPOSE:` (who visits, the one action), `IDEA:` (the one idea that would fail for a rival business), `TOKENS:` (colours, type pair, radius), `SECTIONS:` (one line each: the claim and its proof), `MOTION:` (the one moment). Add `PICKED: auto — <why this look fits>`. If the user asked for options, show the other looks first and wait for their pick instead.
+         2. Plan in five lines in `.layoza/direction.md`: `PURPOSE:` (who visits, the one action), `SIGNATURE:` (the set piece only this subject could have: what it does or reveals, how scroll or the hand drives it, its final frame), `TOKENS:` (colours, type pair, radius), `SECTIONS:` (one line each: the claim and its proof), `QUIET:` (what the rest of the page does to set up the signature). Add `PICKED: auto — <why this look fits>`. If the user asked for options, show the other looks first and wait for their pick instead.
 
-         3. Build the whole page in one pass in the project's framework (`inspect_project` on path `{p}`). Real images of the subject; content visible without JavaScript; motion with reduced-motion support. {copy} Put the look stamp `/* layoza · direction: <idea> · structure: <flow> · hero: <hero> · palette: <accent> · type: <display/body> · critique: P? H? E? S? R? V? */` on the first line of the main CSS, scored 1-5 on philosophy, hierarchy, execution, specificity, restraint, variety.
+         3. Build the signature moment first, then the whole page around it in one pass in the project's framework (`inspect_project` on path `{p}`). Real images of the subject; content visible without JavaScript; motion with reduced-motion support. {copy} Put the look stamp `/* layoza · direction: <idea> · structure: <flow> · hero: <hero> · palette: <accent> · type: <display/body> · critique: P? H? E? S? R? V? */` on the first line of the main CSS, scored 1-5 on philosophy, hierarchy, execution, specificity, restraint, variety.
 
-         4. Look. `capture_screenshots` on {t} and open the 1440 and 375 images. Fix the three worst problems (generic, crowded, broken); at most two rounds. Judge the pixels, not the code.
+         4. Look. `capture_screenshots` on {t} and open the 1440 and 375 images, and look at the signature at the start, middle and end of its scroll. Ask whether a template could have made this. Fix the three worst problems (generic, crowded, broken); at most two rounds. Judge the pixels, not the code.
          {rtl}
          5. {verify}",
         brief = quoted(&c.brief),
@@ -478,7 +478,7 @@ mod tests {
     #[test]
     fn art_direct_routes_components_loops_and_gates() {
         let page = text("art-direct", json!({ "brief": "harbour bakery website" }));
-        for must in ["get_design_system", "PURPOSE:", "PICKED: auto", "one pass", "three worst", "taste.md", "stamp", "reduced-motion"] {
+        for must in ["get_design_system", "PURPOSE:", "SIGNATURE:", "PICKED: auto", "one pass", "three worst", "taste.md", "stamp", "reduced-motion"] {
             assert!(page.contains(must), "art-direct lacks {must}");
         }
         let comp = text("art-direct", json!({ "brief": "a pricing table component with a yearly toggle" }));
