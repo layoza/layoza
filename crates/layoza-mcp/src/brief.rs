@@ -112,6 +112,24 @@ fn tokens_css(m: &mut String, d: &Value) {
     }
 }
 
+fn rgb(hex: &str) -> Option<[f64; 3]> {
+    let h = hex.trim().trim_start_matches('#');
+    let h: String = if h.len() == 3 { h.chars().flat_map(|c| [c, c]).collect() } else { h.to_string() };
+    if h.len() != 6 || !h.is_ascii() {
+        return None;
+    }
+    let ch = |i: usize| u8::from_str_radix(&h[i..i + 2], 16).ok().map(|v| f64::from(v) / 255.0);
+    Some([ch(0)?, ch(2)?, ch(4)?])
+}
+
+/// A near-black ground with one bright, saturated accent: the stock "dark + neon" look.
+fn neon_on_black(ground: &str, accent: &str) -> bool {
+    let (Some(g), Some(a)) = (rgb(ground), rgb(accent)) else { return false };
+    let lum = |c: [f64; 3]| 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    let spread = |c: [f64; 3]| c.iter().copied().fold(0.0, f64::max) - c.iter().copied().fold(1.0, f64::min);
+    lum(g) < 0.1 && spread(g) < 0.12 && lum(a) > 0.45 && spread(a) > 0.6
+}
+
 /// Render the deal as a compact Markdown brief.
 pub fn markdown(out: &Value) -> String {
     let ub = &out["understood_brief"];
@@ -165,6 +183,9 @@ pub fn markdown(out: &Value) -> String {
         let _ = writeln!(m, "- Shape: radius {}; hero material: {}", s(d, "radius"), s(d, "hero_material"));
         let _ = writeln!(m, "- Fonts: {} (body contrast {}:1)", s(&d["typography"], "google_fonts_url"), d["palette"]["wcag_body_contrast"]);
         tokens_css(&mut m, d);
+        if neon_on_black(s(&d["palette"], "background"), s(&d["palette"], "primary_accent")) {
+            let _ = writeln!(m, "- Check: this palette is near-black with one neon accent, which the avoid list bans. Give the ground a colour of its own or let the photography carry the colour.");
+        }
         let ps = &d["page_shape"];
         for (label, key) in [("Hero idea", "hero_frame"), ("Grounds", "ground"), ("Motif", "motif")] {
             let b = s(&ps[key], "build");
@@ -204,17 +225,23 @@ pub fn markdown(out: &Value) -> String {
         let _ = writeln!(m, "- Recently used, do not repeat: {}", clip(&recent.join(", "), 300));
     }
     if let Some(slots) = out["uniqueness"]["slots"].as_array() {
-        let rep: Vec<String> = slots.iter().filter(|x| s(x, "status").contains("repeat")).map(|x| format!("{} ({})", s(x, "slot"), s(x, "id"))).collect();
+        // Only the suggested look's slots: the other looks are listed by name, not built.
+        let rep: Vec<String> = slots
+            .iter()
+            .filter(|x| s(x, "status").contains("repeat") && !s(x, "slot").starts_with("B.") && !s(x, "slot").starts_with("C."))
+            .map(|x| format!("{} ({})", s(x, "slot").trim_start_matches("A."), s(x, "id")))
+            .collect();
         if !rep.is_empty() {
             let _ = writeln!(m, "- Repeats a recent run, change these: {}", rep.join(", "));
         }
     }
 
     let _ = writeln!(m, "\n## How to build");
-    let _ = writeln!(m, "1. Write the plan (first taste rule), signature first. Change any part of the look above that fights it; say what you changed.");
-    let _ = writeln!(m, "2. Build the signature moment first, then the rest of the page around it in one pass, in the project's own framework, with real copy for this business.");
-    let _ = writeln!(m, "3. Screenshot the signature at three scroll positions, then the whole page at 1440px and 390px. Ask: could a template have made this? Swap two section headlines: if both sections still work, they are interchangeable, so rebuild one. Cut one element that does not earn its place. Fix the three worst problems (generic, crowded, broken), at most two rounds.");
-    let _ = writeln!(m, "4. Run `capture_screenshots` (or `layoza qa <url>`) once and fix its errors. Done.");
+    let _ = writeln!(m, "1. Write .layoza/direction.md from \"Decide first\": MOTION, three concepts, PICKED, SIGNATURE, SECTIONS. Change any part of the suggested look that fights your concept; say what you changed.");
+    let _ = writeln!(m, "2. Build the signature moment first, then the rest of the page around it in one pass at your motion level, in the project's own framework, with real copy for this business.");
+    let _ = writeln!(m, "3. Screenshot the signature at start, middle and end, then the page at 1440px and 390px, and score the rubric. Swap two section headlines: if both still work, rebuild one.");
+    let _ = writeln!(m, "4. Blind critic: a fresh subagent that sees only this brief and the screenshots names the business, scores the rubric and lists the three weakest spots. Fix anything under 8; log `ROUND n: <what changed>`, two rounds at most.");
+    let _ = writeln!(m, "5. Run `capture_screenshots` (or `layoza qa <url>`) and fix its errors. Done.");
     m
 }
 
@@ -222,6 +249,14 @@ pub fn markdown(out: &Value) -> String {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn neon_on_black_spots_the_stock_dark_look() {
+        assert!(neon_on_black("#101510", "#B2F630"));
+        assert!(!neon_on_black("#FFF", "#B2F630"));
+        assert!(!neon_on_black("#1F2A4A", "#B2F630"));
+        assert!(!neon_on_black("#101510", "#8C6A3F"));
+    }
 
     #[test]
     fn brief_is_short_and_names_the_look() {
@@ -237,7 +272,7 @@ mod tests {
         assert!(md.starts_with("# Design brief: harbour bakery"));
         assert!(md.contains("## The signature moment") && md.contains("## A suggested look: Counter") && md.contains("## Decide first") && md.contains("The morning board") && md.contains("Flour dust."));
         assert!(md.contains(":root {\n  --ground: #FFF;") && md.contains("--font-display: \"Fraunces\""));
-        assert!(md.contains("- Map:") && md.contains("A.nav (nav-x)"));
+        assert!(md.contains("- Map:") && md.contains("- Repeats a recent run, change these: nav (nav-x)"));
         assert!(!md.contains("…") && md.contains("- Composition: The counter at dawn. The counter"), "long text keeps whole sentences");
         assert!(md.len() < 6000, "{}", md.len());
         // The agent decides the motion level; no rule fixes it to quiet.

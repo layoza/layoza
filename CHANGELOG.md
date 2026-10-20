@@ -15,6 +15,7 @@ All notable changes to Layoza are listed here. The format follows
   orders. Fixed taste rules became rubric questions, scored 0-10 first by the builder and then by a
   blind critic subagent that sees only the brief and the screenshots; anything under 8 gets fixed.
   Agencies and studios are no longer pushed toward a quiet page.
+- The brief's build steps follow the same path (decide, signature, rubric, blind critic, QA), it warns when the suggested palette is a near-black ground with one neon accent, and the repeat list names only the suggested look's slots.
 - New QA warning `DESIGN-NO-MOTION-LEVEL`: `direction.md` needs `MOTION: <0-5> — <why>`.
 - The art-direct prompt plans `MOTION:` and three concepts instead of `QUIET:`, and adds the blind
   critic to the look step.
