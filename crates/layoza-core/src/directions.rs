@@ -865,7 +865,14 @@ fn brand_palette(colors: &[String], roles: &std::collections::BTreeMap<String, S
     let (bg, surface) = match ground.and_then(|g| rgb(g).map(|c| (g, c))) {
         Some((g, c)) => {
             let toward = if luminance(g).unwrap_or(0.0) < 0.5 { (255, 255, 255) } else { (0, 0, 0) };
-            (g.clone(), mix(c, toward, 0.06))
+            // A tinted brief colour on the same side of mid-grey as the ground is the surface.
+            let light = luminance(g).unwrap_or(0.0) >= 0.5;
+            let neutral = |h: &str| rgb(h).is_some_and(|(r, gg, b)| r == gg && gg == b);
+            let tint = colors.iter().filter(|h| *h != g && !neutral(h) && luminance(h).is_some_and(|l| if light { l > 0.75 } else { l < 0.02 })).min_by(|a, b| {
+                let d = |h: &String| (luminance(h).unwrap_or(0.0) - luminance(g).unwrap_or(0.0)).abs();
+                d(a).total_cmp(&d(b))
+            });
+            (g.clone(), tint.cloned().unwrap_or_else(|| mix(c, toward, 0.06)))
         }
         None => (base.background.clone(), base.surface.clone()),
     };
@@ -879,8 +886,10 @@ fn brand_palette(colors: &[String], roles: &std::collections::BTreeMap<String, S
     } else {
         "#111111".to_string()
     };
-    let muted = if let Some(m) = roles.get("muted").filter(|m| ok(m)) {
-        m.clone()
+    let nudge = |c: &str| rgb(c).and_then(|c| [0.0, 0.1, 0.2, 0.3, 0.4, 0.5].iter().map(|t| mix(c, rgb(&fg).unwrap_or((0, 0, 0)), *t)).find(|m| ok(m)));
+    let muted = if let Some(m) = roles.get("muted").and_then(|m| nudge(m)) {
+        // The brief's own secondary text, darkened toward the ink only as far as contrast needs.
+        m
     } else if ok(&base.muted) {
         base.muted.clone()
     } else {
@@ -1147,11 +1156,18 @@ pub(crate) fn is_paid_face(name: &str) -> bool {
 /// The brief's own type: names rotate through display and body per direction; a mono name fills
 /// the mono role. Returns the pairing (main stylesheet), a second stylesheet when faces come from
 /// two sources (Fontshare faces with a Google mono), and notes for paid faces.
-fn brand_type(fonts: &[String], slot: u8, base: &TypographyPairing) -> (TypographyPairing, Option<String>, Vec<String>) {
+fn brand_type(fonts: &[String], roles: &std::collections::BTreeMap<String, String>, slot: u8, base: &TypographyPairing) -> (TypographyPairing, Option<String>, Vec<String>) {
     let names: Vec<&String> = fonts.iter().filter(|f| !is_mono_name(f)).collect();
+    // Fonts the brief labels by role ("Headings: ...", "Body: ...") keep that role; each direction
+    // takes its own pick among the alternatives.
+    let by_role = |r: &str| names.iter().copied().filter(|f| roles.get(*f).is_some_and(|x| x == r)).collect::<Vec<_>>();
+    let (heads, bodies) = (by_role("display"), by_role("body"));
     // A brief that names two or more faces has its system; a third, unasked mono face only adds noise.
     let mono = fonts.iter().find(|f| is_mono_name(f)).cloned().unwrap_or_else(|| if names.len() >= 2 { names[(slot as usize + 1) % names.len()].clone() } else { base.mono_font.clone() });
     let (display, body) = match names.len() {
+        _ if !heads.is_empty() && !bodies.is_empty() => (heads[slot as usize % heads.len()].clone(), bodies[slot as usize % bodies.len()].clone()),
+        _ if !heads.is_empty() => (heads[slot as usize % heads.len()].clone(), base.body_font.clone()),
+        _ if !bodies.is_empty() => (base.display_font.clone(), bodies[slot as usize % bodies.len()].clone()),
         0 => (base.display_font.clone(), base.body_font.clone()),
         // One named face leads display; body comes from the base so long text stays legible.
         1 => (names[0].clone(), if slot == 2 { names[0].clone() } else { base.body_font.clone() }),
@@ -1677,7 +1693,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
             d.brand.push(format!("palette built around the brief's colours ({})", signals.brief_colors.join(", ")));
         }
         if !signals.brief_fonts.is_empty() {
-            let (t, extra, paid) = brand_type(&signals.brief_fonts, d.slot, &d.typography);
+            let (t, extra, paid) = brand_type(&signals.brief_fonts, &signals.brief_font_roles, d.slot, &d.typography);
             d.typography = t;
             d.extra_font_url = extra;
             d.brand.extend(paid);

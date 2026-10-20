@@ -635,6 +635,9 @@ pub struct BriefSignals {
     /// directions' pairings are only fallbacks.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub brief_fonts: Vec<String>,
+    /// Role the brief gives each named font by label (`display` for headings, `body` for text).
+    #[serde(default, skip_serializing_if = "std::collections::BTreeMap::is_empty")]
+    pub brief_font_roles: std::collections::BTreeMap<String, String>,
     /// Catalogue niches the brief names (`mechanics::detect_niches`): the one niche signal shared by
     /// `design-system` and `deal`, so both read the same trade. `niche_tags` are palette families only.
     #[serde(default)]
@@ -686,6 +689,28 @@ fn brief_font_names(query: &str) -> Vec<String> {
     }
     found.sort();
     found.into_iter().map(|(_, f)| f.to_string()).collect()
+}
+
+/// Roles the brief gives its fonts by the words before them on the same line or clause
+/// ("Headings: Space Grotesk or Sora" -> display; "Body: Inter" -> body).
+fn brief_font_roles(query: &str, fonts: &[String]) -> std::collections::BTreeMap<String, String> {
+    let lower = query.to_lowercase();
+    let mut roles = std::collections::BTreeMap::new();
+    for f in fonts {
+        let Some(i) = lower.find(&f.to_lowercase()) else { continue };
+        let start = lower[..i].rfind(['\n', ';', '.']).map_or(0, |p| p + 1);
+        let words = tokenize(&lower[start..i]);
+        let has = |w: &[&str]| words.iter().any(|x| w.contains(&x.as_str()));
+        let role = if has(&["heading", "headings", "headline", "headlines", "display", "title", "titles", "h1", "h2"]) {
+            "display"
+        } else if has(&["body", "text", "paragraph", "paragraphs", "copy", "ui", "interface"]) {
+            "body"
+        } else {
+            continue;
+        };
+        roles.insert(f.clone(), role.to_string());
+    }
+    roles
 }
 
 /// `#RRGGBB` / `#RGB` colours in the brief, upper-cased, first occurrence order, except that the
@@ -1002,10 +1027,11 @@ pub fn brief_signals(query: &str) -> BriefSignals {
     let brief_colors = brief_hex_colors(query);
     let brief_color_roles = brief_color_roles(query, &brief_colors);
     let brief_fonts = brief_font_names(query);
+    let brief_font_roles = brief_font_roles(query, &brief_fonts);
     let niches = crate::mechanics::niche_signal(query);
     let brief_objects = crate::mechanics::brief_objects(query);
     let brief_action = crate::mechanics::brief_action(query);
-    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_color_roles, brief_fonts, niches, brief_objects, brief_action }
+    BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_color_roles, brief_fonts, brief_font_roles, niches, brief_objects, brief_action }
 }
 
 /// Applies the brief's motion bias and ceiling to a direction's motion dial.
@@ -2086,6 +2112,7 @@ pub fn recommend_design_steered(
         signals.brief_colors = whole.brief_colors;
         signals.brief_color_roles = whole.brief_color_roles;
         signals.brief_fonts = whole.brief_fonts;
+        signals.brief_font_roles = whole.brief_font_roles;
     }
     let mut subject = crate::directions::read_subject(query, &signals);
     if !subject.from_trades {
@@ -2706,6 +2733,18 @@ Text: #10203A");
         assert!(rec("a calm bakery site").brief_signals.brief_fonts.is_empty());
         // Font names inside ordinary words are not fonts
         assert!(rec("international interiors studio").brief_signals.brief_fonts.is_empty());
+    }
+
+    #[test]
+    fn brief_font_roles_follow_their_labels() {
+        let r = rec("led screens site.
+* Headings: Space Grotesk or Sora.
+* Body: Inter or Manrope.");
+        let roles = &r.brief_signals.brief_font_roles;
+        assert_eq!(roles.get("Sora").map(String::as_str), Some("display"));
+        assert_eq!(roles.get("Space Grotesk").map(String::as_str), Some("display"));
+        assert_eq!(roles.get("Inter").map(String::as_str), Some("body"));
+        assert_eq!(roles.get("Manrope").map(String::as_str), Some("body"));
     }
 
     #[test]

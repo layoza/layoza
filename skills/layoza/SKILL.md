@@ -59,9 +59,9 @@ On demand: [`layoza-animations`](../layoza-animations/SKILL.md),
    object as authored art. A stranger can name the business with the words covered.
 2. **One signature moment:** a set piece only this subject could have, built
    first. A stack of stock parts with fade-ups fails even when QA passes.
-3. Colour owns sections (a quiet or minimal prompt: one ground, one accent),
-   type can be the image, each section's composition comes from its content,
-   and the idea reaches the footer.
+3. Colour owns sections (quiet prompt: one ground, one accent), type can be
+   the image, each section's composition comes from its content, and the idea
+   reaches the footer.
 4. Mechanics (overflow, contrast, focus, leading) are enforced by `layoza qa`.
 
 ## 2b. The simple path (new sites and redesigns)
@@ -74,9 +74,12 @@ On demand: [`layoza-animations`](../layoza-animations/SKILL.md),
    (5–7, one idea each), `QUIET:` (what the rest does to set the signature up).
 3. **Build the signature first,** from the real subject, then the page around it
    in one pass. Everything else stays quiet: feedback and one staggered entrance.
-4. **Look.** Screenshot the signature at the start, middle and end of its scroll,
-   then the page at 1440 and 375. Fix the three worst problems; ask whether a
-   template could have made this. Log `ROUND 1: <what changed>` (two rounds max).
+4. **Look.** Screenshot the signature at start, middle and end, then the page
+   at 1440 and 375. Then crop each section and check it alone: one idea with
+   proof, type from the tokens only, spacing on the scale (more above a heading
+   than below), a composition its neighbours do not share. Swap two headlines:
+   if both still work, rebuild one. Cut one element that does not earn its
+   place. Log `ROUND 1: <what changed>` (two rounds max).
 5. **QA** (below) until 0 errors; read each warning and fix the real ones.
 
 Tick [`references/what-wins.md`](references/what-wins.md) before shipping.

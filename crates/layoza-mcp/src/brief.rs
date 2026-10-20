@@ -8,48 +8,63 @@ use std::fmt::Write as _;
 
 /// Taste rules every page meets. Short on purpose: one idea per line.
 pub const TASTE: &[&str] = &[
-    "Before code, write a 5-line plan: the signature moment, the 4-6 colour tokens, the type pair, a one-line layout sentence per section, what the rest of the page does to set up the signature. Check it against the brief and rewrite anything generic.",
+    "Before code, write a 5-line plan: the signature, 4-6 colour tokens, the type pair, one layout sentence per section, how the page sets up the signature. Score it 0-10, say what a 10 is for this brief, fix every line below 8.",
     "The hero opens on the subject itself: the trade's own object, place, work or product at scale. Decoration never stands in for the subject.",
-    "Every section is a claim plus its proof (a picture, a number with a source, a real name). A section with no proof gets cut, not padded.",
-    "Type: one family or two clearly different ones, display 4-6x the body size, tight leading (0.9-1.05) and slight negative tracking on big type, body 16-20px at 45-75 characters a line, at most 6 sizes. No habitual default face for display.",
-    "Colour: one ground, one ink, one accent, plus at most 2-3 supporting tokens. Secondary text is a tint of the ground's hue, not grey; body contrast 4.5:1 or more. Light or dark follows where the page is read, not the industry cliché.",
-    "Pacing like a product launch: one idea per screen near the top, 5-7 sections in all, rhythm that changes between full-bleed, contained and dense; at least one screen where type or the subject alone fills the view. Dark and light grounds follow the story, not a pattern.",
-    "Layout: a real grid with deliberate asymmetry, more space above a heading than below, generous gaps between sections (96-200px desktop). Headlines at most 2-3 lines.",
-    "Every border, label, number and divider carries information; one radius and one rule weight across the page.",
-    "Copy in the customer's words: concrete nouns, real numbers, places, names. Buttons say the exact action ('Get a quote for my wall'). Sentence case.",
-    "Motion craft: the signature is driven by scroll position or the user's hand, not a timer, and is choreographed: parts arrive in a planned order (40-80ms staggers), one easing family, every move explains something. Outside it, motion stays quiet: UI feedback under 300ms with strong ease-out, exits faster than entrances, hover only on (hover:hover). Animate transform, opacity, clip-path or a canvas only. Without JS or under reduced motion show the final frame.",
-    "Imagery: real or brand photos and footage of the subject; if none exist, a crafted render or diagram of the real object, never stock people, SVG people or emoji icons.",
+    "Every section is a claim plus its proof (a picture, a sourced number, a real name). No proof, cut it.",
+    "Type: one family or two clearly different ones; display 4-6x body, leading 0.9-1.05, slight negative tracking; body 16-20px, 45-75 characters a line. Two or three sizes do the visible work. Headlines break by hand: at most 2 lines on desktop, 3 on a phone.",
+    "Colour: one ground, one ink, one accent, at most 2-3 supporting tokens. Secondary text is a tint of the ground's hue, not grey; body contrast 4.5:1+. Light text on dark: weight 400+.",
+    "Pacing like a product launch: one idea per screen near the top, 5-7 sections, rhythm changing between full-bleed, contained and dense; one screen where type or the subject alone fills the view. Grounds follow the story, not a pattern.",
+    "Layout: a real grid with deliberate asymmetry; more space above a heading than below; section gaps 120-220px desktop, at least twice the gaps inside one. No blank stretch over half a screen, no section huddled to one side.",
+    "Every border, label, number and divider carries information; one radius, one rule weight, one spacing scale.",
+    "Copy in the customer's words: concrete nouns, real numbers, places, names. Buttons say the exact action. Sentence case.",
+    "Motion: the signature is driven by scroll or hand, not a timer, choreographed in a planned order (40-80ms staggers, one easing family), every move explaining something. Elsewhere quiet: feedback under 300ms ease-out, hover only on (hover:hover), transform/opacity/clip-path/canvas only. No JS or reduced motion shows the final frame.",
+    "Imagery: real photos and footage of the subject, else a crafted render or diagram of the real object; never stock or SVG people, never emoji icons. At least four pictures on a long page, one crop ratio and one treatment.",
     "Finish: themed selection, focus ring and scrollbar; tabular figures; every state (hover, focus, active, disabled, empty, error) designed.",
-    "Mobile is designed, not squeezed: headline readable in 3 lines, main action above the fold at 390px, 44px tap targets, no sideways scroll.",
+    "Mobile is designed, not squeezed: main action above the fold at 390px, 44px tap targets, pictures re-cropped for portrait, no sideways scroll.",
 ];
 
 /// Patterns that read as AI-made. Ban unless the brief asks for them.
 pub const AVOID: &[&str] = &[
-    "Small tracked-caps eyebrow labels above headings; one accented (coloured or italic) word inside a headline.",
-    "Grids of identical icon-topped cards with the same radius and soft shadow; cards nested in cards.",
-    "Hero of big stat numbers, or a gradient blob/mesh behind a centred headline and two pill buttons.",
-    "Gradient text, decorative gradient washes, glows, glass panels, zero-offset shadows.",
-    "Stock AI palettes: purple-to-pink, violet/indigo on dark, near-black with one neon accent, cream with serif and terracotta.",
-    "Monospace as a 'tech' costume; middle-dot meta strings; arrows tacked onto every link and button.",
-    "Coloured side borders thicker than 1px on cards, buttons or callouts.",
-    "A page assembled from stock parts (hero, logo strip, feature cards, steps, testimonials, CTA) with no set piece, where the only motion is a fade-up on scroll and a hover lift.",
-    "Zig-zag stacks: picture left and text right, then swapped, repeated down the page.",
-    "Invented proof: reviews, client logos, statistics or awards the brief did not give.",
-    "Every section built from the same centred heading + subhead + grid.",
+    "Small tracked-caps eyebrows above headings; one coloured or italic word inside a headline.",
+    "Grids of identical icon-topped cards with one radius and soft shadow; cards in cards.",
+    "A hero of big stat numbers, or a gradient blob behind a centred headline and two pill buttons.",
+    "Gradient text, gradient washes, glows, glass panels, zero-offset shadows, coloured side borders over 1px.",
+    "Stock AI palettes: purple-to-pink, violet on dark, near-black with one neon accent, cream with serif and terracotta.",
+    "Monospace as a 'tech' costume; middle-dot meta strings; arrows on every link.",
+    "A page assembled from stock parts (hero, logo strip, feature cards, steps, testimonials, CTA) with no set piece, moving only by fade-up and hover lift; every section the same centred heading + subhead + grid.",
+    "Zig-zag stacks: picture left and text right, then swapped, down the page.",
+    "Invented proof: reviews, logos, statistics or awards the brief did not give.",
 ];
 
 fn s<'a>(v: &'a Value, k: &str) -> &'a str {
     v.get(k).and_then(|x| x.as_str()).unwrap_or("")
 }
 
-/// Cut text at a sentence or word boundary near `max` characters.
+/// Whole sentences of `t` up to about `max` characters. The first sentence is always kept whole
+/// (up to twice `max`), so an idea is never cut off mid-thought.
 fn clip(t: &str, max: usize) -> String {
+    let t = t.trim();
     if t.chars().count() <= max {
         return t.to_string();
     }
-    let cut: String = t.chars().take(max).collect();
-    let end = cut.rfind(". ").map(|i| i + 1).filter(|&i| i > max / 2).or_else(|| cut.rfind(' ')).unwrap_or(cut.len());
-    format!("{}…", cut[..end].trim_end())
+    let mut out = String::new();
+    for sentence in t.split_inclusive(". ") {
+        let next = out.chars().count() + sentence.chars().count();
+        if !out.is_empty() && next > max {
+            break;
+        }
+        out.push_str(sentence);
+        if next > max {
+            break;
+        }
+    }
+    if out.chars().count() > max * 2 {
+        // One run-on sentence: end at the last clause break instead.
+        let cut: String = out.chars().take(max * 2).collect();
+        let end = cut.rfind(['.', ';', ':', ',']).unwrap_or(cut.len());
+        out = format!("{}.", cut[..end].trim_end());
+    }
+    out.trim_end().to_string()
 }
 
 fn list(v: &Value) -> Vec<String> {
@@ -123,7 +138,7 @@ pub fn markdown(out: &Value) -> String {
 
     if let Some(d) = dirs.first() {
         let _ = writeln!(m, "\n## The signature moment (build this first)");
-        let _ = writeln!(m, "The one set piece the page is remembered for. Ask what this subject does or reveals that nothing else does (how it is made, used, moves, scales, or changes with distance, time or light) and stage it as a scene the visitor drives by scroll or hand, one to two screens long, built from the real subject. It must fail for a rival business.");
+        let _ = writeln!(m, "The set piece the page is remembered for: what this subject does that nothing else does (how it is made, used, moves, scales, or changes with distance, time or light), staged as a scene the visitor drives by scroll or hand, one to two screens, built from the real subject. It must fail for a rival business. On a docs page, article or portfolio the content or the work itself is the signature: keep the interface quiet around it.");
         let lead = s(d, "motion_choreography");
         if !lead.is_empty() {
             let _ = writeln!(m, "- Starting idea: {}", clip(lead, 300));
@@ -131,7 +146,7 @@ pub fn markdown(out: &Value) -> String {
         let _ = writeln!(m, "- Done when: start, middle and end frames each read as a poster, it is smooth on a phone, and the final frame works without JavaScript.");
 
         let _ = writeln!(m, "\n## The look: {}", title(d));
-        let _ = writeln!(m, "One look that frames the signature. Tokens, type and shape are the system; the rest are raw ideas, kept only if they serve the signature. The user's own asks always win.\n");
+        let _ = writeln!(m, "One look that frames the signature. Tokens, type and shape are the system; the rest are raw ideas, kept only if they serve the signature. Where two ideas clash, the signature wins; the user's own asks always win.\n");
         let _ = writeln!(m, "- Composition: {}", clip(s(d, "layout_composition"), 260));
         let _ = writeln!(m, "- Content: {}", clip(s(d, "content_treatment"), 200));
         let _ = writeln!(m, "- Shape: radius {}; hero material: {}", s(d, "radius"), s(d, "hero_material"));
@@ -144,7 +159,7 @@ pub fn markdown(out: &Value) -> String {
                 let _ = writeln!(m, "- {label}: {}", clip(b, 220));
             }
         }
-                let nav = s(&d["nav"], "name");
+        let nav = s(&d["nav"], "name");
         let foot = s(&d["footer"], "name");
         if !nav.is_empty() || !foot.is_empty() {
             let _ = writeln!(m, "- Header idea: {nav}. Footer idea: {foot}.");
@@ -185,7 +200,7 @@ pub fn markdown(out: &Value) -> String {
     let _ = writeln!(m, "\n## How to build");
     let _ = writeln!(m, "1. Write the 5-line plan (first taste rule), signature first. Change any part of the look above that fights it; say what you changed.");
     let _ = writeln!(m, "2. Build the signature moment first, then the rest of the page around it in one pass, in the project's own framework, with real copy for this business.");
-    let _ = writeln!(m, "3. Screenshot the signature at three scroll positions, then the whole page at 1440px and 390px. Ask: could a template have made this? Fix the three worst problems (generic, crowded, broken), at most two rounds.");
+    let _ = writeln!(m, "3. Screenshot the signature at three scroll positions, then the whole page at 1440px and 390px. Ask: could a template have made this? Swap two section headlines: if both sections still work, they are interchangeable, so rebuild one. Cut one element that does not earn its place. Fix the three worst problems (generic, crowded, broken), at most two rounds.");
     let _ = writeln!(m, "4. Run `capture_screenshots` (or `layoza qa <url>`) once and fix its errors. Done.");
     m
 }
@@ -210,7 +225,7 @@ mod tests {
         assert!(md.contains("## The signature moment") && md.contains("## The look: Counter") && md.contains("The morning board") && md.contains("Flour dust."));
         assert!(md.contains(":root {\n  --ground: #FFF;") && md.contains("--font-display: \"Fraunces\""));
         assert!(md.contains("- Map:") && md.contains("A.nav (nav-x)"));
-        assert!(md.contains("…"), "long composition is clipped");
+        assert!(!md.contains("…") && md.contains("- Composition: The counter at dawn. The counter"), "long text keeps whole sentences");
         assert!(md.len() < 6000, "{}", md.len());
     }
 }

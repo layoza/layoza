@@ -5146,6 +5146,14 @@ function layozaQualitySweep(opts) {
     "mono-running-text": ["critique", "typography", "mono", "Paragraphs set in a monospace face are slower to read; mono works for code, figures and short labels.", "Set running text in a proportional face and keep mono for code and data."],
     "nav-floating-pill": ["critique", "style", "pill", "A detached rounded navigation capsule floating over the page is a stock template move.", "Dock the navigation to the edge, or name the floating nav in DESIGN.md when the brief wants it."],
     "imagery-scarce": ["critique", "content", "imagery", "A long page with no photographs, product shots or real artwork shows nothing of the subject; it reads as a template.", "Show the actual objects of the trade: product, place, people, work samples, data."],
+    "picture-floor": ["warning", "content", "imagery", "A long page carried by type and flat panels with only one to three pictures reads as a template; editorial pages show the subject again and again.", "Show at least four real pictures, footage or rendered scenes of the subject (240x160px+), in one crop system and one treatment."],
+    "headline-too-many-lines": ["warning", "typography", "", "A headline that wraps to four or more lines stops reading as one idea; senior pages keep display type to two or three deliberate lines.", "Shorten the headline, widen its column or step the size down at this width; break lines by hand on phones."],
+    "blank-stretch": ["warning", "visual", "", "A stretch of more than half a screen with no text, picture or control looks like a broken load, not like breathing room.", "Close the gap, or give the space a reason: the subject, a full-bleed picture or a single line of type."],
+    "heading-level-skip": ["warning", "accessibility", "", "Skipped heading levels (h2 to h4) break the outline screen-reader users navigate by and usually mean headings were picked for size, not structure.", "Use the next level down and size it with CSS."],
+    "colour-sprawl": ["critique", "visual", "", "Many unrelated hues across text, fills and borders means the palette was never fixed; a designed page runs on a few tokens.", "Collapse colours to the ground, ink, accent and two or three supporting tokens; use tints of those, not new hues."],
+    "selection-unstyled": ["critique", "visual", "", "The browser's default blue selection and caret are the one place the brand never reached; finished pages theme them.", "Set ::selection (and caret-color/accent-color on forms) from the palette tokens."],
+    "spacing-sprawl": ["critique", "visual", "", "Dozens of unrelated padding, margin and gap values mean spacing was eyeballed per block, so the rhythm never reads as deliberate.", "Put spacing on a short scale (for example 4/8/12/16/24/32/48/64/96/128) and use only its steps."],
+    "thin-text-on-dark": ["warning", "typography", "", "Light text on a dark ground looks thinner and blurrier than the same text on light; weights of 300 or below fall apart.", "Use 400+ for body text on dark sections and open the leading slightly."],
     "font-size-sprawl": ["critique", "typography", "", "Many unrelated font sizes mean there is no type scale; hierarchy becomes guesswork.", "Pick 5-7 sizes from a ratio-based scale and map every text role to one of them."],
     "radius-sprawl": ["critique", "style", "", "Many different corner radii on boxes of the same kind look unplanned.", "Define 2-4 radius tokens (control, card, overlay) and use only those."],
     "link-default-blue": ["critique", "style", "", "Links still use the browser default blue/purple, which clashes with the palette and looks unfinished.", "Style links from the palette with an underline or other non-colour cue."],
@@ -5616,6 +5624,106 @@ function layozaQualitySweep(opts) {
     });
     const bgArt = boxes.filter((el) => /url\(/.test(cs(el).backgroundImage)).length;
     if (media.length + bgArt === 0) emit("imagery-scarce", D.body, "page " + Math.round(docH / vh) + " screens tall with no image, video, canvas or artwork of 160x120px+");
+  });
+  run("picture-floor", () => {
+    if (docH < vh * 4 || D.querySelector('meta[name="layoza-surface"][content="app" i]')) return;
+    const pics = Array.from(D.querySelectorAll("img, picture > img, video, canvas, [style*='background-image']")).filter((m) => {
+      const r = m.getBoundingClientRect();
+      if (r.width < 240 || r.height < 160 || m.closest("header nav, footer")) return false;
+      if (m.tagName === "IMG" && /\.svg(\?|$)/i.test(m.currentSrc || m.src || "")) return false;
+      return shown(m) || m.tagName === "CANVAS";
+    });
+    const seen = new Set(pics.map((m) => m.currentSrc || m.src || m.style.backgroundImage || m.tagName + absTop(m)));
+    if (seen.size >= 1 && seen.size < 4) emit("picture-floor", D.body, seen.size + " picture(s) on a page " + Math.round(docH / vh) + " screens tall");
+  });
+  run("headline-too-many-lines", () => {
+    D.querySelectorAll("h1, h2").forEach((h) => {
+      if (!shown(h)) return;
+      const lh = px(cs(h).lineHeight) || px(cs(h).fontSize) * 1.15;
+      const lines = Math.round(h.getBoundingClientRect().height / lh);
+      if (px(cs(h).fontSize) >= 28 && lines >= 4) emit("headline-too-many-lines", h, lines + " lines at " + vw + "px (" + textOf(h).slice(0, 50) + ")");
+    });
+  });
+  run("blank-stretch", () => {
+    if (docH < vh * 2) return;
+    // Covered spans: visible text, media and controls, plus whole scroll tracks that hold sticky
+    // content (their stage is pinned somewhere inside the track at capture time).
+    const spans = [];
+    all.forEach((el) => {
+      const isMedia = /^(IMG|VIDEO|CANVAS|SVG|PICTURE|IFRAME|INPUT|TEXTAREA|SELECT|BUTTON)$/i.test(el.tagName) || /url\(/.test(cs(el).backgroundImage);
+      if (!(isMedia || ownText(el)) || !shown(el)) return;
+      const r = el.getBoundingClientRect();
+      spans.push([r.top + pageTop, r.bottom + pageTop]);
+    });
+    all.forEach((el) => {
+      if (cs(el).position === "sticky" && el.parentElement) {
+        const r = el.parentElement.getBoundingClientRect();
+        spans.push([r.top + pageTop, r.bottom + pageTop]);
+      }
+    });
+    spans.sort((a, b) => a[0] - b[0]);
+    let reach = 0;
+    for (const [a, b] of spans) {
+      if (a - reach > vh * 0.6 && reach > 0) {
+        emit("blank-stretch", D.body, Math.round(a - reach) + "px empty from y=" + Math.round(reach) + " at " + vw + "px");
+        return;
+      }
+      reach = Math.max(reach, b);
+    }
+  });
+  run("heading-level-skip", () => {
+    let prev = 0;
+    for (const h of D.querySelectorAll("h1, h2, h3, h4, h5, h6")) {
+      if (!shown(h) && !h.matches(".sr-only, .visually-hidden")) continue;
+      const n = +h.tagName[1];
+      if (prev && n > prev + 1) { emit("heading-level-skip", h, "h" + prev + " then h" + n); return; }
+      prev = n;
+    }
+  });
+  run("colour-sprawl", () => {
+    const hues = new Set();
+    all.slice(0, 3000).forEach((el) => {
+      if (!shown(el)) return;
+      const st = cs(el);
+      [st.color, st.backgroundColor, st.borderTopColor].forEach((v) => {
+        const c = rgba(v);
+        if (!c || c[3] < 0.5) return;
+        const mx = Math.max(c[0], c[1], c[2]), mn = Math.min(c[0], c[1], c[2]);
+        if (mx - mn < 30) return; // greys and near-greys are neutrals, not palette colours
+        hues.add(c.slice(0, 3).map((x) => Math.round(x / 24)).join(","));
+      });
+    });
+    if (hues.size > 12) emit("colour-sprawl", D.body, hues.size + " distinct chromatic colours");
+  });
+  run("selection-unstyled", () => {
+    let themed = false;
+    for (const sheet of Array.from(D.styleSheets)) {
+      let rules;
+      try { rules = sheet.cssRules; } catch (e) { continue; }
+      if (Array.from(rules || []).some((r) => /::selection/.test(r.cssText || ""))) { themed = true; break; }
+    }
+    if (!themed && docH >= vh * 2) emit("selection-unstyled", D.body, "no ::selection rule in readable stylesheets");
+  });
+  run("spacing-sprawl", () => {
+    const vals = new Set();
+    all.slice(0, 3000).forEach((el) => {
+      if (!shown(el)) return;
+      const st = cs(el);
+      [st.paddingTop, st.paddingLeft, st.marginTop, st.marginBottom, st.rowGap, st.columnGap].forEach((v) => {
+        const n = Math.round(px(v));
+        if (n >= 4) vals.add(n);
+      });
+    });
+    if (vals.size > 28) emit("spacing-sprawl", D.body, vals.size + " distinct spacing values");
+  });
+  run("thin-text-on-dark", () => {
+    const lum = (c) => (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255;
+    for (const el of all) {
+      if (!ownText(el) || !shown(el) || textOf(el).length < 60) continue;
+      const st = cs(el);
+      const c = rgba(st.color);
+      if (c && lum(c) > 0.75 && +st.fontWeight <= 300 && px(st.fontSize) < 24) { emit("thin-text-on-dark", el, "weight " + st.fontWeight + " light text at " + st.fontSize); return; }
+    }
   });
   run("cta-competition", () => {
     const pageBg = rgba(cs(D.body).backgroundColor) || [255, 255, 255, 1];

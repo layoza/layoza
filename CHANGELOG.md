@@ -7,6 +7,8 @@ All notable changes to Layoza are listed here. The format follows
 ## [Unreleased]
 
 ### Changed
+- Taste rules: score the plan before code, two or three working type sizes, hand-broken headlines (2 lines desktop, 3 phone), one spacing scale, a picture floor with one crop system, section gaps at least twice inner gaps; docs, articles and portfolios let the content be the signature.
+- The review step checks every section on its own crop (one idea with proof, type from tokens, spacing on the scale, a composition its neighbours do not share), runs a headline-swap test and cuts one element.
 - `get_design_system` now returns a short Markdown design brief by default (`detail: "brief"`):
   one whole-page look, twelve taste rules, an avoid list and a four-step build. The SMDLED brief
   went from about 91 KB of JSON to 7 KB. `detail: "summary"` / `"full"` still return the JSON deal.
@@ -24,12 +26,16 @@ All notable changes to Layoza are listed here. The format follows
   (a pinned stage that changes with scroll, or a scroll-timeline animation).
 
 ### Added
+- QA: `picture-floor`, `headline-too-many-lines`, `blank-stretch`, `heading-level-skip`, `thin-text-on-dark` (warnings) and `colour-sprawl`, `spacing-sprawl`, `selection-unstyled` (critiques).
 - `zigzag-stack` (`UI-ZIGZAG-STACK`): three or more media-beside-text rows that flip sides warn; four
   or more fail the gate. It is the commonest template rhythm.
 - `signature-missing` (`UI-NO-SIGNATURE`): a page that is not declared calm warns when no pinned
   stage changes with scroll and no animation is linked to scroll.
 
 ### Fixed
+- Fonts the brief labels by role ("Headings: …", "Body: …") keep that role; a body face is no longer dealt as display or the reverse.
+- The brief's own secondary-text colour is kept (darkened only as far as contrast needs) and a brief tint becomes the surface, instead of unrelated base colours.
+- The short brief no longer cuts ideas off mid-sentence.
 - `QA-SECTION-RESKIN` no longer flags a page as a copy of itself when one QA run used the file
   and another a loopback URL on a different port.
 - `testimonial-unsourced` reads the attribution in a quote's `figcaption` instead of counting the
