@@ -1660,6 +1660,35 @@ const DOM_EVAL_SCRIPT = `(() => {
     if (n >= 4 && topSig >= 4 && topSig / n >= 0.5) {
       issue("repeated-card-look", "warning", "One card treatment (same border, fill, radius and shadow) is used in " + topSig + " of " + n + " sections at " + vw + "px wide (give each section its own material: open ground, full-bleed colour, inset, art plate; boxes are not a layout)");
     }
+    // Zig-zag stack: three or more rows of one large media block beside a text block, the media
+    // flipping sides row after row. The commonest template rhythm; one section per idea instead.
+    const zrows = [];
+    for (const m of Array.from(document.querySelectorAll("main img, main picture, main video, main canvas, main svg, body > section img, body > section video, body > section canvas")).slice(0, 200)) {
+      if (m.parentElement && m.parentElement.closest("svg, picture")) continue;
+      const mr = m.getBoundingClientRect();
+      if (!isVisible(m) || mr.width < vw * 0.28 || mr.height < 180) continue;
+      let row = m.parentElement;
+      while (row && row !== document.body) {
+        const rr = row.getBoundingClientRect();
+        if (rr.width >= vw * 0.6) break;
+        row = row.parentElement;
+      }
+      if (!row || row === document.body || zrows.some((z) => z.row === row || z.row.contains(row) || row.contains(z.row))) continue;
+      const rr = row.getBoundingClientRect();
+      const text = Array.from(row.querySelectorAll("h2, h3, p")).filter((t) => isVisible(t) && !m.contains(t)).map((t) => t.getBoundingClientRect())
+        .filter((t) => t.top < mr.bottom && t.bottom > mr.top && (t.left >= mr.right - 4 || t.right <= mr.left + 4));
+      if (!text.length || rr.height > window.innerHeight * 1.6) continue;
+      zrows.push({ row, top: rr.top + window.scrollY, side: mr.left + mr.width / 2 < rr.left + rr.width / 2 ? "L" : "R", label: describe(row) });
+    }
+    zrows.sort((a, b) => a.top - b.top);
+    let run = 1, best = 1, bestEnd = 0;
+    for (let k = 1; k < zrows.length; k++) {
+      run = zrows[k].side !== zrows[k - 1].side ? run + 1 : 1;
+      if (run > best) { best = run; bestEnd = k; }
+    }
+    if (best >= 3) {
+      issue("zigzag-stack", best >= 4 ? "error" : "warning", best + " media-and-text rows in a row flip the media left and right (" + zrows.slice(bestEnd - best + 1, bestEnd + 1).map((z) => z.side + " " + z.label).slice(0, 4).join("; ") + ") at " + vw + "px wide: the stock template rhythm. Give these items one shared composition (a set, a scene, a comparison, a single stage that changes) instead of alternating rows");
+    }
   }
 
   // --- Hero empty band (phones): a tall stretch of the first screen with no text, image or photo reads
@@ -7850,6 +7879,13 @@ function assembleReport(url, engine, raw, tokens) {
         rule: "motion-too-sparse",
         severity: "warning",
         detail: `Only ${motion.groups} distinct motion idea(s) found across scroll positions and declared animations (need ${motion.threshold} for a ${motion.level} page${motion.level_source === "declared" ? "" : `, ${motion.level_source}`}): build one scroll- or hand-driven signature set piece from the subject (a pinned stage that changes with scroll counts), or declare <meta name="layoza-motion" content="calm"> if the page is meant to be quiet`,
+      });
+    }
+    if (motion && !motion.signature && !motion.skipped && motion.level !== "calm" && v.label === "desktop") {
+      issues.push({
+        rule: "signature-missing",
+        severity: "warning",
+        detail: "No signature set piece found: no pinned stage changes with scroll and no animation is linked to scroll. Build one scroll- or hand-driven scene from the subject (what it does or reveals), or declare <meta name=\"layoza-motion\" content=\"calm\"> if the page is meant to be still",
       });
     }
     for (const pin of (motion && motion.static_pins) || []) {

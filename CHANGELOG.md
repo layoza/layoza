@@ -23,6 +23,12 @@ All notable changes to Layoza are listed here. The format follows
 - `motion-too-sparse` needs only two motion ideas when the page has a live signature set piece
   (a pinned stage that changes with scroll, or a scroll-timeline animation).
 
+### Added
+- `zigzag-stack` (`UI-ZIGZAG-STACK`): three or more media-beside-text rows that flip sides warn; four
+  or more fail the gate. It is the commonest template rhythm.
+- `signature-missing` (`UI-NO-SIGNATURE`): a page that is not declared calm warns when no pinned
+  stage changes with scroll and no animation is linked to scroll.
+
 ### Fixed
 - `QA-SECTION-RESKIN` no longer flags a page as a copy of itself when one QA run used the file
   and another a loopback URL on a different port.
