@@ -45,13 +45,8 @@ screen, internal tool or mobile app UI (the visitor finishes a task rather than
 being persuaded), load [`layoza-product-ui`](../layoza-product-ui/SKILL.md)
 instead of world-building. A marketing home still gets art direction.
 
-On demand: [`layoza-animations`](../layoza-animations/SKILL.md),
-[`layoza-threejs-webgl`](../layoza-threejs-webgl/SKILL.md),
-[`layoza-components`](../layoza-components/SKILL.md),
-[`layoza-wordpress`](../layoza-wordpress/SKILL.md),
-[`layoza-accessibility`](../layoza-accessibility/SKILL.md),
-[`layoza-performance`](../layoza-performance/SKILL.md),
-[`layoza-visual-qa`](../layoza-visual-qa/SKILL.md).
+On demand: `layoza-animations`, `-threejs-webgl`, `-components`,
+`-wordpress`, `-accessibility`, `-performance`, `-visual-qa`.
 
 ## 2. Design guardrails
 
@@ -59,21 +54,21 @@ On demand: [`layoza-animations`](../layoza-animations/SKILL.md),
    object as authored art. A stranger can name the business with the words covered.
 2. **One signature moment:** a set piece only this subject could have, built
    first. A stack of stock parts with fade-ups fails even when QA passes.
-3. Colour owns sections (quiet prompt: one ground, one accent), type can be
-   the image, each section's composition comes from its content, and the idea
-   reaches the footer.
+3. **Depth, not wireframe:** one depth system (photo light, overlapping planes
+   or tonal fields), two sections break their frame, no outlined-box stacks.
+   Type can be the image; the idea reaches the footer.
 4. Mechanics (overflow, contrast, focus, leading) are enforced by `layoza qa`.
 
 ## 2b. The simple path (new sites and redesigns)
 
 1. **Brief.** Read the short brief: its signature moment, look tokens and the
    things to avoid. The user's own asks win over it.
-2. **Plan, five lines** in `.layoza/direction.md`: `PURPOSE:` (goal, audience,
-   new|existing), `PICKED: auto — <why>`, `SIGNATURE:` (what this subject does or
+2. **Plan** in `.layoza/direction.md`: `PURPOSE:` (goal, audience,
+   new|existing), `PICKED: auto — <two-word tone, pushed to its extreme>`, `SIGNATURE:` (what this subject does or
    reveals, how scroll or the hand drives it, its final frame), `SECTIONS:`
-   (5–7, one idea each), `QUIET:` (what the rest does to set the signature up).
+   (5–7, one idea each, no two heads alike), `MATERIAL:` (surface, light, texture).
 3. **Build the signature first,** from the real subject, then the page around it
-   in one pass. Everything else stays quiet: feedback and one staggered entrance.
+   in one pass. The hero gets one living element; quiet means ornament, not colour or depth.
 4. **Look.** Screenshot the signature at start, middle and end, then the page
    at 1440 and 375. Then crop each section and check it alone: one idea with
    proof, type from the tokens only, spacing on the scale (more above a heading

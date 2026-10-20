@@ -8,19 +8,19 @@ use std::fmt::Write as _;
 
 /// Taste rules every page meets. Short on purpose: one idea per line.
 pub const TASTE: &[&str] = &[
-    "Before code, write a 5-line plan: the signature, 4-6 colour tokens, the type pair, one layout sentence per section, how the page sets up the signature. Score it 0-10, say what a 10 is for this brief, fix every line below 8.",
-    "The hero opens on the subject itself: the trade's own object, place, work or product at scale. Decoration never stands in for the subject.",
+    "Before code, plan: a two-word tone pushed to its extreme (e.g. sunlit-brutal), the signature, the material (surface, light, texture), 4-6 colour tokens, the type pair, one layout line per section. Score it 0-10 against this brief's 10; fix every line below 8.",
+    "The hero opens on the subject itself: the trade's own object, place, work or product at scale, not decoration.",
     "Every section is a claim plus its proof (a picture, a sourced number, a real name). No proof, cut it.",
-    "Type: one family or two clearly different ones; display 4-6x body, leading 0.9-1.05, slight negative tracking; body 16-20px, 45-75 characters a line. Two or three sizes do the visible work. Headlines break by hand: at most 2 lines on desktop, 3 on a phone.",
-    "Colour: one ground, one ink, one accent, at most 2-3 supporting tokens. Secondary text is a tint of the ground's hue, not grey; body contrast 4.5:1+. Light text on dark: weight 400+.",
-    "Pacing like a product launch: one idea per screen near the top, 5-7 sections, rhythm changing between full-bleed, contained and dense; one screen where type or the subject alone fills the view. Grounds follow the story, not a pattern.",
-    "Layout: a real grid with deliberate asymmetry; more space above a heading than below; section gaps 120-220px desktop, at least twice the gaps inside one. No blank stretch over half a screen, no section huddled to one side.",
-    "Every border, label, number and divider carries information; one radius, one rule weight, one spacing scale.",
-    "Copy in the customer's words: concrete nouns, real numbers, places, names. Buttons say the exact action. Sentence case.",
-    "Motion: the signature is driven by scroll or hand, not a timer, choreographed in a planned order (40-80ms staggers, one easing family), every move explaining something. Elsewhere quiet: feedback under 300ms ease-out, hover only on (hover:hover), transform/opacity/clip-path/canvas only. No JS or reduced motion shows the final frame.",
-    "Imagery: real photos and footage of the subject, else a crafted render or diagram of the real object; never stock or SVG people, never emoji icons. At least four pictures on a long page, one crop ratio and one treatment.",
-    "Finish: themed selection, focus ring and scrollbar; tabular figures; every state (hover, focus, active, disabled, empty, error) designed.",
-    "Mobile is designed, not squeezed: main action above the fold at 390px, 44px tap targets, pictures re-cropped for portrait, no sideways scroll.",
+    "Type: one family or two clearly different; display 4-6x body, leading 0.9-1.05, slight negative tracking; body 16-20px, 45-75ch. Two or three sizes do the work. Headlines break by hand: 2 lines desktop, 3 phone.",
+    "Colour: ground, ink, accent, 2-3 supporting tokens; quiet or immersive (a full-bleed colour field), chosen first. Secondary text tints the ground's hue; body contrast 4.5:1+.",
+    "Depth: one system - photographic light, three overlapping planes with contact shadow, or tonal fields stepping in lightness. Flat only if asked. Separate surfaces by tone, scale and space; ruled lines only for real tables.",
+    "Pacing: one idea per screen near the top, 5-7 sections, rhythm changing between full-bleed, contained and dense; one screen where type or subject alone fills the view.",
+    "Layout: a real grid with asymmetry; two or more sections break their frame (type over a picture, an object off the edge or across a seam); neighbours never place the heading alike; section gaps 120-220px; no blank stretch over half a screen.",
+    "Every label, number and divider informs; one radius, one rule weight, one spacing scale.",
+    "Copy in the customer's words: concrete nouns, numbers, places, names. Buttons say the exact action.",
+    "Motion: the signature is driven by scroll or hand in planned order (40-80ms staggers, one easing). The hero holds one living element and one scroll move shows depth between planes. Elsewhere quiet: feedback under 300ms, hover only on (hover:hover), transform/opacity/clip-path only. No JS or reduced motion shows the final frame.",
+    "Imagery: real photos or footage of the subject, else a crafted render of the real object; no stock or SVG people, no emoji. Four or more pictures, one full-bleed, one crop ratio and treatment; work shown big, not as thumbnails.",
+    "Finish: themed selection, focus ring and scrollbar; tabular figures; every state designed. Mobile: main action above the fold at 390px, 44px taps, portrait re-crops, no sideways scroll.",
 ];
 
 /// Patterns that read as AI-made. Ban unless the brief asks for them.
@@ -28,11 +28,12 @@ pub const AVOID: &[&str] = &[
     "Small tracked-caps eyebrows above headings; one coloured or italic word inside a headline.",
     "Grids of identical icon-topped cards with one radius and soft shadow; cards in cards.",
     "A hero of big stat numbers, or a gradient blob behind a centred headline and two pill buttons.",
-    "Gradient text, gradient washes, glows, glass panels, zero-offset shadows, coloured side borders over 1px.",
+    "Decorative gradient text, washes, glows, glass (light falloff, photo scrims, faint grain on print/film worlds are fine); zero-offset shadows, coloured side borders over 1px.",
     "Stock AI palettes: purple-to-pink, violet on dark, near-black with one neon accent, cream with serif and terracotta.",
     "Monospace as a 'tech' costume; middle-dot meta strings; arrows on every link.",
     "A page assembled from stock parts (hero, logo strip, feature cards, steps, testimonials, CTA) with no set piece, moving only by fade-up and hover lift; every section the same centred heading + subhead + grid.",
     "Zig-zag stacks: picture left and text right, then swapped, down the page.",
+    "A wireframe page: 1px-outlined boxes and ruled lists section after section, flat, nothing overlapping.",
     "Invented proof: reviews, logos, statistics or awards the brief did not give.",
 ];
 
@@ -198,7 +199,7 @@ pub fn markdown(out: &Value) -> String {
     }
 
     let _ = writeln!(m, "\n## How to build");
-    let _ = writeln!(m, "1. Write the 5-line plan (first taste rule), signature first. Change any part of the look above that fights it; say what you changed.");
+    let _ = writeln!(m, "1. Write the plan (first taste rule), signature first. Change any part of the look above that fights it; say what you changed.");
     let _ = writeln!(m, "2. Build the signature moment first, then the rest of the page around it in one pass, in the project's own framework, with real copy for this business.");
     let _ = writeln!(m, "3. Screenshot the signature at three scroll positions, then the whole page at 1440px and 390px. Ask: could a template have made this? Swap two section headlines: if both sections still work, they are interchangeable, so rebuild one. Cut one element that does not earn its place. Fix the three worst problems (generic, crowded, broken), at most two rounds.");
     let _ = writeln!(m, "4. Run `capture_screenshots` (or `layoza qa <url>`) once and fix its errors. Done.");

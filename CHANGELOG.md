@@ -7,6 +7,8 @@ All notable changes to Layoza are listed here. The format follows
 ## [Unreleased]
 
 ### Changed
+- Taste rules ask for richness, not just restraint: a two-word tone pushed to its extreme and a material line in the plan, one depth system (photographic light, overlapping planes or tonal fields), quiet or immersive colour chosen up front, two sections that break their frame, varied section heads, a living hero element, one full-bleed picture and work shown big. The gradient ban now covers decorative uses only, and outlined-box pages are listed as an AI tell.
+- New QA warnings: `wireframe-page` (most sections built from 1px-ruled boxes or rows) and `no-frame-break` (no type over a picture, no full-bleed picture, nothing crossing a section edge).
 - Taste rules: score the plan before code, two or three working type sizes, hand-broken headlines (2 lines desktop, 3 phone), one spacing scale, a picture floor with one crop system, section gaps at least twice inner gaps; docs, articles and portfolios let the content be the signature.
 - The review step checks every section on its own crop (one idea with proof, type from tokens, spacing on the scale, a composition its neighbours do not share), runs a headline-swap test and cuts one element.
 - `get_design_system` now returns a short Markdown design brief by default (`detail: "brief"`):

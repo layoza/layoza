@@ -1604,6 +1604,8 @@ const DOM_EVAL_SCRIPT = `(() => {
     const ledgerSecs = [];
     const starved = [];
     const cardSigs = new Map();
+    const ruledSecs = [];
+    let breaks = 0;
     for (const s of sections.slice(0, 40)) {
       const sr = s.getBoundingClientRect();
       const sArea = Math.max(1, sr.width * sr.height);
@@ -1647,6 +1649,20 @@ const DOM_EVAL_SCRIPT = `(() => {
         if (bi.includes("url(")) visual = true;
       }
       const label = describe(s);
+      // Hairline structure: three or more wide boxes or rows drawn with 1px rules.
+      let hairlines = 0;
+      for (const b of Array.from(s.querySelectorAll("div, li, article, figure, form, fieldset, dl, ul, ol, a, button, label")).slice(0, 400)) {
+        const br = b.getBoundingClientRect();
+        if (br.width < 160 || !isVisible(b)) continue;
+        const bc = getComputedStyle(b);
+        if (["Top", "Bottom", "Left"].some((k) => { const w = parseFloat(bc["border" + k + "Width"]); return w > 0 && w <= 1.5 && bc["border" + k + "Style"] !== "none"; })) hairlines++;
+        if (hairlines >= 3) break;
+      }
+      if (hairlines >= 3 && s.querySelectorAll("table").length === 0) ruledSecs.push(label);
+      // Frame break: text set over a picture, or a picture that bleeds to both viewport edges or past the section.
+      const pics = Array.from(s.querySelectorAll("img, video, canvas, picture, svg")).filter((m) => !(m.parentElement && m.parentElement.closest("svg, picture")) && isVisible(m)).map((m) => m.getBoundingClientRect()).filter((r) => r.width >= 200 && r.height >= 140);
+      const words = Array.from(s.querySelectorAll("h1, h2, h3, p")).filter(isVisible).map((w) => w.getBoundingClientRect());
+      if (pics.some((r) => (r.left <= 1 && r.right >= vw - 1) || r.top < sr.top - 8 || r.bottom > sr.bottom + 8 || words.some((w) => w.left < r.right - 8 && w.right > r.left + 8 && w.top < r.bottom - 8 && w.bottom > r.top + 8))) breaks++;
       if (rows >= 4 && listArea >= sArea * 0.25 && !visual) ledgerSecs.push(label + " (" + rows + " rows)");
       if (!visual) starved.push(label);
       const seen = new Set();
@@ -1668,6 +1684,12 @@ const DOM_EVAL_SCRIPT = `(() => {
     }
     if (n >= 4 && starved.length / n >= 0.6) {
       issue("visual-starved-page", "warning", starved.length + " of " + n + " sections have no visual moment (no art, media, 3D or type-as-image covering a quarter of the section), e.g. " + starved.slice(0, 3).join("; ") + " at " + vw + "px wide (each section needs one dominant visual drawn from its own content)");
+    }
+    if (n >= 4 && ruledSecs.length / n >= 0.5) {
+      issue("wireframe-page", "warning", ruledSecs.length + " of " + n + " sections are built from 1px-ruled boxes or rows (" + ruledSecs.slice(0, 3).join("; ") + ") at " + vw + "px wide: it reads as a wireframe. Separate surfaces by tone, scale and space; keep rules for real tables");
+    }
+    if (n >= 4 && breaks === 0) {
+      issue("no-frame-break", "warning", "None of " + n + " sections breaks its frame at " + vw + "px wide (no type set over a picture, no full-bleed picture, nothing crossing a section edge): the page stays flat. Let at least two sections overlap or bleed");
     }
     const topSig = Array.from(cardSigs.values()).reduce((a, b) => Math.max(a, b), 0);
     if (n >= 4 && topSig >= 4 && topSig / n >= 0.5) {
