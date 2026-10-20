@@ -19,7 +19,7 @@ description: >-
    for what the prompt leaves open (art-direction step 0). If the folder holds
    an existing site, this is Mode B/C/D, not A.
 2. **Design method:** follow [`layoza-art-direction`](../layoza-art-direction/SKILL.md)
-   end to end: subject inventory, rut, seven worlds plus `layoza deal`, fusion,
+   end to end: subject inventory, rut, three rendered compositions plus `layoza deal`, fusion,
    contract and copy, build, motion, art loop, then the QA floor.
 3. **Apps, dashboards and tools go elsewhere.** When the brief is a web app,
    SaaS screen, dashboard, admin, settings or mobile app UI, follow
@@ -49,3 +49,6 @@ description: >-
    reports 0 errors, tables work at 375px, and the main task passes a
    keyboard-only walk-through. No art-loop score; motion uses the tool
    personality (120/200/280ms).
+
+## Creative process authority
+For composition, asset acquisition, automatic selection and visual review, follow `skills/layoza/references/creative-process.md`. It supersedes conflicting quotas, world lotteries, mandatory user-pick pauses and numeric taste pass marks.

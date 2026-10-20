@@ -1,0 +1,1261 @@
+{
+  "mode": "new_website",
+  "query": "Industry: dental clinic\nClient brief: Noor Dental, a calm dental clinic in Lahore for people anxious about visiting a dentist. English with an Urdu welcome. Explain first visits and treatment options clearly. Let visitors request an appointment. Soft sage, warm white, no animation, no invented doctors, testimonials, ratings or clinical promises. Illustrative photos must be labelled.\nAudience: Lahore residents and anxious first-time patients\nPrimary action: request an appointment\nBrand colours: #E7EDE7, #173C37, #FBFAF6\nNo animation.\nNo invented doctors.\nNo unverified clinical claims.",
+  "matched_industry": {
+    "slug": "healthcare",
+    "name": "Healthcare, Clinical & Wellness",
+    "keywords": [
+      "healthcare",
+      "medical",
+      "clinic",
+      "hospital",
+      "patient",
+      "patients",
+      "telehealth",
+      "dental",
+      "dentist",
+      "optician",
+      "opticians",
+      "optometrist",
+      "optometrists",
+      "eyecare",
+      "nhs",
+      "pharmacy",
+      "physiotherapy",
+      "physio"
+    ],
+    "recommended_styles": [
+      "crisp-product-workbench",
+      "swiss-editorial-grid"
+    ],
+    "layout_archetype": "Patient-First Action Hero + Care Pathway & Provider Directory",
+    "first_viewport_priority": "Immediate appointment/triage action, insurance/care clarity, WCAG AAA-leaning readability",
+    "typography_pairing": {
+      "id": "atkinson-lexend",
+      "display_font": "Lexend",
+      "body_font": "Atkinson Hyperlegible",
+      "mono_font": "IBM Plex Mono",
+      "mood": "Calm, hyper-legible, empathetic",
+      "scale_ratio": "1.250 (Major Third)",
+      "google_fonts_url": "https://fonts.google.com/share?selection.family=Atkinson+Hyperlegible:wght@400;700|Lexend:wght@500;600"
+    },
+    "palette": {
+      "id": "brand-e7ede7-173c37-fbfaf6-on-sanctuary-teal",
+      "background": "#E7EDE7",
+      "surface": "#FBFAF6",
+      "foreground": "#0F172A",
+      "muted": "#334155",
+      "primary_accent": "#173C37",
+      "secondary_accent": "#1D4ED8",
+      "wcag_body_contrast": 15.02,
+      "notes": "Brief colours #E7EDE7, #173C37, #FBFAF6 lead: #E7EDE7 is the ground; #173C37 as accents; #FBFAF6 as surfaces and deep tones, never accents | base Calming clinical teal and slate with high-legibility contrast"
+    },
+    "conversion_trust_elements": [
+      "Clinician registration shown the local way (e.g. GOC / NHS in the UK, state licence in the US)",
+      "Plain-language privacy note for health data",
+      "Accessible booking flow"
+    ],
+    "motion_language": "Gentle opacity/height transitions (200ms); zero vestibular-triggering parallax",
+    "anti_patterns": [
+      "Low-contrast pastel text",
+      "Complex scroll-jacking"
+    ],
+    "default_dials": {
+      "design_variance": 2,
+      "motion_intensity": 2,
+      "visual_density": 5
+    },
+    "provenance": "adapted:ui-ux-pro-max+layoza"
+  },
+  "match_score": 6,
+  "match_confidence": "strong",
+  "alternative_industries": [],
+  "distinctiveness": {
+    "place_cues": [
+      "Lahore"
+    ],
+    "material_cues": [],
+    "category_cliches": [
+      "Stock smiling-professional photo on a teal gradient",
+      "Icon trio (heart, shield, clock) with three vague promises",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. Place: Lahore — what does it look like there, specifically? The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "brief_signals": {
+    "surface": "general",
+    "niche_tags": [
+      "care"
+    ],
+    "moods": [
+      "calm"
+    ],
+    "constraints": [
+      "reduced-motion",
+      "rtl (logical CSS properties, mirrored layout)"
+    ],
+    "motion_bias": -2,
+    "motion_cap": 0,
+    "brief_colors": [
+      "#E7EDE7",
+      "#173C37",
+      "#FBFAF6"
+    ],
+    "brief_color_roles": {
+      "primary": "#E7EDE7"
+    },
+    "niches": [
+      "health"
+    ],
+    "brief_objects": [
+      "industry",
+      "dental clinic",
+      "client brief",
+      "noor dental",
+      "lahore",
+      "people anxious",
+      "dentist",
+      "english"
+    ],
+    "brief_action": "request an appointment"
+  },
+  "matched_styles": [
+    {
+      "slug": "swiss-editorial-grid",
+      "name": "Swiss Editorial Grid",
+      "category": "Architectural & Editorial",
+      "keywords": [
+        "swiss",
+        "editorial",
+        "grid",
+        "corporate",
+        "hairline",
+        "typography"
+      ],
+      "characteristics": [
+        "Exposed structural grid borders (`1px solid`) with generous internal cell padding",
+        "High-contrast serif or neo-grotesque display headlines paired with crisp body copy",
+        "Asymmetric column ratios (e.g., 4:8 or 5:7) with clear typographic hierarchy"
+      ],
+      "best_for": [
+        "Corporate & Enterprise",
+        "Editorial Publishing",
+        "Finance & Fintech",
+        "Architecture"
+      ],
+      "avoid_when": [
+        "Playful children's apps"
+      ],
+      "provenance": "adapted:awesome-design-skills+taste-skill+layoza"
+    },
+    {
+      "slug": "atelier-minimalism",
+      "name": "Atelier Tactile Minimalism",
+      "category": "Luxury & Craft",
+      "keywords": [
+        "luxury",
+        "minimal",
+        "atelier",
+        "warm",
+        "serif",
+        "lookbook"
+      ],
+      "characteristics": [
+        "Warm paper and limestone neutrals (`#FAF8F5`) rather than sterile `#FFFFFF`",
+        "Unhurried vertical rhythm (`96px–140px` section spacing) and monograph captions",
+        "Zero decorative card wrappers; imagery and typography sit directly on the canvas"
+      ],
+      "best_for": [
+        "Luxury Brands",
+        "Hospitality & Resorts",
+        "Design Portfolios"
+      ],
+      "avoid_when": [
+        "Dense telemetry dashboards"
+      ],
+      "provenance": "adapted:impeccable+taste-skill+layoza"
+    },
+    {
+      "slug": "crisp-product-workbench",
+      "name": "Crisp Product Workbench",
+      "category": "Product & SaaS",
+      "keywords": [
+        "saas",
+        "workbench",
+        "product",
+        "bento",
+        "clean",
+        "startup"
+      ],
+      "characteristics": [
+        "Interactive live product state demonstrations in the hero instead of static screenshots",
+        "Subtle surface layering (`#FCFCFA` -> `#F2F3EE`) with crisp 1px borders",
+        "Clear scannable feature proof and transparent pricing architecture"
+      ],
+      "best_for": [
+        "SaaS Startups",
+        "Productivity Tools",
+        "B2B Platforms"
+      ],
+      "avoid_when": [
+        "Experimental art installations"
+      ],
+      "provenance": "adapted:ui-ux-pro-max+impeccable+layoza"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 2,
+    "motion_intensity": 0,
+    "visual_density": 5
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — Healthcare, Clinical & Wellness (Arched Window)",
+      "style_family": "atelier-minimalism",
+      "layout_composition": "Dental clinic in Lahore framed in an arch: the treatment room photographed through an arched window shape, the headline wrapping its curve; the appointment slot and the clinician in smaller arches below; 'book an appointment' under the first arch. Structure: the photo framed in an arch with the headline wrapping it. Knobs: density airy; span irregularity medium; accent on the primary action only. Mobile: the arch narrows and sits above the headline",
+      "visual_identity": "Soft architecture: Lexend for headings, Atkinson Hyperlegible for text; palette brand-e7ede7-173c37-fbfaf6-on-sanctuary-teal (light ground): brief colours #e7ede7, #173c37, #fbfaf6 lead: #e7ede7 is the ground; #173c37 as accents; #fbfaf6 as surfaces and deep tones, never accents; arches only on images, square elsewhere; corners: arch-topped images and frames, 4px controls (arched); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Lexend: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Lexend: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "atkinson-lexend",
+        "display_font": "Lexend",
+        "body_font": "Atkinson Hyperlegible",
+        "mono_font": "IBM Plex Mono",
+        "mood": "Calm, hyper-legible, empathetic",
+        "scale_ratio": "1.250 (Major Third)",
+        "google_fonts_url": "https://fonts.google.com/share?selection.family=Atkinson+Hyperlegible:wght@400;700|Lexend:wght@500;600"
+      },
+      "palette": {
+        "id": "brand-e7ede7-173c37-fbfaf6-on-sanctuary-teal",
+        "background": "#E7EDE7",
+        "surface": "#FBFAF6",
+        "foreground": "#0F172A",
+        "muted": "#334155",
+        "primary_accent": "#173C37",
+        "secondary_accent": "#1D4ED8",
+        "wcag_body_contrast": 15.02,
+        "notes": "Brief colours #E7EDE7, #173C37, #FBFAF6 lead: #E7EDE7 is the ground; #173C37 as accents; #FBFAF6 as surfaces and deep tones, never accents | base Calming clinical teal and slate with high-legibility contrast"
+      },
+      "content_treatment": "The place first, then dates, capacity and prices (appointment times, treatment names and prices)",
+      "motion_choreography": "No motion: the treatment room and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 2,
+        "motion_intensity": 0,
+        "visual_density": 5
+      },
+      "rationale": "Arched Window for \"dental clinic\" (general surface): the place is the product, and framing it like a doorway invites the visitor in. Type Lexend / Atkinson Hyperlegible and palette brand-e7ede7-173c37-fbfaf6-on-sanctuary-teal are the Healthcare, Clinical & Wellness profile's own. First screen: stacked composition (no fitting object-wrap hero for this trade, so the direction follows the dealt hero hero-health-next-appointments), hero material photo, look family soft-organic, corners arched. Motion flavour (tier and tools follow page_shape.motion): the arch opens slightly on load. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#E7EDE7, #173C37, #FBFAF6). Other structures that fit this slot: Long Read, Broadsheet Front Page, Full-Bleed Stage, Open Letter, Questions Answered, Wayfinding Map.",
+      "mechanics": [
+        {
+          "id": "hero-health-next-appointments",
+          "name": "Next appointments by clinician",
+          "kind": "hero",
+          "role": "hero",
+          "family": "health-next-appointments",
+          "intensity": "calm",
+          "still_check": "Any still shows clinicians and times.",
+          "composition": "stacked",
+          "hero_material": "data-image",
+          "look_family": "soft-stone"
+        },
+        {
+          "id": "schedule-class-week-grid",
+          "name": "Studio week board",
+          "kind": "section",
+          "role": "schedule",
+          "family": "calendar-grid",
+          "intensity": "calm",
+          "still_check": "At 50% all seven columns and the Morning and Evening bands are visible, tags legible with times and capacity, and today highlighted. At 25% the chips and morning band show; at 75% evening classes and the timezone note show."
+        },
+        {
+          "id": "services-hairline-directory-index",
+          "name": "Building directory index",
+          "kind": "section",
+          "role": "services",
+          "family": "sticky-index",
+          "intensity": "calm",
+          "still_check": "At 50% the board shows the middle service highlighted with its arrow, and the right column shows that service's full text. At 25% and 75% a different row is lit and a different entry fills the right."
+        }
+      ],
+      "hero_material": "photo",
+      "radius": "arched",
+      "archetype": "arch-window",
+      "nav": {
+        "id": "nav-open-status-bar",
+        "name": "Open-now nav bar",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-open-status",
+        "intensity": "calm",
+        "still_check": "Any still shows status, phone and address.",
+        "look_family": "quiet-civic"
+      },
+      "footer": {
+        "id": "footer-search-first",
+        "name": "Footer whose answer is a search box",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-search-first",
+        "intensity": "calm",
+        "still_check": "Any still shows the field, its label and the common searches.",
+        "look_family": "technical-blueprint"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.8rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.441rem",
+        "h2": "1.953rem",
+        "h3": "1.562rem",
+        "label": "0.8rem",
+        "lead": "1.25rem",
+        "ratio": "1.25",
+        "small": "0.9rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "quiet-statement",
+          "build": "Centred quiet statement on open ground, one small image or mark below it."
+        },
+        "flow": {
+          "id": "drawer-rows",
+          "build": "Numbered rows that open in place to reveal each section, like a chapter index."
+        },
+        "section_head": {
+          "id": "question-heads",
+          "build": "Each head is a visitor's question in plain words; the answer starts right below."
+        },
+        "ground": {
+          "id": "soft-gradient",
+          "build": "Soft gradients drifting between two pale tints of the palette; no hard bands."
+        },
+        "material": {
+          "id": "photographic",
+          "build": "Photographic art direction: real-looking scenes of people, places and the work."
+        },
+        "labels": {
+          "id": "accent-dash",
+          "build": "A short accent dash before each label, body face semibold, sentence case."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: fade-in-once (Web Animations API). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "fade-in-once",
+            "build": "Sections fade from 0.6 to full opacity once as they enter, no movement.",
+            "tool": "waapi",
+            "tool_name": "Web Animations API",
+            "fallback": "sections show at full opacity."
+          }
+        ],
+        "motion_signature": "fade-in-once",
+        "motion_tools": [
+          "waapi"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette"
+        ],
+        "motif": {
+          "id": "arch-top",
+          "build": "Arch top: media frames and the main feature panel rise into one round arch drawn from the treatment room; one arch, one radius, repeated."
+        },
+        "button": {
+          "id": "pill",
+          "build": "Primary: solid accent pill echoing the arch, 48px tall with 28px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same size with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — Healthcare, Clinical & Wellness (Full-Bleed Stage)",
+      "style_family": "kinetic-editorial",
+      "layout_composition": "Full-bleed stage for the dental clinic in Lahore: the treatment room fills the first screen edge to edge with the headline set into its quiet area; later sections cut between the appointment slot and the clinician at full width; 'book an appointment' stays docked and usable at every scroll position. Structure: one subject image edge to edge, headline in its quiet area, full-width cuts, docked action. Knobs: density standard; span irregularity medium; accent on the primary action only. Mobile: the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+      "visual_identity": "Cinematic contrast: Sentient at stage scale over Satoshi; palette brand-e7ede7-173c37-fbfaf6-on-dusk-calm (light ground): brief colours #e7ede7, #173c37, #fbfaf6 lead: #e7ede7 is the ground; #173c37 as accents; #fbfaf6 as surfaces and deep tones, never accents; real photography or drawn art of the subject, never stock; corners: square corners (0) on cards, buttons and images (sharp-0); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Sentient: Georgia, 'Times New Roman', serif; Satoshi: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Spline Sans Mono loads from a second stylesheet: https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap",
+      "typography": {
+        "id": "sentient-satoshi",
+        "display_font": "Sentient",
+        "body_font": "Satoshi",
+        "mono_font": "Spline Sans Mono",
+        "mood": "Gentle serif, wellness. Display and body from Fontshare; load Spline Sans Mono from Google Fonts",
+        "scale_ratio": "1.333 (Perfect Fourth)",
+        "google_fonts_url": "https://api.fontshare.com/v2/css?f[]=sentient@700&f[]=satoshi@400,700&display=swap"
+      },
+      "palette": {
+        "id": "brand-e7ede7-173c37-fbfaf6-on-dusk-calm",
+        "background": "#E7EDE7",
+        "surface": "#FBFAF6",
+        "foreground": "#111111",
+        "muted": "#5C5E5C",
+        "primary_accent": "#173C37",
+        "secondary_accent": "#F2B880",
+        "wcag_body_contrast": 15.88,
+        "notes": "Brief colours #E7EDE7, #173C37, #FBFAF6 lead: #E7EDE7 is the ground; #173C37 as accents; #FBFAF6 as surfaces and deep tones, never accents | base Blue-hour slate with mint and apricot"
+      },
+      "content_treatment": "Atmosphere first, then what is available now (appointment times, treatment names and prices), then 'book an appointment'",
+      "motion_choreography": "No motion: the treatment room and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 5,
+        "motion_intensity": 0,
+        "visual_density": 4
+      },
+      "rationale": "Full-Bleed Stage for \"dental clinic\" (general surface): atmosphere sells it: the place, the product or the work has to be felt before it is read. Type Sentient / Satoshi (gentle serif, wellness. display and body from fontshare; load spline sans mono from google fonts) for an expressive voice, tagged care/calm like the brief. Palette brand-e7ede7-173c37-fbfaf6-on-dusk-calm on a light ground, tagged care/calm like the brief. First screen: full-bleed composition, hero material photo, look family cinematic-dark, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): slow cross-fades; plates hand off on scroll. Licence: ITF Free Font License (Fontshare). Brand first: palette built around the brief's colours (#E7EDE7, #173C37, #FBFAF6). Other structures that fit this slot: Quote-Led Opening, Timeline Spine, Bento Board.",
+      "mechanics": [
+        {
+          "id": "hero-focus-band",
+          "name": "Tilt-shift focus band",
+          "kind": "hero",
+          "role": "hero",
+          "family": "focus-band",
+          "intensity": "calm",
+          "still_check": "Any still shows the band sharp, the rest softly blurred, panel text crisp.",
+          "composition": "full-bleed",
+          "hero_material": "real-photo",
+          "look_family": "documentary-photo"
+        },
+        {
+          "id": "section-location-arrival-steps",
+          "name": "How to arrive",
+          "kind": "section",
+          "role": "location",
+          "family": "arrival-steps",
+          "intensity": "calm",
+          "still_check": "Any still shows every step and photo."
+        },
+        {
+          "id": "impact-gift-allocation-bar",
+          "name": "Where each gift goes",
+          "kind": "section",
+          "role": "impact",
+          "family": "allocation-bar",
+          "intensity": "calm",
+          "still_check": "At 50% the full bar shows every segment at its final width with every label and percentage readable, and the default gift sentence is visible. At 25% the bar may be mid-growth but labels already sit at final positions."
+        }
+      ],
+      "hero_material": "photo",
+      "radius": "sharp-0",
+      "archetype": "full-bleed-stage",
+      "nav": {
+        "id": "nav-two-tier-utility",
+        "name": "Two-tier header with a utility line",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-two-tier-utility",
+        "intensity": "calm",
+        "still_check": "Any still shows both rows and every destination or the Menu control.",
+        "look_family": "hairline-newspaper"
+      },
+      "footer": {
+        "id": "section-footer-the-practical-sheet",
+        "name": "Footer as the practical sheet",
+        "kind": "section",
+        "role": "footer",
+        "family": "practical-sheet-footer",
+        "intensity": "calm",
+        "still_check": "Any still shows all 4 columns readable.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.75rem",
+        "display": "clamp(3.157rem, 6vw, 5.61rem)",
+        "h1": "3.157rem",
+        "h2": "2.369rem",
+        "h3": "1.777rem",
+        "label": "0.75rem",
+        "lead": "1.333rem",
+        "ratio": "1.333",
+        "small": "0.875rem"
+      },
+      "extra_font_url": "https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap",
+      "page_shape": {
+        "hero_frame": {
+          "id": "full-bleed-scene",
+          "build": "Full-bleed scene: one edge-to-edge image or rendered world, the headline set over it."
+        },
+        "flow": {
+          "id": "editorial-column",
+          "build": "Single editorial column (~65ch) with images breaking out full-width between passages."
+        },
+        "section_head": {
+          "id": "centred-overline",
+          "build": "Centred title with one small overline word above it; symmetric openings."
+        },
+        "ground": {
+          "id": "light-throughout",
+          "build": "Light ground throughout; sections separate by space and rules, not colour."
+        },
+        "material": {
+          "id": "illustrated",
+          "build": "One illustration style (one hand, one line weight) across every section."
+        },
+        "labels": {
+          "id": "sentence-case",
+          "build": "Sentence case only, body face; labels read as plain words, no caps anywhere."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: tint-shift (CSS transitions). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "tint-shift",
+            "build": "Cards shift one tint on hover, 200ms.",
+            "tool": "css",
+            "tool_name": "CSS transitions",
+            "fallback": "no tint shift."
+          }
+        ],
+        "motion_signature": "tint-shift",
+        "motion_tools": [
+          "css"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette"
+        ],
+        "motif": {
+          "id": "round-mask",
+          "build": "Round mask: one feature image per chapter sits in a full circle and bullets are dots, taken from the appointment slot; everything else stays square."
+        },
+        "button": {
+          "id": "pill",
+          "build": "Primary: solid accent pill, 48px tall with 28px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same height with a 1px outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — Healthcare, Clinical & Wellness (Week Grid)",
+      "style_family": "crisp-product-workbench",
+      "layout_composition": "Dental clinic in Lahore as a week grid: sessions of the treatment room coloured by age or level, each with time and spaces left (appointment times, treatment names and prices); filters above; 'book an appointment' on each session. Structure: a week grid of sessions coloured by age or level, with spaces left. Knobs: density standard; span irregularity low; accent on links and the primary action. Mobile: one day per screen with sessions as rows",
+      "visual_identity": "Timetable: Plus Jakarta Sans for days, Plus Jakarta Sans for sessions, colour for age bands; palette brand-e7ede7-173c37-fbfaf6-on-clean-room (light ground): brief colours #e7ede7, #173c37, #fbfaf6 lead: #e7ede7 is the ground; #173c37 as accents; #fbfaf6 as surfaces and deep tones, never accents; corners: 12px on cards and images, 8px on controls (soft-12); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Plus Jakarta Sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Plus Jakarta Sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "plus-jakarta-sans-solo",
+        "display_font": "Plus Jakarta Sans",
+        "body_font": "Plus Jakarta Sans",
+        "mono_font": "JetBrains Mono",
+        "mood": "Friendly product sans",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap"
+      },
+      "palette": {
+        "id": "brand-e7ede7-173c37-fbfaf6-on-clean-room",
+        "background": "#E7EDE7",
+        "surface": "#FBFAF6",
+        "foreground": "#0F2229",
+        "muted": "#415A64",
+        "primary_accent": "#173C37",
+        "secondary_accent": "#C2492E",
+        "wcag_body_contrast": 13.79,
+        "notes": "Brief colours #E7EDE7, #173C37, #FBFAF6 lead: #E7EDE7 is the ground; #173C37 as accents; #FBFAF6 as surfaces and deep tones, never accents | base Clean-room white with clinical teal and warm alert"
+      },
+      "content_treatment": "What is on, for whom, when, and how many spaces are left",
+      "motion_choreography": "No motion: the treatment room and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 2,
+        "motion_intensity": 0,
+        "visual_density": 7
+      },
+      "rationale": "Week Grid for \"dental clinic\" (general surface): families and members plan by the week, so the timetable is the page. Type Plus Jakarta Sans / Plus Jakarta Sans (friendly product sans) for a utility voice, tagged care/calm like the brief. Palette brand-e7ede7-173c37-fbfaf6-on-clean-room on a light ground, tagged care/calm like the brief. First screen: poster composition (no fitting stacked hero for this trade, so the direction follows the dealt hero hero-numeral-poster), hero material document, look family playful-color-block, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): filters update the grid. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#E7EDE7, #173C37, #FBFAF6). Other structures that fit this slot: Price Board, Wayfinding Map, Bento Board, Booking-First Board.",
+      "mechanics": [
+        {
+          "id": "hero-numeral-poster",
+          "name": "Stamped numeral poster",
+          "kind": "hero",
+          "role": "hero",
+          "family": "numeral-poster",
+          "intensity": "calm",
+          "still_check": "Any still shows the number, its sentence and its source caption complete, with the strip fully behind the h1.",
+          "composition": "poster",
+          "hero_material": "data-image",
+          "look_family": "brutal-flat"
+        },
+        {
+          "id": "section-team-who-you-will-meet",
+          "name": "Who you will meet",
+          "kind": "section",
+          "role": "team",
+          "family": "who-you-will-meet",
+          "intensity": "calm",
+          "still_check": "Any still shows every person in order with contact details."
+        },
+        {
+          "id": "section-process-what-happens-when",
+          "name": "What happens, and when",
+          "kind": "section",
+          "role": "process",
+          "family": "what-happens-when",
+          "intensity": "calm",
+          "still_check": "Any still shows all rows complete."
+        }
+      ],
+      "hero_material": "document",
+      "radius": "soft-12",
+      "archetype": "week-grid",
+      "nav": {
+        "id": "nav-task-verbs-bar",
+        "name": "Navigation by the visitor's tasks",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-task-verbs",
+        "intensity": "calm",
+        "still_check": "Any still shows the 3 tasks and the phone number.",
+        "look_family": "quiet-civic"
+      },
+      "footer": {
+        "id": "footer-triage-routes",
+        "name": "Footer that sorts visitors by situation",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-triage-routes",
+        "intensity": "calm",
+        "still_check": "Any still shows all three routes and the phone number.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "index-first",
+          "build": "Index first: the page opens on a list of real items with counts, no hero image."
+        },
+        "flow": {
+          "id": "spine",
+          "build": "One continuous rail runs down the page; every section hangs off it in order."
+        },
+        "section_head": {
+          "id": "title-note",
+          "build": "Title left, short note right on one shared baseline."
+        },
+        "ground": {
+          "id": "inverted-alternating",
+          "build": "Alternate ground and ink sections: palette background, then the foreground colour as ground."
+        },
+        "material": {
+          "id": "diagrammatic",
+          "build": "Diagrams and technical drawings: plans, exploded views, flow lines and callouts."
+        },
+        "labels": {
+          "id": "small-caps",
+          "build": "True small caps from the body face for labels and metadata."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: check-tick (Web Animations API). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "check-tick",
+            "build": "Form checks and toggles tick with a 160ms stroke draw.",
+            "tool": "waapi",
+            "tool_name": "Web Animations API",
+            "fallback": "controls switch instantly."
+          }
+        ],
+        "motion_signature": "check-tick",
+        "motion_tools": [
+          "waapi"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette"
+        ],
+        "motif": {
+          "id": "ruled-frame",
+          "build": "Ruled frame: every chapter opens on a hairline rule with a short thick start segment, drawn from the trim lines of the clinician; figures and captions hang from the rule, which never crosses media."
+        },
+        "button": {
+          "id": "square-ruled",
+          "build": "Primary: solid accent fill, 48px tall with 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "BRIEF COLOURS: the brief names its own colours (#E7EDE7, #173C37, #FBFAF6). Use them as the palette in every direction (check WCAG pairs); the direction palettes below are fallbacks only.",
+    "RTL: the brief names a right-to-left language. Set `<html dir=\"rtl\" lang=\"..\">`, use logical CSS properties only (margin-inline-start, padding-inline, inset-inline-end, text-align: start, border-inline-start), mirror the layout and directional icons and motion (an entrance from the start edge comes from the right), keep numerals, code and brand marks LTR where they belong, and pick fonts that ship the script.",
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest stacked / full-bleed / poster (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error.",
+    "DIRECTIONS: render three materially different compositions with identical factual content and available assets at desktop and phone sizes. Compare the actual renders for hierarchy, typography, image integration, clarity and full-page rhythm. Choose with reasons as the designer unless the user asked to choose. Persist candidates, screenshot evidence and visible tradeoffs with review_design; never invent user approval. Library deals are starting material, not mandatory shapes or a substitute for art direction.",
+    "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.",
+    "FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.",
+    "COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.",
+    "SELF-CRITIQUE before QA: score philosophy, hierarchy, execution, specificity, restraint, variety from 1 to 5; any score below 3 means revise first. Put the stamp `/* layoza · direction: <A|B|C> · structure: <style_family> · hero: <hero id> · palette: <palette id> · type: <type id> · critique: P4 H4 E4 S4 R4 V4 */` as the first line of the main CSS (your direction, structure, hero, palette, type and scores)."
+  ],
+  "scope": "page",
+  "uniqueness": {
+    "ledger": "off",
+    "window": 36,
+    "entries_compared": 0,
+    "slots": [
+      {
+        "slot": "A.nav",
+        "id": "nav-open-status-bar",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.hero",
+        "id": "hero-health-next-appointments",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-1",
+        "id": "schedule-class-week-grid",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-2",
+        "id": "services-hairline-directory-index",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.footer",
+        "id": "footer-search-first",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.palette",
+        "id": "brand-e7ede7-173c37-fbfaf6-on-sanctuary-teal",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.typography",
+        "id": "lexend/atkinson hyperlegible",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.archetype",
+        "id": "arch-window",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.hero-frame",
+        "id": "quiet-statement",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.flow",
+        "id": "drawer-rows",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-head",
+        "id": "question-heads",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.ground",
+        "id": "soft-gradient",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.material",
+        "id": "photographic",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.labels",
+        "id": "accent-dash",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.motion",
+        "id": "fade-in-once",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.nav",
+        "id": "nav-two-tier-utility",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.hero",
+        "id": "hero-focus-band",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-1",
+        "id": "section-location-arrival-steps",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-2",
+        "id": "impact-gift-allocation-bar",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.footer",
+        "id": "section-footer-the-practical-sheet",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.palette",
+        "id": "brand-e7ede7-173c37-fbfaf6-on-dusk-calm",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.typography",
+        "id": "sentient/satoshi",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.archetype",
+        "id": "full-bleed-stage",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.hero-frame",
+        "id": "full-bleed-scene",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.flow",
+        "id": "editorial-column",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-head",
+        "id": "centred-overline",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.ground",
+        "id": "light-throughout",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.material",
+        "id": "illustrated",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.labels",
+        "id": "sentence-case",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.motion",
+        "id": "tint-shift",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.nav",
+        "id": "nav-task-verbs-bar",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.hero",
+        "id": "hero-numeral-poster",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-1",
+        "id": "section-team-who-you-will-meet",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-2",
+        "id": "section-process-what-happens-when",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.footer",
+        "id": "footer-triage-routes",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.palette",
+        "id": "brand-e7ede7-173c37-fbfaf6-on-clean-room",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.typography",
+        "id": "plus jakarta sans/plus jakarta sans",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.archetype",
+        "id": "week-grid",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.hero-frame",
+        "id": "index-first",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.flow",
+        "id": "spine",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-head",
+        "id": "title-note",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.ground",
+        "id": "inverted-alternating",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.material",
+        "id": "diagrammatic",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.labels",
+        "id": "small-caps",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.motion",
+        "id": "check-tick",
+        "status": "unchecked (ledger off)"
+      }
+    ],
+    "fresh": 0,
+    "repeats": 0,
+    "score": 0,
+    "verdict": "Ledger off: no slot was checked for repeats. Uniqueness needs the ledger; leave it on unless the user asked."
+  },
+  "understood_brief": {
+    "trade": "Healthcare, Clinical & Wellness (strong match)",
+    "subject": "dental clinic",
+    "audience": "Lahore residents and anxious first-time patients",
+    "primary_action": "request an appointment",
+    "tone": [
+      "solemn",
+      "calm"
+    ],
+    "motion_wish": "none (0; no animation)",
+    "must_haves": [
+      "colour #E7EDE7",
+      "colour #173C37",
+      "colour #FBFAF6",
+      "Urdu welcome",
+      "first visit explanation",
+      "appointment request",
+      "Do not use: animation",
+      "Do not use: invented doctors",
+      "Do not use: unverified clinical claims"
+    ],
+    "pinned_by_prompt": [
+      "motion",
+      "palette"
+    ],
+    "assumed": [
+      "stack: the project's own framework if one exists, else plain HTML/CSS/JS"
+    ],
+    "open_questions": []
+  },
+  "creative_workspace": {
+    "brief_context": {
+      "subject": "dental clinic",
+      "audience": "Lahore residents and anxious first-time patients",
+      "primary_action": "request an appointment",
+      "objects": [],
+      "facts": [],
+      "required_content": [
+        "Urdu welcome",
+        "first visit explanation",
+        "appointment request"
+      ],
+      "forbidden": [
+        "animation",
+        "invented doctors",
+        "unverified clinical claims"
+      ],
+      "display_font": "",
+      "body_font": "",
+      "colors": [
+        "#E7EDE7",
+        "#173C37",
+        "#FBFAF6"
+      ],
+      "assets": []
+    },
+    "context_basis": "explicit structured client context supplied by the calling designer",
+    "concepts": [
+      {
+        "direction": 1,
+        "title": "Direction A — Healthcare, Clinical & Wellness (Arched Window)",
+        "composition": "Dental clinic in Lahore framed in an arch: the treatment room photographed through an arched window shape, the headline wrapping its curve; the appointment slot and the clinician in smaller arches below; 'book an appointment' under the first arch. Structure: the photo framed in an arch with the headline wrapping it. Knobs: density airy; span irregularity medium; accent on the primary action only. Mobile: the arch narrows and sits above the headline",
+        "why_this_subject": "Arched Window for \"dental clinic\" (general surface): the place is the product, and framing it like a doorway invites the visitor in. Type Lexend / Atkinson Hyperlegible and palette brand-e7ede7-173c37-fbfaf6-on-sanctuary-teal are the Healthcare, Clinical & Wellness profile's own. First screen: stacked composition (no fitting object-wrap hero for this trade, so the direction follows the dealt hero hero-health-next-appointments), hero material photo, look family soft-organic, corners arched. Motion flavour (tier and tools follow page_shape.motion): the arch opens slightly on load. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#E7EDE7, #173C37, #FBFAF6). Other structures that fit this slot: Long Read, Broadsheet Front Page, Full-Bleed Stage, Open Letter, Questions Answered, Wayfinding Map.",
+        "image_medium": "photo",
+        "asset_plan": {
+          "subject": "dental clinic",
+          "medium": "photo",
+          "available": [
+            {
+              "path": "assets/dental-room-katarzyna.jpg",
+              "source": "https://unsplash.com/photos/a-white-dental-chair-in-a-room-with-a-window-44jaETSVX2I",
+              "license": "Unsplash License",
+              "credit": "Katarzyna Zygnerska",
+              "role": "Illustrative licensed interior, not the fictional clinic premises.",
+              "alt": "A white dental chair in a room with a window",
+              "bytes": 340986,
+              "content_fingerprint": "3a6d8a138adbb9cb",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/dental-consultation-harold.jpg",
+              "source": "https://unsplash.com/photos/dentist-talking-to-patient-in-a-modern-dental-office-Bg81yWKZlMg",
+              "license": "Unsplash License",
+              "credit": "Harold Hisona",
+              "role": "Illustrative licensed consultation; do not identify depicted people as real test-clinic staff or patients.",
+              "alt": "Dentist talking to patient in a modern dental office",
+              "bytes": 318249,
+              "content_fingerprint": "aa54a3e4eee48336",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction A — Healthcare, Clinical & Wellness (Arched Window) requires convincing photo material; judge the actual render before committing."
+      },
+      {
+        "direction": 2,
+        "title": "Direction B — Healthcare, Clinical & Wellness (Full-Bleed Stage)",
+        "composition": "Full-bleed stage for the dental clinic in Lahore: the treatment room fills the first screen edge to edge with the headline set into its quiet area; later sections cut between the appointment slot and the clinician at full width; 'book an appointment' stays docked and usable at every scroll position. Structure: one subject image edge to edge, headline in its quiet area, full-width cuts, docked action. Knobs: density standard; span irregularity medium; accent on the primary action only. Mobile: the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+        "why_this_subject": "Full-Bleed Stage for \"dental clinic\" (general surface): atmosphere sells it: the place, the product or the work has to be felt before it is read. Type Sentient / Satoshi (gentle serif, wellness. display and body from fontshare; load spline sans mono from google fonts) for an expressive voice, tagged care/calm like the brief. Palette brand-e7ede7-173c37-fbfaf6-on-dusk-calm on a light ground, tagged care/calm like the brief. First screen: full-bleed composition, hero material photo, look family cinematic-dark, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): slow cross-fades; plates hand off on scroll. Licence: ITF Free Font License (Fontshare). Brand first: palette built around the brief's colours (#E7EDE7, #173C37, #FBFAF6). Other structures that fit this slot: Quote-Led Opening, Timeline Spine, Bento Board.",
+        "image_medium": "photo",
+        "asset_plan": {
+          "subject": "dental clinic",
+          "medium": "photo",
+          "available": [
+            {
+              "path": "assets/dental-room-katarzyna.jpg",
+              "source": "https://unsplash.com/photos/a-white-dental-chair-in-a-room-with-a-window-44jaETSVX2I",
+              "license": "Unsplash License",
+              "credit": "Katarzyna Zygnerska",
+              "role": "Illustrative licensed interior, not the fictional clinic premises.",
+              "alt": "A white dental chair in a room with a window",
+              "bytes": 340986,
+              "content_fingerprint": "3a6d8a138adbb9cb",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/dental-consultation-harold.jpg",
+              "source": "https://unsplash.com/photos/dentist-talking-to-patient-in-a-modern-dental-office-Bg81yWKZlMg",
+              "license": "Unsplash License",
+              "credit": "Harold Hisona",
+              "role": "Illustrative licensed consultation; do not identify depicted people as real test-clinic staff or patients.",
+              "alt": "Dentist talking to patient in a modern dental office",
+              "bytes": 318249,
+              "content_fingerprint": "aa54a3e4eee48336",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction B — Healthcare, Clinical & Wellness (Full-Bleed Stage) requires convincing photo material; judge the actual render before committing."
+      },
+      {
+        "direction": 3,
+        "title": "Direction C — Healthcare, Clinical & Wellness (Week Grid)",
+        "composition": "Dental clinic in Lahore as a week grid: sessions of the treatment room coloured by age or level, each with time and spaces left (appointment times, treatment names and prices); filters above; 'book an appointment' on each session. Structure: a week grid of sessions coloured by age or level, with spaces left. Knobs: density standard; span irregularity low; accent on links and the primary action. Mobile: one day per screen with sessions as rows",
+        "why_this_subject": "Week Grid for \"dental clinic\" (general surface): families and members plan by the week, so the timetable is the page. Type Plus Jakarta Sans / Plus Jakarta Sans (friendly product sans) for a utility voice, tagged care/calm like the brief. Palette brand-e7ede7-173c37-fbfaf6-on-clean-room on a light ground, tagged care/calm like the brief. First screen: poster composition (no fitting stacked hero for this trade, so the direction follows the dealt hero hero-numeral-poster), hero material document, look family playful-color-block, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): filters update the grid. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#E7EDE7, #173C37, #FBFAF6). Other structures that fit this slot: Price Board, Wayfinding Map, Bento Board, Booking-First Board.",
+        "image_medium": "document",
+        "asset_plan": {
+          "subject": "dental clinic",
+          "medium": "document",
+          "available": [
+            {
+              "path": "assets/dental-room-katarzyna.jpg",
+              "source": "https://unsplash.com/photos/a-white-dental-chair-in-a-room-with-a-window-44jaETSVX2I",
+              "license": "Unsplash License",
+              "credit": "Katarzyna Zygnerska",
+              "role": "Illustrative licensed interior, not the fictional clinic premises.",
+              "alt": "A white dental chair in a room with a window",
+              "bytes": 340986,
+              "content_fingerprint": "3a6d8a138adbb9cb",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/dental-consultation-harold.jpg",
+              "source": "https://unsplash.com/photos/dentist-talking-to-patient-in-a-modern-dental-office-Bg81yWKZlMg",
+              "license": "Unsplash License",
+              "credit": "Harold Hisona",
+              "role": "Illustrative licensed consultation; do not identify depicted people as real test-clinic staff or patients.",
+              "alt": "Dentist talking to patient in a modern dental office",
+              "bytes": 318249,
+              "content_fingerprint": "aa54a3e4eee48336",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction C — Healthcare, Clinical & Wellness (Week Grid) requires convincing document material; judge the actual render before committing."
+      }
+    ],
+    "selection": "Render the three concepts with identical real content and available assets. Pick the clearest, most expressive, subject-specific composition; record the decision and visible tradeoffs with review_design. Familiar controls may be reused when they serve the task.",
+    "success": [
+      "brief fidelity",
+      "clear hierarchy",
+      "expressive typography",
+      "convincing imagery",
+      "coherent colour and spacing",
+      "complete page rhythm",
+      "designed phone composition",
+      "usable interactions"
+    ],
+    "novelty": "A supporting signal, never a reason to change a working brand or navigation pattern",
+    "design_gate": "Browser defects and recorded process only. Exceptional design requires reviewing the actual renders, not passing a numeric checker."
+  },
+  "client_request": "Noor Dental, a calm dental clinic in Lahore for people anxious about visiting a dentist. English with an Urdu welcome. Explain first visits and treatment options clearly. Let visitors request an appointment. Soft sage, warm white, no animation, no invented doctors, testimonials, ratings or clinical promises. Illustrative photos must be labelled.",
+  "ledger": "off (`ledger: false`)",
+  "registers": [
+    "civic"
+  ],
+  "craft_floor": [
+    "Header: one row, 60-88px tall on desktop and 56-76px on mobile; logo 24-40px high on the left, 4-6 nav links of 15-16px at weight 500 with 24-40px between them, the primary action on the right at the header's button size. Phone or hours sit in that row or the footer; no utility bar stacked above the nav. Mark the current link with a 2px underline 6px below the text; a sticky header turns opaque after the first scroll, never taller.",
+    "Primary button: 48-60px tall, horizontal padding 20-32px (about twice the vertical), label 15-17px at weight 600 in sentence or title case with tracking 0-0.02em, at most one drawn SVG icon of 16-20px set 8px from the label. The secondary action matches its height, radius and padding as an outline (1-1.5px) or ghost; one button shape and radius on the whole page, 44px minimum hit area everywhere.",
+    "Button states, all four authored: :hover shifts the fill by 6-10% lightness or nudges the icon 2-4px; :active presses with translateY(1px) or scale(0.98) over 80-120ms; :focus-visible draws a 2px ring at 2-3px offset with at least 3:1 contrast; disabled sits at 45-55% opacity with cursor not-allowed. No state changes width, height or padding.",
+    "Type scale: at most 8 distinct font sizes each carry 2% or more of the text on a desktop render, each step at least 1.2x the one below; body 18-21px at line-height 1.5-1.65; headings at line-height 1.0-1.15. The h1 tops out at 80px on desktop (set with clamp()), and display sizes of 48px and up track -0.02 to -0.04em, never tighter than -0.05em; body text keeps tracking at 0.",
+    "Measure: prose never runs past 76 characters a line (cap paragraphs at 60-68ch with max-width); h1 lines stay under 20ch and h2 under 24ch; no centred paragraph runs past three lines.",
+    "Spacing rhythm: every gap comes from one 4/8px scale. Sections pad 72-136px top and bottom on desktop and 64-96px on mobile; a heading sits 16-24px above its text and has at least twice that space above it; content width caps at 1200-1320px with 24-40px gutters on desktop and 16-20px on mobile.",
+    "Section heads: one heading per section (one h2, or the h1 in the hero) and at most one lead paragraph of 40 words or fewer. No stacked pile of label, heading, accent-coloured second heading and paragraph; a second voice goes in the body, not the head.",
+    "Composition: no two neighbouring sections share a layout; use 4 or more layout kinds across the page (split, full-bleed media, list or table, asymmetric grid, quote, form). Card rows vary span or media; never a grid of equal cards that differ only by text.",
+    "Hero: the h1, one supporting paragraph of 30 words or fewer, at most two actions and one real picture or film; at most 14 text blocks in the first viewport. Spec tables, chip rows and stat grids go below the fold (one slim proof strip may sit on the fold line). On a 390x844 phone a real picture is in view before the first scroll.",
+    "Imagery: real photographs or renders of the trade's own objects, one aspect ratio per row (16:9, 3:2, 4:3 or 1:1) with object-fit: cover, corner radius from the button's family. Nothing decorative over a product picture: no hairlines, crosshairs, hotspot squares or graph-paper grids. Text on a photo sits on a scrim that holds 4.5:1; captions 13-14px in the muted ink.",
+    "Colour: one accent on no more than about 10% of any screen (primary action, links, one highlight); neutrals tinted toward the accent hue, never pure grey; at most two ground colours plus one accent ground across the page; body and secondary text at 4.5:1 or better, large text at 3:1.",
+    "Icons: one drawn SVG set at one stroke weight (1.5 or 2px) and one size per context (16, 20 or 24px), coloured with currentColor. Never a Unicode arrow, check mark, star or emoji standing in for an icon.",
+    "Motion: one signature moment; every other transition runs 120-250ms ease-out on transform and opacity only. Reveals travel 24px or less, start from content that is already readable, and differ by section role rather than one fade-up everywhere. No infinite loops besides hero media; prefers-reduced-motion turns all of it off.",
+    "Footer: brand and one-line description, two or three link groups and the contact block, four columns at most on desktop; group titles 13-14px at weight 600 in sentence case; links 15-16px with 10-12px between rows; a bottom bar for legal and copyright at 13-14px; 64px or more of top padding.",
+    "Browser surfaces: ::selection and focus rings use the palette; link underlines sit 3-4px below the text at 1-2px thickness; tables and figures use tabular numerals; no unthemed default blue links anywhere.",
+    "Civic: plain language at 18px or more, every action a labelled button of 48px or taller, contrast 7:1 for body text where possible, no motion needed to understand anything."
+  ],
+  "design_critique": {
+    "authority": "contextual visual judgment",
+    "criteria": [
+      "brief fidelity",
+      "hierarchy",
+      "typography",
+      "imagery",
+      "colour",
+      "rhythm",
+      "phone composition",
+      "interaction"
+    ],
+    "note": "Stylistic devices are not defects by themselves. Diagnose the actual composition, not a list of banned looks."
+  },
+  "avoid_recent": {
+    "entries": 2,
+    "directions": [
+      {
+        "date": "2026-10-20",
+        "direction": "auto — 1, Edit bay, with concept 2 folded in as the curve readout and the curves"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — Object Study look from the brief (Space Grotesk / Inter, Ice Blue surface"
+      }
+    ],
+    "palettes": [
+      [
+        "#0d2424",
+        "#133131",
+        "#2a4a48",
+        "#f1eadf",
+        "#a8beb9",
+        "#ff6a3d",
+        "#f2c94c"
+      ]
+    ],
+    "fonts": [
+      "Space Grotesk",
+      "Inter",
+      "Bricolage Grotesque",
+      "Instrument Sans"
+    ],
+    "motifs": [
+      "sticky",
+      "film",
+      "paper",
+      "kinetic type",
+      "webgl",
+      "timeline",
+      "blob"
+    ],
+    "mechanics": [],
+    "rule": "Make all three directions materially different from these recent picks: a different palette family, different type families, different motifs and mechanics. Reuse them only when the user asks for the same look, and then record `REPEAT-OK: <the user's words>` in direction.md."
+  }
+}

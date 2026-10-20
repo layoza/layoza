@@ -1,0 +1,42 @@
+{
+  "tool_count": 24,
+  "dtcg_aliases": "passed",
+  "figma_modes": "passed",
+  "figma_rest_export": "passed",
+  "asset_import_and_registration": "passed",
+  "observed_tokens": "7px / 23px / 0px / 713ms linear / 913px retained",
+  "same_length_freshness": "passed",
+  "vue_quote_syntax": "Escaping assertions passed; TypeScript parser unavailable",
+  "held_out": [
+    {
+      "subject": "harbour operations console",
+      "contract": "passed",
+      "visual_quality": "not evaluated; engine contract only"
+    },
+    {
+      "subject": "mycology specimen archive",
+      "contract": "passed",
+      "visual_quality": "not evaluated; engine contract only"
+    },
+    {
+      "subject": "family funeral care",
+      "contract": "passed",
+      "visual_quality": "not evaluated; engine contract only"
+    },
+    {
+      "subject": "children's science museum",
+      "contract": "passed",
+      "visual_quality": "not evaluated; engine contract only"
+    },
+    {
+      "subject": "Arabic architecture studio",
+      "contract": "passed",
+      "visual_quality": "not evaluated; engine contract only"
+    },
+    {
+      "subject": "precision machine repair workshop",
+      "contract": "passed",
+      "visual_quality": "not evaluated; engine contract only"
+    }
+  ]
+}

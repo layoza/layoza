@@ -1,0 +1,26 @@
+{
+  "intervals": [
+    "uipro",
+    "layoza",
+    "impeccable",
+    "taste"
+  ],
+  "willow": [
+    "taste",
+    "impeccable",
+    "layoza",
+    "uipro"
+  ],
+  "noor": [
+    "impeccable",
+    "uipro",
+    "taste",
+    "layoza"
+  ],
+  "hearth": [
+    "layoza",
+    "taste",
+    "uipro",
+    "impeccable"
+  ]
+}

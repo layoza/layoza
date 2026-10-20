@@ -1,0 +1,18 @@
+# 3 directions dealt for this brief
+
+Choose the one whose way of composing can best carry an idea from your inventory (SKILL.md steps 1 and 4), not the
+most familiar one. Then deal it in full with the same command plus `--direction <id>` (and without --options).
+
+## `split-stage` — The split stage
+Idea engine: Half the screen never moves. One side is a fixed photograph (or object, or product view) that stays in place for the whole visit; the other side is a calm scrolling column with everything you need to read.
+Composition: Desktop: a two-column page, 50/50 or 45/55. One column is `position: sticky; top: 0; height: 100svh` and holds a single photograph filling it edge to edge, or the object centred on a flat field.
+
+## `uneven-photographs` — Photographs at uneven sizes
+Idea engine: A calm page where the pictures are placed like prints on a gallery wall: each at its own size and position, with text set small and light between them. Nothing lines up in the obvious way, yet everything sits on a grid you can feel.
+Composition: A 12-column grid with wide margins (5–7vw). The hero is a single line of large light type (6–9vw) across the top third, and below it one photograph placed off-centre (columns 6–12, 16:10), its top edge overlapping the baseline zone of the headline by a few pixels of deliberate tension.
+Needs: many pictures. Without photographs of its own, each is a real picture of the subject's world found with scripts/assets.mjs, or a drawing you make.
+
+## `place-carries-it` — The place carries it
+Idea engine: For a place, the photograph is the argument. One full-bleed image of where you would be standing fills the first screen, and the design steps back: the name sits along the bottom edge like a film title, or small in a corner, and nothing else interrupts the view.
+Composition: First screen: a single photograph at 100vw by 100svh, focal point kept clear of text. The name is set either very large (14–20vw) hugging the bottom edge with 16–24px of margin, or small (20–28px) top-left with a one-line description bottom-left.
+Needs: many pictures. Without photographs of its own, each is a real picture of the subject's world found with scripts/assets.mjs, or a drawing you make.

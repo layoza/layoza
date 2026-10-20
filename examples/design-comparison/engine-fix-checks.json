@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "id": "intervals",
+      "pass": true
+    },
+    {
+      "id": "willow",
+      "pass": true
+    },
+    {
+      "id": "noor",
+      "pass": true
+    },
+    {
+      "id": "hearth",
+      "pass": true
+    }
+  ],
+  "scope": "Actual updated MCP get_design_system outputs, same four frozen brief contexts; not a visual quality score."
+}

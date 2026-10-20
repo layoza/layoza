@@ -1,0 +1,16 @@
+initialize      ok  protocol 2024-11-05, server layoza-mcp 0.1.4 (34 ms)
+tools/list      ok  24 tools: inspect_project, inspect_site, extract_site_dna, get_design_system, recommend_animation, discover_components, capture_screenshots, compare_before_after, audit_accessibility, audit_performance, verify_functional, export_report, deal_mechanics, get_mechanic, search_guidelines, get_guideline, recommend_chart, get_stack_notes, get_icon_guidance, import_design_tokens, design_assets, review_design, safe_rollback, check_deal_conformance
+prompts/list    ok  art-direct, critique, anti-slop-review, extend-site, improve-site, redesign, study
+prompts/get     ok  art-direct, 698 words, UTF-8 intact
+tools/call      ok  deal_mechanics returned 13885 chars
+uniqueness      ok  deal_mechanics carries uniqueness and ledger
+tools/call      ok  search_guidelines returned 3099 chars
+tools/call      ok  recommend_chart returned 3284 chars
+bad argument    ok  `count` for `deal_mechanics` must be from 2 to 10.
+unknown tool    ok  Unknown MCP tool `no_such_tool`.
+ping            ok
+shutdown        ok  exited with code 0 after stdin closed
+stdout          ok  only JSON-RPC messages
+stderr          empty
+
+MCP smoke test passed

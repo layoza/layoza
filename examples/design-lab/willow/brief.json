@@ -1,0 +1,26 @@
+{
+  "id": "willow",
+  "name": "Willow Public Library",
+  "brief": "Willow public library, a welcoming neighbourhood place for readers of every age. Help residents find books, see opening hours, discover events and join the library. Green and yellow, approachable editorial design, useful on phones, no installation commands or software imagery.",
+  "context": {
+    "subject": "public library",
+    "audience": "local residents, families and readers",
+    "primary_action": "search the catalogue",
+    "colors": [
+      "#153E35",
+      "#F4F4E9",
+      "#D8F06B"
+    ],
+    "objects": [
+      "books",
+      "reading rooms",
+      "community events"
+    ],
+    "forbidden": [
+      "software installation instructions"
+    ]
+  },
+  "assets": [
+    "library-zetong-li.jpg"
+  ]
+}

@@ -1,0 +1,52 @@
+DESIGN LAB IMAGE SOURCES — 21 OCTOBER 2026
+
+These are local evaluation assets, not evidence of any test business's actual
+premises, staff, customers or commissions. Do not turn image subjects into invented
+business facts. Machine-readable records, source URLs, rights evidence, dimensions
+and SHA-256 hashes are in assets.json.
+
+GALLERY
+gallery-152229.jpg — Eugène Atget, Rue de la Montagne-Sainte-Geneviève, 1898.
+gallery-152228.jpg — Eugène Atget, Versailles, Fountain of Triumphant France, 1904.
+gallery-162340.jpg — Eugène Atget, Nymphéa, 1922–23.
+gallery-325449.jpg — Alfred Stieglitz, The Steerage, 1907.
+Source: Cleveland Museum of Art public collection API and original print JPEGs.
+Rights: each API record reports share_license_status=CC0.
+Policy: https://www.clevelandart.org/open-access
+These are historical photographs shown in a contemporary interface, not newly
+commissioned contemporary photography. Preserve the original artist/title/date.
+The originals retain their historical paper/sepia colour. For an expressly
+black-and-white interface, a CSS grayscale treatment can be used without
+misrepresenting the original asset as a newly colour-graded file.
+
+LIBRARY
+library-zetong-li.jpg — Zetong Li, A long row of books in a library, 4 May 2023.
+https://unsplash.com/photos/a-long-row-of-books-in-a-library-xYyJAC0IdyI
+Rights: the primary photo page says Free to use under the Unsplash License.
+Suggested role: large library-shelves image; keep the aisle depth visible.
+
+DENTAL
+dental-room-katarzyna.jpg — Katarzyna Zygnerska,
+A white dental chair in a room with a window, 7 October 2024.
+https://unsplash.com/photos/a-white-dental-chair-in-a-room-with-a-window-44jaETSVX2I
+Suggested role: quiet clinic hero; preserve the chair/window/light composition.
+
+dental-consultation-harold.jpg — Harold Hisona,
+Dentist talking to patient in a modern dental office, 27 April 2026.
+https://unsplash.com/photos/dentist-talking-to-patient-in-a-modern-dental-office-Bg81yWKZlMg
+Suggested role: optional illustrative consultation scene. This is a third-party
+stock image supplied by its source, not verified staff/patient documentary evidence.
+
+dental-caroline-lm.jpg — Caroline LM,
+Dental exam with mirror and tool, 1 December 2020.
+https://unsplash.com/photos/dental-exam-with-mirror-and-tool-8BkF0sTC6Uo
+Suggested role: secondary clinical detail only. The close-up is intense, so avoid
+it as the first image for a calm or anxiety-sensitive clinic brief.
+
+All three dental photo pages identify the assets as free under the Unsplash
+License. Policy: https://unsplash.com/license
+Use a small visible photo credit on the evaluation pages and link to these sources.
+Do not say any photo depicts the fictional test clinic or test library.
+
+All eight local files were opened and visually inspected. Original files were
+retained; no raster edits were made during sourcing.

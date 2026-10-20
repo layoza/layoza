@@ -1,0 +1,297 @@
+   Compiling layoza-core v0.1.4 (C:\Users\ajjma\Desktop\sharethrone\crates\layoza-core)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\ajjma\Desktop\sharethrone\target\debug\incremental\layoza_core-2lb1sv0dlbt0s\s-hneekat7az-1hbknkz-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\ajjma\Desktop\sharethrone\target\debug\incremental\layoza_core-3bphhy9a80zwj\s-hneekat7an-0uxmk39-working`
+
+   Compiling layoza-mcp v0.1.4 (C:\Users\ajjma\Desktop\sharethrone\crates\layoza-mcp)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\ajjma\Desktop\sharethrone\target\debug\incremental\layoza_mcp-2vh450jccf1jz\s-hneekfkhos-0wr8jb6-working`
+
+warning: `layoza-mcp` (lib) generated 1 warning
+warning: `layoza-core` (lib) generated 1 warning
+   Compiling layoza-cli v0.1.4 (C:\Users\ajjma\Desktop\sharethrone\crates\layoza-cli)
+warning: `layoza-core` (lib test) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\ajjma\Desktop\sharethrone\target\debug\incremental\layoza-2lwkuqyz3gpdv\s-hneekmj67k-0x6z1x1-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\ajjma\Desktop\sharethrone\target\debug\incremental\layoza_mcp-1oljfgk500b70\s-hneekmjgak-0186k6j-working`
+
+warning: `layoza-cli` (bin "layoza" test) generated 1 warning
+warning: `layoza-mcp` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 26.07s
+     Running unittests src\main.rs (target\debug\deps\layoza-47957570719b5e8b.exe)
+
+running 6 tests
+test tests::every_command_has_usage ... ok
+test tests::positional_arg_skips_value_flags ... ok
+test tests::wcag_line_never_passes_a_static_scan ... ok
+test tests::unknown_flags_and_missing_values_are_rejected ... ok
+test tests::every_flag_read_with_a_value_is_a_value_flag ... ok
+test tests::qa_compare_reads_reports_and_names_a_reskin ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src\lib.rs (target\debug\deps\layoza_core-6f6db5fbff64866e.exe)
+
+running 227 tests
+test baseline::tests::redacts_every_secret_but_not_identifiers ... ok
+test baseline::tests::public_url_guard_rejects_private_literals_offline ... ok
+test craft::tests::anti_slop_names_the_amateur_tells ... ok
+test craft::tests::registers_tune_the_numbers ... ok
+test animation::tests::select_by_recipe_id_category_and_reports_misses ... ok
+test directions::page_shape::tests::a_dark_hero_in_the_brief_leads_the_ground ... ok
+test conformance::tests::every_motif_has_a_hint_and_unknown_facts_stay_unknown ... ok
+test conformance::tests::the_old_light_wording_is_still_checked ... ok
+test design_md::tests::lint_warns_on_type_below_the_body_and_label_floors ... ok
+test conformance::tests::page_shape_is_found_in_any_deal_form ... ok
+test baseline::tests::untrusted_text_is_isolated_structurally ... ok
+test conformance::tests::a_slop_render_fails_with_evidence ... ok
+test conformance::tests::permissive_rules_allow_a_little_but_not_a_lot ... ok
+test craft::tests::every_register_gets_a_numeric_floor_of_the_right_size ... ok
+test directions::page_shape::tests::pools_are_wide_enough ... ok
+test conformance::tests::a_dealt_dark_hero_is_checked_only_when_dealt ... ok
+test conformance::tests::craft_numbers_follow_the_register_and_old_facts_stay_unknown ... ok
+test conformance::tests::a_clean_render_passes_every_rule ... ok
+test conformance::tests::button_shapes_match_the_dealt_id ... ok
+test directions::tests::dbg_eight ... ignored, prints the eight-brief deal for inspection
+test conformance::tests::amateur_craft_fails_each_measured_rule_with_evidence ... ok
+test craft::tests::the_floor_reads_a_brief_and_covers_the_craft_axes ... ok
+test design_md::tests::design_md_has_the_nine_standard_sections_in_order_then_layoza_extras ... ok
+test directions::tests::every_surface_has_options_in_every_role ... ok
+test directions::tests::every_face_is_free_to_use_and_mono_links_stand_alone ... ok
+test creative::tests::structured_context_is_explicit_and_review_cannot_claim_missing_evidence ... ok
+test directions::tests::type_overuse_is_rare_and_scripts_are_covered ... ok
+test directions::tests::pools_are_wide_valid_and_aa ... ok
+test directions::tests::paid_brief_fonts_are_never_linked_to_a_cdn ... ok
+test directions::tests::palettes_are_distinct_and_free_of_slop ... ok
+test directions::tests::brief_colours_and_fonts_lead ... ok
+test directions::page_shape::tests::opposite_tone_words_read_as_one_mix ... ok
+test guidelines::tests::chart_for_picks_sensible_charts ... ok
+test guidelines::tests::counts_meet_targets ... ok
+test directions::tests::subject_is_read_from_the_brief ... ok
+test directions::page_shape::tests::highly_animated_agency_gets_heavy_motion_with_several_tools ... ok
+test directions::page_shape::tests::dark_minimal_pins_ground_and_calm_motion ... ok
+test guidelines::tests::hook_rules_are_opted_in ... ok
+test guidelines::tests::every_supported_stack_is_present_and_resolvable ... ok
+test creative::tests::visual_selection_requires_three_real_current_renders_and_detects_same_length_edits ... ok
+test guidelines::tests::ids_are_unique_across_tables ... ok
+test guidelines::tests::required_fields_are_filled ... ok
+test baseline::tests::look_ledger_keeps_the_last_runs_in_utf8 ... ok
+test history::tests::civil_date_is_well_formed ... ok
+test directions::tests::unmatched_briefs_spread_over_the_pool ... ok
+test history::tests::parses_blocks_and_extracts_only_design_signals ... ok
+test hooks::hook_tests::check_edit_is_silent_for_non_ui_files ... ok
+test directions::page_shape::tests::understood_brief_assumes_instead_of_asking ... ok
+test hooks::hook_tests::guideline_rules_respect_the_budget ... ok
+test hooks::hook_tests::check_edit_rate_limits_same_file ... ok
+test hooks::hook_tests::exemptions_only_cover_their_own_element_or_nearby_lines ... ok
+test history::tests::records_once_per_design_and_flags_repeats_across_projects ... ok
+test hooks::hook_tests::hex_extraction_skips_fragment_links ... ok
+test inspector::font_tests::font_shorthand_parsing ... ok
+test guidelines::tests::search_returns_relevant_results ... ok
+test directions::page_shape::tests::tools_follow_the_stack ... ok
+test guidelines::tests::synonyms_and_stems_find_what_people_mean ... ok
+test hooks::hook_tests::check_edit_is_brand_aware ... ok
+test hooks::hook_tests::check_edit_reports_html_findings_and_reminds_once ... ok
+test directions::page_shape::tests::niche_fit_gates_the_deal_before_uniqueness ... ok
+test hooks::hook_tests::malformed_settings_are_never_overwritten ... ok
+test directions::page_shape::tests::niches_that_allow_it_default_to_heavy_motion_without_being_asked ... ok
+test inspector::font_tests::fontsource_and_font_shorthand ... ok
+test installer::config_merge_tests::creates_missing_file ... ok
+test hooks::hook_tests::guideline_rules_run_opt_in_and_report_timing ... ok
+test directions::tests::directions_vary_corners_and_axes ... ok
+test hooks::hook_tests::off_removes_only_layoza_entry ... ok
+test hooks::hook_tests::install_merges_and_keeps_existing_settings_and_hooks ... ok
+test inspector::font_tests::no_fonts_falls_back_and_says_so ... ok
+test installer::config_merge_tests::keeps_other_servers ... ok
+test installer::config_merge_tests::refuses_non_object_servers_key ... ok
+test directions::page_shape::tests::solemn_briefs_never_get_wild_motion ... ok
+test intelligence::tests::brief_font_roles_follow_their_labels ... ok
+test intelligence::tests::brief_type_and_colours_replace_the_industry_baseline ... ok
+test directions::page_shape::tests::directions_of_one_deal_differ_on_every_axis ... ok
+test directions::tests::client_task_objects_and_available_capabilities_survive_dealing ... ok
+test intelligence::tests::copy_and_rationale_come_from_the_brief ... ok
+test intelligence::tests::brief_fonts_are_read_and_negated_fonts_are_not ... ok
+test intelligence::tests::brief_colors_and_soft_caps ... ok
+test intelligence::tests::directions_print_their_own_type_not_the_industry_pairing ... ok
+test directions::page_shape::tests::pinning_one_axis_keeps_the_others_unique ... ok
+test intelligence::tests::a_labelled_light_ground_and_text_colours_win_over_the_first_dark_hex ... ok
+test intelligence::tests::a_b2b_supplier_reads_as_its_trade_not_its_buyers ... ok
+test installer::config_merge_tests::refuses_to_overwrite_invalid_json ... ok
+test intelligence::tests::brief_pixel_sizes_set_the_display_and_section_tokens ... ok
+test inspector::font_tests::google_fonts_and_minified_vars_map_by_usage ... ok
+test directions::page_shape::tests::premium_cinematic_briefs_get_no_document_or_playful_looks ... ok
+test directions::tests::eight_briefs_get_distinct_on_tone_directions ... ok
+test inspector::font_tests::sketch_and_draft_fonts_do_not_override_the_shipped_source ... ok
+test inspector::font_tests::tailwind_next_font_and_theme_json ... ok
+test directions::page_shape::tests::craft_and_technical_briefs_keep_their_own_looks ... ok
+test intelligence::tests::each_direction_gets_its_own_hero_and_two_signature_mechanics ... ok
+test intelligence::tests::named_fonts_get_no_extra_mono_and_load_their_bold_cut ... ok
+test directions::tests::unrelated_briefs_do_not_share_type_families ... ok
+test intelligence::tests::subject_phrase_keeps_the_trade_noun ... ok
+test intelligence::tests::labelled_primary_leads_and_cinematic_asks_skip_document_looks ... ok
+test intelligence::tests::different_niches_give_materially_different_directions ... ok
+test mechanics::brief_tests::brief_objects_are_the_brief_s_own_nouns ... ok
+test intelligence::tests::persona_and_plumbing_lines_do_not_pick_the_trade_or_mood ... ok
+test mechanics::brief_tests::a_shared_niche_signal_is_used_verbatim ... ok
+test intelligence::tests::audited_briefs_keep_subject_constraints_and_composition_material ... ok
+test mechanics::brief_tests::furniture_has_its_own_slots_and_is_never_a_signature ... ok
+test mechanics::brief_tests::funeral_home_and_water_utility_reach_their_own_niches ... ok
+test mechanics::brief_tests::the_call_to_action_comes_from_the_brief_s_verbs_or_is_absent ... ok
+test mechanics::brief_tests::look_family_and_pure_type_exclusions_are_honoured ... ok
+test mechanics::brief_tests::recent_heroes_are_steered_away_from ... ok
+test intelligence::tests::heavy_motion_words_raise_every_direction ... ok
+test mechanics::brief_tests::seeds_serialise_as_strings_and_read_either_form ... ok
+test intelligence::tests::devtools_keywords_do_not_steal_other_industries ... ok
+test intelligence::tests::devtool_briefs_route_to_ai_devtools_with_devtool_directions ... ok
+test mechanics::tests::catalogue_is_broad_with_a_universal_hero_pool ... ok
+test mechanics::tests::calm_deal_returns_only_calm_entries ... ok
+test intelligence::tests::ledger_type_families_are_not_dealt_again ... ok
+test mechanics::tests::catalogue_size_kinds_and_fields ... ok
+test mechanics::tests::brief_keywords_override_defaults ... ok
+test mechanics::tests::avoid_list_is_never_dealt_and_stays_deterministic ... ok
+test intelligence::tests::negated_parts_do_not_steer_the_match ... ok
+test intelligence::tests::unmatched_briefs_are_read_from_their_own_words ... ok
+test mechanics::tests::every_niche_has_varied_furniture ... ok
+test directions::page_shape::tests::three_ledger_runs_share_no_hero_flow_head_material_or_signature ... ok
+test intelligence::tests::named_constraints_and_overrides ... ok
+test mechanics::tests::every_hero_names_its_material_and_look ... ok
+test mechanics::tests::every_niche_has_hero_depth_and_look_spread ... ok
+test mechanics::tests::exclusions_keep_directions_apart ... ok
+test mechanics::brief_tests::unknown_trades_get_their_own_deal_not_one_fixed_fallback ... ok
+test mechanics::tests::heroes_declare_compositions_and_splits_are_a_minority ... ok
+test intelligence::tests::design_system_and_deal_read_one_niche_signal ... ok
+test mechanics::tests::existing_site_niche_comes_from_the_site ... ok
+test directions::tests::law_and_money_briefs_never_get_navy_and_gold ... ok
+test mechanics::tests::composition_preference_and_exclusion_steer_the_hero ... ok
+test mechanics::tests::existing_site_deal_respects_intensity ... ok
+test mechanics::tests::deal_is_distinct_coherent_and_deterministic ... ok
+test mechanics::tests::dental_clinic_gets_no_app_hero ... ok
+test mechanics::tests::new_trades_are_detected ... ok
+test process::tests::redesign_skeletons_are_compared ... ok
+test mechanics::tests::similes_are_not_niches_and_heavy_motion_is_wild ... ok
+test process::tests::briefs_route_to_component_custom_and_fact_checks ... ok
+test process::tests::three_directions_never_all_pure_type ... ok
+test process::tests::stamps_round_trip_rebuild_history_and_low_scores_gate ... ok
+test qa::compact_tests::dedupes_one_rule_across_viewports_and_sums_more_counts ... ok
+test mechanics::tests::funeral_home_and_water_utility_get_different_heroes ... ok
+test qa::compact_tests::caps_lines_clips_examples_and_reports_omitted ... ok
+test qa::compact_tests::summary_puts_design_first_and_speed_only_when_requested ... ok
+test qa::compact_tests::viewport_and_occurrence_parsing ... ok
+test qa::look_and_allow_tests::caller_allow_merges_with_brief_groups ... ok
+test qa::look_and_allow_tests::ledger_skips_same_target_and_flags_reskins ... ok
+test mechanics::tests::long_brief_ranks_niches_by_weight_and_trade_leads_technique ... ok
+test qa::look_and_allow_tests::old_temp_script_pattern_is_exact ... ok
+test mechanics::tests::devtools_words_do_not_steal_other_niches ... ok
+test qa::look_and_allow_tests::same_skeleton_new_colours_is_a_reskin ... ok
+test mechanics::tests::law_firm_gets_no_other_trades_objects ... ok
+test mechanics::tests::niche_filtering ... ok
+test register::tests::briefs_read_their_register ... ok
+test source_tokens::tests::preserves_actual_declared_geometry_and_motion_without_defaults ... ok
+test qa::look_and_allow_tests::section_reskin_flags_same_role_same_structure_for_other_targets ... ok
+test qa::look_and_allow_tests::style_allow_reads_requests_and_ignores_negations ... ok
+test qa::look_and_allow_tests::run_dirs_are_unique_and_removed_on_drop ... ok
+test intelligence::tests::rtl_briefs_get_logical_properties_and_mirrored_layout ... ok
+test qa::look_and_allow_tests::old_temp_cleanup_removes_only_matching_files ... ok
+test intelligence::tests::unknown_trades_are_written_from_their_own_nouns_and_verbs ... ok
+test mechanics::tests::generic_brief_excludes_narrow_trade_objects ... ok
+test process::tests::user_ledger_steers_new_sites_outside_a_project_and_mirrors_project_runs ... ok
+test tests::test_craft_critique_issues_are_non_blocking_subjective_findings ... ok
+test tests::design_gate_needs_visual_evidence_but_never_speed_measurements ... ok
+test tests::test_cwv_unmeasured_is_not_a_pass ... ok
+test tests::test_gate_is_unverified_without_browser_evidence ... ok
+test tests::test_framework_adapters_preserve_native_formats ... ok
+test tests::test_before_after_flags_new_error_rules ... ok
+test tests::test_baseline_and_rollback_and_security ... ok
+test tests::test_no_profile_recommends_its_own_cliche ... ok
+test tests::test_craft_critique_does_not_change_release_gate ... ok
+test mechanics::tests::unknown_niche_avoids_narrow_trade_picks ... ok
+test tests::test_inline_root_custom_properties_are_extracted ... ok
+test directions::tests::later_variants_stay_on_the_brief_s_own_subject ... ok
+test tests::test_safe_path_rejects_nonexistent_paths_outside_root ... ok
+test uniqueness::tests::repeats_are_named_with_their_distance ... ok
+test process::tests::continue_never_passes_the_direction_gate_and_skip_needs_the_user ... ok
+test tests::test_wcag_contrast_and_design_md_lint ... ok
+test mechanics::tests::devtools_brief_gets_devtools_fits_and_no_foreign_trades ... ok
+test uniqueness::type_key_tests::pairings_sharing_a_display_family_are_one_look ... ok
+test verifier::design_system_tests::art_over_text_maps_to_a_named_visual_rule ... ok
+test verifier::design_system_tests::design_md_frontmatter_becomes_compact_tokens ... ok
+test verifier::design_system_tests::interface_checks_and_generic_tells_map_to_named_findings ... ok
+test verifier::design_system_tests::design_system_warnings_are_objective_and_name_the_nearest_token ... ok
+test tests::test_every_recommended_style_exists_in_catalog ... ok
+test mechanics::tests::kids_museum_and_bakery_dashboard_get_their_own_objects ... ok
+test verifier::design_system_tests::motion_density_rules_map_to_named_motion_rules ... ok
+test verifier::gate_file_tests::same_section_twice_issue_maps_to_its_own_rule_id ... ok
+test tests::test_palette_contrast_is_computed_not_claimed ... ok
+test verifier::gate_file_tests::section_reskins_are_ingested_with_their_score ... ok
+test verifier::static_subset_tests::background_shorthand_with_an_image_resets_the_colour ... ok
+test tests::test_three_directions_and_modes ... ok
+test verifier::static_subset_tests::exclusive_media_blocks_are_never_merged ... ok
+test verifier::static_subset_tests::markup_rules_catch_ids_zoom_and_placeholders ... ok
+test verifier::static_subset_tests::quality_issues_keep_their_own_why_fix_and_measured_value ... ok
+test tests::test_baseline_default_discovery_skips_and_errors ... ok
+test verifier::static_subset_tests::same_rules_run_on_every_template_language ... ok
+test verifier::gate_file_tests::skipped_passes_are_listed_as_needing_the_browser ... ok
+test verifier::gate_file_tests::new_site_without_approval_warns_and_fails_under_strict ... ok
+test verifier::design_system_tests::direction_must_name_the_trades_objects ... ok
+test verifier::static_subset_tests::static_audit_never_passes_wcag_without_a_browser_report ... ok
+test verifier::design_system_tests::site_dna_and_discovery_prefer_the_nearest_declared_system ... ok
+test verifier::gate_file_tests::existing_site_or_unknown_kind_has_no_gate_file_finding ... ok
+test tests::test_industry_matching_is_whole_word_and_reports_confidence ... ok
+test verifier::design_system_tests::repeated_direction_warns_and_is_recorded_once ... ok
+test directions::tests::solemn_briefs_get_human_presence_not_cold_kit ... ok
+test verifier::design_system_tests::design_process_is_required_only_when_a_direction_exists ... ok
+test mechanics::tests::conditional_furniture_needs_its_signal ... ok
+test tests::test_industry_slug_queries_match_directly ... ok
+test intelligence::tests::no_fixed_hero_and_variant_redeals ... ok
+test intelligence::tests::the_look_ledger_steers_the_next_run_away_from_recent_looks ... ok
+test intelligence::direction_uniqueness_tests::three_directions_share_no_nav_hero_footer_archetype_or_palette ... ok
+test uniqueness::tests::ten_deals_in_a_row_stay_unique_per_slot ... ok
+test mechanics::brief_tests::seeds_rotate_the_in_niche_hero ... ok
+test tests::test_browser_report_ingest_legacy_and_v2 ... ok
+test tests::test_installer_never_writes_cargo_run_and_merges_opencode ... ok
+test directions::tests::sober_briefs_never_get_display_gimmicks ... ok
+test directions::page_shape::tests::same_brief_three_runs_never_repeat_the_motion_signature_or_paper_back_to_back ... ok
+test intelligence::tests::long_spec_is_read_from_its_labelled_industry_line ... ok
+test directions::tests::text_faces_never_set_display_type ... ok
+test intelligence::tests::each_direction_states_its_dealt_hero_s_composition ... ok
+test directions::tests::task_first_briefs_skip_posters_and_placeless_maps ... ok
+test tests::test_auto_repair_and_benchmark_suite ... ok
+test intelligence::tests::every_variant_redeals_all_three_directions ... ok
+test directions::page_shape::tests::the_same_brief_asked_again_is_a_new_design ... ok
+test mechanics::tests::no_near_duplicates ... ok
+test mechanics::tests::consecutive_seeds_rotate_hero_and_furniture ... ok
+
+test result: ok. 226 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 14.13s
+
+     Running unittests src\lib.rs (target\debug\deps\layoza_mcp-28e7a2a940a03228.exe)
+
+running 16 tests
+test prompts::tests::bad_prompt_calls_are_clear_errors ... ok
+test brief::tests::brief_is_short_and_names_the_look ... ok
+test tests::versions_agree_across_manifests ... ok
+test brief::tests::neon_on_black_spots_the_stock_dark_look ... ok
+test prompts::tests::existing_site_prompts_check_the_brand_first_and_rtl_is_detected ... ok
+test prompts::tests::art_direct_routes_components_loops_and_gates ... ok
+test tests::test_capture_screenshots_sketch_mode_returns_paths_only ... ok
+test tests::test_dials_clamp_before_narrowing_and_schema_is_honest ... ok
+test tests::test_check_deal_conformance_validates_before_any_browser_run ... ok
+test prompts::tests::every_prompt_is_short_calls_layoza_and_ends_in_a_qa_gate ... ok
+test tests::test_capture_screenshots_default_is_compact_and_writes_full_detail ... ok
+test tests::test_deal_mechanics_and_get_mechanic_tools ... ok
+test tests::test_mcp_initialize_and_tool_calls ... ok
+test tests::prompts_and_argument_validation_over_json_rpc ... ok
+test tests::test_design_system_avoid_recent_only_for_new_looks ... ok
+test tests::guideline_tools_uniqueness_block_and_url_guard ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+
+   Doc-tests layoza_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests layoza_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

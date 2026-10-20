@@ -49,7 +49,7 @@ labels, decorated buttons, choreography between them and the task.
   firing, a service running degraded, a filter that matches nothing), then where the signature move lives. Real labels,
   units, plausible values; never placeholder tiles.
 
-**Measure in `layoza qa`:** `inp_ms` ≤ 200 (interaction-heavy); `target-size`
+**Measure in `layoza qa`:** `target-size`
 and `interactive-overlap` = 0 (dense controls); `unlabeled-control` = 0 (icon
 toolbars); `focus-obscured` = 0 (sticky toolbars); `document-overflow` /
 `text-clip-or-bleed` at 768 and 375 (tables and side rails). Expected, not
@@ -84,8 +84,8 @@ read as docs, an article as an article.
 **Measure in `layoza qa`:** `max_line_length_ch` ≤ 75 and no `craft-line-length`;
 no `craft-tight-leading`, `craft-justified-text`, `craft-tiny-text`,
 `craft-all-caps-body`; `heading_hierarchy_valid` true; `landmarks_present`
-true (nav + main); `contrast_failures` 0 including code blocks; `cls` ≤ 0.1
-(web fonts on long pages). **Self-check:** can a reader tell where they are and
+true (nav + main); `contrast_failures` 0 including code blocks.
+**Self-check:** can a reader tell where they are and
 read comfortably? Cover the name: could this be any product's docs? Then the
 frame has not taken the world. Does it read as an artifact before a document?
 Then the world has leaked into the column; move it back to the frame.
@@ -111,10 +111,7 @@ first viewport.
 - Persuasion still exists (commission, buy, contact) but sits after the work
   earns it, and stays one tap away.
 
-**Measure in `layoza qa`:** `lcp_ms` ≤ 2500 with a large hero asset (the usual
-failure: serve right-sized `srcset`, `fetchpriority="high"` on the first work);
-`cls` ≤ 0.1 (every media element has dimensions or `aspect-ratio`);
-`missing_alt_count` 0; `broken-image` 0; `text-hidden-after-scroll` 0 (captions
+**Verify the design in `layoza qa`:** `missing_alt_count` 0; `broken-image` 0; `text-hidden-after-scroll` 0 (captions
 revealed by animation); `nav-unreachable` 0 with a minimal header.
 `primary-action-below-fold` is acceptable here when the first viewport is the
 work; say so in the report.
@@ -124,7 +121,7 @@ work; say so in the report.
 ## Persuade (landing pages, marketing, pricing, campaigns)
 
 Covered by SKILL.md step 6 and [world.md](world.md). Measure:
-`primary-action-below-fold` cleared at 375 and 1440, `lcp_ms`, contrast of copy
+`primary-action-below-fold` cleared at 375 and 1440, contrast of copy
 on imagery, and the memory test.
 
 ## Mixed pages

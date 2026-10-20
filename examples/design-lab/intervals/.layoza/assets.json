@@ -1,0 +1,42 @@
+[
+  {
+    "path": "assets/gallery-152229.jpg",
+    "source": "https://clevelandart.org/art/1985.115",
+    "license": "CC0-1.0",
+    "credit": "Eugène Atget (French, 1857–1927)",
+    "role": "Historical artwork in a contemporary gallery interface; retain artist/title/date and do not label it as a new commission.",
+    "alt": "Rue de la Montagne-Sainte-Geneviève",
+    "bytes": 4739184,
+    "content_fingerprint": "49394ff6c359b723"
+  },
+  {
+    "path": "assets/gallery-152228.jpg",
+    "source": "https://clevelandart.org/art/1985.114",
+    "license": "CC0-1.0",
+    "credit": "Eugène Atget (French, 1857–1927)",
+    "role": "Historical artwork in a contemporary gallery interface; retain artist/title/date and do not label it as a new commission.",
+    "alt": "Versailles, Fountain of Triumphant France",
+    "bytes": 6685128,
+    "content_fingerprint": "1921726bd9112589"
+  },
+  {
+    "path": "assets/gallery-162340.jpg",
+    "source": "https://clevelandart.org/art/2002.69",
+    "license": "CC0-1.0",
+    "credit": "Eugène Atget (French, 1857–1927)",
+    "role": "Historical artwork in a contemporary gallery interface; retain artist/title/date and do not label it as a new commission.",
+    "alt": "Nymphéa",
+    "bytes": 4912867,
+    "content_fingerprint": "62d6b12aae509730"
+  },
+  {
+    "path": "assets/gallery-325449.jpg",
+    "source": "https://clevelandart.org/art/2019.22",
+    "license": "CC0-1.0",
+    "credit": "Alfred Stieglitz (American, 1864–1946)",
+    "role": "Historical artwork in a contemporary gallery interface; retain artist/title/date and do not label it as a new commission.",
+    "alt": "The Steerage",
+    "bytes": 1858037,
+    "content_fingerprint": "f90ef7b3c2a728e4"
+  }
+]

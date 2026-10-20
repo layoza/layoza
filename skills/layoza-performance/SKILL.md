@@ -5,7 +5,7 @@ description: Core Web Vitals optimization (LCP, CLS, INP), font loading strategy
 
 # Layoza Specialist Skill: Frontend Performance (`layoza-performance`)
 
-Use this skill to optimize loading speed, layout stability, responsiveness, and GPU frame budgets.
+Use this skill only when the user explicitly requests speed diagnostics or optimization. It is optional and never a prerequisite for designing, visually reviewing, or completing a design. Run `layoza qa <target> --performance` or MCP `audit_performance` separately from the design verdict.
 
 ## 1. Core Web Vitals Targets
 - **LCP (Largest Contentful Paint)**: `<= 2,500ms`

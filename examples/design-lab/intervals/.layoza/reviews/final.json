@@ -1,0 +1,61 @@
+{
+  "id": "final",
+  "brief": "A contemporary photography gallery called Intervals. Black and white only, Helvetica only, no animation. Make historical photographs the main experience, with an exhibition introduction, selected works, artist information and an exhibition enquiry. No invented awards or sales claims.",
+  "chosen_direction": "Revised A",
+  "reason": "Photographs lead through a coherent asymmetric exhibition composition; the index made images too small and the immersive overlay obscured them.",
+  "strengths": [
+    "Complete photograph framing in the desktop composition",
+    "All three phone works have a full-width presentation and readable captions",
+    "Monochrome Helvetica identity remains consistent through exhibition, artist and enquiry"
+  ],
+  "weaknesses": [
+    "Full-width works create a long phone gallery",
+    "Secondary metadata still needs close optical review at physical device scale"
+  ],
+  "changes": [
+    "Reduced opening title footprint and enlarged introductory text",
+    "Restored mobile enquiry shortcut and increased captions",
+    "Preserved entire image framing rather than cropping artworks"
+  ],
+  "alternatives": [
+    "Archive index: faster scanning, weaker photographic experience",
+    "Immersive stage: strong image mass but headline overlaps the photograph"
+  ],
+  "review_kind": "Designer decision informed by an independent assistant image-only critic (two rounds), not a human panel or competitor benchmark",
+  "screenshots": [
+    "qa/desktop-a-hero.png",
+    "qa/mobile-a-hero.png",
+    "qa/desktop-b-hero.png",
+    "qa/mobile-b-hero.png",
+    "qa/desktop-c-hero.png",
+    "qa/mobile-c-hero.png"
+  ],
+  "screenshot_evidence": [
+    {
+      "path": "qa/desktop-a-hero.png",
+      "content_fingerprint": "6ea2c06529bc2ace"
+    },
+    {
+      "path": "qa/mobile-a-hero.png",
+      "content_fingerprint": "c7705f185a3f26bd"
+    },
+    {
+      "path": "qa/desktop-b-hero.png",
+      "content_fingerprint": "325a2887dfbddee0"
+    },
+    {
+      "path": "qa/mobile-b-hero.png",
+      "content_fingerprint": "2771f81b1f48b651"
+    },
+    {
+      "path": "qa/desktop-c-hero.png",
+      "content_fingerprint": "f349772b0098c4d8"
+    },
+    {
+      "path": "qa/mobile-c-hero.png",
+      "content_fingerprint": "18047c860ddcb31b"
+    }
+  ],
+  "project_fingerprint": "09514f66e73e3c94",
+  "recorded_at_unix": 1792530138
+}

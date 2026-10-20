@@ -45,10 +45,8 @@ pub fn compute_project_fingerprint(root: &Path) -> String {
             hash = hash.wrapping_mul(0x100000001b3);
         }
         let full = root.join(&rel);
-        if let Ok(meta) = fs::metadata(&full) {
-            let len = meta.len();
-            hash ^= len;
-            hash = hash.wrapping_mul(0x100000001b3);
+        if let Ok(bytes) = fs::read(&full) {
+            for b in bytes { hash = (hash ^ b as u64).wrapping_mul(0x100000001b3); }
         }
     }
     format!("{:016x}", hash)
@@ -69,6 +67,10 @@ fn collect_project_files(root: &Path, current: &Path, out: &mut Vec<String>, dep
         if matches!(
             name,
             ".git"
+                | ".internal"
+                | "qa"
+                | "screenshots"
+                | "vendor"
                 | "node_modules"
                 | "target"
                 | ".next"
@@ -144,6 +146,7 @@ pub fn inspect_project(
     let mut footer_elements = BTreeSet::new();
     let mut grid_systems = BTreeSet::new();
     let mut max_widths = BTreeSet::new();
+    let mut observed_tokens = crate::source_tokens::SourceTokens::default();
 
     // 1. Inspect package.json if present
     let pkg_path = project_root.join("package.json");
@@ -244,9 +247,9 @@ pub fn inspect_project(
                 name: comp_name,
                 category: category.to_string(),
                 file_path: rel.clone(),
-                variants: vec!["default".to_string()],
-                props_or_classes: Vec::new(),
-                accessible_patterns: Vec::new(),
+                variants: fs::read_to_string(&full).map(|s| crate::source_tokens::component_details(&s).0).unwrap_or_default(),
+                props_or_classes: fs::read_to_string(&full).map(|s| crate::source_tokens::component_details(&s).1).unwrap_or_default(),
+                accessible_patterns: fs::read_to_string(&full).map(|s| crate::source_tokens::component_details(&s).2).unwrap_or_default(),
             });
         }
 
@@ -269,6 +272,7 @@ pub fn inspect_project(
             || lower.ends_with(".liquid")
         {
             if let Ok(content) = fs::read_to_string(&full) {
+                if !is_draft_path(rel) { observed_tokens.scan(rel, &content); }
                 let target = if is_draft_path(rel) { &mut draft_font_scan } else { &mut font_scan };
                 scan_fonts(rel, &content, target);
                 scan_source_content(
@@ -407,35 +411,18 @@ pub fn inspect_project(
         3
     };
 
-    let mut spacing_scale = BTreeMap::new();
-    spacing_scale.insert("xs".to_string(), "4px".to_string());
-    spacing_scale.insert("sm".to_string(), "8px".to_string());
-    spacing_scale.insert("md".to_string(), "16px".to_string());
-    spacing_scale.insert("lg".to_string(), "32px".to_string());
-    spacing_scale.insert("xl".to_string(), "64px".to_string());
-    spacing_scale.insert("section".to_string(), "96px".to_string());
-
-    let mut radii_scale = BTreeMap::new();
-    radii_scale.insert("sm".to_string(), "6px".to_string());
-    radii_scale.insert("md".to_string(), "12px".to_string());
-    radii_scale.insert("lg".to_string(), "20px".to_string());
-
-    let mut shadows = BTreeMap::new();
-    shadows.insert(
-        "sm".to_string(),
-        "0 1px 2px rgba(15, 23, 42, 0.06)".to_string(),
-    );
-    shadows.insert(
-        "md".to_string(),
-        "0 10px 30px -10px rgba(15, 23, 42, 0.10)".to_string(),
-    );
-
-    let mut breakpoints = BTreeMap::new();
-    breakpoints.insert("mobile".to_string(), "375px".to_string());
-    breakpoints.insert("tablet".to_string(), "768px".to_string());
-    breakpoints.insert("desktop".to_string(), "1280px".to_string());
+    let spacing_scale = observed_tokens.spacing;
+    let radii_scale = observed_tokens.radii;
+    let shadows = observed_tokens.shadows;
+    let breakpoints = observed_tokens.breakpoints;
+    for (label, missing) in [("spacing", spacing_scale.is_empty()), ("radii", radii_scale.is_empty()), ("shadows", shadows.is_empty()), ("breakpoints", breakpoints.is_empty())] {
+        if missing { unknowns.push(format!("No {label} declarations extracted; values remain unknown. Do not replace the incumbent design with a default scale.")); }
+    }
 
     let mut decisions = Vec::new();
+    for (token, source) in &observed_tokens.evidence {
+        decisions.push(DecisionEntry { id: format!("TOKEN-{}", decisions.len() + 1), category: "source-token".into(), tier: KnowledgeTier::ObservedFact, statement: format!("Source declaration `{token}`; verify the computed cascade on a sibling render."), evidence_source: source.clone(), confidence: 0.8 });
+    }
     decisions.push(DecisionEntry {
         id: "DEC-001".to_string(),
         category: "framework".to_string(),
@@ -491,23 +478,15 @@ pub fn inspect_project(
         radii_scale,
         shadows,
         breakpoints,
-        content_max_widths: if max_widths.is_empty() {
-            vec!["1280px".to_string()]
-        } else {
-            max_widths.into_iter().collect()
-        },
-        grid_systems: if grid_systems.is_empty() {
-            vec!["CSS Grid".to_string(), "Flexbox".to_string()]
-        } else {
-            grid_systems.into_iter().collect()
-        },
+        content_max_widths: max_widths.into_iter().collect(),
+        grid_systems: grid_systems.into_iter().collect(),
         dark_mode_strategy: dark_mode,
         accessibility_patterns: a11y_patterns.into_iter().collect(),
         motion: MotionProfile {
             libraries_detected: motion_libs.into_iter().collect(),
             keyframes_detected: keyframes.into_iter().collect(),
-            transition_durations: vec!["180ms".to_string(), "320ms".to_string(), "600ms".to_string()],
-            easing_curves: vec!["cubic-bezier(0.22, 1, 0.36, 1)".to_string()],
+            transition_durations: observed_tokens.durations.into_iter().collect(),
+            easing_curves: observed_tokens.easings.into_iter().collect(),
             scroll_behavior: "native".to_string(),
             honors_reduced_motion,
             recommended_motion_intensity: motion_intensity,

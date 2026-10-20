@@ -49,3 +49,6 @@ Write it before the first edit; every row must be ticked before release:
 ```bash
 cargo run --quiet --bin layoza -- baseline create v1-backup --file DESIGN.md
 ```
+
+## Creative process authority
+For composition, asset acquisition, automatic selection and visual review, follow `skills/layoza/references/creative-process.md`. It supersedes conflicting quotas, world lotteries, mandatory user-pick pauses and numeric taste pass marks.

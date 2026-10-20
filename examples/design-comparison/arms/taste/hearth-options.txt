@@ -1,0 +1,11 @@
+# 2 app styles dealt for this brief
+
+Choose the one that suits how this product is used (long sessions or a quick look, money or media, a team or one person), not the most familiar. Then deal it with the same command plus `--style <id>` (and without --options).
+
+## `accent-ladder` — Accent ladder (light)
+One brand hue at full strength only on small marks, and its pale tints doing all the area work: the active nav row, a plan card, badges and progress tracks.
+The move: The full hue goes only on small marks: the one filled-button style, the data series and the active nav icon. Its 50-200 tints carry every area: the active nav row (tint fill with the dark ink of the hue), the plan or trial card, badges and progress tracks. The primary action may instead be near-black, as on the study's newsletter home.
+
+## `framed-sheet` — Framed sheet (light)
+The app chrome is one tinted L-shaped frame; the work sits on a white sheet with a hairline edge and soft corners, so depth comes from a single tone step and no shadow.
+The move: One tinted frame holds the sidebar and the 48px top bar with no rule between them; the page is a white sheet inset 8px from the window's right and bottom edges, with a 1px edge, 16px corners and no shadow. The active tab is a 2px underline in ink or the accent; everything else in the chrome is grey.

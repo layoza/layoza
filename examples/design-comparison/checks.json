@@ -1,0 +1,866 @@
+{
+  "results": [
+    {
+      "arm": "taste",
+      "id": "intervals",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "intervals",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "intervals",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "taste",
+        "id": "intervals",
+        "pass": true
+      }
+    },
+    {
+      "arm": "taste",
+      "id": "willow",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "willow",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "willow",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "taste",
+        "id": "willow",
+        "pass": true
+      }
+    },
+    {
+      "arm": "taste",
+      "id": "noor",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "noor",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "noor",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "taste",
+        "id": "noor",
+        "pass": true
+      }
+    },
+    {
+      "arm": "taste",
+      "id": "hearth",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "hearth",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "taste",
+      "id": "hearth",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "taste",
+        "id": "hearth",
+        "pass": true
+      }
+    },
+    {
+      "arm": "impeccable",
+      "id": "intervals",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "intervals",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "intervals",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "impeccable",
+        "id": "intervals",
+        "pass": true
+      }
+    },
+    {
+      "arm": "impeccable",
+      "id": "willow",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "willow",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "willow",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "impeccable",
+        "id": "willow",
+        "pass": true
+      }
+    },
+    {
+      "arm": "impeccable",
+      "id": "noor",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "noor",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "noor",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "impeccable",
+        "id": "noor",
+        "pass": true
+      }
+    },
+    {
+      "arm": "impeccable",
+      "id": "hearth",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "hearth",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "impeccable",
+      "id": "hearth",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "impeccable",
+        "id": "hearth",
+        "pass": true
+      }
+    },
+    {
+      "arm": "uipro",
+      "id": "intervals",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "intervals",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "intervals",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "uipro",
+        "id": "intervals",
+        "pass": true
+      }
+    },
+    {
+      "arm": "uipro",
+      "id": "willow",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "willow",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "willow",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "uipro",
+        "id": "willow",
+        "pass": true
+      }
+    },
+    {
+      "arm": "uipro",
+      "id": "noor",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "noor",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "noor",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "uipro",
+        "id": "noor",
+        "pass": true
+      }
+    },
+    {
+      "arm": "uipro",
+      "id": "hearth",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "hearth",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "uipro",
+      "id": "hearth",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "uipro",
+        "id": "hearth",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza",
+      "id": "intervals",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "intervals",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "intervals",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza",
+        "id": "intervals",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza",
+      "id": "willow",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "willow",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "willow",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza",
+        "id": "willow",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza",
+      "id": "noor",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "noor",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "noor",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza",
+        "id": "noor",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza",
+      "id": "hearth",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "hearth",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza",
+      "id": "hearth",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza",
+        "id": "hearth",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "intervals",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "intervals",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "intervals",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza-refined",
+        "id": "intervals",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "willow",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "willow",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "willow",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza-refined",
+        "id": "willow",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "noor",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "noor",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "noor",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza-refined",
+        "id": "noor",
+        "pass": true
+      }
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "hearth",
+      "view": "desktop",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "hearth",
+      "view": "mobile",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "arm": "layoza-refined",
+      "id": "hearth",
+      "view": "narrow",
+      "overflow": false,
+      "brokenImages": 0,
+      "h1": 1,
+      "unlabelled": [],
+      "invalidAnchors": [],
+      "animations": 0,
+      "js": []
+    },
+    {
+      "interaction": {
+        "arm": "layoza-refined",
+        "id": "hearth",
+        "pass": true
+      }
+    }
+  ],
+  "failures": [],
+  "scope": "Real Chromium; layout, image, form semantics, local tasks. No speed check. Not full WCAG certification."
+}

@@ -63,9 +63,9 @@ also take `strict` (gate warnings, such as an unapproved direction, become error
 `LAYOZA_PLAYWRIGHT_DIR` and `LAYOZA_QA_ENGINE=python`. Live URLs must resolve to a public address;
 private, link-local and metadata ranges are refused, while `localhost` stays allowed.
 
-## Tools (21 listed) and prompts (7)
+## Tools (24 listed) and prompts (7)
 
-`tools/list` returns 21 tools. `recommend_layout` is deprecated and no longer listed, but still answers
+`tools/list` returns 24 tools. `recommend_layout` is deprecated and no longer listed, but still answers
 `tools/call` for older clients; use `get_design_system` instead. Every call is checked against the tool's
 schema first: unknown arguments, wrong types, out-of-range numbers, empty briefs and over-long strings
 are rejected with a clear error. `prompts/list` returns seven workflow prompts: `art-direct`, `critique`,
@@ -89,9 +89,9 @@ directions never share a hero look family.
 | [`recommend_animation`](#recommend_animation) | No | Recommends accessible GSAP, Motion, WAAPI, Three.js/R3F, or conditional Lenis animation recipes with reduced-motion and cleanup guarantees. |
 | [`discover_components`](#discover_components) | No | Discovers existing project UI components and generates framework-native component patterns. |
 | [`capture_screenshots`](#capture_screenshots) | Only with `write_approved: true` | Loads a local HTML file or http(s) URL in headless Chromium at 1440x900, 768x1024 and 375x812, waits for motion to settle, saves full-page, 1:1 mobile-hero and menu-open screenshots, and returns a compact summary: verdict and counts, lab LCP/CLS/INP proxy and minimum contrast first, then findings deduplicated across viewports (one line per rule with the viewports and a short example), then screenshot paths. |
-| [`compare_before_after`](#compare_before_after) | No | Compares the current audit of `path` against the audit report saved when `safe_rollback` created `baseline_id`, separating intended changes from regressions (new error rules, WCAG or Core Web Vitals regressions). |
+| [`compare_before_after`](#compare_before_after) | No | Compares the current audit of `path` against the audit report saved when `safe_rollback` created `baseline_id`, separating intended changes from regressions (new error rules or accessibility regressions). |
 | [`audit_accessibility`](#audit_accessibility) | No | Audits WCAG 2.2 AA accessibility compliance, reporting automated violations separately from manual review requirements. |
-| [`audit_performance`](#audit_performance) | No | Evaluates Core Web Vitals targets (LCP <= 2.5s, INP <= 200ms, CLS <= 0.1). |
+| [`audit_performance`](#audit_performance) | No | Optional, only when explicitly requested. Speed diagnostics never block the design gate. Evaluates Core Web Vitals targets (LCP <= 2.5s, INP <= 200ms, CLS <= 0.1). |
 | [`verify_functional`](#verify_functional) | Only with `write_approved: true` | Runs full release-gate verification and optional bounded auto-repair (requires write_approved=true when auto_repair=true). |
 | [`export_report`](#export_report) | No | Exports a structured quality, accessibility, performance, and benchmark verification report. |
 | [`deal_mechanics`](#deal_mechanics) | No | Deals specific, buildable page mechanics from Layoza's catalogue: 1 hero + `count` section mechanics (2 `signature` to build verbatim in spirit, the rest `suggestions`) + 1 transition, never two of one mechanism family, deterministic per `seed`. |
@@ -192,7 +192,7 @@ Loads a local HTML file or http(s) URL in headless Chromium at 1440x900, 768x102
 
 ### `compare_before_after`
 
-Compares the current audit of `path` against the audit report saved when `safe_rollback` created `baseline_id`, separating intended changes from regressions (new error rules, WCAG or Core Web Vitals regressions). Run `capture_screenshots` first so the current audit includes live browser results.
+Compares the current audit of `path` against the audit report saved when `safe_rollback` created `baseline_id`, separating intended changes from regressions (new error rules or accessibility regressions). Run `capture_screenshots` first so the current audit includes live browser results.
 
 | Input | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
@@ -211,7 +211,7 @@ Audits WCAG 2.2 AA accessibility compliance, reporting automated violations sepa
 
 ### `audit_performance`
 
-Evaluates Core Web Vitals targets (LCP <= 2.5s, INP <= 200ms, CLS <= 0.1). Pass `target_url_or_file` to measure them in headless Chromium, or pass lab values you measured elsewhere. Unmeasured metrics are reported as null, never as passing.
+Optional, only when explicitly requested. Speed diagnostics never block the design gate. Evaluates Core Web Vitals targets (LCP <= 2.5s, INP <= 200ms, CLS <= 0.1). Pass `target_url_or_file` to measure them in headless Chromium, or pass lab values you measured elsewhere. Unmeasured metrics are reported as null, never as passing.
 
 | Input | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
@@ -295,3 +295,9 @@ Read-only. Loads a built page in headless Chromium at 1440px and 390px (scrolled
 | `deal` | string or object | yes | Path to saved `get_design_system` / `design-system --json` output inside the project, or an inline direction or `page_shape` object. |
 | `direction` | integer | no | Direction to check, 1-based (default 1). |
 | `allow_private_network` | boolean | no | Allow a private-network host. localhost is always allowed. |
+
+## Evidence-backed design workflow
+
+The default MCP tool list exposes all 24 supported tools. `get_design_system` accepts `brief_context` to preserve the actual client subject, facts and pinned choices and returns three compositions even in its default brief. `design_assets` inventories/registers real images with provenance; `import_design_tokens` imports local DTCG/Figma Variables JSON with aliases and modes; `review_design` persists actual screenshot evidence and flags stale source/renders; `compare_before_after` can decode and compare supplied PNG screenshots. Performance diagnostics remain opt-in.
+
+Retained local studies and reproducible scripts are in [the design lab](../examples/design-lab/README.md). These examples demonstrate the local workflow; historical benchmark scores are not a current competitor ranking.

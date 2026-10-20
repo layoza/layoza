@@ -1,5 +1,7 @@
 # Head-to-Head Master Benchmark: Layoza MCP vs `pbakaus/impeccable`
 
+> Historical experiment. Some original page sources/renders are no longer retained. Scores here are development notes, not a current reproducible competitor ranking. See [the retained design lab](../examples/design-lab/README.md) for current local workflow evidence.
+
 **Master Prompt Under Test**:
 > **MASTER PROMPT: Build a World-Class, Highly Animated Creative Agency Website** (20 sections — Floating & Full-Screen Overlay Nav, Signature Cinematic 3D Hero `"WE MAKE DIGITAL FEEL ALIVE."`, 6-Discipline Interactive Services Stage, 5 Believable Agency Projects with Full-Screen Pinned Feature, Unconventional Brand Manifesto, Interactive Creative Playground, 01–05 Scroll-Driven Process, Demo-Disclosed Impact Metrics, Demo Brand Wall & Testimonials, Experimental Spatial Transition, Spectacular Final Contact CTA `"LET'S MAKE SOMETHING IMPOSSIBLE TO IGNORE."`, Intentional Footer, Global Motion System, and WCAG/Performance Engineering).
 
@@ -10,22 +12,22 @@
 1. **Installed `pbakaus/impeccable`**:
    - Cloned from `https://github.com/pbakaus/impeccable` and installed into `skills/impeccable/` (vendored copy, removed 2026-10-14) (including `reference/new-work.md`, `reference/overdrive.md`, `reference/craft-floor.md`, and its 18 sub-command references).
 2. **Design 1 — Built with Our Layoza MCP + Layoza Skills (`KINETIX // ATELIER`)**:
-   - **Live Website**: [`examples/master-agency-benchmark/layoza-mcp/index.html`](../examples/master-agency-benchmark/layoza-mcp/index.html)
-   - **Extracted Google-Spec Design System**: [`examples/master-agency-benchmark/layoza-mcp/DESIGN.md`](../examples/master-agency-benchmark/layoza-mcp/DESIGN.md)
-   - **Machine-Readable Site DNA**: [`examples/master-agency-benchmark/layoza-mcp/SITE-DNA.json`](../examples/master-agency-benchmark/layoza-mcp/SITE-DNA.json)
-   - **Motion Specification**: [`examples/master-agency-benchmark/layoza-mcp/MOTION.md`](../examples/master-agency-benchmark/layoza-mcp/MOTION.md)
-   - **Multi-Viewport Chromium QA Report**: [`examples/master-agency-benchmark/layoza-mcp/qa-report.json`](../examples/master-agency-benchmark/layoza-mcp/qa-report.json)
+   - **Live Website**: ``examples/master-agency-benchmark/layoza-mcp/index.html`` (archived artifact unavailable)
+   - **Extracted Google-Spec Design System**: ``examples/master-agency-benchmark/layoza-mcp/DESIGN.md`` (archived artifact unavailable)
+   - **Machine-Readable Site DNA**: ``examples/master-agency-benchmark/layoza-mcp/SITE-DNA.json`` (archived artifact unavailable)
+   - **Motion Specification**: ``examples/master-agency-benchmark/layoza-mcp/MOTION.md`` (archived artifact unavailable)
+   - **Multi-Viewport Chromium QA Report**: ``examples/master-agency-benchmark/layoza-mcp/qa-report.json`` (archived artifact unavailable)
    - **Rendered Chromium Screenshots**:
-     - Desktop (`1440×900`): [`examples/master-agency-benchmark/layoza-mcp/screenshots/desktop.png`](../examples/master-agency-benchmark/layoza-mcp/screenshots/desktop.png)
-     - Tablet (`768×1024`): [`examples/master-agency-benchmark/layoza-mcp/screenshots/tablet.png`](../examples/master-agency-benchmark/layoza-mcp/screenshots/tablet.png)
-     - Mobile (`375×812`): [`examples/master-agency-benchmark/layoza-mcp/screenshots/mobile.png`](../examples/master-agency-benchmark/layoza-mcp/screenshots/mobile.png)
+     - Desktop (`1440×900`): ``examples/master-agency-benchmark/layoza-mcp/screenshots/desktop.png`` (archived artifact unavailable)
+     - Tablet (`768×1024`): ``examples/master-agency-benchmark/layoza-mcp/screenshots/tablet.png`` (archived artifact unavailable)
+     - Mobile (`375×812`): ``examples/master-agency-benchmark/layoza-mcp/screenshots/mobile.png`` (archived artifact unavailable)
 3. **Design 2 — Built with `pbakaus/impeccable` (`MONOLITH // BUREAU`)**:
-   - **Live Website**: [`examples/master-agency-benchmark/impeccable/index.html`](../examples/master-agency-benchmark/impeccable/index.html)
-   - **Multi-Viewport Chromium QA Report**: [`examples/master-agency-benchmark/impeccable/qa-report.json`](../examples/master-agency-benchmark/impeccable/qa-report.json)
+   - **Live Website**: ``examples/master-agency-benchmark/impeccable/index.html`` (archived artifact unavailable)
+   - **Multi-Viewport Chromium QA Report**: ``examples/master-agency-benchmark/impeccable/qa-report.json`` (archived artifact unavailable)
    - **Rendered Chromium Screenshots**:
-     - Desktop (`1440×900`): [`examples/master-agency-benchmark/impeccable/screenshots/desktop.png`](../examples/master-agency-benchmark/impeccable/screenshots/desktop.png)
-     - Tablet (`768×1024`): [`examples/master-agency-benchmark/impeccable/screenshots/tablet.png`](../examples/master-agency-benchmark/impeccable/screenshots/tablet.png)
-     - Mobile (`375×812`): [`examples/master-agency-benchmark/impeccable/screenshots/mobile.png`](../examples/master-agency-benchmark/impeccable/screenshots/mobile.png)
+     - Desktop (`1440×900`): ``examples/master-agency-benchmark/impeccable/screenshots/desktop.png`` (archived artifact unavailable)
+     - Tablet (`768×1024`): ``examples/master-agency-benchmark/impeccable/screenshots/tablet.png`` (archived artifact unavailable)
+     - Mobile (`375×812`): ``examples/master-agency-benchmark/impeccable/screenshots/mobile.png`` (archived artifact unavailable)
 
 ---
 

@@ -1,0 +1,15 @@
+file:///C:/Users/ajjma/Desktop/sharethrone/.internal/comparison/upstreams/taste/skills/taste-skill/scripts/lib/cdp.mjs:110
+      proc.on('exit', (code) => { clearTimeout(t); reject(new Error('Chrome exited early, code ' + code + '\n' + buf.slice(-600))); });
+                                                          ^
+
+Error: Chrome exited early, code 4294930433
+[1021/024121.678:ERROR:third_party\crashpad\crashpad\util\win\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)
+
+[1021/024121.756:ERROR:third_party\crashpad\crashpad\client\crashpad_client_win.cc:144] crash server failed to launch, self-terminating
+
+
+    at ChildProcess.<anonymous> (file:///C:/Users/ajjma/Desktop/sharethrone/.internal/comparison/upstreams/taste/skills/taste-skill/scripts/lib/cdp.mjs:110:59)
+    at ChildProcess.emit (node:events:509:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+
+Node.js v24.15.0

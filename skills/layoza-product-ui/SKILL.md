@@ -24,7 +24,7 @@ type, palette, density and one signature move, never the controls.
 | [../layoza-art-direction/reference/surfaces.md](../layoza-art-direction/reference/surfaces.md) | The "Operate" surface: what the brand may own |
 | [../layoza-animations/reference/motion-system.md](../layoza-animations/reference/motion-system.md) | Motion tokens (§1 "Tool / product UI", §4 loaders) |
 | [../layoza-accessibility/SKILL.md](../layoza-accessibility/SKILL.md) | WCAG 2.2 details, live regions, grid patterns |
-| [../layoza-performance/SKILL.md](../layoza-performance/SKILL.md) | INP, virtualisation, JS budgets |
+| [../layoza-performance/SKILL.md](../layoza-performance/SKILL.md) | Optional, only when the user requests speed diagnostics |
 
 ## 0. Authority (decide first)
 
@@ -73,8 +73,11 @@ for another base.
 - **State lives in the URL**: filters, tabs, sort, page, selected record and
   open drawer. Back/forward, reload and share must restore the exact view.
 - **One H1 per view**, landmarks `nav`/`main`/`aside`, and a skip link.
-- **Page header**: title, one-line purpose or count, primary action at the
-  right; secondary actions in an overflow menu once there are more than 3.
+- **Page header**: title, useful context and primary action. On phones, judge
+  the space these consume against the working rows below them. Compact summary
+  counts should support the task rather than push it out of view. For operations
+  screens, put time-critical risks and shortages before secondary reports or
+  collections, while retaining quantities, units, location and demo status.
 
 ## 2. Density modes
 

@@ -120,7 +120,30 @@ pub fn craft_floor(registers: &[&str]) -> Vec<String> {
 
 /// The craft floor read straight from a brief.
 pub fn craft_floor_for_brief(brief: &str) -> Vec<String> {
-    craft_floor(&brief_registers(brief))
+    let signals = crate::intelligence::brief_signals(brief);
+    let mut floor = craft_floor(&brief_registers(brief));
+    let product = matches!(signals.surface, crate::intelligence::Surface::ProductUi | crate::intelligence::Surface::DevTool);
+    let lower = brief.to_lowercase();
+    for rule in &mut floor {
+        if rule.starts_with("Composition:") {
+            *rule = "Composition: choose section forms from the content and reading order. Repeated rows, equal cards and consistent app panels are useful when people compare equivalent items. Vary composition only when it improves hierarchy; no minimum number of layout kinds.".into();
+        } else if rule.starts_with("Hero:") {
+            *rule = if product { "Hero: this is a working interface. Put the primary task, essential quantities and actionable exceptions in view, including on phones. Use the product itself; no required marketing hero, stock photograph or forced display headline." } else { "Hero: establish the subject, dominant visual relationship and useful next action. Let the actual content determine the number of pictures, amount of copy and first-screen balance; no mandatory picture or fixed text-block quota." }.into();
+        } else if rule.starts_with("Imagery:") {
+            *rule = if lower.contains("gallery") || lower.contains("archive") { "Imagery: preserve the complete composition of collection works with intrinsic sizing or object-fit: contain. Use whitespace deliberately around differing aspect ratios. Keep artist, title, date and source readable; cropping requires an explicitly labelled detail view." } else { "Imagery: use relevant, licensed material and truthful labels. Decide crop and aspect ratio for each image's role; no universal ratio or radius. Label illustrative stock near the image and never imply it shows the actual client. Text on images must remain readable at 4.5:1." }.into();
+        } else if rule.starts_with("Colour:") {
+            *rule = "Colour: respect pinned brand colours and monochrome constraints. Assign clear roles to grounds, text, actions and status; choose saturation and colour area from the concept, without an accent-area quota. Body and secondary text need 4.5:1 contrast, large text 3:1.".into();
+        } else if rule.starts_with("Motion:") {
+            *rule = if signals.motion_cap == Some(0) { "Motion: none. Render essential content in its final visible state; no entrance, hover movement, autoplay or signature animation. Focus and state changes remain clear without movement, including under prefers-reduced-motion." } else { "Motion: use it when it explains a state or serves the composition. No mandatory signature effect. Keep content readable before initialization, honor prefers-reduced-motion, and clean up listeners/timelines on unmount." }.into();
+        } else if rule.starts_with("Spacing rhythm:") {
+            *rule = "Spacing rhythm: use a coherent scale suited to density and content. Group related controls tightly and separate different tasks clearly. Preserve incumbent tokens; do not impose fixed section padding or an arbitrary 4/8px scale on every project.".into();
+        } else if rule.starts_with("Craft:") {
+            *rule = "Craft: use convincing material and characterful typography where the subject supports it. State prices and hours as readable text. Licensed illustrative stock is acceptable when honestly labelled; no compulsory picture count.".into();
+        } else if signals.motion_cap == Some(0) && rule.starts_with("Button states") {
+            *rule = "Button states: author hover, :active, disabled and :focus-visible feedback without movement. Use a visible 2px focus ring with 3:1 contrast; do not change the control's size or hide its label.".into();
+        }
+    }
+    floor
 }
 
 /// Things a professional page never does, whatever the register. A brief that asks for one by
@@ -139,7 +162,7 @@ pub fn anti_slop() -> Vec<String> {
         "Gradient text, decorative glows, glass panels and blurred blobs; hard offset block shadows outside a brutalist world.",
         "Monospace type as a costume for 'technical' rather than for code or data.",
         "The same fade-up entrance on every section, scroll-jacking, parallax on body text, and hover effects that change an element's size.",
-        "Placeholder, stock or AI-filler pictures, invented logos, invented testimonials, lorem ipsum.",
+        "Misleading placeholder, stock or AI-filler pictures presented as client evidence; invented logos, invented testimonials, lorem ipsum. Licensed illustrative material is allowed when labelled truthfully.",
         "More than two typefaces, or more than one accent colour competing for the eye.",
         "Centred paragraphs longer than three lines, and prose that runs the full width of a wide screen.",
     ]

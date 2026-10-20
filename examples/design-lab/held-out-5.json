@@ -1,0 +1,1323 @@
+{
+  "mode": "new_website",
+  "query": "Industry: Arabic architecture studio\nClient brief: An Arabic-first architecture studio portfolio. RTL content, projects and drawings, dark stone and warm white. Preserve the supplied custom typeface: Heading font: Studio Sans. No decorative pseudo-Arabic symbols.\nHeading font: Studio Sans\nNo decorative pseudo-Arabic symbols.",
+  "matched_industry": {
+    "slug": "marketing-agency",
+    "name": "Marketing & Creative Advertising Agencies",
+    "keywords": [
+      "agency",
+      "studio",
+      "marketing",
+      "advertising",
+      "branding",
+      "creative"
+    ],
+    "recommended_styles": [
+      "kinetic-editorial",
+      "swiss-editorial-grid"
+    ],
+    "layout_archetype": "Full-Bleed Kinetic Reel + Staggered Case Study Index",
+    "first_viewport_priority": "Immediate signature craft statement, flagship client work reel, and distinctive typographic voice",
+    "typography_pairing": {
+      "id": "brand-studio-sans-ibm-plex-sans-arabic",
+      "display_font": "Studio Sans",
+      "body_font": "IBM Plex Sans Arabic",
+      "mono_font": "Studio Sans",
+      "mood": "The brief's own type (Studio Sans); scale and roles from reem-kufi-ibm-plex-sans-arabic",
+      "scale_ratio": "1.5 (Perfect Fifth)",
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap"
+    },
+    "palette": {
+      "id": "obsidian-vermilion",
+      "background": "#0D0E11",
+      "surface": "#17191E",
+      "foreground": "#F5F3EF",
+      "muted": "#9CA3AF",
+      "primary_accent": "#FF4D2D",
+      "secondary_accent": "#E2F163",
+      "wcag_body_contrast": 17.42,
+      "notes": "Cinema-dark obsidian stage with vermilion kinetic focal points"
+    },
+    "conversion_trust_elements": [
+      "Interactive case study outcomes",
+      "Client roster with shipped artifacts",
+      "Direct scope estimator"
+    ],
+    "motion_language": "GSAP SplitText headline reveals, pinned ScrollTrigger case study scrubbers, magnetic CTAs",
+    "anti_patterns": [
+      "Generic 3-column SaaS feature cards",
+      "Stock corporate handshake photos"
+    ],
+    "default_dials": {
+      "design_variance": 8,
+      "motion_intensity": 8,
+      "visual_density": 4
+    },
+    "provenance": "adapted:taste-skill+ui-ux-pro-max+layoza"
+  },
+  "match_score": 3,
+  "match_confidence": "weak",
+  "alternative_industries": [],
+  "distinctiveness": {
+    "place_cues": [],
+    "material_cues": [
+      "stone"
+    ],
+    "category_cliches": [
+      "Giant name plus a 'Selected works' thumbnail grid",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. Materials: stone — sample real colours and textures from them. The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "brief_signals": {
+    "surface": "showcase",
+    "niche_tags": [],
+    "moods": [
+      "dark"
+    ],
+    "constraints": [
+      "rtl (logical CSS properties, mirrored layout)"
+    ],
+    "motion_bias": 0,
+    "motion_cap": null,
+    "brief_fonts": [
+      "Studio Sans"
+    ],
+    "brief_font_roles": {
+      "Studio Sans": "display"
+    },
+    "niches": [
+      "agency",
+      "portfolio"
+    ],
+    "brief_objects": [
+      "industry",
+      "arabic architecture studio",
+      "client brief",
+      "architecture studio portfolio",
+      "rtl content",
+      "projects",
+      "drawings",
+      "stone"
+    ]
+  },
+  "matched_styles": [
+    {
+      "slug": "swiss-editorial-grid",
+      "name": "Swiss Editorial Grid",
+      "category": "Architectural & Editorial",
+      "keywords": [
+        "swiss",
+        "editorial",
+        "grid",
+        "corporate",
+        "hairline",
+        "typography"
+      ],
+      "characteristics": [
+        "Exposed structural grid borders (`1px solid`) with generous internal cell padding",
+        "High-contrast serif or neo-grotesque display headlines paired with crisp body copy",
+        "Asymmetric column ratios (e.g., 4:8 or 5:7) with clear typographic hierarchy"
+      ],
+      "best_for": [
+        "Corporate & Enterprise",
+        "Editorial Publishing",
+        "Finance & Fintech",
+        "Architecture"
+      ],
+      "avoid_when": [
+        "Playful children's apps"
+      ],
+      "provenance": "adapted:awesome-design-skills+taste-skill+layoza"
+    },
+    {
+      "slug": "kinetic-editorial",
+      "name": "Kinetic Editorial Showcase",
+      "category": "Motion-Led & Creative",
+      "keywords": [
+        "kinetic",
+        "agency",
+        "studio",
+        "portfolio",
+        "gsap",
+        "scroll"
+      ],
+      "characteristics": [
+        "Choreographed display typography with SplitText mask reveals",
+        "Scroll-synchronized case study pinning and smooth image scale transitions",
+        "Tactile magnetic triggers with instant reduced-motion static fallback"
+      ],
+      "best_for": [
+        "Marketing Agencies",
+        "Creative Studios",
+        "Product Launches"
+      ],
+      "avoid_when": [
+        "High-density backoffice data entry forms"
+      ],
+      "provenance": "adapted:taste-skill+ui-ux-pro-max+layoza"
+    },
+    {
+      "slug": "atelier-minimalism",
+      "name": "Atelier Tactile Minimalism",
+      "category": "Luxury & Craft",
+      "keywords": [
+        "luxury",
+        "minimal",
+        "atelier",
+        "warm",
+        "serif",
+        "lookbook"
+      ],
+      "characteristics": [
+        "Warm paper and limestone neutrals (`#FAF8F5`) rather than sterile `#FFFFFF`",
+        "Unhurried vertical rhythm (`96px–140px` section spacing) and monograph captions",
+        "Zero decorative card wrappers; imagery and typography sit directly on the canvas"
+      ],
+      "best_for": [
+        "Luxury Brands",
+        "Hospitality & Resorts",
+        "Design Portfolios"
+      ],
+      "avoid_when": [
+        "Dense telemetry dashboards"
+      ],
+      "provenance": "adapted:impeccable+taste-skill+layoza"
+    },
+    {
+      "slug": "precision-terminal-craft",
+      "name": "Precision Terminal & Hardware Craft",
+      "category": "Developer & Industrial",
+      "keywords": [
+        "devtools",
+        "cli",
+        "ai",
+        "terminal",
+        "dark",
+        "industrial",
+        "rust"
+      ],
+      "characteristics": [
+        "Monospace telemetry accents (`JetBrains Mono` / `IBM Plex Mono`) with `tabular-nums`",
+        "Low-glare carbon surfaces (`#0B0D10`) with high-contrast amber/emerald semantic signals",
+        "Copyable CLI snippets, architecture diagrams, and reproducible benchmark tables"
+      ],
+      "best_for": [
+        "AI & Developer Tools",
+        "Infrastructure",
+        "Cybersecurity",
+        "Industrial B2B"
+      ],
+      "avoid_when": [
+        "Local healthcare clinics"
+      ],
+      "provenance": "adapted:awesome-design-skills+ui-ux-pro-max+layoza"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 8,
+    "motion_intensity": 8,
+    "visual_density": 4
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — Marketing & Creative Advertising Agencies (Full-Bleed Stage)",
+      "style_family": "kinetic-editorial",
+      "layout_composition": "Full-bleed stage for the arabic architecture studio: the building on its site fills the first screen edge to edge with the headline set into its quiet area; later sections cut between the section drawing and the material sample at full width; 'view a project or start a brief' stays docked and usable at every scroll position. Structure: one subject image edge to edge, headline in its quiet area, full-width cuts, docked action. Knobs: density standard; span irregularity medium; accent on the primary action only. Mobile: the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+      "visual_identity": "Cinematic contrast: Studio Sans at stage scale over IBM Plex Sans Arabic; palette obsidian-vermilion (dark ground): cinema-dark obsidian stage with vermilion kinetic focal points; real photography or drawn art of the subject, never stock; corners: square corners (0) on cards, buttons and images (sharp-0); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum",
+      "typography": {
+        "id": "brand-studio-sans-ibm-plex-sans-arabic",
+        "display_font": "Studio Sans",
+        "body_font": "IBM Plex Sans Arabic",
+        "mono_font": "Studio Sans",
+        "mood": "The brief's own type (Studio Sans); scale and roles from reem-kufi-ibm-plex-sans-arabic",
+        "scale_ratio": "1.5 (Perfect Fifth)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap"
+      },
+      "palette": {
+        "id": "obsidian-vermilion",
+        "background": "#0D0E11",
+        "surface": "#17191E",
+        "foreground": "#F5F3EF",
+        "muted": "#9CA3AF",
+        "primary_accent": "#FF4D2D",
+        "secondary_accent": "#E2F163",
+        "wcag_body_contrast": 17.42,
+        "notes": "Cinema-dark obsidian stage with vermilion kinetic focal points"
+      },
+      "content_treatment": "Atmosphere first, then what is available now (drawing numbers, scales and project years), then 'view a project or start a brief'",
+      "motion_choreography": "Plates pin and hand off as you scroll (800ms cross-fades keyed to scroll progress) while the building on its site drifts slowly; the action bar stays fixed",
+      "dials": {
+        "design_variance": 8,
+        "motion_intensity": 8,
+        "visual_density": 4
+      },
+      "rationale": "Full-Bleed Stage for \"arabic architecture studio\" (showcase surface): atmosphere sells it: the place, the product or the work has to be felt before it is read. Type Studio Sans / IBM Plex Sans Arabic and palette obsidian-vermilion are the Marketing & Creative Advertising Agencies profile's own. First screen: full-bleed composition, hero material photo, look family cinematic-dark, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): slow cross-fades; plates hand off on scroll. The brief names a arabic-script place or language and this pairing covers arabic. Brand first: type built from the brief's fonts (Studio Sans). Other structures that fit this slot: Irregular Work Grid, Object Study, Type Architecture, Kit of Parts, Catalogue Index.",
+      "mechanics": [
+        {
+          "id": "hero-agency-work-wall",
+          "name": "Wall of the real work",
+          "kind": "hero",
+          "role": "hero",
+          "family": "agency-work-wall",
+          "intensity": "bold",
+          "still_check": "Any still shows the wall and the heading block complete.",
+          "composition": "full-bleed",
+          "hero_material": "real-photo",
+          "look_family": "cinematic-film"
+        },
+        {
+          "id": "work-shader-dissolve-index",
+          "name": "Index with shader dissolve stage",
+          "kind": "section",
+          "role": "work",
+          "family": "shader-surface",
+          "intensity": "wild",
+          "still_check": "At 50% one project image is crisp and its list item active and legible; dissolves happen only in the last 30% of each slice. At 25% and 75% a different project is active with a different image."
+        },
+        {
+          "id": "services-hairline-directory-index",
+          "name": "Building directory index",
+          "kind": "section",
+          "role": "services",
+          "family": "sticky-index",
+          "intensity": "calm",
+          "still_check": "At 50% the board shows the middle service highlighted with its arrow, and the right column shows that service's full text. At 25% and 75% a different row is lit and a different entry fills the right."
+        }
+      ],
+      "hero_material": "photo",
+      "radius": "sharp-0",
+      "archetype": "full-bleed-stage",
+      "nav": {
+        "id": "nav-masthead-dateline",
+        "name": "Newspaper masthead nav",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-masthead-dateline",
+        "intensity": "bold",
+        "still_check": "Any still shows the masthead or the compact bar complete.",
+        "look_family": "hairline-newspaper"
+      },
+      "footer": {
+        "id": "footer-oversize-signup",
+        "name": "Oversize signup sentence",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-oversize-signup",
+        "intensity": "bold",
+        "still_check": "Any still shows the full sentence with the field, the button and the link row.",
+        "look_family": "brutal-flat"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.75rem",
+        "display": "clamp(5.062rem, 6vw, 11.391rem)",
+        "h1": "5.062rem",
+        "h2": "3.375rem",
+        "h3": "2.25rem",
+        "label": "0.75rem",
+        "lead": "1.5rem",
+        "ratio": "1.5",
+        "small": "0.875rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "full-bleed-scene",
+          "build": "Full-bleed scene: one edge-to-edge image or rendered world, the headline set over it."
+        },
+        "flow": {
+          "id": "staggered",
+          "build": "Asymmetric staggered blocks alternating edges and widths down the page."
+        },
+        "section_head": {
+          "id": "vertical-label",
+          "build": "Vertical label rotated along each section's edge; content starts at the top."
+        },
+        "ground": {
+          "id": "dark-throughout",
+          "build": "Dark ground throughout; one accent colour, no light sections."
+        },
+        "material": {
+          "id": "photographic",
+          "build": "Photographic art direction: real-looking scenes of people, places and the work."
+        },
+        "labels": {
+          "id": "numbered",
+          "build": "Numbered labels (01, 02, §3) set in the display face's figures."
+        },
+        "motion": {
+          "id": "heavy",
+          "build": "Heavy motion: webgl-scene (Three.js); marquee-physics (GSAP + ScrollTrigger); cursor-field (Canvas 2D / SVG path morphs). Each technique keeps its fallback. Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "webgl-scene",
+            "build": "WebGL scene: a lit 3D object or shader field of the trade behind the hero, paused off-screen.",
+            "tool": "three",
+            "tool_name": "Three.js",
+            "fallback": "a pre-rendered still of the scene is the poster; no WebGL shows that still; no JS shows the same final frame, visible to screenshots."
+          },
+          {
+            "id": "marquee-physics",
+            "build": "Marquee with physics: rows drift, speed up with scroll velocity and drag with inertia.",
+            "tool": "gsap",
+            "tool_name": "GSAP + ScrollTrigger",
+            "fallback": "rows sit still and wrap; every item stays reachable; no JS shows the same final frame, visible to screenshots."
+          },
+          {
+            "id": "cursor-field",
+            "build": "Cursor-reactive field: a grid, particle or type field leaning toward the pointer.",
+            "tool": "canvas-svg",
+            "tool_name": "Canvas 2D / SVG path morphs",
+            "fallback": "the field renders at rest; touch and keyboard users lose nothing; no JS shows the same final frame, visible to screenshots."
+          }
+        ],
+        "motion_signature": "webgl-scene",
+        "motion_tools": [
+          "three",
+          "gsap",
+          "canvas-svg"
+        ],
+        "pinned_by_prompt": [
+          "ground",
+          "typography"
+        ],
+        "motif": {
+          "id": "letterbox",
+          "build": "Letterbox: every photograph and film still is cropped to one cinematic ratio (2.39:1 on desktop, 4:5 on phones) with its caption set in the bar beneath, as if the building on its site were framed by a lens; the crop ratio is the only device."
+        },
+        "button": {
+          "id": "pill",
+          "build": "Primary: solid accent pill, 52px tall with 32px side padding, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — Marketing & Creative Advertising Agencies (Colour-Field Poster)",
+      "style_family": "block-first-editorial",
+      "layout_composition": "The arabic architecture studio as a run of posters: each section is one full colour field with one large statement and one image (the building on its site, then the section drawing, then the material sample); the first poster carries 'view a project or start a brief' as a large button. Structure: run of full colour fields, one statement and one image each. Knobs: density standard; span irregularity medium; accent on one word of the headline. Mobile: each poster keeps one statement at 14vw; the image drops below it at full width",
+      "visual_identity": "Poster print: Studio Sans set huge, Vazirmatn small and tight; palette graphite-sun (dark ground): graphite with sun yellow and rose; colour owns whole sections, no gradients; corners: 2px on controls and cards, square images (hairline-2); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum",
+      "typography": {
+        "id": "brand-studio-sans-vazirmatn",
+        "display_font": "Studio Sans",
+        "body_font": "Vazirmatn",
+        "mono_font": "Studio Sans",
+        "mood": "The brief's own type (Studio Sans); scale and roles from lalezar-vazirmatn",
+        "scale_ratio": "1.333 (Perfect Fourth)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap"
+      },
+      "palette": {
+        "id": "graphite-sun",
+        "background": "#222222",
+        "surface": "#2C2C2C",
+        "foreground": "#F1F1EE",
+        "muted": "#AAAAA5",
+        "primary_accent": "#E86A92",
+        "secondary_accent": "#F5C400",
+        "wcag_body_contrast": 14.06,
+        "notes": "Graphite with sun yellow and rose"
+      },
+      "content_treatment": "One message per screen in the visitor's words, ending on 'view a project or start a brief'; details (drawing numbers, scales and project years) in a compact closing section",
+      "motion_choreography": "Each colour field wipes into the next with scroll progress while the headline and image move at different speeds",
+      "dials": {
+        "design_variance": 10,
+        "motion_intensity": 10,
+        "visual_density": 3
+      },
+      "rationale": "Colour-Field Poster for \"arabic architecture studio\" (showcase surface): the brand needs one loud, memorable message per screen more than detail. Type Studio Sans / Vazirmatn (the brief's own type (studio sans); scale and roles from lalezar-vazirmatn) for an expressive voice. Palette graphite-sun on a dark ground, tagged modernist like the brief. First screen: poster composition, hero material giant-type, look family playful-color-block, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): colour wipes between fields. The brief names a arabic-script place or language and this pairing covers arabic. Brand first: type built from the brief's fonts (Studio Sans). Other structures that fit this slot: Manifesto Sheet, Object Study, Pin-Board Collage, Type Architecture, Type Specimen, Irregular Work Grid.",
+      "mechanics": [
+        {
+          "id": "hero-glyph-zoom-through",
+          "name": "Zoom through the letter",
+          "kind": "hero",
+          "role": "hero",
+          "family": "glyph-zoom-through",
+          "intensity": "wild",
+          "still_check": "At 50% the glyph is about 8x, its counter filling most of the frame with the next image clearly visible through it, and the h1 band still fully readable. 25% shows the whole glyph cropped large; 75% shows almost only the next image.",
+          "composition": "poster",
+          "hero_material": "giant-type",
+          "look_family": "dark-single-accent"
+        },
+        {
+          "id": "work-filing-drawer-case-files",
+          "name": "Filing drawer case files",
+          "kind": "section",
+          "role": "work",
+          "family": "stack-deck",
+          "intensity": "bold",
+          "still_check": "At 50% case three is fully open and flat with all text legible; drawer behind shows two stamped tabs and two waiting. At 25% case two is open; at 75% case four is open and three is stamped."
+        },
+        {
+          "id": "section-about-founding-object",
+          "name": "The object it started with",
+          "kind": "section",
+          "role": "about",
+          "family": "founding-object",
+          "intensity": "bold",
+          "still_check": "Any still shows object, markers and full story."
+        }
+      ],
+      "hero_material": "giant-type",
+      "radius": "hairline-2",
+      "archetype": "colour-field-poster",
+      "nav": {
+        "id": "nav-floating-section-island",
+        "name": "Floating island that names the section",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-section-island",
+        "intensity": "bold",
+        "still_check": "Any still shows the island with a complete section name.",
+        "look_family": "dark-single-accent"
+      },
+      "footer": {
+        "id": "footer-statement-line",
+        "name": "Statement footer",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-statement-line",
+        "intensity": "bold",
+        "still_check": "Any still shows the statement and the contact route readable.",
+        "look_family": "brutal-flat"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.75rem",
+        "display": "clamp(3.157rem, 6vw, 5.61rem)",
+        "h1": "3.157rem",
+        "h2": "2.369rem",
+        "h3": "1.777rem",
+        "label": "0.75rem",
+        "lead": "1.333rem",
+        "ratio": "1.333",
+        "small": "0.875rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "poster-type",
+          "build": "Poster-scale type fills the first screen: words only, no image, no widget."
+        },
+        "flow": {
+          "id": "snap-slides",
+          "build": "Full-screen snap slides: one idea per viewport, scroll snaps between them."
+        },
+        "section_head": {
+          "id": "no-heads",
+          "build": "No section heads: the content itself and a change of ground mark each section."
+        },
+        "ground": {
+          "id": "dark-throughout",
+          "build": "Dark ground throughout; one accent colour, no light sections."
+        },
+        "material": {
+          "id": "typographic",
+          "build": "Typographic only: type, rules and numerals carry every section; no imagery."
+        },
+        "labels": {
+          "id": "italic-captions",
+          "build": "Italic labels in the display face, set like captions in a book."
+        },
+        "motion": {
+          "id": "heavy",
+          "build": "Heavy motion: pinned-scene (CSS scroll-driven animations (animation-timeline: view()/scroll())); kinetic-type (Web Animations API); page-transitions (View Transitions API). Each technique keeps its fallback. Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "pinned-scene",
+            "build": "Pinned scroll scene: one section pins while the subject assembles over ~200vh of scroll.",
+            "tool": "css-scroll",
+            "tool_name": "CSS scroll-driven animations (animation-timeline: view()/scroll())",
+            "fallback": "the assembled final frame is the static layout; no JS shows the same final frame, visible to screenshots."
+          },
+          {
+            "id": "kinetic-type",
+            "build": "Kinetic split type: headline words and letters stagger in and re-set with scroll.",
+            "tool": "waapi",
+            "tool_name": "Web Animations API",
+            "fallback": "the headline renders set and complete before any script runs; no JS shows the same final frame, visible to screenshots."
+          },
+          {
+            "id": "page-transitions",
+            "build": "Page and view transitions: shared elements morph between list and detail views.",
+            "tool": "view-transitions",
+            "tool_name": "View Transitions API",
+            "fallback": "plain navigation; every page is complete on load; no JS shows the same final frame, visible to screenshots."
+          }
+        ],
+        "motion_signature": "pinned-scene",
+        "motion_tools": [
+          "css-scroll",
+          "waapi",
+          "view-transitions"
+        ],
+        "pinned_by_prompt": [
+          "ground",
+          "typography"
+        ],
+        "motif": {
+          "id": "registration-marks",
+          "build": "Registration marks: small corner crop marks frame each image and key figure, as on a press proof of the section drawing; never over the hero image or film."
+        },
+        "button": {
+          "id": "square-marked",
+          "build": "Primary: solid ink fill, 48px tall with 24px side padding, radius 2px; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px, and four crop marks appear 4px outside its corners on hover and focus. Secondary: a 1px outline button of the same size."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — Marketing & Creative Advertising Agencies (Kit of Parts)",
+      "style_family": "atelier-minimalism",
+      "layout_composition": "Arabic architecture studio as a kit of parts: the building on its site shown finished at the centre, its parts laid out around it and labelled with material and size (drawing numbers, scales and project years); the section drawing and the material sample follow; 'view a project or start a brief' beside the finished object. Structure: parts laid out flat and labelled around the finished object. Knobs: density standard; span irregularity medium; accent on the selected option and the primary button. Mobile: the finished object first, the labelled parts list under it",
+      "visual_identity": "Exploded view: Studio Sans for part names, Studio Sans for sizes, General Sans for notes; palette tty-amber (dark ground): amber-phosphor terminal with retro amber and ok green; corners: 6px on controls, 8px on panels, square images (tool-6); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum",
+      "typography": {
+        "id": "brand-studio-sans-general-sans",
+        "display_font": "Studio Sans",
+        "body_font": "General Sans",
+        "mono_font": "Studio Sans",
+        "mood": "The brief's own type (Studio Sans); scale and roles from general-sans-solo",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://api.fontshare.com/v2/css?f[]=general-sans@400,700&display=swap"
+      },
+      "palette": {
+        "id": "tty-amber",
+        "background": "#14100A",
+        "surface": "#1E1810",
+        "foreground": "#F5EAD7",
+        "muted": "#B7A78E",
+        "primary_accent": "#CA9D42",
+        "secondary_accent": "#7FC8A9",
+        "wcag_body_contrast": 15.91,
+        "notes": "Amber-phosphor terminal with retro amber and ok green"
+      },
+      "content_treatment": "What it is made of and why (drawing numbers, scales and project years)",
+      "motion_choreography": "The parts assemble into the finished object as the visitor scrolls",
+      "dials": {
+        "design_variance": 8,
+        "motion_intensity": 8,
+        "visual_density": 6
+      },
+      "rationale": "Kit of Parts for \"arabic architecture studio\" (showcase surface): the product is assembled from parts, and showing them laid out builds trust in the whole. Type Studio Sans / General Sans (the brief's own type (studio sans); scale and roles from general-sans-solo) for a utility voice, tagged modernist like the brief. Palette tty-amber on a dark ground. First screen: object-wrap composition, hero material object, look family swiss-grid, corners tool-6. Motion flavour (tier and tools follow page_shape.motion): parts assemble on scroll. Brand first: type built from the brief's fonts (Studio Sans). Other structures that fit this slot: Catalogue Index.",
+      "mechanics": [
+        {
+          "id": "hero-headline-wraps-object",
+          "name": "Headline Wrapped Around the Specimen",
+          "kind": "hero",
+          "role": "hero",
+          "family": "shape-wrap",
+          "intensity": "calm",
+          "still_check": "At 50% the headline lines visibly hug the object contour with no awkward single-word lines, caption and CTA readable. 25% and 75% differ only in a slight object rotation and the caption leader state.",
+          "composition": "object-wrap",
+          "hero_material": "physical-object",
+          "look_family": "warm-paper-serif"
+        },
+        {
+          "id": "work-contact-sheet-loupe",
+          "name": "Contact sheet with loupe",
+          "kind": "section",
+          "role": "work",
+          "family": "lens-magnify",
+          "intensity": "bold",
+          "still_check": "At 50% a frame sits squarely in the loupe with its caption readable and neighbouring frames visible around it. At 25% and 75% different frames and captions are in the loupe, and the sheet edge numbers differ."
+        },
+        {
+          "id": "section-about-week-in-numbers",
+          "name": "This week, counted",
+          "kind": "section",
+          "role": "about",
+          "family": "week-in-numbers",
+          "intensity": "calm",
+          "still_check": "Any still shows the sentence with every number (final values in the HTML)."
+        }
+      ],
+      "hero_material": "object",
+      "radius": "tool-6",
+      "archetype": "kit-of-parts",
+      "nav": {
+        "id": "nav-centred-wordmark-split",
+        "name": "Wordmark centred between two link groups",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-centred-wordmark-split",
+        "intensity": "calm",
+        "still_check": "Any still shows the wordmark and both groups.",
+        "look_family": "luxe-dark"
+      },
+      "footer": {
+        "id": "footer-letter-close",
+        "name": "Footer that closes like a letter",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-letter-close",
+        "intensity": "calm",
+        "still_check": "Any still shows the letter, signature, PS and legal line.",
+        "look_family": "warm-paper-serif"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "pinned-story",
+          "build": "Pinned scroll story: the first screen stays fixed while the subject assembles on scroll."
+        },
+        "flow": {
+          "id": "spreads",
+          "build": "Magazine spreads: each section a facing pair, a full image page beside a text page."
+        },
+        "section_head": {
+          "id": "margin-numeral",
+          "build": "Giant section numeral in the left margin, the title small beside it."
+        },
+        "ground": {
+          "id": "dark-throughout",
+          "build": "Dark ground throughout; one accent colour, no light sections."
+        },
+        "material": {
+          "id": "rendered-3d",
+          "build": "Rendered 3D objects of the trade, lit and shadowed, as the main visuals."
+        },
+        "labels": {
+          "id": "small-caps",
+          "build": "True small caps from the body face for labels and metadata."
+        },
+        "motion": {
+          "id": "heavy",
+          "build": "Heavy motion: smooth-depth (Lenis smooth scroll); vector-sequence (Lottie-style vector sequence (dotLottie / lottie-web)); cursor-field (Three.js). Each technique keeps its fallback. Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "smooth-depth",
+            "build": "Smooth-scroll depth: layered parallax planes over inertial scroll.",
+            "tool": "lenis",
+            "tool_name": "Lenis smooth scroll",
+            "fallback": "native scroll with flat planes; no JS shows the same final frame, visible to screenshots."
+          },
+          {
+            "id": "vector-sequence",
+            "build": "Vector sequence: an animated line drawing of the trade's process plays as its section enters.",
+            "tool": "lottie",
+            "tool_name": "Lottie-style vector sequence (dotLottie / lottie-web)",
+            "fallback": "the last frame shows as a static SVG; no JS shows the same final frame, visible to screenshots."
+          },
+          {
+            "id": "cursor-field",
+            "build": "Cursor-reactive field: a grid, particle or type field leaning toward the pointer.",
+            "tool": "three",
+            "tool_name": "Three.js",
+            "fallback": "the field renders at rest; touch and keyboard users lose nothing; no JS shows the same final frame, visible to screenshots."
+          }
+        ],
+        "motion_signature": "smooth-depth",
+        "motion_tools": [
+          "lenis",
+          "lottie",
+          "three"
+        ],
+        "pinned_by_prompt": [
+          "ground",
+          "typography"
+        ],
+        "motif": {
+          "id": "torn-edge",
+          "build": "Torn edge: chapters part on one torn paper edge, and media frames carry the same edge on one side, as on the wrapping of the material sample."
+        },
+        "button": {
+          "id": "soft-square",
+          "build": "Primary: solid fill, radius 8px, 48px tall with 24px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "BRIEF FONTS: the brief names its own type (Studio Sans). Build every direction's type system from these (display and body roles among them; a mono role only where the restraint allows one); the direction pairings below are fallbacks only.",
+    "RTL: the brief names a right-to-left language. Set `<html dir=\"rtl\" lang=\"..\">`, use logical CSS properties only (margin-inline-start, padding-inline, inset-inline-end, text-align: start, border-inline-start), mirror the layout and directional icons and motion (an entrance from the start edge comes from the right), keep numerals, code and brand marks LTR where they belong, and pick fonts that ship the script.",
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest full-bleed / poster / object-wrap (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error.",
+    "DIRECTIONS: render three materially different compositions with identical factual content and available assets at desktop and phone sizes. Compare the actual renders for hierarchy, typography, image integration, clarity and full-page rhythm. Choose with reasons as the designer unless the user asked to choose. Persist candidates, screenshot evidence and visible tradeoffs with review_design; never invent user approval. Library deals are starting material, not mandatory shapes or a substitute for art direction.",
+    "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.",
+    "FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.",
+    "COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.",
+    "SELF-CRITIQUE before QA: score philosophy, hierarchy, execution, specificity, restraint, variety from 1 to 5; any score below 3 means revise first. Put the stamp `/* layoza · direction: <A|B|C> · structure: <style_family> · hero: <hero id> · palette: <palette id> · type: <type id> · critique: P4 H4 E4 S4 R4 V4 */` as the first line of the main CSS (your direction, structure, hero, palette, type and scores)."
+  ],
+  "scope": "page",
+  "uniqueness": {
+    "ledger": "off",
+    "window": 36,
+    "entries_compared": 0,
+    "slots": [
+      {
+        "slot": "A.nav",
+        "id": "nav-masthead-dateline",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.hero",
+        "id": "hero-agency-work-wall",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-1",
+        "id": "work-shader-dissolve-index",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-2",
+        "id": "services-hairline-directory-index",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.footer",
+        "id": "footer-oversize-signup",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.palette",
+        "id": "obsidian-vermilion",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.typography",
+        "id": "studio sans/ibm plex sans arabic",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.archetype",
+        "id": "full-bleed-stage",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.hero-frame",
+        "id": "full-bleed-scene",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.flow",
+        "id": "staggered",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-head",
+        "id": "vertical-label",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.ground",
+        "id": "dark-throughout",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.material",
+        "id": "photographic",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.labels",
+        "id": "numbered",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.motion",
+        "id": "webgl-scene",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.nav",
+        "id": "nav-floating-section-island",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.hero",
+        "id": "hero-glyph-zoom-through",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-1",
+        "id": "work-filing-drawer-case-files",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-2",
+        "id": "section-about-founding-object",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.footer",
+        "id": "footer-statement-line",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.palette",
+        "id": "graphite-sun",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.typography",
+        "id": "studio sans/vazirmatn",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.archetype",
+        "id": "colour-field-poster",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.hero-frame",
+        "id": "poster-type",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.flow",
+        "id": "snap-slides",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-head",
+        "id": "no-heads",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.ground",
+        "id": "dark-throughout",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.material",
+        "id": "typographic",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.labels",
+        "id": "italic-captions",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.motion",
+        "id": "pinned-scene",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.nav",
+        "id": "nav-centred-wordmark-split",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.hero",
+        "id": "hero-headline-wraps-object",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-1",
+        "id": "work-contact-sheet-loupe",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-2",
+        "id": "section-about-week-in-numbers",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.footer",
+        "id": "footer-letter-close",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.palette",
+        "id": "tty-amber",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.typography",
+        "id": "studio sans/general sans",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.archetype",
+        "id": "kit-of-parts",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.hero-frame",
+        "id": "pinned-story",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.flow",
+        "id": "spreads",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-head",
+        "id": "margin-numeral",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.ground",
+        "id": "dark-throughout",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.material",
+        "id": "rendered-3d",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.labels",
+        "id": "small-caps",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.motion",
+        "id": "smooth-depth",
+        "status": "unchecked (ledger off)"
+      }
+    ],
+    "fresh": 0,
+    "repeats": 0,
+    "score": 0,
+    "verdict": "Ledger off: no slot was checked for repeats. Uniqueness needs the ledger; leave it on unless the user asked."
+  },
+  "understood_brief": {
+    "trade": "Marketing & Creative Advertising Agencies (weak match)",
+    "subject": "Arabic architecture studio",
+    "audience": "prospective clients judging the work",
+    "primary_action": "view a project or start a brief",
+    "tone": [
+      "dark"
+    ],
+    "motion_wish": "heavy (niche default, up to heavy)",
+    "must_haves": [
+      "font Studio Sans",
+      "Do not use: decorative pseudo-Arabic symbols"
+    ],
+    "pinned_by_prompt": [
+      "ground",
+      "typography"
+    ],
+    "assumed": [
+      "audience: prospective clients judging the work (niche default)",
+      "motion: heavy (niche default, up to heavy)",
+      "stack: the project's own framework if one exists, else plain HTML/CSS/JS"
+    ],
+    "open_questions": []
+  },
+  "creative_workspace": {
+    "brief_context": {
+      "subject": "Arabic architecture studio",
+      "audience": "",
+      "primary_action": "",
+      "objects": [],
+      "facts": [],
+      "required_content": [],
+      "forbidden": [
+        "decorative pseudo-Arabic symbols"
+      ],
+      "display_font": "Studio Sans",
+      "body_font": "",
+      "colors": [],
+      "assets": []
+    },
+    "context_basis": "explicit structured client context supplied by the calling designer",
+    "concepts": [
+      {
+        "direction": 1,
+        "title": "Direction A — Marketing & Creative Advertising Agencies (Full-Bleed Stage)",
+        "composition": "Full-bleed stage for the arabic architecture studio: the building on its site fills the first screen edge to edge with the headline set into its quiet area; later sections cut between the section drawing and the material sample at full width; 'view a project or start a brief' stays docked and usable at every scroll position. Structure: one subject image edge to edge, headline in its quiet area, full-width cuts, docked action. Knobs: density standard; span irregularity medium; accent on the primary action only. Mobile: the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+        "why_this_subject": "Full-Bleed Stage for \"arabic architecture studio\" (showcase surface): atmosphere sells it: the place, the product or the work has to be felt before it is read. Type Studio Sans / IBM Plex Sans Arabic and palette obsidian-vermilion are the Marketing & Creative Advertising Agencies profile's own. First screen: full-bleed composition, hero material photo, look family cinematic-dark, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): slow cross-fades; plates hand off on scroll. The brief names a arabic-script place or language and this pairing covers arabic. Brand first: type built from the brief's fonts (Studio Sans). Other structures that fit this slot: Irregular Work Grid, Object Study, Type Architecture, Kit of Parts, Catalogue Index.",
+        "image_medium": "photo",
+        "asset_plan": {
+          "subject": "Arabic architecture studio",
+          "medium": "photo",
+          "available": [
+            {
+              "path": "assets/import-1792529397635.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/import-1792530871937.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction A — Marketing & Creative Advertising Agencies (Full-Bleed Stage) requires convincing photo material; judge the actual render before committing."
+      },
+      {
+        "direction": 2,
+        "title": "Direction B — Marketing & Creative Advertising Agencies (Colour-Field Poster)",
+        "composition": "The arabic architecture studio as a run of posters: each section is one full colour field with one large statement and one image (the building on its site, then the section drawing, then the material sample); the first poster carries 'view a project or start a brief' as a large button. Structure: run of full colour fields, one statement and one image each. Knobs: density standard; span irregularity medium; accent on one word of the headline. Mobile: each poster keeps one statement at 14vw; the image drops below it at full width",
+        "why_this_subject": "Colour-Field Poster for \"arabic architecture studio\" (showcase surface): the brand needs one loud, memorable message per screen more than detail. Type Studio Sans / Vazirmatn (the brief's own type (studio sans); scale and roles from lalezar-vazirmatn) for an expressive voice. Palette graphite-sun on a dark ground, tagged modernist like the brief. First screen: poster composition, hero material giant-type, look family playful-color-block, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): colour wipes between fields. The brief names a arabic-script place or language and this pairing covers arabic. Brand first: type built from the brief's fonts (Studio Sans). Other structures that fit this slot: Manifesto Sheet, Object Study, Pin-Board Collage, Type Architecture, Type Specimen, Irregular Work Grid.",
+        "image_medium": "giant-type",
+        "asset_plan": {
+          "subject": "Arabic architecture studio",
+          "medium": "giant-type",
+          "available": [
+            {
+              "path": "assets/import-1792529397635.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/import-1792530871937.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction B — Marketing & Creative Advertising Agencies (Colour-Field Poster) requires convincing giant-type material; judge the actual render before committing."
+      },
+      {
+        "direction": 3,
+        "title": "Direction C — Marketing & Creative Advertising Agencies (Kit of Parts)",
+        "composition": "Arabic architecture studio as a kit of parts: the building on its site shown finished at the centre, its parts laid out around it and labelled with material and size (drawing numbers, scales and project years); the section drawing and the material sample follow; 'view a project or start a brief' beside the finished object. Structure: parts laid out flat and labelled around the finished object. Knobs: density standard; span irregularity medium; accent on the selected option and the primary button. Mobile: the finished object first, the labelled parts list under it",
+        "why_this_subject": "Kit of Parts for \"arabic architecture studio\" (showcase surface): the product is assembled from parts, and showing them laid out builds trust in the whole. Type Studio Sans / General Sans (the brief's own type (studio sans); scale and roles from general-sans-solo) for a utility voice, tagged modernist like the brief. Palette tty-amber on a dark ground. First screen: object-wrap composition, hero material object, look family swiss-grid, corners tool-6. Motion flavour (tier and tools follow page_shape.motion): parts assemble on scroll. Brand first: type built from the brief's fonts (Studio Sans). Other structures that fit this slot: Catalogue Index.",
+        "image_medium": "object",
+        "asset_plan": {
+          "subject": "Arabic architecture studio",
+          "medium": "object",
+          "available": [
+            {
+              "path": "assets/import-1792529397635.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/import-1792530871937.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction C — Marketing & Creative Advertising Agencies (Kit of Parts) requires convincing object material; judge the actual render before committing."
+      }
+    ],
+    "selection": "Render the three concepts with identical real content and available assets. Pick the clearest, most expressive, subject-specific composition; record the decision and visible tradeoffs with review_design. Familiar controls may be reused when they serve the task.",
+    "success": [
+      "brief fidelity",
+      "clear hierarchy",
+      "expressive typography",
+      "convincing imagery",
+      "coherent colour and spacing",
+      "complete page rhythm",
+      "designed phone composition",
+      "usable interactions"
+    ],
+    "novelty": "A supporting signal, never a reason to change a working brand or navigation pattern",
+    "design_gate": "Browser defects and recorded process only. Exceptional design requires reviewing the actual renders, not passing a numeric checker."
+  },
+  "client_request": "An Arabic-first architecture studio portfolio. RTL content, projects and drawings, dark stone and warm white. Preserve the supplied custom typeface: Heading font: Studio Sans. No decorative pseudo-Arabic symbols.",
+  "ledger": "off (`ledger: false`)",
+  "registers": [
+    "editorial"
+  ],
+  "craft_floor": [
+    "Header: one row, 52-88px tall on desktop and 56-76px on mobile; logo 24-40px high on the left, 4-6 nav links of 15-16px at weight 500 with 24-40px between them, the primary action on the right at the header's button size. Phone or hours sit in that row or the footer; no utility bar stacked above the nav. Mark the current link with a 2px underline 6px below the text; a sticky header turns opaque after the first scroll, never taller.",
+    "Primary button: 40-56px tall, horizontal padding 20-32px (about twice the vertical), label 15-17px at weight 600 in sentence or title case with tracking 0-0.02em, at most one drawn SVG icon of 16-20px set 8px from the label. The secondary action matches its height, radius and padding as an outline (1-1.5px) or ghost; one button shape and radius on the whole page, 44px minimum hit area everywhere.",
+    "Button states, all four authored: :hover shifts the fill by 6-10% lightness or nudges the icon 2-4px; :active presses with translateY(1px) or scale(0.98) over 80-120ms; :focus-visible draws a 2px ring at 2-3px offset with at least 3:1 contrast; disabled sits at 45-55% opacity with cursor not-allowed. No state changes width, height or padding.",
+    "Type scale: at most 10 distinct font sizes each carry 2% or more of the text on a desktop render, each step at least 1.2x the one below; body 17-22px at line-height 1.5-1.65; headings at line-height 1.0-1.15. The h1 tops out at 168px on desktop (set with clamp()), and display sizes of 48px and up track -0.02 to -0.04em, never tighter than -0.05em; body text keeps tracking at 0.",
+    "Measure: prose never runs past 78 characters a line (cap paragraphs at 60-68ch with max-width); h1 lines stay under 20ch and h2 under 24ch; no centred paragraph runs past three lines.",
+    "Spacing rhythm: every gap comes from one 4/8px scale. Sections pad 96-192px top and bottom on desktop and 64-96px on mobile; a heading sits 16-24px above its text and has at least twice that space above it; content width caps at 1200-1320px with 24-40px gutters on desktop and 16-20px on mobile.",
+    "Section heads: one heading per section (one h2, or the h1 in the hero) and at most one lead paragraph of 40 words or fewer. No stacked pile of label, heading, accent-coloured second heading and paragraph; a second voice goes in the body, not the head.",
+    "Composition: no two neighbouring sections share a layout; use 4 or more layout kinds across the page (split, full-bleed media, list or table, asymmetric grid, quote, form). Card rows vary span or media; never a grid of equal cards that differ only by text.",
+    "Hero: the h1, one supporting paragraph of 30 words or fewer, at most two actions and one real picture or film; at most 14 text blocks in the first viewport. Spec tables, chip rows and stat grids go below the fold (one slim proof strip may sit on the fold line). On a 390x844 phone a real picture is in view before the first scroll.",
+    "Imagery: real photographs or renders of the trade's own objects, one aspect ratio per row (16:9, 3:2, 4:3 or 1:1) with object-fit: cover, corner radius from the button's family. Nothing decorative over a product picture: no hairlines, crosshairs, hotspot squares or graph-paper grids. Text on a photo sits on a scrim that holds 4.5:1; captions 13-14px in the muted ink.",
+    "Colour: one accent on no more than about 10% of any screen (primary action, links, one highlight); neutrals tinted toward the accent hue, never pure grey; at most two ground colours plus one accent ground across the page; body and secondary text at 4.5:1 or better, large text at 3:1.",
+    "Icons: one drawn SVG set at one stroke weight (1.5 or 2px) and one size per context (16, 20 or 24px), coloured with currentColor. Never a Unicode arrow, check mark, star or emoji standing in for an icon.",
+    "Motion: one signature moment; every other transition runs 180-500ms ease-out on transform and opacity only. Reveals travel 24px or less, start from content that is already readable, and differ by section role rather than one fade-up everywhere. No infinite loops besides hero media; prefers-reduced-motion turns all of it off.",
+    "Footer: brand and one-line description, two or three link groups and the contact block, four columns at most on desktop; group titles 13-14px at weight 600 in sentence case; links 15-16px with 10-12px between rows; a bottom bar for legal and copyright at 13-14px; 64px or more of top padding.",
+    "Browser surfaces: ::selection and focus rings use the palette; link underlines sit 3-4px below the text at 1-2px thickness; tables and figures use tabular numerals; no unthemed default blue links anywhere.",
+    "Editorial: a real reading column (60-68ch) with a serif or a strong grotesk at 18-21px; pictures run full-bleed or in the column, never as thumbnails in cards."
+  ],
+  "design_critique": {
+    "authority": "contextual visual judgment",
+    "criteria": [
+      "brief fidelity",
+      "hierarchy",
+      "typography",
+      "imagery",
+      "colour",
+      "rhythm",
+      "phone composition",
+      "interaction"
+    ],
+    "note": "Stylistic devices are not defects by themselves. Diagnose the actual composition, not a list of banned looks."
+  },
+  "avoid_recent": {
+    "entries": 6,
+    "directions": [
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred early first-visit links. The "
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Sidebar A gives the shift lead the clearest production overvie"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred the task-first C composition."
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Photographs lead through a coherent asymmetric exhibition comp"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — 1, Edit bay, with concept 2 folded in as the curve readout and the curves"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — Object Study look from the brief (Space Grotesk / Inter, Ice Blue surface"
+      }
+    ],
+    "palettes": [
+      [
+        "#0d2424",
+        "#133131",
+        "#2a4a48",
+        "#f1eadf",
+        "#a8beb9",
+        "#ff6a3d",
+        "#f2c94c"
+      ]
+    ],
+    "fonts": [
+      "Space Grotesk",
+      "Inter",
+      "Bricolage Grotesque",
+      "Instrument Sans"
+    ],
+    "motifs": [
+      "sticky",
+      "film",
+      "paper",
+      "kinetic type",
+      "webgl",
+      "timeline",
+      "blob",
+      "asymmetric",
+      "index",
+      "catalogue",
+      "chart"
+    ],
+    "mechanics": [],
+    "rule": "Make all three directions materially different from these recent picks: a different palette family, different type families, different motifs and mechanics. Reuse them only when the user asks for the same look, and then record `REPEAT-OK: <the user's words>` in direction.md."
+  }
+}

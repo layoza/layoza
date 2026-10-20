@@ -1,0 +1,26 @@
+[
+  {
+    "id": "intervals",
+    "errors": [],
+    "contrast": 5.5,
+    "performance_requested": false
+  },
+  {
+    "id": "willow",
+    "errors": [],
+    "contrast": 6.27,
+    "performance_requested": false
+  },
+  {
+    "id": "noor",
+    "errors": [],
+    "contrast": 5.19,
+    "performance_requested": false
+  },
+  {
+    "id": "hearth",
+    "errors": [],
+    "contrast": 4.61,
+    "performance_requested": false
+  }
+]

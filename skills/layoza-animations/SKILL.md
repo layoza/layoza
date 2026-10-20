@@ -197,8 +197,8 @@ whose motion lived only inside one pinned section lost, however polished.
 8. **Reduced motion keeps the story.** Show each act's key frame as a still
    composition with the thread at that act's value. The narrative stays
    readable without the travel.
-9. **Budget:** 60fps on mid hardware; LCP ≤ 2.5s with the headline painted
-   before any motion script; only transform and opacity in scroll loops (filter and clip-path repaint; use them on small elements or one-off tweens, never a full-screen scrub).
+9. **Visual continuity:** keep the headline visible while scripts load and
+   make every resting frame intentional. Speed measurements are optional and never reduce the chosen design's ambition.
 
 10. **Detail parity across acts.** Builders spend their best work on the hero
     and run out of budget later, and reviewers mark it every time. Before
@@ -243,8 +243,8 @@ Any "no" is the next fix.
    in one viewport.
 6. **Teardown:** revert contexts, kill triggers, and cancel animations on
    unmount. Pause idle loops when off-screen.
-7. **Performance:** INP ≤ 200ms and CLS ≤ 0.1 hold. Defer scripts, and let the
-   LCP element paint before animating it.
+7. **Design continuity:** content stays visible before and after animation;
+   controls remain usable. Speed checks are optional, only on explicit request.
 8. **Use the chosen library correctly.** Once you pick GSAP, Motion, Lenis,
    CSS scroll timelines or WAAPI, apply its rules in
    [reference/library-rules.md](reference/library-rules.md). It covers

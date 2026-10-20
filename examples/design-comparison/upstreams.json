@@ -1,0 +1,7 @@
+{
+  "retrieved": "2026-10-21",
+  "taste": {"url":"https://github.com/Leonxlnx/taste-skill", "commit":"6010f91a9935f1c167dfc500fb1a475681892e6b", "entry":"skills/taste-skill/SKILL.md", "license":"MIT"},
+  "uipro": {"url":"https://github.com/nextlevelbuilder/ui-ux-pro-max-skill", "commit":"56ea9cf174ed86786187daa9de0e6247cb0747e4", "entry":"src/ui-ux-pro-max/templates/base/skill-content.md", "license":"MIT"},
+  "impeccable": {"url":"https://github.com/pbakaus/impeccable", "commit":"dad8dbb3aac21ad1fa236c110315ef4abece23e8", "entry":"plugin/skills/impeccable/SKILL.md", "version":"4.7.0", "license":"Apache-2.0"},
+  "limits": ["One builder per system; same model family, separate contexts, no human panel.","Common local photographs and system font availability; this controls assets but limits complete upstream font sourcing workflows.","One build and one shared repair round before freezing comparison.","Skill-conditioned implementations by our agents, not submissions by the authors.","Impeccable native engine unavailable; prescribed direct-context fallback used. This is not a full native-engine benchmark."]
+}

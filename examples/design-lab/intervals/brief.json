@@ -1,0 +1,28 @@
+{
+  "id": "intervals",
+  "name": "Intervals",
+  "brief": "A contemporary photography gallery called Intervals. Black and white only, Helvetica only, no animation. Make historical photographs the main experience, with an exhibition introduction, selected works, artist information and an exhibition enquiry. No invented awards or sales claims.",
+  "context": {
+    "subject": "photography gallery",
+    "audience": "photography enthusiasts and collectors",
+    "primary_action": "view the photographs and enquire about an exhibition",
+    "display_font": "Helvetica",
+    "body_font": "Helvetica",
+    "colors": [
+      "#FFFFFF",
+      "#111111",
+      "#666666"
+    ],
+    "forbidden": [
+      "animation",
+      "coloured accents",
+      "invented awards"
+    ]
+  },
+  "assets": [
+    "gallery-152229.jpg",
+    "gallery-152228.jpg",
+    "gallery-162340.jpg",
+    "gallery-325449.jpg"
+  ]
+}

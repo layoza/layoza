@@ -1,0 +1,22 @@
+[
+  {
+    "path": "assets/dental-room-katarzyna.jpg",
+    "source": "https://unsplash.com/photos/a-white-dental-chair-in-a-room-with-a-window-44jaETSVX2I",
+    "license": "Unsplash License",
+    "credit": "Katarzyna Zygnerska",
+    "role": "Illustrative licensed interior, not the fictional clinic premises.",
+    "alt": "A white dental chair in a room with a window",
+    "bytes": 340986,
+    "content_fingerprint": "3a6d8a138adbb9cb"
+  },
+  {
+    "path": "assets/dental-consultation-harold.jpg",
+    "source": "https://unsplash.com/photos/dentist-talking-to-patient-in-a-modern-dental-office-Bg81yWKZlMg",
+    "license": "Unsplash License",
+    "credit": "Harold Hisona",
+    "role": "Illustrative licensed consultation; do not identify depicted people as real test-clinic staff or patients.",
+    "alt": "Dentist talking to patient in a modern dental office",
+    "bytes": 318249,
+    "content_fingerprint": "aa54a3e4eee48336"
+  }
+]

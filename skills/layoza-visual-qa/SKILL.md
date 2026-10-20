@@ -33,7 +33,7 @@ screenshots and look at them; the report alone never proves a design.
 | `warning` | `label-wrap`, `heading-crowding`, `ios-input-zoom`, `field-autocomplete`, `dark-color-scheme`, `image-no-size`, `pointer-not-button`, `transition-all`, `design-system-*` drift | Objective, but needs judgment. Fix or justify. |
 | `critique` (`CRAFT-*`) | template chrome, card kits, `hero-art-scale`, overused fonts, monotonous spacing, and more | Generated-page tells. Review them against the committed direction. |
 
-Lab LCP, CLS and INP are measured; an unmeasured value is `null`, never a pass.
+Speed diagnostics are off by default, including with `--full`. Use `layoza qa <target> --performance` or MCP `audit_performance` only when the user asks. Unmeasured speed values remain `null`; they do not block design completion.
 
 ## Rules for fixing
 

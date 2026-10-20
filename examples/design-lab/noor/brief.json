@@ -1,0 +1,29 @@
+{
+  "id": "noor",
+  "name": "Noor Dental",
+  "brief": "Noor Dental, a calm dental clinic in Lahore for people anxious about visiting a dentist. English with an Urdu welcome. Explain first visits and treatment options clearly. Let visitors request an appointment. Soft sage, warm white, no animation, no invented doctors, testimonials, ratings or clinical promises. Illustrative photos must be labelled.",
+  "context": {
+    "subject": "dental clinic",
+    "audience": "Lahore residents and anxious first-time patients",
+    "primary_action": "request an appointment",
+    "colors": [
+      "#E7EDE7",
+      "#173C37",
+      "#FBFAF6"
+    ],
+    "required_content": [
+      "Urdu welcome",
+      "first visit explanation",
+      "appointment request"
+    ],
+    "forbidden": [
+      "animation",
+      "invented doctors",
+      "unverified clinical claims"
+    ]
+  },
+  "assets": [
+    "dental-room-katarzyna.jpg",
+    "dental-consultation-harold.jpg"
+  ]
+}

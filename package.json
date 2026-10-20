@@ -30,7 +30,11 @@
     "skills/",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "README.md"
+    "README.md",
+    "scripts/render-facts.mjs",
+    "scripts/design-assets.mjs",
+    "scripts/compare-renders.mjs",
+    "scripts/import-tokens.mjs"
   ],
   "scripts": {
     "build": "cargo build --release",
