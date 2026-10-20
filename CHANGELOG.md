@@ -6,12 +6,6 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
-### Fixed
-- Live QA on `file://` pages read no stylesheet rules (Chromium treats each file as its own origin), so every stylesheet-driven check ran blind and reported false "no ::selection" and "no error states" findings. Chromium now launches with file access for local pages.
-- `visual-starved-page` treated each item of a list titled with `h2`s as its own section, and judged a sticky photo or an image strip against the full height of a tall section. Sections are now landmark sections, and media is summed and measured against one viewport.
-- `ledger-heavy-page` fired at two data sections although its own advice allows one or two; it now fires at three.
-- The static reduced-motion check matched the `gsap.min.js` script URL as an animation; it now looks for real GSAP calls.
-
 ### Changed
 - Taste rules: score the plan before code, two or three working type sizes, hand-broken headlines (2 lines desktop, 3 phone), one spacing scale, a picture floor with one crop system, section gaps at least twice inner gaps; docs, articles and portfolios let the content be the signature.
 - The review step checks every section on its own crop (one idea with proof, type from tokens, spacing on the scale, a composition its neighbours do not share), runs a headline-swap test and cuts one element.
@@ -39,6 +33,10 @@ All notable changes to Layoza are listed here. The format follows
   stage changes with scroll and no animation is linked to scroll.
 
 ### Fixed
+- Live QA on `file://` pages read no stylesheet rules (Chromium treats each file as its own origin), so every stylesheet-driven check ran blind and reported false "no ::selection" and "no error states" findings. Chromium now launches with file access for local pages.
+- `visual-starved-page` treated each item of a list titled with `h2`s as its own section, and judged a sticky photo or an image strip against the full height of a tall section. Sections are now landmark sections, and media is summed and measured against one viewport.
+- `ledger-heavy-page` fired at two data sections although its own advice allows one or two; it now fires at three.
+- The static reduced-motion check matched the `gsap.min.js` script URL as an animation; it now looks for real GSAP calls.
 - Fonts the brief labels by role ("Headings: …", "Body: …") keep that role; a body face is no longer dealt as display or the reverse.
 - The brief's own secondary-text colour is kept (darkened only as far as contrast needs) and a brief tint becomes the surface, instead of unrelated base colours.
 - The short brief no longer cuts ideas off mid-sentence.
