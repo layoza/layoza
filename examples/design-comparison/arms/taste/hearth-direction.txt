@@ -1,0 +1,55 @@
+# APP SHEET — Accent ladder
+seed 21204 · drawn 2026-10-20 · kind smb-admin · light
+Brief: Hearth bakery shift operations: batch quantities, oven status and collection orders on Canal Street
+
+This is the style for this product. Adopt it whole and keep its move intact; everything the sheet does not fix comes from the
+shared defaults in references/app-screens.md. Redraw only for a reason you can state (it contradicts the brand, or the product is
+used in a way the style does not suit) and say why in your report. The values were measured on real product screens: use them
+as given rather than rounding them towards your habits.
+
+## 1. The style
+One brand hue at full strength only on small marks, and its pale tints doing all the area work: the active nav row, a plan card, badges and progress tracks.
+
+**The move:** The full hue goes only on small marks: the one filled-button style, the data series and the active nav icon. Its 50-200 tints carry every area: the active nav row (tint fill with the dark ink of the hue), the plan or trial card, badges and progress tracks. The primary action may instead be near-black, as on the study's newsletter home.
+
+**Colour budget:** 3-10%, nearly all of it as pale tints of the one hue.
+**Off-style here:** the full hue on large areas; a second accent family (four families on one screen was flagged in the study); a gradient on the trial chip or upgrade button; a left accent bar on the active nav row on top of the tint (seen once in 23 screens); violet or indigo.
+Distilled from 3 screens: a newsletter home, a network analytics overview, a cap-table company home. All three studied screens of this kind used violet, purple or pink as the one hue. The move does not depend on the hue, so the house's violet and indigo ban holds and the library deals a raspberry instead.
+
+**Its face.** Choose one of these (or one of your own of the same weight) before you build, write it in your notes next to
+the screen's question, and check that it shows on the first screen. Without one the screen reads as a well-applied kit.
+- The ladder built from the brand's own hue (its logo, the brief's object) in place of the dealt raspberry: the full hue on small marks, its pale tints on areas, never violet or indigo.
+- The product's objects in the lead block: the newsletter's latest issue as its cover, the shop's products as 40px thumbnails, the course's lessons with their own art.
+- A ground one level toward the hue's palest tint (#fbf7f8 for the raspberry) in place of #f9fafb, so the page and the tints read as one family.
+
+**Signature elements this brief names** (an element only this kind of product has; build one of them as part of a screen):
+- **Team timeline with kind encoding** (`leave-timeline`). People down the left on a 160-220px column, grouped under 12px team subheaders; days across with weekends one tone step darker, faint 1px day lines, and today as a 1px line in the one data hue with its date in ink in the header. Each kind of booking has its own mark, drawn with `Charts.timeline(el, rows, kinds)`: holiday a pale fill, off sick a 1px diagonal hatch, long leave a darker grey step, working away an outline, a pending request a dashed outline. Full colour only for what needs a decision: a request that breaks cover is outlined and labelled in the negative colour. Bars 20-24px tall at radius 4; the label inside the bar, the kind's code when the bar is too short, then the label after the bar's end, never over the days before it. One-line names on a 32px pitch; a name with a subline (team, office) on 40-44px. A public holiday is a small dot under its date whose tooltip names the office. The legend is the one the helper returns, so each swatch is its mark scaled down and only kinds on screen are listed. On a phone: One week at a time, with the week switch in the same control row as any office filter; names shorten to first name and initial; the legend sits in a 2-column grid.
+- **Cover against the minimum** (`cover-matrix`). A team-by-day matrix of slack against each team's minimum (+2, +1, 0, −1) rather than headcounts, drawn with `Charts.matrix(el, rows, { cols, comfort })`: the team and its rule ("needs 7 of 10") in a 160-220px label column on a 40-44px pitch, one cell per working day with the signed slack in 12px tabular figures. Cells with room to spare stay plain; one hue ramps toward the negative colour as the slack runs out (tight a pale tint, at the minimum a stronger tint, short the full negative with white figures), and the headcount sits in the tooltip ("6 in of 9, needs 7"). Today's column has its date in ink. The days that go short are the finding in the title row, beside the request that causes them. On a phone: The lowest slack per team for each week (four columns), with the days behind a tap; or one team at a time.
+- **Sell-out time strip** (`sell-out-strip`). One row per line that sold out, earliest first: the line and its shop on the left; a 2px grey track on a shared opening-to-closing axis with an ink dot at today's sell-out time and a hollow tick at the comparison day's (last Sunday), drawn with `Charts.timeStrip(el, rows, { open, close, compareLabel })`; the time on the right in ink with the gap under it in 12px grey, its baseline named ("3 h 40 m before close", "45 m earlier than last Sunday"). The lines that did not sell out are counted in one closing sentence, not drawn. Axis labels on one hourly step from opening; the legend (Today, Last Sunday) is the one the helper returns. On a phone: The rows keep the full width with axis labels every two hours; the gap moves under the line's name.
+
+## 2. Tokens
+Kept from the brand: map its colours onto this style's roles (ground, surface, raised, border, rule, control, text, muted, accent, status pills, chart) and keep its proportions: 3-10%, nearly all of it as pale tints of the one hue. Take the sizes, radii, row and control heights from the style as they are.
+
+## 4. Shell — Open plane
+The labelled sidebar sits on the page ground with nothing or one hairline between it and the canvas; there is no top bar, and the page header and cards sit straight on the ground about 32-36px from the top. Workspace or account switcher at the top of the sidebar, primary nav on a 34px pitch, groups under 12-13px sentence-case grey labels with 22-56px of air above, utilities and the user row pushed to the bottom. Cards are white on the off-white ground (or the sidebar is white with a 1px border on a #f9fafb canvas). The canvas is fluid with one gutter value, or a centred column for personal homes.
+Numbers: sidebarWidth 230-256 (230, 240, 256 in the study; 280 and 292 with a built-in icon rail); separation none, or one 1px hairline; the sidebar sits on the page ground or within 1-2% of it; navPitch 34; navRowHeight 32; navIcon 16px outline, about 1.5px stroke; navLabel 14px, 400, grey or ink; activeItem neutral grey pill, radius 6-12, inset 8-12px from the sidebar edges (#e9e9e9-#ededed); topBar none; canvas fluid with a 24-64px gutter, or a centred 1100px column.
+On a phone: The sidebar folds into a 48px top bar holding the screen's name, a menu button that opens a full-screen sheet with the nav and the switcher, and at most one action. Content takes the full width with 16px margins.
+
+## 5. Screens
+
+### overview — KPI strip, main chart and a side rail
+Title row: a 24px noun or the product's name at 600-700, an optional 14-16px grey line under it, and the one primary action on the right, bottom-aligned with that line. 16-24px below, the scope row: section tabs and the date range in one row of 32-36px controls, or a 48px segmented track with the range select inside its right end. Then a grid of 1fr and a fixed 384px rail with a 24px gap. Main column: one KPI container split by 1px dividers into 3-5 equal cells (14px grey label, 24px value at 400-600, a 12px caption naming the baseline and window), then the main chart card, which is the largest thing on the screen, then the next card, all 16px apart. Rail: 16px headings outside their cards, 8px above each and 16px after the previous card; a recent-items list of 3-5 rows on a 45px pitch with 1px rules, closed by a 30px outlined 'View all' button instead of pagination. The rail starts level with the first card, not with the title.
+On a phone: The rail moves below the main column; the KPI container becomes a 2-column grid; tabs scroll inside their own row.
+
+### list — Table with tabs and a filter bar
+Title row: an 18-24px title on the left, at most an outlined secondary and the one primary (36px) on the right. Underline tabs for the list's states on a full-width 1px rule with a 2px indicator as wide as the label; 22-32px below, the toolbar: a search of about 252-316 x 32-36 on the left, the count ('7 events') and the sort on the right. The table sits on the panel or page ground with no card around it: a header of 12-13px grey sentence-case labels with no fill and no rule, rows on a 48-56px pitch for one line or 72-92px with a thumbnail (media height plus 24-32px), 1px rules 3-7% darker than the ground or no rules at all, the identity column given the most width, numbers right-aligned in tabular figures with the unit muted ('5 /10'), one status mark per row and one kebab at the far right. Drop a column that is empty in every row (a blank co-host column left a 300px dead band). On an overview, cap the rows and link to the full list; on the full list, state the total and load more at the end.
+On a phone: Rows become two-line items: identity and the key number on line 1, the secondary fields in 13px grey on line 2, the kebab at the right. Tabs scroll in their own row; the search becomes a full-width field.
+
+## 6. Always
+Real data for this product, written before the markup: names, amounts that add up, dates in order, units on every figure,
+honest zeros and dashes. One chart answers one question. No gradients, glows, glass, icons in tinted squares, sparklines on KPIs,
+rainbow charts, emoji, lorem or Acme. `<skill>/assets/app.css` and `<skill>/assets/charts.js` are a neutral start set to these
+rules. Check with `node <skill>/scripts/lint.mjs <files>` and `node <skill>/scripts/inspect.mjs <page>`: this sheet switches both
+to app rules.
+
+Saved to C:/Users/ajjma/Desktop/sharethrone/examples/design-comparison/arms/taste/hearth/draw/direction.json · reprint with `node draw.mjs --show`

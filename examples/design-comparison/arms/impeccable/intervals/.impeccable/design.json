@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T21:43:46.337Z",
+  "title": "Design System: Intervals",
+  "extensions": {
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "700px"
+      }
+    ],
+    "motion": [],
+    "shadows": []
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The principal local task action.",
+      "html": "<button class=\"ds-button\">Send exhibition enquiry</button>",
+      "css": ".ds-button{font:14px Arial,sans-serif;background:#111111;color:#ffffff;padding:14px 24px;border:1px solid #111111;border-radius:0px;cursor:pointer}.ds-button:hover{filter:brightness(1.15)}.ds-button:focus-visible{outline:3px solid #8e652e;outline-offset:4px}.ds-button:active{filter:brightness(.9)}"
+    },
+    {
+      "name": "Labelled input",
+      "kind": "input",
+      "description": "Persistent label and editable input.",
+      "html": "<label class=\"ds-label\">Your name<input class=\"ds-input\" name=\"name\"></label>",
+      "css": ".ds-label{display:block;font:13px Arial,sans-serif;color:#111111}.ds-input{display:block;margin-top:6px;padding:10px 12px;border:1px solid #111111;color:#111111;background:#ffffff;font:14px Arial,sans-serif}.ds-input:focus-visible{outline:3px solid #8e652e;outline-offset:4px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The photographic spread",
+    "overview": "This records the built fictional comparison page. It is a source extraction, not a visual-review verdict.",
+    "keyCharacteristics": [],
+    "rules": [],
+    "dos": [
+      "Do preserve the common copy and local-only feedback.",
+      "Do keep all meaningful content visible without animation initialization.",
+      "Do keep the native form controls and visible labels."
+    ],
+    "donts": [
+      "Don't invent factual proof or staff.",
+      "Don't treat this documentation as independent design approval."
+    ]
+  }
+}

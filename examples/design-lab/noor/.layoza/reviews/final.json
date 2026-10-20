@@ -1,0 +1,62 @@
+{
+  "id": "final",
+  "brief": "Noor Dental, a calm dental clinic in Lahore for people anxious about visiting a dentist. English with an Urdu welcome. Explain first visits and treatment options clearly. Let visitors request an appointment. Soft sage, warm white, no animation, no invented doctors, testimonials, ratings or clinical promises. Illustrative photos must be labelled.",
+  "chosen_direction": "Revised A",
+  "reason": "The independent critic preferred early first-visit links. The revised selected page uses a labelled human consultation image and puts the first-step explanation and practical links before the phone image.",
+  "strengths": [
+    "Calm English/Urdu welcome with an obvious appointment action",
+    "Consultation image feels more humane than the initial equipment-led hero",
+    "Adjacent stock-photo label clearly separates illustration from clinic evidence"
+  ],
+  "weaknesses": [
+    "The long phone introduction trades immediate imagery for visit information",
+    "Actual team, availability, services and costs remain unspecified in the fictional brief"
+  ],
+  "changes": [
+    "Replaced the hero chair image with an illustrative consultation",
+    "Reduced phone heading size and surfaced first-visit explanation",
+    "Added practical links and adjacent image provenance",
+    "Removed repeated consultation image from the explanatory section"
+  ],
+  "alternatives": [
+    "Equipment-led arch: elegant but less reassuring to anxious visitors",
+    "Full-width equipment stage: visually dominant without improving first-visit clarity"
+  ],
+  "review_kind": "Designer decision informed by an independent assistant image-only critic (two rounds), not a human panel or competitor benchmark",
+  "screenshots": [
+    "qa/desktop-a-hero.png",
+    "qa/mobile-a-hero.png",
+    "qa/desktop-b-hero.png",
+    "qa/mobile-b-hero.png",
+    "qa/desktop-c-hero.png",
+    "qa/mobile-c-hero.png"
+  ],
+  "screenshot_evidence": [
+    {
+      "path": "qa/desktop-a-hero.png",
+      "content_fingerprint": "90a6cf78f9b20a91"
+    },
+    {
+      "path": "qa/mobile-a-hero.png",
+      "content_fingerprint": "0ad70485baaca43b"
+    },
+    {
+      "path": "qa/desktop-b-hero.png",
+      "content_fingerprint": "c864a3f188318ae7"
+    },
+    {
+      "path": "qa/mobile-b-hero.png",
+      "content_fingerprint": "8b09b493f84a2062"
+    },
+    {
+      "path": "qa/desktop-c-hero.png",
+      "content_fingerprint": "6ea7933901e04986"
+    },
+    {
+      "path": "qa/mobile-c-hero.png",
+      "content_fingerprint": "9a210b0046af38fe"
+    }
+  ],
+  "project_fingerprint": "9885e02180b9b253",
+  "recorded_at_unix": 1792530139
+}

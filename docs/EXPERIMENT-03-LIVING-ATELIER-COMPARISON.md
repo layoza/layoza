@@ -1,24 +1,26 @@
 # DESIGN EXPERIMENT 03: "THE LIVING ATELIER" — Three-Skill Benchmark & Multi-Experiment Comparison
 
+> Historical experiment. Some original page sources/renders are no longer retained. Scores here are development notes, not a current reproducible competitor ranking. See [the retained design lab](../examples/design-lab/README.md) for current local workflow evidence.
+
 ## 1. Executive Summary
 
 This benchmark evaluates **Design Experiment 03 ("THE LIVING ATELIER")** built side-by-side using three distinct AI frontend design skill architectures:
 
 1. **Build 1 — Layoza MCP + Layoza Skills (`layoza_layoza`)**:
-   - **Location**: [`examples/experiment-03-living-atelier/layoza-mcp/index.html`](../examples/experiment-03-living-atelier/layoza-mcp/index.html)
-   - **Site DNA & Design System Artifacts**: [`DESIGN.md`](../examples/experiment-03-living-atelier/layoza-mcp/DESIGN.md), [`BRAND.md`](../examples/experiment-03-living-atelier/layoza-mcp/BRAND.md), [`MOTION.md`](../examples/experiment-03-living-atelier/layoza-mcp/MOTION.md), [`SITE-DNA.json`](../examples/experiment-03-living-atelier/layoza-mcp/SITE-DNA.json)
+   - **Location**: ``examples/experiment-03-living-atelier/layoza-mcp/index.html`` (archived artifact unavailable)
+   - **Site DNA & Design System Artifacts**: ``DESIGN.md`` (archived artifact unavailable), ``BRAND.md`` (archived artifact unavailable), ``MOTION.md`` (archived artifact unavailable), ``SITE-DNA.json`` (archived artifact unavailable)
    - **Creative Concept**: *ATELIER VIVANT* — Warm gallery porcelain (`#FAF7F2`), sculptural alabaster (`#F2ECE1`), deep midnight ink (`#0B1021`), electric cobalt (`#0047FF`), and coral vermilion (`#E63B20`). Pairs high-x-height **`Playfair Display` (`700/800` Roman + `600i` Italic)** with **`Plus Jakarta Sans`** and **`JetBrains Mono`**, with stacked Swiss curatorial catalog index plaques (`ROOM 01–06`) and generous museum section rhythm (`clamp(6.5rem, 10.5vw, 10rem)`).
 2. **Build 2 — `pbakaus/impeccable` (`skills/impeccable`, vendored copy since removed)**:
-   - **Location**: [`examples/experiment-03-living-atelier/impeccable/index.html`](../examples/experiment-03-living-atelier/impeccable/index.html)
+   - **Location**: ``examples/experiment-03-living-atelier/impeccable/index.html`` (archived artifact unavailable)
    - **Creative Concept**: *KUNSTHALLE NUMÉRIQUE* — Warm gallery parchment (`#F8F4EC`), cobalt-drenched manifesto room (`#0035C9`), midnight ink (`#090F22`), and coral vermilion (`#E83C22`). Pairs `Bodoni Moda` with `Chivo` and `Fira Code`, applying Impeccable's anti-kicker discipline and themed browser surfaces.
 3. **Build 3 — `nextlevelbuilder/ui-ux-pro-max-skill` (`skills/ui-ux-pro-max`, vendored copy since removed)**:
-   - **Location**: [`examples/experiment-03-living-atelier/ui-ux-pro-max/index.html`](../examples/experiment-03-living-atelier/ui-ux-pro-max/index.html)
-   - **Persisted Design System**: [`design-system/the-living-atelier/MASTER.md`](../examples/experiment-03-living-atelier/ui-ux-pro-max/design-system/the-living-atelier/MASTER.md)
+   - **Location**: ``examples/experiment-03-living-atelier/ui-ux-pro-max/index.html`` (archived artifact unavailable)
+   - **Persisted Design System**: ``design-system/the-living-atelier/MASTER.md`` (archived artifact unavailable)
    - **Creative Concept**: *MUSEUM OF KINETIC CRAFT* — Generated via `search.py --design-system --variance 9 --motion 9 --density 3` and supplemented with `--domain typography` (`Libre Bodoni` + `Public Sans` + `JetBrains Mono`) and `--stack threejs`, pairing high-contrast brutalist-editorial framing with warm gallery ivory (`#FAF8F4`), electric cobalt (`#0047FF`), and coral (`#FF4D2D`).
 
 All earlier experiments remain intact for independent comparison:
-- **Experiment 01 (BIA Communication A/B Test)**: [`examples/ab-test-bia-communication/`](../examples/ab-test-bia-communication/)
-- **Experiment 02 (Master Agency Benchmark — AETHERIA / Vespera)**: [`examples/master-agency-benchmark/`](../examples/master-agency-benchmark/)
+- **Experiment 01 (BIA Communication A/B Test)**: ``examples/ab-test-bia-communication/`` (archived artifact unavailable)
+- **Experiment 02 (Master Agency Benchmark — AETHERIA / Vespera)**: ``examples/master-agency-benchmark/`` (archived artifact unavailable)
 
 ---
 

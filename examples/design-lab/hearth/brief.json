@@ -1,0 +1,29 @@
+{
+  "id": "hearth",
+  "name": "Hearth Operations",
+  "brief": "Hearth bakery operations dashboard. A shift lead needs todays bake quantities, oven status, low stock and collection orders. Dense but calm, warm paper and brick red, usable real controls. Product demo data must be labelled. No marketing hero or invented business growth claims.",
+  "context": {
+    "subject": "bakery operations dashboard",
+    "audience": "bakery shift leads",
+    "primary_action": "review todays bake and update production",
+    "colors": [
+      "#F5F3EE",
+      "#292B28",
+      "#963D28"
+    ],
+    "objects": [
+      "bake quantities",
+      "oven status",
+      "stock",
+      "collection orders"
+    ],
+    "required_content": [
+      "clearly labelled demo data"
+    ],
+    "forbidden": [
+      "marketing hero",
+      "growth claims"
+    ]
+  },
+  "assets": []
+}

@@ -1,0 +1,63 @@
+{
+  "id": "final",
+  "brief": "Hearth bakery operations dashboard. A shift lead needs todays bake quantities, oven status, low stock and collection orders. Dense but calm, warm paper and brick red, usable real controls. Product demo data must be labelled. No marketing hero or invented business growth claims.",
+  "chosen_direction": "Revised A",
+  "reason": "Sidebar A gives the shift lead the clearest production overview. Horizontal navigation wastes vertical space and the exception-first rearrangement weakens production priority.",
+  "strengths": [
+    "Production, oven status, stock and collections form a coherent operations workspace",
+    "Every phone production row retains its quantity",
+    "The demo boundary is visible and critical task state can be exercised"
+  ],
+  "weaknesses": [
+    "Status and secondary metadata remain visually small in a deliberately dense workspace",
+    "This local state demonstration does not implement persistence or a live production backend"
+  ],
+  "changes": [
+    "Restored phone quantities beside product details",
+    "Added an early phone oven/stock summary",
+    "Made queued batches start baking before they can be marked ready",
+    "Updated ready quantities and completion percentage together",
+    "Used explicit action labels and a keyboard-operable native dialog"
+  ],
+  "alternatives": [
+    "Horizontal navigation: less efficient in the opening viewport",
+    "Exception-first rearrangement: awkward empty area and production shifted right"
+  ],
+  "review_kind": "Designer decision informed by an independent assistant image-only critic (two rounds), not a human panel or competitor benchmark",
+  "screenshots": [
+    "qa/desktop-a-hero.png",
+    "qa/mobile-a-hero.png",
+    "qa/desktop-b-hero.png",
+    "qa/mobile-b-hero.png",
+    "qa/desktop-c-hero.png",
+    "qa/mobile-c-hero.png"
+  ],
+  "screenshot_evidence": [
+    {
+      "path": "qa/desktop-a-hero.png",
+      "content_fingerprint": "1485e5e7a3eb70a8"
+    },
+    {
+      "path": "qa/mobile-a-hero.png",
+      "content_fingerprint": "530ca68140c09763"
+    },
+    {
+      "path": "qa/desktop-b-hero.png",
+      "content_fingerprint": "c1f033432dd765b4"
+    },
+    {
+      "path": "qa/mobile-b-hero.png",
+      "content_fingerprint": "9fc38e2ee1a39231"
+    },
+    {
+      "path": "qa/desktop-c-hero.png",
+      "content_fingerprint": "6cab35a15d23b9e1"
+    },
+    {
+      "path": "qa/mobile-c-hero.png",
+      "content_fingerprint": "efdff167af18d515"
+    }
+  ],
+  "project_fingerprint": "7c8aa2a5b4c44aea",
+  "recorded_at_unix": 1792530139
+}

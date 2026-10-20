@@ -24,6 +24,13 @@ pub fn generate_framework_artifact(
     dna: &SiteDna,
 ) -> AdapterOutput {
     let fw = framework.trim().to_ascii_lowercase();
+    // Escape for the generated language, including quotes/newlines in real client copy.
+    let escape = |s: &str| if matches!(fw.as_str(), "html" | "html/css/js" | "wordpress" | "wordpress-gutenberg" | "gutenberg") {
+        s.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;").replace("*/", "* /")
+    } else { let quoted = serde_json::to_string(s).unwrap(); quoted[1..quoted.len()-1].replace('<', "\\u003c") };
+    let section_title = escape(section_title);
+    let section_subtitle = escape(section_subtitle);
+    let cta_label = escape(cta_label);
     let bg = dna
         .colors
         .iter()
@@ -32,7 +39,10 @@ pub fn generate_framework_artifact(
         .unwrap_or("#F8F7F4");
     let fg = dna
         .colors
-        .first()
+        .iter()
+        .filter(|c| c.name.contains("ink") || c.name.contains("text") || c.name.contains("foreground"))
+        .max_by(|a,b| crate::intelligence::wcag_contrast(&a.value,bg).unwrap_or(0.0).total_cmp(&crate::intelligence::wcag_contrast(&b.value,bg).unwrap_or(0.0)))
+        .or_else(|| dna.colors.iter().max_by(|a,b| crate::intelligence::wcag_contrast(&a.value,bg).unwrap_or(0.0).total_cmp(&crate::intelligence::wcag_contrast(&b.value,bg).unwrap_or(0.0))))
         .map(|c| c.value.as_str())
         .unwrap_or("#141619");
     let accent = dna
@@ -620,6 +630,9 @@ h1 {{ font-family: {display_font}; font-size: clamp(2.25rem, 4.5vw, 4rem); line-
         }
     }
 
+    let radius = dna.radii_scale.values().next().map(String::as_str).unwrap_or("0");
+    for source in files.values_mut() { *source = source.replace("border-radius: 8px", &format!("border-radius: {radius}")).replace("border-radius:8px", &format!("border-radius:{radius}")); }
+    notes.push("This is a native-framework starter, not a composed final design or an accessibility certification. Retain inspected geometry, replace placeholder structure using the chosen composition, and review real renders.".into());
     AdapterOutput {
         framework: fw,
         files,

@@ -1,0 +1,1191 @@
+{
+  "mode": "new_website",
+  "query": "Industry: public library\nClient brief: Willow public library, a welcoming neighbourhood place for readers of every age. Help residents find books, see opening hours, discover events and join the library. Green and yellow, approachable editorial design, useful on phones, no installation commands or software imagery.\nAudience: local residents, families and readers\nPrimary action: search the catalogue\nBrand colours: #153E35, #F4F4E9, #D8F06B\nSubject objects: books, reading rooms, community events\nNo software installation instructions.",
+  "matched_industry": {
+    "slug": "brief-derived",
+    "name": "Public library (read from the brief)",
+    "keywords": [
+      "public",
+      "library"
+    ],
+    "recommended_styles": [
+      "kinetic-editorial",
+      "atelier-minimalism"
+    ],
+    "layout_archetype": "Public library: the reading room and 'find a book or join' lead the first screen; shelf marks, opening hours and event dates organise the rest",
+    "first_viewport_priority": "'find a book or join' working next to the reading room",
+    "typography_pairing": {
+      "id": "newsreader-public-sans",
+      "display_font": "Newsreader",
+      "body_font": "Public Sans",
+      "mono_font": "IBM Plex Mono",
+      "mood": "Newspaper-reading serif",
+      "scale_ratio": "1.414 (Augmented Fourth)",
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Newsreader:wght@700&family=Public+Sans:wght@400;700&family=IBM+Plex+Mono&display=swap"
+    },
+    "palette": {
+      "id": "brand-153e35-f4f4e9-d8f06b-on-library-baize",
+      "background": "#F4F4E9",
+      "surface": "#D8F06B",
+      "foreground": "#18221C",
+      "muted": "#4C5A50",
+      "primary_accent": "#153E35",
+      "secondary_accent": "#A0522D",
+      "wcag_body_contrast": 14.76,
+      "notes": "Brief colours #153E35, #F4F4E9, #D8F06B lead: #F4F4E9 is the ground; #153E35 as accents; #D8F06B as surfaces and deep tones, never accents | base Library baize green with sienna leather"
+    },
+    "conversion_trust_elements": [
+      "Real names, places and opening hours or response times",
+      "Specifics in the trade's own terms (shelf marks, opening hours and event dates)",
+      "One clear primary action: find a book or join"
+    ],
+    "motion_language": "Decide from the subject: motion that shows the trade's objects working, never decoration",
+    "anti_patterns": [
+      "Full-bleed hero photo with a centred script headline, and the hours, prices or menu hidden in a PDF",
+      "Grey page with one gold serif and a slideshow of exhibitions but no visit information",
+      "Stack-of-old-books stock photo with a script logo",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "default_dials": {
+      "design_variance": 5,
+      "motion_intensity": 4,
+      "visual_density": 5
+    },
+    "provenance": "Synthesised from the brief's own words (\"Industry: public library. Client brief: Willow public library, a welcoming neighbourhood place for readers of every age.\"); no catalogue industry matched, so check it against what the user meant."
+  },
+  "match_score": 0,
+  "match_confidence": "none",
+  "alternative_industries": [],
+  "distinctiveness": {
+    "place_cues": [],
+    "material_cues": [],
+    "category_cliches": [
+      "Full-bleed hero photo with a centred script headline, and the hours, prices or menu hidden in a PDF",
+      "Grey page with one gold serif and a slideshow of exhibitions but no visit information",
+      "Stack-of-old-books stock photo with a script logo",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "brief_signals": {
+    "surface": "venue",
+    "niche_tags": [
+      "civic",
+      "literary"
+    ],
+    "moods": [],
+    "constraints": [],
+    "motion_bias": 0,
+    "motion_cap": null,
+    "brief_colors": [
+      "#153E35",
+      "#F4F4E9",
+      "#D8F06B"
+    ],
+    "brief_color_roles": {
+      "primary": "#153E35"
+    },
+    "niches": [
+      "local-business",
+      "events",
+      "editorial",
+      "store"
+    ],
+    "brief_objects": [
+      "industry",
+      "public library",
+      "client brief",
+      "willow public library",
+      "welcoming neighbourhood place",
+      "readers",
+      "age",
+      "help residents"
+    ],
+    "brief_action": "search the catalogue"
+  },
+  "matched_styles": [
+    {
+      "slug": "swiss-editorial-grid",
+      "name": "Swiss Editorial Grid",
+      "category": "Architectural & Editorial",
+      "keywords": [
+        "swiss",
+        "editorial",
+        "grid",
+        "corporate",
+        "hairline",
+        "typography"
+      ],
+      "characteristics": [
+        "Exposed structural grid borders (`1px solid`) with generous internal cell padding",
+        "High-contrast serif or neo-grotesque display headlines paired with crisp body copy",
+        "Asymmetric column ratios (e.g., 4:8 or 5:7) with clear typographic hierarchy"
+      ],
+      "best_for": [
+        "Corporate & Enterprise",
+        "Editorial Publishing",
+        "Finance & Fintech",
+        "Architecture"
+      ],
+      "avoid_when": [
+        "Playful children's apps"
+      ],
+      "provenance": "adapted:awesome-design-skills+taste-skill+layoza"
+    },
+    {
+      "slug": "kinetic-editorial",
+      "name": "Kinetic Editorial Showcase",
+      "category": "Motion-Led & Creative",
+      "keywords": [
+        "kinetic",
+        "agency",
+        "studio",
+        "portfolio",
+        "gsap",
+        "scroll"
+      ],
+      "characteristics": [
+        "Choreographed display typography with SplitText mask reveals",
+        "Scroll-synchronized case study pinning and smooth image scale transitions",
+        "Tactile magnetic triggers with instant reduced-motion static fallback"
+      ],
+      "best_for": [
+        "Marketing Agencies",
+        "Creative Studios",
+        "Product Launches"
+      ],
+      "avoid_when": [
+        "High-density backoffice data entry forms"
+      ],
+      "provenance": "adapted:taste-skill+ui-ux-pro-max+layoza"
+    },
+    {
+      "slug": "atelier-minimalism",
+      "name": "Atelier Tactile Minimalism",
+      "category": "Luxury & Craft",
+      "keywords": [
+        "luxury",
+        "minimal",
+        "atelier",
+        "warm",
+        "serif",
+        "lookbook"
+      ],
+      "characteristics": [
+        "Warm paper and limestone neutrals (`#FAF8F5`) rather than sterile `#FFFFFF`",
+        "Unhurried vertical rhythm (`96px–140px` section spacing) and monograph captions",
+        "Zero decorative card wrappers; imagery and typography sit directly on the canvas"
+      ],
+      "best_for": [
+        "Luxury Brands",
+        "Hospitality & Resorts",
+        "Design Portfolios"
+      ],
+      "avoid_when": [
+        "Dense telemetry dashboards"
+      ],
+      "provenance": "adapted:impeccable+taste-skill+layoza"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 5,
+    "motion_intensity": 4,
+    "visual_density": 5
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — Public library (read from the brief) (Shelf Browser)",
+      "style_family": "atelier-minimalism",
+      "layout_composition": "Public library as a shelf: the first screen is a row of the reading room the visitor can run along, each item tilting out to show its card; the catalogue and the events board as shelves below; 'find a book or join' on every card. Structure: a shelf of real items (spines, jars, bolts) the visitor runs along. Knobs: density airy; span irregularity high; accent on the selected option and the primary button. Mobile: the shelf scrolls sideways with a visible edge; tapping an item opens it below",
+      "visual_identity": "Shop shelf: EB Garamond for shelf labels, Libre Franklin for cards; palette brand-153e35-f4f4e9-d8f06b-on-library-baize (light ground): brief colours #153e35, #f4f4e9, #d8f06b lead: #f4f4e9 is the ground; #153e35 as accents; #d8f06b as surfaces and deep tones, never accents; real photographs of the items; corners: square corners (0) on cards, buttons and images (sharp-0); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks EB Garamond: Georgia, 'Times New Roman', serif; Libre Franklin: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "eb-garamond-libre-franklin",
+        "display_font": "EB Garamond",
+        "body_font": "Libre Franklin",
+        "mono_font": "Courier Prime",
+        "mood": "Bookish and familiar, a shop that reads",
+        "scale_ratio": "1.250 (Major Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Libre+Franklin:wght@400;700&family=Courier+Prime&display=swap"
+      },
+      "palette": {
+        "id": "brand-153e35-f4f4e9-d8f06b-on-library-baize",
+        "background": "#F4F4E9",
+        "surface": "#D8F06B",
+        "foreground": "#18221C",
+        "muted": "#4C5A50",
+        "primary_accent": "#153E35",
+        "secondary_accent": "#A0522D",
+        "wcag_body_contrast": 14.76,
+        "notes": "Brief colours #153E35, #F4F4E9, #D8F06B lead: #F4F4E9 is the ground; #153E35 as accents; #D8F06B as surfaces and deep tones, never accents | base Library baize green with sienna leather"
+      },
+      "content_treatment": "Staff notes on each item; prices and availability (shelf marks, opening hours and event dates)",
+      "motion_choreography": "Items tilt out on hover or focus (150ms); nothing moves on scroll",
+      "dials": {
+        "design_variance": 5,
+        "motion_intensity": 4,
+        "visual_density": 5
+      },
+      "rationale": "Shelf Browser for \"public library\" (venue surface): browsing the real shelf is the pleasure, so the shelf is the interface. Type EB Garamond / Libre Franklin (bookish and familiar, a shop that reads) for an editorial voice, tagged literary/civic like the brief. Palette brand-153e35-f4f4e9-d8f06b-on-library-baize on a light ground, tagged literary/civic like the brief. First screen: layered composition, hero material object, look family warm-paper-serif, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): items tilt out on hover. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#153E35, #F4F4E9, #D8F06B). Other structures that fit this slot: Broadsheet Front Page, Wayfinding Map, Numbers Up Front, Timeline Spine, Plain Index Page, Open Letter.",
+      "mechanics": [
+        {
+          "id": "hero-annotation-ink",
+          "name": "Annotated by hand",
+          "kind": "hero",
+          "role": "hero",
+          "family": "annotation-ink",
+          "intensity": "bold",
+          "still_check": "Any still shows typeset h1 plus every annotation complete.",
+          "composition": "layered",
+          "hero_material": "generated-image",
+          "look_family": "playful-cutout"
+        },
+        {
+          "id": "section-location-walking-radius",
+          "name": "Walking radius map",
+          "kind": "section",
+          "role": "location",
+          "family": "walking-radius",
+          "intensity": "bold",
+          "still_check": "Any still shows map, rings and labels."
+        },
+        {
+          "id": "about-founding-letter-papers",
+          "name": "Founding letter on stacked paper",
+          "kind": "section",
+          "role": "about",
+          "family": "layered-paper",
+          "intensity": "calm",
+          "still_check": "At 50% the letter is fully legible, sheets are half fanned, and the first two margin notes are visible. At 25% sheets are nearly closed with one note; at 75% sheets are fully fanned and the signature starts."
+        }
+      ],
+      "hero_material": "object",
+      "radius": "sharp-0",
+      "archetype": "shelf-browser",
+      "nav": {
+        "id": "nav-basket-ledger",
+        "name": "Search-led shop nav",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-basket-ledger",
+        "intensity": "calm",
+        "still_check": "Any still shows search, every visible chip, basket count and total.",
+        "look_family": "quiet-civic"
+      },
+      "footer": {
+        "id": "footer-category-shelf",
+        "name": "Category shelf footer",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-category-shelf",
+        "intensity": "calm",
+        "still_check": "Any still shows every tile with its name, the three promises and the final row.",
+        "look_family": "soft-stone"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.8rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.441rem",
+        "h2": "1.953rem",
+        "h3": "1.562rem",
+        "label": "0.8rem",
+        "lead": "1.25rem",
+        "ratio": "1.25",
+        "small": "0.9rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "object-centre",
+          "build": "One object centre-stage at large scale; type tucked around or behind it."
+        },
+        "flow": {
+          "id": "editorial-column",
+          "build": "Single editorial column (~65ch) with images breaking out full-width between passages."
+        },
+        "section_head": {
+          "id": "question-heads",
+          "build": "Each head is a visitor's question in plain words; the answer starts right below."
+        },
+        "ground": {
+          "id": "paper-grain",
+          "build": "Warm paper ground with a faint grain; sections part on torn or deckled edges, not boxes."
+        },
+        "material": {
+          "id": "illustrated",
+          "build": "One illustration style (one hand, one line weight) across every section."
+        },
+        "labels": {
+          "id": "small-caps",
+          "build": "True small caps from the body face for labels and metadata."
+        },
+        "motion": {
+          "id": "medium",
+          "build": "Medium motion: scroll reveals (opacity plus at most 24px translate, ending visible) and hover physics on cards and links, plus one signature: path-draw (Canvas 2D / SVG path morphs). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "path-draw",
+            "build": "An SVG line draws itself along the section's route or process.",
+            "tool": "canvas-svg",
+            "tool_name": "Canvas 2D / SVG path morphs",
+            "fallback": "the line is drawn complete."
+          }
+        ],
+        "motion_signature": "path-draw",
+        "motion_tools": [
+          "canvas-svg"
+        ],
+        "pinned_by_prompt": [
+          "palette"
+        ],
+        "motif": {
+          "id": "arch-top",
+          "build": "Arch top: media frames and the main feature panel rise into one round arch drawn from the reading room; one arch, one radius, repeated."
+        },
+        "button": {
+          "id": "pill",
+          "build": "Primary: solid accent pill echoing the arch, 48px tall with 28px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same size with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — Public library (read from the brief) (Neighbourhood Map)",
+      "style_family": "atelier-minimalism",
+      "layout_composition": "Public library on a full-width drawn map of its surroundings: the reading room marked first, the catalogue and the events board as nearby points; a floating card on the map holds 'find a book or join' and opening hours. Structure: a full-width drawn map as the first screen, with the action floating on it. Knobs: density standard; span irregularity medium; accent on the visitor's chosen point. Mobile: the map is a fixed-height frame; a list of places sits under it",
+      "visual_identity": "Drawn cartography: Author for place names, Author for cards; palette brand-153e35-f4f4e9-d8f06b-on-tatami (light ground): brief colours #153e35, #f4f4e9, #d8f06b lead: #f4f4e9 is the ground; #153e35 as accents; #d8f06b as surfaces and deep tones, never accents; hand-drawn lines, flat fills; corners: 12px on cards and images, 8px on controls (soft-12); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Author: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Author: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Spline Sans Mono loads from a second stylesheet: https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap",
+      "typography": {
+        "id": "author-solo",
+        "display_font": "Author",
+        "body_font": "Author",
+        "mono_font": "Spline Sans Mono",
+        "mood": "Book-grotesk, quiet. Display and body from Fontshare; load Spline Sans Mono from Google Fonts",
+        "scale_ratio": "1.250 (Major Third)",
+        "google_fonts_url": "https://api.fontshare.com/v2/css?f[]=author@400,700&display=swap"
+      },
+      "palette": {
+        "id": "brand-153e35-f4f4e9-d8f06b-on-tatami",
+        "background": "#F4F4E9",
+        "surface": "#D8F06B",
+        "foreground": "#1E1C12",
+        "muted": "#524D38",
+        "primary_accent": "#153E35",
+        "secondary_accent": "#8F3B2A",
+        "wcag_body_contrast": 15.42,
+        "notes": "Brief colours #153E35, #F4F4E9, #D8F06B lead: #F4F4E9 is the ground; #153E35 as accents; #D8F06B as surfaces and deep tones, never accents | base Tatami straw with rush green and lacquer brown"
+      },
+      "content_treatment": "Where it is, what is near, how to arrive (shelf marks, opening hours and event dates); then the action",
+      "motion_choreography": "Scroll pans the map from the wider area to the door; the card pins at the end",
+      "dials": {
+        "design_variance": 8,
+        "motion_intensity": 7,
+        "visual_density": 4
+      },
+      "rationale": "Neighbourhood Map for \"public library\" (venue surface): the place's surroundings (streets, coast, route) are part of what the visitor is choosing. Type Author / Author (book-grotesk, quiet. display and body from fontshare; load spline sans mono from google fonts) for a utility voice, tagged literary/civic like the brief. Palette brand-153e35-f4f4e9-d8f06b-on-tatami on a light ground. First screen: full-bleed composition, hero material map, look family soft-organic, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): the map pans to each chosen place. Licence: ITF Free Font License (Fontshare). Brand first: palette built around the brief's colours (#153E35, #F4F4E9, #D8F06B). Other structures that fit this slot: Timeline Spine, Marquee Statement, Colour-Field Poster, Manifesto Sheet, Card Stack, Kinetic Type Field.",
+      "mechanics": [
+        {
+          "id": "hero-shoppable-still-life",
+          "name": "Shoppable Still Life",
+          "kind": "hero",
+          "role": "hero",
+          "family": "hover-preview",
+          "intensity": "calm",
+          "still_check": "At 50% the photo is sharp, headline readable, all hotspots visible, index list present. 25% and 75% differ only by the slight photo scale; no card should be half-open in a static capture.",
+          "composition": "full-bleed",
+          "hero_material": "real-photo",
+          "look_family": "documentary-photo"
+        },
+        {
+          "id": "location-transit-directions-route",
+          "name": "From the station, on foot",
+          "kind": "section",
+          "role": "location",
+          "family": "map-route",
+          "intensity": "bold",
+          "still_check": "At 50% the route is drawn past the second landmark, step 2 is active, all step text is legible, and the map is never blank. At 25% the first segment and step 1 show; at 75% step 3 and most of the route show."
+        },
+        {
+          "id": "catalogue-aisle-shelf-track",
+          "name": "Aisle shelf with hanging signs",
+          "kind": "section",
+          "role": "catalogue",
+          "family": "horizontal-track",
+          "intensity": "bold",
+          "still_check": "At 50% the shelf is mid-aisle with one hanging sign readable, at least five full price labels legible, and no empty shelf gaps. At 25% the Pantry and Dairy signs show; at 75% Bakery to Household with a different indicator number."
+        }
+      ],
+      "hero_material": "map",
+      "radius": "soft-12",
+      "archetype": "neighbourhood-map",
+      "nav": {
+        "id": "nav-open-status-bar",
+        "name": "Open-now nav bar",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-open-status",
+        "intensity": "calm",
+        "still_check": "Any still shows status, phone and address.",
+        "look_family": "quiet-civic"
+      },
+      "footer": {
+        "id": "footer-map-band",
+        "name": "Map band footer",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-map-band",
+        "intensity": "bold",
+        "still_check": "Any still shows the map, block text and policies.",
+        "look_family": "technical-blueprint"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.8rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.441rem",
+        "h2": "1.953rem",
+        "h3": "1.562rem",
+        "label": "0.8rem",
+        "lead": "1.25rem",
+        "ratio": "1.25",
+        "small": "0.9rem"
+      },
+      "extra_font_url": "https://fonts.googleapis.com/css2?family=Spline+Sans+Mono&display=swap",
+      "page_shape": {
+        "hero_frame": {
+          "id": "close-crop",
+          "build": "Extreme close-up crop of one detail fills the screen; headline tucked in one corner."
+        },
+        "flow": {
+          "id": "horizontal-chapters",
+          "build": "Horizontal chapters: one section scrolls sideways through panels, then the page continues down."
+        },
+        "section_head": {
+          "id": "run-in",
+          "build": "Run-in heads: a bold title opens the first sentence of the section, no line break."
+        },
+        "ground": {
+          "id": "full-bleed-media",
+          "build": "Full-bleed image or 3D backdrops behind key sections, with a scrim for text contrast."
+        },
+        "material": {
+          "id": "paper-print",
+          "build": "Paper and print artefacts: tickets, receipts, labels, stamps, folded sheets."
+        },
+        "labels": {
+          "id": "sentence-case",
+          "build": "Sentence case only, body face; labels read as plain words, no caps anywhere."
+        },
+        "motion": {
+          "id": "medium",
+          "build": "Medium motion: scroll reveals (opacity plus at most 24px translate, ending visible) and hover physics on cards and links, plus one signature: mask-wipe (CSS scroll-driven animations (animation-timeline: view()/scroll())). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "mask-wipe",
+            "build": "Images reveal through a mask wipe as they enter.",
+            "tool": "css-scroll",
+            "tool_name": "CSS scroll-driven animations (animation-timeline: view()/scroll())",
+            "fallback": "images are fully shown."
+          }
+        ],
+        "motion_signature": "mask-wipe",
+        "motion_tools": [
+          "css-scroll"
+        ],
+        "pinned_by_prompt": [
+          "palette"
+        ],
+        "motif": {
+          "id": "ruled-frame",
+          "build": "Ruled frame: every chapter opens on a hairline rule with a short thick start segment, drawn from the trim lines of the catalogue; figures and captions hang from the rule, which never crosses media."
+        },
+        "button": {
+          "id": "square-ruled",
+          "build": "Primary: solid accent fill, 48px tall with 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — Public library (read from the brief) (Booking-First Board)",
+      "style_family": "crisp-product-workbench",
+      "layout_composition": "Booking-first board for the public library: date and time slots (with party size where it applies) working above the fold, stacked over today's board (the reading room, the catalogue, with prices or availability); location, hours and access follow as a ruled table. Structure: slots above the fold over today's board; location and hours as a ruled table. Knobs: density standard; span irregularity low; accent on links and the primary action. Mobile: slots become a horizontal day strip and a 2-column time grid with 48px targets",
+      "visual_identity": "The venue's own board, ticket or label as the visual system: Arsenal for the board, Arsenal at large sizes for phones; palette brand-153e35-f4f4e9-d8f06b-on-marbled-endpaper (light ground): brief colours #153e35, #f4f4e9, #d8f06b lead: #f4f4e9 is the ground; #153e35 as accents; #d8f06b as surfaces and deep tones, never accents; corners: ticket shapes: notched or perforated corners on cards, square controls (ticket-notch); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Arsenal: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Arsenal: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "arsenal-solo",
+        "display_font": "Arsenal",
+        "body_font": "Arsenal",
+        "mono_font": "Fira Code",
+        "mood": "Ukrainian-designed grotesk, Cyrillic-native",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Fira+Code&display=swap"
+      },
+      "palette": {
+        "id": "brand-153e35-f4f4e9-d8f06b-on-marbled-endpaper",
+        "background": "#F4F4E9",
+        "surface": "#D8F06B",
+        "foreground": "#111111",
+        "muted": "#60605D",
+        "primary_accent": "#153E35",
+        "secondary_accent": "#E9A07A",
+        "wcag_body_contrast": 17.05,
+        "notes": "Brief colours #153E35, #F4F4E9, #D8F06B lead: #F4F4E9 is the ground; #153E35 as accents; #D8F06B as surfaces and deep tones, never accents | base Marbled-endpaper blue with salmon and pale-green veins"
+      },
+      "content_treatment": "Utility first: can I find a book or join, what is on today, how do I get there",
+      "motion_choreography": "Slot-selection micro-interactions only (150ms); nothing moves on scroll; reduced-motion removes them",
+      "dials": {
+        "design_variance": 5,
+        "motion_intensity": 4,
+        "visual_density": 7
+      },
+      "rationale": "Booking-First Board for \"public library\" (venue surface): most visitors arrive to book or check availability, often on a phone. Type Arsenal / Arsenal (ukrainian-designed grotesk, cyrillic-native) for a utility voice, tagged civic like the brief. Palette brand-153e35-f4f4e9-d8f06b-on-marbled-endpaper on a light ground, tagged literary like the brief. First screen: stacked composition, hero material document, look family retro-print, corners ticket-notch. Motion flavour (tier and tools follow page_shape.motion): slot-selection micro-interactions. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#153E35, #F4F4E9, #D8F06B). Other structures that fit this slot: Plain Index Page, Card Stack, Week Grid.",
+      "mechanics": [
+        {
+          "id": "hero-contact-sheet",
+          "name": "Contact sheet with grease pencil",
+          "kind": "hero",
+          "role": "hero",
+          "family": "contact-sheet",
+          "intensity": "bold",
+          "still_check": "At 50% the circle is fully drawn around frame 3 or 4 and its caption matches.",
+          "composition": "stacked",
+          "hero_material": "real-photo",
+          "look_family": "cinematic-film"
+        },
+        {
+          "id": "section-location-arrival-steps",
+          "name": "How to arrive",
+          "kind": "section",
+          "role": "location",
+          "family": "arrival-steps",
+          "intensity": "calm",
+          "still_check": "Any still shows every step and photo."
+        },
+        {
+          "id": "data-story-annotated-chart-build",
+          "name": "Chart that builds with annotated stills",
+          "kind": "section",
+          "role": "data-story",
+          "family": "chart-build",
+          "intensity": "bold",
+          "still_check": "At 50% the line reaches the second event with that callout fully readable and earlier markers visible; chart never empty. At 25% only the first event is annotated; at 75% both series appear."
+        }
+      ],
+      "hero_material": "document",
+      "radius": "ticket-notch",
+      "archetype": "booking-board",
+      "nav": {
+        "id": "nav-masthead-dateline",
+        "name": "Newspaper masthead nav",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-masthead-dateline",
+        "intensity": "bold",
+        "still_check": "Any still shows the masthead or the compact bar complete.",
+        "look_family": "hairline-newspaper"
+      },
+      "footer": {
+        "id": "footer-week-hours",
+        "name": "Week hours footer",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-week-hours",
+        "intensity": "calm",
+        "still_check": "Any still shows all seven days with hours, today highlighted, address and phone.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "index-first",
+          "build": "Index first: the page opens on a list of real items with counts, no hero image."
+        },
+        "flow": {
+          "id": "drawer-rows",
+          "build": "Numbered rows that open in place to reveal each section, like a chapter index."
+        },
+        "section_head": {
+          "id": "centred-overline",
+          "build": "Centred title with one small overline word above it; symmetric openings."
+        },
+        "ground": {
+          "id": "duotone-photo",
+          "build": "Photos washed into a two-colour duotone from the palette become the section grounds."
+        },
+        "material": {
+          "id": "tactile",
+          "build": "Tactile surfaces sampled from the trade itself: fabric, stone, wood, metal grain."
+        },
+        "labels": {
+          "id": "italic-captions",
+          "build": "Italic labels in the display face, set like captions in a book."
+        },
+        "motion": {
+          "id": "medium",
+          "build": "Medium motion: scroll reveals (opacity plus at most 24px translate, ending visible) and hover physics on cards and links, plus one signature: drag-carousel (GSAP + ScrollTrigger). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "drag-carousel",
+            "build": "Draggable carousel of real items with inertia and snap.",
+            "tool": "gsap",
+            "tool_name": "GSAP + ScrollTrigger",
+            "fallback": "a plain scroll-snap row."
+          }
+        ],
+        "motion_signature": "drag-carousel",
+        "motion_tools": [
+          "gsap"
+        ],
+        "pinned_by_prompt": [
+          "palette"
+        ],
+        "motif": {
+          "id": "round-mask",
+          "build": "Round mask: one feature image per chapter sits in a full circle and bullets are dots, taken from the events board; everything else stays square."
+        },
+        "button": {
+          "id": "pill",
+          "build": "Primary: solid accent pill, 48px tall with 28px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same height with a 1px outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "ROTATION: tell the user in one line before dealing: The last 20 runs used kinetic-editorial 9 times, swiss-editorial-grid 6 times, atelier-minimalism 4 times, crisp-product-workbench 4 times; this run picks from {hero-annotation-ink, hero-shoppable-still-life, hero-contact-sheet}.",
+    "CUSTOM ROUTE (no library trade fits and the brief describes its own world in detail): treat the library directions as sketches, not picks. Derive the look from the brief's objects: (1) palette from photographs or physical materials of 2-3 named objects (sample the real colours, then check WCAG pairs); (2) type from the trade's own lettering (signage, labels, documents, instruments) and a readable body face; (3) layout from how the objects are arranged in real life (a ledger, a shelf, a route, a timetable); (4) one hero material the subject actually has. Record each derivation in .layoza/direction.md so the reviewer can check it.",
+    "BRIEF COLOURS: the brief names its own colours (#153E35, #F4F4E9, #D8F06B). Use them as the palette in every direction (check WCAG pairs); the direction palettes below are fallbacks only.",
+    "BRIEF OBJECTS: no catalogue trade matched, so the subject is read from the brief's own words: industry, public library, client brief, willow public library, welcoming neighbourhood place, readers, age, help residents. Map every direction and every dealt mechanic onto these objects (the hero shows one of them, sections are built from their real names, numbers and records), never onto the catalogue's example objects. Call to action: search the catalogue.",
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest layered / full-bleed / stacked (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error.",
+    "DIRECTIONS: render three materially different compositions with identical factual content and available assets at desktop and phone sizes. Compare the actual renders for hierarchy, typography, image integration, clarity and full-page rhythm. Choose with reasons as the designer unless the user asked to choose. Persist candidates, screenshot evidence and visible tradeoffs with review_design; never invent user approval. Library deals are starting material, not mandatory shapes or a substitute for art direction.",
+    "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.",
+    "FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.",
+    "COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.",
+    "SELF-CRITIQUE before QA: score philosophy, hierarchy, execution, specificity, restraint, variety from 1 to 5; any score below 3 means revise first. Put the stamp `/* layoza · direction: <A|B|C> · structure: <style_family> · hero: <hero id> · palette: <palette id> · type: <type id> · critique: P4 H4 E4 S4 R4 V4 */` as the first line of the main CSS (your direction, structure, hero, palette, type and scores).",
+    "LOOK LEDGER: steered away from 36 look(s) in this project's last 20 run(s) (.layoza/looks.jsonl); 8 slot repeat(s) remain (see `uniqueness`). Pass ledger=false (CLI --no-ledger) to ignore it."
+  ],
+  "scope": "page",
+  "custom_route": "CUSTOM ROUTE (no library trade fits and the brief describes its own world in detail): treat the library directions as sketches, not picks. Derive the look from the brief's objects: (1) palette from photographs or physical materials of 2-3 named objects (sample the real colours, then check WCAG pairs); (2) type from the trade's own lettering (signage, labels, documents, instruments) and a readable body face; (3) layout from how the objects are arranged in real life (a ledger, a shelf, a route, a timetable); (4) one hero material the subject actually has. Record each derivation in .layoza/direction.md so the reviewer can check it.",
+  "rotation": "The last 20 runs used kinetic-editorial 9 times, swiss-editorial-grid 6 times, atelier-minimalism 4 times, crisp-product-workbench 4 times; this run picks from {hero-annotation-ink, hero-shoppable-still-life, hero-contact-sheet}.",
+  "uniqueness": {
+    "ledger": "on",
+    "window": 36,
+    "entries_compared": 36,
+    "slots": [
+      {
+        "slot": "A.nav",
+        "id": "nav-basket-ledger",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.hero",
+        "id": "hero-annotation-ink",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.section-1",
+        "id": "section-location-walking-radius",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.section-2",
+        "id": "about-founding-letter-papers",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.footer",
+        "id": "footer-category-shelf",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.palette",
+        "id": "brand-153e35-f4f4e9-d8f06b-on-library-baize",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "A.typography",
+        "id": "eb garamond/libre franklin",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.archetype",
+        "id": "shelf-browser",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.hero-frame",
+        "id": "object-centre",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.flow",
+        "id": "editorial-column",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.section-head",
+        "id": "question-heads",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.ground",
+        "id": "paper-grain",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.material",
+        "id": "illustrated",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.labels",
+        "id": "small-caps",
+        "status": "repeat (last used 4 entries ago, 2 min ago)"
+      },
+      {
+        "slot": "A.motion",
+        "id": "path-draw",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.nav",
+        "id": "nav-open-status-bar",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.hero",
+        "id": "hero-shoppable-still-life",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.section-1",
+        "id": "location-transit-directions-route",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.section-2",
+        "id": "catalogue-aisle-shelf-track",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.footer",
+        "id": "footer-map-band",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.palette",
+        "id": "brand-153e35-f4f4e9-d8f06b-on-tatami",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "B.typography",
+        "id": "author/author",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.archetype",
+        "id": "neighbourhood-map",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.hero-frame",
+        "id": "close-crop",
+        "status": "repeat (last used 9 entries ago, 2 h ago)"
+      },
+      {
+        "slot": "B.flow",
+        "id": "horizontal-chapters",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.section-head",
+        "id": "run-in",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.ground",
+        "id": "full-bleed-media",
+        "status": "repeat (last used 3 entries ago, just now)"
+      },
+      {
+        "slot": "B.material",
+        "id": "paper-print",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.labels",
+        "id": "sentence-case",
+        "status": "repeat (last used 5 entries ago, 2 min ago)"
+      },
+      {
+        "slot": "B.motion",
+        "id": "mask-wipe",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.nav",
+        "id": "nav-masthead-dateline",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.hero",
+        "id": "hero-contact-sheet",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.section-1",
+        "id": "section-location-arrival-steps",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.section-2",
+        "id": "data-story-annotated-chart-build",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.footer",
+        "id": "footer-week-hours",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.palette",
+        "id": "brand-153e35-f4f4e9-d8f06b-on-marbled-endpaper",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "C.typography",
+        "id": "arsenal/arsenal",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.archetype",
+        "id": "booking-board",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.hero-frame",
+        "id": "index-first",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.flow",
+        "id": "drawer-rows",
+        "status": "repeat (last used 5 entries ago, 2 min ago)"
+      },
+      {
+        "slot": "C.section-head",
+        "id": "centred-overline",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.ground",
+        "id": "duotone-photo",
+        "status": "repeat (last used 2 entries ago, just now)"
+      },
+      {
+        "slot": "C.material",
+        "id": "tactile",
+        "status": "repeat (last used 7 entries ago, 2 h ago)"
+      },
+      {
+        "slot": "C.labels",
+        "id": "italic-captions",
+        "status": "repeat (last used 2 entries ago, just now)"
+      },
+      {
+        "slot": "C.motion",
+        "id": "drag-carousel",
+        "status": "fresh"
+      }
+    ],
+    "fresh": 34,
+    "repeats": 8,
+    "score": 81,
+    "verdict": "8 of 42 slots repeat (A.labels small-caps, B.hero-frame close-crop, B.ground full-bleed-media, B.labels sentence-case, C.flow drawer-rows, C.ground duotone-photo, C.material tactile, C.labels italic-captions): no fresh pick fit those slots as well. Tell the user, then re-deal with another seed/variant, `avoid` the ids, or replace them by hand."
+  },
+  "understood_brief": {
+    "trade": "Public library (read from the brief) (none match)",
+    "subject": "public library",
+    "audience": "local residents, families and readers",
+    "primary_action": "search the catalogue",
+    "tone": [
+      "trust"
+    ],
+    "motion_wish": "medium (niche default, up to medium)",
+    "must_haves": [
+      "colour #153E35",
+      "colour #F4F4E9",
+      "colour #D8F06B",
+      "green palette",
+      "Do not use: software installation instructions"
+    ],
+    "pinned_by_prompt": [
+      "palette"
+    ],
+    "assumed": [
+      "motion: medium (niche default, up to medium)",
+      "stack: the project's own framework if one exists, else plain HTML/CSS/JS"
+    ],
+    "open_questions": []
+  },
+  "creative_workspace": {
+    "brief_context": {
+      "subject": "public library",
+      "audience": "local residents, families and readers",
+      "primary_action": "search the catalogue",
+      "objects": [
+        "books",
+        "reading rooms",
+        "community events"
+      ],
+      "facts": [],
+      "required_content": [],
+      "forbidden": [
+        "software installation instructions"
+      ],
+      "display_font": "",
+      "body_font": "",
+      "colors": [
+        "#153E35",
+        "#F4F4E9",
+        "#D8F06B"
+      ],
+      "assets": []
+    },
+    "context_basis": "explicit structured client context supplied by the calling designer",
+    "concepts": [
+      {
+        "direction": 1,
+        "title": "Direction A — Public library (read from the brief) (Shelf Browser)",
+        "composition": "Public library as a shelf: the first screen is a row of the reading room the visitor can run along, each item tilting out to show its card; the catalogue and the events board as shelves below; 'find a book or join' on every card. Structure: a shelf of real items (spines, jars, bolts) the visitor runs along. Knobs: density airy; span irregularity high; accent on the selected option and the primary button. Mobile: the shelf scrolls sideways with a visible edge; tapping an item opens it below",
+        "why_this_subject": "Shelf Browser for \"public library\" (venue surface): browsing the real shelf is the pleasure, so the shelf is the interface. Type EB Garamond / Libre Franklin (bookish and familiar, a shop that reads) for an editorial voice, tagged literary/civic like the brief. Palette brand-153e35-f4f4e9-d8f06b-on-library-baize on a light ground, tagged literary/civic like the brief. First screen: layered composition, hero material object, look family warm-paper-serif, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): items tilt out on hover. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#153E35, #F4F4E9, #D8F06B). Other structures that fit this slot: Broadsheet Front Page, Wayfinding Map, Numbers Up Front, Timeline Spine, Plain Index Page, Open Letter.",
+        "image_medium": "object",
+        "asset_plan": {
+          "subject": "public library",
+          "medium": "object",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction A — Public library (read from the brief) (Shelf Browser) requires convincing object material; judge the actual render before committing."
+      },
+      {
+        "direction": 2,
+        "title": "Direction B — Public library (read from the brief) (Neighbourhood Map)",
+        "composition": "Public library on a full-width drawn map of its surroundings: the reading room marked first, the catalogue and the events board as nearby points; a floating card on the map holds 'find a book or join' and opening hours. Structure: a full-width drawn map as the first screen, with the action floating on it. Knobs: density standard; span irregularity medium; accent on the visitor's chosen point. Mobile: the map is a fixed-height frame; a list of places sits under it",
+        "why_this_subject": "Neighbourhood Map for \"public library\" (venue surface): the place's surroundings (streets, coast, route) are part of what the visitor is choosing. Type Author / Author (book-grotesk, quiet. display and body from fontshare; load spline sans mono from google fonts) for a utility voice, tagged literary/civic like the brief. Palette brand-153e35-f4f4e9-d8f06b-on-tatami on a light ground. First screen: full-bleed composition, hero material map, look family soft-organic, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): the map pans to each chosen place. Licence: ITF Free Font License (Fontshare). Brand first: palette built around the brief's colours (#153E35, #F4F4E9, #D8F06B). Other structures that fit this slot: Timeline Spine, Marquee Statement, Colour-Field Poster, Manifesto Sheet, Card Stack, Kinetic Type Field.",
+        "image_medium": "map",
+        "asset_plan": {
+          "subject": "public library",
+          "medium": "map",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction B — Public library (read from the brief) (Neighbourhood Map) requires convincing map material; judge the actual render before committing."
+      },
+      {
+        "direction": 3,
+        "title": "Direction C — Public library (read from the brief) (Booking-First Board)",
+        "composition": "Booking-first board for the public library: date and time slots (with party size where it applies) working above the fold, stacked over today's board (the reading room, the catalogue, with prices or availability); location, hours and access follow as a ruled table. Structure: slots above the fold over today's board; location and hours as a ruled table. Knobs: density standard; span irregularity low; accent on links and the primary action. Mobile: slots become a horizontal day strip and a 2-column time grid with 48px targets",
+        "why_this_subject": "Booking-First Board for \"public library\" (venue surface): most visitors arrive to book or check availability, often on a phone. Type Arsenal / Arsenal (ukrainian-designed grotesk, cyrillic-native) for a utility voice, tagged civic like the brief. Palette brand-153e35-f4f4e9-d8f06b-on-marbled-endpaper on a light ground, tagged literary like the brief. First screen: stacked composition, hero material document, look family retro-print, corners ticket-notch. Motion flavour (tier and tools follow page_shape.motion): slot-selection micro-interactions. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#153E35, #F4F4E9, #D8F06B). Other structures that fit this slot: Plain Index Page, Card Stack, Week Grid.",
+        "image_medium": "document",
+        "asset_plan": {
+          "subject": "public library",
+          "medium": "document",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction C — Public library (read from the brief) (Booking-First Board) requires convincing document material; judge the actual render before committing."
+      }
+    ],
+    "selection": "Render the three concepts with identical real content and available assets. Pick the clearest, most expressive, subject-specific composition; record the decision and visible tradeoffs with review_design. Familiar controls may be reused when they serve the task.",
+    "success": [
+      "brief fidelity",
+      "clear hierarchy",
+      "expressive typography",
+      "convincing imagery",
+      "coherent colour and spacing",
+      "complete page rhythm",
+      "designed phone composition",
+      "usable interactions"
+    ],
+    "novelty": "A supporting signal, never a reason to change a working brand or navigation pattern",
+    "design_gate": "Browser defects and recorded process only. Exceptional design requires reviewing the actual renders, not passing a numeric checker."
+  },
+  "client_request": "Willow public library, a welcoming neighbourhood place for readers of every age. Help residents find books, see opening hours, discover events and join the library. Green and yellow, approachable editorial design, useful on phones, no installation commands or software imagery.",
+  "ledger": "written C:\\Users\\ajjma\\Desktop\\sharethrone\\.layoza\\looks.jsonl",
+  "registers": [
+    "civic",
+    "editorial",
+    "craft"
+  ],
+  "craft_floor": [
+    "Header: one row, 60-88px tall on desktop and 56-76px on mobile; logo 24-40px high on the left, 4-6 nav links of 15-16px at weight 500 with 24-40px between them, the primary action on the right at the header's button size. Phone or hours sit in that row or the footer; no utility bar stacked above the nav. Mark the current link with a 2px underline 6px below the text; a sticky header turns opaque after the first scroll, never taller.",
+    "Primary button: 48-60px tall, horizontal padding 20-32px (about twice the vertical), label 15-17px at weight 600 in sentence or title case with tracking 0-0.02em, at most one drawn SVG icon of 16-20px set 8px from the label. The secondary action matches its height, radius and padding as an outline (1-1.5px) or ghost; one button shape and radius on the whole page, 44px minimum hit area everywhere.",
+    "Button states, all four authored: :hover shifts the fill by 6-10% lightness or nudges the icon 2-4px; :active presses with translateY(1px) or scale(0.98) over 80-120ms; :focus-visible draws a 2px ring at 2-3px offset with at least 3:1 contrast; disabled sits at 45-55% opacity with cursor not-allowed. No state changes width, height or padding.",
+    "Type scale: at most 8 distinct font sizes each carry 2% or more of the text on a desktop render, each step at least 1.2x the one below; body 18-21px at line-height 1.5-1.65; headings at line-height 1.0-1.15. The h1 tops out at 80px on desktop (set with clamp()), and display sizes of 48px and up track -0.02 to -0.04em, never tighter than -0.05em; body text keeps tracking at 0.",
+    "Measure: prose never runs past 76 characters a line (cap paragraphs at 60-68ch with max-width); h1 lines stay under 20ch and h2 under 24ch; no centred paragraph runs past three lines.",
+    "Spacing rhythm: every gap comes from one 4/8px scale. Sections pad 72-136px top and bottom on desktop and 64-96px on mobile; a heading sits 16-24px above its text and has at least twice that space above it; content width caps at 1200-1320px with 24-40px gutters on desktop and 16-20px on mobile.",
+    "Section heads: one heading per section (one h2, or the h1 in the hero) and at most one lead paragraph of 40 words or fewer. No stacked pile of label, heading, accent-coloured second heading and paragraph; a second voice goes in the body, not the head.",
+    "Composition: no two neighbouring sections share a layout; use 4 or more layout kinds across the page (split, full-bleed media, list or table, asymmetric grid, quote, form). Card rows vary span or media; never a grid of equal cards that differ only by text.",
+    "Hero: the h1, one supporting paragraph of 30 words or fewer, at most two actions and one real picture or film; at most 14 text blocks in the first viewport. Spec tables, chip rows and stat grids go below the fold (one slim proof strip may sit on the fold line). On a 390x844 phone a real picture is in view before the first scroll.",
+    "Imagery: real photographs or renders of the trade's own objects, one aspect ratio per row (16:9, 3:2, 4:3 or 1:1) with object-fit: cover, corner radius from the button's family. Nothing decorative over a product picture: no hairlines, crosshairs, hotspot squares or graph-paper grids. Text on a photo sits on a scrim that holds 4.5:1; captions 13-14px in the muted ink.",
+    "Colour: one accent on no more than about 10% of any screen (primary action, links, one highlight); neutrals tinted toward the accent hue, never pure grey; at most two ground colours plus one accent ground across the page; body and secondary text at 4.5:1 or better, large text at 3:1.",
+    "Icons: one drawn SVG set at one stroke weight (1.5 or 2px) and one size per context (16, 20 or 24px), coloured with currentColor. Never a Unicode arrow, check mark, star or emoji standing in for an icon.",
+    "Motion: one signature moment; every other transition runs 120-250ms ease-out on transform and opacity only. Reveals travel 24px or less, start from content that is already readable, and differ by section role rather than one fade-up everywhere. No infinite loops besides hero media; prefers-reduced-motion turns all of it off.",
+    "Footer: brand and one-line description, two or three link groups and the contact block, four columns at most on desktop; group titles 13-14px at weight 600 in sentence case; links 15-16px with 10-12px between rows; a bottom bar for legal and copyright at 13-14px; 64px or more of top padding.",
+    "Browser surfaces: ::selection and focus rings use the palette; link underlines sit 3-4px below the text at 1-2px thickness; tables and figures use tabular numerals; no unthemed default blue links anywhere.",
+    "Civic: plain language at 18px or more, every action a labelled button of 48px or taller, contrast 7:1 for body text where possible, no motion needed to understand anything.",
+    "Editorial: a real reading column (60-68ch) with a serif or a strong grotesk at 18-21px; pictures run full-bleed or in the column, never as thumbnails in cards.",
+    "Craft: warm photography of hands, materials and the place in natural light, 3 or more real pictures above the footer, no stock; type with some character in the headings and a plain body; prices and opening hours are text, not images."
+  ],
+  "design_critique": {
+    "authority": "contextual visual judgment",
+    "criteria": [
+      "brief fidelity",
+      "hierarchy",
+      "typography",
+      "imagery",
+      "colour",
+      "rhythm",
+      "phone composition",
+      "interaction"
+    ],
+    "note": "Stylistic devices are not defects by themselves. Diagnose the actual composition, not a list of banned looks."
+  },
+  "avoid_recent": {
+    "entries": 6,
+    "directions": [
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred early first-visit links. The "
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Sidebar A gives the shift lead the clearest production overvie"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred the task-first C composition."
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Photographs lead through a coherent asymmetric exhibition comp"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — 1, Edit bay, with concept 2 folded in as the curve readout and the curves"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — Object Study look from the brief (Space Grotesk / Inter, Ice Blue surface"
+      }
+    ],
+    "palettes": [
+      [
+        "#0d2424",
+        "#133131",
+        "#2a4a48",
+        "#f1eadf",
+        "#a8beb9",
+        "#ff6a3d",
+        "#f2c94c"
+      ]
+    ],
+    "fonts": [
+      "Space Grotesk",
+      "Inter",
+      "Bricolage Grotesque",
+      "Instrument Sans"
+    ],
+    "motifs": [
+      "sticky",
+      "film",
+      "paper",
+      "kinetic type",
+      "webgl",
+      "timeline",
+      "blob",
+      "asymmetric",
+      "index",
+      "catalogue",
+      "chart"
+    ],
+    "mechanics": [],
+    "rule": "Make all three directions materially different from these recent picks: a different palette family, different type families, different motifs and mechanics. Reuse them only when the user asks for the same look, and then record `REPEAT-OK: <the user's words>` in direction.md."
+  }
+}

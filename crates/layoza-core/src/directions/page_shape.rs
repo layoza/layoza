@@ -586,6 +586,7 @@ impl ShapeBrief {
 
     /// The prompt's motion wish, or the niche default for `dial`.
     pub(crate) fn motion_wish(&self, dial: u8) -> String {
+        if dial == 0 { return "none (0; no animation)".into(); }
         match self.tier_pin {
             Some(t) => format!("{} (asked in the brief)", t.id()),
             None => format!("{} (niche default, up to {})", self.tier(dial).id(), self.tier_cap.id()),
@@ -1251,7 +1252,8 @@ pub(crate) fn understand(b: &ShapeBrief, signals: &BriefSignals, query: &str, tr
     };
     // A bare verb ("buy") says less than the trade's own action, so the trade's wins over it.
     let trade_action = subject.from_trades.then(|| subject.action.clone());
-    let brief_action = signals.brief_action.clone().filter(|a| a.contains(' ') || trade_action.is_none());
+    let brief_action = query.lines().find_map(|line| line.strip_prefix("Primary action:").map(str::trim).filter(|s| !s.is_empty()).map(str::to_string))
+        .or_else(|| signals.brief_action.clone().filter(|a| a.contains(' ') || trade_action.is_none()));
     let primary_action = match brief_action.or(trade_action) {
         // The business sells; the visitor buys.
         Some(a) if a.starts_with("sell ") => format!("buy {}", &a[5..]),

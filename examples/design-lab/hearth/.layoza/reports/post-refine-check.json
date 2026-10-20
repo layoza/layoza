@@ -1,0 +1,137 @@
+{
+  "target_path": "C:/Users/ajjma/Desktop/sharethrone/examples/design-lab/hearth",
+  "passed_release_gate": true,
+  "verification_status": "passed",
+  "gate_scope": "Design and usability defects: accessibility, layout and the recorded design process, backed by fresh browser evidence. Speed is optional and never blocks this gate. Design quality is judged on the screenshots and by the user.",
+  "objective_error_count": 0,
+  "objective_warning_count": 3,
+  "subjective_critique_notes": 6,
+  "findings": [
+    {
+      "rule_id": "UI-MOTION-SPARSE",
+      "kind": "deterministic_objective",
+      "severity": "warning",
+      "category": "motion",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "motion-too-sparse at desktop: Only 0 distinct motion idea(s) found across scroll positions and declared animations (need 3 for a calm page, undeclared page with table/grid content, calm threshold): build one scroll- or hand-driven signature set piece from the subject (a pinned stage that changes with scroll counts), or declare <meta name=\"layoza-motion\" content=\"calm\"> if the page is meant to be quiet",
+      "remediation": "Fewer distinct elements move, transition or follow scroll than the page's declared motion level expects: build one scroll- or hand-driven signature set piece from the subject (then two motion ideas are enough), or declare <meta name=\"layoza-motion\" content=\"calm\"> (or `none`) if a quiet page is intended.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "CRAFT-OVERUSED-FONT",
+      "kind": "subjective_critique",
+      "severity": "info",
+      "category": "design-critique",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "Design critique: Overused font at desktop: Primary font: arial (97% of text)",
+      "remediation": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality. If the existing brand requires this, declare it with <meta name=\"layoza-brand-allow\" content=\"font:<family>, palette:<cream|purple|cyan>\"> and the rule stands down.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "CRAFT-CREAM-PALETTE",
+      "kind": "subjective_critique",
+      "severity": "info",
+      "category": "design-critique",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "Design critique: Cream / beige palette at desktop: cream/beige page background rgb(245, 243, 238)",
+      "remediation": "A warm cream or beige page background has become the default \"tasteful\" AI surface, reached for by reflex. Choose a background that comes from a deliberate palette, not the safe warm off-white. If the existing brand requires this, declare it with <meta name=\"layoza-brand-allow\" content=\"font:<family>, palette:<cream|purple|cyan>\"> and the rule stands down.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "CRAFT-UNDERSIZED-UI-TEXT",
+      "kind": "subjective_critique",
+      "severity": "info",
+      "category": "design-critique",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "Design critique: Undersized functional text at desktop: 9px functional text \"Bakery operations\" (below 11px floor) (+9 more)",
+      "remediation": "Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. WCAG sets no absolute pixel floor, but functional text under 11px is a defensible quality bar: it fails on high-DPI and small viewports and it degrades tap and read targets. The 11px floor holds even inside a footer; only non-interactive legal smallprint gets the softer 10px floor. Being ON the DESIGN.md size ramp does not exempt a value here: adding 8px to the ramp launders the token but not the legibility problem, and that is exactly the escape hatch this rule closes. Exempts sup/sub, visually-hidden (sr-only) text, and code/terminal contexts. Decorative letterspaced micro-labels are still functional and stay in scope.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "CRAFT-TINY-TEXT",
+      "kind": "subjective_critique",
+      "severity": "info",
+      "category": "design-critique",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "Design critique: Tiny body text at desktop: 10px body text <small> \"5 batches · 248 pieces\" (+3 more)",
+      "remediation": "Body text below 12px is hard to read, especially on high-DPI screens. Use at least 14px for body content, 16px is ideal.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "CRAFT-MIDDOT-META",
+      "kind": "subjective_critique",
+      "severity": "info",
+      "category": "design-critique",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "Design critique: Middle-dot meta strings at desktop: 2 meta strings joined with middle dots, e.g. \"Classic · 75 g · 96 pieces\", \"Jamie R. #10422 sourdough · 4 croissants09:30Studio North #104312 morning buns10:00Riley T. #10441 focaccia · 1 rye10:30\"",
+      "remediation": "Meta lines joined with middle dots ('A · B · C') are a recurring generated-page signature. Set the facts in a structure that fits them (a definition list, a table row, a sentence) or keep only the one that matters.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "CRAFT-DEAD-CONTROLS",
+      "kind": "subjective_critique",
+      "severity": "info",
+      "category": "design-critique",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "Design critique: Dead controls at desktop: 12 of 12 buttons have no transition and no :active press state (e.g. a.skip); give every control hover, press and state feedback (layoza-animations 2c)",
+      "remediation": "Most buttons have no transition and no :active press state, so clicks feel unacknowledged. Give every control hover, press and state feedback (layoza-animations 2c); under a static brief an instant :active colour change is enough.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "UI-SVG-TEXT-ILLEGIBLE",
+      "kind": "deterministic_objective",
+      "severity": "warning",
+      "category": "accessibility",
+      "file_or_selector": "qa/browser-qa-report.json (desktop)",
+      "message": "svg-text-illegible at desktop: 7 SVG text label(s) render under 9px at 1440px after viewBox scaling: \"5:00\" 8.4px, \"6:00\" 8.4px, \"7:00\" 8.4px; enlarge them, hide them at this width, or move the content into HTML",
+      "remediation": "SVG labels scaled down by the viewBox render under 9px: enlarge them at this width, hide them and carry the content in HTML, or swap to a mobile-specific drawing.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "BROWSER-HEADING-CROWDING",
+      "kind": "deterministic_objective",
+      "severity": "warning",
+      "category": "layout-spacing",
+      "file_or_selector": "qa/browser-qa-report.json (tablet)",
+      "message": "heading-crowding at tablet: <h2> \"Before the next bake\" sits 15px from sibling column <small> \"2 low-stock items\" (min 16px)",
+      "remediation": "Increase column gap beside the heading or stack the columns at this width.",
+      "auto_repairable": false
+    },
+    {
+      "rule_id": "A11Y-CONTRAST-UNMEASURABLE",
+      "kind": "deterministic_objective",
+      "severity": "info",
+      "category": "accessibility",
+      "file_or_selector": "qa/browser-qa-report.json",
+      "message": "contrast unmeasurable (image/gradient) for some text, so no ratio is claimed: svg text x7",
+      "remediation": "Check these by eye or give the text a solid backing (a scrim or a solid panel) so contrast can be measured.",
+      "auto_repairable": false
+    }
+  ],
+  "accessibility": {
+    "target_standard": "WCAG 2.2 Level AA",
+    "automated_violations": 0,
+    "passes_automated_wcag22_aa": true,
+    "manual_review_required": [
+      "Verify keyboard Tab/Shift+Tab focus order matches visual reading sequence across 375px, 768px, and 1280px viewports (WCAG 2.4.3).",
+      "Verify focus appearance and non-obscuration when sticky headers or dialogs are active (WCAG 2.4.11 / 2.4.13).",
+      "Verify screen-reader announcement clarity for dynamic state changes and live regions (WCAG 4.1.3)."
+    ],
+    "evidence_basis": "browser report (qa/browser-qa-report.json, fast mode) + static checks",
+    "needs_browser": [
+      "Skipped by the browser report: Full rule sweep, craft, tells, interface, design-token and art-over-text checks at 768px, 375px: fast mode ran layout, overflow and touch rules only there; run with --full"
+    ]
+  },
+  "core_web_vitals": {
+    "methodology_source": "laboratory_synthetic",
+    "methodology_disclosure": "Measured in one headless Chromium load per viewport (`qa/browser-qa-report.json`): LCP/CLS via PerformanceObserver, INP via an Event Timing proxy. Lab diagnostics, not CrUX field telemetry.",
+    "lcp_ms": null,
+    "lcp_passes_target": null,
+    "inp_or_tbt_ms": null,
+    "inp_passes_target": null,
+    "cls": null,
+    "cls_passes_target": null,
+    "measured": false
+  },
+  "visual_regression": null
+}

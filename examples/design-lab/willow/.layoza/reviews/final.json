@@ -1,0 +1,61 @@
+{
+  "id": "final",
+  "brief": "Willow public library, a welcoming neighbourhood place for readers of every age. Help residents find books, see opening hours, discover events and join the library. Green and yellow, approachable editorial design, useful on phones, no installation commands or software imagery.",
+  "chosen_direction": "Revised A",
+  "reason": "The independent critic preferred the task-first C composition. The revised selected design puts catalogue search, demo hours and practical actions before the image, with yellow confined to search.",
+  "strengths": [
+    "Catalogue search appears early at phone size",
+    "Opening hours and practical actions are adjacent to the primary task",
+    "Editorial books, events and reading content share a welcoming green identity"
+  ],
+  "weaknesses": [
+    "The illustrative programme and hours require real client facts before a live implementation",
+    "A single location photograph limits the range of documentary material"
+  ],
+  "changes": [
+    "Selected and refined the search-first composition",
+    "Shortened input placeholder and mobile headline",
+    "Moved demo hours forward and reduced the yellow field"
+  ],
+  "alternatives": [
+    "Editorial masthead: appealing, but promotional copy precedes search",
+    "Split photo/search: input becomes cramped on phones"
+  ],
+  "review_kind": "Designer decision informed by an independent assistant image-only critic (two rounds), not a human panel or competitor benchmark",
+  "screenshots": [
+    "qa/desktop-a-hero.png",
+    "qa/mobile-a-hero.png",
+    "qa/desktop-b-hero.png",
+    "qa/mobile-b-hero.png",
+    "qa/desktop-c-hero.png",
+    "qa/mobile-c-hero.png"
+  ],
+  "screenshot_evidence": [
+    {
+      "path": "qa/desktop-a-hero.png",
+      "content_fingerprint": "97344494d22511d5"
+    },
+    {
+      "path": "qa/mobile-a-hero.png",
+      "content_fingerprint": "d8a86867120488a8"
+    },
+    {
+      "path": "qa/desktop-b-hero.png",
+      "content_fingerprint": "2c3b4e77e6da4f8f"
+    },
+    {
+      "path": "qa/mobile-b-hero.png",
+      "content_fingerprint": "3b8c790b207804b5"
+    },
+    {
+      "path": "qa/desktop-c-hero.png",
+      "content_fingerprint": "0a3e336173099ed9"
+    },
+    {
+      "path": "qa/mobile-c-hero.png",
+      "content_fingerprint": "f9a8ccddb957d870"
+    }
+  ],
+  "project_fingerprint": "6b7b3c532e8d9a5f",
+  "recorded_at_unix": 1792530139
+}

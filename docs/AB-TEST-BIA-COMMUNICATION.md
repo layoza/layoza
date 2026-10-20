@@ -1,5 +1,7 @@
 # Head-to-Head A/B Benchmark: "Make a Website for BIA Communication"
 
+> Historical experiment. Some original page sources/renders are no longer retained. Scores here are development notes, not a current reproducible competitor ranking. See [the retained design lab](../examples/design-lab/README.md) for current local workflow evidence.
+
 **Prompt Under Test**:
 > *"Make a website for BIA Communication"*
 
@@ -48,12 +50,12 @@ Both implementations were rendered in headless Chromium via [`scripts/browser-qa
 ## 3. Artifacts & Screenshots
 
 - **Arm A (Layoza + Project MCP)**:
-  - Code: [`examples/ab-test-bia-communication/arm-a-layoza/index.html`](../examples/ab-test-bia-communication/arm-a-layoza/index.html)
-  - Extracted Design System: [`examples/ab-test-bia-communication/arm-a-layoza/DESIGN.md`](../examples/ab-test-bia-communication/arm-a-layoza/DESIGN.md)
-  - Extracted Site DNA: [`examples/ab-test-bia-communication/arm-a-layoza/SITE-DNA.json`](../examples/ab-test-bia-communication/arm-a-layoza/SITE-DNA.json)
+  - Code: ``examples/ab-test-bia-communication/arm-a-layoza/index.html`` (archived artifact unavailable)
+  - Extracted Design System: ``examples/ab-test-bia-communication/arm-a-layoza/DESIGN.md`` (archived artifact unavailable)
+  - Extracted Site DNA: ``examples/ab-test-bia-communication/arm-a-layoza/SITE-DNA.json`` (archived artifact unavailable)
   - QA Snapshot: [`.layoza/qa-bia-arm-a.json`](../.layoza/qa-bia-arm-a.json)
   - Screenshots: `.layoza/screenshots/bia-arm-a/{desktop,tablet,mobile}.png`
 - **Arm B (Copied All Skills)**:
-  - Code: [`examples/ab-test-bia-communication/arm-b-copied-skills/index.html`](../examples/ab-test-bia-communication/arm-b-copied-skills/index.html)
+  - Code: ``examples/ab-test-bia-communication/arm-b-copied-skills/index.html`` (archived artifact unavailable)
   - QA Snapshot: [`.layoza/qa-bia-arm-b.json`](../.layoza/qa-bia-arm-b.json)
   - Screenshots: `.layoza/screenshots/bia-arm-b/{desktop,tablet,mobile}.png`

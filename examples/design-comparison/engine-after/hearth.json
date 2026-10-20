@@ -1,0 +1,1203 @@
+{
+  "mode": "new_website",
+  "query": "Industry: bakery operations dashboard\nClient brief: Hearth bakery operations dashboard. A shift lead needs todays bake quantities, oven status, low stock and collection orders. Dense but calm, warm paper and brick red, usable real controls. Product demo data must be labelled. No marketing hero or invented business growth claims.\nAudience: bakery shift leads\nPrimary action: review todays bake and update production\nBrand colours: #F5F3EE, #292B28, #963D28\nSubject objects: bake quantities, oven status, stock, collection orders\nNo marketing hero.\nNo growth claims.",
+  "matched_industry": {
+    "slug": "dashboard-admin",
+    "name": "Dashboards, Analytics & Admin Software",
+    "keywords": [
+      "dashboard",
+      "admin",
+      "analytics",
+      "crm",
+      "erp",
+      "monitoring",
+      "observability",
+      "table"
+    ],
+    "recommended_styles": [
+      "high-density-workbench"
+    ],
+    "layout_archetype": "Collapsible Command Sidebar + KPI Strip + Filterable Data Table & Chart Canvas",
+    "first_viewport_priority": "Actionable status summary, anomaly highlights, keyboard-navigable filter/command bar",
+    "typography_pairing": {
+      "id": "inter-jetbrains-tabular",
+      "display_font": "Plus Jakarta Sans",
+      "body_font": "Inter",
+      "mono_font": "JetBrains Mono",
+      "mood": "Functional, high-density, scannable",
+      "scale_ratio": "1.125 (Major Second)",
+      "google_fonts_url": "https://fonts.google.com/share?selection.family=Inter:wght@400;500;600|JetBrains+Mono:wght@400;500|Plus+Jakarta+Sans:wght@600"
+    },
+    "palette": {
+      "id": "brand-f5f3ee-292b28-963d28-on-proofing-basket",
+      "background": "#F5F3EE",
+      "surface": "#E6E4E0",
+      "foreground": "#24180E",
+      "muted": "#5A4635",
+      "primary_accent": "#963D28",
+      "secondary_accent": "#3F6E68",
+      "wcag_body_contrast": 15.62,
+      "notes": "Brief colours #F5F3EE, #292B28, #963D28 lead: #F5F3EE is the ground; #963D28 as accents; #292B28 as surfaces and deep tones, never accents | base Proofing-basket cane with crust brown and tea green"
+    },
+    "conversion_trust_elements": [
+      "Live filter & sort controls",
+      "Export CSV/JSON actions",
+      "Clear empty, loading, and error states"
+    ],
+    "motion_language": "Fast 120ms state transitions, skeleton shimmer loaders, zero decorative scroll animations",
+    "anti_patterns": [
+      "Oversized marketing hero inside an authenticated dashboard",
+      "Giant padding that forces horizontal scrolling"
+    ],
+    "default_dials": {
+      "design_variance": 2,
+      "motion_intensity": 2,
+      "visual_density": 9
+    },
+    "provenance": "adapted:impeccable+ui-ux-pro-max+layoza"
+  },
+  "match_score": 3,
+  "match_confidence": "weak",
+  "alternative_industries": [
+    [
+      "local-business",
+      3
+    ]
+  ],
+  "distinctiveness": {
+    "place_cues": [],
+    "material_cues": [
+      "paper",
+      "oven"
+    ],
+    "category_cliches": [
+      "A row of four KPI cards over one line chart",
+      "Cream background with a terracotta accent and an italic serif",
+      "Sparkline-in-every-card dashboard template",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. Materials: paper, oven — sample real colours and textures from them. The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "brief_signals": {
+    "surface": "product_ui",
+    "niche_tags": [
+      "warm-grain",
+      "data"
+    ],
+    "moods": [
+      "calm"
+    ],
+    "constraints": [
+      "task-ui (no scroll choreography)"
+    ],
+    "motion_bias": -2,
+    "motion_cap": 4,
+    "brief_colors": [
+      "#F5F3EE",
+      "#292B28",
+      "#963D28"
+    ],
+    "brief_color_roles": {
+      "primary": "#F5F3EE"
+    },
+    "niches": [
+      "dashboard",
+      "local-business"
+    ],
+    "brief_objects": [
+      "industry",
+      "bakery operations dashboard",
+      "client brief",
+      "shift lead",
+      "todays bake quantities",
+      "oven status",
+      "low stock",
+      "collection"
+    ],
+    "brief_action": "review todays bake and update production"
+  },
+  "matched_styles": [
+    {
+      "slug": "atelier-minimalism",
+      "name": "Atelier Tactile Minimalism",
+      "category": "Luxury & Craft",
+      "keywords": [
+        "luxury",
+        "minimal",
+        "atelier",
+        "warm",
+        "serif",
+        "lookbook"
+      ],
+      "characteristics": [
+        "Warm paper and limestone neutrals (`#FAF8F5`) rather than sterile `#FFFFFF`",
+        "Unhurried vertical rhythm (`96px–140px` section spacing) and monograph captions",
+        "Zero decorative card wrappers; imagery and typography sit directly on the canvas"
+      ],
+      "best_for": [
+        "Luxury Brands",
+        "Hospitality & Resorts",
+        "Design Portfolios"
+      ],
+      "avoid_when": [
+        "Dense telemetry dashboards"
+      ],
+      "provenance": "adapted:impeccable+taste-skill+layoza"
+    },
+    {
+      "slug": "crisp-product-workbench",
+      "name": "Crisp Product Workbench",
+      "category": "Product & SaaS",
+      "keywords": [
+        "saas",
+        "workbench",
+        "product",
+        "bento",
+        "clean",
+        "startup"
+      ],
+      "characteristics": [
+        "Interactive live product state demonstrations in the hero instead of static screenshots",
+        "Subtle surface layering (`#FCFCFA` -> `#F2F3EE`) with crisp 1px borders",
+        "Clear scannable feature proof and transparent pricing architecture"
+      ],
+      "best_for": [
+        "SaaS Startups",
+        "Productivity Tools",
+        "B2B Platforms"
+      ],
+      "avoid_when": [
+        "Experimental art installations"
+      ],
+      "provenance": "adapted:ui-ux-pro-max+impeccable+layoza"
+    },
+    {
+      "slug": "high-density-workbench",
+      "name": "High-Density Operational Cockpit",
+      "category": "Dashboards & Data",
+      "keywords": [
+        "dashboard",
+        "admin",
+        "analytics",
+        "table",
+        "dense",
+        "finance"
+      ],
+      "characteristics": [
+        "Compact 4px/8px/12px spacing grid maximizing above-the-fold data visibility",
+        "Right-aligned `tabular-nums` numeric columns, keyboard-first filtering, and clear status badges",
+        "Complete empty, loading, error, and overflow-resilient states"
+      ],
+      "best_for": [
+        "SaaS Dashboards",
+        "Fintech Terminals",
+        "Admin Consoles"
+      ],
+      "avoid_when": [
+        "Brand storytelling landing pages"
+      ],
+      "provenance": "adapted:impeccable+ui-ux-pro-max+layoza"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 2,
+    "motion_intensity": 0,
+    "visual_density": 9
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — Dashboards, Analytics & Admin Software (Morning Brief)",
+      "style_family": "block-first-editorial",
+      "layout_composition": "The bakery operations dashboard as a morning brief: a short written summary of today with small inline charts of bake quantities and oven status, centred; the tables behind each sentence open below; stock as the closing section. Structure: a written summary with inline charts, then the tables behind it. Knobs: density airy; span irregularity low; accent on cells and rows that need action. Mobile: the brief reads as text with small inline charts",
+      "visual_identity": "Written report: Young Serif for the date line, Instrument Sans for the brief, Space Mono for values; palette brand-f5f3ee-292b28-963d28-on-proofing-basket (light ground): brief colours #f5f3ee, #292b28, #963d28 lead: #f5f3ee is the ground; #963d28 as accents; #292b28 as surfaces and deep tones, never accents; corners: 2px on controls and cards, square images (hairline-2); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Young Serif: Georgia, 'Times New Roman', serif; Instrument Sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "young-serif-instrument-sans",
+        "display_font": "Young Serif",
+        "body_font": "Instrument Sans",
+        "mono_font": "Space Mono",
+        "mood": "Warm, hand-made, oven-lit",
+        "scale_ratio": "1.414 (Augmented Fourth)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;700&family=Space+Mono&display=swap"
+      },
+      "palette": {
+        "id": "brand-f5f3ee-292b28-963d28-on-proofing-basket",
+        "background": "#F5F3EE",
+        "surface": "#E6E4E0",
+        "foreground": "#24180E",
+        "muted": "#5A4635",
+        "primary_accent": "#963D28",
+        "secondary_accent": "#3F6E68",
+        "wcag_body_contrast": 15.62,
+        "notes": "Brief colours #F5F3EE, #292B28, #963D28 lead: #F5F3EE is the ground; #963D28 as accents; #292B28 as surfaces and deep tones, never accents | base Proofing-basket cane with crust brown and tea green"
+      },
+      "content_treatment": "Three sentences that say what changed and what to do (units, timestamps, owners and status)",
+      "motion_choreography": "No motion: bake quantities and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 2,
+        "motion_intensity": 0,
+        "visual_density": 9
+      },
+      "rationale": "Morning Brief for \"bakery operations dashboard\" (productui surface): the team needs the day's story before the numbers. Type Young Serif / Instrument Sans (warm, hand-made, oven-lit) for an editorial voice, tagged warm-grain like the brief. Palette brand-f5f3ee-292b28-963d28-on-proofing-basket on a light ground, tagged warm-grain/calm like the brief. First screen: centred composition, hero material data-as-image, look family warm-paper-serif, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): charts draw once. Flag: this pairing uses a face seen on most generated sites; swap it if the brand allows. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#F5F3EE, #292B28, #963D28). Other structures that fit this slot: Live Status Board, Numbers Up Front, Changelog Front, Plain Index Page, Feature Stack, Catalogue Index.",
+      "mechanics": [
+        {
+          "id": "hero-live-status-centred",
+          "name": "Open-now status line",
+          "kind": "hero",
+          "role": "hero",
+          "family": "live-status",
+          "intensity": "calm",
+          "still_check": "Any still shows a complete true status, the dial, the h1 and both actions.",
+          "composition": "centred",
+          "hero_material": "data-image",
+          "look_family": "quiet-civic"
+        },
+        {
+          "id": "section-app-nav-icon-rail",
+          "name": "Collapsible sidebar to icon rail",
+          "kind": "section",
+          "role": "docs-nav",
+          "family": "icon-rail-sidebar",
+          "intensity": "calm",
+          "still_check": "Any still in either state shows icons, the active marker and, in the expanded state, all labels."
+        },
+        {
+          "id": "about-founding-letter-papers",
+          "name": "Founding letter on stacked paper",
+          "kind": "section",
+          "role": "about",
+          "family": "layered-paper",
+          "intensity": "calm",
+          "still_check": "At 50% the letter is fully legible, sheets are half fanned, and the first two margin notes are visible. At 25% sheets are nearly closed with one note; at 75% sheets are fully fanned and the signature starts."
+        }
+      ],
+      "hero_material": "working product interface with truthful demo data",
+      "radius": "hairline-2",
+      "archetype": "morning-brief",
+      "nav": {
+        "id": "nav-solutions-mega-panel",
+        "name": "Solutions mega panel for B2B ranges",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-solutions-mega",
+        "intensity": "calm",
+        "still_check": "Any still with a panel open shows every item with thumbnail, name and use line plus the featured case.",
+        "look_family": "quiet-civic"
+      },
+      "footer": {
+        "id": "footer-week-hours",
+        "name": "Week hours footer",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-week-hours",
+        "intensity": "calm",
+        "still_check": "Any still shows all seven days with hours, today highlighted, address and phone.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.75rem",
+        "display": "clamp(3.998rem, 6vw, 7.993rem)",
+        "h1": "3.998rem",
+        "h2": "2.827rem",
+        "h3": "1.999rem",
+        "label": "0.75rem",
+        "lead": "1.414rem",
+        "ratio": "1.414",
+        "small": "0.875rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "giant-figure",
+          "build": "One giant figure, date or price leads; the headline sits small beneath it, proof first."
+        },
+        "flow": {
+          "id": "layered-deck",
+          "build": "Stacked deck: each section slides over the previous one as a sticky layer."
+        },
+        "section_head": {
+          "id": "inline-count",
+          "build": "Each head is one sentence carrying a live real number (\"212 jobs booked today\")."
+        },
+        "ground": {
+          "id": "full-bleed-media",
+          "build": "Full-bleed image or 3D backdrops behind key sections, with a scrim for text contrast."
+        },
+        "material": {
+          "id": "glass-light",
+          "build": "Glass and light: translucent panels, blur, glow and refraction over a deep ground."
+        },
+        "labels": {
+          "id": "pill-tags",
+          "build": "Labels as filled pill tags in the accent colour, sentence case."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: press-depth (CSS transitions). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "press-depth",
+            "build": "Buttons press down 1-2px with a shadow change on active.",
+            "tool": "css",
+            "tool_name": "CSS transitions",
+            "fallback": "buttons keep their resting state."
+          }
+        ],
+        "motion_signature": "press-depth",
+        "motion_tools": [
+          "css"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette"
+        ],
+        "motif": {
+          "id": "seam-grid",
+          "build": "Module seams: a hairline grid at the trade's real unit runs along section edges and behind spec tables and figures, taken from bake quantities; it never crosses photographs or hero media, and the active item fills one cell in the accent."
+        },
+        "button": {
+          "id": "square-cell",
+          "build": "Primary: solid accent fill, 48px tall (one grid cell), 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — Dashboards, Analytics & Admin Software (Live Operations Wall)",
+      "style_family": "high-density-workbench",
+      "layout_composition": "Full-width live wall for the bakery operations dashboard: bake quantities on a horizontal time axis as the hero, oven status as an exceptions rail pinned to the side, drill-down drawers instead of page changes. Structure: full-width time axis, pinned exceptions rail, drill-down drawers. Knobs: density dense; span irregularity medium; accent on cells and rows that need action. Mobile: the wall becomes the exceptions list first, with the time axis as a swipeable strip",
+      "visual_identity": "Control-room surface: Rokkitt condensed numerals over Figtree with tabular figures; palette brand-f5f3ee-292b28-963d28-on-rye-ledger (light ground): brief colours #f5f3ee, #292b28, #963d28 lead: #f5f3ee is the ground; #963d28 as accents; #292b28 as surfaces and deep tones, never accents; state colour (on track, late, short) is the only decoration; corners: square corners (0) on cards, buttons and images (sharp-0); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Rokkitt: Rockwell, 'Roboto Slab', Georgia, serif; Figtree: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "rokkitt-figtree",
+        "display_font": "Rokkitt",
+        "body_font": "Figtree",
+        "mono_font": "Sometype Mono",
+        "mood": "Menu-slab with a friendly sans",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Rokkitt:wght@700&family=Figtree:wght@400;700&family=Sometype+Mono&display=swap"
+      },
+      "palette": {
+        "id": "brand-f5f3ee-292b28-963d28-on-rye-ledger",
+        "background": "#F5F3EE",
+        "surface": "#E6E4E0",
+        "foreground": "#1E1A16",
+        "muted": "#57504A",
+        "primary_accent": "#963D28",
+        "secondary_accent": "#3D6B4F",
+        "wcag_body_contrast": 15.59,
+        "notes": "Brief colours #F5F3EE, #292B28, #963D28 lead: #F5F3EE is the ground; #963D28 as accents; #292B28 as surfaces and deep tones, never accents | base Flour-dusted grey ledger with rye-crust and herb-green accents"
+      },
+      "content_treatment": "Exceptions first: what is late, short or wrong right now and who owns it, then the plan, then history (units, timestamps, owners and status)",
+      "motion_choreography": "Data-driven only: 150ms value tweens on update and FLIP row insert or remove; no scroll-triggered choreography; reduced-motion swaps tweens for instant updates",
+      "dials": {
+        "design_variance": 5,
+        "motion_intensity": 3,
+        "visual_density": 8
+      },
+      "rationale": "Live Operations Wall for \"bakery operations dashboard\" (productui surface): the team watches the numbers all day on a shared screen and acts on exceptions. Type Rokkitt / Figtree (menu-slab with a friendly sans) for a utility voice, tagged food/warm-grain like the brief. Palette brand-f5f3ee-292b28-963d28-on-rye-ledger on a light ground, tagged warm-grain/data like the brief. First screen: object-wrap composition (no fitting full-bleed hero for this trade, so the direction follows the dealt hero hero-shared-baseline-shelf), hero material data-as-image, look family technical-blueprint, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): value tweens on update; FLIP row insert. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#F5F3EE, #292B28, #963D28). Other structures that fit this slot: Bento Board, System Diagram, Timeline Axis.",
+      "mechanics": [
+        {
+          "id": "hero-shared-baseline-shelf",
+          "name": "Object on the headline's shelf",
+          "kind": "hero",
+          "role": "hero",
+          "family": "shared-baseline",
+          "intensity": "calm",
+          "still_check": "Any still shows the shelf, objects standing on it with contact shadows, and the headline's baseline on the same line.",
+          "composition": "object-wrap",
+          "hero_material": "physical-object",
+          "look_family": "soft-stone"
+        },
+        {
+          "id": "section-features-question-first",
+          "name": "Features as answered questions",
+          "kind": "section",
+          "role": "features",
+          "family": "question-first-features",
+          "intensity": "calm",
+          "still_check": "Any still shows each question and answer."
+        },
+        {
+          "id": "section-comparison-line-by-line",
+          "name": "Line-by-line comparison",
+          "kind": "section",
+          "role": "comparison",
+          "family": "line-by-line-comparison",
+          "intensity": "calm",
+          "still_check": "Any still shows every row and option readable."
+        }
+      ],
+      "hero_material": "working product interface with truthful demo data",
+      "radius": "sharp-0",
+      "archetype": "live-wall",
+      "nav": {
+        "id": "nav-command-palette-visible",
+        "name": "Command palette with a visible door",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-command-palette",
+        "intensity": "calm",
+        "still_check": "Any still shows the trigger with its shortcut hint visible.",
+        "look_family": "technical-blueprint"
+      },
+      "footer": {
+        "id": "footer-contact-card",
+        "name": "Footer as a contact card to keep",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-contact-card",
+        "intensity": "calm",
+        "still_check": "Any still shows the card and its three ways to reach you.",
+        "look_family": "hairline-newspaper"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "product-ui-bleed",
+          "build": "Product UI full-bleed: the live interface fills the screen; the headline sits inside it."
+        },
+        "flow": {
+          "id": "sticky-index",
+          "build": "Sticky index on one side; content panes scroll past it on the other side. The index is never an empty column: it carries the section titles plus the live picture or figure of the pane in view, and under 1024px it folds into a top bar."
+        },
+        "section_head": {
+          "id": "tab-heads",
+          "build": "Heads sit as tabs on each section panel's top edge, like folder dividers."
+        },
+        "ground": {
+          "id": "soft-gradient",
+          "build": "Soft gradients drifting between two pale tints of the palette; no hard bands."
+        },
+        "material": {
+          "id": "product-screens",
+          "build": "Real product screens and data states, cropped and annotated, as the visuals."
+        },
+        "labels": {
+          "id": "outline-tags",
+          "build": "Labels in hairline-outlined tags, no fill, in the body face."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: arrow-nudge (CSS transitions). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "arrow-nudge",
+            "build": "Link and button arrows nudge 3px forward on hover and focus.",
+            "tool": "css",
+            "tool_name": "CSS transitions",
+            "fallback": "arrows sit still."
+          }
+        ],
+        "motion_signature": "arrow-nudge",
+        "motion_tools": [
+          "css"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette"
+        ],
+        "motif": {
+          "id": "torn-edge",
+          "build": "Torn edge: chapters part on one torn paper edge, and media frames carry the same edge on one side, as on the wrapping of oven status."
+        },
+        "button": {
+          "id": "soft-square",
+          "build": "Primary: solid fill, radius 8px, 48px tall with 24px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — Dashboards, Analytics & Admin Software (Flow Board)",
+      "style_family": "crisp-product-workbench",
+      "layout_composition": "The bakery operations dashboard as a flow board: stages as columns with bake quantities as cards, limits per column, oven status flagged; dragging or keyboard moves a card; stock in a side panel. Structure: columns of stages with cards, limits per column. Knobs: density standard; span irregularity high; accent on the active control and its result. Mobile: one stage per screen with a stage switcher",
+      "visual_identity": "Board: Arsenal for stage heads, Arsenal for cards; palette brand-f5f3ee-292b28-963d28-on-nordic-birch (light ground): brief colours #f5f3ee, #292b28, #963d28 lead: #f5f3ee is the ground; #963d28 as accents; #292b28 as surfaces and deep tones, never accents; colour by state only; corners: 12px on cards and images, 8px on controls (soft-12); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Arsenal: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Arsenal: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "arsenal-solo",
+        "display_font": "Arsenal",
+        "body_font": "Arsenal",
+        "mono_font": "Fira Code",
+        "mood": "Ukrainian-designed grotesk, Cyrillic-native",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Fira+Code&display=swap"
+      },
+      "palette": {
+        "id": "brand-f5f3ee-292b28-963d28-on-nordic-birch",
+        "background": "#F5F3EE",
+        "surface": "#E6E4E0",
+        "foreground": "#1C1E1F",
+        "muted": "#535659",
+        "primary_accent": "#963D28",
+        "secondary_accent": "#C1592D",
+        "wcag_body_contrast": 15.09,
+        "notes": "Brief colours #F5F3EE, #292B28, #963D28 lead: #F5F3EE is the ground; #963D28 as accents; #292B28 as surfaces and deep tones, never accents | base Birch-white with spruce and lingonberry"
+      },
+      "content_treatment": "What is stuck, where, and who owns it (units, timestamps, owners and status)",
+      "motion_choreography": "No motion: bake quantities and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 2,
+        "motion_intensity": 0,
+        "visual_density": 10
+      },
+      "rationale": "Flow Board for \"bakery operations dashboard\" (productui surface): the work moves through stages and the team drags it forward. Type Arsenal / Arsenal (ukrainian-designed grotesk, cyrillic-native) for a utility voice, tagged data like the brief. Palette brand-f5f3ee-292b28-963d28-on-nordic-birch on a light ground, tagged calm like the brief. First screen: layered composition, hero material live-ui, look family playful-color-block, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): cards move with FLIP. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#F5F3EE, #292B28, #963D28). Other structures that fit this slot: Plain Index Page, Bento Board, Catalogue Index, Timeline Axis.",
+      "mechanics": [
+        {
+          "id": "hero-tracing-overlay",
+          "name": "Tracing paper over the photo",
+          "kind": "hero",
+          "role": "hero",
+          "family": "tracing-overlay",
+          "intensity": "calm",
+          "still_check": "Any still shows photo, paper, completed drawing and h1 legible.",
+          "composition": "layered",
+          "hero_material": "procedural",
+          "look_family": "warm-paper-serif"
+        },
+        {
+          "id": "section-about-week-in-numbers",
+          "name": "This week, counted",
+          "kind": "section",
+          "role": "about",
+          "family": "week-in-numbers",
+          "intensity": "calm",
+          "still_check": "Any still shows the sentence with every number (final values in the HTML)."
+        },
+        {
+          "id": "section-location-arrival-steps",
+          "name": "How to arrive",
+          "kind": "section",
+          "role": "location",
+          "family": "arrival-steps",
+          "intensity": "calm",
+          "still_check": "Any still shows every step and photo."
+        }
+      ],
+      "hero_material": "working product interface with truthful demo data",
+      "radius": "soft-12",
+      "archetype": "flow-board",
+      "nav": {
+        "id": "nav-centred-wordmark-split",
+        "name": "Wordmark centred between two link groups",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-centred-wordmark-split",
+        "intensity": "calm",
+        "still_check": "Any still shows the wordmark and both groups.",
+        "look_family": "luxe-dark"
+      },
+      "footer": {
+        "id": "footer-letter-close",
+        "name": "Footer that closes like a letter",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-letter-close",
+        "intensity": "calm",
+        "still_check": "Any still shows the letter, signature, PS and legal line.",
+        "look_family": "warm-paper-serif"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "object-centre",
+          "build": "One object centre-stage at large scale; type tucked around or behind it."
+        },
+        "flow": {
+          "id": "bento",
+          "build": "Bento mosaic: sections packed as unequal tiles in one grid, sized by importance."
+        },
+        "section_head": {
+          "id": "run-in",
+          "build": "Run-in heads: a bold title opens the first sentence of the section, no line break."
+        },
+        "ground": {
+          "id": "inverted-alternating",
+          "build": "Alternate ground and ink sections: palette background, then the foreground colour as ground."
+        },
+        "material": {
+          "id": "diagrammatic",
+          "build": "Diagrams and technical drawings: plans, exploded views, flow lines and callouts."
+        },
+        "labels": {
+          "id": "numbered",
+          "build": "Numbered labels (01, 02, §3) set in the display face's figures."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: check-tick (Web Animations API). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "check-tick",
+            "build": "Form checks and toggles tick with a 160ms stroke draw.",
+            "tool": "waapi",
+            "tool_name": "Web Animations API",
+            "fallback": "controls switch instantly."
+          }
+        ],
+        "motion_signature": "check-tick",
+        "motion_tools": [
+          "waapi"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette"
+        ],
+        "motif": {
+          "id": "bezel-frame",
+          "build": "Bezel frame: media sits inside a thin, even bezel with one continuous corner radius, like the housing of stock; the same radius and bezel width carry to panels and the primary button. Nothing is drawn over the media."
+        },
+        "button": {
+          "id": "soft-square",
+          "build": "Primary: solid accent fill, 52px tall with 28px side padding, radius 10px (the bezel's inner radius), label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "ROTATION: tell the user in one line before dealing: The last 12 runs used atelier-minimalism 9 times, swiss-editorial-grid 8 times, kinetic-editorial 6 times, block-first-editorial 4 times; this run picks from {hero-live-status-centred, hero-shared-baseline-shelf, hero-tracing-overlay}.",
+    "BRIEF COLOURS: the brief names its own colours (#F5F3EE, #292B28, #963D28). Use them as the palette in every direction (check WCAG pairs); the direction palettes below are fallbacks only.",
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest centred / object-wrap / layered (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error.",
+    "DIRECTIONS: render three materially different compositions with identical factual content and available assets at desktop and phone sizes. Compare the actual renders for hierarchy, typography, image integration, clarity and full-page rhythm. Choose with reasons as the designer unless the user asked to choose. Persist candidates, screenshot evidence and visible tradeoffs with review_design; never invent user approval. Library deals are starting material, not mandatory shapes or a substitute for art direction.",
+    "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.",
+    "FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.",
+    "COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.",
+    "SELF-CRITIQUE before QA: score philosophy, hierarchy, execution, specificity, restraint, variety from 1 to 5; any score below 3 means revise first. Put the stamp `/* layoza · direction: <A|B|C> · structure: <style_family> · hero: <hero id> · palette: <palette id> · type: <type id> · critique: P4 H4 E4 S4 R4 V4 */` as the first line of the main CSS (your direction, structure, hero, palette, type and scores).",
+    "LOOK LEDGER: steered away from 36 look(s) in this project's last 12 run(s) (.layoza/looks.jsonl); 30 slot repeat(s) remain (see `uniqueness`). Pass ledger=false (CLI --no-ledger) to ignore it."
+  ],
+  "scope": "page",
+  "rotation": "The last 12 runs used atelier-minimalism 9 times, swiss-editorial-grid 8 times, kinetic-editorial 6 times, block-first-editorial 4 times; this run picks from {hero-live-status-centred, hero-shared-baseline-shelf, hero-tracing-overlay}.",
+  "uniqueness": {
+    "ledger": "on",
+    "window": 36,
+    "entries_compared": 36,
+    "slots": [
+      {
+        "slot": "A.nav",
+        "id": "nav-solutions-mega-panel",
+        "status": "repeat (last used 22 entries ago, 13 min ago)"
+      },
+      {
+        "slot": "A.hero",
+        "id": "hero-live-status-centred",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.section-1",
+        "id": "section-app-nav-icon-rail",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.section-2",
+        "id": "about-founding-letter-papers",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.footer",
+        "id": "footer-week-hours",
+        "status": "repeat (last used 14 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.palette",
+        "id": "brand-f5f3ee-292b28-963d28-on-proofing-basket",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "A.typography",
+        "id": "young serif/instrument sans",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.archetype",
+        "id": "morning-brief",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.hero-frame",
+        "id": "giant-figure",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.flow",
+        "id": "layered-deck",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.section-head",
+        "id": "inline-count",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.ground",
+        "id": "full-bleed-media",
+        "status": "repeat (last used 5 entries ago, just now)"
+      },
+      {
+        "slot": "A.material",
+        "id": "glass-light",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.labels",
+        "id": "pill-tags",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.motion",
+        "id": "press-depth",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "B.nav",
+        "id": "nav-command-palette-visible",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.hero",
+        "id": "hero-shared-baseline-shelf",
+        "status": "repeat (last used 32 entries ago, 13 min ago)"
+      },
+      {
+        "slot": "B.section-1",
+        "id": "section-features-question-first",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.section-2",
+        "id": "section-comparison-line-by-line",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.footer",
+        "id": "footer-contact-card",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.palette",
+        "id": "brand-f5f3ee-292b28-963d28-on-rye-ledger",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "B.typography",
+        "id": "rokkitt/figtree",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.archetype",
+        "id": "live-wall",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.hero-frame",
+        "id": "product-ui-bleed",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.flow",
+        "id": "sticky-index",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.section-head",
+        "id": "tab-heads",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.ground",
+        "id": "soft-gradient",
+        "status": "repeat (last used 1 entry ago, just now)"
+      },
+      {
+        "slot": "B.material",
+        "id": "product-screens",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.labels",
+        "id": "outline-tags",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.motion",
+        "id": "arrow-nudge",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "C.nav",
+        "id": "nav-centred-wordmark-split",
+        "status": "repeat (last used 7 entries ago, just now)"
+      },
+      {
+        "slot": "C.hero",
+        "id": "hero-tracing-overlay",
+        "status": "repeat (last used 33 entries ago, 13 min ago)"
+      },
+      {
+        "slot": "C.section-1",
+        "id": "section-about-week-in-numbers",
+        "status": "repeat (last used 8 entries ago, just now)"
+      },
+      {
+        "slot": "C.section-2",
+        "id": "section-location-arrival-steps",
+        "status": "repeat (last used 2 entries ago, just now)"
+      },
+      {
+        "slot": "C.footer",
+        "id": "footer-letter-close",
+        "status": "repeat (last used 9 entries ago, just now)"
+      },
+      {
+        "slot": "C.palette",
+        "id": "brand-f5f3ee-292b28-963d28-on-nordic-birch",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "C.typography",
+        "id": "arsenal/arsenal",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.archetype",
+        "id": "flow-board",
+        "status": "repeat (last used 22 entries ago, 13 min ago)"
+      },
+      {
+        "slot": "C.hero-frame",
+        "id": "object-centre",
+        "status": "repeat (last used 4 entries ago, just now)"
+      },
+      {
+        "slot": "C.flow",
+        "id": "bento",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.section-head",
+        "id": "run-in",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.ground",
+        "id": "inverted-alternating",
+        "status": "repeat (last used 2 entries ago, just now)"
+      },
+      {
+        "slot": "C.material",
+        "id": "diagrammatic",
+        "status": "repeat (last used 3 entries ago, just now)"
+      },
+      {
+        "slot": "C.labels",
+        "id": "numbered",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.motion",
+        "id": "check-tick",
+        "status": "pinned by prompt"
+      }
+    ],
+    "fresh": 9,
+    "repeats": 30,
+    "score": 23,
+    "verdict": "30 of 39 slots repeat (A.nav nav-solutions-mega-panel, A.section-1 section-app-nav-icon-rail, A.section-2 about-founding-letter-papers, A.footer footer-week-hours, A.hero-frame giant-figure, A.flow layered-deck, A.ground full-bleed-media, A.material glass-light, A.labels pill-tags, B.nav nav-command-palette-visible, B.hero hero-shared-baseline-shelf, B.section-1 section-features-question-first, B.section-2 section-comparison-line-by-line, B.footer footer-contact-card, B.hero-frame product-ui-bleed, B.flow sticky-index, B.ground soft-gradient, B.material product-screens, B.labels outline-tags, C.nav nav-centred-wordmark-split, C.hero hero-tracing-overlay, C.section-1 section-about-week-in-numbers, C.section-2 section-location-arrival-steps, C.footer footer-letter-close, C.archetype flow-board, C.hero-frame object-centre, C.flow bento, C.ground inverted-alternating, C.material diagrammatic, C.labels numbered): no fresh pick fit those slots as well. Tell the user, then re-deal with another seed/variant, `avoid` the ids, or replace them by hand."
+  },
+  "understood_brief": {
+    "trade": "Dashboards, Analytics & Admin Software (weak match)",
+    "subject": "bakery operations dashboard",
+    "audience": "bakery shift leads",
+    "primary_action": "review todays bake and update production",
+    "tone": [
+      "calm"
+    ],
+    "motion_wish": "none (0; no animation)",
+    "must_haves": [
+      "colour #F5F3EE",
+      "colour #292B28",
+      "colour #963D28",
+      "clearly labelled demo data",
+      "Do not use: marketing hero",
+      "Do not use: growth claims"
+    ],
+    "pinned_by_prompt": [
+      "motion",
+      "palette"
+    ],
+    "assumed": [
+      "stack: the project's own framework if one exists, else plain HTML/CSS/JS"
+    ],
+    "open_questions": []
+  },
+  "creative_workspace": {
+    "brief_context": {
+      "subject": "bakery operations dashboard",
+      "audience": "bakery shift leads",
+      "primary_action": "review todays bake and update production",
+      "objects": [
+        "bake quantities",
+        "oven status",
+        "stock",
+        "collection orders"
+      ],
+      "facts": [],
+      "required_content": [
+        "clearly labelled demo data"
+      ],
+      "forbidden": [
+        "marketing hero",
+        "growth claims"
+      ],
+      "display_font": "",
+      "body_font": "",
+      "colors": [
+        "#F5F3EE",
+        "#292B28",
+        "#963D28"
+      ],
+      "assets": []
+    },
+    "context_basis": "explicit structured client context supplied by the calling designer",
+    "concepts": [
+      {
+        "direction": 1,
+        "title": "Direction A — Dashboards, Analytics & Admin Software (Morning Brief)",
+        "composition": "The bakery operations dashboard as a morning brief: a short written summary of today with small inline charts of bake quantities and oven status, centred; the tables behind each sentence open below; stock as the closing section. Structure: a written summary with inline charts, then the tables behind it. Knobs: density airy; span irregularity low; accent on cells and rows that need action. Mobile: the brief reads as text with small inline charts",
+        "why_this_subject": "Morning Brief for \"bakery operations dashboard\" (productui surface): the team needs the day's story before the numbers. Type Young Serif / Instrument Sans (warm, hand-made, oven-lit) for an editorial voice, tagged warm-grain like the brief. Palette brand-f5f3ee-292b28-963d28-on-proofing-basket on a light ground, tagged warm-grain/calm like the brief. First screen: centred composition, hero material data-as-image, look family warm-paper-serif, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): charts draw once. Flag: this pairing uses a face seen on most generated sites; swap it if the brand allows. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#F5F3EE, #292B28, #963D28). Other structures that fit this slot: Live Status Board, Numbers Up Front, Changelog Front, Plain Index Page, Feature Stack, Catalogue Index.",
+        "image_medium": "working product interface with truthful demo data",
+        "asset_plan": {
+          "subject": "bakery operations dashboard",
+          "medium": "working product interface with truthful demo data",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction A — Dashboards, Analytics & Admin Software (Morning Brief) requires convincing working product interface with truthful demo data material; judge the actual render before committing."
+      },
+      {
+        "direction": 2,
+        "title": "Direction B — Dashboards, Analytics & Admin Software (Live Operations Wall)",
+        "composition": "Full-width live wall for the bakery operations dashboard: bake quantities on a horizontal time axis as the hero, oven status as an exceptions rail pinned to the side, drill-down drawers instead of page changes. Structure: full-width time axis, pinned exceptions rail, drill-down drawers. Knobs: density dense; span irregularity medium; accent on cells and rows that need action. Mobile: the wall becomes the exceptions list first, with the time axis as a swipeable strip",
+        "why_this_subject": "Live Operations Wall for \"bakery operations dashboard\" (productui surface): the team watches the numbers all day on a shared screen and acts on exceptions. Type Rokkitt / Figtree (menu-slab with a friendly sans) for a utility voice, tagged food/warm-grain like the brief. Palette brand-f5f3ee-292b28-963d28-on-rye-ledger on a light ground, tagged warm-grain/data like the brief. First screen: object-wrap composition (no fitting full-bleed hero for this trade, so the direction follows the dealt hero hero-shared-baseline-shelf), hero material data-as-image, look family technical-blueprint, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): value tweens on update; FLIP row insert. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#F5F3EE, #292B28, #963D28). Other structures that fit this slot: Bento Board, System Diagram, Timeline Axis.",
+        "image_medium": "working product interface with truthful demo data",
+        "asset_plan": {
+          "subject": "bakery operations dashboard",
+          "medium": "working product interface with truthful demo data",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction B — Dashboards, Analytics & Admin Software (Live Operations Wall) requires convincing working product interface with truthful demo data material; judge the actual render before committing."
+      },
+      {
+        "direction": 3,
+        "title": "Direction C — Dashboards, Analytics & Admin Software (Flow Board)",
+        "composition": "The bakery operations dashboard as a flow board: stages as columns with bake quantities as cards, limits per column, oven status flagged; dragging or keyboard moves a card; stock in a side panel. Structure: columns of stages with cards, limits per column. Knobs: density standard; span irregularity high; accent on the active control and its result. Mobile: one stage per screen with a stage switcher",
+        "why_this_subject": "Flow Board for \"bakery operations dashboard\" (productui surface): the work moves through stages and the team drags it forward. Type Arsenal / Arsenal (ukrainian-designed grotesk, cyrillic-native) for a utility voice, tagged data like the brief. Palette brand-f5f3ee-292b28-963d28-on-nordic-birch on a light ground, tagged calm like the brief. First screen: layered composition, hero material live-ui, look family playful-color-block, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): cards move with FLIP. Licence: SIL Open Font License 1.1. Brand first: palette built around the brief's colours (#F5F3EE, #292B28, #963D28). Other structures that fit this slot: Plain Index Page, Bento Board, Catalogue Index, Timeline Axis.",
+        "image_medium": "working product interface with truthful demo data",
+        "asset_plan": {
+          "subject": "bakery operations dashboard",
+          "medium": "working product interface with truthful demo data",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction C — Dashboards, Analytics & Admin Software (Flow Board) requires convincing working product interface with truthful demo data material; judge the actual render before committing."
+      }
+    ],
+    "selection": "Render the three concepts with identical real content and available assets. Pick the clearest, most expressive, subject-specific composition; record the decision and visible tradeoffs with review_design. Familiar controls may be reused when they serve the task.",
+    "success": [
+      "brief fidelity",
+      "clear hierarchy",
+      "expressive typography",
+      "convincing imagery",
+      "coherent colour and spacing",
+      "complete page rhythm",
+      "designed phone composition",
+      "usable interactions"
+    ],
+    "novelty": "A supporting signal, never a reason to change a working brand or navigation pattern",
+    "design_gate": "Browser defects and recorded process only. Exceptional design requires reviewing the actual renders, not passing a numeric checker."
+  },
+  "client_request": "Hearth bakery operations dashboard. A shift lead needs todays bake quantities, oven status, low stock and collection orders. Dense but calm, warm paper and brick red, usable real controls. Product demo data must be labelled. No marketing hero or invented business growth claims.",
+  "ledger": "written C:\\Users\\ajjma\\Desktop\\sharethrone\\.layoza\\looks.jsonl",
+  "registers": [
+    "technical",
+    "craft"
+  ],
+  "craft_floor": [
+    "Header: one row, 52-72px tall on desktop and 56-76px on mobile; logo 24-40px high on the left, 4-6 nav links of 15-16px at weight 500 with 24-40px between them, the primary action on the right at the header's button size. Phone or hours sit in that row or the footer; no utility bar stacked above the nav. Mark the current link with a 2px underline 6px below the text; a sticky header turns opaque after the first scroll, never taller.",
+    "Primary button: 36-52px tall, horizontal padding 20-32px (about twice the vertical), label 15-17px at weight 600 in sentence or title case with tracking 0-0.02em, at most one drawn SVG icon of 16-20px set 8px from the label. The secondary action matches its height, radius and padding as an outline (1-1.5px) or ghost; one button shape and radius on the whole page, 44px minimum hit area everywhere.",
+    "Button states, all four authored: :hover shifts the fill by 6-10% lightness or nudges the icon 2-4px; :active presses with translateY(1px) or scale(0.98) over 80-120ms; :focus-visible draws a 2px ring at 2-3px offset with at least 3:1 contrast; disabled sits at 45-55% opacity with cursor not-allowed. No state changes width, height or padding.",
+    "Type scale: at most 10 distinct font sizes each carry 2% or more of the text on a desktop render, each step at least 1.2x the one below; body 14-17px at line-height 1.5-1.65; headings at line-height 1.0-1.15. The h1 tops out at 88px on desktop (set with clamp()), and display sizes of 48px and up track -0.02 to -0.04em, never tighter than -0.05em; body text keeps tracking at 0.",
+    "Measure: prose never runs past 82 characters a line (cap paragraphs at 60-68ch with max-width); h1 lines stay under 20ch and h2 under 24ch; no centred paragraph runs past three lines.",
+    "Spacing rhythm: use a coherent scale suited to density and content. Group related controls tightly and separate different tasks clearly. Preserve incumbent tokens; do not impose fixed section padding or an arbitrary 4/8px scale on every project.",
+    "Section heads: one heading per section (one h2, or the h1 in the hero) and at most one lead paragraph of 40 words or fewer. No stacked pile of label, heading, accent-coloured second heading and paragraph; a second voice goes in the body, not the head.",
+    "Composition: choose section forms from the content and reading order. Repeated rows, equal cards and consistent app panels are useful when people compare equivalent items. Vary composition only when it improves hierarchy; no minimum number of layout kinds.",
+    "Hero: this is a working interface. Put the primary task, essential quantities and actionable exceptions in view, including on phones. Use the product itself; no required marketing hero, stock photograph or forced display headline.",
+    "Imagery: use relevant, licensed material and truthful labels. Decide crop and aspect ratio for each image's role; no universal ratio or radius. Label illustrative stock near the image and never imply it shows the actual client. Text on images must remain readable at 4.5:1.",
+    "Colour: respect pinned brand colours and monochrome constraints. Assign clear roles to grounds, text, actions and status; choose saturation and colour area from the concept, without an accent-area quota. Body and secondary text need 4.5:1 contrast, large text 3:1.",
+    "Icons: one drawn SVG set at one stroke weight (1.5 or 2px) and one size per context (16, 20 or 24px), coloured with currentColor. Never a Unicode arrow, check mark, star or emoji standing in for an icon.",
+    "Motion: use it when it explains a state or serves the composition. No mandatory signature effect. Keep content readable before initialization, honor prefers-reduced-motion, and clean up listeners/timelines on unmount.",
+    "Footer: brand and one-line description, two or three link groups and the contact block, four columns at most on desktop; group titles 13-14px at weight 600 in sentence case; links 15-16px with 10-12px between rows; a bottom bar for legal and copyright at 13-14px; 64px or more of top padding.",
+    "Browser surfaces: ::selection and focus rings use the palette; link underlines sit 3-4px below the text at 1-2px thickness; tables and figures use tabular numerals; no unthemed default blue links anywhere.",
+    "Technical: figures in tabular numerals, real UI or diagrams instead of illustration, monospace only for actual code, radii 4-8px, nothing animates longer than 250ms.",
+    "Craft: use convincing material and characterful typography where the subject supports it. State prices and hours as readable text. Licensed illustrative stock is acceptable when honestly labelled; no compulsory picture count."
+  ],
+  "design_critique": {
+    "authority": "contextual visual judgment",
+    "criteria": [
+      "brief fidelity",
+      "hierarchy",
+      "typography",
+      "imagery",
+      "colour",
+      "rhythm",
+      "phone composition",
+      "interaction"
+    ],
+    "note": "Stylistic devices are not defects by themselves. Diagnose the actual composition, not a list of banned looks."
+  },
+  "avoid_recent": {
+    "entries": 6,
+    "directions": [
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred early first-visit links. The "
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Sidebar A gives the shift lead the clearest production overvie"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred the task-first C composition."
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Photographs lead through a coherent asymmetric exhibition comp"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — 1, Edit bay, with concept 2 folded in as the curve readout and the curves"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — Object Study look from the brief (Space Grotesk / Inter, Ice Blue surface"
+      }
+    ],
+    "palettes": [
+      [
+        "#0d2424",
+        "#133131",
+        "#2a4a48",
+        "#f1eadf",
+        "#a8beb9",
+        "#ff6a3d",
+        "#f2c94c"
+      ]
+    ],
+    "fonts": [
+      "Space Grotesk",
+      "Inter",
+      "Bricolage Grotesque",
+      "Instrument Sans"
+    ],
+    "motifs": [
+      "sticky",
+      "film",
+      "paper",
+      "kinetic type",
+      "webgl",
+      "timeline",
+      "blob",
+      "asymmetric",
+      "index",
+      "catalogue",
+      "chart"
+    ],
+    "mechanics": [],
+    "rule": "Make all three directions materially different from these recent picks: a different palette family, different type families, different motifs and mechanics. Reuse them only when the user asks for the same look, and then record `REPEAT-OK: <the user's words>` in direction.md."
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "rust": {
+    "passed": 247,
+    "failed": 0,
+    "ignored": 1
+  },
+  "tools": 24,
+  "visual_briefs": 4,
+  "rendered_compositions": 12,
+  "held_out_contract_briefs": 6,
+  "custom_browser_checks": 32,
+  "interaction_flows": 4,
+  "windows_binary_sha256": "b3ddc2f3c1e82963ea5d5f3275acbd177aa417c3f4913b7ba64db14e5e2307f1",
+  "windows_package_parity": true,
+  "packed_mcp_smoke": "passed: 24 tools, seven prompts, valid JSON-RPC, clean shutdown",
+  "packed_source_compile": "passed",
+  "mcp_browser_audits": [
+    {
+      "id": "intervals",
+      "release_gate": true,
+      "objective_errors": 0,
+      "min_text_contrast": 5.5,
+      "performance_requested": false,
+      "scope": {
+        "mode": "fast",
+        "passes": [
+          "full-sweep@1440",
+          "layout-rules@768",
+          "layout-rules@375",
+          "reduced-motion@1440",
+          "extra-widths@320,1024,1920",
+          "motion-density@1440"
+        ],
+        "skipped_passes": [
+          "Full rule sweep, craft, tells, interface, design-token and art-over-text checks at 768px, 375px: fast mode ran layout, overflow and touch rules only there; run with --full"
+        ]
+      }
+    },
+    {
+      "id": "willow",
+      "release_gate": true,
+      "objective_errors": 0,
+      "min_text_contrast": 6.27,
+      "performance_requested": false,
+      "scope": {
+        "mode": "fast",
+        "passes": [
+          "full-sweep@1440",
+          "layout-rules@768",
+          "layout-rules@375",
+          "reduced-motion@1440",
+          "extra-widths@320,1024,1920",
+          "motion-density@1440"
+        ],
+        "skipped_passes": [
+          "Full rule sweep, craft, tells, interface, design-token and art-over-text checks at 768px, 375px: fast mode ran layout, overflow and touch rules only there; run with --full"
+        ]
+      }
+    },
+    {
+      "id": "noor",
+      "release_gate": true,
+      "objective_errors": 0,
+      "min_text_contrast": 5.19,
+      "performance_requested": false,
+      "scope": {
+        "mode": "fast",
+        "passes": [
+          "full-sweep@1440",
+          "layout-rules@768",
+          "layout-rules@375",
+          "reduced-motion@1440",
+          "extra-widths@320,1024,1920",
+          "motion-density@1440"
+        ],
+        "skipped_passes": [
+          "Full rule sweep, craft, tells, interface, design-token and art-over-text checks at 768px, 375px: fast mode ran layout, overflow and touch rules only there; run with --full"
+        ]
+      }
+    },
+    {
+      "id": "hearth",
+      "release_gate": true,
+      "objective_errors": 0,
+      "min_text_contrast": 4.61,
+      "performance_requested": false,
+      "scope": {
+        "mode": "fast",
+        "passes": [
+          "full-sweep@1440",
+          "layout-rules@768",
+          "layout-rules@375",
+          "reduced-motion@1440",
+          "extra-widths@320,1024,1920",
+          "motion-density@1440"
+        ],
+        "skipped_passes": [
+          "Full rule sweep, craft, tells, interface, design-token and art-over-text checks at 768px, 375px: fast mode ran layout, overflow and touch rules only there; run with --full"
+        ]
+      }
+    }
+  ],
+  "decoded_mcp_same_render_diff": 0,
+  "publication": "none",
+  "scope": "Local Windows runtime and package. Other bundled platform binaries were not rebuilt or tested here. Held-out briefs test engine contracts only. Visual critique is by an independent assistant, not a human panel or fresh rival rebuild."
+}

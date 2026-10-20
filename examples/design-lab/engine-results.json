@@ -1,0 +1,34 @@
+[
+  {
+    "brief": "intervals",
+    "subject": "photography gallery",
+    "directions": 3,
+    "pinned_choices": "passed",
+    "registered_assets": 4,
+    "tools": 24
+  },
+  {
+    "brief": "willow",
+    "subject": "public library",
+    "directions": 3,
+    "pinned_choices": "passed",
+    "registered_assets": 1,
+    "tools": 24
+  },
+  {
+    "brief": "noor",
+    "subject": "dental clinic",
+    "directions": 3,
+    "pinned_choices": "passed",
+    "registered_assets": 2,
+    "tools": 24
+  },
+  {
+    "brief": "hearth",
+    "subject": "bakery operations dashboard",
+    "directions": 3,
+    "pinned_choices": "passed",
+    "registered_assets": 0,
+    "tools": 24
+  }
+]

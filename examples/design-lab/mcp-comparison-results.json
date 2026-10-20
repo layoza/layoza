@@ -1,0 +1,36 @@
+{
+  "comparison": {
+    "baseline_present": true,
+    "viewports_compared": [],
+    "pixel_diff_ratio": 0,
+    "comparison_basis": "Audit findings plus decoded PNG pixel comparison by Layoza; visual_comparison records dimensions, threshold and measured change. Pixel changes do not establish design quality; speed is optional.",
+    "intended_changes": [],
+    "unintended_regressions": [],
+    "accepted": true
+  },
+  "visual_comparison": {
+    "comparable": true,
+    "width": 1440,
+    "height": 1377,
+    "changed_pixels": 0,
+    "pixel_diff_ratio": 0,
+    "mean_channel_difference": 0,
+    "threshold_per_channel": 16,
+    "notice": "Pixel change measures regression evidence, not better or worse design. Review the before and after images."
+  },
+  "structure": {
+    "same_structure": 1,
+    "max_similarity": 0.8,
+    "files": [
+      {
+        "file": "index.html",
+        "similarity": 1,
+        "same_structure": true
+      }
+    ]
+  },
+  "before_errors": 0,
+  "after_errors": 0,
+  "after_release_gate": true,
+  "after_verification_status": "passed"
+}

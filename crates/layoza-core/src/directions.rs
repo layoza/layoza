@@ -413,6 +413,8 @@ const TRADES: &[Trade] = &[
         ["the case file", "the signed agreement", "the hearing calendar"], "book a first consultation", "matter numbers, clause references and hearing dates", &["legal"]),
     tr(&["kids", "children", "child", "toddlers", "toddler", "toy", "toys", "playground"], None,
         ["hands-on activities mid-use", "the activity map", "the stamp card"], "plan the day by age and time", "age bands, session times and wayfinding colours", &["play"]),
+    tr(&["photography gallery", "photographic gallery", "photograph archive", "photography archive"], Some(S::Showcase),
+        ["the complete photograph", "the artist and collection caption", "the selected works"], "view the photographs and enquire", "artist names, titles, dates and collection sources", &["civic"]),
     tr(&["museum", "exhibition", "exhibitions", "gallery", "heritage"], Some(S::Venue),
         ["the object on its plinth", "the wall label", "the floor plan"], "plan a visit and book a timed ticket", "accession numbers, wall labels and gallery numbers", &["civic"]),
     tr(&["seafood", "fish", "oyster", "oysters", "fishmonger"], Some(S::Venue),
@@ -433,7 +435,7 @@ const TRADES: &[Trade] = &[
         ["the lit screen on its site", "the module and its pixel pitch", "the cabinet from the side"], "request a site survey or quote", "pixel pitch, nits, viewing distance and IP rating", &["industrial", "infrastructure"]),
     tr(&["agency", "studio", "portfolio", "designer", "photographer"], Some(S::Showcase),
         ["the work itself", "the process sketches", "the client credits"], "open a case study or start a project", "project numbers, years and credits", &["generic"]),
-    tr(&["cli", "sdk", "api", "devtool", "devtools", "dev tool", "dev tools", "developer", "developers", "terminal", "mcp", "compiler", "library"], Some(S::DevTool),
+    tr(&["cli", "sdk", "api", "devtool", "devtools", "dev tool", "dev tools", "developer", "developers", "terminal", "mcp", "compiler", "software library", "javascript library", "python library", "component library"], Some(S::DevTool),
         ["the command and its real output", "the diff it produces", "the config file"], "copy the install command", "commands, flags, exit codes and versions", &["code"]),
     tr(&["saas", "software", "platform", "app"], None,
         ["the product screen doing its job", "the before and after of one task", "the plan table"], "start a trial", "plan limits, uptime and changelog dates", &["generic"]),
@@ -520,7 +522,7 @@ const TRADES: &[Trade] = &[
         ["the drink on the bar", "the back bar", "the room at night"], "book a table or see what is on", "drink names, prices and opening hours", &["night", "food"]),
     tr(&["church", "chapel", "parish church", "cathedral", "temple", "mosque", "synagogue"], None,
         ["the building and its doors", "the service times", "the community at work"], "find a service time", "service times, festivals and notices", &["civic"]),
-    tr(&["public library", "libraries", "reading room"], Some(S::Venue),
+    tr(&["public library", "community library", "municipal library", "libraries", "reading room"], Some(S::Venue),
         ["the reading room", "the catalogue", "the events board"], "find a book or join", "shelf marks, opening hours and event dates", &["literary", "civic"]),
     tr(&["farm", "farmshop", "orchard", "dairy", "cheesemaker", "creamery"], None,
         ["the field in season", "the produce box", "the farm-gate board"], "order a box or visit the farm", "seasons, weights and collection days", &["earth", "food"]),
@@ -595,7 +597,7 @@ fn subject_phrase(query: &str) -> String {
         .filter(|w| !w.is_empty())
         .collect();
     let mut segments: Vec<Vec<String>> = vec![Vec::new()];
-    for w in words {
+    for (wi, w) in words.iter().enumerate() {
         let lw = w.to_lowercase();
         // A participle after the subject opens a clause ("funeral home helping families ..."):
         // the subject ends there, so its head noun is kept.
@@ -603,10 +605,11 @@ fn subject_phrase(query: &str) -> String {
             && lw.ends_with("ing")
             && !ING_NOUNS.contains(&lw.as_str())
             && segments.last().is_some_and(|s| !s.is_empty());
-        if BREAKS.contains(&lw.as_str()) || participle {
+        let colour_pair = lw == "and" && wi > 0 && words[wi - 1].eq_ignore_ascii_case("black") && words.get(wi + 1).is_some_and(|s| s.eq_ignore_ascii_case("white"));
+        if (BREAKS.contains(&lw.as_str()) && !colour_pair) || participle {
             segments.push(Vec::new());
         } else if let Some(last) = segments.last_mut() {
-            last.push(w);
+            last.push(w.clone());
         }
     }
     let content = |seg: &Vec<String>| -> Vec<String> {
@@ -643,13 +646,25 @@ fn brief_nouns(query: &str) -> Vec<String> {
 
 pub(crate) fn read_subject(query: &str, signals: &BriefSignals) -> Subject {
     // A labelled trade line ("Industry: ...") names the subject better than a long spec's first line.
-    if let Some(focus) = crate::intelligence::focus_line(query) {
-        let s = read_subject_in(&focus, signals);
-        if s.from_trades {
-            return s;
+    let mut subject = crate::intelligence::focus_line(query)
+        .map(|focus| read_subject_in(&focus, signals))
+        .filter(|s| s.from_trades)
+        .unwrap_or_else(|| read_subject_in(query, signals));
+    // Structured client context must shape the compositions, not only the summary.
+    // Keep three real objects for the templates without inventing extra client material.
+    for line in query.lines() {
+        if let Some(action) = line.strip_prefix("Primary action:").map(str::trim).filter(|s| !s.is_empty()) {
+            subject.action = action.to_string();
+        }
+        if let Some(objects) = line.strip_prefix("Subject objects:") {
+            let mut objects: Vec<String> = objects.split(',').map(str::trim).filter(|s| !s.is_empty()).map(str::to_string).collect();
+            if !objects.is_empty() {
+                while objects.len() < 3 { objects.push(objects.last().unwrap().clone()); }
+                subject.objects = objects;
+            }
         }
     }
-    read_subject_in(query, signals)
+    subject
 }
 
 fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
@@ -658,8 +673,8 @@ fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
         let parts = tokenize(w);
         if parts.len() == 1 {
             tokens.iter().position(|t| *t == parts[0] || (parts[0].len() > 3 && *t == format!("{}s", parts[0])))
-        } else if keyword_hit(&tokens, w) {
-            Some(tokens.len())
+        } else if !parts.is_empty() {
+            tokens.windows(parts.len()).position(|slice| slice == parts)
         } else {
             None
         }
@@ -697,18 +712,6 @@ fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
             nouns,
         };
     }
-    let mut objects: Vec<String> = Vec::new();
-    for round in 0..3 {
-        for (_, _, t) in &hits {
-            if objects.len() < 3 && !objects.iter().any(|o| o == t.objects[round]) {
-                objects.push(t.objects[round].to_string());
-            }
-        }
-    }
-    let notation = match hits.get(1) {
-        Some((_, _, t2)) if t2.notation != hits[0].2.notation => format!("{}; {}", hits[0].2.notation, t2.notation),
-        _ => hits[0].2.notation.to_string(),
-    };
     // The action comes from the head of the subject phrase: the last specific trade word inside it
     // ("vineyard wedding venue" books a viewing; "tattoo studio" books an artist, not a project).
     let phrase_end = phrase.split_whitespace().last().and_then(|w| tokenize(w).into_iter().last()).and_then(|w| tokens.iter().position(|t| *t == w));
@@ -719,6 +722,18 @@ fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
         .max_by_key(|(_, p, _)| *p)
         .map(|(_, _, t)| *t)
         .unwrap_or(hits[0].2);
+    // A recognised multiword trade is more specific than its generic head noun:
+    // photography gallery must not inherit a museum's plinths and ticket booking.
+    let head = hits.iter().filter(|(off, _, _)| *off == lead_off)
+        .flat_map(|(_, _, t)| t.words.iter().filter_map(|w| {
+            let n = w.split_whitespace().count();
+            (n > 1 && phrase.contains(w)).then_some((n, *t))
+        }))
+        .max_by_key(|(n, _)| *n).map(|(_, t)| t).unwrap_or(head);
+    // One subject owns its objects and notation. Build techniques and incidental nouns must not
+    // splice a second trade's world into the client's content.
+    let objects = head.objects.iter().map(|s| s.to_string()).collect();
+    let notation = head.notation.to_string();
     // The head trade's tags lead (a "municipal water utility" is infrastructure first).
     let mut tags: Vec<&'static str> = head.tags.iter().copied().filter(|t| *t != "generic").collect();
     for (_, _, t) in hits.iter().take(3) {
@@ -896,8 +911,9 @@ fn brand_palette(colors: &[String], roles: &std::collections::BTreeMap<String, S
         let (f, b) = (rgb(&fg).unwrap_or((0, 0, 0)), rgb(&bg).unwrap_or((255, 255, 255)));
         [0.35, 0.3, 0.25, 0.2, 0.15, 0.1, 0.05, 0.0].iter().map(|t| mix(f, b, *t)).find(|c| ok(c)).unwrap_or_else(|| fg.clone())
     };
-    let primary = accents.first().map(|c| (*c).clone()).unwrap_or_else(|| base.primary_accent.clone());
-    let secondary = accents.get(1).map(|c| (*c).clone()).unwrap_or_else(|| base.secondary_accent.clone());
+    let monochrome = colors.len() >= 2 && colors.iter().all(|c| rgb(c).is_some_and(|(r,g,b)| r == g && g == b));
+    let primary = roles.get("primary").filter(|c| Some(*c) != ground).cloned().or_else(|| accents.first().map(|c| (*c).clone())).unwrap_or_else(|| if monochrome { fg.clone() } else { base.primary_accent.clone() });
+    let secondary = accents.get(1).map(|c| (*c).clone()).unwrap_or_else(|| if monochrome { primary.clone() } else { base.secondary_accent.clone() });
     let hexes: Vec<String> = colors.iter().map(|c| c.trim_start_matches('#').to_lowercase()).collect();
     let notes = format!(
         "Brief colours {} lead: {}; {} | base {}",
@@ -1163,14 +1179,14 @@ fn brand_type(fonts: &[String], roles: &std::collections::BTreeMap<String, Strin
     let by_role = |r: &str| names.iter().copied().filter(|f| roles.get(*f).is_some_and(|x| x == r)).collect::<Vec<_>>();
     let (heads, bodies) = (by_role("display"), by_role("body"));
     // A brief that names two or more faces has its system; a third, unasked mono face only adds noise.
-    let mono = fonts.iter().find(|f| is_mono_name(f)).cloned().unwrap_or_else(|| if names.len() >= 2 { names[(slot as usize + 1) % names.len()].clone() } else { base.mono_font.clone() });
+    let mono = fonts.iter().find(|f| is_mono_name(f)).cloned().unwrap_or_else(|| if !names.is_empty() { names[(slot as usize + 1) % names.len()].clone() } else { base.mono_font.clone() });
     let (display, body) = match names.len() {
         _ if !heads.is_empty() && !bodies.is_empty() => (heads[slot as usize % heads.len()].clone(), bodies[slot as usize % bodies.len()].clone()),
         _ if !heads.is_empty() => (heads[slot as usize % heads.len()].clone(), base.body_font.clone()),
         _ if !bodies.is_empty() => (base.display_font.clone(), bodies[slot as usize % bodies.len()].clone()),
         0 => (base.display_font.clone(), base.body_font.clone()),
         // One named face leads display; body comes from the base so long text stays legible.
-        1 => (names[0].clone(), if slot == 2 { names[0].clone() } else { base.body_font.clone() }),
+        1 => (names[0].clone(), names[0].clone()),
         n => (names[slot as usize % n].clone(), names[(slot as usize + 1) % n].clone()),
     };
     let fontshare = |f: &str| type_pool().iter().any(|e| e.source == "fontshare" && (e.pairing.display_font == f || e.pairing.body_font == f));
@@ -1182,7 +1198,8 @@ fn brand_type(fonts: &[String], roles: &std::collections::BTreeMap<String, Strin
         .filter(|f| is_paid_face(f))
         .map(|f| format!("{f} is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN"))
         .collect();
-    let free: Vec<&String> = fams.iter().copied().filter(|f| !is_paid_face(f)).collect();
+    let known_free = |f: &str| type_pool().iter().any(|e| e.pairing.display_font == f || e.pairing.body_font == f || e.pairing.mono_font == f);
+    let free: Vec<&String> = fams.iter().copied().filter(|f| !is_paid_face(f) && known_free(f)).collect();
     let google: Vec<String> = free.iter().filter(|f| !fontshare(f)).map(|f| {
             // Bold headings need the 700 cut; Google rejects the whole sheet for a weight a face lacks,
             // so single-weight display faces are asked for as they are.
@@ -1236,6 +1253,18 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let base = if variant > 0 { Some(deal(signals, query, 0, industry)) } else { None };
     let subject = read_subject(query, signals);
     let q = query.to_lowercase();
+    // A visually different candidate still has to be deliverable with the brief's
+    // capabilities and evidence. Novelty never buys invented quotes or unavailable slots.
+    let compatible = |a: &&Archetype| {
+        !(signals.motion_cap.is_some_and(|cap| cap <= 1) && a.hero_material == "video")
+            && !(a.key == "quote-led" && !q.contains("verified quote:"))
+            && !(matches!(a.key, "booking-board" | "week-grid")
+                && !["time slots", "availability", "classes", "sessions", "timetable"].iter().any(|s| q.contains(s)))
+            && !(a.key == "component-playground" && signals.surface == S::ProductUi
+                && !["component", "design system", "developer", "code playground"].iter().any(|s| q.contains(s)))
+            && !(a.key == "service-area"
+                && !["postcode", "service area", "coverage check", "call-out", "callout"].iter().any(|s| q.contains(s)))
+    };
     let h = |s: &str| fnv1a(&format!("{s}|{q}"));
     let w = |tag: &str| tag_weight(signals, &subject, tag);
     let has = |tag: &str| w(tag) > 0;
@@ -1316,6 +1345,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         // Archetype
         let pool: Vec<&'static Archetype> = ARCHETYPES()
             .iter()
+            .filter(compatible)
             .filter(|a| a.roles.contains(&role) && fits(a, signals.surface) && (a.needs.is_empty() || a.needs.iter().any(|n| has(n))))
             .collect();
         // Register before novelty: only layouts that read as professional in the brief's register
@@ -1325,6 +1355,7 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         let pool = if pool.iter().filter(|a| reg.tier(a.registers) >= 1).count() < 2 {
             let borrowed: Vec<&'static Archetype> = ARCHETYPES()
                 .iter()
+                .filter(compatible)
                 .filter(|a| fits(a, signals.surface) && (a.needs.is_empty() || a.needs.iter().any(|n| has(n))))
                 .filter(|a| reg.tier(a.registers) >= 1 && !used_families.contains(&a.look_family))
                 .collect();
@@ -1431,6 +1462,8 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                         s += 4;
                     }
                 }
+                if has("care") && matches!(a.hero_material, "photo" | "video") { s += 7; }
+                if has("care") && a.key.contains("before-after") && !q.contains("before and after") && !q.contains("before-after") { s -= 30; }
                 (s, a)
             })
             .collect();

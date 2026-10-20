@@ -147,7 +147,7 @@ pub fn generate_design_md(dna: &SiteDna) -> String {
     out.push_str("  button-primary:\n");
     out.push_str(&format!("    backgroundColor: \"{{colors.{}}}\"\n", primary_key));
     out.push_str(&format!("    textColor: \"{{colors.{}}}\"\n", bg_key));
-    out.push_str(&format!("    rounded: \"{{rounded.{}}}\"\n", radius_key));
+    if !dna.radii_scale.is_empty() { out.push_str(&format!("    rounded: \"{{rounded.{}}}\"\n", radius_key)); }
     out.push_str("    padding: \"12px\"\n");
     out.push_str("---\n\n");
 
@@ -210,7 +210,7 @@ fn design_md_body(dna: &SiteDna, bg_key: &str, primary_key: &str) -> String {
     out.push_str("- Body measure 45-75 characters; multi-line display headings keep line-height at 1.04 or more; body text never below 16px and labels or captions never below 12px.\n\n");
 
     out.push_str("## 4. Component Stylings\n\n");
-    let radius = dna.radii_scale.values().next().cloned().unwrap_or_else(|| "8px".into());
+    let radius = dna.radii_scale.values().next().cloned().unwrap_or_else(|| "unknown; inspect the existing control".into());
     out.push_str(&format!(
         "- **button-primary**: `{{colors.{}}}` fill, `{{colors.{}}}` label, radius `{}`. States: hover (darken or lift 1 step), focus-visible (2px outline offset 2px, never removed), active (pressed, no layout shift), disabled (reduced contrast plus `aria-disabled`), loading (label kept, spinner beside it).\n",
         primary_key, bg_key, radius
@@ -220,8 +220,8 @@ fn design_md_body(dna: &SiteDna, bg_key: &str, primary_key: &str) -> String {
     out.push_str("- **cards / panels**: one radius and one border or shadow style per surface level; no nested cards.\n\n");
 
     out.push_str("## 5. Layout Principles\n\n");
-    out.push_str(&format!("- **Max content widths**: {}\n", if dna.content_max_widths.is_empty() { "`1280px`".to_string() } else { dna.content_max_widths.join(", ") }));
-    out.push_str(&format!("- **Grid systems**: {}\n", if dna.grid_systems.is_empty() { "CSS Grid + Flexbox".to_string() } else { dna.grid_systems.join(", ") }));
+    out.push_str(&format!("- **Max content widths**: {}\n", if dna.content_max_widths.is_empty() { "Unknown from source".to_string() } else { dna.content_max_widths.join(", ") }));
+    out.push_str(&format!("- **Grid systems**: {}\n", if dna.grid_systems.is_empty() { "Unknown from source".to_string() } else { dna.grid_systems.join(", ") }));
     out.push_str(&format!("- **Spacing scale**: {}\n", dna.spacing_scale.iter().map(|(k, v)| format!("{k} `{v}`")).collect::<Vec<_>>().join(", ")));
     out.push_str("- Every gap and padding comes from the spacing scale; sections differ in rhythm on purpose, not by accident.\n\n");
 

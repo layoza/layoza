@@ -1,0 +1,1163 @@
+{
+  "mode": "new_website",
+  "query": "Industry: photography gallery\nClient brief: A contemporary photography gallery called Intervals. Black and white only, Helvetica only, no animation. Make historical photographs the main experience, with an exhibition introduction, selected works, artist information and an exhibition enquiry. No invented awards or sales claims.\nAudience: photography enthusiasts and collectors\nPrimary action: view the photographs and enquire about an exhibition\nHeading font: Helvetica\nBody font: Helvetica\nBrand colours: #FFFFFF, #111111, #666666\nNo animation.\nNo coloured accents.\nNo invented awards.",
+  "matched_industry": {
+    "slug": "creative-portfolio",
+    "name": "Creative Portfolios & Independent Makers",
+    "keywords": [
+      "portfolio",
+      "designer",
+      "architect",
+      "director",
+      "photographer",
+      "photography gallery",
+      "personal"
+    ],
+    "recommended_styles": [
+      "kinetic-editorial",
+      "spatial-webgl-stage"
+    ],
+    "layout_archetype": "Curated Work Index + Deep Case Study Monograph",
+    "first_viewport_priority": "Clear practitioner identity, selected shipped works, and availability status",
+    "typography_pairing": {
+      "id": "brand-helvetica-helvetica",
+      "display_font": "Helvetica",
+      "body_font": "Helvetica",
+      "mono_font": "Helvetica",
+      "mood": "The brief's own type (Helvetica); scale and roles from literata-inter",
+      "scale_ratio": "1.414 (Augmented Fourth)",
+      "google_fonts_url": ""
+    },
+    "palette": {
+      "id": "brand-ffffff-111111-666666-on-civic-limestone",
+      "background": "#FFFFFF",
+      "surface": "#F0F0F0",
+      "foreground": "#191A1C",
+      "muted": "#50525A",
+      "primary_accent": "#666666",
+      "secondary_accent": "#666666",
+      "wcag_body_contrast": 17.41,
+      "notes": "Brief colours #FFFFFF, #111111, #666666 lead: #FFFFFF is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents | base Town-hall limestone with notice blue and stamp red"
+    },
+    "conversion_trust_elements": [
+      "Role, timeline, and shipped impact per project",
+      "Direct email copy interaction"
+    ],
+    "motion_language": "Hover-linked project preview planes, FLIP route continuity",
+    "anti_patterns": [
+      "Unverified skill percentage bars (e.g. 'HTML 95%')"
+    ],
+    "default_dials": {
+      "design_variance": 7,
+      "motion_intensity": 7,
+      "visual_density": 3
+    },
+    "provenance": "adapted:taste-skill+impeccable+layoza"
+  },
+  "match_score": 3,
+  "match_confidence": "weak",
+  "alternative_industries": [],
+  "distinctiveness": {
+    "place_cues": [],
+    "material_cues": [],
+    "category_cliches": [
+      "Black-and-white with a single gold accent",
+      "Huge thin serif + letter-spaced caps everywhere",
+      "Full-screen hero video with centred logo"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "brief_signals": {
+    "surface": "showcase",
+    "niche_tags": [
+      "civic"
+    ],
+    "moods": [],
+    "constraints": [
+      "reduced-motion"
+    ],
+    "motion_bias": 0,
+    "motion_cap": 0,
+    "brief_colors": [
+      "#FFFFFF",
+      "#111111",
+      "#666666"
+    ],
+    "brief_color_roles": {
+      "primary": "#FFFFFF",
+      "text": "#FFFFFF"
+    },
+    "brief_fonts": [
+      "Helvetica"
+    ],
+    "niches": [
+      "events",
+      "portfolio"
+    ],
+    "brief_objects": [
+      "industry",
+      "photography gallery",
+      "client brief",
+      "gallery called intervals",
+      "black",
+      "white",
+      "helvetica",
+      "historical photographs"
+    ],
+    "brief_action": "enquire"
+  },
+  "matched_styles": [
+    {
+      "slug": "kinetic-editorial",
+      "name": "Kinetic Editorial Showcase",
+      "category": "Motion-Led & Creative",
+      "keywords": [
+        "kinetic",
+        "agency",
+        "studio",
+        "portfolio",
+        "gsap",
+        "scroll"
+      ],
+      "characteristics": [
+        "Choreographed display typography with SplitText mask reveals",
+        "Scroll-synchronized case study pinning and smooth image scale transitions",
+        "Tactile magnetic triggers with instant reduced-motion static fallback"
+      ],
+      "best_for": [
+        "Marketing Agencies",
+        "Creative Studios",
+        "Product Launches"
+      ],
+      "avoid_when": [
+        "High-density backoffice data entry forms"
+      ],
+      "provenance": "adapted:taste-skill+ui-ux-pro-max+layoza"
+    },
+    {
+      "slug": "spatial-webgl-stage",
+      "name": "Spatial WebGL & Interactive 3D Stage",
+      "category": "3D & Experimental",
+      "keywords": [
+        "3d",
+        "threejs",
+        "webgl",
+        "r3f",
+        "shader",
+        "spatial",
+        "interactive"
+      ],
+      "characteristics": [
+        "Demand-rendered or viewport-throttled Three.js / R3F canvas with PBR lighting or custom shaders",
+        "Accessible semantic HTML overlay that remains 100% usable when WebGL is disabled or reduced-motion is active",
+        "Synchronized camera keyframes driven by scroll progress or pointer parallax"
+      ],
+      "best_for": [
+        "Experimental Sites",
+        "3D Product Configurators",
+        "Flagship Hardware Reveals"
+      ],
+      "avoid_when": [
+        "Content-heavy documentation or low-power utility forms"
+      ],
+      "provenance": "layoza-original"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 7,
+    "motion_intensity": 0,
+    "visual_density": 3
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — Creative Portfolios & Independent Makers (Full-Bleed Stage)",
+      "style_family": "kinetic-editorial",
+      "layout_composition": "Full-bleed stage for the photography gallery: the complete photograph fills the first screen edge to edge with the headline set into its quiet area; later sections cut between the artist and collection caption and the selected works at full width; 'view the photographs and enquire about an exhibition' stays docked and usable at every scroll position. Structure: one subject image edge to edge, headline in its quiet area, full-width cuts, docked action. Knobs: density standard; span irregularity medium; accent on the primary action only. Mobile: the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+      "visual_identity": "Cinematic contrast: Helvetica at stage scale over Helvetica; palette brand-ffffff-111111-666666-on-civic-limestone (light ground): brief colours #ffffff, #111111, #666666 lead: #ffffff is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents; real photography or drawn art of the subject, never stock; corners: square corners (0) on cards, buttons and images (sharp-0); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum",
+      "typography": {
+        "id": "brand-helvetica-helvetica",
+        "display_font": "Helvetica",
+        "body_font": "Helvetica",
+        "mono_font": "Helvetica",
+        "mood": "The brief's own type (Helvetica); scale and roles from literata-inter",
+        "scale_ratio": "1.414 (Augmented Fourth)",
+        "google_fonts_url": ""
+      },
+      "palette": {
+        "id": "brand-ffffff-111111-666666-on-civic-limestone",
+        "background": "#FFFFFF",
+        "surface": "#F0F0F0",
+        "foreground": "#191A1C",
+        "muted": "#50525A",
+        "primary_accent": "#666666",
+        "secondary_accent": "#666666",
+        "wcag_body_contrast": 17.41,
+        "notes": "Brief colours #FFFFFF, #111111, #666666 lead: #FFFFFF is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents | base Town-hall limestone with notice blue and stamp red"
+      },
+      "content_treatment": "Atmosphere first, then what is available now (artist names, titles, dates and collection sources), then 'view the photographs and enquire about an exhibition'",
+      "motion_choreography": "No motion: the complete photograph and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 7,
+        "motion_intensity": 0,
+        "visual_density": 3
+      },
+      "rationale": "Full-Bleed Stage for \"photography gallery\" (showcase surface): atmosphere sells it: the place, the product or the work has to be felt before it is read. Type Helvetica / Helvetica (the brief's own type (helvetica); scale and roles from literata-inter) for an expressive voice, tagged civic like the brief. Palette brand-ffffff-111111-666666-on-civic-limestone on a light ground, tagged civic like the brief. First screen: centred composition (no fitting full-bleed hero for this trade, so the direction follows the dealt hero hero-question-of-the-day), hero material photo, look family cinematic-dark, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): slow cross-fades; plates hand off on scroll. Brand first: palette built around the brief's colours (#FFFFFF, #111111, #666666). Brand first: Helvetica is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN. Brand first: type built from the brief's fonts (Helvetica). Other structures that fit this slot: Irregular Work Grid, Object Study.",
+      "mechanics": [
+        {
+          "id": "hero-question-of-the-day",
+          "name": "Question of the Day",
+          "kind": "hero",
+          "role": "hero",
+          "family": "question-card",
+          "intensity": "calm",
+          "still_check": "Any screenshot shows the question, the card (either side complete), the hours and the visit action readable.",
+          "composition": "centred",
+          "hero_material": "giant-type",
+          "look_family": "risograph-bright"
+        },
+        {
+          "id": "section-data-story-scale-objects",
+          "name": "Numbers as countable objects",
+          "kind": "section",
+          "role": "data-story",
+          "family": "scale-objects-story",
+          "intensity": "calm",
+          "still_check": "Any still shows the full objects and the number in text."
+        },
+        {
+          "id": "section-gallery-filter-by-object",
+          "name": "Gallery filtered by thing",
+          "kind": "section",
+          "role": "gallery",
+          "family": "filter-by-object",
+          "intensity": "calm",
+          "still_check": "Any still shows a filtered grid with captions."
+        }
+      ],
+      "hero_material": "photo",
+      "radius": "sharp-0",
+      "archetype": "full-bleed-stage",
+      "nav": {
+        "id": "nav-divider-tab-rail",
+        "name": "Divider tabs down the edge",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-divider-tabs",
+        "intensity": "calm",
+        "still_check": "Any still shows all tabs readable and one active.",
+        "look_family": "warm-paper-serif"
+      },
+      "footer": {
+        "id": "footer-letter-close",
+        "name": "Footer that closes like a letter",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-letter-close",
+        "intensity": "calm",
+        "still_check": "Any still shows the letter, signature, PS and legal line.",
+        "look_family": "warm-paper-serif"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.75rem",
+        "display": "clamp(3.998rem, 6vw, 7.993rem)",
+        "h1": "3.998rem",
+        "h2": "2.827rem",
+        "h3": "1.999rem",
+        "label": "0.75rem",
+        "lead": "1.414rem",
+        "ratio": "1.414",
+        "small": "0.875rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "poster-type",
+          "build": "Poster-scale type fills the first screen: words only, no image, no widget."
+        },
+        "flow": {
+          "id": "staggered",
+          "build": "Asymmetric staggered blocks alternating edges and widths down the page."
+        },
+        "section_head": {
+          "id": "vertical-label",
+          "build": "Vertical label rotated along each section's edge; content starts at the top."
+        },
+        "ground": {
+          "id": "split-ground",
+          "build": "Each section split down the middle: one half on the palette ground, the other on its ink."
+        },
+        "material": {
+          "id": "rendered-3d",
+          "build": "Rendered 3D objects of the trade, lit and shadowed, as the main visuals."
+        },
+        "labels": {
+          "id": "italic-captions",
+          "build": "Italic labels in the display face, set like captions in a book."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: underline-sweep (CSS transitions). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "underline-sweep",
+            "build": "Link underlines sweep in on hover and focus, 180ms.",
+            "tool": "css",
+            "tool_name": "CSS transitions",
+            "fallback": "underlines show statically."
+          }
+        ],
+        "motion_signature": "underline-sweep",
+        "motion_tools": [
+          "css"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette",
+          "typography"
+        ],
+        "motif": {
+          "id": "ruled-frame",
+          "build": "Ruled frame: every chapter opens on a hairline rule with a short thick start segment, drawn from the trim lines of the complete photograph; figures and captions hang from the rule, which never crosses media."
+        },
+        "button": {
+          "id": "square-ruled",
+          "build": "Primary: solid accent fill, 48px tall with 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — Creative Portfolios & Independent Makers (Salon Hang)",
+      "style_family": "atelier-minimalism",
+      "layout_composition": "Photography gallery as a salon hang: one wall of framed pieces at different sizes, the complete photograph largest at eye height; each frame has a wall label; the artist and collection caption and the selected works as further walls; 'view the photographs and enquire about an exhibition' on the wall label. Structure: a wall of framed pieces hung at different sizes, each labelled. Knobs: density standard; span irregularity high; accent on the primary action only. Mobile: the wall becomes a single column of frames in hanging order",
+      "visual_identity": "Gallery wall: Helvetica for wall titles, Helvetica for labels; palette brand-ffffff-111111-666666-on-archive-stone (light ground): brief colours #ffffff, #111111, #666666 lead: #ffffff is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents; corners: arch-topped images and frames, 4px controls (arched); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum",
+      "typography": {
+        "id": "brand-helvetica-helvetica",
+        "display_font": "Helvetica",
+        "body_font": "Helvetica",
+        "mono_font": "Helvetica",
+        "mood": "The brief's own type (Helvetica); scale and roles from albert-sans-solo",
+        "scale_ratio": "1.250 (Major Third)",
+        "google_fonts_url": ""
+      },
+      "palette": {
+        "id": "brand-ffffff-111111-666666-on-archive-stone",
+        "background": "#FFFFFF",
+        "surface": "#F0F0F0",
+        "foreground": "#18181A",
+        "muted": "#505056",
+        "primary_accent": "#666666",
+        "secondary_accent": "#666666",
+        "wcag_body_contrast": 17.73,
+        "notes": "Brief colours #FFFFFF, #111111, #666666 lead: #FFFFFF is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents | base Archive-box stone with catalogue red and record blue"
+      },
+      "content_treatment": "Each piece labelled with title, year and maker (artist names, titles, dates and collection sources)",
+      "motion_choreography": "No motion: the complete photograph and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 10,
+        "motion_intensity": 0,
+        "visual_density": 2
+      },
+      "rationale": "Salon Hang for \"photography gallery\" (showcase surface): many pieces seen together in one wall tell the story better than one at a time. Type Helvetica / Helvetica (the brief's own type (helvetica); scale and roles from albert-sans-solo) for an expressive voice, tagged civic like the brief. Palette brand-ffffff-111111-666666-on-archive-stone on a light ground, tagged civic like the brief. First screen: object-wrap composition (no fitting layered hero for this trade, so the direction follows the dealt hero hero-headline-wraps-object), hero material photo, look family luxury-sparse, corners arched. Motion flavour (tier and tools follow page_shape.motion): pieces come forward on focus. Brand first: palette built around the brief's colours (#FFFFFF, #111111, #666666). Brand first: Helvetica is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN. Brand first: type built from the brief's fonts (Helvetica). Other structures that fit this slot: Split Studio, Pin-Board Collage, Object Study, Irregular Work Grid.",
+      "mechanics": [
+        {
+          "id": "hero-headline-wraps-object",
+          "name": "Headline Wrapped Around the Specimen",
+          "kind": "hero",
+          "role": "hero",
+          "family": "shape-wrap",
+          "intensity": "calm",
+          "still_check": "At 50% the headline lines visibly hug the object contour with no awkward single-word lines, caption and CTA readable. 25% and 75% differ only in a slight object rotation and the caption leader state.",
+          "composition": "object-wrap",
+          "hero_material": "physical-object",
+          "look_family": "warm-paper-serif"
+        },
+        {
+          "id": "section-about-week-in-numbers",
+          "name": "This week, counted",
+          "kind": "section",
+          "role": "about",
+          "family": "week-in-numbers",
+          "intensity": "calm",
+          "still_check": "Any still shows the sentence with every number (final values in the HTML)."
+        },
+        {
+          "id": "section-schedule-week-grid",
+          "name": "The week at a glance",
+          "kind": "section",
+          "role": "schedule",
+          "family": "week-grid-schedule",
+          "intensity": "calm",
+          "still_check": "Any still shows the whole week with today marked."
+        }
+      ],
+      "hero_material": "photo",
+      "radius": "arched",
+      "archetype": "salon-hang",
+      "nav": {
+        "id": "nav-corner-index",
+        "name": "Corner index nav",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-corner-index",
+        "intensity": "calm",
+        "still_check": "Closed: wordmark and Index control are legible. Open: every numbered line and description is legible.",
+        "look_family": "soft-stone"
+      },
+      "footer": {
+        "id": "footer-sitemap-sentences",
+        "name": "Sitemap written as sentences",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-sitemap-sentences",
+        "intensity": "calm",
+        "still_check": "Any still shows every sentence and link.",
+        "look_family": "soft-stone"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.8rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.441rem",
+        "h2": "1.953rem",
+        "h3": "1.562rem",
+        "label": "0.8rem",
+        "lead": "1.25rem",
+        "ratio": "1.25",
+        "small": "0.9rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "collage",
+          "build": "Scattered collage: several real artefacts across the screen at different scales and angles."
+        },
+        "flow": {
+          "id": "spreads",
+          "build": "Magazine spreads: each section a facing pair, a full image page beside a text page."
+        },
+        "section_head": {
+          "id": "no-heads",
+          "build": "No section heads: the content itself and a change of ground mark each section."
+        },
+        "ground": {
+          "id": "duotone-photo",
+          "build": "Photos washed into a two-colour duotone from the palette become the section grounds."
+        },
+        "material": {
+          "id": "typographic",
+          "build": "Typographic only: type, rules and numerals carry every section; no imagery."
+        },
+        "labels": {
+          "id": "sentence-case",
+          "build": "Sentence case only, body face; labels read as plain words, no caps anywhere."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: fade-in-once (CSS scroll-driven animations (animation-timeline: view()/scroll())). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "fade-in-once",
+            "build": "Sections fade from 0.6 to full opacity once as they enter, no movement.",
+            "tool": "css-scroll",
+            "tool_name": "CSS scroll-driven animations (animation-timeline: view()/scroll())",
+            "fallback": "sections show at full opacity."
+          }
+        ],
+        "motion_signature": "fade-in-once",
+        "motion_tools": [
+          "css-scroll"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette",
+          "typography"
+        ],
+        "motif": {
+          "id": "letterbox",
+          "build": "Letterbox: every photograph and film still is cropped to one cinematic ratio (2.39:1 on desktop, 4:5 on phones) with its caption set in the bar beneath, as if the artist and collection caption were framed by a lens; the crop ratio is the only device."
+        },
+        "button": {
+          "id": "pill",
+          "build": "Primary: solid accent pill, 52px tall with 32px side padding, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — Creative Portfolios & Independent Makers (Kit of Parts)",
+      "style_family": "atelier-minimalism",
+      "layout_composition": "Photography gallery as a kit of parts: the complete photograph shown finished at the centre, its parts laid out around it and labelled with material and size (artist names, titles, dates and collection sources); the artist and collection caption and the selected works follow; 'view the photographs and enquire about an exhibition' beside the finished object. Structure: parts laid out flat and labelled around the finished object. Knobs: density standard; span irregularity medium; accent on the selected option and the primary button. Mobile: the finished object first, the labelled parts list under it",
+      "visual_identity": "Exploded view: Helvetica for part names, Helvetica for sizes, Helvetica for notes; palette brand-ffffff-111111-666666-on-ballot-paper (light ground): brief colours #ffffff, #111111, #666666 lead: #ffffff is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents; corners: 2px on controls and cards, square images (hairline-2); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum",
+      "typography": {
+        "id": "brand-helvetica-helvetica",
+        "display_font": "Helvetica",
+        "body_font": "Helvetica",
+        "mono_font": "Helvetica",
+        "mood": "The brief's own type (Helvetica); scale and roles from schibsted-grotesk-solo",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": ""
+      },
+      "palette": {
+        "id": "brand-ffffff-111111-666666-on-ballot-paper",
+        "background": "#FFFFFF",
+        "surface": "#F0F0F0",
+        "foreground": "#121512",
+        "muted": "#4C524C",
+        "primary_accent": "#666666",
+        "secondary_accent": "#666666",
+        "wcag_body_contrast": 18.39,
+        "notes": "Brief colours #FFFFFF, #111111, #666666 lead: #FFFFFF is the ground; #666666 as accents; #111111 as surfaces and deep tones, never accents | base Ballot-paper white with purple ink and pass green"
+      },
+      "content_treatment": "What it is made of and why (artist names, titles, dates and collection sources)",
+      "motion_choreography": "No motion: the complete photograph and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 7,
+        "motion_intensity": 0,
+        "visual_density": 5
+      },
+      "rationale": "Kit of Parts for \"photography gallery\" (showcase surface): the product is assembled from parts, and showing them laid out builds trust in the whole. Type Helvetica / Helvetica (the brief's own type (helvetica); scale and roles from schibsted-grotesk-solo) for a utility voice, tagged civic like the brief. Palette brand-ffffff-111111-666666-on-ballot-paper on a light ground, tagged civic like the brief. First screen: poster composition (no fitting object-wrap hero for this trade, so the direction follows the dealt hero hero-ruled-ledger-poster), hero material object, look family swiss-grid, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): parts assemble on scroll. Brand first: palette built around the brief's colours (#FFFFFF, #111111, #666666). Brand first: Helvetica is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN. Brand first: type built from the brief's fonts (Helvetica).",
+      "mechanics": [
+        {
+          "id": "hero-ruled-ledger-poster",
+          "name": "Ruled ledger poster",
+          "kind": "hero",
+          "role": "hero",
+          "family": "ruled-poster",
+          "intensity": "calm",
+          "still_check": "Any still shows every rule, the headline sitting on its baselines, and all four ledger facts readable in the margin column. The composition is complete with no motion at all.",
+          "composition": "poster",
+          "hero_material": "giant-type",
+          "look_family": "hairline-newspaper"
+        },
+        {
+          "id": "section-impact-where-money-went",
+          "name": "Where the money went",
+          "kind": "section",
+          "role": "impact",
+          "family": "where-money-went",
+          "intensity": "calm",
+          "still_check": "Any still shows full bar and labels."
+        },
+        {
+          "id": "section-pricing-three-real-jobs",
+          "name": "Three real jobs, priced",
+          "kind": "section",
+          "role": "pricing",
+          "family": "three-real-jobs",
+          "intensity": "calm",
+          "still_check": "Any still shows each job and its price."
+        }
+      ],
+      "hero_material": "object",
+      "radius": "hairline-2",
+      "archetype": "kit-of-parts",
+      "nav": {
+        "id": "nav-centred-wordmark-split",
+        "name": "Wordmark centred between two link groups",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-centred-wordmark-split",
+        "intensity": "calm",
+        "still_check": "Any still shows the wordmark and both groups.",
+        "look_family": "luxe-dark"
+      },
+      "footer": {
+        "id": "section-footer-the-practical-sheet",
+        "name": "Footer as the practical sheet",
+        "kind": "section",
+        "role": "footer",
+        "family": "practical-sheet-footer",
+        "intensity": "calm",
+        "still_check": "Any still shows all 4 columns readable.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "close-crop",
+          "build": "Extreme close-up crop of one detail fills the screen; headline tucked in one corner."
+        },
+        "flow": {
+          "id": "snap-slides",
+          "build": "Full-screen snap slides: one idea per viewport, scroll snaps between them."
+        },
+        "section_head": {
+          "id": "banner-rule",
+          "build": "Full-width title between hairline rules, set huge like a newspaper banner."
+        },
+        "ground": {
+          "id": "full-bleed-media",
+          "build": "Full-bleed image or 3D backdrops behind key sections, with a scrim for text contrast."
+        },
+        "material": {
+          "id": "photographic",
+          "build": "Photographic art direction: real-looking scenes of people, places and the work."
+        },
+        "labels": {
+          "id": "accent-dash",
+          "build": "A short accent dash before each label, body face semibold, sentence case."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: image-settle (Web Animations API). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "image-settle",
+            "build": "Images settle from 1.02 scale to 1 once on load.",
+            "tool": "waapi",
+            "tool_name": "Web Animations API",
+            "fallback": "images show at rest."
+          }
+        ],
+        "motion_signature": "image-settle",
+        "motion_tools": [
+          "waapi"
+        ],
+        "pinned_by_prompt": [
+          "motion",
+          "palette",
+          "typography"
+        ],
+        "motif": {
+          "id": "registration-marks",
+          "build": "Registration marks: small corner crop marks frame each image and key figure, as on a press proof of the selected works; never over the hero image or film."
+        },
+        "button": {
+          "id": "square-marked",
+          "build": "Primary: solid ink fill, 48px tall with 24px side padding, radius 2px; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px, and four crop marks appear 4px outside its corners on hover and focus. Secondary: a 1px outline button of the same size."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "ROTATION: tell the user in one line before dealing: The last 12 runs used atelier-minimalism 7 times, swiss-editorial-grid 7 times, crisp-product-workbench 6 times, kinetic-editorial 6 times; this run picks from {hero-question-of-the-day, hero-headline-wraps-object, hero-ruled-ledger-poster}.",
+    "BRIEF FONTS: the brief names its own type (Helvetica). Build every direction's type system from these (display and body roles among them; a mono role only where the restraint allows one); the direction pairings below are fallbacks only.",
+    "BRIEF COLOURS: the brief names its own colours (#FFFFFF, #111111, #666666). Use them as the palette in every direction (check WCAG pairs); the direction palettes below are fallbacks only.",
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest centred / object-wrap / poster (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error.",
+    "DIRECTIONS: render three materially different compositions with identical factual content and available assets at desktop and phone sizes. Compare the actual renders for hierarchy, typography, image integration, clarity and full-page rhythm. Choose with reasons as the designer unless the user asked to choose. Persist candidates, screenshot evidence and visible tradeoffs with review_design; never invent user approval. Library deals are starting material, not mandatory shapes or a substitute for art direction.",
+    "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.",
+    "FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.",
+    "COPY: specific nouns from the brief, no startup clichés, no invented metrics, reviews or logo walls (use honest placeholders such as `[customer quote — to supply]`), and call-to-action verbs taken from what the visitor actually does.",
+    "SELF-CRITIQUE before QA: score philosophy, hierarchy, execution, specificity, restraint, variety from 1 to 5; any score below 3 means revise first. Put the stamp `/* layoza · direction: <A|B|C> · structure: <style_family> · hero: <hero id> · palette: <palette id> · type: <type id> · critique: P4 H4 E4 S4 R4 V4 */` as the first line of the main CSS (your direction, structure, hero, palette, type and scores).",
+    "LOOK LEDGER: steered away from 36 look(s) in this project's last 12 run(s) (.layoza/looks.jsonl); 28 slot repeat(s) remain (see `uniqueness`). Pass ledger=false (CLI --no-ledger) to ignore it."
+  ],
+  "scope": "page",
+  "rotation": "The last 12 runs used atelier-minimalism 7 times, swiss-editorial-grid 7 times, crisp-product-workbench 6 times, kinetic-editorial 6 times; this run picks from {hero-question-of-the-day, hero-headline-wraps-object, hero-ruled-ledger-poster}.",
+  "uniqueness": {
+    "ledger": "on",
+    "window": 36,
+    "entries_compared": 36,
+    "slots": [
+      {
+        "slot": "A.nav",
+        "id": "nav-divider-tab-rail",
+        "status": "repeat (last used 22 entries ago, 13 min ago)"
+      },
+      {
+        "slot": "A.hero",
+        "id": "hero-question-of-the-day",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.section-1",
+        "id": "section-data-story-scale-objects",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.section-2",
+        "id": "section-gallery-filter-by-object",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.footer",
+        "id": "footer-letter-close",
+        "status": "repeat (last used 2 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.palette",
+        "id": "brand-ffffff-111111-666666-on-civic-limestone",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "A.typography",
+        "id": "helvetica/helvetica",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "A.archetype",
+        "id": "full-bleed-stage",
+        "status": "repeat (last used 36 entries ago, 22 min ago)"
+      },
+      {
+        "slot": "A.hero-frame",
+        "id": "poster-type",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.flow",
+        "id": "staggered",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.section-head",
+        "id": "vertical-label",
+        "status": "fresh"
+      },
+      {
+        "slot": "A.ground",
+        "id": "split-ground",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.material",
+        "id": "rendered-3d",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.labels",
+        "id": "italic-captions",
+        "status": "repeat (last used 7 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "A.motion",
+        "id": "underline-sweep",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "B.nav",
+        "id": "nav-corner-index",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.hero",
+        "id": "hero-headline-wraps-object",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.section-1",
+        "id": "section-about-week-in-numbers",
+        "status": "repeat (last used 1 entry ago, 11 min ago)"
+      },
+      {
+        "slot": "B.section-2",
+        "id": "section-schedule-week-grid",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.footer",
+        "id": "footer-sitemap-sentences",
+        "status": "repeat (last used 1 entry ago, 11 min ago)"
+      },
+      {
+        "slot": "B.palette",
+        "id": "brand-ffffff-111111-666666-on-archive-stone",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "B.typography",
+        "id": "helvetica/helvetica",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "B.archetype",
+        "id": "salon-hang",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.hero-frame",
+        "id": "collage",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.flow",
+        "id": "spreads",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.section-head",
+        "id": "no-heads",
+        "status": "fresh"
+      },
+      {
+        "slot": "B.ground",
+        "id": "duotone-photo",
+        "status": "repeat (last used 7 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.material",
+        "id": "typographic",
+        "status": "repeat (last used 12 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.labels",
+        "id": "sentence-case",
+        "status": "repeat (last used 4 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "B.motion",
+        "id": "fade-in-once",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "C.nav",
+        "id": "nav-centred-wordmark-split",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.hero",
+        "id": "hero-ruled-ledger-poster",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.section-1",
+        "id": "section-impact-where-money-went",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.section-2",
+        "id": "section-pricing-three-real-jobs",
+        "status": "repeat (last used 10 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.footer",
+        "id": "section-footer-the-practical-sheet",
+        "status": "repeat (last used 15 entries ago, 13 min ago)"
+      },
+      {
+        "slot": "C.palette",
+        "id": "brand-ffffff-111111-666666-on-ballot-paper",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "C.typography",
+        "id": "helvetica/helvetica",
+        "status": "pinned by prompt"
+      },
+      {
+        "slot": "C.archetype",
+        "id": "kit-of-parts",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.hero-frame",
+        "id": "close-crop",
+        "status": "repeat (last used 9 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.flow",
+        "id": "snap-slides",
+        "status": "repeat (last used 11 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.section-head",
+        "id": "banner-rule",
+        "status": "fresh"
+      },
+      {
+        "slot": "C.ground",
+        "id": "full-bleed-media",
+        "status": "repeat (last used 3 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.material",
+        "id": "photographic",
+        "status": "repeat (last used 4 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.labels",
+        "id": "accent-dash",
+        "status": "repeat (last used 6 entries ago, 11 min ago)"
+      },
+      {
+        "slot": "C.motion",
+        "id": "image-settle",
+        "status": "pinned by prompt"
+      }
+    ],
+    "fresh": 8,
+    "repeats": 28,
+    "score": 22,
+    "verdict": "28 of 36 slots repeat (A.nav nav-divider-tab-rail, A.section-1 section-data-story-scale-objects, A.section-2 section-gallery-filter-by-object, A.footer footer-letter-close, A.archetype full-bleed-stage, A.hero-frame poster-type, A.flow staggered, A.ground split-ground, A.material rendered-3d, A.labels italic-captions, B.nav nav-corner-index, B.section-1 section-about-week-in-numbers, B.section-2 section-schedule-week-grid, B.footer footer-sitemap-sentences, B.hero-frame collage, B.flow spreads, B.ground duotone-photo, B.material typographic, B.labels sentence-case, C.nav nav-centred-wordmark-split, C.section-1 section-impact-where-money-went, C.section-2 section-pricing-three-real-jobs, C.footer section-footer-the-practical-sheet, C.hero-frame close-crop, C.flow snap-slides, C.ground full-bleed-media, C.material photographic, C.labels accent-dash): no fresh pick fit those slots as well. Tell the user, then re-deal with another seed/variant, `avoid` the ids, or replace them by hand."
+  },
+  "understood_brief": {
+    "trade": "Creative Portfolios & Independent Makers (weak match)",
+    "subject": "photography gallery",
+    "audience": "photography enthusiasts and collectors",
+    "primary_action": "view the photographs and enquire about an exhibition",
+    "tone": [
+      "trust"
+    ],
+    "motion_wish": "none (0; no animation)",
+    "must_haves": [
+      "colour #FFFFFF",
+      "colour #111111",
+      "colour #666666",
+      "font Helvetica",
+      "Do not use: animation",
+      "Do not use: coloured accents",
+      "Do not use: invented awards"
+    ],
+    "pinned_by_prompt": [
+      "motion",
+      "palette",
+      "typography"
+    ],
+    "assumed": [
+      "stack: the project's own framework if one exists, else plain HTML/CSS/JS"
+    ],
+    "open_questions": []
+  },
+  "creative_workspace": {
+    "brief_context": {
+      "subject": "photography gallery",
+      "audience": "photography enthusiasts and collectors",
+      "primary_action": "view the photographs and enquire about an exhibition",
+      "objects": [],
+      "facts": [],
+      "required_content": [],
+      "forbidden": [
+        "animation",
+        "coloured accents",
+        "invented awards"
+      ],
+      "display_font": "Helvetica",
+      "body_font": "Helvetica",
+      "colors": [
+        "#FFFFFF",
+        "#111111",
+        "#666666"
+      ],
+      "assets": []
+    },
+    "context_basis": "explicit structured client context supplied by the calling designer",
+    "concepts": [
+      {
+        "direction": 1,
+        "title": "Direction A — Creative Portfolios & Independent Makers (Full-Bleed Stage)",
+        "composition": "Full-bleed stage for the photography gallery: the complete photograph fills the first screen edge to edge with the headline set into its quiet area; later sections cut between the artist and collection caption and the selected works at full width; 'view the photographs and enquire about an exhibition' stays docked and usable at every scroll position. Structure: one subject image edge to edge, headline in its quiet area, full-width cuts, docked action. Knobs: density standard; span irregularity medium; accent on the primary action only. Mobile: the image crops to a 4:5 focal point chosen by hand; the headline moves under it, never over a busy area",
+        "why_this_subject": "Full-Bleed Stage for \"photography gallery\" (showcase surface): atmosphere sells it: the place, the product or the work has to be felt before it is read. Type Helvetica / Helvetica (the brief's own type (helvetica); scale and roles from literata-inter) for an expressive voice, tagged civic like the brief. Palette brand-ffffff-111111-666666-on-civic-limestone on a light ground, tagged civic like the brief. First screen: centred composition (no fitting full-bleed hero for this trade, so the direction follows the dealt hero hero-question-of-the-day), hero material photo, look family cinematic-dark, corners sharp-0. Motion flavour (tier and tools follow page_shape.motion): slow cross-fades; plates hand off on scroll. Brand first: palette built around the brief's colours (#FFFFFF, #111111, #666666). Brand first: Helvetica is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN. Brand first: type built from the brief's fonts (Helvetica). Other structures that fit this slot: Irregular Work Grid, Object Study.",
+        "image_medium": "photo",
+        "asset_plan": {
+          "subject": "photography gallery",
+          "medium": "photo",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction A — Creative Portfolios & Independent Makers (Full-Bleed Stage) requires convincing photo material; judge the actual render before committing."
+      },
+      {
+        "direction": 2,
+        "title": "Direction B — Creative Portfolios & Independent Makers (Salon Hang)",
+        "composition": "Photography gallery as a salon hang: one wall of framed pieces at different sizes, the complete photograph largest at eye height; each frame has a wall label; the artist and collection caption and the selected works as further walls; 'view the photographs and enquire about an exhibition' on the wall label. Structure: a wall of framed pieces hung at different sizes, each labelled. Knobs: density standard; span irregularity high; accent on the primary action only. Mobile: the wall becomes a single column of frames in hanging order",
+        "why_this_subject": "Salon Hang for \"photography gallery\" (showcase surface): many pieces seen together in one wall tell the story better than one at a time. Type Helvetica / Helvetica (the brief's own type (helvetica); scale and roles from albert-sans-solo) for an expressive voice, tagged civic like the brief. Palette brand-ffffff-111111-666666-on-archive-stone on a light ground, tagged civic like the brief. First screen: object-wrap composition (no fitting layered hero for this trade, so the direction follows the dealt hero hero-headline-wraps-object), hero material photo, look family luxury-sparse, corners arched. Motion flavour (tier and tools follow page_shape.motion): pieces come forward on focus. Brand first: palette built around the brief's colours (#FFFFFF, #111111, #666666). Brand first: Helvetica is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN. Brand first: type built from the brief's fonts (Helvetica). Other structures that fit this slot: Split Studio, Pin-Board Collage, Object Study, Irregular Work Grid.",
+        "image_medium": "photo",
+        "asset_plan": {
+          "subject": "photography gallery",
+          "medium": "photo",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction B — Creative Portfolios & Independent Makers (Salon Hang) requires convincing photo material; judge the actual render before committing."
+      },
+      {
+        "direction": 3,
+        "title": "Direction C — Creative Portfolios & Independent Makers (Kit of Parts)",
+        "composition": "Photography gallery as a kit of parts: the complete photograph shown finished at the centre, its parts laid out around it and labelled with material and size (artist names, titles, dates and collection sources); the artist and collection caption and the selected works follow; 'view the photographs and enquire about an exhibition' beside the finished object. Structure: parts laid out flat and labelled around the finished object. Knobs: density standard; span irregularity medium; accent on the selected option and the primary button. Mobile: the finished object first, the labelled parts list under it",
+        "why_this_subject": "Kit of Parts for \"photography gallery\" (showcase surface): the product is assembled from parts, and showing them laid out builds trust in the whole. Type Helvetica / Helvetica (the brief's own type (helvetica); scale and roles from schibsted-grotesk-solo) for a utility voice, tagged civic like the brief. Palette brand-ffffff-111111-666666-on-ballot-paper on a light ground, tagged civic like the brief. First screen: poster composition (no fitting object-wrap hero for this trade, so the direction follows the dealt hero hero-ruled-ledger-poster), hero material object, look family swiss-grid, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): parts assemble on scroll. Brand first: palette built around the brief's colours (#FFFFFF, #111111, #666666). Brand first: Helvetica is a commercial face: self-host it under the brand's own licence; it is not linked to a free CDN. Brand first: type built from the brief's fonts (Helvetica).",
+        "image_medium": "object",
+        "asset_plan": {
+          "subject": "photography gallery",
+          "medium": "object",
+          "available": [],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction C — Creative Portfolios & Independent Makers (Kit of Parts) requires convincing object material; judge the actual render before committing."
+      }
+    ],
+    "selection": "Render the three concepts with identical real content and available assets. Pick the clearest, most expressive, subject-specific composition; record the decision and visible tradeoffs with review_design. Familiar controls may be reused when they serve the task.",
+    "success": [
+      "brief fidelity",
+      "clear hierarchy",
+      "expressive typography",
+      "convincing imagery",
+      "coherent colour and spacing",
+      "complete page rhythm",
+      "designed phone composition",
+      "usable interactions"
+    ],
+    "novelty": "A supporting signal, never a reason to change a working brand or navigation pattern",
+    "design_gate": "Browser defects and recorded process only. Exceptional design requires reviewing the actual renders, not passing a numeric checker."
+  },
+  "client_request": "A contemporary photography gallery called Intervals. Black and white only, Helvetica only, no animation. Make historical photographs the main experience, with an exhibition introduction, selected works, artist information and an exhibition enquiry. No invented awards or sales claims.",
+  "ledger": "written C:\\Users\\ajjma\\Desktop\\sharethrone\\.layoza\\looks.jsonl",
+  "registers": [
+    "editorial"
+  ],
+  "craft_floor": [
+    "Header: one row, 52-88px tall on desktop and 56-76px on mobile; logo 24-40px high on the left, 4-6 nav links of 15-16px at weight 500 with 24-40px between them, the primary action on the right at the header's button size. Phone or hours sit in that row or the footer; no utility bar stacked above the nav. Mark the current link with a 2px underline 6px below the text; a sticky header turns opaque after the first scroll, never taller.",
+    "Primary button: 40-56px tall, horizontal padding 20-32px (about twice the vertical), label 15-17px at weight 600 in sentence or title case with tracking 0-0.02em, at most one drawn SVG icon of 16-20px set 8px from the label. The secondary action matches its height, radius and padding as an outline (1-1.5px) or ghost; one button shape and radius on the whole page, 44px minimum hit area everywhere.",
+    "Button states: author hover, :active, disabled and :focus-visible feedback without movement. Use a visible 2px focus ring with 3:1 contrast; do not change the control's size or hide its label.",
+    "Type scale: at most 10 distinct font sizes each carry 2% or more of the text on a desktop render, each step at least 1.2x the one below; body 17-22px at line-height 1.5-1.65; headings at line-height 1.0-1.15. The h1 tops out at 168px on desktop (set with clamp()), and display sizes of 48px and up track -0.02 to -0.04em, never tighter than -0.05em; body text keeps tracking at 0.",
+    "Measure: prose never runs past 78 characters a line (cap paragraphs at 60-68ch with max-width); h1 lines stay under 20ch and h2 under 24ch; no centred paragraph runs past three lines.",
+    "Spacing rhythm: use a coherent scale suited to density and content. Group related controls tightly and separate different tasks clearly. Preserve incumbent tokens; do not impose fixed section padding or an arbitrary 4/8px scale on every project.",
+    "Section heads: one heading per section (one h2, or the h1 in the hero) and at most one lead paragraph of 40 words or fewer. No stacked pile of label, heading, accent-coloured second heading and paragraph; a second voice goes in the body, not the head.",
+    "Composition: choose section forms from the content and reading order. Repeated rows, equal cards and consistent app panels are useful when people compare equivalent items. Vary composition only when it improves hierarchy; no minimum number of layout kinds.",
+    "Hero: establish the subject, dominant visual relationship and useful next action. Let the actual content determine the number of pictures, amount of copy and first-screen balance; no mandatory picture or fixed text-block quota.",
+    "Imagery: preserve the complete composition of collection works with intrinsic sizing or object-fit: contain. Use whitespace deliberately around differing aspect ratios. Keep artist, title, date and source readable; cropping requires an explicitly labelled detail view.",
+    "Colour: respect pinned brand colours and monochrome constraints. Assign clear roles to grounds, text, actions and status; choose saturation and colour area from the concept, without an accent-area quota. Body and secondary text need 4.5:1 contrast, large text 3:1.",
+    "Icons: one drawn SVG set at one stroke weight (1.5 or 2px) and one size per context (16, 20 or 24px), coloured with currentColor. Never a Unicode arrow, check mark, star or emoji standing in for an icon.",
+    "Motion: none. Render essential content in its final visible state; no entrance, hover movement, autoplay or signature animation. Focus and state changes remain clear without movement, including under prefers-reduced-motion.",
+    "Footer: brand and one-line description, two or three link groups and the contact block, four columns at most on desktop; group titles 13-14px at weight 600 in sentence case; links 15-16px with 10-12px between rows; a bottom bar for legal and copyright at 13-14px; 64px or more of top padding.",
+    "Browser surfaces: ::selection and focus rings use the palette; link underlines sit 3-4px below the text at 1-2px thickness; tables and figures use tabular numerals; no unthemed default blue links anywhere.",
+    "Editorial: a real reading column (60-68ch) with a serif or a strong grotesk at 18-21px; pictures run full-bleed or in the column, never as thumbnails in cards."
+  ],
+  "design_critique": {
+    "authority": "contextual visual judgment",
+    "criteria": [
+      "brief fidelity",
+      "hierarchy",
+      "typography",
+      "imagery",
+      "colour",
+      "rhythm",
+      "phone composition",
+      "interaction"
+    ],
+    "note": "Stylistic devices are not defects by themselves. Diagnose the actual composition, not a list of banned looks."
+  },
+  "avoid_recent": {
+    "entries": 6,
+    "directions": [
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred early first-visit links. The "
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Sidebar A gives the shift lead the clearest production overvie"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred the task-first C composition."
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Photographs lead through a coherent asymmetric exhibition comp"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — 1, Edit bay, with concept 2 folded in as the curve readout and the curves"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — Object Study look from the brief (Space Grotesk / Inter, Ice Blue surface"
+      }
+    ],
+    "palettes": [
+      [
+        "#0d2424",
+        "#133131",
+        "#2a4a48",
+        "#f1eadf",
+        "#a8beb9",
+        "#ff6a3d",
+        "#f2c94c"
+      ]
+    ],
+    "fonts": [
+      "Space Grotesk",
+      "Inter",
+      "Bricolage Grotesque",
+      "Instrument Sans"
+    ],
+    "motifs": [
+      "sticky",
+      "film",
+      "paper",
+      "kinetic type",
+      "webgl",
+      "timeline",
+      "blob",
+      "asymmetric",
+      "index",
+      "catalogue",
+      "chart"
+    ],
+    "mechanics": [],
+    "rule": "Make all three directions materially different from these recent picks: a different palette family, different type families, different motifs and mechanics. Reuse them only when the user asks for the same look, and then record `REPEAT-OK: <the user's words>` in direction.md."
+  }
+}

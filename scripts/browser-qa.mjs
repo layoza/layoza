@@ -15,7 +15,7 @@
  *    is behind the text (captured with the text hidden), and text that something paints over
  *  - Motion settle: each viewport waits (capped at 5s) for finite animations to finish and the first
  *    screen to be pixel-stable before it is measured; `motion_unsettled_viewports` lists cap hits
- *  - Laboratory Core Web Vitals: LCP and CLS from PerformanceObserver, and an INP proxy from Event Timing
+ *  - Optional (--performance) Laboratory Core Web Vitals: LCP and CLS from PerformanceObserver, and an INP proxy from Event Timing
  *    entries recorded during scripted keyboard interactions. All are labeled LaboratorySynthetic.
  *
  *  - Non-blocking design critique ("craft") findings: design anti-pattern rules ported from
@@ -1589,7 +1589,9 @@ const DOM_EVAL_SCRIPT = `(() => {
   // --- Ledger-heavy / visual-starved page (desktop). A section is the largest box around one h2. Sections
   // built as stacked rows (lists, tables, row-cards) with no dominant visual read as a spreadsheet; a page
   // where most sections carry no visual moment (art, 3D, scene, media, type as image) reads as a document.
-  if (vw >= 1024) {
+  const taskSurface = document.querySelector('meta[name="layoza-surface"][content="app" i]') ||
+    (document.querySelector('table, [role="grid"], [role="table"]') && document.querySelector('aside nav, nav[aria-orientation="vertical"], [role="tablist"], [role="toolbar"]'));
+  if (vw >= 1024 && !taskSurface) {
     const sections = [];
     for (const h of Array.from(document.querySelectorAll("main h2, body > section h2, body > div h2"))) {
       if (!isVisible(h) || h.closest("header, footer, nav, dialog, [aria-hidden='true']")) continue;
@@ -6939,6 +6941,7 @@ function parseArgs(argv) {
     allow: [],
     compare: null,
     full: false,
+    performance: false,
   };
   let outGiven = false;
   for (let i = 2; i < argv.length; i++) {
@@ -6951,6 +6954,7 @@ function parseArgs(argv) {
     else if (k === "--allow" && argv[i + 1]) args.allow.push(...argv[++i].split(",").map((s) => s.trim()).filter(Boolean));
     else if (k === "--compare" && argv[i + 1] && argv[i + 2]) args.compare = [argv[++i], argv[++i]];
     else if (k === "--full") args.full = true;
+    else if (k === "--performance") args.performance = true;
     else if (k.startsWith("--")) console.error(`Unknown flag ignored: ${k}`);
   }
   args.outGiven = outGiven;
@@ -7262,7 +7266,7 @@ async function motionPassNode(page, url, caps) {
 async function viewportPassNode(browser, vp, args, shotDir, caps, wide) {
       const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
       try {
-      await context.addInitScript(PERF_INIT_SCRIPT);
+      if (args.performance) await context.addInitScript(PERF_INIT_SCRIPT);
       const page = await context.newPage();
       const consoleErrors = [];
       page.on("pageerror", (err) => consoleErrors.push(`PageError: ${err.message}`));
@@ -7278,7 +7282,7 @@ async function viewportPassNode(browser, vp, args, shotDir, caps, wide) {
       const settleLoad = await settleNode(page, caps.settle_ms);
       // Read load-phase LCP/CLS before screenshots: full-page capture resizes the viewport and
       // would otherwise add late LCP candidates and layout shifts that real users never see.
-      const loadPerf = await ev(page, PERF_READ_SCRIPT);
+      const loadPerf = args.performance ? await ev(page, PERF_READ_SCRIPT) : null;
       await ev(page, SCROLL_PASS_SCRIPT);
       // Back at the top after the scroll pass: let reveals that re-ran come to rest (shares the cap)
       const settleTop = await settleNode(page, Math.max(SETTLE_STEP_MS * 3, caps.settle_ms - settleLoad.ms));
@@ -7371,7 +7375,7 @@ async function viewportPassNode(browser, vp, args, shotDir, caps, wide) {
           menu = { links_before: before, links_after: null, opened: false, error: String(e.message || e) };
         }
       }
-      const inputPerf = await ev(page, PERF_READ_SCRIPT);
+      const inputPerf = args.performance ? await ev(page, PERF_READ_SCRIPT) : null;
       const perf = loadPerf && inputPerf ? { ...loadPerf, inp_proxy_ms: inputPerf.inp_proxy_ms, event_entries: inputPerf.event_entries } : null;
       return { ...vp, checks: wide ? "full" : "layout", dom, craft, design, ui, quality, fingerprint, hiddenText, perf, menu, art, motion: null, consoleErrors, screenshot, heroShot, settle };
       } finally {
@@ -7405,13 +7409,14 @@ async function collectWithNode(pw, args, shotDir) {
     const [motion, reduced, throttled, ...vps] = await Promise.all([
       motionContextNode(browser, args.url, caps).catch((e) => ({ density: null, pins: [], errors: [firstLine(e)] })),
       reducedMotionNode(browser, args.url, caps),
-      full ? throttledPerfNode(browser, args.url) : Promise.resolve(null),
+      args.performance ? throttledPerfNode(browser, args.url) : Promise.resolve(null),
       ...VIEWPORTS.map((vp) => viewportPassNode(browser, vp, args, shotDir, caps, full || vp.label === "desktop")),
     ]);
     const raw = vps;
     raw[0].motion = motion;
     raw.extra = { reduced, throttled };
     raw.mode = full ? "full" : "fast";
+    raw.performanceRequested = Boolean(args.performance);
     return raw;
   } finally {
     await browser.close();
@@ -7427,6 +7432,7 @@ from playwright.async_api import async_playwright
 url, raw_out, shot_dir, cfg_path = sys.argv[1:5]
 cfg = json.load(open(cfg_path, encoding="utf-8"))
 FULL = bool(cfg["full"])
+PERFORMANCE = bool(cfg["performance"])
 CAPS = cfg["caps"]
 WAIT = cfg["wait"]
 
@@ -7543,7 +7549,8 @@ async def art_scan(page, vp):
 async def viewport_pass(browser, vp, wide):
     ctx = await browser.new_context(viewport={"width": vp["width"], "height": vp["height"]})
     try:
-        await ctx.add_init_script(cfg["perf_init"])
+        if PERFORMANCE:
+            await ctx.add_init_script(cfg["perf_init"])
         page = await ctx.new_page()
         console_errors = []
         page.on("pageerror", lambda err, ce=console_errors: ce.append(f"PageError: {err}"))
@@ -7552,7 +7559,7 @@ async def viewport_pass(browser, vp, wide):
         await page.goto(url, wait_until="load", timeout=30000)
         await quiet(page, CAPS["netidle_ms"])
         settle_load = await settle(page, CAPS["settle_ms"])
-        load_perf = await page.evaluate(cfg["perf_read"])
+        load_perf = await page.evaluate(cfg["perf_read"]) if PERFORMANCE else None
         await page.evaluate(cfg["scroll_pass"])
         settle_top = await settle(page, max(cfg["settle_step"] * 3, CAPS["settle_ms"] - settle_load["ms"]))
         settle_info = {"settled": settle_load["settled"] and settle_top["settled"], "ms": settle_load["ms"] + settle_top["ms"], "load": settle_load, "after_scroll": settle_top}
@@ -7643,7 +7650,7 @@ async def viewport_pass(browser, vp, wide):
             except Exception as e:
                 menu = {"links_before": before, "links_after": None, "opened": False, "error": first_line(e)}
         # Lab interaction proxy is read after every scripted interaction, including the menu click
-        input_perf = await page.evaluate(cfg["perf_read"])
+        input_perf = await page.evaluate(cfg["perf_read"]) if PERFORMANCE else None
         perf = {**load_perf, "inp_proxy_ms": input_perf["inp_proxy_ms"], "event_entries": input_perf["event_entries"]} if load_perf and input_perf else None
         return {**vp, "checks": "full" if wide else "layout", "dom": dom, "craft": craft, "design": design, "ui": ui, "quality": quality, "fingerprint": fingerprint, "hiddenText": hidden_text, "perf": perf, "menu": menu, "art": art, "motion": None, "consoleErrors": console_errors, "screenshot": shot, "heroShot": hero_shot, "settle": settle_info}
     finally:
@@ -7746,7 +7753,7 @@ async def main():
             raise RuntimeError("Could not launch headless Chromium, Chrome, or Edge: " + " | ".join(errors))
         try:
             jobs = [viewport_pass(browser, vp, FULL or vp["label"] == "desktop") for vp in cfg["viewports"]]
-            res = await asyncio.gather(motion_pass(browser), reduced_pass(browser), throttled_pass(browser) if FULL else none(), *jobs)
+            res = await asyncio.gather(motion_pass(browser), reduced_pass(browser), throttled_pass(browser) if PERFORMANCE else none(), *jobs)
         finally:
             await browser.close()
     motion, reduced, throttled = res[0], res[1], res[2]
@@ -7805,6 +7812,7 @@ asyncio.run(main())
       quality_other: QUALITY_EVAL({ allow: args.allow, skipFocus: true }),
       quality_layout: QUALITY_EVAL({ allow: args.allow, skipFocus: true, only: LAYOUT_ONLY_RULES }),
       full: Boolean(args.full),
+      performance: Boolean(args.performance),
       caps: MODE_CAPS[args.full ? "full" : "fast"],
       wait: WAIT,
       frames: FRAMES_SCRIPT,
@@ -7832,6 +7840,7 @@ asyncio.run(main())
     const raw = parsed.viewports;
     raw.extra = parsed.extra;
     raw.mode = args.full ? "full" : "fast";
+    raw.performanceRequested = Boolean(args.performance);
     // Fold the Python runner's raw text-over-graphic samples with the same rules as the Node runner
     for (const v of raw) {
       const t = v.art && v.art.tg;
@@ -8233,7 +8242,7 @@ function assembleReport(url, engine, raw, tokens) {
     unthrottled: mobile && mobile.perf ? { lcp_ms: mobile.perf.lcp_ms, cls: mobile.perf.cls } : null,
     throttled: thr && !thr.error ? { lcp_ms: thr.lcp_ms ?? null, cls: thr.cls ?? null, load_event_ms: thr.load_event_ms ?? null } : null,
     throttled_error: thr && thr.error ? thr.error : null,
-    throttled_skipped: thr ? null : "skipped (fast mode); run with --full for the throttled pass",
+    throttled_skipped: thr ? null : "not requested; speed diagnostics are optional (--performance)",
     profile: THROTTLE,
     inp: "lab interaction proxy only (scripted key presses), not field INP",
     note: url.startsWith("file:") ? "file:// loads bypass the network, so only the CPU throttle applies; serve over http for network-throttled numbers" : "CDP network emulation + CPU slowdown; Lab data, not field (CrUX) data",
@@ -8246,7 +8255,7 @@ function assembleReport(url, engine, raw, tokens) {
   if (desktop.motion) passes.push("motion-density@" + desktop.width);
   if (thr) passes.push("throttled-perf@" + (VIEWPORTS.find((v) => v.label === "mobile") || {}).width);
   const skipped = [];
-  if (!thr) skipped.push("Throttled Lab LCP/CLS (slow-device pass): skipped in fast mode; run with --full");
+  report.performance_requested = Boolean(raw.performanceRequested);
   if (layoutOnly.length) skipped.push("Full rule sweep, craft, tells, interface, design-token and art-over-text checks at " + layoutOnly.join("px, ") + "px: fast mode ran layout, overflow and touch rules only there; run with --full");
   if (raw.extra && raw.extra.reduced && raw.extra.reduced.error) skipped.push("Reduced-motion and extra-width pass failed: " + raw.extra.reduced.error);
   report.mode = mode;
@@ -8254,9 +8263,15 @@ function assembleReport(url, engine, raw, tokens) {
   report.skipped_passes = skipped;
   report.methodology_disclosure += mode === "fast"
     ? " Fast mode: one browser, viewports and side passes in parallel contexts (parallel loads share the CPU, so lab timings can read higher than a lone load)."
-    : " Full mode: adds the throttled slow-device pass and the full rule sweep at every width.";
+    : " Full mode: the full visual rule sweep at every width.";
+  report.methodology_disclosure += raw.performanceRequested
+    ? " Optional speed diagnostics were requested; lab values are not design gates."
+    : " Design-only run: speed diagnostics were not requested.";
+  if (!raw.performanceRequested) {
+    report.methodology_disclosure = "Real Chromium visual and usability checks at the recorded viewports. Speed diagnostics were not requested and do not affect the design verdict.";
+  }
   report.unmeasured = Object.entries(report)
-    .filter(([, v]) => v === null)
+    .filter(([k, v]) => v === null && (raw.performanceRequested || !["lcp_ms", "cls", "inp_ms"].includes(k)))
     .map(([k]) => k);
   // Declared design tokens (DESIGN.md / SITE-DNA.json) the page was checked against; `null` means the
   // project declares none, so no design-system rule ran (not a measurement gap, so not in `unmeasured`).

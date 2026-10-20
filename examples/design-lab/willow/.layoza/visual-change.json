@@ -1,0 +1,10 @@
+{
+  "comparable": true,
+  "width": 1440,
+  "height": 1000,
+  "changed_pixels": 593975,
+  "pixel_diff_ratio": 0.41248263888888886,
+  "mean_channel_difference": 32.705415277777774,
+  "threshold_per_channel": 16,
+  "notice": "Pixel change measures regression evidence, not better or worse design. Review the before and after images."
+}

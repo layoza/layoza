@@ -226,7 +226,7 @@ fn main() {
                 out["ledger"] = serde_json::json!(ledger);
                 let regs = layoza_core::register::brief_registers(&query);
                 out["registers"] = serde_json::json!(regs);
-                out["craft_floor"] = serde_json::json!(layoza_core::craft::craft_floor(&regs));
+                out["craft_floor"] = serde_json::json!(layoza_core::craft::craft_floor_for_brief(&query));
                 out["anti_slop"] = serde_json::json!(layoza_core::craft::anti_slop());
                 println!("{}", serde_json::to_string_pretty(&out).unwrap());
             } else {
@@ -370,11 +370,11 @@ fn main() {
                     }
                 }
                 let regs = layoza_core::register::brief_registers(&query);
-                println!("\nCraft floor (register: {}; every direction meets these numbers):", regs.join(", "));
-                for l in layoza_core::craft::craft_floor(&regs) {
+                println!("\nCraft floor (register: {}; contextual guidance; explicit brief wins):", regs.join(", "));
+                for l in layoza_core::craft::craft_floor_for_brief(&query) {
                     println!("  - {}", l);
                 }
-                println!("Never: {}", layoza_core::craft::anti_slop().join(" | "));
+                println!("Contextual design cautions: {}", layoza_core::craft::anti_slop().join(" | "));
                 println!("Ledger: {}", ledger);
                 println!("\nMechanics: `layoza mechanics show <id>` prints a blueprint; `layoza mechanics deal \"<brief>\"` deals a full page.");
             }
@@ -576,6 +576,7 @@ fn main() {
                     .map(|v| v.split(',').map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect())
                     .unwrap_or_default(),
                 full: args.iter().any(|a| a == "--full"),
+                performance: args.iter().any(|a| a == "--performance"),
             };
             let live = match run_browser_qa_with(&cwd, &run_target, &out_json, &qa_dir, &qa_opts) {
                 Ok(v) => v,
@@ -637,12 +638,12 @@ fn main() {
                         let fmt = |v: Option<f64>, digits: usize, unit: &str| {
                             v.map(|x| format!("{:.*}{}", digits, x, unit)).unwrap_or_else(|| "not measured".to_string())
                         };
-                        println!(
+                        if qa_opts.performance { println!(
                             "Lab Core Web Vitals    : LCP={} INP~{} CLS={}",
                             fmt(cwv.lcp_ms, 0, "ms"),
                             fmt(cwv.inp_or_tbt_ms, 0, "ms"),
                             fmt(cwv.cls, 3, "")
-                        );
+                        ); }
                         println!("Release Gate           : {}", gate_label(&report));
                         println!("Objective Errors       : {}", report.objective_error_count);
                         println!("Objective Warnings     : {}", report.objective_warning_count);
@@ -1199,7 +1200,7 @@ fn allowed_flags(args: &[String]) -> &'static [&'static str] {
         "animate" => &["--recipe", "--intensity"],
         "verify" => &["--repair", "--fix", "--strict"],
         "audit" => &["--strict"],
-        "qa" => &["--allow", "--full", "--compare"],
+        "qa" => &["--allow", "--full", "--performance", "--compare"],
         "conform" => &["--deal", "--direction"],
         "guidelines" => &["--stack", "--platform", "--limit"],
         "chart" => &["--task"],
@@ -1314,7 +1315,7 @@ fn subcommand_usage(cmd: &str) -> Option<&'static str> {
         "conform" => "Usage: layoza conform <url|file|dir> --deal <deal.json> [--direction N] [--json]\n  Check a built page against the page shape it was dealt: --deal takes `design-system --json` output (or one direction, or a bare page_shape); --direction picks the direction (1-based, default 1). Measures render facts in headless Chromium at 1440px and 390px (read-only: scrolled, never clicked) and checks each restraint rule, the dealt button shape and the motif. Prints PASS/FAIL/unknown with evidence and a 0-100 score; exits 2 when any check fails.",
         "audit" => "Usage: layoza audit [<path>] [--strict] [--json]\n  Deterministic accessibility, layout, motion and Core Web Vitals checks; exits 1 if the release gate fails. --strict turns process warnings (such as an unapproved direction) into errors.",
         "verify" => "Usage: layoza verify [<path>] [--repair] [--strict] [--json]\n  Verify release gates and the process gate files in .layoza/ (direction-approved.md, brand-spec.md, product-facts.md, self-critique stamp); exits 1 when any fails. --repair applies bounded auto-repairs to a single HTML file. --strict turns process warnings into errors.",
-        "qa" => "Usage: layoza qa [<url|file|dir>] [--full] [--allow rule1,rule2] [--json] | layoza qa --compare <a.json> <b.json>\n  Headless Chromium multi-viewport QA (default index.html). Fast mode is the default; --full adds the slower passes, and the report lists mode, passes and skipped_passes. --allow suppresses named findings you have accepted. Env: LAYOZA_PLAYWRIGHT_DIR points at a Playwright install; LAYOZA_QA_ENGINE=python uses the Python engine. --compare reads two saved browser-qa-report.json files and exits 2 on a re-skin (same skeleton, new colours). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
+        "qa" => "Usage: layoza qa [<url|file|dir>] [--full] [--performance] [--allow rule1,rule2] [--json] | layoza qa --compare <a.json> <b.json>\n  Headless Chromium multi-viewport QA (default index.html). Fast mode is the default; --full runs full visual checks at every width; --performance separately opts into speed diagnostics, and the report lists mode, passes and skipped_passes. --allow suppresses named findings you have accepted. Env: LAYOZA_PLAYWRIGHT_DIR points at a Playwright install; LAYOZA_QA_ENGINE=python uses the Python engine. --compare reads two saved browser-qa-report.json files and exits 2 on a re-skin (same skeleton, new colours). Overall timeout: LAYOZA_QA_TIMEOUT_SECS (default 600).",
         "doctor" => "Usage: layoza doctor [--json]\n  Validate agent installations, skill frontmatter, runtimes and smoke tests.",
         "generate" => "Usage: layoza generate [--framework <fw>] [--title <t>] [--subtitle <s>] [--cta <c>] [--output <dir>] [--json]\n  Generate a framework-native component from the project's Site DNA.",
         "baseline" => "Usage: layoza baseline create [<id>] [--file <path>]...\n       layoza baseline rollback [<id>]\n       layoza baseline structure [<id>]\n       layoza baseline [freshness]\n  structure compares each page's skeleton with the baseline and exits 1 when a redesign kept it.\n  create without --file snapshots the project's UI sources (html/css/js/ts/tsx/jsx/vue/svelte/astro/liquid/php, theme JSON, DESIGN.md...), skipping node_modules, .git, target, dist, build, .layoza and hidden dirs (caps: 2000 files, 1 MB/file, 32 MB total); skipped paths are reported. --file is repeatable and errors on paths that cannot be snapshotted. rollback exits 1 if it restores nothing.",
@@ -1430,7 +1431,7 @@ Run `layoza <COMMAND> --help` for that command's options.
 fn gate_label(report: &layoza_core::verifier::AuditReport) -> String {
     match report.verification_status.as_str() {
         "passed" => "PASSED (defects only; this gate cannot judge whether the design is good)".to_string(),
-        "unverified" => "UNVERIFIED (no objective errors, but Core Web Vitals were not measured; run `layoza qa` first)".to_string(),
+        "unverified" => "UNVERIFIED (no fresh visual browser evidence; run `layoza qa` first)".to_string(),
         _ => "FAILED".to_string(),
     }
 }

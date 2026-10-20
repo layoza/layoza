@@ -1,0 +1,114 @@
+[
+  {
+    "id": "intervals",
+    "name": "Intervals",
+    "brief": "A contemporary photography gallery called Intervals. Black and white only, Helvetica only, no animation. Make historical photographs the main experience, with an exhibition introduction, selected works, artist information and an exhibition enquiry. No invented awards or sales claims.",
+    "context": {
+      "subject": "photography gallery",
+      "audience": "photography enthusiasts and collectors",
+      "primary_action": "view the photographs and enquire about an exhibition",
+      "display_font": "Helvetica",
+      "body_font": "Helvetica",
+      "colors": [
+        "#FFFFFF",
+        "#111111",
+        "#666666"
+      ],
+      "forbidden": [
+        "animation",
+        "coloured accents",
+        "invented awards"
+      ]
+    },
+    "assets": [
+      "gallery-152229.jpg",
+      "gallery-152228.jpg",
+      "gallery-162340.jpg",
+      "gallery-325449.jpg"
+    ]
+  },
+  {
+    "id": "willow",
+    "name": "Willow Public Library",
+    "brief": "Willow public library, a welcoming neighbourhood place for readers of every age. Help residents find books, see opening hours, discover events and join the library. Green and yellow, approachable editorial design, useful on phones, no installation commands or software imagery.",
+    "context": {
+      "subject": "public library",
+      "audience": "local residents, families and readers",
+      "primary_action": "search the catalogue",
+      "colors": [
+        "#153E35",
+        "#F4F4E9",
+        "#D8F06B"
+      ],
+      "objects": [
+        "books",
+        "reading rooms",
+        "community events"
+      ],
+      "forbidden": [
+        "software installation instructions"
+      ]
+    },
+    "assets": [
+      "library-zetong-li.jpg"
+    ]
+  },
+  {
+    "id": "noor",
+    "name": "Noor Dental",
+    "brief": "Noor Dental, a calm dental clinic in Lahore for people anxious about visiting a dentist. English with an Urdu welcome. Explain first visits and treatment options clearly. Let visitors request an appointment. Soft sage, warm white, no animation, no invented doctors, testimonials, ratings or clinical promises. Illustrative photos must be labelled.",
+    "context": {
+      "subject": "dental clinic",
+      "audience": "Lahore residents and anxious first-time patients",
+      "primary_action": "request an appointment",
+      "colors": [
+        "#E7EDE7",
+        "#173C37",
+        "#FBFAF6"
+      ],
+      "required_content": [
+        "Urdu welcome",
+        "first visit explanation",
+        "appointment request"
+      ],
+      "forbidden": [
+        "animation",
+        "invented doctors",
+        "unverified clinical claims"
+      ]
+    },
+    "assets": [
+      "dental-room-katarzyna.jpg",
+      "dental-consultation-harold.jpg"
+    ]
+  },
+  {
+    "id": "hearth",
+    "name": "Hearth Operations",
+    "brief": "Hearth bakery operations dashboard. A shift lead needs todays bake quantities, oven status, low stock and collection orders. Dense but calm, warm paper and brick red, usable real controls. Product demo data must be labelled. No marketing hero or invented business growth claims.",
+    "context": {
+      "subject": "bakery operations dashboard",
+      "audience": "bakery shift leads",
+      "primary_action": "review todays bake and update production",
+      "colors": [
+        "#F5F3EE",
+        "#292B28",
+        "#963D28"
+      ],
+      "objects": [
+        "bake quantities",
+        "oven status",
+        "stock",
+        "collection orders"
+      ],
+      "required_content": [
+        "clearly labelled demo data"
+      ],
+      "forbidden": [
+        "marketing hero",
+        "growth claims"
+      ]
+    },
+    "assets": []
+  }
+]

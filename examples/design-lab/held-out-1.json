@@ -1,0 +1,1208 @@
+{
+  "mode": "new_website",
+  "query": "Industry: harbour operations console\nClient brief: An operations console for a harbour master: vessel arrivals, berth assignments and weather observations. No animation. Dense readable tables, keyboard actions, no invented live feed.\nNo animation.\nNo invented live feed.",
+  "matched_industry": {
+    "slug": "brief-derived",
+    "name": "Harbour operations console (read from the brief)",
+    "keywords": [
+      "harbour",
+      "operations",
+      "console"
+    ],
+    "recommended_styles": [
+      "high-density-workbench",
+      "crisp-product-workbench"
+    ],
+    "layout_archetype": "Harbour operations console: today's numbers and 'resolve what is late or short' lead the first screen; units, timestamps, owners and status organise the rest",
+    "first_viewport_priority": "'resolve what is late or short' working next to today's numbers",
+    "typography_pairing": {
+      "id": "roboto-slab-inter-tight",
+      "display_font": "Roboto Slab",
+      "body_font": "Inter Tight",
+      "mono_font": "Roboto Mono",
+      "mood": "Engineered slab",
+      "scale_ratio": "1.200 (Minor Third)",
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter+Tight:wght@400;700&family=Roboto+Mono&display=swap"
+    },
+    "palette": {
+      "id": "ops-console-night",
+      "background": "#0D1117",
+      "surface": "#161B22",
+      "foreground": "#E6EDF3",
+      "muted": "#9DA7B3",
+      "primary_accent": "#3FB950",
+      "secondary_accent": "#F0883E",
+      "wcag_body_contrast": 16.02,
+      "notes": "Night console where state colour (ok / late / short) is the only decoration"
+    },
+    "conversion_trust_elements": [
+      "Real names, places and opening hours or response times",
+      "Specifics in the trade's own terms (units, timestamps, owners and status)",
+      "One clear primary action: resolve what is late or short"
+    ],
+    "motion_language": "State changes only: value tweens and row insert/remove; nothing scroll-driven",
+    "anti_patterns": [
+      "A row of four KPI cards over one line chart",
+      "Anchors, rope and navy-stripe clip art",
+      "Sparkline-in-every-card dashboard template",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "default_dials": {
+      "design_variance": 3,
+      "motion_intensity": 2,
+      "visual_density": 7
+    },
+    "provenance": "Synthesised from the brief's own words (\"Industry: harbour operations console. Client brief: An operations console for a harbour master: vessel arrivals, berth a\"); no catalogue industry matched, so check it against what the user meant."
+  },
+  "match_score": 0,
+  "match_confidence": "none",
+  "alternative_industries": [],
+  "distinctiveness": {
+    "place_cues": [],
+    "material_cues": [
+      "harbour"
+    ],
+    "category_cliches": [
+      "A row of four KPI cards over one line chart",
+      "Anchors, rope and navy-stripe clip art",
+      "Sparkline-in-every-card dashboard template",
+      "Template hero (headline left, illustration right, two buttons)",
+      "Uniform card grids with icon + heading + paragraph",
+      "Gradient blobs and glassmorphism with no brand reason"
+    ],
+    "instruction": "Subject first: list the objects, tools and moments a visitor actually sees in this business (a bakery: loaves, the oven, flour; an optician: frames, lenses, the test chart). The first screen must show the most characteristic of them as authored art at scale, so a stranger can name the business with the text covered. Then write down 3 concrete references from the brand's own world (local architecture, craft traditions, signage, landscape, the material itself) and derive palette, pattern, and type voice from them. Materials: harbour — sample real colours and textures from them. The clichés below are generic *treatments* (layouts, kits, palettes), not the subject's own objects: avoid the treatments, never the subject."
+  },
+  "brief_signals": {
+    "surface": "product_ui",
+    "niche_tags": [
+      "marine",
+      "data"
+    ],
+    "moods": [],
+    "constraints": [
+      "reduced-motion",
+      "task-ui (no scroll choreography)"
+    ],
+    "motion_bias": 0,
+    "motion_cap": 0,
+    "niches": [
+      "dashboard"
+    ],
+    "brief_objects": [
+      "industry",
+      "harbour operations console",
+      "client brief",
+      "operations console",
+      "harbour master",
+      "vessel arrivals",
+      "berth assignments",
+      "weather observations"
+    ]
+  },
+  "matched_styles": [
+    {
+      "slug": "crisp-product-workbench",
+      "name": "Crisp Product Workbench",
+      "category": "Product & SaaS",
+      "keywords": [
+        "saas",
+        "workbench",
+        "product",
+        "bento",
+        "clean",
+        "startup"
+      ],
+      "characteristics": [
+        "Interactive live product state demonstrations in the hero instead of static screenshots",
+        "Subtle surface layering (`#FCFCFA` -> `#F2F3EE`) with crisp 1px borders",
+        "Clear scannable feature proof and transparent pricing architecture"
+      ],
+      "best_for": [
+        "SaaS Startups",
+        "Productivity Tools",
+        "B2B Platforms"
+      ],
+      "avoid_when": [
+        "Experimental art installations"
+      ],
+      "provenance": "adapted:ui-ux-pro-max+impeccable+layoza"
+    },
+    {
+      "slug": "high-density-workbench",
+      "name": "High-Density Operational Cockpit",
+      "category": "Dashboards & Data",
+      "keywords": [
+        "dashboard",
+        "admin",
+        "analytics",
+        "table",
+        "dense",
+        "finance"
+      ],
+      "characteristics": [
+        "Compact 4px/8px/12px spacing grid maximizing above-the-fold data visibility",
+        "Right-aligned `tabular-nums` numeric columns, keyboard-first filtering, and clear status badges",
+        "Complete empty, loading, error, and overflow-resilient states"
+      ],
+      "best_for": [
+        "SaaS Dashboards",
+        "Fintech Terminals",
+        "Admin Consoles"
+      ],
+      "avoid_when": [
+        "Brand storytelling landing pages"
+      ],
+      "provenance": "adapted:impeccable+ui-ux-pro-max+layoza"
+    }
+  ],
+  "active_dials": {
+    "design_variance": 3,
+    "motion_intensity": 0,
+    "visual_density": 7
+  },
+  "preservation_enforced": false,
+  "directions": [
+    {
+      "index": 1,
+      "title": "Direction A — Harbour operations console (read from the brief) (Live Status Board)",
+      "style_family": "high-density-workbench",
+      "layout_composition": "Harbour operations console opens on live status: one line says whether the service is normal, then a map or list of today's numbers with current issues and planned work (units, timestamps, owners and status); the exception list and the plan table follow; 'resolve what is late or short' is a prominent report button. Structure: a live status strip and map, then planned work, then how to report. Knobs: density standard; span irregularity medium; accent on cells and rows that need action. Mobile: the status line is first; the map follows at half height",
+      "visual_identity": "Control room: Roboto Slab for the status line, Inter Tight for details, Roboto Mono for references and times; palette ops-console-night (dark ground): night console where state colour (ok / late / short) is the only decoration; status colours are the only colours; corners: 2px on controls and cards, square images (hairline-2); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Roboto Slab: Rockwell, 'Roboto Slab', Georgia, serif; Inter Tight: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "roboto-slab-inter-tight",
+        "display_font": "Roboto Slab",
+        "body_font": "Inter Tight",
+        "mono_font": "Roboto Mono",
+        "mood": "Engineered slab",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter+Tight:wght@400;700&family=Roboto+Mono&display=swap"
+      },
+      "palette": {
+        "id": "ops-console-night",
+        "background": "#0D1117",
+        "surface": "#161B22",
+        "foreground": "#E6EDF3",
+        "muted": "#9DA7B3",
+        "primary_accent": "#3FB950",
+        "secondary_accent": "#F0883E",
+        "wcag_body_contrast": 16.02,
+        "notes": "Night console where state colour (ok / late / short) is the only decoration"
+      },
+      "content_treatment": "Is it working, where is it not, when will it be fixed, how do I report it",
+      "motion_choreography": "No motion: today's numbers and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 3,
+        "motion_intensity": 0,
+        "visual_density": 7
+      },
+      "rationale": "Live Status Board for \"harbour operations console\" (productui surface): people come to check whether something is working now, so live status leads. Type Roboto Slab / Inter Tight (engineered slab) for a utility voice, tagged data like the brief. Palette ops-console-night on a dark ground, tagged data like the brief. First screen: full-bleed composition, hero material data-as-image, look family technical-blueprint, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): values update; no decoration. Licence: Apache-2.0 and SIL OFL 1.1. Other structures that fit this slot: Numbers Up Front, System Diagram, Changelog Front, Morning Brief, Daily Ledger, Step-by-Step Workflow.",
+      "mechanics": [
+        {
+          "id": "hero-slow-pan-band",
+          "name": "Slow pan with a solid band",
+          "kind": "hero",
+          "role": "hero",
+          "family": "slow-pan-band",
+          "intensity": "calm",
+          "still_check": "At 50% the photo is mid-pan and the band text crisp.",
+          "composition": "full-bleed",
+          "hero_material": "real-photo",
+          "look_family": "documentary-photo"
+        },
+        {
+          "id": "section-app-nav-icon-rail",
+          "name": "Collapsible sidebar to icon rail",
+          "kind": "section",
+          "role": "docs-nav",
+          "family": "icon-rail-sidebar",
+          "intensity": "calm",
+          "still_check": "Any still in either state shows icons, the active marker and, in the expanded state, all labels."
+        },
+        {
+          "id": "section-data-story-scale-objects",
+          "name": "Numbers as countable objects",
+          "kind": "section",
+          "role": "data-story",
+          "family": "scale-objects-story",
+          "intensity": "calm",
+          "still_check": "Any still shows the full objects and the number in text."
+        }
+      ],
+      "hero_material": "working product interface with truthful demo data",
+      "radius": "hairline-2",
+      "archetype": "status-board",
+      "nav": {
+        "id": "nav-mega-by-audience",
+        "name": "Menu by who you are",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-mega-audience",
+        "intensity": "calm",
+        "still_check": "Any still shows the panel with all columns readable.",
+        "look_family": "soft-stone"
+      },
+      "footer": {
+        "id": "footer-triage-routes",
+        "name": "Footer that sorts visitors by situation",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-triage-routes",
+        "intensity": "calm",
+        "still_check": "Any still shows all three routes and the phone number.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "giant-figure",
+          "build": "One giant figure, date or price leads; the headline sits small beneath it, proof first."
+        },
+        "flow": {
+          "id": "spine",
+          "build": "One continuous rail runs down the page; every section hangs off it in order."
+        },
+        "section_head": {
+          "id": "margin-numeral",
+          "build": "Giant section numeral in the left margin, the title small beside it."
+        },
+        "ground": {
+          "id": "split-ground",
+          "build": "Each section split down the middle: one half on the palette ground, the other on its ink."
+        },
+        "material": {
+          "id": "flat-graphic",
+          "build": "Flat graphic shapes and solid colour blocks; no texture, shadow or photos."
+        },
+        "labels": {
+          "id": "pill-tags",
+          "build": "Labels as filled pill tags in the accent colour, sentence case."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: press-depth (CSS transitions). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "press-depth",
+            "build": "Buttons press down 1-2px with a shadow change on active.",
+            "tool": "css",
+            "tool_name": "CSS transitions",
+            "fallback": "buttons keep their resting state."
+          }
+        ],
+        "motion_signature": "press-depth",
+        "motion_tools": [
+          "css"
+        ],
+        "pinned_by_prompt": [
+          "motion"
+        ],
+        "motif": {
+          "id": "seam-grid",
+          "build": "Module seams: a hairline grid at the trade's real unit runs along section edges and behind spec tables and figures, taken from today's numbers; it never crosses photographs or hero media, and the active item fills one cell in the accent."
+        },
+        "button": {
+          "id": "square-cell",
+          "build": "Primary: solid accent fill, 48px tall (one grid cell), 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "title": "Direction B — Harbour operations console (read from the brief) (Bento Board)",
+      "style_family": "block-first-editorial",
+      "layout_composition": "Harbour operations console as a bento board: one irregular grid where the largest tile holds today's numbers, mid tiles hold the exception list and the plan table, and small tiles hold single facts from the trade (units, timestamps, owners and status); 'resolve what is late or short' owns its own tile, never a floating button. Structure: one irregular grid of unequal tiles, each tile one real fact or object. Knobs: density standard; span irregularity high; accent on the selected option and the primary button. Mobile: tiles re-order by importance into one column; the largest tile stays first",
+      "visual_identity": "Tile system: Bitter for tile headlines, Source Sans 3 inside tiles; palette diff-view (light ground): diff-view white with added green and removed red; tiles differ in size and fill, not in drop shadow; corners: 12px on cards and images, 8px on controls (soft-12); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Bitter: Rockwell, 'Roboto Slab', Georgia, serif; Source Sans 3: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "bitter-source-sans-3",
+        "display_font": "Bitter",
+        "body_font": "Source Sans 3",
+        "mono_font": "Victor Mono",
+        "mood": "Chart-slab, tide tables",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Source+Sans+3:wght@400;700&family=Victor+Mono&display=swap"
+      },
+      "palette": {
+        "id": "diff-view",
+        "background": "#F6F8F7",
+        "surface": "#FFFFFF",
+        "foreground": "#121614",
+        "muted": "#4A524E",
+        "primary_accent": "#2F8E46",
+        "secondary_accent": "#CF222E",
+        "wcag_body_contrast": 17.11,
+        "notes": "Diff-view white with added green and removed red | Computed: primary accent is 3.88:1 on the background, so use it for fills, large text (>= 24px) or icons only, never body-size text."
+      },
+      "content_treatment": "Each tile proves one thing with a real number, photo or object; no tile is decoration",
+      "motion_choreography": "No motion: today's numbers and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 6,
+        "motion_intensity": 0,
+        "visual_density": 6
+      },
+      "rationale": "Bento Board for \"harbour operations console\" (productui surface): the subject has several small proofs of different shapes, and one glance should show them all. Type Bitter / Source Sans 3 (chart-slab, tide tables) for a utility voice, tagged marine/data like the brief. Palette diff-view on a light ground, tagged data like the brief. First screen: layered composition, hero material object, look family playful-color-block, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): tiles settle once; hover lifts a tile's detail. Licence: SIL Open Font License 1.1. Other structures that fit this slot: Timeline Axis.",
+      "mechanics": [
+        {
+          "id": "hero-cast-shadow-type",
+          "name": "Type casting a long shadow",
+          "kind": "hero",
+          "role": "hero",
+          "family": "cast-shadow-type",
+          "intensity": "calm",
+          "still_check": "At 50% shadows are mid-length and the headline is crisp; the object shadow matches the type's angle.",
+          "composition": "layered",
+          "hero_material": "physical-object",
+          "look_family": "soft-stone"
+        },
+        {
+          "id": "section-features-question-first",
+          "name": "Features as answered questions",
+          "kind": "section",
+          "role": "features",
+          "family": "question-first-features",
+          "intensity": "calm",
+          "still_check": "Any still shows each question and answer."
+        },
+        {
+          "id": "impact-gift-allocation-bar",
+          "name": "Where each gift goes",
+          "kind": "section",
+          "role": "impact",
+          "family": "allocation-bar",
+          "intensity": "calm",
+          "still_check": "At 50% the full bar shows every segment at its final width with every label and percentage readable, and the default gift sentence is visible. At 25% the bar may be mid-growth but labels already sit at final positions."
+        }
+      ],
+      "hero_material": "working product interface with truthful demo data",
+      "radius": "soft-12",
+      "archetype": "bento-board",
+      "nav": {
+        "id": "nav-centred-wordmark-split",
+        "name": "Wordmark centred between two link groups",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-centred-wordmark-split",
+        "intensity": "calm",
+        "still_check": "Any still shows the wordmark and both groups.",
+        "look_family": "luxe-dark"
+      },
+      "footer": {
+        "id": "footer-contact-card",
+        "name": "Footer as a contact card to keep",
+        "kind": "section",
+        "role": "footer",
+        "family": "footer-contact-card",
+        "intensity": "calm",
+        "still_check": "Any still shows the card and its three ways to reach you.",
+        "look_family": "hairline-newspaper"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "object-centre",
+          "build": "One object centre-stage at large scale; type tucked around or behind it."
+        },
+        "flow": {
+          "id": "sticky-index",
+          "build": "Sticky index on one side; content panes scroll past it on the other side. The index is never an empty column: it carries the section titles plus the live picture or figure of the pane in view, and under 1024px it folds into a top bar."
+        },
+        "section_head": {
+          "id": "tab-heads",
+          "build": "Heads sit as tabs on each section panel's top edge, like folder dividers."
+        },
+        "ground": {
+          "id": "light-throughout",
+          "build": "Light ground throughout; sections separate by space and rules, not colour."
+        },
+        "material": {
+          "id": "rendered-3d",
+          "build": "Rendered 3D objects of the trade, lit and shadowed, as the main visuals."
+        },
+        "labels": {
+          "id": "sentence-case",
+          "build": "Sentence case only, body face; labels read as plain words, no caps anywhere."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: arrow-nudge (CSS transitions). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "arrow-nudge",
+            "build": "Link and button arrows nudge 3px forward on hover and focus.",
+            "tool": "css",
+            "tool_name": "CSS transitions",
+            "fallback": "arrows sit still."
+          }
+        ],
+        "motion_signature": "arrow-nudge",
+        "motion_tools": [
+          "css"
+        ],
+        "pinned_by_prompt": [
+          "motion"
+        ],
+        "motif": {
+          "id": "bezel-frame",
+          "build": "Bezel frame: media sits inside a thin, even bezel with one continuous corner radius, like the housing of the exception list; the same radius and bezel width carry to panels and the primary button. Nothing is drawn over the media."
+        },
+        "button": {
+          "id": "soft-square",
+          "build": "Primary: solid accent fill, 52px tall with 28px side padding, radius 10px (the bezel's inner radius), label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "title": "Direction C — Harbour operations console (read from the brief) (Component Playground)",
+      "style_family": "precision-terminal-craft",
+      "layout_composition": "Component playground for the harbour operations console, split because each control and its live result must be read together: controls for today's numbers on one side, the live result on the other, the generated code beneath both; the exception list and the plan table as presets. Structure: controls beside a live preview, code under both. Knobs: density standard; span irregularity medium; accent on the active control and its result. Mobile: controls become a bottom sheet over the preview",
+      "visual_identity": "Dark bench: Reddit Mono for code and controls, Schibsted Grotesk for preset names, Schibsted Grotesk for help; palette heatmap-night (dark ground): heatmap night with hot coral and cool sky; one accent for changed values; corners: 6px on controls, 8px on panels, square images (tool-6); body 1rem (16px) minimum, labels and captions 0.75rem (12px) minimum; fallbacks Schibsted Grotesk: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; Schibsted Grotesk: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "typography": {
+        "id": "schibsted-grotesk-solo",
+        "display_font": "Schibsted Grotesk",
+        "body_font": "Schibsted Grotesk",
+        "mono_font": "Reddit Mono",
+        "mood": "Newsroom grotesk for figures",
+        "scale_ratio": "1.200 (Minor Third)",
+        "google_fonts_url": "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;700&family=Reddit+Mono&display=swap"
+      },
+      "palette": {
+        "id": "heatmap-night",
+        "background": "#14121A",
+        "surface": "#1D1A26",
+        "foreground": "#F0EEF5",
+        "muted": "#ABA6BC",
+        "primary_accent": "#F37C7E",
+        "secondary_accent": "#66C6FF",
+        "wcag_body_contrast": 16.14,
+        "notes": "Heatmap night with hot coral and cool sky"
+      },
+      "content_treatment": "Try it, see it, copy the code; limits and defaults stated beside each control (units, timestamps, owners and status)",
+      "motion_choreography": "No motion: today's numbers and every section render in their final state on load; hover and focus change colour only; nothing moves on scroll",
+      "dials": {
+        "design_variance": 3,
+        "motion_intensity": 0,
+        "visual_density": 9
+      },
+      "rationale": "Component Playground for \"harbour operations console\" (productui surface): options and their live result must be seen together (props on one side, the rendered piece on the other). Type Schibsted Grotesk / Schibsted Grotesk (newsroom grotesk for figures) for a utility voice, tagged data like the brief. Palette heatmap-night on a dark ground, tagged data like the brief. First screen: stacked composition (no fitting split hero for this trade, so the direction follows the dealt hero hero-dashboard-today), hero material live-ui, look family dark-single-accent, corners tool-6. Motion flavour (tier and tools follow page_shape.motion): preview updates instantly; code diff highlights. Licence: SIL Open Font License 1.1. Other structures that fit this slot: Command-First Console, Catalogue Index, Plain Index Page, Timeline Axis.",
+      "mechanics": [
+        {
+          "id": "hero-dashboard-today",
+          "name": "Today, at a Glance",
+          "kind": "hero",
+          "role": "hero",
+          "family": "progress-meter",
+          "intensity": "calm",
+          "still_check": "At 50% scroll the greeting, summary sentence, every meter value and the Next up item are fully visible and filled. 25% and 75% show the same composition; the only allowed difference is a live data update.",
+          "composition": "stacked",
+          "hero_material": "data-image",
+          "look_family": "quiet-civic"
+        },
+        {
+          "id": "section-about-week-in-numbers",
+          "name": "This week, counted",
+          "kind": "section",
+          "role": "about",
+          "family": "week-in-numbers",
+          "intensity": "calm",
+          "still_check": "Any still shows the sentence with every number (final values in the HTML)."
+        },
+        {
+          "id": "section-schedule-week-grid",
+          "name": "The week at a glance",
+          "kind": "section",
+          "role": "schedule",
+          "family": "week-grid-schedule",
+          "intensity": "calm",
+          "still_check": "Any still shows the whole week with today marked."
+        }
+      ],
+      "hero_material": "working product interface with truthful demo data",
+      "radius": "tool-6",
+      "archetype": "component-playground",
+      "nav": {
+        "id": "nav-divider-tab-rail",
+        "name": "Divider tabs down the edge",
+        "kind": "section",
+        "role": "nav",
+        "family": "nav-divider-tabs",
+        "intensity": "calm",
+        "still_check": "Any still shows all tabs readable and one active.",
+        "look_family": "warm-paper-serif"
+      },
+      "footer": {
+        "id": "section-footer-the-practical-sheet",
+        "name": "Footer as the practical sheet",
+        "kind": "section",
+        "role": "footer",
+        "family": "practical-sheet-footer",
+        "intensity": "calm",
+        "still_check": "Any still shows all 4 columns readable.",
+        "look_family": "quiet-civic"
+      },
+      "type_tokens": {
+        "body": "1rem",
+        "caption": "0.833rem",
+        "display": "clamp(2.75rem, 6vw, 4.5rem)",
+        "h1": "2.074rem",
+        "h2": "1.728rem",
+        "h3": "1.44rem",
+        "label": "0.833rem",
+        "lead": "1.2rem",
+        "ratio": "1.2",
+        "small": "0.917rem"
+      },
+      "page_shape": {
+        "hero_frame": {
+          "id": "product-ui-bleed",
+          "build": "Product UI full-bleed: the live interface fills the screen; the headline sits inside it."
+        },
+        "flow": {
+          "id": "bento",
+          "build": "Bento mosaic: sections packed as unequal tiles in one grid, sized by importance."
+        },
+        "section_head": {
+          "id": "question-heads",
+          "build": "Each head is a visitor's question in plain words; the answer starts right below."
+        },
+        "ground": {
+          "id": "night-glow",
+          "build": "Dark ground lit by soft glow pools of the accent behind key objects."
+        },
+        "material": {
+          "id": "product-screens",
+          "build": "Real product screens and data states, cropped and annotated, as the visuals."
+        },
+        "labels": {
+          "id": "accent-dash",
+          "build": "A short accent dash before each label, body face semibold, sentence case."
+        },
+        "motion": {
+          "id": "micro",
+          "build": "Micro motion only: hover, focus and press states (150-200ms), no scroll choreography; signature: check-tick (Web Animations API). Reduced motion: under prefers-reduced-motion: reduce every effect is replaced by its final state; all content stays visible and readable."
+        },
+        "motion_techniques": [
+          {
+            "id": "check-tick",
+            "build": "Form checks and toggles tick with a 160ms stroke draw.",
+            "tool": "waapi",
+            "tool_name": "Web Animations API",
+            "fallback": "controls switch instantly."
+          }
+        ],
+        "motion_signature": "check-tick",
+        "motion_tools": [
+          "waapi"
+        ],
+        "pinned_by_prompt": [
+          "motion"
+        ],
+        "motif": {
+          "id": "stepped-corner",
+          "build": "Stepped corner: a three-step pixel cut in one corner of every media frame (the frame edge only, nothing over the image) and of the primary button, taken from the plan table; square bullets echo it, and one band of the same steps divides two chapters. Nothing else decorates."
+        },
+        "button": {
+          "id": "square-stepped",
+          "build": "Primary: solid accent fill, label in the ground colour at medium weight, 48px tall with 24px side padding, radius 2px, the stepped cut on its top-right corner only; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: the same size with a 1px ink outline that fills on hover."
+        },
+        "restraint": [
+          "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.",
+          "No monospace face: figures use the body face's tabular numerals.",
+          "No index numerals (01, 02) on sections or steps; an ordered list carries order.",
+          "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.",
+          "No icon cards and no row of three or more identical cards: vary size, span and media per item.",
+          "At most two typefaces; hierarchy comes from size and weight.",
+          "One h1, authored in at most two lines at every width; statements stay under about 25 words.",
+          "Sections 120-240px apart on desktop (about clamp(88px, 11vw, 168px)); never cramped bands.",
+          "Real pictures of the trade's objects wherever the brief supplies them, four or more; no stock filler or placeholder art.",
+          "One live interaction born from the product (its deciding spec made interactive) with a no-JS table of the same facts.",
+          "The footer returns the brand line large across the full width."
+        ]
+      }
+    }
+  ],
+  "workflow_guidance": [
+    "COMPONENT SCOPE: the brief is one component, not a page. Skip page-level steps (hero, three directions, art loop); keep the project's tokens, every state (default, hover, focus-visible, active, disabled, loading, error, empty), keyboard and screen-reader behaviour, reduced-motion rules and RTL with logical properties. Stamp it with `scope: component`.",
+    "BRIEF OBJECTS: no catalogue trade matched, so the subject is read from the brief's own words: industry, harbour operations console, client brief, operations console, harbour master, vessel arrivals, berth assignments, weather observations. Map every direction and every dealt mechanic onto these objects (the hero shows one of them, sections are built from their real names, numbers and records), never onto the catalogue's example objects. Call to action: the brief names none; ask the user, do not assume booking or contact.",
+    "Mode A (New Website): the user's prompt wins over everything here. The 3 directions are structural raw material (layout, content treatment, dials), not finished looks; the visual world comes from art direction.",
+    "DISTINCTIVENESS: Read `distinctiveness` first. If `match_confidence` is `none` or `weak`, the industry profile is only a fallback; build the visual world from the brief's place and material cues instead, and do not ship any listed category cliché unless the brief asks for it.",
+    "ART DIRECTION (load `skills/layoza-art-direction`): commit to ONE specific world. Derive the world from far (place, notation, print traditions), keep the subject up close (the trade's object as the signature interaction, at scale), rule out the category reflex and its obvious opposite, and put the visitor's real action in the first viewport. Let colour own whole sections. Decide motion and tools per design; nothing is mandatory.",
+    "ENGINEERING LESSONS: sticky headers need `html { scroll-padding-top: <header height + 1rem> }` (WCAG 2.4.11); web fonts need metric-adjusted fallback `@font-face` (size-adjust / ascent-override) or the font swap re-wraps headings and fails CLS; scroll reveals must end visible.",
+    "HERO: Layoza does not fix the first-screen composition; you choose it, from the subject and the brief. The directions suggest full-bleed / layered / stacked (each with its reason in `rationale`), and the dealt hero mechanic is one fit for that composition, not the only one. Give the three directions three different first screens, do not default to headline-left / visual-right (a split needs a stated reason), and record `HERO:` with the reason in `.layoza/direction.md`.",
+    "TYPE & LEADING: Keep multi-line display headings at `line-height >= 1.0` so ascenders and descenders never collide.",
+    "LAYOUT SAFETY: Keep short header links/buttons on one line (`white-space: nowrap`), give side-by-side heading columns >= 16px of clear space, collapse multi-column grids before gaps exceed the viewport, and size any <canvas> from a fixed-size container with devicePixelRatio capped at 2.",
+    "Verify in a real browser with `layoza qa <file-or-url>` (1440/768/375): it measures contrast, overflow, clipping, nav, scroll reveals, and lab Core Web Vitals; fix every error."
+  ],
+  "scope": "component",
+  "uniqueness": {
+    "ledger": "off",
+    "window": 36,
+    "entries_compared": 0,
+    "slots": [
+      {
+        "slot": "A.nav",
+        "id": "nav-mega-by-audience",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.hero",
+        "id": "hero-slow-pan-band",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-1",
+        "id": "section-app-nav-icon-rail",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-2",
+        "id": "section-data-story-scale-objects",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.footer",
+        "id": "footer-triage-routes",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.palette",
+        "id": "ops-console-night",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.typography",
+        "id": "roboto slab/inter tight",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.archetype",
+        "id": "status-board",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.hero-frame",
+        "id": "giant-figure",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.flow",
+        "id": "spine",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.section-head",
+        "id": "margin-numeral",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.ground",
+        "id": "split-ground",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.material",
+        "id": "flat-graphic",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.labels",
+        "id": "pill-tags",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "A.motion",
+        "id": "press-depth",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.nav",
+        "id": "nav-centred-wordmark-split",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.hero",
+        "id": "hero-cast-shadow-type",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-1",
+        "id": "section-features-question-first",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-2",
+        "id": "impact-gift-allocation-bar",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.footer",
+        "id": "footer-contact-card",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.palette",
+        "id": "diff-view",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.typography",
+        "id": "bitter/source sans 3",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.archetype",
+        "id": "bento-board",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.hero-frame",
+        "id": "object-centre",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.flow",
+        "id": "sticky-index",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.section-head",
+        "id": "tab-heads",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.ground",
+        "id": "light-throughout",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.material",
+        "id": "rendered-3d",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.labels",
+        "id": "sentence-case",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "B.motion",
+        "id": "arrow-nudge",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.nav",
+        "id": "nav-divider-tab-rail",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.hero",
+        "id": "hero-dashboard-today",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-1",
+        "id": "section-about-week-in-numbers",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-2",
+        "id": "section-schedule-week-grid",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.footer",
+        "id": "section-footer-the-practical-sheet",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.palette",
+        "id": "heatmap-night",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.typography",
+        "id": "schibsted grotesk/schibsted grotesk",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.archetype",
+        "id": "component-playground",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.hero-frame",
+        "id": "product-ui-bleed",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.flow",
+        "id": "bento",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.section-head",
+        "id": "question-heads",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.ground",
+        "id": "night-glow",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.material",
+        "id": "product-screens",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.labels",
+        "id": "accent-dash",
+        "status": "unchecked (ledger off)"
+      },
+      {
+        "slot": "C.motion",
+        "id": "check-tick",
+        "status": "unchecked (ledger off)"
+      }
+    ],
+    "fresh": 0,
+    "repeats": 0,
+    "score": 0,
+    "verdict": "Ledger off: no slot was checked for repeats. Uniqueness needs the ledger; leave it on unless the user asked."
+  },
+  "understood_brief": {
+    "trade": "Harbour operations console (read from the brief) (none match)",
+    "subject": "harbour operations console",
+    "audience": "the teams that buy and use the product day to day",
+    "primary_action": "resolve what is late or short",
+    "tone": [
+      "clear, confident, task-first"
+    ],
+    "motion_wish": "none (0; no animation)",
+    "must_haves": [
+      "Do not use: animation",
+      "Do not use: invented live feed"
+    ],
+    "pinned_by_prompt": [
+      "motion"
+    ],
+    "assumed": [
+      "audience: the teams that buy and use the product day to day (niche default)",
+      "tone: clear, confident, task-first (niche default)",
+      "stack: the project's own framework if one exists, else plain HTML/CSS/JS"
+    ],
+    "open_questions": []
+  },
+  "creative_workspace": {
+    "brief_context": {
+      "subject": "harbour operations console",
+      "audience": "",
+      "primary_action": "",
+      "objects": [],
+      "facts": [],
+      "required_content": [],
+      "forbidden": [
+        "animation",
+        "invented live feed"
+      ],
+      "display_font": "",
+      "body_font": "",
+      "colors": [],
+      "assets": []
+    },
+    "context_basis": "explicit structured client context supplied by the calling designer",
+    "concepts": [
+      {
+        "direction": 1,
+        "title": "Direction A — Harbour operations console (read from the brief) (Live Status Board)",
+        "composition": "Harbour operations console opens on live status: one line says whether the service is normal, then a map or list of today's numbers with current issues and planned work (units, timestamps, owners and status); the exception list and the plan table follow; 'resolve what is late or short' is a prominent report button. Structure: a live status strip and map, then planned work, then how to report. Knobs: density standard; span irregularity medium; accent on cells and rows that need action. Mobile: the status line is first; the map follows at half height",
+        "why_this_subject": "Live Status Board for \"harbour operations console\" (productui surface): people come to check whether something is working now, so live status leads. Type Roboto Slab / Inter Tight (engineered slab) for a utility voice, tagged data like the brief. Palette ops-console-night on a dark ground, tagged data like the brief. First screen: full-bleed composition, hero material data-as-image, look family technical-blueprint, corners hairline-2. Motion flavour (tier and tools follow page_shape.motion): values update; no decoration. Licence: Apache-2.0 and SIL OFL 1.1. Other structures that fit this slot: Numbers Up Front, System Diagram, Changelog Front, Morning Brief, Daily Ledger, Step-by-Step Workflow.",
+        "image_medium": "working product interface with truthful demo data",
+        "asset_plan": {
+          "subject": "harbour operations console",
+          "medium": "working product interface with truthful demo data",
+          "available": [
+            {
+              "path": "assets/import-1792529397635.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/import-1792530871937.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction A — Harbour operations console (read from the brief) (Live Status Board) requires convincing working product interface with truthful demo data material; judge the actual render before committing."
+      },
+      {
+        "direction": 2,
+        "title": "Direction B — Harbour operations console (read from the brief) (Bento Board)",
+        "composition": "Harbour operations console as a bento board: one irregular grid where the largest tile holds today's numbers, mid tiles hold the exception list and the plan table, and small tiles hold single facts from the trade (units, timestamps, owners and status); 'resolve what is late or short' owns its own tile, never a floating button. Structure: one irregular grid of unequal tiles, each tile one real fact or object. Knobs: density standard; span irregularity high; accent on the selected option and the primary button. Mobile: tiles re-order by importance into one column; the largest tile stays first",
+        "why_this_subject": "Bento Board for \"harbour operations console\" (productui surface): the subject has several small proofs of different shapes, and one glance should show them all. Type Bitter / Source Sans 3 (chart-slab, tide tables) for a utility voice, tagged marine/data like the brief. Palette diff-view on a light ground, tagged data like the brief. First screen: layered composition, hero material object, look family playful-color-block, corners soft-12. Motion flavour (tier and tools follow page_shape.motion): tiles settle once; hover lifts a tile's detail. Licence: SIL Open Font License 1.1. Other structures that fit this slot: Timeline Axis.",
+        "image_medium": "working product interface with truthful demo data",
+        "asset_plan": {
+          "subject": "harbour operations console",
+          "medium": "working product interface with truthful demo data",
+          "available": [
+            {
+              "path": "assets/import-1792529397635.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/import-1792530871937.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction B — Harbour operations console (read from the brief) (Bento Board) requires convincing working product interface with truthful demo data material; judge the actual render before committing."
+      },
+      {
+        "direction": 3,
+        "title": "Direction C — Harbour operations console (read from the brief) (Component Playground)",
+        "composition": "Component playground for the harbour operations console, split because each control and its live result must be read together: controls for today's numbers on one side, the live result on the other, the generated code beneath both; the exception list and the plan table as presets. Structure: controls beside a live preview, code under both. Knobs: density standard; span irregularity medium; accent on the active control and its result. Mobile: controls become a bottom sheet over the preview",
+        "why_this_subject": "Component Playground for \"harbour operations console\" (productui surface): options and their live result must be seen together (props on one side, the rendered piece on the other). Type Schibsted Grotesk / Schibsted Grotesk (newsroom grotesk for figures) for a utility voice, tagged data like the brief. Palette heatmap-night on a dark ground, tagged data like the brief. First screen: stacked composition (no fitting split hero for this trade, so the direction follows the dealt hero hero-dashboard-today), hero material live-ui, look family dark-single-accent, corners tool-6. Motion flavour (tier and tools follow page_shape.motion): preview updates instantly; code diff highlights. Licence: SIL Open Font License 1.1. Other structures that fit this slot: Command-First Console, Catalogue Index, Plain Index Page, Timeline Axis.",
+        "image_medium": "working product interface with truthful demo data",
+        "asset_plan": {
+          "subject": "harbour operations console",
+          "medium": "working product interface with truthful demo data",
+          "available": [
+            {
+              "path": "assets/import-1792529397635.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            },
+            {
+              "path": "assets/import-1792530871937.jpg",
+              "source": "https://clevelandart.org/art/1985.115",
+              "license": "CC0-1.0",
+              "credit": "Eugène Atget / Cleveland Museum of Art",
+              "role": "Illustrative test import of a historical photograph",
+              "alt": "Rue de la Montagne-Sainte-Geneviève, 1898",
+              "bytes": 4739184,
+              "content_fingerprint": "49394ff6c359b723",
+              "exists": true,
+              "content_current": true
+            }
+          ],
+          "required_role": "A truthful subject image or working product view, composed at desktop and phone sizes",
+          "acquisition": "Use supplied assets first. If missing, run scripts/design-assets.mjs search <subject> or import a verified image; register source, licence and credit with design_assets. Generate or draw only when that medium serves the idea.",
+          "crop": "Choose focal point and aspect ratio per composition; preserve the subject on phones",
+          "fallback": "If the required material cannot be obtained, change the concept honestly; never substitute a fake photograph or invented product proof"
+        },
+        "content_proof": [],
+        "tradeoff": "Direction C — Harbour operations console (read from the brief) (Component Playground) requires convincing working product interface with truthful demo data material; judge the actual render before committing."
+      }
+    ],
+    "selection": "Render the three concepts with identical real content and available assets. Pick the clearest, most expressive, subject-specific composition; record the decision and visible tradeoffs with review_design. Familiar controls may be reused when they serve the task.",
+    "success": [
+      "brief fidelity",
+      "clear hierarchy",
+      "expressive typography",
+      "convincing imagery",
+      "coherent colour and spacing",
+      "complete page rhythm",
+      "designed phone composition",
+      "usable interactions"
+    ],
+    "novelty": "A supporting signal, never a reason to change a working brand or navigation pattern",
+    "design_gate": "Browser defects and recorded process only. Exceptional design requires reviewing the actual renders, not passing a numeric checker."
+  },
+  "client_request": "An operations console for a harbour master: vessel arrivals, berth assignments and weather observations. No animation. Dense readable tables, keyboard actions, no invented live feed.",
+  "ledger": "off (`ledger: false`)",
+  "registers": [
+    "corporate"
+  ],
+  "craft_floor": [
+    "Header: one row, 60-84px tall on desktop and 56-76px on mobile; logo 24-40px high on the left, 4-6 nav links of 15-16px at weight 500 with 24-40px between them, the primary action on the right at the header's button size. Phone or hours sit in that row or the footer; no utility bar stacked above the nav. Mark the current link with a 2px underline 6px below the text; a sticky header turns opaque after the first scroll, never taller.",
+    "Primary button: 44-56px tall, horizontal padding 20-32px (about twice the vertical), label 15-17px at weight 600 in sentence or title case with tracking 0-0.02em, at most one drawn SVG icon of 16-20px set 8px from the label. The secondary action matches its height, radius and padding as an outline (1-1.5px) or ghost; one button shape and radius on the whole page, 44px minimum hit area everywhere.",
+    "Button states, all four authored: :hover shifts the fill by 6-10% lightness or nudges the icon 2-4px; :active presses with translateY(1px) or scale(0.98) over 80-120ms; :focus-visible draws a 2px ring at 2-3px offset with at least 3:1 contrast; disabled sits at 45-55% opacity with cursor not-allowed. No state changes width, height or padding.",
+    "Type scale: at most 10 distinct font sizes each carry 2% or more of the text on a desktop render, each step at least 1.2x the one below; body 15-18px at line-height 1.5-1.65; headings at line-height 1.0-1.15. The h1 tops out at 104px on desktop (set with clamp()), and display sizes of 48px and up track -0.02 to -0.04em, never tighter than -0.05em; body text keeps tracking at 0.",
+    "Measure: prose never runs past 82 characters a line (cap paragraphs at 60-68ch with max-width); h1 lines stay under 20ch and h2 under 24ch; no centred paragraph runs past three lines.",
+    "Spacing rhythm: every gap comes from one 4/8px scale. Sections pad 96-168px top and bottom on desktop and 64-96px on mobile; a heading sits 16-24px above its text and has at least twice that space above it; content width caps at 1200-1320px with 24-40px gutters on desktop and 16-20px on mobile.",
+    "Section heads: one heading per section (one h2, or the h1 in the hero) and at most one lead paragraph of 40 words or fewer. No stacked pile of label, heading, accent-coloured second heading and paragraph; a second voice goes in the body, not the head.",
+    "Composition: no two neighbouring sections share a layout; use 4 or more layout kinds across the page (split, full-bleed media, list or table, asymmetric grid, quote, form). Card rows vary span or media; never a grid of equal cards that differ only by text.",
+    "Hero: the h1, one supporting paragraph of 30 words or fewer, at most two actions and one real picture or film; at most 16 text blocks in the first viewport. Spec tables, chip rows and stat grids go below the fold (one slim proof strip may sit on the fold line). On a 390x844 phone a real picture is in view before the first scroll.",
+    "Imagery: real photographs or renders of the trade's own objects, one aspect ratio per row (16:9, 3:2, 4:3 or 1:1) with object-fit: cover, corner radius from the button's family. Nothing decorative over a product picture: no hairlines, crosshairs, hotspot squares or graph-paper grids. Text on a photo sits on a scrim that holds 4.5:1; captions 13-14px in the muted ink.",
+    "Colour: one accent on no more than about 10% of any screen (primary action, links, one highlight); neutrals tinted toward the accent hue, never pure grey; at most two ground colours plus one accent ground across the page; body and secondary text at 4.5:1 or better, large text at 3:1.",
+    "Icons: one drawn SVG set at one stroke weight (1.5 or 2px) and one size per context (16, 20 or 24px), coloured with currentColor. Never a Unicode arrow, check mark, star or emoji standing in for an icon.",
+    "Motion: one signature moment; every other transition runs 150-320ms ease-out on transform and opacity only. Reveals travel 24px or less, start from content that is already readable, and differ by section role rather than one fade-up everywhere. No infinite loops besides hero media; prefers-reduced-motion turns all of it off.",
+    "Footer: brand and one-line description, two or three link groups and the contact block, four columns at most on desktop; group titles 13-14px at weight 600 in sentence case; links 15-16px with 10-12px between rows; a bottom bar for legal and copyright at 13-14px; 64px or more of top padding.",
+    "Browser surfaces: ::selection and focus rings use the palette; link underlines sit 3-4px below the text at 1-2px thickness; tables and figures use tabular numerals; no unthemed default blue links anywhere.",
+    "Corporate: the quote or contact action is reachable from every screen (header button plus one per long section), proof (client names, numbers with their source) sits within the first 2 scrolls (about 1800px)."
+  ],
+  "design_critique": {
+    "authority": "contextual visual judgment",
+    "criteria": [
+      "brief fidelity",
+      "hierarchy",
+      "typography",
+      "imagery",
+      "colour",
+      "rhythm",
+      "phone composition",
+      "interaction"
+    ],
+    "note": "Stylistic devices are not defects by themselves. Diagnose the actual composition, not a list of banned looks."
+  },
+  "avoid_recent": {
+    "entries": 6,
+    "directions": [
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred early first-visit links. The "
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Sidebar A gives the shift lead the clearest production overvie"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, The independent critic preferred the task-first C composition."
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — revised A, Photographs lead through a coherent asymmetric exhibition comp"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — 1, Edit bay, with concept 2 folded in as the curve readout and the curves"
+      },
+      {
+        "date": "2026-10-20",
+        "direction": "auto — Object Study look from the brief (Space Grotesk / Inter, Ice Blue surface"
+      }
+    ],
+    "palettes": [
+      [
+        "#0d2424",
+        "#133131",
+        "#2a4a48",
+        "#f1eadf",
+        "#a8beb9",
+        "#ff6a3d",
+        "#f2c94c"
+      ]
+    ],
+    "fonts": [
+      "Space Grotesk",
+      "Inter",
+      "Bricolage Grotesque",
+      "Instrument Sans"
+    ],
+    "motifs": [
+      "sticky",
+      "film",
+      "paper",
+      "kinetic type",
+      "webgl",
+      "timeline",
+      "blob",
+      "asymmetric",
+      "index",
+      "catalogue",
+      "chart"
+    ],
+    "mechanics": [],
+    "rule": "Make all three directions materially different from these recent picks: a different palette family, different type families, different motifs and mechanics. Reuse them only when the user asks for the same look, and then record `REPEAT-OK: <the user's words>` in direction.md."
+  }
+}
