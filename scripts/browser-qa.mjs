@@ -1593,8 +1593,12 @@ const DOM_EVAL_SCRIPT = `(() => {
     const sections = [];
     for (const h of Array.from(document.querySelectorAll("main h2, body > section h2, body > div h2"))) {
       if (!isVisible(h) || h.closest("header, footer, nav, dialog, [aria-hidden='true']")) continue;
-      let s = h;
-      while (s.parentElement && s.parentElement !== document.body && s.parentElement.querySelectorAll("h2").length === 1) s = s.parentElement;
+      // A landmark section owns all its h2s (e.g. a list of steps titled with h2); only climb when there is none.
+      let s = h.closest("main > section, body > section, main > article, body > article, main > div > section");
+      if (!s) {
+        s = h;
+        while (s.parentElement && s.parentElement !== document.body && s.parentElement.querySelectorAll("h2").length === 1) s = s.parentElement;
+      }
       if (!sections.includes(s)) sections.push(s);
     }
     const ledgerSecs = [];
@@ -1619,10 +1623,18 @@ const DOM_EVAL_SCRIPT = `(() => {
         listArea += cr.width * cr.height;
       }
       let visual = false;
+      // Judge media against what a reader sees at once: a tall section with a sticky photo, or a strip
+      // of several images, still has a visual moment, so cap the section at one viewport and sum media.
+      const seenArea = Math.max(1, sr.width * Math.min(sr.height, innerHeight));
+      let mediaArea = 0;
       for (const m of Array.from(s.querySelectorAll("canvas, video, img, picture, svg"))) {
-        if (m.parentElement && m.parentElement.closest("svg")) continue;
+        if ((m.parentElement && m.parentElement.closest("svg, picture")) || !isVisible(m)) continue;
         const mr = m.getBoundingClientRect();
-        if (isVisible(m) && (mr.width * mr.height >= sArea * 0.25 || (mr.width >= vw * 0.45 && mr.height >= 280))) { visual = true; break; }
+        if (mr.width < 120 || mr.height < 80) continue;
+        // Only the part inside the section and the viewport width counts (scroll strips clip the rest).
+        const visW = Math.max(0, Math.min(mr.right, sr.right, vw) - Math.max(mr.left, sr.left, 0));
+        mediaArea += visW * mr.height;
+        if (mediaArea >= seenArea * 0.25 || (mr.width >= vw * 0.45 && mr.height >= 280)) { visual = true; break; }
       }
       if (!visual) {
         for (const h of Array.from(s.querySelectorAll("h1, h2, p, span, div, strong, b")).slice(0, 300)) {
@@ -1650,7 +1662,8 @@ const DOM_EVAL_SCRIPT = `(() => {
       }
     }
     const n = sections.length;
-    if (n >= 3 && ledgerSecs.length >= 2 && ledgerSecs.length / n >= 0.3) {
+    // One or two data sections are fine (a spec table, a calculator); a third makes the page a ledger.
+    if (n >= 3 && ledgerSecs.length >= 3 && ledgerSecs.length / n >= 0.3) {
       issue("ledger-heavy-page", "warning", ledgerSecs.length + " of " + n + " sections are stacked rows or tables with no dominant visual: " + ledgerSecs.slice(0, 4).join("; ") + " at " + vw + "px wide (keep data to the 1-2 sections where the visitor needs it; give the rest one visual moment: art, 3D, a scene or type as image)");
     }
     if (n >= 4 && starved.length / n >= 0.6) {
@@ -7362,7 +7375,9 @@ async function motionContextNode(browser, url, caps) {
 async function collectWithNode(pw, args, shotDir) {
   const full = Boolean(args.full);
   const caps = MODE_CAPS[full ? "full" : "fast"];
-  const browser = await pw.chromium.launch({ headless: true });
+  // file:// pages are unique origins: without this flag every stylesheet throws on cssRules and
+  // all stylesheet-driven checks run blind (false "no ::selection", "no error states", ...).
+  const browser = await pw.chromium.launch({ headless: true, args: ["--allow-file-access-from-files"] });
   try {
     const firstLine = (e) => String((e && e.message) || e).split("\n")[0];
     const [motion, reduced, throttled, ...vps] = await Promise.all([
@@ -7701,7 +7716,7 @@ async def main():
         errors = []
         for kwargs in [{}, {"channel": "chrome"}, {"channel": "msedge"}]:
             try:
-                browser = await p.chromium.launch(headless=True, **kwargs)
+                browser = await p.chromium.launch(headless=True, args=["--allow-file-access-from-files"], **kwargs)
                 break
             except Exception as e:
                 errors.append(first_line(e))

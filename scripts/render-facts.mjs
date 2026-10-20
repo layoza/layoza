@@ -763,7 +763,8 @@ function parseArgs(argv) {
 }
 
 async function collectWithNode(pw, url) {
-  const browser = await pw.chromium.launch({ headless: true });
+  // Let file:// pages expose their own stylesheets to cssRules (unique-origin otherwise).
+  const browser = await pw.chromium.launch({ headless: true, args: ["--allow-file-access-from-files"] });
   try {
     return await Promise.all(
       WIDTHS.map(async (vp) => {
@@ -821,7 +822,7 @@ async def main():
         errors = []
         for kwargs in [{}, {"channel": "chrome"}, {"channel": "msedge"}]:
             try:
-                browser = await p.chromium.launch(headless=True, **kwargs)
+                browser = await p.chromium.launch(headless=True, args=["--allow-file-access-from-files"], **kwargs)
                 break
             except Exception as e:
                 errors.append(str(e).splitlines()[0] if str(e) else repr(e))

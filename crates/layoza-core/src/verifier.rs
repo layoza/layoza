@@ -1421,8 +1421,11 @@ pub fn audit_file_content(
 
     // 4. Motion safety: animations without prefers-reduced-motion guard
     let has_animation = lower.contains("@keyframes")
-        || lower.contains("gsap.")
-        || lower.contains("scrolltrigger")
+        // Real GSAP calls only: a `<script src=".../gsap.min.js">` tag loads, it does not animate.
+        || ["gsap.to(", "gsap.from(", "gsap.fromto(", "gsap.timeline(", "gsap.set("]
+            .iter()
+            .any(|call| lower.contains(call))
+        || lower.contains("scrolltrigger.create")
         || lower.contains("requestanimationframe");
     let has_reduced_motion_guard = lower.contains("prefers-reduced-motion")
         || lower.contains("usereducedmotion")
