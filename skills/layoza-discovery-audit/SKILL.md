@@ -31,5 +31,5 @@ description: >-
 
 ## Tested Example
 ```bash
-cargo run --quiet --bin layoza -- audit examples/minimal-corporate/index.html
+cargo run --quiet --bin layoza -- audit path/to/index.html
 ```

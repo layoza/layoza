@@ -105,10 +105,10 @@ A fresh blind judge then compared scroll stills at 1440 and 375 px for design, u
   - small hero art on phones
   - a 3D hero whose lab LCP is well over the 2.5 s target
 
-Full method, every round and the judge notes (with the raw scores) are in [docs/CROSS-TYPE-BENCHMARK-2026-10.md](docs/CROSS-TYPE-BENCHMARK-2026-10.md). Each brief and page is in [`examples/benchmark-*`](examples). To re-run the QA on any page:
+Full method, every round and the judge notes (with the raw scores) are in [docs/CROSS-TYPE-BENCHMARK-2026-10.md](docs/CROSS-TYPE-BENCHMARK-2026-10.md). The demo pages were removed in October 2026 ahead of a fresh set. To run the QA on any page:
 
 ```bash
-npx layoza qa examples/benchmark-restaurant-saltmarsh/layoza-v4/index.html
+npx layoza qa path/to/index.html
 ```
 
 ## What it does
