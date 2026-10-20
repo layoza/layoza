@@ -609,6 +609,18 @@ fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &
             "Add `SIGNATURE: <what this subject does or reveals, how scroll or the hand drives it, its final frame>` to .layoza/direction.md and build it first.",
         ));
     }
+    // The motion level is decided per brief (0 none .. 5 immersive), not taken from a default.
+    let motion = lines.iter().find_map(|l| l.strip_prefix("MOTION:").map(|v| v.trim().to_string()));
+    if !motion.as_deref().unwrap_or("").starts_with(|c: char| ('0'..='5').contains(&c)) {
+        findings.push(browser_finding(
+            "DESIGN-NO-MOTION-LEVEL",
+            Severity::Warning,
+            "design-process",
+            rel,
+            "No motion level is decided, so the page falls back to a default amount of motion that may not fit the niche (an agency sells its motion; a clinic needs calm).".into(),
+            "Add `MOTION: <0-5> — <why this niche, audience and assets need it; the techniques chosen>` to .layoza/direction.md.",
+        ));
+    }
     let blocks = crate::history::parse_direction(&text);
     audit_direction_subject(&blocks, rel, findings);
     if let Some(ledger) = ledger {
@@ -2468,6 +2480,15 @@ components:
 
     #[test]
     fn design_process_is_required_only_when_a_direction_exists() {
+        // The motion level must be a decided number, not prose.
+        let rules = process_rules(Some("PURPOSE: x; new
+PICKED: auto — x
+SIGNATURE: x
+MOTION: heavy
+ROUND 1: x
+"));
+        assert!(rules.contains(&"DESIGN-NO-MOTION-LEVEL".to_string()));
+
         // Mode B/C projects have no direction file and are untouched.
         assert!(process_rules(None).is_empty());
 
@@ -2480,22 +2501,22 @@ components:
 
         // No screenshot review logged and no signature.
         let rules = process_rules(Some("PURPOSE: sell\nPICKED: B (user)\n"));
-        assert_eq!(rules, vec!["DESIGN-NOT-REVIEWED".to_string(), "DESIGN-NO-SIGNATURE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
+        assert_eq!(rules, vec!["DESIGN-NOT-REVIEWED".to_string(), "DESIGN-NO-SIGNATURE".to_string(), "DESIGN-NO-MOTION-LEVEL".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
 
         // A UTF-8 BOM (PowerShell 5.1 Set-Content) must not hide the first line.
         let rules = process_rules(Some("\u{feff}PURPOSE: sell\nPICKED: B (user)\nROUND 1: fixed hero crop\n"));
-        assert_eq!(rules, vec!["DESIGN-NO-SIGNATURE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
+        assert_eq!(rules, vec!["DESIGN-NO-SIGNATURE".to_string(), "DESIGN-NO-MOTION-LEVEL".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
 
         // An empty pick does not count; "round" prose does not count as a round;
         // markdown bold around a key is accepted.
-        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nSIGNATURE: x\nROUND one: x\n"));
+        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nSIGNATURE: x\nMOTION: 2\nROUND one: x\n"));
         assert_eq!(rules, vec!["DESIGN-NO-DIRECTION-PICK".to_string(), "DESIGN-NOT-REVIEWED".to_string()]);
-        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nSIGNATURE: x\n- Round 1: 7\n"));
+        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nSIGNATURE: x\nMOTION: 2\n- Round 1: 7\n"));
         assert_eq!(rules, vec!["DESIGN-NO-DIRECTION-PICK".to_string()]);
 
         // A complete record passes: purpose, auto pick, signature, one review round.
         assert!(process_rules(Some(
-            "PURPOSE: book tables; audience: locals; new\nPICKED: auto — harbour chart\nSIGNATURE: the catch board fills as you scroll the tide\nROUND 1: tightened hero\n"
+            "PURPOSE: book tables; audience: locals; new\nPICKED: auto — harbour chart\nSIGNATURE: the catch board fills as you scroll the tide\nMOTION: 2 — locals booking on phones\nROUND 1: tightened hero\n"
         ))
         .is_empty());
 
@@ -2510,7 +2531,7 @@ components:
         .is_empty());
     }
 
-    const LOOP: &str = "SIGNATURE: x\nROUND 1: 7\n";
+    const LOOP: &str = "SIGNATURE: x\nMOTION: 3\nROUND 1: 7\n";
 
     #[test]
     fn direction_must_name_the_trades_objects() {

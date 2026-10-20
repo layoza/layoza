@@ -150,11 +150,11 @@ pub fn purpose_markdown() -> String {
     s
 }
 
-/// The page shape is binding (guidance line and MCP instructions).
-pub const PAGE_SHAPE_RULE: &str = "PAGE SHAPE: each direction's `page_shape` is binding. Build its hero frame, flow, section heads, ground, material, labels and motion exactly as dealt; it wins over `layout_composition` wording. Use the named motion tools and keep every fallback. Axes in `pinned_by_prompt` follow the user's words; every other axis stays as dealt, unique against the ledger.";
+/// The page shape is a menu of suggestions; the agent decides (guidance line).
+pub const PAGE_SHAPE_RULE: &str = "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.";
 
 /// How to read `understood_brief` (MCP instructions).
-pub const UNDERSTOOD_RULE: &str = "Read understood_brief; proceed on its niche-based assumptions without asking; ask only an open_question that blocks building; explicit user asks (a colour, font, style, motion level) override the deal for that axis only — every other axis stays unique.";
+pub const UNDERSTOOD_RULE: &str = "Read understood_brief; proceed on its niche-based assumptions without asking; ask only an open_question that blocks building; explicit user asks (a colour, font, style, motion level) override every suggestion for that axis only — you decide every other axis from the niche and keep it unique.";
 
 /// Smallest body size, in rem (16px at the default root size).
 pub const BODY_FLOOR_REM: f64 = 1.0;

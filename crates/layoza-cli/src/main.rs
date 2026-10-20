@@ -341,7 +341,7 @@ fn main() {
                         println!("      Why     : {}", dir.rationale);
                     }
                     if let Some(p) = &dir.page_shape {
-                        println!("      Page shape (binding):");
+                        println!("      Page shape (suggested):");
                         let shared = rec.directions.first().and_then(|d| d.page_shape.as_ref()).is_some_and(|f| f.restraint == p.restraint);
                         let lines = if shared && dir.index != rec.directions.first().map_or(0, |d| d.index) { p.lines_without_restraint() } else { p.lines() };
                         for l in lines {

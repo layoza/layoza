@@ -59,22 +59,26 @@ On demand: `layoza-animations`, `-threejs-webgl`, `-components`,
    Type can be the image; the idea reaches the footer.
 4. Mechanics (overflow, contrast, focus, leading) are enforced by `layoza qa`.
 
-## 2b. The simple path (new sites and redesigns)
+## 2b. The path (new sites and redesigns)
 
-1. **Brief.** Read the short brief: its signature moment, look tokens and the
-   things to avoid. The user's own asks win over it.
-2. **Plan** in `.layoza/direction.md`: `PURPOSE:` (goal, audience,
-   new|existing), `PICKED: auto — <two-word tone, pushed to its extreme>`, `SIGNATURE:` (what this subject does or
-   reveals, how scroll or the hand drives it, its final frame), `SECTIONS:`
-   (5–7, one idea each, no two heads alike), `MATERIAL:` (surface, light, texture).
-3. **Build the signature first,** from the real subject, then the page around it
-   in one pass. The hero gets one living element; quiet means ornament, not colour or depth.
-4. **Look.** Screenshot the signature at start, middle and end, then the page
-   at 1440 and 375. Then crop each section and check it alone: one idea with
-   proof, type from the tokens only, spacing on the scale (more above a heading
-   than below), a composition its neighbours do not share. Swap two headlines:
-   if both still work, rebuild one. Cut one element that does not earn its
-   place. Log `ROUND 1: <what changed>` (two rounds max).
+Layoza shows the path; you decide. The brief gives signals, a suggested look
+and a rubric: options, not orders. The user's own asks win.
+
+1. **Decide** in `.layoza/direction.md` (signals and techniques:
+   [`references/decide.md`](references/decide.md)): `PURPOSE:` (goal, audience,
+   new|existing), `MOTION: <0-5> — <why; techniques>` (agencies sell motion:
+   4–5; clinics 1), three concepts from the brief's facts scored for fit and
+   originality, `PICKED: auto — <winner, two-word tone pushed to its extreme>`,
+   `SIGNATURE:` (a mechanic this subject owns, how scroll or hand drives it,
+   final frame), `SECTIONS:` (5–7, no two heads alike), `MATERIAL:`.
+2. **Build the signature first,** from the real subject, then the page around
+   it in one pass at the motion level you chose.
+3. **Look.** Screenshot the signature at start, middle and end, the page at
+   1440 and 375, and each section alone. Score the brief's rubric 0–10.
+4. **Blind critic.** A fresh subagent that never saw your plan gets only the
+   brief and the screenshots, names the business, scores the rubric and lists
+   the three weakest spots. Fix anything under 8; log `ROUND 1: <what changed>`
+   (two rounds max).
 5. **QA** (below) until 0 errors; read each warning and fix the real ones.
 
 Tick [`references/what-wins.md`](references/what-wins.md) before shipping.
@@ -87,7 +91,7 @@ layoza qa <html-file-or-url>
 Real Chromium at 1440/768/375: contrast, overflow, clipping, nav, focus,
 hidden text, motion and lab Core Web Vitals (`null` = unmeasured, never a
 pass). A page is done when `direction.md` has `PURPOSE:`, `PICKED:`,
-`SIGNATURE:` and a `ROUND`, the screenshots show the signature working on a
+`SIGNATURE:`, `MOTION:` and a `ROUND`, the screenshots show the signature working on a
 phone and with reduced motion, and QA of the **final** file shows 0 errors.
 
 **Apps and dashboards** are done differently: every view renders its state

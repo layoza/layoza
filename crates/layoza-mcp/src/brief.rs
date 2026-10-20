@@ -1,4 +1,4 @@
-//! The short design brief: one whole-page look plus taste rules, as Markdown.
+//! The short design brief: signals to decide from, one suggested look and a rubric, as Markdown.
 //!
 //! This is what `get_design_system` returns by default. The model designs the
 //! whole page in one pass from it; the dealt parts are ideas, not mandates.
@@ -6,21 +6,23 @@
 use serde_json::Value;
 use std::fmt::Write as _;
 
-/// Taste rules every page meets. Short on purpose: one idea per line.
+/// What the agent decides before building; Layoza only reads the signals.
+pub const DECIDE: &[&str] = &[
+    "MOTION: 0-5 from site type, audience, task urgency and asset strength. Guide: agency or studio, or 'award, bold' 4-5; portfolio 3-5; brand launch 4 on the story, 2 in the shop; SaaS 2-3; restaurant or local 1-2 (luxury 3); docs, gov, health 0-2. Weak assets or mostly-phone visitors: keep type motion, drop WebGL. The user's words override.",
+    "CONCEPTS: three from this brief's own facts (people, place, materials, how the work is made or used), scored 0-10 for originality and fit; keep the winner and say why. Genericness test: if an average AI would make it for any business in the trade, push it further.",
+    "SIGNATURE: one mechanic this subject owns. Then pick techniques for your level from references/decide.md (each says when it fits); none is required.",
+];
+
+/// Rubric questions. The agent and a blind critic score each 0-10 from screenshots.
 pub const TASTE: &[&str] = &[
-    "Before code, plan: a two-word tone pushed to its extreme (e.g. sunlit-brutal), the signature, the material (surface, light, texture), 4-6 colour tokens, the type pair, one layout line per section. Score it 0-10 against this brief's 10; fix every line below 8.",
-    "The hero opens on the subject itself: the trade's own object, place, work or product at scale, not decoration.",
-    "Every section is a claim plus its proof (a picture, a sourced number, a real name). No proof, cut it.",
-    "Type: one family or two clearly different; display 4-6x body, leading 0.9-1.05, slight negative tracking; body 16-20px, 45-75ch. Two or three sizes do the work. Headlines break by hand: 2 lines desktop, 3 phone.",
-    "Colour: ground, ink, accent, 2-3 supporting tokens; quiet or immersive (a full-bleed colour field), chosen first. Secondary text tints the ground's hue; body contrast 4.5:1+.",
-    "Depth: one system - photographic light, three overlapping planes with contact shadow, or tonal fields stepping in lightness. Flat only if asked. Separate surfaces by tone, scale and space; ruled lines only for real tables.",
-    "Pacing: one idea per screen near the top, 5-7 sections, rhythm changing between full-bleed, contained and dense; one screen where type or subject alone fills the view.",
-    "Layout: a real grid with asymmetry; two or more sections break their frame (type over a picture, an object off the edge or across a seam); neighbours never place the heading alike; section gaps 120-220px; no blank stretch over half a screen.",
-    "Every label, number and divider informs; one radius, one rule weight, one spacing scale.",
-    "Copy in the customer's words: concrete nouns, numbers, places, names. Buttons say the exact action.",
-    "Motion: the signature is driven by scroll or hand in planned order (40-80ms staggers, one easing). The hero holds one living element and one scroll move shows depth between planes. Elsewhere quiet: feedback under 300ms, hover only on (hover:hover), transform/opacity/clip-path only. No JS or reduced motion shows the final frame.",
-    "Imagery: real photos or footage of the subject, else a crafted render of the real object; no stock or SVG people, no emoji. Four or more pictures, one full-bleed, one crop ratio and treatment; work shown big, not as thumbnails.",
-    "Finish: themed selection, focus ring and scrollbar; tabular figures; every state designed. Mobile: main action above the fold at 390px, 44px taps, portrait re-crops, no sideways scroll.",
+    "Subject: does the first screen show the trade's own object, place, work or product at scale, so a stranger names the business with the words covered?",
+    "Proof: does each section make one claim with proof (a picture, a sourced number, a real name)?",
+    "Type: one family or two clearly different; display 4-6x body, headlines broken by hand; body 16-20px at 45-75ch?",
+    "Colour and depth: ground, ink, accent and 2-3 tokens, quiet or immersive by choice; one depth system (photo light, overlapping planes or tonal fields); body contrast 4.5:1+?",
+    "Layout: 5-7 sections whose rhythm changes; two or more break their frame; neighbours never place the heading alike; no blank stretch over half a screen?",
+    "Motion: does the amount match your level? 0-1 feedback only; 2 reveals and one scroll scene; 3 a living hero plus scroll scenes; 4-5 motion on every screen (split headings, pinned runs, moving work, smooth scroll, cursor-led previews, transitions, WebGL where it serves). One easing family, transform/opacity/clip-path, 60fps on a phone; reduced motion and no JS show the final frame.",
+    "Imagery: real photos of the subject or crafted renders, four or more, one full-bleed, work shown big?",
+    "Finish: the customer's words, exact button labels, focus ring, every state designed; main action above the fold at 390px, 44px taps, no sideways scroll?",
 ];
 
 /// Patterns that read as AI-made. Ban unless the brief asks for them.
@@ -34,6 +36,7 @@ pub const AVOID: &[&str] = &[
     "A page assembled from stock parts (hero, logo strip, feature cards, steps, testimonials, CTA) with no set piece, moving only by fade-up and hover lift; every section the same centred heading + subhead + grid.",
     "Zig-zag stacks: picture left and text right, then swapped, down the page.",
     "A wireframe page: 1px-outlined boxes and ruled lists section after section, flat, nothing overlapping.",
+    "A heavy-motion kit with no idea behind it: 0-100 preloader, blob cursor reading 'View', stacked sticky cards, RGB-split hover, every heading scrubbed letter by letter.",
     "Invented proof: reviews, logos, statistics or awards the brief did not give.",
 ];
 
@@ -118,7 +121,7 @@ pub fn markdown(out: &Value) -> String {
     let _ = writeln!(m, "# Design brief: {}\n", if subject.is_empty() { "this site" } else { subject });
 
     let _ = writeln!(m, "## Who it is for");
-    for (label, key) in [("Trade", "trade"), ("Audience", "audience"), ("Main action", "primary_action"), ("Motion", "motion_wish"), ("Stack", "stack")] {
+    for (label, key) in [("Trade", "trade"), ("Audience", "audience"), ("Main action", "primary_action"), ("Stack", "stack")] {
         let v = s(ub, key);
         if !v.is_empty() {
             let _ = writeln!(m, "- {label}: {v}");
@@ -137,17 +140,26 @@ pub fn markdown(out: &Value) -> String {
         let _ = writeln!(m, "- Ask only if it blocks building: {}", open.join(" / "));
     }
 
+    let _ = writeln!(m, "\n## Decide first (you choose; write each in .layoza/direction.md)");
+    let motion = s(ub, "motion_wish");
+    for r in DECIDE {
+        let _ = writeln!(m, "- {r}");
+    }
+    if !motion.is_empty() {
+        let _ = writeln!(m, "- Layoza's read of the niche, for you to confirm or change: motion {motion}.");
+    }
+
     if let Some(d) = dirs.first() {
         let _ = writeln!(m, "\n## The signature moment (build this first)");
-        let _ = writeln!(m, "The set piece the page is remembered for: what this subject does that nothing else does (how it is made, used, moves, scales, or changes with distance, time or light), staged as a scene the visitor drives by scroll or hand, one to two screens, built from the real subject. It must fail for a rival business. On a docs page, article or portfolio the content or the work itself is the signature: keep the interface quiet around it.");
+        let _ = writeln!(m, "The set piece the page is remembered for: what this subject does that nothing else does (how it is made, used, moves, scales, or changes with distance, time or light), staged as a scene the visitor drives by scroll or hand, one to two screens, built from the real subject. It must fail for a rival business.");
         let lead = s(d, "motion_choreography");
         if !lead.is_empty() {
             let _ = writeln!(m, "- Starting idea: {}", clip(lead, 300));
         }
         let _ = writeln!(m, "- Done when: start, middle and end frames each read as a poster, it is smooth on a phone, and the final frame works without JavaScript.");
 
-        let _ = writeln!(m, "\n## The look: {}", title(d));
-        let _ = writeln!(m, "One look that frames the signature. Tokens, type and shape are the system; the rest are raw ideas, kept only if they serve the signature. Where two ideas clash, the signature wins; the user's own asks always win.\n");
+        let _ = writeln!(m, "\n## A suggested look: {}", title(d));
+        let _ = writeln!(m, "Options, not orders: take, change or drop any line so it serves your concept. The user's own asks always win.\n");
         let _ = writeln!(m, "- Composition: {}", clip(s(d, "layout_composition"), 260));
         let _ = writeln!(m, "- Content: {}", clip(s(d, "content_treatment"), 200));
         let _ = writeln!(m, "- Shape: radius {}; hero material: {}", s(d, "radius"), s(d, "hero_material"));
@@ -178,7 +190,7 @@ pub fn markdown(out: &Value) -> String {
         }
     }
 
-    let _ = writeln!(m, "\n## Taste rules");
+    let _ = writeln!(m, "\n## Rubric (you, then a blind critic, score each 0-10 from screenshots; fix anything under 8)");
     for r in TASTE {
         let _ = writeln!(m, "- {r}");
     }
@@ -223,10 +235,12 @@ mod tests {
         });
         let md = markdown(&out);
         assert!(md.starts_with("# Design brief: harbour bakery"));
-        assert!(md.contains("## The signature moment") && md.contains("## The look: Counter") && md.contains("The morning board") && md.contains("Flour dust."));
+        assert!(md.contains("## The signature moment") && md.contains("## A suggested look: Counter") && md.contains("## Decide first") && md.contains("The morning board") && md.contains("Flour dust."));
         assert!(md.contains(":root {\n  --ground: #FFF;") && md.contains("--font-display: \"Fraunces\""));
         assert!(md.contains("- Map:") && md.contains("A.nav (nav-x)"));
         assert!(!md.contains("…") && md.contains("- Composition: The counter at dawn. The counter"), "long text keeps whole sentences");
         assert!(md.len() < 6000, "{}", md.len());
+        // The agent decides the motion level; no rule fixes it to quiet.
+        assert!(md.contains("MOTION: 0-5") && !md.contains("Elsewhere quiet") && !md.contains("keep the interface quiet"));
     }
 }

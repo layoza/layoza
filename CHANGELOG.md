@@ -7,6 +7,17 @@ All notable changes to Layoza are listed here. The format follows
 ## [Unreleased]
 
 ### Changed
+- Layoza now shows the path and the AI decides. The brief opens with "Decide first": a motion
+  level (0-5) read from the niche, three concepts drawn from the brief's facts and scored for fit
+  and originality, and a signature with techniques chosen from the new
+  `skills/layoza/references/decide.md` (signals, a motion-level table, techniques with when-it-fits
+  and safety notes, heavy-motion clichés). The dealt look is now "A suggested look": options, not
+  orders. Fixed taste rules became rubric questions, scored 0-10 first by the builder and then by a
+  blind critic subagent that sees only the brief and the screenshots; anything under 8 gets fixed.
+  Agencies and studios are no longer pushed toward a quiet page.
+- New QA warning `DESIGN-NO-MOTION-LEVEL`: `direction.md` needs `MOTION: <0-5> — <why>`.
+- The art-direct prompt plans `MOTION:` and three concepts instead of `QUIET:`, and adds the blind
+  critic to the look step.
 - Taste rules ask for richness, not just restraint: a two-word tone pushed to its extreme and a material line in the plan, one depth system (photographic light, overlapping planes or tonal fields), quiet or immersive colour chosen up front, two sections that break their frame, varied section heads, a living hero element, one full-bleed picture and work shown big. The gradient ban now covers decorative uses only, and outlined-box pages are listed as an AI tell.
 - New QA warnings: `wireframe-page` (most sections built from 1px-ruled boxes or rows) and `no-frame-break` (no type over a picture, no full-bleed picture, nothing crossing a section edge).
 - Taste rules: score the plan before code, two or three working type sizes, hand-broken headlines (2 lines desktop, 3 phone), one spacing scale, a picture floor with one crop system, section gaps at least twice inner gaps; docs, articles and portfolios let the content be the signature.
