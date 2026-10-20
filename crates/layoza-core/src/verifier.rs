@@ -418,10 +418,10 @@ fn browser_finding(
 }
 
 /// Plain statement of what a passing gate means, carried in every report.
-pub const GATE_SCOPE: &str = "Defects only: accessibility, layout, performance and the recorded design process. Passing does not mean the design is good; that is judged by the art loop, a fresh-eyes reviewer and the user.";
+pub const GATE_SCOPE: &str = "Defects only: accessibility, layout, performance and the recorded design process. Passing does not mean the design is good; that is judged on the screenshots and by the user.";
 
-/// Minimum logged art-loop rounds before a Mode A/D build can pass the gate.
-pub const MIN_ART_LOOP_ROUNDS: usize = 3;
+/// Minimum logged screenshot reviews before a Mode A/D build can pass the gate.
+pub const MIN_ART_LOOP_ROUNDS: usize = 1;
 
 /// Checks the design process recorded in `.layoza/direction.md` (written in Mode A/D).
 ///
@@ -433,7 +433,8 @@ pub const MIN_ART_LOOP_ROUNDS: usize = 3;
 ///   with a reason, for runs with nobody to ask). An existing-site (Mode B/C) flow
 ///   that keeps this file records `PICKED: existing — <design followed>`;
 ///   it never offers new directions;
-/// - at least [`MIN_ART_LOOP_ROUNDS`] `ROUND <n>:` lines and a `REVIEWER:` line.
+/// - a `SIGNATURE:` line naming the page's one subject-driven set piece;
+/// - at least [`MIN_ART_LOOP_ROUNDS`] `ROUND <n>:` line from the screenshot review.
 ///
 /// Projects without a direction file (usually Mode B/C) are not affected.
 ///
@@ -583,25 +584,30 @@ fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &
                 })
         })
         .count();
-    let reviewer = lines.iter().any(|l| l.starts_with("REVIEWER:"));
-    if rounds < MIN_ART_LOOP_ROUNDS || !reviewer {
+    if rounds < MIN_ART_LOOP_ROUNDS {
         findings.push(browser_finding(
-            "DESIGN-ART-LOOP-INCOMPLETE",
+            "DESIGN-NOT-REVIEWED",
             Severity::Error,
             "design-process",
             rel,
-            format!(
-                "Art loop incomplete: {} of {} rounds logged{}. Passing defect checks does not mean the design is good.",
-                rounds,
-                MIN_ART_LOOP_ROUNDS,
-                if reviewer { "" } else { ", no fresh-eyes reviewer verdict" }
-            ),
-            "Each round: critique the screenshots, score (0.4 design + 0.3 usability + 0.2 creativity + 0.1 content), fix the top 3, then log `ROUND <n>: <score> — <what changed>`. Finish with `REVIEWER: <ship|fix|rebuild> <score>` from a reviewer with no build context.",
+            "No screenshot review is logged. Passing defect checks does not mean the design is good.".into(),
+            "Open the 1440 and 375 screenshots and the signature at the start, middle and end of its scroll, fix the three worst problems, then log `ROUND 1: <what changed>` (at most two rounds).",
         ));
     }
-    // An existing site follows its own design: no subject or repeat checks for its look.
+    // An existing site follows its own design: no signature, subject or repeat checks.
     if pick.as_deref().is_some_and(|p| p.starts_with("EXISTING")) {
         return;
+    }
+    let signature = lines.iter().find_map(|l| l.strip_prefix("SIGNATURE:").map(|v| v.trim().to_string()));
+    if signature.as_deref().unwrap_or("").is_empty() {
+        findings.push(browser_finding(
+            "DESIGN-NO-SIGNATURE",
+            Severity::Error,
+            "design-process",
+            rel,
+            "No signature moment is recorded, so the page risks being a stack of stock parts that any business could use.".into(),
+            "Add `SIGNATURE: <what this subject does or reveals, how scroll or the hand drives it, its final frame>` to .layoza/direction.md and build it first.",
+        ));
     }
     let blocks = crate::history::parse_direction(&text);
     audit_direction_subject(&blocks, rel, findings);
@@ -678,10 +684,10 @@ fn audit_direction_subject(
     findings: &mut Vec<AuditFinding>,
 ) {
     let join = |keys: &[&str]| keys.iter().filter_map(|k| blocks.get(*k)).cloned().collect::<Vec<_>>().join(" ");
-    let direction_keys = ["PICKED", "THESIS", "OWN-WORLD", "FIRST VIEWPORT", "SECTIONS", "ART PLAN"];
+    let direction_keys = ["PICKED", "SIGNATURE", "THESIS", "OWN-WORLD", "FIRST VIEWPORT", "SECTIONS", "ART PLAN"];
     let (all_nouns, all_style) = subject_words(&format!("{} {}", join(&["PURPOSE"]), join(&direction_keys)));
     let (dir_nouns, dir_style) = subject_words(&join(&direction_keys));
-    let remediation = "Name the trade's concrete objects in PURPOSE and the direction (THESIS, OWN-WORLD, ART PLAN): the dish, tool, room, garment or document a stranger would recognise, e.g. `THESIS: the daily catch board becomes a tide chart`. Style words (modern, clean, bold) do not count.";
+    let remediation = "Name the trade's concrete objects in PURPOSE and SIGNATURE: the dish, tool, room, garment or document a stranger would recognise, e.g. `THESIS: the daily catch board becomes a tide chart`. Style words (modern, clean, bold) do not count.";
     if all_nouns.is_empty() {
         let generic = all_style >= 2;
         findings.push(browser_finding(
@@ -940,7 +946,7 @@ fn browser_rule(rule: &str) -> (&'static str, &'static str, &'static str) {
         "text-over-graphic-contrast" => ("UI-TEXT-OVER-ART-CONTRAST","accessibility","Text sitting on an image, canvas or gradient falls below 4.5:1 against the pixels behind it: put the text on a solid or scrimmed plate, move it off the art, or darken/lighten the art under it."),
         "text-over-busy-graphic" => ("UI-TEXT-OVER-BUSY-ART","visual","Text runs across a busy, high-detail part of an image or canvas, so letters fight the picture: give the text a quiet zone or a plate, or crop the art so the busy area sits beside the text."),
         "text-occluded" => ("UI-TEXT-OCCLUDED","visual","Another element is painted on top of visible text at a resting scroll position: fix the stacking or layout so the text is never covered."),
-        "motion-too-sparse" => ("UI-MOTION-SPARSE","motion","Fewer distinct elements move, transition or follow scroll than the page's declared motion level expects: give each mid-page section its own dealt mechanic (`layoza mechanics deal`), or declare <meta name=\"layoza-motion\" content=\"calm\"> (or `none`) if a quiet page is intended."),
+        "motion-too-sparse" => ("UI-MOTION-SPARSE","motion","Fewer distinct elements move, transition or follow scroll than the page's declared motion level expects: build one scroll- or hand-driven signature set piece from the subject (then two motion ideas are enough), or declare <meta name=\"layoza-motion\" content=\"calm\"> (or `none`) if a quiet page is intended."),
         "pinned-stage-static" => ("UI-PINNED-STATIC","motion","A sticky or pinned stage looks the same at 25%, 50% and 75% of its scroll range: map a visible change to scroll progress across the range (or shorten the pin), so every still is a different, complete composition."),
         "floating-control-covers-text" => ("UI-FLOAT-COVER","visual","A floating button or pill sits on top of body text while scrolling: dock it in a solid header, keep a matching gutter clear in the text column, or move it where text never runs."),
         "hero-empty-band" => (
@@ -2458,48 +2464,46 @@ components:
         // Mode B/C projects have no direction file and are untouched.
         assert!(process_rules(None).is_empty());
 
-        // A direction with no pick and no art loop fails both checks.
+        // A direction with no pick, no signature and no review fails each check.
         let rules = process_rules(Some("THESIS: x\n"));
         assert!(rules.contains(&"DESIGN-NO-PURPOSE".to_string()));
         assert!(rules.contains(&"DESIGN-NO-DIRECTION-PICK".to_string()));
-        assert!(rules.contains(&"DESIGN-ART-LOOP-INCOMPLETE".to_string()));
+        assert!(rules.contains(&"DESIGN-NOT-REVIEWED".to_string()));
+        assert!(rules.contains(&"DESIGN-NO-SIGNATURE".to_string()));
 
-        // Two rounds and no reviewer is still incomplete.
-        let rules = process_rules(Some(
-            "PURPOSE: sell\nPICKED: B (user)\nROUND 1: 6.5\nROUND 2: 7.8\n",
-        ));
-        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
+        // No screenshot review logged and no signature.
+        let rules = process_rules(Some("PURPOSE: sell\nPICKED: B (user)\n"));
+        assert_eq!(rules, vec!["DESIGN-NOT-REVIEWED".to_string(), "DESIGN-NO-SIGNATURE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
 
         // A UTF-8 BOM (PowerShell 5.1 Set-Content) must not hide the first line.
-        let rules = process_rules(Some(
-            "\u{feff}PURPOSE: sell\nPICKED: B (user)\nROUND 1: 6.5\nROUND 2: 7.8\n",
-        ));
-        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
+        let rules = process_rules(Some("\u{feff}PURPOSE: sell\nPICKED: B (user)\nROUND 1: fixed hero crop\n"));
+        assert_eq!(rules, vec!["DESIGN-NO-SIGNATURE".to_string(), "DESIGN-NO-SUBJECT".to_string()]);
 
         // An empty pick does not count; "round" prose does not count as a round;
         // markdown bold around a key is accepted.
-        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nROUND one: x\n- Round 1: 7\n- Round 2: 8\n- Round 3: 9\nReviewer: ship 9\n"));
+        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nSIGNATURE: x\nROUND one: x\n"));
+        assert_eq!(rules, vec!["DESIGN-NO-DIRECTION-PICK".to_string(), "DESIGN-NOT-REVIEWED".to_string()]);
+        let rules = process_rules(Some("**PURPOSE:** install\nPICKED:\nSIGNATURE: x\n- Round 1: 7\n"));
         assert_eq!(rules, vec!["DESIGN-NO-DIRECTION-PICK".to_string()]);
 
-        // A complete record passes, including an explicit unattended pick.
+        // A complete record passes: purpose, auto pick, signature, one review round.
         assert!(process_rules(Some(
-            "PURPOSE: book tables; audience: locals; new\nPICKED: unattended — benchmark run\nROUND 1: 7\nROUND 2: 8.2\nROUND 3: 9.0\nREVIEWER: ship 9.0\n"
+            "PURPOSE: book tables; audience: locals; new\nPICKED: auto — harbour chart\nSIGNATURE: the catch board fills as you scroll the tide\nROUND 1: tightened hero\n"
         ))
         .is_empty());
 
-        // An existing site (Mode B/C) that keeps a direction file follows its own design:
-        // `PICKED: existing — ...` satisfies the pick without three new directions.
+        // An existing site (Mode B/C) follows its own design: no signature needed, still reviewed.
         let rules = process_rules(Some(
             "PURPOSE: add a pricing section; audience: current visitors; existing\nPICKED: existing — follows SITE-DNA.json\n",
         ));
-        assert_eq!(rules, vec!["DESIGN-ART-LOOP-INCOMPLETE".to_string()]);
+        assert_eq!(rules, vec!["DESIGN-NOT-REVIEWED".to_string()]);
         assert!(process_rules(Some(
-            "PURPOSE: improve contrast; existing\n**PICKED:** existing — incumbent design\nROUND 1: 7\nROUND 2: 8\nROUND 3: 9\nREVIEWER: ship 9\n"
+            "PURPOSE: improve contrast; existing\n**PICKED:** existing — incumbent design\nROUND 1: 7\n"
         ))
         .is_empty());
     }
 
-    const LOOP: &str = "ROUND 1: 7\nROUND 2: 8\nROUND 3: 9\nREVIEWER: ship 9\n";
+    const LOOP: &str = "SIGNATURE: x\nROUND 1: 7\n";
 
     #[test]
     fn direction_must_name_the_trades_objects() {

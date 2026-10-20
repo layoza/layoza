@@ -41,6 +41,8 @@
  *    checks): `motion-too-sparse` warns when fewer than 6 distinct motion ideas (3 on calm pages:
  *    `<meta name="layoza-motion" content="calm">` or an undeclared table/grid app surface) change
  *    across scroll positions or run as CSS/WAAPI/scroll-timeline animations; `none` skips it.
+ *    A page with a live signature set piece (a pinned stage that changes, or a scroll-timeline
+ *    animation) needs only 2: the signature plus quiet feedback is the intended shape.
  *    `pinned-stage-static` warns when a sticky/pinned stage taller than half the viewport looks the
  *    same at 25/50/75% of its pinned range (< 2% of pixels change). Summary in `motion_summary`.
  *
@@ -5763,10 +5765,10 @@ function layozaQualitySweep(opts) {
   });
   run("testimonial-unsourced", () => {
     const STOCK = /\b(john|jane) (doe|smith)\b|\b(sarah johnson|mike johnson|emily (davis|chen)|alex (morgan|johnson)|david (lee|kim)|lisa (wong|park)|happy customer|satisfied (client|customer)|anonymous)\b/i;
-    const cards = Array.from(D.body.querySelectorAll("blockquote, figure, [class*='testimonial' i], [class*='review' i], [class*='quote' i]")).filter((el) => shown(el) && textOf(el).length > 40 && !el.parentElement.closest("[class*='testimonial' i], [class*='review' i], blockquote"));
+    const cards = Array.from(D.body.querySelectorAll("blockquote, figure, [class*='testimonial' i], [class*='review' i], [class*='quote' i]")).filter((el) => shown(el) && textOf(el).length > 40 && !el.parentElement.closest("[class*='testimonial' i], [class*='review' i], blockquote, figure"));
     if (!cards.length) return;
     const stock = cards.filter((c) => STOCK.test(textOf(c)));
-    const bare = cards.filter((c) => !c.querySelector("cite, a[href], img, [class*='role' i], [class*='company' i], [class*='title' i], [class*='org' i]") && !/,|—|–|\|/.test(textOf(c).slice(-60)));
+    const bare = cards.filter((c) => !c.querySelector("cite, figcaption, a[href], img, [class*='role' i], [class*='company' i], [class*='title' i], [class*='org' i]") && !/,|—|–|\|/.test(textOf(c).slice(-60)));
     if (stock.length) emit("testimonial-unsourced", stock[0], stock.length + " testimonial(s) attributed to stock names");
     else if (bare.length >= 2) emit("testimonial-unsourced", bare[0], bare.length + " of " + cards.length + " testimonials have no role, company, link or photo");
   });
@@ -6939,7 +6941,7 @@ async function artOverTextNode(page, vp) {
 // scroll-timeline links; nested movers count once (top-most) and siblings count as one group (a
 // staggered list is one idea). Large canvases add at most 2, interactive transitions at most 2.
 // The page declares its level with <meta name="layoza-motion" content="calm|bold|wild|none">.
-const MOTION_DENSITY_MIN = { calm: 3, bold: 6 };
+const MOTION_DENSITY_MIN = { calm: 3, bold: 6, signature: 2 };
 const MOTION_PROBE_SCRIPT = `(async () => {
   const meta = document.querySelector('meta[name="layoza-motion"]');
   const declared = ((meta && meta.getAttribute("content")) || document.documentElement.getAttribute("data-motion") || "").trim().toLowerCase();
@@ -7749,8 +7751,10 @@ function motionVerdict(m) {
   if (d.declared && ["calm", "subtle", "simple", "minimal"].includes(d.declared)) [level, source] = ["calm", "declared"];
   else if (d.declared && ["bold", "wild"].includes(d.declared)) [level, source] = [d.declared, "declared"];
   else if (d.app_surface) [level, source] = ["calm", "undeclared page with table/grid content, calm threshold"];
-  const threshold = level === "calm" ? MOTION_DENSITY_MIN.calm : MOTION_DENSITY_MIN.bold;
   const pins = m.pins.map((p) => ({ ...p, max_change: Number(p.max_change.toFixed(4)) }));
+  // One scroll-driven set piece plus quiet feedback is a complete motion design, not a sparse one.
+  const signature = pins.some((p) => p.max_change >= PIN_STATIC_MAX) || d.scroll_linked > 0;
+  const threshold = signature ? MOTION_DENSITY_MIN.signature : level === "calm" ? MOTION_DENSITY_MIN.calm : MOTION_DENSITY_MIN.bold;
   return {
     level,
     level_source: source,
@@ -7758,6 +7762,7 @@ function motionVerdict(m) {
     skipped: d.skipped || (d.short_page ? "page shorter than 1.5 viewports" : null),
     groups: d.groups,
     threshold,
+    signature,
     sparse: !d.skipped && !d.short_page && d.groups < threshold,
     changed_elements: d.changed,
     animated_elements: d.animated,
@@ -7844,7 +7849,7 @@ function assembleReport(url, engine, raw, tokens) {
       issues.push({
         rule: "motion-too-sparse",
         severity: "warning",
-        detail: `Only ${motion.groups} distinct motion idea(s) found across scroll positions and declared animations (need ${motion.threshold} for a ${motion.level} page${motion.level_source === "declared" ? "" : `, ${motion.level_source}`}): give the dealt signature sections their mechanic (\`layoza mechanics deal\`), or declare <meta name="layoza-motion" content="calm"> if the page is meant to be quiet`,
+        detail: `Only ${motion.groups} distinct motion idea(s) found across scroll positions and declared animations (need ${motion.threshold} for a ${motion.level} page${motion.level_source === "declared" ? "" : `, ${motion.level_source}`}): build one scroll- or hand-driven signature set piece from the subject (a pinned stage that changes with scroll counts), or declare <meta name="layoza-motion" content="calm"> if the page is meant to be quiet`,
       });
     }
     for (const pin of (motion && motion.static_pins) || []) {

@@ -42,8 +42,8 @@ description: >-
 5. **Motion and 3D** are decided per design: [`layoza-animations`](../layoza-animations/SKILL.md)
    and [`layoza-threejs-webgl`](../layoza-threejs-webgl/SKILL.md).
 6. **Done means:** `.layoza/direction.md` records `PURPOSE:`, the user's
-   `PICKED:` direction, at least 3 `ROUND` lines and a `REVIEWER:` verdict; the
-   art loop scores ≥ 9 (reviewer agrees); and `layoza qa <file-or-url>`
+   `PICKED:` direction, its `SIGNATURE:` set piece and at least one `ROUND`
+   line from the screenshot review; and `layoza qa <file-or-url>`
    reports 0 errors, with screenshots reviewed. A passing gate alone is not done.
    **For apps and dashboards:** every view renders its state matrix, `layoza qa`
    reports 0 errors, tables work at 375px, and the main task passes a

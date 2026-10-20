@@ -266,7 +266,7 @@ fn art_direct(c: &Ctx) -> String {
 
          3. Build the signature moment first, then the whole page around it in one pass in the project's framework (`inspect_project` on path `{p}`). Real images of the subject; content visible without JavaScript; motion with reduced-motion support. {copy} Put the look stamp `/* layoza · direction: <idea> · structure: <flow> · hero: <hero> · palette: <accent> · type: <display/body> · critique: P? H? E? S? R? V? */` on the first line of the main CSS, scored 1-5 on philosophy, hierarchy, execution, specificity, restraint, variety.
 
-         4. Look. `capture_screenshots` on {t} and open the 1440 and 375 images, and look at the signature at the start, middle and end of its scroll. Ask whether a template could have made this. Fix the three worst problems (generic, crowded, broken); at most two rounds. Judge the pixels, not the code.
+         4. Look. `capture_screenshots` on {t} and open the 1440 and 375 images, and look at the signature at the start, middle and end of its scroll. Ask whether a template could have made this. Fix the three worst problems (generic, crowded, broken); at most two rounds, each logged as `ROUND n: <what changed>`. Judge the pixels, not the code.
          {rtl}
          5. {verify}",
         brief = quoted(&c.brief),

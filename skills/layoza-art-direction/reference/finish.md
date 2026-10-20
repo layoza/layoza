@@ -47,7 +47,7 @@ feature, or special-case the QA user agent. A rule you believe is wrong for this
 page: leave it failing, say why in the report, and let the user decide.
 `null` metrics are "not measured", never "passed".
 
-## 3. Art loop (design director pass; at least 3 rounds)
+## 3. Screenshot review (design director pass; one or two rounds)
 
 `CRAFT-*` notes in the report are non-blocking critique: each one names a
 pattern that generated pages share. Fix the ones your direction didn't choose on

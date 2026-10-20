@@ -318,7 +318,7 @@ Load [reference/finish.md](reference/finish.md).
    drawn), not by the report. Check by eye that every label or headline over
    3D, canvas, video or images is readable at each width; never rely on the
    automated contrast checks alone there.
-2. **Art loop (at least 3 rounds; art has no two-round cap):**
+2. **Screenshot review (one round required, two is usually enough):**
    1. Critique like the harshest art director: subject test, the one-second
       test, squint test, cover-the-logo, sameness, the phone composition,
       reading order, states, the cliché swap and the TYPE / MATERIAL / GROUND
@@ -328,18 +328,18 @@ Load [reference/finish.md](reference/finish.md).
       art → colour → detail → motion.
    4. Run the usability pass (finish.md) every round, and the ceiling pass
       (`reference/ceiling.md`) once the score reaches 8.
-   5. Stop when the score is ≥ 9 and the fresh-eyes reviewer agrees, or after
-      6 rounds; report the reviewer's score.
+   5. Stop when the signature works at its start, middle and end frames and
+      no template could have made the page.
    6. **Log every round** in `direction.md` as
-      `ROUND <n>: <score> — <what changed>`, and the reviewer's verdict as
-      `REVIEWER: <ship|fix|rebuild> <score>`. `layoza audit` / `qa` fail with
-      `DESIGN-ART-LOOP-INCOMPLETE` until 3 rounds and a verdict are logged.
-3. **Fresh-eyes reviewer:** when subagents are available, spawn one with no
+      `ROUND <n>: <what changed>`. `layoza audit` / `qa` fail with
+      `DESIGN-NOT-REVIEWED` until one is logged, and with
+      `DESIGN-NO-SIGNATURE` until `SIGNATURE:` names the set piece.
+3. **Fresh-eyes reviewer (optional):** when subagents are available, spawn one with no
    build context. Give it the screenshots, the brief and `direction.md`. It
    returns ship / fix / rebuild using the finish.md checklist.
 4. **QA floor:** fix every `layoza qa` error at the cause; never game a
    checker. The gate measures defects only: **PASSED never means the design is
-   good.** Only the art loop, the reviewer and the user decide that. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
+   good.** Only the screenshots and the user decide that. `CRAFT-*` notes are reviewed against the direction, not obeyed blindly.
    The built page should also pass `layoza conform <file> --deal <deal.json> --direction N` (restraints, button, motif as dealt).
 5. **Report honestly:** the score, QA errors (0 or a list), metrics with nulls
    named, what is still open, and anything the user should confirm.

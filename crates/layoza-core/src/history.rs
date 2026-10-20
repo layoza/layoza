@@ -97,7 +97,7 @@ pub fn today_utc() -> String {
 pub fn parse_direction(text: &str) -> BTreeMap<String, String> {
     const KEYS: &[&str] = &[
         "PURPOSE", "PICKED", "THESIS", "OWN-WORLD", "TOKENS", "FONTS", "FIRST VIEWPORT", "SECTIONS",
-        "ART PLAN", "MOTION", "FINISH", "REVIEWER", "REPEAT-OK", "ROUND",
+        "ART PLAN", "SIGNATURE", "QUIET", "MOTION", "FINISH", "REVIEWER", "REPEAT-OK", "ROUND",
     ];
     let mut out: BTreeMap<String, String> = BTreeMap::new();
     let mut current: Option<String> = None;

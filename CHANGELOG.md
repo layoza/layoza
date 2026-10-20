@@ -16,6 +16,18 @@ All notable changes to Layoza are listed here. The format follows
   scroll or hand, with a done-when check (start, middle and end frames, phone, no-JS final frame).
   New taste rules for launch-style pacing and choreographed motion; new bans on zig-zag stacks and
   pages assembled from stock parts. The art-direct plan names `SIGNATURE:` and builds it first.
+- The design-process gate matches the simple path: `direction.md` needs `PURPOSE:`, `PICKED:`,
+  `SIGNATURE:` and one `ROUND` from the screenshot review. `DESIGN-ART-LOOP-INCOMPLETE` (three
+  rounds plus a reviewer verdict) is replaced by `DESIGN-NOT-REVIEWED` and `DESIGN-NO-SIGNATURE`.
+  The entry skill (`skills/layoza/SKILL.md`) now teaches the same five steps and asks for 0 QA errors.
+- `motion-too-sparse` needs only two motion ideas when the page has a live signature set piece
+  (a pinned stage that changes with scroll, or a scroll-timeline animation).
+
+### Fixed
+- `QA-SECTION-RESKIN` no longer flags a page as a copy of itself when one QA run used the file
+  and another a loopback URL on a different port.
+- `testimonial-unsourced` reads the attribution in a quote's `figcaption` instead of counting the
+  inner `blockquote` as a separate, unattributed testimonial.
 - The brief carries the look's tokens as a paste-ready `:root` CSS block.
 - `tools/list` shows the 13 tools the prompts use. Eight lookup tools stay callable and are listed
   with `LAYOZA_TOOLS=all`.

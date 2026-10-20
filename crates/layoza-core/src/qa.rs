@@ -562,6 +562,29 @@ fn section_text_cells(s: &Value) -> f64 {
     nums(s.get("structure").and_then(|x| x.get("text"))).iter().sum()
 }
 
+/// The ledger lives in one project, whose pages are checked as files or served on a fresh loopback
+/// port each run, so `index.html`, `http://localhost:4611/` and `http://127.0.0.1:5020/index.html`
+/// name the same page. Compare a page key: the loopback path or the file name, `index.html` as `/`.
+fn same_page(a: &str, b: &str) -> bool {
+    fn key(t: &str) -> String {
+        let mut path = None;
+        for scheme in ["http://", "https://"] {
+            if let Some(rest) = t.strip_prefix(scheme) {
+                let (host, p) = rest.split_at(rest.find('/').unwrap_or(rest.len()));
+                let name = host.rsplit_once(':').map_or(host, |(h, _)| h);
+                if !matches!(name, "localhost" | "127.0.0.1" | "[::1]") {
+                    return t.to_string();
+                }
+                path = Some(p.to_string());
+            }
+        }
+        let p = path.unwrap_or_else(|| format!("/{}", t.rsplit(['/', '\\']).next().unwrap_or(t)));
+        let p = p.strip_suffix("index.html").unwrap_or(&p).trim_end_matches('/');
+        if p.is_empty() { "/".into() } else { p.to_string() }
+    }
+    key(a) == key(b)
+}
+
 /// QA-SECTION-RESKIN candidates: each section of `entry` whose structure matches a same-role section
 /// of an earlier ledger entry for another target. One match (the best) per section and earlier target.
 fn compare_sections_with_ledger(entry: &Value, ledger: &str) -> Vec<Value> {
@@ -572,7 +595,7 @@ fn compare_sections_with_ledger(entry: &Value, ledger: &str) -> Vec<Value> {
     for line in ledger.lines().filter(|l| !l.trim().is_empty()) {
         let Ok(prev) = serde_json::from_str::<Value>(line) else { continue };
         let prev_target = prev.get("target").and_then(|t| t.as_str()).unwrap_or("").to_string();
-        if prev_target == target {
+        if same_page(&prev_target, target) {
             continue;
         }
         let Some(theirs) = prev.get("sections").and_then(|s| s.as_array()) else { continue };
@@ -628,7 +651,7 @@ fn compare_with_ledger(entry: &Value, ledger: &str) -> (usize, Vec<Value>) {
     let mut flagged = Vec::new();
     for line in ledger.lines().filter(|l| !l.trim().is_empty()) {
         let Ok(prev) = serde_json::from_str::<Value>(line) else { continue };
-        if prev.get("target").and_then(|t| t.as_str()) == Some(target) {
+        if same_page(prev.get("target").and_then(|t| t.as_str()).unwrap_or(""), target) {
             continue;
         }
         compared += 1;
@@ -1133,6 +1156,12 @@ mod look_and_allow_tests {
         let m = compare_sections_with_ledger(&entry, &ledger);
         assert_eq!(m.len(), 1, "{m:#?}");
         assert_eq!(m[0]["rule"], "QA-SECTION-RESKIN");
+        assert!(same_page("http://localhost:4611/", "http://127.0.0.1:5020"));
+        assert!(same_page("http://localhost:4611/a.html", "http://localhost:9/a.html"));
+        assert!(!same_page("http://localhost:4611/a.html", "http://localhost:4611/b.html"));
+        assert!(!same_page("https://example.com/", "http://localhost:4611/"));
+        assert!(same_page("http://localhost:4611", "C:\\site\\.\\index.html"));
+        assert!(same_page("b.html", "http://localhost:4611/b.html"));
         assert_eq!(m[0]["role"], "hero");
         assert_eq!(m[0]["matched_target"], "a.html");
         assert!(m[0]["similarity"].as_f64().unwrap() >= SECTION_STRUCTURE_SAME);
