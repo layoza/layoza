@@ -6,6 +6,13 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- `get_design_system` now returns a short Markdown design brief by default (`detail: "brief"`):
+  one whole-page look, twelve taste rules, an avoid list and a four-step build. The SMDLED brief
+  went from about 91 KB of JSON to 7 KB. `detail: "summary"` / `"full"` still return the JSON deal.
+- The art-direct prompt is five steps: brief, five-line plan, one-pass build, one screenshot
+  review (three worst problems, at most two rounds), QA once. Dealt parts are ideas, not mandates.
+
 ### Added
 - Stated purpose (stop look-alike AI output) in the MCP server instructions, prompts, README,
   entry skill and the generated project skill.
