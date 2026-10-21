@@ -568,6 +568,28 @@ fn browser_pass(approved_root: &Path, target: &Path, enabled: bool, opts: &QaOpt
     }
 }
 
+/// Folds this call's own browser pass into the static audit. Without it the report would say
+/// "static checks only" and BROWSER-QA-NOT-MEASURED right next to the browser findings it just made.
+fn fold_browser_pass(report: &mut AuditReport, scope: &Value, browser_findings: &[AuditFinding]) {
+    if scope.get("mode").and_then(|m| m.as_str()) != Some("browser") {
+        return;
+    }
+    let source = scope.get("report").and_then(|r| r.as_str()).unwrap_or("this call's browser pass");
+    report.findings.retain(|f| f.rule_id != "BROWSER-QA-NOT-MEASURED");
+    let browser_a11y_errors = browser_findings
+        .iter()
+        .filter(|f| f.severity == Severity::Error && f.category == "accessibility")
+        .count();
+    let a = &mut report.accessibility;
+    a.automated_violations += browser_a11y_errors;
+    a.passes_automated_wcag22_aa = a.automated_violations == 0;
+    a.evidence_basis = format!("browser report ({}) + static checks", source.replace('\\', "/"));
+    a.needs_browser.clear();
+    let browser_errors = browser_findings.iter().filter(|f| f.severity == Severity::Error).count();
+    report.passed_release_gate = report.objective_error_count == 0 && browser_errors == 0;
+    report.verification_status = if report.passed_release_gate { "passed" } else { "failed" }.to_string();
+}
+
 /// Returns the 24 listed, schema-validated MCP tool definitions (`recommend_layout` is a hidden deprecated alias).
 pub fn tool_definitions() -> Value {
     let mut category_enum: Vec<&str> = vec!["all"];
@@ -1202,7 +1224,15 @@ Ledger: {}. For the full deal as JSON call again with detail \"summary\" or \"fu
             let cat = args.get("category").and_then(|c| c.as_str());
             let recipe = args.get("recipe").and_then(|c| c.as_str());
             let intensity = dial_arg(args, "motion_intensity", 6);
-            let recipes = select_animations(cat, recipe, intensity)?;
+            let mut recipes = select_animations(cat, recipe, intensity)?;
+            // Recipes that share one runtime asset ship its code once; later ones point at the first.
+            let mut seen: Vec<(String, String)> = Vec::new();
+            for r in recipes.iter_mut() {
+                match seen.iter().find(|(code, _)| *code == r.code_snippet) {
+                    Some((_, first)) => r.code_snippet = format!("// Same code as recipe `{}` above.", first),
+                    None => seen.push((r.code_snippet.clone(), r.id.clone())),
+                }
+            }
             Ok(json!({
                 "motion_intensity": intensity,
                 "count": recipes.len(),
@@ -1371,8 +1401,9 @@ Ledger: {}. For the full deal as JSON call again with detail \"summary\" or \"fu
         }
         "audit_accessibility" => {
             let strict = AuditOptions { strict: args.get("strict").and_then(|b| b.as_bool()) == Some(true) };
-            let report = audit_project_with(&target_path, None, None, None, None, &strict)?;
+            let mut report = audit_project_with(&target_path, None, None, None, None, &strict)?;
             let (scope, browser_findings) = browser_pass(approved_root, &target_path, args.get("browser").and_then(|b| b.as_bool()) != Some(false), &qa_opts(args));
+            fold_browser_pass(&mut report, &scope, &browser_findings);
             let gate_root = if target_path.is_file() { target_path.parent().unwrap_or(approved_root) } else { &target_path };
             Ok(json!({
                 "qa_scope": scope,
@@ -1444,6 +1475,7 @@ Ledger: {}. For the full deal as JSON call again with detail \"summary\" or \"fu
             let strict = AuditOptions { strict: args.get("strict").and_then(|b| b.as_bool()) == Some(true) };
             let mut report = audit_project_with(&target_path, None, None, None, None, &strict)?;
             let (scope, browser_findings) = browser_pass(approved_root, &target_path, args.get("browser").and_then(|b| b.as_bool()) != Some(false), &qa_opts(args));
+            fold_browser_pass(&mut report, &scope, &browser_findings);
             let gate_root = if target_path.is_file() { target_path.parent().unwrap_or(approved_root) } else { &target_path };
             let gates = check_gates(gate_root);
             // One missing approval file, one finding: the process gate already names it.
@@ -1752,6 +1784,39 @@ mod tests {
     fn rpc(body: &str, root: &Path) -> Value {
         let r = handle_jsonrpc_message(body, root).unwrap();
         serde_json::to_value(&r).unwrap()
+    }
+
+    #[test]
+    fn audit_counts_its_own_browser_pass() {
+        let root = std::env::temp_dir().join("layoza_mcp_fold_test");
+        let _ = fs::remove_dir_all(&root);
+        fs::create_dir_all(&root).unwrap();
+        fs::write(root.join("index.html"), "<!doctype html><html lang=en><title>t</title><main><h1>Hi</h1></main></html>").unwrap();
+        let mut report = audit_project_with(&root, None, None, None, None, &AuditOptions::default()).unwrap();
+        assert!(report.findings.iter().any(|f| f.rule_id == "BROWSER-QA-NOT-MEASURED"));
+        // A static-only scope changes nothing.
+        fold_browser_pass(&mut report, &json!({"mode": "static"}), &[]);
+        assert!(report.accessibility.evidence_basis.starts_with("static checks only"));
+        let scope = json!({"mode": "browser", "report": r"C:\tmp\browser-qa-report.json"});
+        let contrast = AuditFinding {
+            rule_id: "BROWSER-CONTRAST".into(),
+            kind: layoza_core::verifier::FindingKind::DeterministicObjective,
+            severity: Severity::Error,
+            category: "accessibility".into(),
+            file_or_selector: "p".into(),
+            message: "low contrast".into(),
+            remediation: "darken".into(),
+            auto_repairable: false,
+        };
+        fold_browser_pass(&mut report, &scope, std::slice::from_ref(&contrast));
+        assert!(!report.findings.iter().any(|f| f.rule_id == "BROWSER-QA-NOT-MEASURED"));
+        assert_eq!(report.accessibility.evidence_basis, "browser report (C:/tmp/browser-qa-report.json) + static checks");
+        assert!(report.accessibility.needs_browser.is_empty());
+        assert!(!report.accessibility.passes_automated_wcag22_aa && !report.passed_release_gate);
+        assert_eq!(report.verification_status, "failed");
+        fold_browser_pass(&mut report, &scope, &[]);
+        let clean = report.objective_error_count == 0;
+        assert_eq!(report.passed_release_gate, clean);
     }
 
     #[test]

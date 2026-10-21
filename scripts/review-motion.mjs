@@ -1,7 +1,8 @@
 // Original Layoza scroll-state evidence, on Layoza's own CDP client (scripts/lib/cdp.mjs).
 import fs from 'node:fs';import path from 'node:path';
 import {Browser,sleep} from './lib/cdp.mjs';
-const args=process.argv.slice(2),url=args.shift(),opts={};for(let i=0;i<args.length;i+=2)opts[args[i].replace(/^--/,'')]=args[i+1];
+// A bare second argument is the output directory, as in review-composition.mjs; --out still works.
+const args=process.argv.slice(2),url=args.shift(),opts={};if(args[0]&&!args[0].startsWith('--'))opts.out=args.shift();for(let i=0;i<args.length;i+=2)opts[args[i].replace(/^--/,'')]=args[i+1];
 if(!/^https?:\/\//.test(url||''))throw Error('Usage: node scripts/review-motion.mjs <URL> --out <directory>');
 const out=path.resolve(opts.out||'.layoza/motion-review');fs.mkdirSync(out,{recursive:true});
 const selected=opts.scenes?new Set(opts.scenes.split(',')):null;
@@ -12,12 +13,12 @@ try{await page.goto(url,{settleMs:1500});await page.eval(()=>{document.querySele
 // Warm lazy media in normal document order before measuring trigger locations.
 await page.eval(()=>{document.documentElement.style.scrollBehavior='auto';document.querySelectorAll('img[loading]').forEach(i=>i.loading='eager')});
 for(let n=0;n<3;n++){await page.eval(n=>scrollTo(0,n*innerHeight),n);await sleep(100)}await page.eval(()=>scrollTo(0,0));await sleep(700);
-const initial=await page.eval(()=>document.querySelector('.site')?.__layozaMotion?.snapshot()||null);
+const initial=await page.eval(()=>(()=>[...document.querySelectorAll('[data-layoza-motion-root]'),document.querySelector('.site'),document.querySelector('main'),document.body,document.documentElement].find(el=>el?.__layozaMotion))()?.__layozaMotion.snapshot()||null);
 const viewport={width,status:initial?'instrumented':'uninstrumented',scenes:[]};report.viewports.push(viewport);if(!initial){report.observations.push(`${width}: no section inspector; no motion pass can be claimed.`);continue}
 for(const scene of initial.scenes.filter(s=>!selected||selected.has(s.id))){const entry={id:scene.id,family:scene.family,kind:scene.kind,variant:scene.variant,samples:[],changed:null};viewport.scenes.push(entry);if(scene.kind!=='scroll'||scene.start===null)continue;
 const safe=scene.id.replace(/[^a-z0-9_-]/gi,'_');for(const progress of[0,.25,.5,.75,1]){
-await page.eval(({id,progress})=>{const scene=document.querySelector('.site').__layozaMotion.snapshot().scenes.find(s=>s.id===id);scrollTo({top:scene.start+(scene.end-scene.start)*progress,behavior:'instant'})},{id:scene.id,progress});await page.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:width/2,y:450,deltaX:0,deltaY:1});await sleep(700);
-const state=await page.eval(id=>({scrollY,snapshot:document.querySelector('.site').__layozaMotion.snapshot().scenes.find(s=>s.id===id)}),scene.id);
+await page.eval(({id,progress})=>{const scene=(()=>[...document.querySelectorAll('[data-layoza-motion-root]'),document.querySelector('.site'),document.querySelector('main'),document.body,document.documentElement].find(el=>el?.__layozaMotion))().__layozaMotion.snapshot().scenes.find(s=>s.id===id);scrollTo({top:scene.start+(scene.end-scene.start)*progress,behavior:'instant'})},{id:scene.id,progress});await page.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:width/2,y:450,deltaX:0,deltaY:1});await sleep(700);
+const state=await page.eval(id=>({scrollY,snapshot:(()=>[...document.querySelectorAll('[data-layoza-motion-root]'),document.querySelector('.site'),document.querySelector('main'),document.body,document.documentElement].find(el=>el?.__layozaMotion))().__layozaMotion.snapshot().scenes.find(s=>s.id===id)}),scene.id);
 const file=`${safe}-${width}-${progress*100}.png`,viewportFile=`${safe}-${width}-${progress*100}-viewport.png`;const shot=await page.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(path.join(out,viewportFile),Buffer.from(shot.data,'base64'));
 fs.copyFileSync(path.join(out,viewportFile),path.join(out,file));
 report.images.push({viewport:width,scene:scene.id,progress,path:file,viewport_path:viewportFile});entry.samples.push({requested_progress:progress,...state,image:file,viewport_image:viewportFile});

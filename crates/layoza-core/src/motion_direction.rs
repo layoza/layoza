@@ -34,8 +34,11 @@ pub fn study(plan:Option<&Value>,dial:u8)->Result<Value,String>{
             "proof"|"reading"=>&["held_reading","state_continuity"],
             _=>&["editorial_recomposition","perspective_sequence","material_assembly","held_reading"],
         };
-        let complete=s.family.is_some()&&s.transformation.as_ref().is_some_and(|s|!s.trim().is_empty())&&s.resolved_state.as_ref().is_some_and(|s|!s.trim().is_empty())&&s.phone.as_ref().is_some_and(|s|!s.trim().is_empty());
-        if complete{assigned+=1}else{warnings.push(format!("{}: author the actual transformation, resolved state and phone staging; a family name is not a scene.",s.id))}
+        let filled=|v:&Option<String>|v.as_ref().is_some_and(|s|!s.trim().is_empty());
+        let missing:Vec<&str>=[("family",&s.family),("transformation",&s.transformation),("resolved_state",&s.resolved_state),("phone",&s.phone)].into_iter().filter(|(_,v)|!filled(v)).map(|(k,_)|k).collect();
+        if missing.is_empty(){assigned+=1}
+        else if missing==["family"]{warnings.push(format!("{}: the scene is authored; name its family from candidate_families ({}) so repetition across sections can be checked.",s.id,candidates.join(", ")))}
+        else{warnings.push(format!("{}: missing {}. Author the actual transformation, resolved state and phone staging; a family name is not a scene.",s.id,missing.join(", ")))}
         rows.push(json!({"section":s,"candidate_families":candidates,"selection":"Author from the actual object and visitor job; candidates are ingredients, not a forced layout or a uniqueness claim.","delivery":if dial==0{"static; no decorative timelines"}else{"GSAP-owned choreography; preserve a complete readable still"}}));
     }
     if dial>=7&&plan.sections.len()>2{let meaningful:Vec<_>=plan.sections.iter().filter_map(|s|s.family.as_deref()).filter(|f|*f!="held_reading").collect();if !meaningful.is_empty()&&meaningful.iter().all(|f|*f==meaningful[0]){warnings.push("Every expressive section uses the same family. Inspect whether unrelated content is receiving a repeated preset; repetition inside one coherent gallery can be appropriate.".into())}}

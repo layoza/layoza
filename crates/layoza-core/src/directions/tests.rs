@@ -432,3 +432,11 @@ fn paid_brief_fonts_are_never_linked_to_a_cdn() {
     }
     assert!(noted, "no self-host note for Neue Montreal");
 }
+
+#[test]
+fn coordinated_modifiers_keep_the_head_noun() {
+    let p = subject_phrase("Independent web design and development agency (small studio, 8 people) that builds sites");
+    assert!(p.ends_with("agency"), "{p}");
+    assert!(!p.contains("small"), "{p}");
+    assert!(subject_phrase("black and white photography studio").ends_with("white photography studio"));
+}

@@ -596,7 +596,7 @@ fn subject_phrase(query: &str) -> String {
         let label = label.trim().trim_start_matches('#').trim().to_ascii_lowercase();
         ["master ai prompt", "ai prompt", "prompt", "design brief", "brief"].contains(&label.as_str()).then_some(value)
     }).unwrap_or(first_line);
-    let sentence = first_line.split(['.', ';', ':', '!', '?', ',', '\n']).next().unwrap_or("");
+    let sentence = first_line.split(['.', ';', ':', '!', '?', ',', '(', '\n']).next().unwrap_or("");
     let words: Vec<String> = sentence
         .split_whitespace()
         .map(|w| w.chars().filter(|c| c.is_alphanumeric() || *c == '\'' || *c == '-' || *c == '\u{2019}').collect::<String>())
@@ -612,6 +612,11 @@ fn subject_phrase(query: &str) -> String {
             && !ING_NOUNS.contains(&lw.as_str())
             && segments.last().is_some_and(|s| !s.is_empty());
         let colour_pair = lw == "and" && wi > 0 && words[wi - 1].eq_ignore_ascii_case("black") && words.get(wi + 1).is_some_and(|s| s.eq_ignore_ascii_case("white"));
+        // "web design and development agency": a coordinating "and" joins modifiers of one head noun,
+        // so the subject keeps running instead of stopping at the first modifier.
+        if lw == "and" && !colour_pair && segments.last().is_some_and(|s| !s.is_empty()) {
+            continue;
+        }
         if (BREAKS.contains(&lw.as_str()) && !colour_pair) || participle {
             segments.push(Vec::new());
         } else if let Some(last) = segments.last_mut() {

@@ -237,7 +237,16 @@ const SCROLL_PASS_SCRIPT = `(async () => {
       if (o < 0.35) continue;
       const range = document.createRange();
       range.selectNodeContents(n);
-      for (const r of range.getClientRects()) {
+      // A text rect spans the font's whole content area. Display faces (Anton, condensed grotesks)
+      // report ascent+descent far taller than a tight line box, so clamp each line to its line
+      // box: stacked lines that share no line box do not overlap on screen.
+      const lh = parseFloat(getComputedStyle(el).lineHeight);
+      for (const raw of range.getClientRects()) {
+        let r = raw;
+        if (lh > 0 && raw.height > lh * 1.05) {
+          const mid = (raw.top + raw.bottom) / 2;
+          r = { left: raw.left, right: raw.right, width: raw.width, top: mid - lh / 2, bottom: mid + lh / 2, height: lh };
+        }
         if (r.width < 4 || r.height < 4 || r.bottom < 0 || r.top > window.innerHeight) continue;
         const b = visibleBox(el, r);
         if (b.right - b.left < 4 || b.bottom - b.top < 4) continue;
@@ -5706,6 +5715,12 @@ function layozaQualitySweep(opts) {
         const r = el.parentElement.getBoundingClientRect();
         spans.push([r.top + pageTop, r.bottom + pageTop]);
       }
+    });
+    // Library pin spacers (GSAP, ScrollMagic) reserve the pinned scene's scroll distance; the scene
+    // itself plays inside that span, so the spacer counts as covered, not as an empty gap.
+    document.querySelectorAll(".pin-spacer, .scrollmagic-pin-spacer").forEach((sp) => {
+      const r = sp.getBoundingClientRect();
+      if (r.height > 0) spans.push([r.top + pageTop, r.bottom + pageTop]);
     });
     spans.sort((a, b) => a[0] - b[0]);
     let reach = 0;
