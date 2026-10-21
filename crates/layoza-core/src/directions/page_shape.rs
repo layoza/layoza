@@ -36,7 +36,7 @@ pub struct MotionTechnique {
     pub fallback: String,
 }
 
-/// The page-level form of one direction. Binding: build every axis as dealt.
+/// An optional page-level starting direction; the brief and rendered concept take priority.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 pub struct PageShape {
     pub hero_frame: ShapePick,
@@ -506,7 +506,9 @@ impl ShapeBrief {
         // a whole-page ask ("static site") is read as no motion above.
         let calm_words = ["minimal", "minimalist", "calm", "quiet", "understated", "subtle", "serene", "gentle"];
         let heavy_words = ["animated", "animation-heavy", "immersive", "kinetic", "cinematic", "motion-rich", "3d", "webgl", "bold", "scrollytelling", "experimental", "interactive"];
-        let no_motion = ["no animation", "no animations", "no motion", "without animation", "static site", "static page"].iter().any(|p| raw_l.contains(p))
+        // Use the same intent parser as the recommendation engine. Accessibility
+        // fallback copy ("readable without animations") must not cancel choreography.
+        let no_motion = crate::intelligence::explicit_no_motion(raw)
             || signals.constraints.iter().any(|c| c == "reduced-motion");
         let calm_ask = no_motion || calm_words.iter().any(|w| hit(&q, &words, w));
         let heavy_ask = heavy_brief || heavy_words.iter().any(|w| hit(&q, &words, w));
@@ -514,6 +516,7 @@ impl ShapeBrief {
             (true, false) => Some(Tier::Micro),
             (false, true) => Some(Tier::Heavy),
             (true, true) if no_motion => Some(Tier::Micro),
+            (true, true) if heavy_brief => Some(Tier::Heavy),
             _ => None,
         };
         let high_ok = signals.surface == Surface::Showcase || HIGH_TAGS.iter().any(|t| has(t)) || HIGH_MOTION_WORDS.iter().any(|w| hit(&q, &words, w));
@@ -564,6 +567,10 @@ impl ShapeBrief {
         self.tier_pin.unwrap_or_else(|| if self.tier_cap == Tier::Heavy { Tier::Heavy } else { Tier::of_dial(dial).min(self.tier_cap) })
     }
 
+    pub(crate) fn pin_motion_dial(&mut self, dial: u8) {
+        self.tier_pin = Some(Tier::of_dial(dial));
+    }
+
     /// The motion dial clamped into its tier (so dials and page shape agree).
     pub(crate) fn clamp_dial(&self, dial: u8) -> u8 {
         match self.tier(dial) {
@@ -586,6 +593,7 @@ impl ShapeBrief {
 
     /// The prompt's motion wish, or the niche default for `dial`.
     pub(crate) fn motion_wish(&self, dial: u8) -> String {
+        if dial == 0 { return "none (0; no animation)".into(); }
         match self.tier_pin {
             Some(t) => format!("{} (asked in the brief)", t.id()),
             None => format!("{} (niche default, up to {})", self.tier(dial).id(), self.tier_cap.id()),
@@ -843,7 +851,7 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
         used_motifs.push(best.id);
         let object = if d.object.is_empty() { "the trade's own object" } else { d.object };
         let s = &mut shapes[i];
-        s.motif = ShapePick { id: best.id.into(), build: best.build.replace("{object}", object) };
+        s.motif = ShapePick { id: best.id.into(), build: format!("Optional framing study: {}. Subject material to inspect: {}. This is not a claim that the motif derives from that material; retain it only when the actual artwork supports the relationship. Controls have their own resolved specification.", best.build, object) };
         s.button = match &b.button_ask {
             Some((id, build, true)) => ShapePick { id: id.clone(), build: build.clone() },
             Some((_, build, false)) => ShapePick { id: best.button_id.into(), build: format!("{} {build}", best.button) },
@@ -938,7 +946,7 @@ fn button_ask(raw: &str) -> Option<(String, String, bool)> {
         return Some((
             id.to_string(),
             format!(
-                "As the brief describes: {}. Build them as real buttons: a clear filled primary with hover, press and a visible 2px focus ring, considered padding (about 48px tall, 24px sides), and a secondary that is a real button of the same size (outline or tonal fill), never a bare text link or an edge line.",
+                "Preserve the explicit control treatment in the brief: {}. Resolve the selected controls once in visual_system, keeping their prose, tokens and CSS consistent. Use anchors for navigation and buttons for state changes, with visible keyboard focus.",
                 quotes.join(" ")
             ),
             true,
@@ -1000,7 +1008,7 @@ struct Motif {
 const MOTIFS: &[Motif] = &[
     Motif {
         id: "stepped-corner",
-        build: "Stepped corner: a three-step pixel cut in one corner of every media frame (the frame edge only, nothing over the image) and of the primary button, taken from {object}; square bullets echo it, and one band of the same steps divides two chapters. Nothing else decorates.",
+        build: "Stepped corner: a three-step pixel cut in one corner of every media frame (the frame edge only, nothing over the image) and of the primary button; square bullets echo it, and one band of the same steps divides two chapters. Nothing else decorates.",
         fit: &["+industrial", "+code", "+data", "+kinetic", "+supplier", "+devtool", "-solemn", "-care"],
         regs: &["technical", "playful"],
         button_id: "square-stepped",
@@ -1008,7 +1016,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "seam-grid",
-        build: "Module seams: a hairline grid at the trade's real unit runs along section edges and behind spec tables and figures, taken from {object}; it never crosses photographs or hero media, and the active item fills one cell in the accent.",
+        build: "Module seams: a hairline grid at the trade's real unit runs along section edges and behind spec tables and figures; it never crosses photographs or hero media, and the active item fills one cell in the accent.",
         fit: &["+industrial", "+infrastructure", "+data", "+devtool", "+product-ui", "+supplier", "+finance"],
         regs: &["technical"],
         button_id: "square-cell",
@@ -1016,7 +1024,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "bezel-frame",
-        build: "Bezel frame: media sits inside a thin, even bezel with one continuous corner radius, like the housing of {object}; the same radius and bezel width carry to panels and the primary button. Nothing is drawn over the media.",
+        build: "Bezel frame: media sits inside a thin, even bezel with one continuous corner radius; the same radius and bezel width carry to panels and the primary button. Nothing is drawn over the media.",
         fit: &["+industrial", "+luxe", "+supplier", "+product-ui", "+commerce", "+dark", "+night", "+data", "-solemn"],
         regs: &["premium", "cinematic", "corporate", "technical"],
         button_id: "soft-square",
@@ -1024,7 +1032,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "letterbox",
-        build: "Letterbox: every photograph and film still is cropped to one cinematic ratio (2.39:1 on desktop, 4:5 on phones) with its caption set in the bar beneath, as if {object} were framed by a lens; the crop ratio is the only device.",
+        build: "Letterbox: every photograph and film still is cropped to one cinematic ratio (2.39:1 on desktop, 4:5 on phones) with its caption set in the bar beneath; the crop ratio is the only device.",
         fit: &["+night", "+kinetic", "+luxe", "+showcase", "+venue", "+bold", "+dark", "+supplier", "-solemn", "-care"],
         regs: &["cinematic", "premium", "editorial"],
         button_id: "pill",
@@ -1032,7 +1040,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "lit-ground",
-        build: "Lit ground: each chapter's ground is lit from above by one soft falloff in the palette's deep tone, as if {object} stood under a single studio light; media frames sit on the light and nothing is drawn over them. One light, one direction, no glow on text.",
+        build: "Lit ground: each chapter's ground is lit from above by one soft falloff in the palette's deep tone; media frames sit on the light and nothing is drawn over them. One light, one direction, no glow on text.",
         fit: &["+night", "+dark", "+luxe", "+showcase", "+venue", "+supplier", "+industrial", "+commerce", "-solemn", "-care"],
         regs: &["premium", "cinematic", "corporate"],
         button_id: "soft-square",
@@ -1040,7 +1048,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "cut-corner",
-        build: "Cut corner: one 45-degree chamfer on the same corner of frames, panels and the primary button, taken from the edge of {object}; the chamfer size is one token, used everywhere.",
+        build: "Cut corner: one 45-degree chamfer on the same corner of frames, panels and the primary button; the chamfer size is one token, used everywhere.",
         fit: &["+industrial", "+trades", "+sport", "+bold", "+supplier", "+infrastructure", "-solemn", "-care"],
         regs: &["technical", "playful"],
         button_id: "chamfer",
@@ -1048,7 +1056,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "ruled-frame",
-        build: "Ruled frame: every chapter opens on a hairline rule with a short thick start segment, drawn from the trim lines of {object}; figures and captions hang from the rule, which never crosses media.",
+        build: "Ruled frame: every chapter opens on a hairline rule with a short thick start segment; figures and captions hang from the rule, which never crosses media.",
         fit: &["+legal", "+finance", "+civic", "+editorial", "+solemn", "+trust", "+supplier", "+infrastructure"],
         regs: &["corporate", "editorial", "civic"],
         button_id: "square-ruled",
@@ -1056,7 +1064,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "registration-marks",
-        build: "Registration marks: small corner crop marks frame each image and key figure, as on a press proof of {object}; never over the hero image or film.",
+        build: "Registration marks: small corner crop marks frame each image and key figure; never over the hero image or film.",
         fit: &["+ink", "+editorial", "+showcase", "+kinetic", "-solemn", "-supplier"],
         regs: &["editorial"],
         button_id: "square-marked",
@@ -1064,7 +1072,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "notched-edge",
-        build: "Notched edge: semicircle notches on the sides of media frames and the primary button, like a ticket or tag that comes with {object}.",
+        build: "Notched edge: semicircle notches on the sides of media frames and the primary button.",
         fit: &["+venue", "+celebration", "+night", "+food", "+playful", "-trust", "-solemn", "-supplier"],
         regs: &["playful", "craft"],
         button_id: "notched",
@@ -1072,7 +1080,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "arch-top",
-        build: "Arch top: media frames and the main feature panel rise into one round arch drawn from {object}; one arch, one radius, repeated.",
+        build: "Arch top: media frames and the main feature panel rise into one round arch; one arch, one radius, repeated.",
         fit: &["+solemn", "+care", "+earth", "+luxe", "+calm", "+venue", "+memorial", "-supplier"],
         regs: &["craft", "premium", "civic"],
         button_id: "pill",
@@ -1080,7 +1088,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "torn-edge",
-        build: "Torn edge: chapters part on one torn paper edge, and media frames carry the same edge on one side, as on the wrapping of {object}.",
+        build: "Torn edge: chapters part on one torn paper edge, and media frames carry the same edge on one side.",
         fit: &["+editorial", "+food", "+earth", "+play", "+playful", "-trust", "-supplier"],
         regs: &["craft", "playful", "editorial"],
         button_id: "soft-square",
@@ -1088,7 +1096,7 @@ const MOTIFS: &[Motif] = &[
     },
     Motif {
         id: "round-mask",
-        build: "Round mask: one feature image per chapter sits in a full circle and bullets are dots, taken from {object}; everything else stays square.",
+        build: "Round mask: one feature image per chapter sits in a full circle and bullets are dots; everything else stays square.",
         fit: &["+care", "+play", "+product-ui", "+commerce", "+calm", "-supplier"],
         regs: &["playful", "craft", "civic"],
         button_id: "pill",
@@ -1251,7 +1259,8 @@ pub(crate) fn understand(b: &ShapeBrief, signals: &BriefSignals, query: &str, tr
     };
     // A bare verb ("buy") says less than the trade's own action, so the trade's wins over it.
     let trade_action = subject.from_trades.then(|| subject.action.clone());
-    let brief_action = signals.brief_action.clone().filter(|a| a.contains(' ') || trade_action.is_none());
+    let brief_action = query.lines().find_map(|line| line.strip_prefix("Primary action:").map(str::trim).filter(|s| !s.is_empty()).map(str::to_string))
+        .or_else(|| signals.brief_action.clone().filter(|a| a.contains(' ') || trade_action.is_none()));
     let primary_action = match brief_action.or(trade_action) {
         // The business sells; the visitor buys.
         Some(a) if a.starts_with("sell ") => format!("buy {}", &a[5..]),

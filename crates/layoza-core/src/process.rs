@@ -425,7 +425,7 @@ pub fn check_gates(root: &Path) -> Vec<GateFinding> {
         }
     }
 
-    if direction_log.is_some() || page_stamp {
+    if (direction_log.is_some() || page_stamp) && !crate::creative::has_visual_selection(root) {
         match read_text(&root.join(DIRECTION_APPROVED)) {
             None => out.push(gate(
                 "GATE-DIRECTION-NOT-APPROVED",

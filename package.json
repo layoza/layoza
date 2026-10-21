@@ -1,6 +1,6 @@
 {
   "name": "layoza",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "mcpName": "io.github.layoza/layoza",
   "description": "Design engineering for AI agents: MCP server + agent skills that give Claude Code, Cursor, Codex, OpenCode, Antigravity and Windsurf a UI/UX design expert, site design DNA, motion mechanics and live Chromium visual QA (accessibility, Core Web Vitals).",
   "license": "MIT",
@@ -30,7 +30,17 @@
     "skills/",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "README.md"
+    "README.md",
+    "scripts/render-facts.mjs",
+    "scripts/design-assets.mjs",
+    "scripts/compare-renders.mjs",
+    "scripts/import-tokens.mjs",
+    "scripts/verify-activation.mjs",
+    "scripts/review-composition.mjs",
+    "scripts/review-identity.mjs",
+    "scripts/review-motion.mjs",
+    "scripts/font-face.mjs",
+    "scripts/lib/cdp.mjs"
   ],
   "scripts": {
     "build": "cargo build --release",

@@ -15,7 +15,7 @@ layoza design-system "<brief>" --mode new --json
 - **Directions** are structural skeletons (layout composition, content
   treatment, dials), not finished looks. Their palettes and fonts come from a
   generic industry profile, so the visual world comes from
-  [`layoza-art-direction`](../layoza-art-direction/SKILL.md) (seven worlds,
+  [`layoza-art-direction`](../layoza-art-direction/SKILL.md) (three rendered compositions,
   `layoza deal`, world from far and subject up close).
 - **Dials** (0–10): Design Variance, Motion Intensity, Visual Density. Use them
   as a starting register; the user's prompt and the committed world override them.
@@ -32,3 +32,6 @@ For apps, dashboards, admin and tools ([`layoza-product-ui`](../layoza-product-u
 - **Motion Intensity ≤ 2**: the "Tool / product UI" personality, 120/200/280ms, no decorative motion.
 
 Present one extra direction type for these briefs: **"Category standard, polished, with one signature move"**: the layout users already know, executed better than the category's usual product (tinted shell, tuned type, complete states) plus one named distinctive move (a signature data treatment, a precise accent, brand-world empty states). It is usually the committed direction.
+
+## Creative process authority
+For composition, asset acquisition, automatic selection and visual review, follow `skills/layoza/references/creative-process.md`. It supersedes conflicting quotas, world lotteries, mandatory user-pick pauses and numeric taste pass marks.

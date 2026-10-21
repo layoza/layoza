@@ -8,6 +8,73 @@
 
 use crate::register::brief_registers;
 
+/// Small execution kit, shared by the brief and JSON MCP responses. These are starting
+/// tokens, not a layout template or a substitute for the incumbent site's tokens.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct ExecutionFoundation {
+    pub authority: String,
+    pub spacing_px: Vec<u16>,
+    pub layout_css: String,
+    pub type_fit: String,
+    pub actions: String,
+    pub motion: MotionDelivery,
+}
+
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct MotionDelivery {
+    pub dial: u8,
+    pub engine: String,
+    pub default_policy: String,
+    pub runtime_asset: String,
+    pub section_runtime_asset: String,
+    pub section_authoring: String,
+    pub tier: String,
+    pub deliverable: String,
+    pub scene_spec: Vec<String>,
+    pub evidence: String,
+}
+
+pub fn motion_delivery(dial: u8) -> MotionDelivery {
+    let dial = dial.min(10);
+    let (tier, deliverable) = match dial {
+        0 => ("none", "Static composition and immediate state feedback. No entrance, ambient, scrub or hover travel."),
+        1..=3 => ("quiet", "Clear control feedback and restrained transitions. A calm brief does not require section reveals."),
+        4..=6 => ("expressive", "A coordinated opening and subject-specific interaction or scroll scene, where the content supports it. Avoid unrelated effects."),
+        _ => ("high", "A visibly transformative signature scene, coordinated type/art opening and connected section handoffs. Describe what changes shape, scale, composition or state; a progress line, floating cards and small translate/rotate tweens alone do not deliver a highly animated brief. Restage the scene for touch screens."),
+    };
+    MotionDelivery {
+        dial,
+        engine: if dial == 0 { "none" } else { "gsap" }.into(),
+        default_policy: "Include purposeful animation by default. Use GSAP for authored DOM, SVG and Three.js state animation unless the user explicitly requests another engine or no animation. Dial 0 creates no decorative timelines or animation loops. Reduced-motion preferences resolve to complete stills; focus and semantic state updates remain immediate.".into(),
+        runtime_asset: "skills/layoza-animations/assets/gsap-motion.mjs".into(),
+        section_runtime_asset: "skills/layoza-animations/assets/section-motion.mjs".into(),
+        section_authoring: "Use recommend_animation.motion_plan for a content-specific thesis, section transformations and phone staging. Rich motion needs connected chapter mechanisms, not repeated reveals. Verify normal playback with scripts/review-motion.mjs; plans alone are unverified.".into(),
+        tier: tier.into(),
+        deliverable: deliverable.into(),
+        scene_spec: if dial == 0 { Vec::new() } else { vec![
+            "Subject/object and the idea its transformation communicates".into(),
+            "Trigger, start composition, transformation, resolved composition and handoff".into(),
+            "Timing/easing, phone staging, pause/interrupt behavior, reduced-motion still and teardown".into(),
+        ] },
+        evidence: if dial >= 7 {
+            "Inspect a recording on desktop and phone, including the actual opening and scroll transitions. Sample signature scenes at start/25/50/75/end. Judge the visible transformation, continuity and legibility; recipe count and a clean still screenshot cannot establish motion quality."
+        } else {
+            "Inspect the actual state changes; verify readable static/no-JS and reduced-motion states."
+        }.into(),
+    }
+}
+
+pub fn execution_foundation(dial: u8) -> ExecutionFoundation {
+    ExecutionFoundation {
+        authority: "Starter values for new work only. Explicit brief sizes and existing project tokens win. Optical composition still requires render review.".into(),
+        spacing_px: vec![4, 8, 12, 16, 24, 32, 48, 64, 96, 128],
+        layout_css: ":root{--gutter:clamp(20px,4vw,64px);--content:1320px;--section-space:clamp(64px,8vw,128px);--copy-gap:24px;--control-gap:12px;--control-height:52px} .container{width:min(calc(100% - 2 * var(--gutter)),var(--content));margin-inline:auto} .actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--control-gap)} .actions>a,.actions>button{min-height:var(--control-height);display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:12px 24px;font:600 1rem/1.25 var(--font-body);text-align:center}".into(),
+        type_fit: "Use each concept's font pair and size tokens, then fit the actual copy at 320/390/768/1440px. Set role-specific leading and measure; start display tracking near -0.03em, body at 0, and inspect counters/word gaps before tightening. Keep heading, supporting copy and action as one aligned group. Remove unearned italic, symbol and label voices rather than adding fonts. A large headline alone is not a hierarchy; examine its relationship to navigation, copy, art and actions at physical size. Recompose phone line breaks instead of shrinking the whole desktop.".into(),
+        actions: "One clear primary action per decision group. Secondary actions share baseline and hit height, with visibly quieter emphasis. Keep label and icon together without arbitrary space-between gaps; allow the group to stack on narrow screens. Check real labels, focus/hover/pressed/disabled states, text zoom and open menus. Place art in a reserved grid/stage; its motion must not collide with copy or actions. Use smaller gaps within a content group than between groups; do not compensate for a weak composition with empty height.".into(),
+        motion: motion_delivery(dial),
+    }
+}
+
 /// Measurable thresholds for one register. `conformance` checks renders against these.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct CraftTuning {
@@ -120,7 +187,33 @@ pub fn craft_floor(registers: &[&str]) -> Vec<String> {
 
 /// The craft floor read straight from a brief.
 pub fn craft_floor_for_brief(brief: &str) -> Vec<String> {
-    craft_floor(&brief_registers(brief))
+    let signals = crate::intelligence::brief_signals(brief);
+    let mut floor = craft_floor(&brief_registers(brief));
+    let product = matches!(signals.surface, crate::intelligence::Surface::ProductUi | crate::intelligence::Surface::DevTool);
+    let lower = brief.to_lowercase();
+    for rule in &mut floor {
+        if rule.starts_with("Composition:") {
+            *rule = "Composition: choose section forms from the content and reading order. Repeated rows, equal cards and consistent app panels are useful when people compare equivalent items. Vary composition only when it improves hierarchy; no minimum number of layout kinds.".into();
+        } else if rule.starts_with("Hero:") {
+            *rule = if product { "Hero: this is a working interface. Put the primary task, essential quantities and actionable exceptions in view, including on phones. Use the product itself; no required marketing hero, stock photograph or forced display headline." } else { "Hero: establish the subject, dominant visual relationship and useful next action. Let the actual content determine the number of pictures, amount of copy and first-screen balance; no mandatory picture or fixed text-block quota." }.into();
+        } else if rule.starts_with("Imagery:") {
+            *rule = if lower.contains("gallery") || lower.contains("archive") { "Imagery: preserve the complete composition of collection works with intrinsic sizing or object-fit: contain. Use whitespace deliberately around differing aspect ratios. Keep artist, title, date and source readable; cropping requires an explicitly labelled detail view." } else { "Imagery: use relevant, licensed material and truthful labels. Decide crop and aspect ratio for each image's role; no universal ratio or radius. Label illustrative stock near the image and never imply it shows the actual client. Text on images must remain readable at 4.5:1." }.into();
+        } else if rule.starts_with("Colour:") {
+            *rule = "Colour: respect pinned brand colours and monochrome constraints. Assign clear roles to grounds, text, actions and status; choose saturation and colour area from the concept, without an accent-area quota. Body and secondary text need 4.5:1 contrast, large text 3:1.".into();
+        } else if rule.starts_with("Motion:") {
+            let dial = crate::intelligence::motion_dial_pin(brief)
+                .unwrap_or(if signals.motion_bias >= 4 { 8 } else { 4 });
+            let dial = signals.motion_cap.map_or(dial, |cap| dial.min(cap));
+            *rule = format!("Motion: {} Keep content readable before initialization, honor prefers-reduced-motion and clean up timelines/listeners. {}", motion_delivery(dial).deliverable, motion_delivery(dial).evidence);
+        } else if rule.starts_with("Spacing rhythm:") {
+            *rule = "Spacing rhythm: use a coherent scale suited to density and content. Group related controls tightly and separate different tasks clearly. Preserve incumbent tokens; do not impose fixed section padding or an arbitrary 4/8px scale on every project.".into();
+        } else if rule.starts_with("Craft:") {
+            *rule = "Craft: use convincing material and characterful typography where the subject supports it. State prices and hours as readable text. Licensed illustrative stock is acceptable when honestly labelled; no compulsory picture count.".into();
+        } else if signals.motion_cap == Some(0) && rule.starts_with("Button states") {
+            *rule = "Button states: author hover, :active, disabled and :focus-visible feedback without movement. Use a visible 2px focus ring with 3:1 contrast; do not change the control's size or hide its label.".into();
+        }
+    }
+    floor
 }
 
 /// Things a professional page never does, whatever the register. A brief that asks for one by
@@ -139,7 +232,7 @@ pub fn anti_slop() -> Vec<String> {
         "Gradient text, decorative glows, glass panels and blurred blobs; hard offset block shadows outside a brutalist world.",
         "Monospace type as a costume for 'technical' rather than for code or data.",
         "The same fade-up entrance on every section, scroll-jacking, parallax on body text, and hover effects that change an element's size.",
-        "Placeholder, stock or AI-filler pictures, invented logos, invented testimonials, lorem ipsum.",
+        "Misleading placeholder, stock or AI-filler pictures presented as client evidence; invented logos, invented testimonials, lorem ipsum. Licensed illustrative material is allowed when labelled truthfully.",
         "More than two typefaces, or more than one accent colour competing for the eye.",
         "Centred paragraphs longer than three lines, and prose that runs the full width of a wide screen.",
     ]
@@ -151,6 +244,28 @@ pub fn anti_slop() -> Vec<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn delivery_tracks_intent_without_forcing_animation_or_exceeding_scale() {
+        assert!(motion_delivery(0).scene_spec.is_empty());
+        assert_eq!(motion_delivery(3).tier, "quiet");
+        assert_eq!(motion_delivery(6).tier, "expressive");
+        assert_eq!(motion_delivery(8).tier, "high");
+        assert_eq!(motion_delivery(255).dial, 10);
+        let f = execution_foundation(8);
+        assert_eq!(f.motion.dial, 8);
+        assert!(f.spacing_px.windows(2).all(|s| s[0] < s[1]));
+        assert!(f.spacing_px.iter().all(|n| n % 4 == 0));
+        for (brief, high) in [
+            ("highly animated agency, motion intensity: 8/10", true),
+            ("highly animated agency, motion intensity: 2/10", false),
+            ("highly animated agency, no animation", false),
+        ] {
+            let floor = craft_floor_for_brief(brief);
+            let motion = floor.iter().find(|r| r.starts_with("Motion:")).unwrap();
+            assert_eq!(motion.contains("visibly transformative"), high, "{motion}");
+        }
+    }
 
     fn has_number(s: &str) -> bool {
         s.chars().any(|c| c.is_ascii_digit())

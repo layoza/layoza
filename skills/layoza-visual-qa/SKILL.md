@@ -3,6 +3,8 @@ name: layoza-visual-qa
 description: Real-browser verification with `layoza qa` (headless Chromium at 1440/768/375, scrolled like a visitor), what its measured rules mean, how objective errors differ from design critique, and before/after comparison.
 ---
 
+For a full-page composition review, run `node scripts/review-composition.mjs <url-or-html> <output-directory>` from the Layoza package. It captures full pages at 1440, 768 and 390 and measures type scale, first-screen fill, section rhythm and media reach. Read the saved images and `composition-review.json`. Its observations are review prompts, not verdicts: judge them against the brief and the chosen identity. Keep objective accessibility and functional checks in the normal QA pass.
+
 # Layoza: Visual QA (`layoza qa`)
 
 QA is the floor under the design, not the goal. Design critique lives in
@@ -33,7 +35,7 @@ screenshots and look at them; the report alone never proves a design.
 | `warning` | `label-wrap`, `heading-crowding`, `ios-input-zoom`, `field-autocomplete`, `dark-color-scheme`, `image-no-size`, `pointer-not-button`, `transition-all`, `design-system-*` drift | Objective, but needs judgment. Fix or justify. |
 | `critique` (`CRAFT-*`) | template chrome, card kits, `hero-art-scale`, overused fonts, monotonous spacing, and more | Generated-page tells. Review them against the committed direction. |
 
-Lab LCP, CLS and INP are measured; an unmeasured value is `null`, never a pass.
+Speed diagnostics are off by default, including with `--full`. Use `layoza qa <target> --performance` or MCP `audit_performance` only when the user asks. Unmeasured speed values remain `null`; they do not block design completion.
 
 ## Rules for fixing
 

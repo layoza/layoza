@@ -58,8 +58,8 @@ entry with the best-built bike scored highest on desirability.
    of each pinned chapter and as the reduced-motion poster (use the `?t=`
    seek harness in `layoza-animations/reference/library-rules.md` so captures
    are exact, not scroll-timed); every frame must
-   be a complete, lit composition. Hold about 60fps on mid hardware (around
-   20fps reads as broken) and LCP ≤ 2.5s.
+   be a complete, lit composition. Inspect actual playback for stutter; speed
+   measurements are optional and never a design-workflow gate.
 
 7. **Hero art with type:** zone grid, knock-out mask, camera fit for 375 and
    pinned-stage rules live in `layoza/references/kinetic-composition.md`.
@@ -75,3 +75,39 @@ Generate a complete Three.js or React Three Fiber scene with built-in disposal a
 layoza animate --recipe threejs-interactive-stage --framework react --intensity 8
 ```
 Or call the MCP tool `recommend_animation` with `category: "three_experience"`, plus `framework` and `intensity`.
+
+For a portfolio or studio brief with real supplied artwork, retrieve
+`recipe: "threejs-spatial-work"` with `motion_intensity: 9`. Its executable module is also at
+[assets/spatial-work-stage.mjs](assets/spatial-work-stage.mjs). Inject the project's
+pinned THREE module, artwork URLs/aspect ratios and selected design-system colours.
+Connect `setProgress()` to an authored scroll transition; connect `setPaused()` to
+the page's motion control and call `dispose()` on teardown. It includes curved
+surface-to-gallery-to-selected-work states, a phone stack and observable lifecycle
+diagnostics. This is one viable mechanism, not a mandatory aesthetic.
+
+For a web development agency, show its actual work or a truthful interface
+construction rather than treating a rotating primitive as the studio's identity.
+Keep complete semantic captions and controls beside the canvas. Review the
+handoff between the spatial work and the following portfolio: a disconnected
+3D showcase followed by unrelated cards is still a weak idea. During section
+motion keep words inside their reserved area; avoid offscreen text becoming an
+empty slab on phones. Keep artwork and captions in separate flow boxes so
+transforming an image cannot collide with the project name.
+
+Inspect which works remain recognizable on touch screens: a depth stack with
+only its front image visible may technically contain three projects while
+communicating only one. The spatial-work starter uses a complete feature above
+two smaller work surfaces on phones. Adapt that arrangement to the actual art,
+and bring it closer to the proposition without squeezing the action labels or
+shrinking useful copy. Canvas contrast does not substitute for readable HTML
+scene captions and project metadata.
+
+For actual geometry, retrieve `recipe: "threejs-scene-staging"` or use
+[assets/scene-staging.mjs](assets/scene-staging.mjs). Its `fitPerspectiveBox`
+fits the current pose at the actual aspect/view direction, excluding infinite
+floors and scenery. Compare the assembled AND separated bounds: a model can be
+uncropped yet much too small for its desktop stage. Use `scenePhase` with the
+scene's real transition thresholds and brief-specific explanations. Keep the
+caption strip in normal HTML flow outside the canvas; the highlighted phase
+must describe what the geometry is actually doing. These helpers supply camera
+and narrative primitives, not a universal building or a mandatory drawing style.

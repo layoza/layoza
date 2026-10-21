@@ -25,7 +25,7 @@
 
 ```bash
 npx layoza init            # adds the skills + MCP server to every agent it finds in this project
-npx layoza qa index.html   # 1440 / 768 / 375 px Chromium check: contrast, overflow, focus, menu, LCP, CLS
+npx layoza qa index.html   # design and usability: contrast, overflow, focus, menu, screenshots
 ```
 
 Then just talk to your agent. Example prompts:
@@ -66,7 +66,7 @@ Six setups got the same one-line brief, the same model (Claude Opus 5.5) and one
 | [taste-skill](https://github.com/Leonxlnx/taste-skill) | Open-source design skill |
 | No skill | Plain Claude, same prompt |
 
-A fresh blind judge then compared scroll stills at 1440 and 375 px for design, usability, creativity and content. Rival pages were frozen; only Layoza was rebuilt between rounds. Judge the pages yourself below, or open any of them in [`examples/benchmark-*`](examples).
+A fresh blind judge then compared scroll stills at 1440 and 375 px for design, usability, creativity and content. Rival pages were frozen; only Layoza was rebuilt between rounds. Judge the pages yourself below.
 
 <details open>
 <summary><b>Restaurant brief</b>: a harbour seafood kitchen</summary>
@@ -118,7 +118,7 @@ npx layoza qa path/to/index.html
 | **Layout expert** | An industry read of the brief, 0–10 design dials, and three art directions that differ in layout, type, colour, content treatment and motion | `layoza design-system "<brief>"` · MCP `get_design_system`, `recommend_layout` |
 | **Site DNA** | For an existing site: its tokens, type scale, spacing, components and motion, written to `DESIGN.md`, `BRAND.md`, `MOTION.md` and `SITE-DNA.json` | `layoza inspect . --write` · MCP `inspect_project`, `extract_site_dna`, `inspect_site` |
 | **Motion mechanics** | 71 hero, section and micro mechanics dealt per niche and intensity, so a law firm gets calm, legible motion and an agency gets a kinetic hero | `layoza mechanics deal "<brief>"` · MCP `deal_mechanics`, `recommend_animation` |
-| **Visual QA** | Headless Chromium at 1440 / 768 / 375 px checks per-element contrast, clipping, overlap, focus-not-obscured, the phone menu (opens, traps focus, Escape closes) and lab LCP / CLS, plus 45 craft critiques | `layoza qa <file-or-url>` · MCP `capture_screenshots`, `audit_accessibility`, `audit_performance`, `verify_functional` |
+| **Visual QA** | Headless Chromium at 1440 / 768 / 375 px checks per-element contrast, clipping, overlap, focus-not-obscured, the phone menu (opens, traps focus, Escape closes) plus craft critiques; speed diagnostics are optional | `layoza qa <file-or-url>` · MCP `capture_screenshots`, `audit_accessibility`, `audit_performance`, `verify_functional` |
 | **Safe changes** | A baseline before a redesign, a before/after comparison, and one-command rollback | `layoza baseline create`, `layoza verify .` · MCP `compare_before_after`, `safe_rollback` |
 
 Output is written in the project's own stack:
@@ -224,7 +224,7 @@ codex mcp add layoza -- npx -y -p layoza layoza-mcp
 | `check_deal_conformance` | Does the built page follow its dealt page shape (restraints, button, motif) |
 | `search_guidelines` · `get_guideline` · `recommend_chart` · `get_stack_notes` · `get_icon_guidance` | Bundled UX guidelines, chart picks, stack notes and icon guidance (read-only) |
 
-`recommend_layout` is deprecated and unlisted, so `tools/list` returns 21 tools.
+`recommend_layout` is deprecated and unlisted, so `tools/list` returns 24 tools.
 
 ### CLI extras
 
@@ -232,7 +232,7 @@ codex mcp add layoza -- npx -y -p layoza layoza-mcp
 - `layoza chart "<data shape>" [--task "<task>"]`: top three chart types with fallbacks.
 - `--window N` on `design-system` and `mechanics deal` sets how many ledger runs the uniqueness check compares (default 36, max 200); `--no-ledger` ignores the ledger.
 - `layoza audit . --strict` and `layoza verify . --strict` turn gate warnings (such as a new site with no recorded approval of its direction) into errors.
-- `layoza qa <file> --full` runs every browser pass; `--allow a,b` limits it to the named passes. The report lists `mode`, `passes` and `skipped_passes`.
+- `layoza qa <file> --full` runs full visual checks at every width. Speed checks are off by default; request `--performance` separately. `--allow a,b` limits it to the named passes. The report lists `mode`, `passes` and `skipped_passes`.
 - `layoza conform <file> --deal deal.json [--direction N]` checks the built page against the page shape it was dealt (`design-system --json` output): every restraint rule, the button shape and the motif, measured in Chromium at 1440px and 390px. It prints PASS / FAIL / unknown with evidence and a 0-100 score, and exits 2 when a check fails. QA finds defects; `conform` finds drift from the deal.
 - Environment: `LAYOZA_QA_TIMEOUT_SECS` (browser QA timeout), `LAYOZA_PLAYWRIGHT_DIR` (where Playwright is installed), `LAYOZA_QA_ENGINE=python` (use the Python Playwright engine).
 
@@ -294,3 +294,7 @@ Layoza adapts ideas, not files, from open-source design skills under Apache-2.0 
 ## License
 
 MIT
+
+## Evidence-backed design workflow
+
+The default MCP tool list exposes all 24 supported tools. `get_design_system` accepts `brief_context` to preserve the actual client subject, facts and pinned choices and returns three compositions even in its default brief. `design_assets` inventories/registers real images with provenance; `import_design_tokens` imports local DTCG/Figma Variables JSON with aliases and modes; `review_design` persists actual screenshot evidence and flags stale source/renders; `compare_before_after` can decode and compare supplied PNG screenshots. Performance diagnostics remain opt-in.

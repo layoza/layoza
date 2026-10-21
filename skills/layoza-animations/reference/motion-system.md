@@ -50,9 +50,10 @@ Write the result as tokens (`--dur-quick`, `--dur-std`, `--dur-slow`,
 - **Crowd limit.** With three or more animated items, at most about a third
   move at once. Keep a whole stagger under ~500ms, and under ~20 animated
   items in one viewport.
-- **No sameness.** Within one scene, no more than two tweens share an ease
-  and direction. The slowest beat is about 3× the fastest. Vary entry
-  directions to follow the composition.
+- **Coherent grouping.** Parts of one group can share an ease and direction;
+  coordinate their stagger. Avoid copying that same entrance across unrelated
+  sections. Vary pacing where the reading order calls for it, not to meet a
+  quota of different effects.
 - **Long travel gets a waypoint.** Movement across more than a third of the
   screen gets an intermediate keyframe or an arc, never a straight slide.
 - **Depth by speed.** Parallax layers move at about 1.0×, 0.5× and 0.2×.

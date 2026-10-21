@@ -15,7 +15,7 @@ art loop once the page scores 8; each failed line is a named fix.
 | 4 | **Two or three sizes, nothing between.** Count the font sizes outside body copy: no more than 3. A smooth five-step scale reads as a template. | Merge the in-between sizes. |
 | 5 | **Usability polish.** All of these hold: <ul><li>body text 16px or more and nothing under 13px;</li><li>field edges 3:1;</li><li>submit button 44px or more;</li><li>radios for one-of-many choices;</li><li>mobile labels two lines or fewer;</li><li>the primary action in the header at every width.</li></ul> Per the juror source, this is the gap between an Honourable Mention and Site of the Day. | The usability pass in `finish.md`. |
 | 6 | **Planned emptiness only.** The gaps between sections are larger than any gap inside one. Nothing is left blank under the footer or under a pinned stage, and every void has a matching mass on the other side. | End the document on the last element; move or cut the void. |
-| 7 | **One signature moment.** You can name the single scene or interaction that *is* the page. | Cut competing effects; strengthen that one. |
+| 7 | **A coherent motion identity.** Name the thesis and the content transformations that express it. Rich-motion briefs can have several substantial chapter mechanisms, with quiet reading intervals. | Cut unrelated effects; strengthen section-specific transformations rather than repeating entrances or stopping after the hero. |
 | 8 | **No layout twice in a row.** Label each section with one layout word (list, split, statement, full-bleed, mosaic, table). No word appears twice in a row or three times on the page. | Re-compose from the content. |
 | 9 | **Ornament is a budget.** One accent device (a rule, a stamp, a colour) appears on 3 or fewer element types. [judgment] | Strip it from everything except where it means something. |
 | 10 | **The subject's objects are drawn in detail.** A stranger can name the object and see how it works. | Apply the fidelity bar and the detail density test (§5) in `art-production.md` to every section, not only the hero. |
@@ -59,8 +59,8 @@ art loop once the page scores 8; each failed line is a named fix.
 - On animated briefs, one scroll-driven thread runs the whole page
   (`layoza-animations` §2e). Motion confined to one pinned section loses to a
   page that tells one story end to end.
-- Choreography (timing, easing, order) is what gets scored. One signature
-  moment beats many effects.
+- Choreography (timing, easing, order) matters more than effect count. Several
+  earned transformations can serve one thesis; unrelated novelty weakens it.
 - **Every still is finished art:**
   - The rest state, the reduced-motion state and every frame of a pinned story
     are complete compositions.
@@ -70,8 +70,7 @@ art loop once the page scores 8; each failed line is a named fix.
   swapped behind a fixed element, and scroll-linked scale. Parallax and spring
   bounce are rare among them.
 - 3D needs lighting, a material story and a camera that tells a beat; a plain
-  model is not direction. Hold 60fps (around 20fps reads as broken) and
-  LCP ≤ 2.5s.
+  model is not direction. Inspect actual playback and interaction. Speed measurements are optional.
 - No gate, no long preloader, and no blank first paint.
 
 ## 5. Things that look impressive and lose

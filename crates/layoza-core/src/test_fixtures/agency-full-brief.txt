@@ -1,0 +1,1042 @@
+# MASTER AI PROMPT: Build an Award-Winning, Ultra-Animated Web Development Agency Homepage
+
+## YOUR ROLE
+
+Act as a world-class creative director, Awwwards-winning web designer, senior creative developer, 3D interaction designer, motion design director, and UX engineer.
+
+Your mission is to **design and develop an extraordinary, production-quality homepage for a premium web development and digital experience agency.**
+
+This must NOT look like a typical agency template, generic SaaS website, or basic landing page.
+
+Create an immersive, visually spectacular, highly interactive digital experience that feels like it was designed by a top global creative agency.
+
+**The entire homepage must be highly animated, from the first frame through the final footer interaction.**
+
+### Creative benchmark
+
+Study the creative quality, visual sophistication, transitions, typography, and interaction patterns associated with:
+
+- Awwwards Site of the Day and Site of the Year winners
+- Active Theory
+- Locomotive
+- RESN
+- Immersive Garden
+- Bruno Simon
+- Cuberto
+- Dogstudio
+- Lusion
+- Unseen Studio
+
+Take inspiration from their craftsmanship, not their exact layouts or designs. Create a distinctive visual identity and original interactions.
+
+## 1. CREATIVE DIRECTION
+
+**Design concept: "THE DIGITAL PLAYGROUND"**
+
+The website must feel like a living digital universe.
+
+Every section should introduce a new visual experience while remaining connected to one cohesive creative system.
+
+Visual direction:
+
+- Futuristic editorial design
+- Experimental asymmetric layouts
+- Bold kinetic typography
+- Premium dark visual identity
+- Sculptural 3D objects
+- Smooth cinematic camera movement
+- Interactive 3D worlds
+- Creative masks and clipping transitions
+- Glass and liquid-like materials
+- Magnetic interactive elements
+- Sophisticated lighting
+- Layered parallax
+- Fluid shape transformations
+- Rich animation choreography
+- Unexpected hover effects
+- High-end art direction
+
+Avoid ordinary cards, generic gradients, standard agency templates, random floating blobs, and repetitive scroll-fade effects.
+
+### Color system
+
+Use the following as the starting palette:
+
+- Background: Obsidian Black `#08090D`
+- Secondary background: Charcoal `#151720`
+- Primary typography: Warm White `#F6F5F2`
+- Electric accent: Acid Lime `#D7FF3F`
+- Secondary accent: Cobalt Blue `#536DFF`
+- Supporting accent: Metallic Silver `#B4BAC7`
+
+Use restrained but striking accent colors with strong contrast.
+
+Design should feel luxurious, futuristic, daring, and editorial rather than like a gaming website.
+
+### Typography
+
+Use expressive oversized display typography paired with clean, highly legible supporting text.
+
+- Huge animated hero heading
+- Variable-font weight transitions
+- Split-text animations
+- Letter-by-letter reveals
+- Responsive kinetic typography
+- Horizontal marquee text
+- Scroll-controlled text scaling
+- Masked word reveals
+- Carefully designed text distortion
+
+Typography itself should be one of the primary visual attractions.
+
+---
+
+## 2. ANIMATION TECHNOLOGY
+
+Use the best suitable technologies for each type of interaction.
+
+### Primary animation technologies
+
+**GSAP + ScrollTrigger**
+- Complex animation timelines
+- Pinned scroll sections
+- Scrubbed scroll animations
+- Split-text sequences
+- Horizontal scrolling galleries
+- SVG path motion
+- Section transitions
+- Staggered reveals
+- Layered parallax
+- Scroll-based camera control
+
+**Three.js / React Three Fiber**
+- Interactive 3D objects
+- Dynamic lighting
+- Custom shaders
+- Scene transitions
+- Camera movement
+- Realistic materials
+- Particles
+- Depth and perspective
+- Mouse-reactive 3D objects
+
+**Framer Motion / Motion for React**
+- React component transitions
+- Layout animations
+- Shared-element animations
+- Micro-interactions
+- UI state transitions
+
+**WebGL / GLSL**
+- Image distortion
+- Liquid effects
+- Displacement transitions
+- Custom cursor distortion
+- Animated shader materials
+- Organic motion
+
+**Lenis**
+- Smooth scrolling coordinated with ScrollTrigger
+
+**Optional**
+- SVG animation
+- Lottie
+- CSS transforms
+- View Transitions API
+- WebGPU only when justified and supported by graceful fallback
+
+Choose tools according to the animation requirements rather than using every library unnecessarily.
+
+The website must feel consistently fluid, premium, and intentional.
+
+---
+
+# 3. COMPLETE HOMEPAGE SECTIONS
+
+Create ALL the following homepage sections with custom visuals, original compositions, and rich interactions.
+
+## SECTION 01: CINEMATIC LOADING EXPERIENCE
+
+Before the homepage appears, present a stunning branded introduction.
+
+### Visuals
+
+Full-screen dark background.
+
+Center a custom 3D logo sculpture rotating slowly.
+
+A large animated numerical progress indicator appears.
+
+Tiny typographic details move around the composition.
+
+### Animations
+
+1. Progress counts smoothly toward 100%.
+2. Logo rotates with lighting changes.
+3. Fine lines expand from the center.
+4. Background grid subtly shifts.
+5. Brand lettering reveals character by character.
+6. At completion, the logo scales dramatically.
+7. A mask transition reveals the hero underneath.
+8. Header components animate into place.
+
+Implement real resource-loading progress where available, rather than pretending to load.
+
+Do not force visitors to watch a long intro on every visit.
+
+**Important:** This must feel like a premium cinematic opening, not a basic percentage counter.
+
+## SECTION 02: IMMERSIVE FULL-SCREEN HERO
+
+Create a spectacular above-the-fold experience that immediately communicates the agency's capabilities.
+
+### Layout
+
+Full viewport height with a visually dominant interactive 3D centerpiece.
+
+Left side:
+- Oversized headline
+- Short agency positioning statement
+- Animated call-to-action
+- Scroll discovery indicator
+
+Center/right:
+- Massive custom 3D sculpture
+- Cinematic lighting
+- Interactive visual effects
+- Animated spatial typography
+
+### Headline concept
+
+"WE DON'T JUST BUILD WEBSITES."
+
+Followed by an animated second line cycling between:
+
+"WE BUILD EXPERIENCES."
+
+"WE BUILD THE FUTURE."
+
+"WE MAKE DIGITAL FEEL ALIVE."
+
+### Signature 3D visual
+
+Create a detailed abstract digital structure made from interconnected metallic rings, translucent glass layers, and glowing internal geometry.
+
+The structure must feel like a bespoke art installation rather than a stock 3D asset.
+
+### Hero animations
+
+- Cinematic camera entrance
+- Staggered text reveals
+- 3D sculpture assembling from fragments
+- Mouse-driven rotation
+- Depth-based parallax
+- Shader-based surface movement
+- Moving light reflections
+- Floating detail labels
+- Animated background grid
+- Mouse-following spotlight
+- Button magnetic attraction
+- Scroll indicator pulsing
+- Subtle continuous 3D idle motion
+
+### Scroll exit transition
+
+When scrolling down:
+
+1. Hero heading scales dramatically.
+2. 3D object begins rotating.
+3. Camera moves through the sculpture.
+4. Background transforms.
+5. Hero text disappears behind animated masks.
+6. Next section emerges from the 3D environment.
+
+Make the transition seamless and unforgettable.
+
+---
+
+## SECTION 03: ANIMATED AGENCY INTRODUCTION
+
+### Headline
+
+"WE TURN COMPLEX IDEAS INTO IMPOSSIBLE-TO-IGNORE DIGITAL EXPERIENCES."
+
+Use huge display typography occupying much of the viewport.
+
+### Composition
+
+Minimal background with enormous typographic layers, an animated 3D object, and editorial text.
+
+### Animations
+
+- Scroll-triggered word highlighting
+- Text revealing through animated masks
+- Huge words changing scale
+- Animated underline trails
+- Background light shifting
+- Decorative elements orbiting around text
+- 3D object responding to scroll position
+- Color inversion while scrolling
+
+Some text should move horizontally while the rest moves vertically.
+
+Conclude with a strong statement:
+
+"STRATEGY. DESIGN. DEVELOPMENT. IMPACT."
+
+Reveal each word with its own unique motion behavior.
+
+---
+
+## SECTION 04: SERVICES AS AN INTERACTIVE DIGITAL UNIVERSE
+
+Do not create a boring four-card services grid.
+
+Build an immersive interactive services experience.
+
+### Services
+
+1. Website Design
+2. Web Development
+3. E-commerce Development
+4. Creative Web Experiences
+5. AI-Powered Digital Solutions
+6. Website Performance & Optimization
+
+### Desktop concept
+
+Create a large central 3D object that changes its shape, material, or lighting according to the selected service.
+
+The left side contains a vertically arranged list of huge service names.
+
+The right side displays animated descriptions and relevant visuals.
+
+### Interactions
+
+When hovering over a service:
+
+- Service text stretches or changes weight.
+- 3D object morphs into a corresponding visual.
+- Background accent changes smoothly.
+- Animated description appears.
+- Small visual elements orbit the cursor.
+- A related project preview fades or slides into view.
+- The previous visual transitions out with distortion.
+
+### On scroll
+
+Each service becomes an immersive pinned chapter with a different spatial arrangement.
+
+Use scroll-driven transitions and dramatic typography without making navigation confusing.
+
+Add a clear "Explore Our Services" CTA.
+
+---
+
+## SECTION 05: FEATURED WORK WITH CINEMATIC PROJECT SHOWCASE
+
+### Heading
+
+"SELECTED WORK. UNREASONABLY GOOD RESULTS."
+
+This section must feel like a premium digital portfolio.
+
+Create 4 original fictional portfolio case studies, clearly presented as concept projects until replaced with real client work.
+
+### Sample concepts
+
+**01. VANTA**
+Luxury architecture and spatial design.
+
+**02. NOVA COMMERCE**
+Next-generation e-commerce experience.
+
+**03. ORBIT AI**
+Artificial intelligence platform.
+
+**04. MONO MOTION**
+Creative production studio.
+
+### Layout
+
+Mix different creative presentations:
+
+- Full-bleed project showcase
+- Split-screen case study
+- Horizontal image gallery
+- Layered floating project preview
+- Large typography integrated into imagery
+
+Avoid using exactly the same card layout for every project.
+
+### Animations
+
+- Full-screen scroll reveals
+- Image expansion from thumbnail to viewport
+- Interactive image distortion
+- 3D tilt on mouse movement
+- Magnetic project labels
+- Smooth perspective transformations
+- Background color morphing
+- Project numbers moving independently
+- Mouse-following "VIEW PROJECT" element
+- Masked image wipes
+- Scroll-triggered cinematic zoom
+
+Use truly designed project visuals rather than empty placeholder rectangles.
+
+Project links should lead to working case-study pages or clearly identified concept previews.
+
+---
+
+## SECTION 06: PINNED HORIZONTAL CREATIVE SHOWCASE
+
+Create a long immersive section where vertical scrolling controls a horizontal visual journey.
+
+### Concept
+
+"THE WAY WE THINK."
+
+Present the agency's design philosophy through five chapters.
+
+1. Discover
+2. Imagine
+3. Design
+4. Build
+5. Evolve
+
+Each chapter should have its own full-screen composition.
+
+### Animations
+
+- Horizontal scrolling driven by ScrollTrigger
+- Floating 3D elements
+- Large animated numbers
+- Animated connecting lines
+- Image parallax
+- Typography changing size
+- Camera zoom between chapters
+- Animated progress timeline
+- Layered scrolling speeds
+
+Ensure the entire section feels like a single continuous narrative.
+
+Provide a simpler vertical layout on mobile.
+
+---
+
+## SECTION 07: INFINITE CREATIVE MARQUEE
+
+Design a dramatic visual separator.
+
+Use huge moving text:
+
+"DESIGN THAT MOVES."
+
+"DEVELOPMENT THAT PERFORMS."
+
+"EXPERIENCES THAT MATTER."
+
+### Motion
+
+- Multiple marquees moving in opposite directions
+- Scroll-velocity-responsive speed
+- Animated outlined text
+- Moving graphical symbols
+- Interactive mouse hover pauses
+- Background transformations
+- Seamlessly looping movement
+
+Build the text loop without visible jumps.
+
+---
+
+## SECTION 08: OUR DEVELOPMENT EXPERTISE
+
+### Heading
+
+"BEAUTIFUL ON THE SURFACE. POWERFUL UNDER THE HOOD."
+
+Represent technical expertise through a futuristic interactive interface.
+
+### Technologies to showcase
+
+- React
+- Next.js
+- WordPress
+- Shopify
+- Laravel
+- WebGL
+- Three.js
+- Modern API integrations
+- AI integrations
+
+### Visual concept
+
+A 3D technology constellation.
+
+Each technology appears as a node arranged in an interactive spatial network.
+
+### Interactions
+
+- Nodes move organically.
+- Cursor proximity influences them.
+- Connections animate.
+- Selecting a technology reveals details.
+- Selected nodes become visually prominent.
+- Background lighting responds.
+- Camera subtly adjusts perspective.
+
+Also provide accessible, clickable text labels and a non-3D fallback.
+
+Do not imply certifications or partnerships that are not real.
+
+---
+
+## SECTION 09: WHY CHOOSE US WITH SCROLL-DRIVEN MOTION
+
+### Heading
+
+"NOT ANOTHER AGENCY. YOUR CREATIVE ADVANTAGE."
+
+Present four differentiation points:
+
+**01. Design-Driven Thinking**
+
+Beautiful interfaces informed by clear user needs.
+
+**02. Engineering Without Compromise**
+
+Maintainable development and strong technical foundations.
+
+**03. Performance-Focused Experiences**
+
+Fast, accessible, responsive digital products.
+
+**04. A True Creative Partnership**
+
+Collaborative thinking from concept through launch.
+
+### Animation concept
+
+Use a vertically stacked sequence of full-viewport visual panels.
+
+As each panel becomes active:
+
+- Previous panel rotates away in 3D.
+- New typography animates forward.
+- Background lighting changes.
+- Supporting illustrations assemble.
+- Numbers scale dramatically.
+- Decorative grids morph.
+- Text reveals along staggered paths.
+
+Each benefit should have an original visual concept.
+
+---
+
+## SECTION 10: LIVE INTERACTIVE WEB EXPERIENCE DEMO
+
+Create a section showing the agency's ability to build advanced digital experiences.
+
+### Headline
+
+"DON'T JUST TAKE OUR WORD FOR IT. INTERACT."
+
+### Experience
+
+Provide an interactive creative sandbox where users can control a WebGL object.
+
+Controls:
+
+- Change material
+- Change lighting
+- Rotate object
+- Switch shape
+- Toggle particle effects
+
+Use a beautiful custom control panel integrated into the composition.
+
+### Motion
+
+- Animated model morphing
+- Material transitions
+- Responsive lighting
+- Interactive camera movement
+- Smooth interface micro-interactions
+
+The controls must genuinely work.
+
+Do not create decorative controls without functionality.
+
+---
+
+## SECTION 11: CREATIVE PROCESS TIMELINE
+
+### Headline
+
+"FROM THE FIRST SPARK TO THE FINAL PIXEL."
+
+Create an animated five-step process.
+
+1. Discovery
+2. Strategy
+3. Experience Design
+4. Development
+5. Launch & Evolution
+
+### Layout
+
+Create a scroll-driven vertical timeline with a moving luminous path.
+
+Each stage introduces an illustrated or 3D visual.
+
+### Animations
+
+- Animated SVG path drawing
+- Glowing progress indicator
+- Scroll-triggered chapter activation
+- Step numbers morphing
+- Text splitting and revealing
+- Visual elements assembling
+- Background transitions
+- Dynamic progress indicators
+
+The progress line should track actual scroll position.
+
+---
+
+## SECTION 12: CLIENT TESTIMONIALS AND CREDIBILITY
+
+### Heading
+
+"GOOD WORK SPEAKS. GREAT PARTNERSHIPS ECHO."
+
+Create a visually sophisticated testimonial area.
+
+Use real testimonials only when supplied and approved.
+
+If no testimonials are available, create clearly marked layout examples that can be replaced later, or use a proof-free capabilities section.
+
+### Layout
+
+Large editorial quote typography.
+
+Support the composition with moving quotation marks, thin animated rules, and smooth horizontal transitions.
+
+### Animations
+
+- Quote text reveal
+- Content crossfading
+- Card perspective
+- Subtle parallax
+- Animated pagination
+- Drag interaction
+- Smooth spring-based changes
+
+Do not invent client endorsements, revenue figures, ratings, or awards.
+
+---
+
+## SECTION 13: AGENCY NUMBERS / IMPACT
+
+### Heading
+
+"BUILT TO MAKE AN IMPACT."
+
+Design an enormous editorial statistics section.
+
+Potential metric categories:
+
+- Projects delivered
+- Years of experience
+- Repeat clients
+- Countries served
+
+Populate them only with verified business figures.
+
+If real figures are unavailable, avoid fake numbers and use an alternative visual presentation of genuine capabilities.
+
+### Motion
+
+- Large numeral transitions
+- Rolling number animation
+- Scroll-linked typography scaling
+- Animated graphical lines
+- Responsive background elements
+- Smooth staggered reveals
+
+---
+
+## SECTION 14: INSIGHTS / JOURNAL
+
+### Headline
+
+"IDEAS WORTH SHARING."
+
+Create a visually attractive editorial content section.
+
+Use three original article concepts:
+
+- Why Digital Experiences Need More Than Beautiful Design
+- Building Faster Websites Without Sacrificing Creativity
+- The Future of Interactive Web Development
+
+### Layout
+
+Asymmetric editorial composition.
+
+One large featured article and two supporting articles.
+
+### Animations
+
+- Image parallax
+- Hover image zoom
+- Text mask reveals
+- Category label animations
+- Cursor-following arrow
+- Smooth layout transitions
+- Scroll-driven image clipping
+
+Use real blog links if articles exist, otherwise mark them as upcoming content.
+
+---
+
+## SECTION 15: EXPLOSIVE CONTACT CALL-TO-ACTION
+
+This must be one of the most memorable sections of the homepage.
+
+### Main headline
+
+"GOT A WILD IDEA?"
+
+After a dramatic animated transition:
+
+"LET'S MAKE IT REAL."
+
+### Visual design
+
+Full-screen background.
+
+Massive typography.
+
+Large reactive 3D object behind the text.
+
+Glowing circular interactive contact button.
+
+### Animation
+
+- Background expands from a small circular mask.
+- 3D sculpture transforms into a new shape.
+- Giant heading assembles from multiple directions.
+- Cursor creates subtle light trails.
+- Large CTA follows magnetic cursor movement.
+- Button deforms slightly when hovered.
+- Background particles react.
+- Typography shifts in depth.
+- Decorative orbiting rings intensify.
+
+### Main CTA
+
+"START A PROJECT ↗"
+
+Use a functional contact link or project inquiry form.
+
+Create an extremely smooth hover animation.
+
+Keep the primary CTA visually clear and accessible.
+
+---
+
+## SECTION 16: ANIMATED PREMIUM FOOTER
+
+Do not end with a static footer.
+
+Create an animated full-width closing experience.
+
+### Footer content
+
+- Agency logo
+- Brief positioning statement
+- Navigation links
+- Services links
+- Email address
+- Social links
+- Location
+- Copyright
+
+### Visual concept
+
+Oversized agency name filling the bottom of the viewport.
+
+Create an illuminated moving line above the footer.
+
+Add subtle reactive particles and a slowly shifting background.
+
+### Animations
+
+- Logo reacts to cursor
+- Oversized brand name reveals on scroll
+- Footer links have elegant animated hover treatments
+- Animated underline transitions
+- Social icons move subtly
+- Back-to-top button triggers smooth navigation
+- Background light changes
+- Final 3D object slowly rotates
+
+End the page with a polished, memorable visual finish.
+
+---
+
+# 4. GLOBAL ANIMATION SYSTEM
+
+Animations must exist throughout the entire website, not only in the hero.
+
+Implement a cohesive global motion language.
+
+### Custom cursor
+
+Create a premium interactive cursor with:
+
+- Smooth trailing movement
+- Magnetic interactions
+- Context-sensitive labels
+- Cursor transformations on links
+- Project preview cursor mode
+- Subtle distortion on selected media
+- Click feedback
+
+Disable cursor replacement on touch devices and preserve standard focus indicators.
+
+### Page transitions
+
+Create cinematic internal navigation transitions using:
+
+- Animated overlay masks
+- Perspective shifts
+- Typography movement
+- Image continuity
+- Coordinated navigation animations
+
+### Scroll behavior
+
+- Smooth scrolling
+- Scroll-controlled animations
+- Pinned storytelling
+- Horizontal movement
+- Depth transitions
+- Text masks
+- Color inversions
+- 3D object transformations
+- Scroll-speed responsiveness
+
+### Hover interactions
+
+Every significant interactive element should have a distinctive, purposeful response.
+
+Examples:
+
+- Magnetic buttons
+- Letter-shuffle text
+- Underline draws
+- Image displacement
+- Perspective tilt
+- Floating arrows
+- Morphing shapes
+- Animated borders
+
+Avoid applying the same hover effect everywhere.
+
+### Ambient motion
+
+Even while the user is not scrolling, the site should feel alive through subtle motion:
+
+- Light reflections
+- 3D object breathing
+- Particle drift
+- Floating typography details
+- Moving grid patterns
+- Gentle shader movement
+
+Ambient animation must remain subtle enough for comfortable reading.
+
+---
+
+# 5. MOBILE EXPERIENCE
+
+Do not simply scale down the desktop website.
+
+Design a carefully adapted mobile experience.
+
+Requirements:
+
+- Dedicated mobile hero composition
+- Optimized 3D rendering
+- Touch-compatible interactions
+- Reduced particle complexity
+- Mobile-specific animation choreography
+- Simplified pinned experiences where needed
+- Responsive typography
+- Large touch targets
+- Lightweight transitions
+- Accessible mobile navigation
+
+Preserve the creative direction while reducing computational demands.
+
+---
+
+# 6. PERFORMANCE AND ACCESSIBILITY
+
+A visually sophisticated website must still be practical.
+
+Target:
+
+- Smooth animation on capable devices
+- Consistent responsiveness
+- Excellent Core Web Vitals
+- Minimal layout shifts
+- Efficient WebGL rendering
+- Fast initial content visibility
+- Optimized 3D assets
+- Lazy loading for below-the-fold experiences
+- Responsive images
+- Compressed textures
+- Reduced GPU memory usage
+- Efficient animation cleanup
+
+Prefer GPU-friendly transforms and opacity changes.
+
+Avoid unnecessarily animating layout-triggering properties.
+
+### Accessibility
+
+- Support `prefers-reduced-motion`.
+- Provide a functional low-motion experience.
+- Maintain keyboard navigation.
+- Preserve visible focus indicators.
+- Maintain adequate text contrast.
+- Avoid scroll trapping.
+- Ensure important content remains readable without animations.
+- Pause unnecessary off-screen effects.
+- Provide semantic HTML.
+- Ensure controls have accessible names.
+
+Animations should enhance the website, not prevent visitors from using it.
+
+---
+
+# 7. IMPORTANT DESIGN QUALITY RULES
+
+DO NOT:
+
+- Build a generic agency landing page.
+- Use a basic hero with floating circles.
+- Fill the website with identical cards.
+- Rely only on fade-up animations.
+- Copy a popular agency website.
+- Use generic stock photos throughout.
+- Leave sections visually unfinished.
+- Create dead buttons.
+- Use fake client logos or testimonials.
+- Add animation for no meaningful reason.
+- Make the layout confusing.
+- Hide important information behind animation.
+- Create a visually empty hero.
+- Let the experience become slow or unresponsive.
+
+DO:
+
+- Create original, beautifully art-directed visuals.
+- Use advanced scroll animation.
+- Introduce different animation techniques between sections.
+- Create carefully timed cinematic transitions.
+- Develop consistent typography and spacing.
+- Build interactive 3D experiences.
+- Use strong visual hierarchy.
+- Make each section feel like a designed experience.
+- Combine creativity with actual conversion-focused UX.
+- Create functional navigation and CTAs.
+- Use production-ready component architecture.
+
+---
+
+# 8. IMPLEMENTATION INSTRUCTIONS
+
+Build the actual working homepage, not just a static design or written concept.
+
+Implement all 16 sections.
+
+Use production-quality frontend code and create reusable components for:
+
+- Navigation
+- Loading sequence
+- Hero scene
+- 3D object system
+- Scroll choreography
+- Service interactions
+- Portfolio showcases
+- Horizontal galleries
+- Interactive demo
+- Contact CTA
+- Animated footer
+
+Create shared animation utilities and consistent motion tokens.
+
+Ensure all GSAP timelines, ScrollTrigger instances, event listeners, and WebGL resources are cleaned up correctly.
+
+Prevent animation conflicts, memory leaks, and unnecessary rendering.
+
+Use realistic, high-quality agency copy.
+
+Use temporary brand name **"FORM / FUTURE"**, designed as a premium international creative development studio, but keep the brand identity easy to replace.
+
+Build the actual navigation, contact form or contact flow, portfolio links, and working interactions.
+
+If original 3D assets are necessary, create them procedurally or use properly licensed assets. Do not substitute unfinished empty spaces.
+
+---
+
+# 9. VISUAL QUALITY TEST
+
+Before considering the homepage complete, inspect every section and ask:
+
+1. Does this feel like a truly premium creative agency?
+2. Is the hero instantly impressive?
+3. Are the animations distinctive and meaningful?
+4. Does each section have its own visual identity?
+5. Are the transitions between sections seamless?
+6. Does the portfolio look like professionally art-directed work?
+7. Is the 3D interaction convincing?
+8. Is the typography exceptional?
+9. Does the mobile experience feel intentionally designed?
+10. Is navigation intuitive?
+11. Do all buttons and interactions work?
+12. Does the website stay smooth while scrolling?
+13. Is there a reduced-motion alternative?
+14. Does the final footer feel as polished as the opening hero?
+
+Fix anything that fails these checks.
+
+Use actual browser testing where available, and inspect the rendered website at multiple viewport sizes.
+
+---
+
+# 10. FINAL EXECUTION DIRECTIVE
+
+**DO NOT STOP AFTER THE HERO.**
+
+**DO NOT BUILD ONLY THE FIRST THREE SECTIONS.**
+
+**DO NOT DELIVER A GENERIC TEMPLATE WITH ANIMATION ADDED ON TOP.**
+
+Build the complete homepage, from the cinematic intro through the animated footer.
+
+Every major section must include a unique combination of motion design, typography, interactive visuals, and cinematic transitions.
+
+Pay special attention to the moments BETWEEN sections. They must feel deliberately choreographed rather than like disconnected blocks.
+
+Prioritize beautiful design, genuine interactions, clear content, optimized rendering, accessibility, and working functionality.
+
+The intended result is a distinctive, exceptionally polished creative agency website worthy of consideration for **Awwwards Site of the Day**, without claiming an award or guaranteeing one.
+
+**MAKE IT FEEL LIKE A LIVE DIGITAL ART EXPERIENCE THAT ALSO SELLS PROFESSIONAL WEB DESIGN AND DEVELOPMENT SERVICES.**

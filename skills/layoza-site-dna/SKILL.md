@@ -39,5 +39,5 @@ get new directions or sketches.
 
 ## Tested Example
 ```bash
-cargo run --quiet --bin layoza -- inspect examples/existing-site-preservation --write
+cargo run --quiet --bin layoza -- inspect path/to/site --write
 ```

@@ -3,7 +3,7 @@
 // Minimal MCP stdio client used to check a release before it is published. No dependencies.
 //
 //   node scripts/mcp-smoke.mjs [--cwd <dir>] -- <command> [args...]
-//   node scripts/mcp-smoke.mjs --cwd /tmp/empty -- npx --yes layoza@0.1.4 mcp
+//   node scripts/mcp-smoke.mjs --cwd /tmp/empty -- npx --yes layoza@0.1.5 mcp
 //
 // It runs initialize, notifications/initialized, tools/list, one read-only tools/call and ping,
 // checks that every stdout line is a JSON-RPC message, then closes stdin and waits for the
@@ -123,7 +123,7 @@ try {
   else console.log(`tools/call      ok  deal_mechanics returned ${text.length} chars`);
   if (text && !(/"uniqueness"/.test(text) && /"ledger"/.test(text))) fail("deal_mechanics: response lacks the uniqueness block or the ledger line");
   else if (text) console.log("uniqueness      ok  deal_mechanics carries uniqueness and ledger");
-  if (Array.isArray(tools) && tools.length !== 21) fail(`tools/list: expected 21 tools, got ${tools.length}`);
+  if (Array.isArray(tools) && tools.length !== 24) fail(`tools/list: expected 24 tools, got ${tools.length}`);
 
   // Guideline tools: read-only lookups into the bundled data
   for (const [name, args, want] of [

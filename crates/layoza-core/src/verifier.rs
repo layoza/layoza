@@ -73,7 +73,6 @@ pub const NEEDS_BROWSER: &[&str] = &[
     "Text contrast against the real backdrop (composited alpha, images, gradients) at computed font sizes",
     "Target size (WCAG 2.5.8), overlap, occlusion and sideways overflow from 320px to 1920px",
     "Focus visibility, focus order and keyboard reach of every control",
-    "Core Web Vitals (Lab LCP and CLS, throttled and unthrottled; INP proxy)",
     "Motion under prefers-reduced-motion and text left hidden by animations",
     "Legibility floors after the cascade (body text under 14px, labels under 12px)",
     "Look fingerprint and re-skin detection",
@@ -98,10 +97,9 @@ pub struct VisualRegressionComparison {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AuditReport {
     pub target_path: String,
-    /// True only when there are no objective errors and Core Web Vitals were measured and met.
+    /// True only when there are no objective errors and fresh browser evidence was ingested.
     pub passed_release_gate: bool,
-    /// "passed", "failed", or "unverified" (no objective errors or CWV failures, but Core Web
-    /// Vitals were not measured, so the gate could not be confirmed).
+    /// "passed", "failed", or "unverified" (no objective errors, but no fresh browser evidence).
     #[serde(default)]
     pub verification_status: String,
     /// What the gate covers. It measures defects; it never judges whether the design is good.
@@ -283,17 +281,17 @@ pub fn audit_project_with(
         cls_passes_target: cls.map(|v| v <= 0.10),
         measured,
     };
-    if !measured {
+    let browser_verified = !browser_cwv_source.is_empty();
+    if !browser_verified {
         findings.push(browser_finding(
-            "CWV-NOT-MEASURED",
+            "BROWSER-QA-NOT-MEASURED",
             Severity::Warning,
-            "performance",
+            "browser-qa",
             ".",
-            "Core Web Vitals were not measured, so the release gate is unverified, not passed.".into(),
-            "Run `layoza qa <file-or-url>` or pass lab_lcp_ms / lab_inp_ms / lab_cls.",
+            "No fresh visual browser QA report was ingested, so the design gate is unverified.".into(),
+            "Run `layoza qa <file-or-url>` for visual checks. Speed measurements are optional.",
         ));
     }
-    let cwv_failed = [cwv.lcp_passes_target, cwv.inp_passes_target, cwv.cls_passes_target].contains(&Some(false));
 
     let objective_error_count = findings
         .iter()
@@ -313,8 +311,8 @@ pub fn audit_project_with(
         .filter(|f| f.category == "accessibility" && f.severity == Severity::Error)
         .count();
 
-    let failed = objective_error_count > 0 || cwv_failed;
-    let passed_release_gate = !failed && measured;
+    let failed = objective_error_count > 0;
+    let passed_release_gate = !failed && browser_verified;
     if passed_release_gate {
         if let Some(ledger) = crate::history::ledger_path() {
             record_verified_direction(project_root, &ledger, &mut findings);
@@ -322,7 +320,7 @@ pub fn audit_project_with(
     }
     let verification_status = if failed {
         "failed"
-    } else if measured {
+    } else if browser_verified {
         "passed"
     } else {
         "unverified"
@@ -418,7 +416,7 @@ fn browser_finding(
 }
 
 /// Plain statement of what a passing gate means, carried in every report.
-pub const GATE_SCOPE: &str = "Defects only: accessibility, layout, performance and the recorded design process. Passing does not mean the design is good; that is judged on the screenshots and by the user.";
+pub const GATE_SCOPE: &str = "Design and usability defects: accessibility, layout and the recorded design process, backed by fresh browser evidence. Speed is optional and never blocks this gate. Design quality is judged on the screenshots and by the user.";
 
 /// Minimum logged screenshot reviews before a Mode A/D build can pass the gate.
 pub const MIN_ART_LOOP_ROUNDS: usize = 1;
@@ -584,14 +582,15 @@ fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &
                 })
         })
         .count();
-    if rounds < MIN_ART_LOOP_ROUNDS {
+    let current_visual_review = crate::creative::has_visual_selection(base_dir);
+    if rounds < MIN_ART_LOOP_ROUNDS && !current_visual_review {
         findings.push(browser_finding(
             "DESIGN-NOT-REVIEWED",
             Severity::Error,
             "design-process",
             rel,
             "No screenshot review is logged. Passing defect checks does not mean the design is good.".into(),
-            "Open the 1440 and 375 screenshots and the signature at the start, middle and end of its scroll, fix the three worst problems, then log `ROUND 1: <what changed>` (at most two rounds).",
+            "Inspect actual desktop and phone compositions, fix visible problems, and persist candidate paths, strengths, weaknesses and changes with review_design. Legacy ROUND notes remain accepted; the default review budget is three rounds, not a taste certificate.",
         ));
     }
     // An existing site follows its own design: no signature, subject or repeat checks.
@@ -599,26 +598,26 @@ fn audit_design_process_with(base_dir: &Path, ledger: Option<&Path>, findings: &
         return;
     }
     let signature = lines.iter().find_map(|l| l.strip_prefix("SIGNATURE:").map(|v| v.trim().to_string()));
-    if signature.as_deref().unwrap_or("").is_empty() {
+    if signature.as_deref().unwrap_or("").is_empty() && !current_visual_review {
         findings.push(browser_finding(
             "DESIGN-NO-SIGNATURE",
-            Severity::Error,
-            "design-process",
+            Severity::Info,
+            "design-critique",
             rel,
-            "No signature moment is recorded, so the page risks being a stack of stock parts that any business could use.".into(),
-            "Add `SIGNATURE: <what this subject does or reveals, how scroll or the hand drives it, its final frame>` to .layoza/direction.md and build it first.",
+            "No distinctive composition decision or current visual review is recorded; judge the actual page before suggesting extra effects.".into(),
+            "Record the chosen composition and visible tradeoff with review_design. A signature effect is optional; familiar patterns can serve the task.",
         ));
     }
-    // The motion level is decided per brief (0 none .. 5 immersive), not taken from a default.
+    // One motion scale throughout engine, skills and review: 0 none .. 10 immersive.
     let motion = lines.iter().find_map(|l| l.strip_prefix("MOTION:").map(|v| v.trim().to_string()));
-    if !motion.as_deref().unwrap_or("").starts_with(|c: char| ('0'..='5').contains(&c)) {
+    if motion.as_deref().unwrap_or("").split(|c: char| !c.is_ascii_digit()).next().and_then(|s| s.parse::<u8>().ok()).is_none_or(|n| n > 10) {
         findings.push(browser_finding(
             "DESIGN-NO-MOTION-LEVEL",
             Severity::Warning,
             "design-process",
             rel,
             "No motion level is decided, so the page falls back to a default amount of motion that may not fit the niche (an agency sells its motion; a clinic needs calm).".into(),
-            "Add `MOTION: <0-5> — <why this niche, audience and assets need it; the techniques chosen>` to .layoza/direction.md.",
+            "Add `MOTION: <0-10> — <why this audience and task need it>`. Zero means no animation.",
         ));
     }
     let blocks = crate::history::parse_direction(&text);
@@ -2113,24 +2112,14 @@ pub fn verify_before_after(
     if !after.accessibility.passes_automated_wcag22_aa && before.accessibility.passes_automated_wcag22_aa {
         unintended.push("Automated WCAG 2.2 AA accessibility regressed.".to_string());
     }
-    let (b, a) = (&before.core_web_vitals, &after.core_web_vitals);
-    for (name, was, now, value) in [
-        ("LCP", b.lcp_passes_target, a.lcp_passes_target, a.lcp_ms),
-        ("INP", b.inp_passes_target, a.inp_passes_target, a.inp_or_tbt_ms),
-        ("CLS", b.cls_passes_target, a.cls_passes_target, a.cls),
-    ] {
-        if was == Some(true) && now == Some(false) {
-            unintended.push(format!("{} regressed past its target (now {:.3}).", name, value.unwrap_or(0.0)));
-        }
-    }
 
     VisualRegressionComparison {
         baseline_present: true,
         viewports_compared: Vec::new(),
         comparison_basis: if pixel_diff_ratio.is_some() {
-            "Audit findings and Core Web Vitals. Screenshots were not diffed by Layoza; pixel_diff_ratio is the caller's own number.".to_string()
+            "Audit findings and an externally supplied pixel-change ratio; this function does not decode screenshots. Speed is optional and does not control acceptance.".to_string()
         } else {
-            "Audit findings and Core Web Vitals only. Screenshots were not diffed.".to_string()
+            "Audit findings only; no screenshot pixel-change measurement supplied. Speed is optional and does not control acceptance.".to_string()
         },
         pixel_diff_ratio,
         intended_changes: intended_descriptions,

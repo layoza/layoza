@@ -63,7 +63,7 @@ layoza verify [path] [--repair] [--json]
 ```
 `layoza conform <file|url> --deal <deal.json> [--direction N] [--json]` checks a built page against the page shape it was dealt. `--deal` takes saved `design-system --json` output (or one direction, or a bare `page_shape`). It measures render facts in headless Chromium at 1440px and 390px, read-only, and checks each restraint rule, the dealt button shape and the motif. Each check prints PASS, FAIL or unknown with evidence, and the score is the share of measured checks that pass. It exits 2 when any check fails. `qa` finds defects; `conform` finds drift from the deal.
 
-The release gate has three outcomes. **passed** (exit 0): no objective errors, and Core Web Vitals were measured and met. **failed** (exit 1): objective errors, or a Core Web Vital missed its target. **unverified** (exit 2): no objective errors, but Core Web Vitals were not measured, so run `layoza qa` first.
+The design gate has three outcomes. **passed** (exit 0): no objective errors and a fresh visual browser QA report. **failed** (exit 1): objective design, accessibility or usability errors. **unverified** (exit 2): no fresh browser report, so run `layoza qa` first. Speed diagnostics are off by default, including with `--full`. Request `layoza qa <target> --performance` separately when wanted; speed numbers never block the design gate or force rollback.
 
 ### 8. `layoza baseline`
 Creates or rolls back non-destructive design baseline snapshots in `.layoza/baselines/`.

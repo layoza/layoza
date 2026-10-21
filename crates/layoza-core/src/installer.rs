@@ -38,6 +38,40 @@ pub struct DoctorReport {
     pub agents: Vec<AgentTargetStatus>,
     pub smoke_test_passed: bool,
     pub issues: Vec<String>,
+    pub skill_source: String,
+    pub skill_installations: Vec<SkillInstallation>,
+    pub activation_note: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SkillInstallation {
+    pub path: String,
+    pub current: bool,
+    pub missing_or_changed: Vec<String>,
+}
+
+fn compare_skill_tree(source: &Path, installed: &Path, relative: &Path, changed: &mut Vec<String>) {
+    let Ok(entries) = fs::read_dir(source.join(relative)) else { return; };
+    for entry in entries.flatten() {
+        let rel = relative.join(entry.file_name());
+        if entry.path().is_dir() {
+            compare_skill_tree(source, installed, &rel, changed);
+        } else if fs::read(entry.path()).ok() != fs::read(installed.join(&rel)).ok() {
+            changed.push(rel.display().to_string());
+        }
+    }
+}
+
+fn skill_installation(source: &Path, installed: &Path) -> SkillInstallation {
+    let mut changed = Vec::new();
+    for name in REQUIRED_SKILL_NAMES {
+        compare_skill_tree(source, installed, Path::new(name), &mut changed);
+        if !installed.join(name).join("SKILL.md").is_file() && !changed.iter().any(|p| p == &format!("{name}{}SKILL.md", std::path::MAIN_SEPARATOR)) {
+            changed.push(format!("{name}/SKILL.md"));
+        }
+    }
+    changed.sort();
+    SkillInstallation { path: installed.display().to_string(), current: changed.is_empty(), missing_or_changed: changed }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -530,6 +564,22 @@ pub fn run_doctor(project_root: &Path) -> DoctorReport {
     );
     let smoke_test_passed = rec.directions.len() == 3 && !rec.matched_industry.slug.is_empty();
 
+    let skill_installations: Vec<_> = [SHARED_SKILLS_DIR, CLAUDE_SKILLS_DIR].iter()
+        .map(|rel| skill_installation(&skills_root, &project_root.join(rel))).collect();
+    for agent in &agents {
+        if agent.detected && !agent.skills_installed {
+            issues.push(format!("{}: project skills are missing. Source bundle validity does not establish agent discovery; global installation is not checked here.", agent.agent));
+        }
+        if agent.detected && !agent.mcp_configured {
+            issues.push(format!("{}: project MCP configuration is missing; global configuration is not checked here.", agent.agent));
+        }
+    }
+    for install in &skill_installations {
+        if Path::new(&install.path).exists() && !install.current {
+            issues.push(format!("Installed skill content differs from source at {} ({} missing/changed files).", install.path, install.missing_or_changed.len()));
+        }
+    }
+
     DoctorReport {
         os,
         arch,
@@ -542,6 +592,9 @@ pub fn run_doctor(project_root: &Path) -> DoctorReport {
         agents,
         smoke_test_passed,
         issues,
+        skill_source: skills_root.display().to_string(),
+        skill_installations,
+        activation_note: "smoke_test_passed tests the in-memory engine only. Verify the actual MCP transport and skill hashes with scripts/verify-activation.mjs. Project configuration cannot prove this host session discovered or loaded a skill; explicitly load it or refresh the host discovery list.".into(),
     }
 }
 
@@ -568,6 +621,23 @@ mod config_merge_tests {
         assert!(v["mcpServers"]["other"].is_object());
         assert!(v["mcpServers"]["layoza"].is_object());
         assert_eq!(v["extra"], 1);
+    }
+
+    #[test]
+    fn installed_asset_drift_is_reported_even_when_entrypoint_matches() {
+        let file = tmp("skill-drift", None);
+        let root = file.parent().unwrap();
+        let source = root.join("source");
+        let installed = root.join("installed");
+        fs::create_dir_all(source.join("layoza/assets")).unwrap();
+        fs::create_dir_all(installed.join("layoza/assets")).unwrap();
+        fs::write(source.join("layoza/SKILL.md"), "same").unwrap();
+        fs::write(installed.join("layoza/SKILL.md"), "same").unwrap();
+        fs::write(source.join("layoza/assets/controller.mjs"), "new behavior").unwrap();
+        fs::write(installed.join("layoza/assets/controller.mjs"), "old behavior").unwrap();
+        let report = skill_installation(&source, &installed);
+        assert!(!report.current);
+        assert!(report.missing_or_changed.iter().any(|p| p.ends_with("controller.mjs")));
     }
 
     #[test]

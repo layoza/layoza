@@ -1,0 +1,35 @@
+// Original Layoza identity diagnostics, on Layoza's own CDP client (scripts/lib/cdp.mjs).
+import fs from 'node:fs';import path from 'node:path';
+import {Browser,sleep} from './lib/cdp.mjs';
+const argv=process.argv.slice(2),target=argv.shift(),options={};for(let i=0;i<argv.length;i+=2)options[argv[i].replace(/^--/,'')]=argv[i+1];
+if(!target||!/^https?:\/\//.test(target)){console.error('Usage: node scripts/review-identity.mjs <URL> --out <directory> [--reference <URL>] [--hero <selector>] [--body <selector>] [--enquiry <selector>] [--brand <selector>]');process.exit(2)}
+const out=path.resolve(options.out||'.layoza/identity-review');fs.mkdirSync(out,{recursive:true});
+const report={schema_version:1,status:'capturing',method:'Actual brand-masked surface captures plus neutral type/colour diagnostics. Neutralization changes typography and can reflow content; it is not a pixel-equivalence test.',targets:{target,reference:options.reference||null},images:[],surfaces:[],observations:[],verdict:'Human visual review required. Similarity is not a defect by itself; familiar patterns and deliberate brand continuity may be appropriate.'};
+const browser=await Browser.launch();
+try{for(const[side,url]of [['target',target],['reference',options.reference]].filter(([,u])=>u)){for(const width of [1440,390]){
+ const page=await browser.newPage({width,height:width===390?844:1000,reducedMotion:true});
+ try{await page.goto(url,{settleMs:700});await page.eval('document.fonts.ready.then(()=>true)');
+ const roles=await page.eval(({hero,body,enquiry,brand})=>{
+   const h=document.querySelector(hero||'h1'),heroEl=hero?h:h?.closest('section,header');
+   const sections=[...document.querySelectorAll('main section')];
+   const contact=enquiry?document.querySelector(enquiry):document.querySelector('form')?.closest('section');
+   const ordinary=body?document.querySelector(body):document.querySelector('#studio')||sections.filter(s=>s!==heroEl&&s!==contact)[Math.floor(Math.max(0,sections.length-2)/2)];
+   const entries=[['hero',heroEl],['body',ordinary],['enquiry',contact]];
+   const style=document.createElement('style');style.textContent=`${brand||'.brand,.wordmark,[data-brand]'}{visibility:hidden!important}`;document.head.append(style);
+   return entries.map(([role,el])=>{if(!el)return{role,missing:true};el.setAttribute('data-layoza-identity-role',role);return{role,id:el.id||el.className||el.tagName};});
+ },{hero:options.hero,body:options.body,enquiry:options.enquiry,brand:options.brand});
+ for(const role of roles){if(role.missing){report.observations.push(`${side}/${width}: missing ${role.role}; supply its selector.`);continue}
+   const metrics=await page.eval(role=>{const el=document.querySelector(`[data-layoza-identity-role="${role}"]`);el.scrollIntoView({block:'start',behavior:'instant'});const b=el.getBoundingClientRect();const rect=e=>{const r=e.getBoundingClientRect();return{x:(r.x-b.x)/b.width,y:(r.y-b.y)/b.height,w:r.width/b.width,h:r.height/b.height}};const heading=el.querySelector('h1,h2,h3');const images=[...el.querySelectorAll('img,canvas,svg')].filter(e=>!e.closest('.brand,.wordmark,[data-brand]'));const grid=[...el.querySelectorAll('*'),el].map(e=>getComputedStyle(e)).filter(s=>s.display==='grid').map(s=>s.gridTemplateColumns.split(' ').length);return{role,height:Math.round(b.height),width:Math.round(b.width),heading:heading?rect(heading):null,media:images.map(rect),columns:Math.max(1,...grid),textChars:el.textContent.trim().length,clip:{x:Math.max(0,b.x+scrollX),y:Math.max(0,b.y+scrollY),width:Math.max(1,b.width),height:Math.min(2000,Math.max(1,b.height)),scale:1},truncated:b.height>2000}},role.role);
+   await sleep(150);report.surfaces.push({side,viewport:width,...metrics});
+   for(const mode of ['masked','neutral']){if(mode==='neutral')await page.eval(()=>{const style=document.createElement('style');style.id='layoza-neutral';style.textContent='*{font-family:Arial,sans-serif!important;color:#151515!important;background-color:#fff!important;box-shadow:none!important}img,svg,canvas{filter:grayscale(1)!important}';document.head.append(style)});
+     const clip=await page.eval(role=>{const b=document.querySelector(`[data-layoza-identity-role="${role}"]`).getBoundingClientRect();return{x:Math.max(0,b.x+scrollX),y:Math.max(0,b.y+scrollY),width:Math.max(1,b.width),height:Math.min(2000,Math.max(1,b.height)),scale:1}},role.role);
+     const file=`${side}-${role.role}-${width}-${mode}.png`;await page.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip}).then(r=>fs.writeFileSync(path.join(out,file),Buffer.from(r.data,'base64')));report.images.push({side,role:role.role,viewport:width,mode,path:file});if(mode==='neutral')await page.eval(()=>document.getElementById('layoza-neutral')?.remove());
+   }
+ }
+ }finally{await page.close()}
+}}
+ const expected=(options.reference?2:1)*2*3*2;report.status=report.images.length===expected?'captured':'incomplete';
+ if(options.reference)for(const width of[1440,390])for(const role of['hero','body','enquiry']){const a=report.surfaces.find(s=>s.side==='target'&&s.viewport===width&&s.role===role),b=report.surfaces.find(s=>s.side==='reference'&&s.viewport===width&&s.role===role);if(!a||!b)continue;const vector=s=>[s.columns/6,s.media.length/6,...['x','y','w','h'].map(k=>s.heading?.[k]||0),...['x','y','w','h'].map(k=>s.media[0]?.[k]||0)];const av=vector(a),bv=vector(b),distance=av.reduce((sum,v,i)=>sum+Math.min(1,Math.abs(v-bv[i])),0)/av.length;const similarity=Number((1-distance).toFixed(3));if(similarity>.92)report.observations.push(`${role}/${width}: high measured structural similarity (${similarity}). Inspect the original and neutral captures; palette, font and a symbol may be carrying most of the difference. This is a review prompt, not a design failure.`)}
+}finally{await browser.close();fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));}
+const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');fs.writeFileSync(path.join(out,'index.html'),`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Identity evidence</title><style>body{font:16px/1.5 system-ui;margin:24px;background:#eee}main{display:grid;grid-template-columns:repeat(4,minmax(250px,1fr));gap:20px;overflow:auto}figure{margin:0;background:white;padding:12px}img{width:100%;display:block}p{max-width:90ch}</style><h1>Identity evidence</h1><p>${escape(report.method)}</p><p>${escape(report.verdict)}</p>${report.observations.map(o=>`<p>${escape(o)}</p>`).join('')}<main>${report.images.map(i=>`<figure><figcaption>${escape(`${i.side} / ${i.role} / ${i.viewport} / ${i.mode}`)}</figcaption><a href="${escape(i.path)}"><img src="${escape(i.path)}" alt="${escape(`${i.role} diagnostic capture`)}"></a></figure>`).join('')}</main></html>`);
+console.log(JSON.stringify({report:path.join(out,'report.json'),status:report.status,images:report.images.length,observations:report.observations.length}));if(report.status!=='captured')process.exitCode=2;

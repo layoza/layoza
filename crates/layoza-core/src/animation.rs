@@ -34,7 +34,101 @@ pub struct AnimationRecipe {
 
 /// Returns the catalog of production-tested, accessible animation and 3D recipes.
 pub fn catalog_animation_recipes() -> Vec<AnimationRecipe> {
-    vec![
+    let mut recipes = vec![
+        AnimationRecipe {
+            id: "scroll-section-choreography".into(),
+            name: "Authored responsive section choreography and actual scroll inspection".into(),
+            category: MotionCategory::ScrollAnimation,
+            engine: "gsap-scrolltrigger".into(),
+            min_motion_intensity: 1,
+            max_motion_intensity: 10,
+            description: "Executable section host with caller-authored desktop and phone timelines. Choose actual transformations through recommend_animation.motion_plan; this helper owns responsive ScrollTriggers, lifecycle and measured state inspection, not the visual concept. Run scripts/review-motion.mjs for real scroll evidence; authored or captured does not mean beautiful.".into(),
+            performance_cost: "Depends on caller-authored scenes; no speed score.".into(),
+            reduced_motion_strategy: "Dynamic reduced motion removes all timelines and pins; resolve callbacks preserve complete readable stills.".into(),
+            cleanup_contract: "destroy() reverts matchMedia, timeline ownership, scroll triggers, inspection registry and pending media refresh; return it from the GSAP lifecycle composition.".into(),
+            code_snippet: include_str!("../../../skills/layoza-animations/assets/section-motion.mjs").into(),
+            css_fallback: "/* Author readable resolved CSS before initializing any scene. */".into(),
+        },
+        AnimationRecipe {
+            id: "threejs-scene-staging".into(),
+            name: "Fit the actual spatial pose and explain its real progression".into(),
+            category: MotionCategory::ThreeExperience,
+            engine: "threejs".into(),
+            min_motion_intensity: 0,
+            max_motion_intensity: 10,
+            description: "Executable fitPerspectiveBox and scenePhase helpers. Fit actual posed model bounds, excluding backdrop/floor, to the camera's aspect and view direction; this avoids both a postage-stamp desktop object and cropped phone geometry. Use the brief's actual object and phases; match semantic captions to geometry thresholds, keep them in a reserved HTML strip outside the canvas, and preserve a resolved paused state. Helpers do not author an identity, scene or animation timeline for you.".into(),
+            performance_cost: "CPU pose bounds and camera fit; invoke on pose/size changes. No speed score.".into(),
+            reduced_motion_strategy: "Fit the resolved static pose and show its accurate phase explanation; no RAF or listeners are created by these helpers.".into(),
+            cleanup_contract: "Pure helpers allocate temporary vectors only, no persistent resources or listeners; caller retains ownership of renderer, meshes and lifecycle.".into(),
+            code_snippet: include_str!("../../../skills/layoza-threejs-webgl/assets/scene-staging.mjs").into(),
+            css_fallback: ".scene-frame{position:relative;isolation:isolate}.scene-caption{position:relative;margin-block-start:1rem}.scene-frame canvas{display:block;width:100%;height:100%}".into(),
+        },
+        AnimationRecipe {
+            id: "threejs-spatial-work".into(),
+            name: "Real artwork unfolds into a spatial portfolio and selected work".into(),
+            category: MotionCategory::ThreeExperience,
+            engine: "threejs".into(),
+            min_motion_intensity: 7,
+            max_motion_intensity: 10,
+            description: "Executable, framework-neutral stage with injected pinned THREE runtime and client-supplied artwork/colours. Curved image surfaces unfold into a triptych, then a selected project comes forward; phone reframes a layered stack. setProgress(0..1) connects to native scroll or GSAP. Keep semantic captions, real links and a complete HTML artwork poster outside the decorative canvas; retain the poster until all textures load. This is a starting mechanism, not an agency house style or proof of artistic quality.".into(),
+            performance_cost: "WebGL stage; pause offscreen and when document hidden. Speed scoring is optional.".into(),
+            reduced_motion_strategy: "Dynamic media-query changes and setPaused(true) cancel the RAF and show a resolved still; semantic HTML remains usable. Failed texture/context keeps HTML poster.".into(),
+            cleanup_contract: "dispose() aborts listeners, cancels RAF, disconnects resize/intersection observers and disposes all geometry, textures, materials and renderer, including late texture arrivals.".into(),
+            code_snippet: include_str!("../../../skills/layoza-threejs-webgl/assets/spatial-work-stage.mjs").into(),
+            css_fallback: ".spatial-stage{position:relative;min-height:360px}.spatial-stage canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.spatial-poster{position:relative;z-index:1}.spatial-stage[data-webgl-ready=true] .spatial-poster{visibility:hidden}".into(),
+        },
+        AnimationRecipe {
+            id: "scroll-composition-to-work".into(),
+            name: "Identity composition resolves into project work".into(),
+            category: MotionCategory::ScrollAnimation,
+            engine: "gsap-scrolltrigger".into(),
+            min_motion_intensity: 7,
+            max_motion_intensity: 10,
+            description: "A coordinated composition transformation: identity planes align into a project viewport, the viewport expands and the work caption resolves. Use real supplied work. The art changes its role instead of merely floating; desktop scrubs a reserved stage and phones restage it without pinning. Example mechanism, not a required house style.".into(),
+            performance_cost: "One reserved transform stage; no performance score implied".into(),
+            reduced_motion_strategy: "Final art and captions remain visible in source CSS. MatchMedia removes pinning and transformations when reduced motion changes live.".into(),
+            cleanup_contract: "The returned cleanup reverts only this scene's context and media queries; invoke it on route teardown or pause, then reinitialize on resume.".into(),
+            code_snippet: r#"import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
+// Mark a source-visible scene with data-work-scene; its reserved stage contains
+// data-work-frame (actual project art) and optional data-work-plane ornaments.
+// Caption and links remain outside the art layers. CSS below is the final state.
+export function initCompositionToWork(scene) {
+  if (!scene) return () => {};
+  const stage = scene.querySelector('[data-work-stage]');
+  const frame = scene.querySelector('[data-work-frame]');
+  if (!stage || !frame) return () => {};
+  const planes = scene.querySelectorAll('[data-work-plane]');
+  const mm = gsap.matchMedia();
+  mm.add({ desktop: '(min-width: 900px)', motion: '(prefers-reduced-motion: no-preference)' }, ({conditions}) => {
+    if (!conditions.motion) return;
+    const desktop = conditions.desktop;
+    const tl = gsap.timeline({ scrollTrigger: {
+      trigger: scene, start: desktop ? 'top top' : 'top 80%',
+      end: desktop ? '+=110%' : 'bottom 30%', pin: desktop ? stage : false,
+      scrub: 0.7, invalidateOnRefresh: true
+    }});
+    // One timeline owns each transform: initial scattered identity -> aligned
+    // planes -> expanded project. Keep real copy readable throughout.
+    tl.fromTo(planes, {
+      xPercent: i => (i % 2 ? 45 : -45), rotation: i => (i % 2 ? 24 : -24),
+      scaleY: 0.35
+    }, { xPercent: 0, rotation: 0, scaleY: 1, duration: 0.45, stagger: 0.06 }, 0)
+    .fromTo(frame, {scale: desktop ? 0.58 : 0.88, rotation: desktop ? -8 : -3},
+      {scale: 1, rotation: 0, duration: 0.8, ease: 'power2.inOut'}, 0.15)
+    .to(planes, {scaleX: 0, transformOrigin: 'right center', duration: 0.4, stagger: 0.05}, 0.65);
+  }, scene);
+  return () => mm.revert();
+}"#.into(),
+            css_fallback: r#"[data-work-scene]{position:relative}
+[data-work-stage]{position:relative;min-height:clamp(360px,65vh,820px);display:grid;place-items:center;overflow:clip;isolation:isolate}
+[data-work-frame]{position:relative;z-index:1;width:100%;margin:0;transform:none}
+[data-work-frame] img{display:block;width:100%;height:auto}
+[data-work-plane]{position:absolute;inset:12% 8%;pointer-events:none;z-index:0}
+@media(prefers-reduced-motion:reduce){[data-work-plane]{display:none}}
+"#.into(),
+        },
         AnimationRecipe {
             id: "hero-gsap-masked-split".into(),
             name: "GSAP Masked Headline & Staggered Hero Entrance".into(),
@@ -317,7 +411,8 @@ export function initPinnedNarrative(sectionEl) {
 
 export function mountThreeArtifactStage(canvasEl) {
   if (!canvasEl || typeof window === "undefined") return () => {};
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const lifecycle = new AbortController();
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
@@ -361,28 +456,36 @@ export function mountThreeArtifactStage(canvasEl) {
   let rafId = 0;
   let isVisible = true;
   const tick = () => {
-    if (!reducedMotion && isVisible) {
+    if (!motionQuery.matches && isVisible && !document.hidden) {
       mesh.rotation.y += 0.0045;
       mesh.rotation.x += 0.002;
       renderer.render(scene, camera);
     }
-    if (!reducedMotion) {
+    if (!motionQuery.matches && isVisible && !document.hidden) {
       rafId = requestAnimationFrame(tick);
     }
   };
-  if (!reducedMotion) {
-    rafId = requestAnimationFrame(tick);
-  }
+  const sync = () => {
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+    renderer.render(scene, camera);
+    if (!motionQuery.matches && isVisible && !document.hidden) rafId = requestAnimationFrame(tick);
+  };
+  motionQuery.addEventListener("change", sync, { signal: lifecycle.signal });
+  document.addEventListener("visibilitychange", sync, { signal: lifecycle.signal });
+  sync();
 
   const ro = new ResizeObserver(resize);
   ro.observe(canvasEl.parentElement || canvasEl);
   const io = new IntersectionObserver(([entry]) => {
     isVisible = Boolean(entry && entry.isIntersecting);
+    sync();
   });
   io.observe(canvasEl);
 
   return () => {
     cancelAnimationFrame(rafId);
+    lifecycle.abort();
     ro.disconnect();
     io.disconnect();
     geometry.dispose();
@@ -435,7 +538,38 @@ export function initConditionalLenis({ motionIntensity = 5 } = {}) {
 }"#.into(),
             css_fallback: r#"html.lenis, html.lenis body { height: auto; }"#.into(),
         },
-    ]
+    ];
+    // Native/CSS alternatives remain addressable for explicit user requests.
+    // Default category selection uses the shared GSAP lifecycle for every tier.
+    for (id, name, category) in [
+        ("section-gsap-authored", "GSAP content-shaped section choreography", MotionCategory::SectionAnimation),
+        ("interactive-gsap-feedback", "GSAP interruptible interaction feedback", MotionCategory::InteractiveEffect),
+        ("page-gsap-transition", "GSAP navigation transition with immediate semantic update", MotionCategory::PageTransition),
+        ("threejs-gsap-stage", "GSAP-driven subject scene with visible static resolution", MotionCategory::ThreeExperience),
+    ] {
+        recipes.push(AnimationRecipe {
+            id: id.into(), name: name.into(), category, engine: "gsap".into(),
+            min_motion_intensity: 1, max_motion_intensity: 10,
+            description: "Use the injected pinned GSAP runtime for authored timelines, interactions and object-state changes. compose() authors the subject-specific transformation; render() may draw Three.js through the scoped GSAP ticker. Keep essential source content visible. Do not substitute an anonymous rotating primitive or identical fade-up for a subject idea.".into(),
+            performance_cost: "Depends on the authored DOM or scene; no speed score is implied.".into(),
+            reduced_motion_strategy: "Dynamic preference changes revert the scoped timelines, remove the render ticker and call resolve() for a complete static composition. enabled:false creates no timelines or observers.".into(),
+            cleanup_contract: "Call destroy() on teardown; it reverts GSAP context/ScrollTrigger, removes scoped listeners and ticker, and disconnects the observer. Dispose Three.js geometry/materials/textures separately.".into(),
+            code_snippet: include_str!("../../../skills/layoza-animations/assets/gsap-motion.mjs").into(),
+            css_fallback: "Essential text, artwork, controls and the resolved poster are visible in source CSS; no opacity:0 startup dependency.".into(),
+        });
+    }
+    recipes.push(AnimationRecipe {
+        id: "react-motion-presence".into(), name: "Explicitly requested Motion for React presence".into(),
+        category: MotionCategory::InteractiveEffect, engine: "motion/react".into(),
+        min_motion_intensity: 1, max_motion_intensity: 10,
+        description: "Opt-in when the user requests Framer Motion / Motion for React. Let it own component presence/layout; GSAP owns separate choreography and scene state. Never animate the same element/property from both engines.".into(),
+        performance_cost: "React component transitions; inspect the actual device behavior.".into(),
+        reduced_motion_strategy: "useReducedMotion and the page pause state remove travel and set duration:0.".into(),
+        cleanup_contract: "AnimatePresence owns component presence; React unmount removes it. Keep focus/aria state changes immediate.".into(),
+        code_snippet: "import { AnimatePresence, motion, useReducedMotion } from 'motion/react';\nexport function PresencePanel({ show, children, paused = false }) {\n  const still = useReducedMotion() || paused;\n  return <AnimatePresence initial={false}>{show && <motion.div key=\"panel\" initial={still ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={still ? { opacity: 0 } : { opacity: 0, y: -4 }} transition={{ duration: still ? 0 : .2 }}>{children}</motion.div>}</AnimatePresence>;\n}".into(),
+        css_fallback: "Source content stays available; use native/SSR markup and stable controls outside the animated presence region.".into(),
+    });
+    recipes
 }
 
 /// Recommends context-appropriate animation recipes based on target category and `motion_intensity` (0–10).
@@ -451,7 +585,7 @@ pub fn recommend_animations(
         .into_iter()
         .filter(|r| {
             let intensity_ok = clamped >= r.min_motion_intensity && clamped <= r.max_motion_intensity;
-            intensity_ok && category_matches(r, category_filter)
+            intensity_ok && default_engine_matches(r, category_filter) && category_matches(r, category_filter)
         })
         .collect()
 }
@@ -491,9 +625,18 @@ fn category_matches(r: &AnimationRecipe, filter: Option<&str>) -> bool {
         Some(c) => {
             let c_low = c.to_ascii_lowercase();
             let c_sq = squash(c);
+            if ["framermotion", "motionreact"].contains(&c_sq.as_str()) { return r.engine == "motion/react"; }
             r.id.contains(&c_low) || r.engine.contains(&c_low) || (!c_sq.is_empty() && squash(r.category.as_str()).contains(&c_sq))
         }
     }
+}
+
+fn default_engine_matches(r: &AnimationRecipe, filter: Option<&str>) -> bool {
+    // A named engine/id is an explicit alternative lookup. Broad categories
+    // never silently recommend another animation runtime.
+    let explicit = filter.is_some_and(|f| r.id.eq_ignore_ascii_case(f) || r.engine.eq_ignore_ascii_case(f)
+        || (["framermotion", "motionreact"].contains(&squash(f).as_str()) && r.engine == "motion/react"));
+    explicit || r.engine.contains("gsap")
 }
 
 /// Agents often pass the *site type* ("ecommerce", "dashboard", "restaurant") as the category.
@@ -535,6 +678,9 @@ pub fn select_animations(
     recipe_id: Option<&str>,
     motion_intensity: u8,
 ) -> Result<Vec<AnimationRecipe>, String> {
+    if motion_intensity == 0 {
+        return Ok(Vec::new());
+    }
     if let Some(id) = recipe_id.map(str::trim).filter(|s| !s.is_empty()) {
         return catalog_animation_recipes()
             .into_iter()
@@ -548,11 +694,11 @@ pub fn select_animations(
     }
     let mut in_category: Vec<AnimationRecipe> = catalog_animation_recipes()
         .into_iter()
-        .filter(|r| category_matches(r, category_filter))
+        .filter(|r| category_matches(r, category_filter) && default_engine_matches(r, category_filter))
         .collect();
     if in_category.is_empty() {
         if let Some(cats) = category_filter.and_then(site_type_categories) {
-            in_category = catalog_animation_recipes().into_iter().filter(|r| cats.contains(&r.category)).collect();
+            in_category = catalog_animation_recipes().into_iter().filter(|r| cats.contains(&r.category) && r.engine.contains("gsap")).collect();
         }
     }
     if in_category.is_empty() {
@@ -582,6 +728,20 @@ pub fn select_animations(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn defaults_are_gsap_and_explicit_other_engines_and_zero_still_work() {
+        for category in MotionCategory::ALL {
+            let recipes = select_animations(Some(category.as_str()), None, 5).unwrap();
+            assert!(!recipes.is_empty());
+            assert!(recipes.iter().all(|r| r.engine.contains("gsap")), "{}", category.as_str());
+        }
+        assert!(select_animations(Some("corporate"), None, 3).unwrap().iter().all(|r| r.engine.contains("gsap")));
+        assert_eq!(select_animations(Some("framer-motion"), None, 5).unwrap()[0].engine, "motion/react");
+        assert_eq!(select_animations(None, Some("micro-css-polish"), 5).unwrap()[0].engine, "css");
+        assert!(select_animations(Some("framer-motion"), None, 0).unwrap().is_empty());
+        assert_eq!(crate::craft::motion_delivery(0).engine, "none");
+        assert_eq!(crate::craft::motion_delivery(3).engine, "gsap");
+    }
 
     #[test]
     fn select_by_recipe_id_category_and_reports_misses() {
@@ -594,6 +754,9 @@ mod tests {
         assert!(miss.starts_with("no recipe matched") && miss.contains("hero_animation") && miss.contains("scroll-lenis-conditional"), "{}", miss);
         assert!(select_animations(None, Some("nope"), 6).unwrap_err().contains("valid ids"));
         assert!(select_animations(None, None, 0).unwrap().is_empty());
+        assert!(select_animations(None, Some("scroll-composition-to-work"), 0).unwrap().is_empty());
+        assert!(select_animations(Some("scroll"), None, 8).unwrap().iter().any(|r| r.id == "scroll-composition-to-work"));
+        assert!(!select_animations(None, None, 3).unwrap().iter().any(|r| r.id == "scroll-composition-to-work"));
         // Site types map to fitting motion categories rather than erroring.
         let dash = select_animations(Some("dashboard"), None, 3).unwrap();
         assert!(!dash.is_empty() && dash.iter().all(|r| r.category != MotionCategory::ThreeExperience && r.category != MotionCategory::ScrollAnimation));

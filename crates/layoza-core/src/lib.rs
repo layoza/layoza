@@ -3,9 +3,14 @@
 
 pub mod adapters;
 pub mod animation;
+pub mod motion_direction;
 pub mod baseline;
 pub mod benchmark;
 pub mod craft;
+pub mod visual_system;
+pub mod composition_system;
+pub mod creative;
+mod source_tokens;
 pub mod design_md;
 pub mod directions;
 pub mod dna;
@@ -315,7 +320,7 @@ mod tests {
         assert!(!report.core_web_vitals.measured);
         assert_eq!(report.core_web_vitals.lcp_ms, None);
         assert_eq!(report.core_web_vitals.lcp_passes_target, None);
-        assert!(report.findings.iter().any(|f| f.rule_id == "CWV-NOT-MEASURED"));
+        assert!(report.findings.iter().any(|f| f.rule_id == "BROWSER-QA-NOT-MEASURED"));
 
         let slow = verifier::audit_project(&dir, None, Some(4000.0), Some(50.0), Some(0.01)).unwrap();
         assert_eq!(slow.core_web_vitals.lcp_passes_target, Some(false));
@@ -447,7 +452,7 @@ mod tests {
     }
 
     #[test]
-    fn test_gate_is_unverified_without_core_web_vitals() {
+    fn test_gate_is_unverified_without_browser_evidence() {
         let dir = std::env::temp_dir().join("layoza_gate_unverified");
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
@@ -456,7 +461,7 @@ mod tests {
         assert_eq!(r.objective_error_count, 0, "{:#?}", r.findings);
         assert_eq!(r.verification_status, "unverified");
         assert!(!r.passed_release_gate);
-        assert!(r.findings.iter().any(|f| f.rule_id == "CWV-NOT-MEASURED"));
+        assert!(r.findings.iter().any(|f| f.rule_id == "BROWSER-QA-NOT-MEASURED"));
         let _ = fs::remove_dir_all(&dir);
     }
 
@@ -466,20 +471,42 @@ mod tests {
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
         fs::write(dir.join("index.html"), "<!doctype html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width\"></head><body></body></html>").unwrap();
+        fs::create_dir_all(dir.join("qa")).unwrap();
+        fs::write(dir.join("qa/browser-qa-report.json"), r#"{"schema_version":"2.0.0","viewports":[{"label":"desktop","issues":[],"console_errors":[]}]}"#).unwrap();
         let before = verifier::audit_project(&dir, None, Some(1000.0), Some(50.0), Some(0.01)).unwrap();
         fs::write(dir.join("index.html"), "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width\"></head><body><img src=\"a.png\"></body></html>").unwrap();
         let after = verifier::audit_project(&dir, None, Some(1000.0), Some(50.0), Some(0.3)).unwrap();
         let cmp = verifier::verify_before_after(&before, &after, None, vec![]);
         assert!(!cmp.accepted);
         assert!(cmp.unintended_regressions.iter().any(|m| m.contains("A11Y-HTML-LANG")));
-        assert!(cmp.unintended_regressions.iter().any(|m| m.starts_with("CLS")));
+        assert!(!cmp.unintended_regressions.iter().any(|m| m.starts_with("CLS")));
         let same = verifier::verify_before_after(&before, &before, None, vec![]);
         assert!(same.unintended_regressions.is_empty());
-        // Measured CWV within target and no errors: the gate is passed, not merely unverified
+        // Fresh browser evidence passes the design gate without requiring speed measurements.
         assert_eq!(before.verification_status, "passed", "{:#?}", before.findings);
         assert!(same.accepted);
         assert_eq!(after.verification_status, "failed");
         let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn design_gate_needs_visual_evidence_but_never_speed_measurements() {
+        let dir = std::env::temp_dir().join(format!("layoza-design-only-{}", std::process::id()));
+        fs::create_dir_all(dir.join("qa")).unwrap();
+        fs::write(dir.join("index.html"), "<!doctype html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width\"></head><body><main><h1>Design first</h1></main></body></html>").unwrap();
+        let report_path = dir.join("qa/browser-qa-report.json");
+        fs::write(&report_path, r#"{"schema_version":"2.0.0","viewports":[{"label":"desktop","issues":[],"console_errors":[]}]}"#).unwrap();
+        let design_only = verifier::audit_project(&dir, None, None, None, None).unwrap();
+        assert!(design_only.passed_release_gate, "{:?}", design_only.findings);
+        assert!(!design_only.core_web_vitals.measured);
+        assert!(!design_only.findings.iter().any(|f| f.rule_id.starts_with("CWV-")));
+        let slow = verifier::audit_project(&dir, None, Some(9000.0), Some(900.0), Some(0.9)).unwrap();
+        assert!(slow.passed_release_gate);
+        assert_eq!(slow.core_web_vitals.lcp_passes_target, Some(false));
+        let comparison = verifier::verify_before_after(&design_only, &slow, None, vec![]);
+        assert!(comparison.accepted);
+        assert!(comparison.unintended_regressions.is_empty());
+        fs::remove_dir_all(dir).unwrap();
     }
 
     #[test]

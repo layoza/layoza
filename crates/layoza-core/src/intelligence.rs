@@ -83,6 +83,10 @@ pub struct CreativeDirection {
     pub palette: PaletteRecommendation,
     pub content_treatment: String,
     pub motion_choreography: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub visual_system: Option<crate::visual_system::VisualSystem>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub composition_system: Option<crate::composition_system::CompositionSystem>,
     pub dials: DesignDials,
     /// Why this direction was dealt for this brief: structure, type, palette and hero composition,
     /// and the other structures that fit the same slot.
@@ -127,11 +131,11 @@ pub struct CreativeDirection {
 pub const PURPOSE_LINE: &str = "Layoza: build a page that belongs to this brief alone. No copies, no re-skins, no repeats of the ledger.";
 
 /// Why Layoza exists, in one paragraph. Shared by the MCP instructions, prompts, README and skills.
-pub const PURPOSE: &str = "Layoza exists so AI-built sites stop looking like slop. Make every design unique: never a copy, a re-skin or a repeat, from the nav through the hero and every section to the footer. Build it modern and subject-first, for this brief and no other. Reusing a look from the ledger, a template layout or another tool's house style counts as a failure, even when the page passes QA.";
+pub const PURPOSE: &str = "Layoza exists to make clear, distinctive, well-composed interfaces for the actual brief. Prioritize readable typography, intentional spacing, clear actions and coherent material and motion. Use the ledger to notice repetition, not to force unfamiliar navigation, a random metaphor or a weaker composition. Familiar patterns can be the best answer. A clean QA report establishes a usability floor, not excellent design.";
 
 /// Five checks to run before shipping; each slot must differ from the ledger and fit the brief.
 pub const PURPOSE_CHECKLIST: [&str; 5] = [
-    "Nav: a pattern the ledger has not shown recently, sized to this site's real routes.",
+    "Nav: clear, familiar where useful, sized to this site's real routes and tasks.",
     "Hero: shows the trade's own objects or work, not a stock split or a gradient blob.",
     "Sections: each one earns its place with this brief's content; no filler grid repeated from a past run.",
     "Footer: built for what visitors of this trade need last, not the default four columns.",
@@ -151,7 +155,7 @@ pub fn purpose_markdown() -> String {
 }
 
 /// The page shape is a menu of suggestions; the agent decides (guidance line).
-pub const PAGE_SHAPE_RULE: &str = "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; whatever you choose stays unique against the ledger.";
+pub const PAGE_SHAPE_RULE: &str = "PAGE SHAPE: each direction's `page_shape` is a set of suggestions, not orders. Decide every axis (hero frame, flow, section heads, ground, material, labels, motion level and tools) from this brief's facts; keep a suggestion only when it serves your concept, and record each decision with its reason in .layoza/direction.md. Axes in `pinned_by_prompt` follow the user's words; clarity and coherent execution take priority over ledger novelty.";
 
 /// How to read `understood_brief` (MCP instructions).
 pub const UNDERSTOOD_RULE: &str = "Read understood_brief; proceed on its niche-based assumptions without asking; ask only an open_question that blocks building; explicit user asks (a colour, font, style, motion level) override every suggestion for that axis only — you decide every other axis from the niche and keep it unique.";
@@ -344,7 +348,7 @@ pub fn affirmed_brief(query: &str) -> String {
             }
             if negated {
                 // "X, not Y" / "X rather than Y": the ask is X, only the tail is ruled out.
-                let head = [", not ", " rather than ", " instead of ", ", never "]
+                let head = [", not ", " rather than ", " instead of ", ", never ", ", no ", " no ", " without ", " do not ", " don't ", " avoid ", " never "]
                     .iter()
                     .filter_map(|m| t.to_ascii_lowercase().find(m))
                     .min()
@@ -452,10 +456,9 @@ pub(crate) fn focus_line(query: &str) -> Option<String> {
 /// ([`focus_line`]) is scored on its own first; the whole brief is used when it matches nothing.
 fn rank_industries(query: &str, industries: &[IndustryRule]) -> Vec<(usize, IndustryRule)> {
     if let Some(focus) = focus_line(query) {
-        let ranked = rank_industries_in(&focus, industries);
-        if ranked[0].0 > 0 {
-            return ranked;
-        }
+        // An explicit unknown subject stays unknown; art-direction words elsewhere
+        // must not turn a community service into software or a gallery into WebGL.
+        return rank_industries_in(&focus, industries);
     }
     rank_industries_in(query, industries)
 }
@@ -662,10 +665,26 @@ const KNOWN_FONTS: &[&str] = &[
     "Space Grotesk", "Space Mono", "Work Sans", "Fira Code", "Fira Sans", "Geist Mono", "DM Sans", "DM Mono",
     "Archivo", "Barlow", "Fraunces", "Geist", "Inter", "Karla", "Lexend", "Lora", "Manrope", "Montserrat",
     "Newsreader", "Outfit", "Poppins", "Roboto", "Satoshi", "Sora", "Syne", "Urbanist",
+    "Helvetica Neue", "Helvetica", "Arial", "Georgia", "Times New Roman", "Futura", "Avenir", "Gotham",
 ];
 
 /// Font families named in the brief, in first-mention order.
 fn brief_font_names(query: &str) -> Vec<String> {
+    // An asset inventory is a choice of available material, not a brand lock.
+    // Explicit use/role sentences remain eligible, including on the following line.
+    let inventory = |p: &str| ["available fonts", "fonts available", "font options", "local fonts", "bundled fonts", "font files", "font library", "shared local assets", "font choices are open"].iter().any(|s| p.contains(s));
+    let selection_text: String = query.lines().flat_map(|line| {
+        // An inventory paragraph often separates its files with semicolons and
+        // version dots. Keep that context across clauses, while explicit role
+        // requirements on the same line still win.
+        let inventory_line = inventory(&line.to_lowercase());
+        line.split_inclusive([';', '.']).filter(move |part| {
+            let p = part.to_lowercase();
+            let required = ["must use", "only use", "use ", "heading font:", "display font:", "body font:"].iter().any(|s| p.contains(s));
+            !(inventory_line || inventory(&p)) || required
+        }).chain(std::iter::once("\n"))
+    }).collect();
+    let query = selection_text.as_str();
     let lower = query.to_lowercase();
     let bytes = lower.as_bytes();
     let boundary = |i: usize| i >= bytes.len() || !bytes[i].is_ascii_alphanumeric();
@@ -688,7 +707,21 @@ fn brief_font_names(query: &str) -> Vec<String> {
         }
     }
     found.sort();
-    found.into_iter().map(|(_, f)| f.to_string()).collect()
+    let mut names: Vec<String> = found.into_iter().map(|(_, f)| f.to_string()).collect();
+    // Explicit font labels accept private/custom families, not only our catalogue vocabulary.
+    for line in query.split(['\n', ';', '.']) {
+        let Some((label, value)) = line.split_once(':') else { continue; };
+        let label = label.trim().to_lowercase();
+        if !["font", "fonts", "heading font", "display font", "body font", "typeface", "font family"].contains(&label.as_str()) { continue; }
+        let split_value = if value.trim().starts_with(['"', '\'']) { value.to_string() } else { value.replace(" and ", ",").replace(" or ", ",") };
+        for part in split_value.split([',', '|']) {
+            let name = part.trim().trim_matches(['"', '\'', '`']).trim();
+            if !name.is_empty() && name.len() <= 80 && !name.contains(['<', '>', '{', '}', '\\']) && !names.iter().any(|n| n.eq_ignore_ascii_case(name)) {
+                names.push(name.to_string());
+            }
+        }
+    }
+    names
 }
 
 /// Roles the brief gives its fonts by the words before them on the same line or clause
@@ -900,7 +933,8 @@ pub fn is_rtl_brief(query: &str) -> bool {
 
 /// Reads surface, niche families, moods and named constraints from the brief.
 pub fn brief_signals(query: &str) -> BriefSignals {
-    let tokens = tokenize(query);
+    let affirmative = affirmed_brief(query);
+    let tokens = tokenize(&affirmative);
     let has = |w: &str| keyword_hit(&tokens, w);
     let any = |ws: &[&str]| ws.iter().any(|w| has(w));
 
@@ -918,8 +952,8 @@ pub fn brief_signals(query: &str) -> BriefSignals {
             ]),
         ),
         (Surface::Commerce, count(&["store", "shop", "ecommerce", "e-commerce", "boutique", "catalog", "catalogue", "selling", "sells", "webshop"])),
-        (Surface::Venue, count(&["restaurant", "cafe", "bistro", "bar", "hotel", "menu", "reservations", "booking", "bakery", "venue", "brasserie", "diner", "museum"])),
-        (Surface::Showcase, count(&["portfolio", "studio", "agency", "showreel", "reel", "artist", "photographer", "designer"])),
+        (Surface::Venue, count(&["restaurant", "cafe", "bistro", "bar", "hotel", "menu", "reservations", "booking", "bakery", "venue", "brasserie", "diner", "museum", "public library", "community library", "reading room"])),
+        (Surface::Showcase, count(&["portfolio", "studio", "agency", "showreel", "reel", "artist", "photographer", "photography gallery", "designer"])),
         (Surface::Editorial, count(&["magazine", "journal", "blog", "publication", "newsletter", "news"])),
     ];
     let best = surfaces.iter().map(|(_, c)| *c).max().unwrap_or(0);
@@ -973,7 +1007,7 @@ pub fn brief_signals(query: &str) -> BriefSignals {
         "motion-rich", "motion rich", "animation-heavy", "cinematic", "immersive", "scrollytelling", "scroll storytelling",
         "scroll-driven", "scroll driven", "wow factor", "awwwards",
     ];
-    let heavy = heavy_motion.iter().any(|p| lower.contains(p));
+    let heavy = heavy_motion.iter().any(|p| lower.contains(p)) || motion_dial_pin(query).is_some_and(|n| n >= 8);
     if heavy {
         if !moods.iter().any(|m| m == "bold") {
             moods.push("bold".into());
@@ -985,9 +1019,9 @@ pub fn brief_signals(query: &str) -> BriefSignals {
     let mut constraints: Vec<String> = Vec::new();
     let mut motion_cap: Option<u8> = None;
     let mut cap = |c: u8| motion_cap = Some(motion_cap.map_or(c, |m: u8| m.min(c)));
-    if ["no animation", "no motion", "without animation", "static site"].iter().any(|p| lower.contains(p)) {
+    if explicit_no_motion(query) {
         constraints.push("reduced-motion".into());
-        cap(1);
+        cap(0);
     } else if ["reduced motion", "reduced-motion", "reduce motion"].iter().any(|p| lower.contains(p)) {
         // "Respect prefers-reduced-motion" is the accessibility guardrail every page keeps: it asks
         // for a fallback, not stillness. Only a plain "reduced motion" ask with no such framing caps.
@@ -1024,20 +1058,55 @@ pub fn brief_signals(query: &str) -> BriefSignals {
         constraints.push("rtl (logical CSS properties, mirrored layout)".into());
     }
 
-    let brief_colors = brief_hex_colors(query);
-    let brief_color_roles = brief_color_roles(query, &brief_colors);
-    let brief_fonts = brief_font_names(query);
-    let brief_font_roles = brief_font_roles(query, &brief_fonts);
-    let niches = crate::mechanics::niche_signal(query);
-    let brief_objects = crate::mechanics::brief_objects(query);
-    let brief_action = crate::mechanics::brief_action(query);
+    let mut brief_colors = brief_hex_colors(&affirmative);
+    let mut brief_color_roles = brief_color_roles(&affirmative, &brief_colors);
+    if ["black and white", "black-and-white", "monochrome only", "monochrome palette"].iter().any(|p| affirmative.to_lowercase().contains(p)) && brief_colors.is_empty() {
+        brief_colors = vec!["#FFFFFF".into(), "#111111".into(), "#666666".into()];
+        brief_color_roles.extend([("ground".into(), "#FFFFFF".into()), ("text".into(), "#111111".into()), ("primary".into(), "#111111".into()), ("muted".into(), "#666666".into())]);
+        constraints.push("monochrome palette (pinned by prompt)".into());
+    }
+    let brief_fonts = brief_font_names(&affirmative);
+    let brief_font_roles = brief_font_roles(&affirmative, &brief_fonts);
+    let niches = crate::mechanics::niche_signal(&affirmative);
+    let brief_objects = crate::mechanics::brief_objects(&affirmative);
+    let brief_action = crate::mechanics::brief_action(&affirmative);
     BriefSignals { surface, niche_tags, moods, constraints, motion_bias, motion_cap, brief_colors, brief_color_roles, brief_fonts, brief_font_roles, niches, brief_objects, brief_action }
+}
+
+pub(crate) fn explicit_no_motion(query: &str) -> bool {
+    let lower = query.to_ascii_lowercase();
+    for phrase in ["no animation", "no motion", "without animation", "without motion", "without any animation", "without any motion", "static site", "static website", "keep it static", "do not animate", "don't animate", "do not add animation", "do not add any animation", "don't add animation", "don't add any animation", "dont add animation", "dont add any animation", "disable animation", "animation off", "motion off"] {
+        for (at, _) in lower.match_indices(phrase) {
+            let prefix = &lower[..at];
+            // "MONO MOTION" is a brand, not the command "no motion".
+            if prefix.chars().next_back().is_some_and(|c| c.is_alphanumeric()) { continue; }
+            // Availability without animation is an accessibility fallback,
+            // not a request to remove an explicitly authored motion experience.
+            if phrase.starts_with("without ") && ["readable ", "visible ", "usable ", "functional ", "available ", "work ", "works ", "working ", "read "].iter().any(|p| prefix.ends_with(p)) { continue; }
+            if phrase.starts_with("static ") && ["not a ", "not just a ", "not only a ", "not "].iter().any(|p| prefix.ends_with(p)) { continue; }
+            return true;
+        }
+    }
+    false
 }
 
 /// Applies the brief's motion bias and ceiling to a direction's motion dial.
 fn tune_motion(base: u8, signals: &BriefSignals) -> u8 {
     let biased = (base as i16 + signals.motion_bias as i16).clamp(0, 10) as u8;
     signals.motion_cap.map_or(biased, |c| biased.min(c))
+}
+
+/// A numeric client choice is exact; adjectives must not silently raise 8 to 10.
+pub(crate) fn motion_dial_pin(query: &str) -> Option<u8> {
+    let lower = query.to_lowercase();
+    for label in ["motion intensity", "motion_intensity", "motion level", "motion dial", "motion intent"] {
+        for (offset, _) in lower.match_indices(label) {
+            let tail = lower[offset + label.len()..].trim_start_matches(|c: char| c.is_whitespace() || ":=-".contains(c));
+            let number: String = tail.chars().take_while(char::is_ascii_digit).collect();
+            if let Ok(n) = number.parse::<u8>() { if n <= 10 { return Some(n); } }
+        }
+    }
+    None
 }
 
 const MATERIAL_LEXICON: &[&str] = &[
@@ -1179,9 +1248,34 @@ fn distinctiveness_for(query: &str, slug: &str, signals: &BriefSignals) -> Disti
     }
 }
 
-/// Returns all 19 core industry rules with rich taxonomy and provenance.
+/// Returns core industry rules with rich taxonomy and provenance.
 pub fn catalog_industries() -> Vec<IndustryRule> {
     let mut rules = raw_industries();
+    rules.push(IndustryRule {
+        slug: "architecture-spatial-design".into(),
+        name: "Architecture & Spatial Design".into(),
+        keywords: ["architecture", "architectural", "architect", "architects", "interior design", "interiors", "spatial design", "spatial-design"].iter().map(|s| (*s).into()).collect(),
+        recommended_styles: vec!["atelier-minimalism".into(), "swiss-editorial-grid".into()],
+        layout_archetype: "Spatial Monograph: Project Image, Clear Proposition and Material Annotation".into(),
+        first_viewport_priority: "Readable practice proposition and enquiry beside a spatially legible project image; distinguish studies from built work".into(),
+        typography_pairing: pairing("architectural-monograph", "Fraunces", "Manrope", "IBM Plex Mono", "Tactile editorial display with precise everyday reading and quiet spatial notation", "1.250 (Major Third)", "https://fonts.google.com/share?selection.family=Fraunces|Manrope|IBM+Plex+Mono"),
+        palette: palette("stone-timber-ink", "#F3F0E9", "#E6E1D6", "#252921", "#595D52", "#435241", "#80634B", 12.0, "A candidate stone and timber starting point; derive final colour relationships from actual project material and light, not a mandatory architectural palette"),
+        conversion_trust_elements: vec!["Truthful project status and complete imagery".into(), "Specific design brief and response".into(), "Useful practice approach and enquiry".into()],
+        motion_language: "Spatial assembly, section and daylight transformation with a useful resolved static composition; captions remain outside moving geometry".into(),
+        anti_patterns: vec!["Advertising reel replacing project comprehension".into(), "Invented completed buildings or practice credentials".into(), "Motion concealing unreadable proposition or cropped architectural evidence".into()],
+        default_dials: DesignDials::clamped(7, 6, 4),
+        provenance: "layoza:subject-specific-spatial-project-reasoning".into(),
+    });
+    // A development studio sells shipped interfaces and engineering capability,
+    // not advertising campaigns. Retain a flexible creative starting world.
+    if let Some(mut web) = rules.iter().find(|r| r.slug == "marketing-agency").cloned() {
+        web.slug = "web-development-agency".into();
+        web.name = "Web Design & Development Studios".into();
+        web.keywords = ["web development", "web development agency", "web design agency", "web agency", "digital studio", "development studio"].iter().map(|s| (*s).into()).collect();
+        web.first_viewport_priority = "Clear development-studio proposition, actual interface/project work and a useful project enquiry action".into();
+        web.conversion_trust_elements = vec!["Truthfully labelled project demonstrations".into(), "Concrete scope and development process".into(), "Clear project enquiry".into()];
+        rules.push(web);
+    }
     for r in &mut rules {
         verify_palette(&mut r.palette);
     }
@@ -1226,7 +1320,7 @@ fn raw_industries() -> Vec<IndustryRule> {
         IndustryRule {
             slug: "marketing-agency".into(),
             name: "Marketing & Creative Advertising Agencies".into(),
-            keywords: vec!["agency".into(), "studio".into(), "marketing".into(), "advertising".into(), "branding".into(), "creative".into()],
+            keywords: ["marketing agency", "creative agency", "advertising agency", "branding studio", "marketing", "advertising", "branding"].iter().map(|s| (*s).into()).collect(),
             recommended_styles: vec!["kinetic-editorial".into(), "swiss-editorial-grid".into()],
             layout_archetype: "Full-Bleed Kinetic Reel + Staggered Case Study Index".into(),
             first_viewport_priority: "Immediate signature craft statement, flagship client work reel, and distinctive typographic voice".into(),
@@ -1569,7 +1663,7 @@ fn raw_industries() -> Vec<IndustryRule> {
         IndustryRule {
             slug: "creative-portfolio".into(),
             name: "Creative Portfolios & Independent Makers".into(),
-            keywords: vec!["portfolio".into(), "designer".into(), "architect".into(), "director".into(), "photographer".into(), "personal".into()],
+            keywords: vec!["portfolio".into(), "designer".into(), "architect".into(), "director".into(), "photographer".into(), "photography gallery".into(), "personal".into()],
             recommended_styles: vec!["kinetic-editorial".into(), "spatial-webgl-stage".into()],
             layout_archetype: "Curated Work Index + Deep Case Study Monograph".into(),
             first_viewport_priority: "Clear practitioner identity, selected shipped works, and availability status".into(),
@@ -2093,7 +2187,12 @@ pub fn recommend_design_steered(
     let affirmed = affirmed_brief(raw_query);
     let affirmed: &str = if affirmed.trim().is_empty() { raw_query } else { &affirmed };
     // Trade, mood and surface read only the segments that describe the client.
-    let (reading, set_aside) = reading_brief(affirmed);
+    let (mut reading, set_aside) = reading_brief(affirmed);
+    // The industry focus narrows classification, but must not discard the explicit
+    // client task and objects used to compose every direction.
+    for line in raw_query.lines().filter(|line| ["Primary action:", "Subject objects:", "Verified quote:"].iter().any(|label| line.starts_with(label))) {
+        if !reading.lines().any(|existing| existing == line) { reading.push('\n'); reading.push_str(line); }
+    }
     let query: &str = &reading;
     let q_lower = query.to_ascii_lowercase();
     let industries = catalog_industries();
@@ -2103,9 +2202,26 @@ pub fn recommend_design_steered(
     let ranked = rank_industries(query, &industries);
     let match_score = ranked[0].0;
     let mut signals = brief_signals(query);
+    if let Some(focus) = focus_line(query) {
+        // Navigation menus, forms and project categories are interface/content
+        // requirements, not evidence that this client's site is a restaurant,
+        // dashboard or another trade. Explicit subject owns classification.
+        let subject_signals = brief_signals(&focus);
+        signals.surface = subject_signals.surface;
+        signals.niche_tags = subject_signals.niche_tags;
+        signals.niches = subject_signals.niches;
+    }
+    // Negative constraints are read from the complete request, never used as subject evidence.
+    let complete = brief_signals(raw_query);
+    signals.motion_cap = complete.motion_cap;
+    signals.constraints = complete.constraints;
+    signals.brief_colors = complete.brief_colors;
+    signals.brief_color_roles = complete.brief_color_roles;
+    signals.brief_fonts = complete.brief_fonts;
+    signals.brief_font_roles = complete.brief_font_roles;
     if !set_aside.is_empty() {
         // Guardrails, colours, fonts and motion asks hold wherever the brief states them.
-        let whole = brief_signals(affirmed);
+        let whole = brief_signals(raw_query);
         signals.constraints = whole.constraints;
         signals.motion_cap = whole.motion_cap;
         signals.motion_bias = signals.motion_bias.max(whole.motion_bias);
@@ -2115,7 +2231,7 @@ pub fn recommend_design_steered(
         signals.brief_font_roles = whole.brief_font_roles;
     }
     let mut subject = crate::directions::read_subject(query, &signals);
-    if !subject.from_trades {
+    if !subject.from_trades && !query.lines().any(|line| line.starts_with("Subject objects:")) {
         // Unknown trade: the brief's own nouns and verbs, not a fixed fallback shared by every
         // unknown brief. No verb in the brief means no guessed call to action.
         let mut objects: Vec<String> = signals.brief_objects.iter().take(3).map(|o| format!("the {o}")).collect();
@@ -2128,10 +2244,12 @@ pub fn recommend_design_steered(
             }
         }
         subject.objects = objects;
-        subject.action = signals
-            .brief_action
-            .clone()
-            .unwrap_or_else(|| "the visitor's next step (the brief names none: use the niche's usual action, do not assume booking)".into());
+        if !query.lines().any(|line| line.starts_with("Primary action:")) {
+            subject.action = signals
+                .brief_action
+                .clone()
+                .unwrap_or_else(|| "the visitor's next step (the brief names none: use the niche's usual action, do not assume booking)".into());
+        }
     }
     let mut best_industry = if match_score > 0 {
         ranked[0].1.clone()
@@ -2226,8 +2344,14 @@ pub fn recommend_design_steered(
 
     // Explicit dial overrides and preservation modes keep the caller's / site's motion level untouched
     let tune_brief_motion = override_dials.is_none() && !preservation_enforced;
-    let tune = |m: u8| if tune_brief_motion { tune_motion(m, &signals) } else { m };
-    let heavy = tune_brief_motion && signals.motion_bias >= 4 && signals.motion_cap.is_none_or(|c| c >= 7);
+    let exact_motion = motion_dial_pin(raw_query).map(|m| signals.motion_cap.map_or(m, |cap| m.min(cap)));
+    let tune = |m: u8| if tune_brief_motion {
+        let value = exact_motion.unwrap_or_else(|| tune_motion(m, &signals));
+        // A quiet brief still receives purposeful feedback by default. Explicit
+        // stillness and numeric zero remain authoritative; preservation is above.
+        if value == 0 && exact_motion != Some(0) && signals.motion_cap != Some(0) { 1 } else { value }
+    } else { m };
+    let heavy = tune_brief_motion && exact_motion.map_or(signals.motion_bias >= 4, |m| m >= 8) && signals.motion_cap.is_none_or(|c| c >= 7);
 
     // Deal three directions: each is an archetype (layout composition + palette tone + type voice +
     // hero composition) with type and palette chosen for it from decoupled pools. A variant > 0
@@ -2235,7 +2359,8 @@ pub fn recommend_design_steered(
     // Read the brief before dealing: pins, register, stack and the motion tier it allows.
     let new_site = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
     let framework = existing_dna.map(|d| d.framework.as_str());
-    let shape_brief = crate::directions::page_shape::ShapeBrief::read(&signals, query, raw_query, framework, variant, signals.motion_bias >= 4);
+    let mut shape_brief = crate::directions::page_shape::ShapeBrief::read(&signals, query, raw_query, framework, variant, heavy);
+    if tune_brief_motion { if let Some(m) = exact_motion { shape_brief.pin_motion_dial(m); } }
     let mut understood_brief = crate::directions::page_shape::understand(&shape_brief, &signals, query, &best_industry.name, &match_confidence, tune(active_dials.motion_intensity));
     understood_brief.set_aside = set_aside;
     let industry_look = (match_score > 0).then_some((&best_industry.typography_pairing, &best_industry.palette));
@@ -2304,6 +2429,8 @@ pub fn recommend_design_steered(
             palette: d.palette.clone(),
             content_treatment: text.content,
             motion_choreography: motion,
+            visual_system: None,
+            composition_system: None,
             dials,
             rationale: crate::directions::rationale(d, &signals, &subject, &best_industry.name),
             mechanics: Vec::new(),
@@ -2433,23 +2560,10 @@ pub fn recommend_design_steered(
             ),
         );
     }
-    let heroes: Vec<(String, String, String)> = directions
-        .iter()
-        .map(|d| {
-            d.mechanics
-                .iter()
-                .find(|m| m.kind == crate::mechanics::MechanicKind::Hero)
-                .map(|m| (m.id.clone(), format!("{} {}", m.hero_material, m.name), m.composition.clone()))
-                .unwrap_or_else(|| (d.style_family.clone(), d.layout_composition.clone(), String::new()))
-        })
-        .collect();
-    for (d, m) in directions.iter_mut().zip(crate::process::hero_materials(&heroes)) {
-        d.hero_material = m;
-    }
     for (d, dealt) in directions.iter_mut().zip(&dealt) {
-        if d.hero_material.trim().is_empty() {
-            d.hero_material = dealt.arch.hero_material.to_string();
-        }
+        // A supporting mechanic never changes what the chosen composition is made of.
+        d.hero_material = if signals.surface == Surface::ProductUi { "working product interface with truthful demo data".into() }
+            else { dealt.arch.hero_material.to_string() };
     }
     let new_look = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign);
     let component = crate::process::is_component_brief(raw_query);
@@ -2460,7 +2574,7 @@ pub fn recommend_design_steered(
     };
     if new_look && !component {
         workflow_guidance.push(
-            "DIRECTIONS: sketch more candidates than you need, from three strategies: (a) what the strongest designer for this subject would make with no budget limit; (b) a verified real reference in the same medium, screenshotted and studied (structure, not pixels); (c) a random roll from Layoza's libraries (these three directions, or `variant`). Keep the 3 that are strongest, most different from each other and not in the look ledger. One shared family (e.g. warm paper serif) is fine; three from the same family is the failure. At most one may be overcooked (the whole page as one prop or metaphor). Each names its `hero_material`; gather the images the content needs before designing. Present them and stop for the user's pick; record it in .layoza/direction-approved.md.".into(),
+            "DIRECTIONS: render three materially different compositions with identical factual content and available assets at desktop and phone sizes. Compare the actual renders for hierarchy, typography, image integration, clarity and full-page rhythm. Choose with reasons as the designer unless the user asked to choose. Persist candidates, screenshot evidence and visible tradeoffs with review_design; never invent user approval. Library deals are starting material, not mandatory shapes or a substitute for art direction.".into(),
         );
         workflow_guidance.push(PAGE_SHAPE_RULE.into());
         workflow_guidance.push("FORM: for each page or section answer narrative role, viewing distance, visual temperature, content capacity and visual motif before styling it; at delivery add one line per section saying which content the form came from.".into());
@@ -2495,6 +2609,14 @@ pub fn recommend_design_steered(
             }
         }
     }
+    for direction in &mut directions {
+        let shape = direction.page_shape.as_ref().map(|s| s.button.id.as_str()).unwrap_or(&direction.radius);
+        direction.visual_system = Some(crate::visual_system::visual_system(&direction.palette, shape));
+        if let Some(page) = direction.page_shape.as_mut() {
+            page.button.build = direction.visual_system.as_ref().unwrap().control_spec.clone();
+        }
+        direction.composition_system = Some(crate::composition_system::composition_system(direction, &subject.phrase, &subject.action, raw_query));
+    }
     DesignRecommendation {
         scope: if component { "component".into() } else { "page".into() },
         custom_route,
@@ -2521,6 +2643,36 @@ pub fn recommend_design_steered(
 #[cfg(test)]
 mod tests {
     #[test]
+    fn full_agency_prompt_keeps_heavy_motion_despite_accessibility_fallback() {
+        let brief = include_str!("test_fixtures/agency-full-brief.txt");
+        let r = super::recommend_design(brief, super::OperatingMode::NewWebsite, None, None);
+        assert!(!super::explicit_no_motion(brief));
+        assert!(r.directions.iter().all(|d| d.dials.motion_intensity >= 8), "{:?}", r.directions.iter().map(|d| d.dials.motion_intensity).collect::<Vec<_>>());
+        let subject = crate::directions::read_subject(brief, &super::brief_signals(brief));
+        assert!(!subject.phrase.contains("master ai prompt"), "Prompt wrapper became the business subject: {}", subject.phrase);
+    }
+    #[test]
+    fn static_fallback_language_does_not_cancel_authored_animation() {
+        let rich = "Ultra-animated agency. Motion intent9/10. Project MONO MOTION. Keep important content readable without animations. This is not a static site.";
+        assert!(!super::explicit_no_motion(rich));
+        let r = super::recommend_design(rich, super::OperatingMode::NewWebsite, None, None);
+        assert!(r.directions.iter().all(|d| d.dials.motion_intensity == 9));
+        assert!(super::explicit_no_motion("No animation. Keep content readable without animation."));
+        assert!(super::explicit_no_motion("Build a static website."));
+        let r = super::recommend_design("A simple quiet corporate website", super::OperatingMode::NewWebsite, None, None);
+        assert!(r.directions.iter().all(|d| d.dials.motion_intensity > 0));
+    }
+    #[test]
+    fn plain_language_opt_out_overrides_the_motion_default() {
+        for request in ["Do not add any animation", "Don't add any animation", "dont add animation", "without any animation", "keep it static"] {
+            assert!(super::explicit_no_motion(request), "{request}");
+            let brief = format!("A highly animated modern agency website. {request}.");
+            let r = super::recommend_design(&brief, super::OperatingMode::NewWebsite, None, None);
+            assert!(r.directions.iter().all(|d| d.dials.motion_intensity == 0), "{request}");
+        }
+        assert!(!super::explicit_no_motion("Keep the important content readable without any animation."));
+    }
+    #[test]
     fn each_direction_gets_its_own_hero_and_two_signature_mechanics() {
         let rec = recommend_design("seafood restaurant on the harbour with a daily catch menu", OperatingMode::NewWebsite, None, None);
         let mut families = std::collections::HashSet::new();
@@ -2541,6 +2693,43 @@ mod tests {
 
     fn rec(q: &str) -> DesignRecommendation {
         recommend_design(q, OperatingMode::NewWebsite, None, None)
+    }
+
+    #[test]
+    fn studio_is_not_an_advertising_industry_and_architecture_keeps_its_trade() {
+        for subject in ["Architecture and spatial design studio", "Independent interiors practice", "Architectural studio"] {
+            let r = rec(&format!("Industry: {subject}\nA highly animated website with a project enquiry."));
+            assert_eq!(r.matched_industry.slug, "architecture-spatial-design", "{subject}");
+            assert!(!r.matched_industry.conversion_trust_elements.iter().any(|s| s.contains("client roster")));
+        }
+        assert_eq!(rec("Industry: mycology studio\nSpecimen studies and public research.").matched_industry.slug, "brief-derived");
+        assert_eq!(rec("Industry: advertising agency\nBrand campaigns.").matched_industry.slug, "marketing-agency");
+        assert_eq!(rec("Industry: web development agency\nShipped websites and engineering.").matched_industry.slug, "web-development-agency");
+    }
+
+    #[test]
+    fn audited_briefs_keep_subject_constraints_and_composition_material() {
+        let gallery = rec("Industry: photography gallery\nBlack and white only. Helvetica only. No animation. An exhibition introduction and selected photographs.");
+        assert_eq!(gallery.matched_industry.slug, "creative-portfolio");
+        for d in &gallery.directions {
+            assert_eq!(d.typography.display_font, "Helvetica");
+            assert_eq!(d.typography.body_font, "Helvetica");
+            assert_eq!(d.dials.motion_intensity, 0);
+            for c in [&d.palette.background, &d.palette.foreground, &d.palette.primary_accent, &d.palette.secondary_accent] {
+                let h = c.trim_start_matches('#');
+                assert_eq!(&h[0..2], &h[2..4], "Pinned monochrome: {c}");
+                assert_eq!(&h[2..4], &h[4..6], "Pinned monochrome: {c}");
+            }
+        }
+        let unknown = rec("Industry: mycology specimen archive\nInteractive exhibition with a shader-style graphic, without WebGL.");
+        assert_eq!(unknown.matched_industry.slug, "brief-derived", "Unknown explicit subject must not become a technology category");
+        let library = rec("A public library for local residents, no animation studio. Find and reserve a book.");
+        let text = library.directions.iter().map(|d| d.layout_composition.clone()).collect::<Vec<_>>().join(" ");
+        assert!(!text.contains("install command") && !text.contains("timecodes"), "{text}");
+        let dashboard = rec("Bakery operations dashboard: quantities, ovens and collection orders.");
+        assert!(dashboard.directions.iter().all(|d| d.hero_material.contains("working product interface")));
+        let clinic = rec("Dental clinic in Lahore, no animation. First visit explanation and appointment requests.");
+        assert!(clinic.directions.iter().all(|d| d.dials.motion_intensity == 0));
     }
 
     const LED_BRIEF: &str = "Homepage for a B2B supplier of SMD LED screens and video walls in Pakistan.\n\
@@ -2642,11 +2831,11 @@ mod tests {
         // Niche drives the palette family (B and C are dealt from the brief's niche tags)
         let pool = crate::directions::palette_pool();
         let tagged = |id: &str, tag: &str| pool.iter().any(|e| e.palette.id == id && e.tags.contains(&tag));
-        for k in 1..3 {
-            assert!(tagged(&sea.directions[k].palette.id, "marine"), "{}", sea.directions[k].palette.id);
-            assert!(tagged(&fashion.directions[k].palette.id, "textile"), "{}", fashion.directions[k].palette.id);
-            assert!(tagged(&dash.directions[k].palette.id, "data"), "{}", dash.directions[k].palette.id);
-        }
+        // At least one option carries category material; every option need not
+        // repeat the category palette after removing candidate A's default pin.
+        assert!(sea.directions.iter().any(|d| tagged(&d.palette.id, "marine")));
+        assert!(fashion.directions.iter().any(|d| tagged(&d.palette.id, "textile")));
+        assert!(dash.directions.iter().any(|d| tagged(&d.palette.id, "data")));
 
         // A task UI never gets scroll choreography or high motion; a kinetic studio keeps it
         for d in &dash.directions {
@@ -2733,6 +2922,28 @@ Text: #10203A");
         assert!(rec("a calm bakery site").brief_signals.brief_fonts.is_empty());
         // Font names inside ordinary words are not fonts
         assert!(rec("international interiors studio").brief_signals.brief_fonts.is_empty());
+    }
+
+    #[test]
+    fn numeric_motion_choice_and_font_inventory_are_not_reinterpreted() {
+        let r = rec("Independent web agency, highly animated. Motion intensity 8/10.\nLocal fonts in assets/fonts/ (Space Grotesk, DM Sans, Instrument Serif). Palette and font selection are yours.");
+        assert_eq!(r.active_dials.motion_intensity, 8);
+        assert!(r.directions.iter().all(|d| d.dials.motion_intensity == 8));
+        assert!(rec("Architecture studio. Motion intent9/10.").directions.iter().all(|d| d.dials.motion_intensity == 9));
+        let spatial = rec("Industry: architecture studio\nNavigation menu, project dialogs and enquiry form. Motion intent9/10. Target WCAG2.2 AA. Honor prefers-reduced-motion.");
+        assert_eq!(spatial.brief_signals.surface, Surface::Showcase);
+        assert!(spatial.directions.iter().all(|d| d.dials.motion_intensity == 9));
+        assert!(r.brief_signals.brief_fonts.is_empty());
+        let assets = rec("Industry: architecture studio\nShared local assets only: the three PNGs; fonts Space Grotesk, DM Sans, Instrument Serif, Fraunces and Manrope in assets/fonts/ with their licenses; GSAP3.13.0. Font choices are open within this inventory.");
+        assert!(assets.brief_signals.brief_fonts.is_empty(), "An asset menu is not a display/body selection");
+        assert_eq!(assets.matched_industry.typography_pairing.display_font, "Fraunces");
+        let required = rec("Independent studio. Available fonts: Space Grotesk, DM Sans.\nHeading font: DM Sans. Motion intensity: 3/10.");
+        assert_eq!(required.brief_signals.brief_fonts, vec!["DM Sans"]);
+        assert_eq!(required.active_dials.motion_intensity, 3);
+        assert!(required.directions.iter().all(|d| d.dials.motion_intensity == 3));
+        let still = rec("Agency, motion intensity 8/10 but no animation.");
+        assert_eq!(still.active_dials.motion_intensity, 0);
+        assert!(still.directions.iter().all(|d| d.dials.motion_intensity == 0));
     }
 
     #[test]
@@ -2910,9 +3121,13 @@ Text: #10203A");
     #[test]
     fn directions_print_their_own_type_not_the_industry_pairing() {
         let r = rec("seafood restaurant on the harbour with a daily catch menu");
-        assert_eq!(r.directions[0].typography.id, r.matched_industry.typography_pairing.id);
-        assert_ne!(r.directions[1].typography.id, r.matched_industry.typography_pairing.id);
-        assert_ne!(r.directions[2].typography.id, r.matched_industry.typography_pairing.id);
+        assert_ne!(r.directions[0].typography.id, r.matched_industry.typography_pairing.id);
+        for d in &r.directions {
+            let controls = d.visual_system.as_ref().unwrap();
+            assert_eq!(d.page_shape.as_ref().unwrap().button.build, controls.control_spec);
+            assert!(d.composition_system.as_ref().unwrap().static_lockup_css.contains(&d.typography.display_font));
+            assert!(!d.page_shape.as_ref().unwrap().motif.build.contains("housing of"));
+        }
     }
 
     #[test]

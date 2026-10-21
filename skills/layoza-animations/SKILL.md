@@ -1,12 +1,17 @@
 ---
 name: layoza-animations
-description: Motion design for the web. Decide what motion a design needs, then pick the right tool for it (CSS, WAAPI, View Transitions, GSAP + ScrollTrigger/SplitText, Motion, Lenis, canvas/WebGL), with reduced-motion support, visible-without-JS content and clean teardown.
+description: GSAP-first web motion by default: authored choreography, scroll, interaction and Three.js state, with explicit Motion for React support when requested, reduced-motion stills and scoped cleanup.
 ---
 
 # Layoza Specialist Skill: Motion Design (`layoza-animations`)
 
-Motion is a design decision, made per brief. Nothing here is mandatory except
-the guardrails in section 3. The user's prompt always wins: if they name a
+Follow [the motion policy](../layoza/references/motion-policy.md): include purposeful animation by default and use GSAP for authored animation unless the user requests none or another engine. The reusable [GSAP lifecycle controller](assets/gsap-motion.mjs) handles scoped timelines, dynamic reduced motion, pause/resume, offscreen/hidden rendering and cleanup.
+
+For rich-motion briefs, use [section choreography](reference/section-choreography.md): author content-specific transformations through MCP `recommend_animation.motion_plan`, implement them with the executable [responsive section host](assets/section-motion.mjs), then capture actual scroll states with `scripts/review-motion.mjs`. Several earned mechanisms may serve one thesis; do not interpret "one signature" as permission to leave the rest of a high-motion brief with identical reveals. Authored plans and passing interaction tests are not motion-quality evidence.
+
+Motion is a design decision, made per brief. Section 3 is the shared guardrail;
+section 2e applies when the brief requests rich motion. Other techniques and
+numeric values are starting points. The user's prompt always wins: if they name a
 library, a feel, or "no animation", do exactly that. In Mode B/C, extend the
 site's existing stack and `MOTION.md`.
 
@@ -28,20 +33,11 @@ A quiet, typographic brief may need only micro-interactions. A showcase may
 need all of them. One identical fade-up on every section is never the answer
 (`CRAFT-SCATTERED-REVEAL`).
 
-## 2. Pick the lightest tool that does it well
+## 2. Assign one owner to each animation
 
-| Need | Tool |
-| :--- | :--- |
-| Hover, press, open/close, small state changes | CSS transitions / `@starting-style`, WAAPI |
-| Scroll-linked effects that are simple | CSS scroll-driven animations (`animation-timeline: view()`), with a fallback |
-| Orchestrated timelines, pinned/scrubbed scroll stories, text splitting, SVG drawing | GSAP + ScrollTrigger / SplitText (all plugins free); pin an exact version |
-| React component state, layout, presence, gestures | Motion (Framer Motion) |
-| Route morphs | View Transitions API |
-| Smooth-scroll showcases | Lenis (section 4) |
-| Particles, shaders, 3D | canvas / WebGL / Three.js ([`layoza-threejs-webgl`](../layoza-threejs-webgl/SKILL.md)) |
+GSAP owns entrance choreography, SVG motion, control feedback, scroll transitions and object-state animation. Use ScrollTrigger for actual scroll relationships and GSAP's scoped ticker for a live Three.js render callback. CSS defines the readable static state and immediate focus/selection feedback.
 
-Load libraries from an allowed CDN with a pinned version, or from npm in a
-bundled project. Never add a library the design doesn't use.
+When explicitly requested, Motion for React owns component presence/layout on its own wrappers; GSAP owns separate timeline/scene properties. Never have both engines write the same transform. Lenis is optional for a requested smooth-scroll showcase and stays synchronized with ScrollTrigger. WebGL renders a real subject, rather than becoming an excuse for a floating primitive.
 
 ## 2b. Values that feel professional
 
@@ -67,7 +63,9 @@ Leonxlnx/taste-skill and greensock/gsap-skills (all MIT), plus GSAP docs.
 | Scrub catch-up | `scrub: 0.6–1`; parallax travel ≤ 8% |
 | Springs | Motion `{ type: "spring", visualDuration: 0.4, bounce: 0.15 }`; bounce 0 for UI, 0.1–0.3 only for drag or play; overshoot on transform, never on opacity |
 
-Never use ease-in on UI. Never animate keyboard-initiated actions. Gate hover
+Use ease-out for UI arrivals; an accelerating exit may use ease-in. Keyboard
+actions update state and focus immediately; decorative movement must not delay
+input or focus. Gate hover
 motion behind `@media (hover: hover) and (pointer: fine)`.
 
 ```js
@@ -91,15 +89,13 @@ gsap.matchMedia().add("(min-width: 900px) and (prefers-reduced-motion: no-prefer
 });
 ```
 
-## 2c. Micro-motion floor (every page)
+## 2c. Control feedback and optional micro-motion
 
-Big moments are optional; small feedback is not. Every control answers the
-person who touched it. A calm, minimal, content-first or "not heavily
-animated" brief still gets this whole floor plus one entrance and gentle
-section fades: light motion is what makes a static page feel finished
-(baseline CSS: `layoza animate --recipe micro-css-polish`). Only an explicit
-"no animation" / "no motion" prompt cuts it back to instant colour/underline
-changes and focus rings.
+Small feedback confirms actions. A calm or minimal brief can use immediate
+colour, underline and focus changes; choose a restrained GSAP response instead of a decorative reveal on every section.
+For richer motion, choose feedback that fits the concept (baseline CSS:
+`layoza animate --recipe interactive-gsap-feedback`). Explicit no-motion requests keep
+feedback immediate with colour/underline changes and focus rings.
 
 | Moment | Floor | Value |
 | :--- | :--- | :--- |
@@ -112,11 +108,10 @@ changes and focus rings.
 | Loading / async | the button shows progress; never a dead click | instant start |
 | Live numbers (totals, counters, prices) | roll or count to the new value | 250–400ms |
 | Page entrance | hero copy rises 12–16px and fades in, staggered 60–80ms; content is visible if CSS animation never runs | 600–800ms, once |
-| Section arrival | content fades up via CSS `animation-timeline: view()` inside `@supports`; no JS gate, no hidden text without support | entry 0–40% |
+| Section arrival | content-shaped GSAP arrival with visible source content; no shared fade-up imposed on every section | entry 0–40% |
 | Card / media hover (fine pointer) | lift 2–4px with shadow, or art scales ≤ 1.03 | 250–500ms |
 
-**Speak the subject.** At least two feedback moments use the business's own
-objects or gestures, so a neighbouring site couldn't reuse them unchanged:
+**Speak the subject.** Where useful, feedback can use the business's own objects or gestures:
 - a planetarium basket count turns like a star wheel;
 - a bakery's add-to-basket drops a loaf icon into the bag;
 - an accountancy match draws a pen tick;
@@ -139,13 +134,15 @@ transition and no visible press state.
 From the 2026-10 blind rounds: animated entries lost points on frames caught
 mid-scroll (faint, half-revealed, an empty pinned stage), not on the motion itself.
 
-- The rest state, the reduced-motion state and every frame of a pinned or
-  scroll-linked story are complete compositions on their own.
+- Resting scroll positions and reduced-motion states are complete, readable
+  compositions. Intentional artwork masks may crop during a transition; do not
+  leave essential copy half-hidden when scrolling stops.
 - Capture each pinned segment at 0, 25, 50, 75 and 100% progress. No frame may
   be empty, faint (content under ~60% opacity covering most of the view) or
   cropped.
-- Entrance reveals finish within ~600ms of entering view, or are scrubbed so
-  every resting scroll position shows readable text. Browser QA warns with
+- Aim to expose essential text within ~600ms; a coordinated art sequence can
+  continue longer while copy/actions stay available. Scrubbed scenes keep every
+  resting scroll position readable. Browser QA warns with
   `text-mid-reveal` when a heading is still faded ~0.9s after scrolling stops.
 - Stage art fills its stage. In a pinned split (list one side, visual the
   other), the visual spans most of its column and roughly half the viewport
@@ -160,67 +157,30 @@ mid-scroll (faint, half-revealed, an empty pinned stage), not on the motion itse
 - No gate and no long preloader: the first paint already shows the headline
   and the primary action. More rules: `layoza-art-direction/reference/ceiling.md` §4.
 
-## 2e. When motion is the brand (animated / kinetic / scroll-driven prompts)
+## 2e. Deliver the requested motion level
 
-From the 2026-10 animated benchmark: the winner made the **whole page one
-scroll story** (a tide that rose from low to high from hero to footer). Entries
-whose motion lived only inside one pinned section lost, however polished.
+Read execution_foundation.motion from get_design_system and delivery from
+recommend_animation. Recipes are ingredients, not choreography. Respect the
+explicit dial: 0 static; 1–3 quiet; 4–6 expressive; 7–10 high.
 
-1. **One page-long motion thread.** Pick a quantity from the subject that can
-   change: tide height, time of day, temperature, progress of a build, a sky.
-   Map scroll progress for the *whole document* onto it, and let every
-   section show its current value: a colour, a line height, a clock, a level
-   in the art. Section by section, the visitor watches the subject change.
-2. **A signature scene per act.** Write the page as 3–5 acts. Each act gets
-   one scroll-driven scene drawn from the subject (arrive → set up → peak →
-   after), not a generic reveal. Every frame of each scene passes §2d.
-3. **Kinetic type is structural.** The hero wordmark and every section
-   heading move with intent: masked line reveals, width or weight morphs,
-   scroll-scrubbed tracking, or words placed by the thread. The motion must
-   come from the subject (letters rising like a tide, glowing like an ember),
-   never a stock split-and-fade on everything.
-4. **Reactive elements answer the visitor:**
-   - the pointer (the art swells or tilts under it);
-   - scroll speed (marquees speed up and reverse);
-   - live data (countdowns, totals, availability).
+For a highly animated brief, prototype the signature transformation before
+finishing the page. Specify its actual subject/object, trigger, starting layout,
+transformation, resolved layout and handoff. Coordinate type and art within it.
+Connect later sections through the same motion language without imposing a fixed
+act count, animated headings everywhere, reactive cursor or particular footer.
 
-   At least two of these, each tied to the subject.
-5. **The big numbers are moments.** A countdown, a total or a capacity is a
-   display-size event, not inline text.
-6. **Pace like film.** Alternate fast and slow acts. Give the slow act room,
-   and fill any band left in the scroll budget; an empty band is a failed
-   frame, not a pause.
-7. **Phones get their own choreography.** No horizontal pin is shrunk into a
-   thumbnail. Re-stage each scene vertically; charts and timelines stay
-   readable (labels ≥ 12px) or swap to a simpler mobile drawing. The
-   wordmark and the primary button sit on the 375px first screen.
-8. **Reduced motion keeps the story.** Show each act's key frame as a still
-   composition with the thread at that act's value. The narrative stays
-   readable without the travel.
-9. **Budget:** 60fps on mid hardware; LCP ≤ 2.5s with the headline painted
-   before any motion script; only transform and opacity in scroll loops (filter and clip-path repaint; use them on small elements or one-off tweens, never a full-screen scrub).
+Small translate/rotate tweens, floating thumbnails, spinning symbols and a page
+progress line alone underdeliver a high-motion brief, however many tweens exist.
+Agency example: project identity elements assemble into a readable website, then
+expand into the work presentation. This illustrates transformation; it is not a
+required agency metaphor.
 
-10. **Detail parity across acts.** Builders spend their best work on the hero
-    and run out of budget later, and reviewers mark it every time. Before
-    building, list each act's drawn object and give it the hero's level of
-    detail: parts named, light, texture, people or props. Build the weakest
-    act's art *before* polishing the hero.
-11. **The last act is the ending.** The final scene (sunrise, last service,
-    launch) *is* the footer: the wordmark at full width, plus one line of
-    contact and links inside that scene. Never end with link columns under
-    the story.
-
-12. **Art reacts, text holds.** For WebGL/canvas hero art, composition and
-    pinned-stage rules: `layoza/references/kinetic-composition.md`.
-
-**Self-check before finishing.** Capture frames every ~760px (desktop) and
-~700px (mobile) with the `?t=` harness or real scrolling. Read them as a
-storyboard:
-- Can you name the thread from the frames alone?
-- Does every frame show it?
-- Does any frame look like a template section?
-
-Any "no" is the next fix.
+Stage the phone scene independently for touch and vertical reading. Inspect an
+actual recording of opening and scroll transitions on desktop and phone; sample
+the signature at start/25/50/75/end. Check legibility, composition, continuity and
+resolved actions, plus complete static/reduced-motion versions. If the prototype
+looks like minor decoration, change the mechanism before adding more effects.
+Stills and QA passes do not prove motion quality. Speed scoring is optional.
 
 ## 3. Guardrails (always)
 
@@ -234,8 +194,9 @@ Any "no" is the next fix.
 3. **Compositor first:** `transform` and `opacity` are the only properties
    that stay off the main thread. `clip-path`, `filter` (blur above all,
    in Safari) and SVG stroke repaint: keep them to small areas or one-off
-   tweens, never a full-viewport scrub. Never animate layout properties, and
-   never write `transition: all`.
+   tweens, never a full-viewport scrub by default. Use transforms for scene
+   motion; local accordion height/grid transitions are a deliberate exception
+   and must not move unrelated content unexpectedly. Never write `transition: all`.
 4. **No layout shift.** Reserve space; refresh scroll measurements after fonts
    load.
 5. **Frequency budget:** frequent actions answer in ≤ 200ms; only rare moments
@@ -243,8 +204,8 @@ Any "no" is the next fix.
    in one viewport.
 6. **Teardown:** revert contexts, kill triggers, and cancel animations on
    unmount. Pause idle loops when off-screen.
-7. **Performance:** INP ≤ 200ms and CLS ≤ 0.1 hold. Defer scripts, and let the
-   LCP element paint before animating it.
+7. **Design continuity:** content stays visible before and after animation;
+   controls remain usable. Speed checks are optional, only on explicit request.
 8. **Use the chosen library correctly.** Once you pick GSAP, Motion, Lenis,
    CSS scroll timelines or WAAPI, apply its rules in
    [reference/library-rules.md](reference/library-rules.md). It covers
@@ -267,5 +228,4 @@ it with ScrollTrigger if both are used (exact wiring: reference/library-rules.md
 ```bash
 layoza animate --recipe hero-gsap-masked-split --framework react --intensity 6
 ```
-Recipes: `staggered-hero`, `scroll-pinned-story`, `waapi-spring-reveal`,
-`magnetic-cta`, `view-transition-route`, `lenis-gsap-sync`.
+Default recipes: `hero-gsap-masked-split`, `section-gsap-authored`, `interactive-gsap-feedback`, `page-gsap-transition`, `scroll-gsap-pinned-narrative`, `threejs-gsap-stage`. Explicit Motion for React: `react-motion-presence`. Legacy alternative-engine recipes remain available by explicit lookup.

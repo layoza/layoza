@@ -6,7 +6,12 @@ All notable changes to Layoza are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-10-22
+
 ### Changed
+- Speed checks are optional: `layoza qa` (including `--full`) skips them unless `--performance` is
+  passed, and they never block the design gate.
+- All example demo pages were removed ahead of a fresh set; docs and skills point at generic paths.
 - Layoza now shows the path and the AI decides. The brief opens with "Decide first": a motion
   level (0-5) read from the niche, three concepts drawn from the brief's facts and scored for fit
   and originality, and a signature with techniques chosen from the new
@@ -40,6 +45,20 @@ All notable changes to Layoza are listed here. The format follows
   (a pinned stage that changes with scroll, or a scroll-timeline animation).
 
 ### Added
+- `recommend_animation.motion_plan`: author a subject-specific motion thesis with per-section
+  transformations and separate phone staging. The executable section host
+  (`skills/layoza-animations/assets/section-motion.mjs`) owns responsive ScrollTriggers, teardown and
+  an inspectable snapshot; a GSAP lifecycle controller, a disclosure header and Three.js scene and
+  work-stage helpers ship as skill assets.
+- Review scripts on Layoza's own CDP client (`scripts/lib/cdp.mjs`, Node 22+, local Chrome, Edge or
+  Playwright Chromium): `review-composition.mjs` (full-page captures at 1440/768/390 with measured
+  display type, type scale, first-screen fill, section rhythm and media reach), `review-identity.mjs`
+  (brand-masked and neutralised surface captures) and `review-motion.mjs` (normal-motion frames at
+  0/25/50/75/100% of each registered scene).
+- `scripts/font-face.mjs` writes `@font-face` rules from a font's real OpenType axes, and
+  `scripts/verify-activation.mjs` checks the install wiring.
+- `get_design_system` accepts `brief_context` to keep the client's subject, facts and pinned choices,
+  and returns three compositions in the default brief. All 24 tools are listed by default.
 - QA: `picture-floor`, `headline-too-many-lines`, `blank-stretch`, `heading-level-skip`, `thin-text-on-dark` (warnings) and `colour-sprawl`, `spacing-sprawl`, `selection-unstyled` (critiques).
 - `zigzag-stack` (`UI-ZIGZAG-STACK`): three or more media-beside-text rows that flip sides warn; four
   or more fail the gate. It is the commonest template rhythm.
@@ -47,6 +66,7 @@ All notable changes to Layoza are listed here. The format follows
   stage changes with scroll and no animation is linked to scroll.
 
 ### Fixed
+- Eleven clippy warnings (simplified boolean guards, a stray doc comment).
 - Live QA on `file://` pages read no stylesheet rules (Chromium treats each file as its own origin), so every stylesheet-driven check ran blind and reported false "no ::selection" and "no error states" findings. Chromium now launches with file access for local pages.
 - `visual-starved-page` treated each item of a list titled with `h2`s as its own section, and judged a sticky photo or an image strip against the full height of a tall section. Sections are now landmark sections, and media is summed and measured against one viewport.
 - `ledger-heavy-page` fired at two data sections although its own advice allows one or two; it now fires at three.
@@ -325,6 +345,7 @@ First public release.
   `docs/CROSS-TYPE-BENCHMARK-2026-10.md`.
 
 [Unreleased]: https://github.com/layoza/layoza/compare/v0.1.4...HEAD
+[0.1.5]: https://github.com/layoza/layoza/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/layoza/layoza/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/layoza/layoza/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/layoza/layoza/releases/tag/v0.1.2

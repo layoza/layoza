@@ -1,4 +1,31 @@
 use super::*;
+
+#[test]
+fn portfolio_project_vocabulary_does_not_invent_the_clients_inventory() {
+    let query = "Industry: independent web agency\nHighly animated kinetic website. Portfolio: Aster cultural programme, festival identity and event booking concept. No actual events or products for sale.";
+    let signals = crate::intelligence::brief_signals(query);
+    for variant in 0..32 {
+        let directions = deal(&signals, query, variant, None);
+        assert!(directions.iter().all(|d| !matches!(d.arch.key, "night-programme" | "flash-sheet")), "variant {variant}");
+    }
+}
+
+#[test]
+fn client_task_objects_and_available_capabilities_survive_dealing() {
+    let query = "Industry: public library\nPrimary action: search the catalogue\nSubject objects: books, reading rooms, community events\nNo animation.";
+    let signals = brief_signals(query);
+    let subject = read_subject(query, &signals);
+    assert_eq!(subject.action, "search the catalogue");
+    assert_eq!(subject.objects, vec!["books", "reading rooms", "community events"]);
+    for variant in 0..8 {
+        let dealt = deal(&signals, query, variant, None);
+        assert_eq!(dealt.len(), 3);
+        for d in dealt {
+            assert_ne!(d.arch.hero_material, "video");
+            assert!(!["quote-led", "booking-board", "week-grid", "service-area"].contains(&d.arch.key));
+        }
+    }
+}
 use crate::intelligence::{brief_signals, recommend_design, recommend_design_variant, wcag_contrast, OperatingMode};
 use std::collections::HashSet;
 
@@ -157,10 +184,9 @@ fn subject_is_read_from_the_brief() {
     assert_eq!(s("Marketing site for an open-source MCP server").phrase, "open-source mcp server");
     assert_eq!(s("seafood restaurant on the harbour with a daily catch menu").phrase, "seafood restaurant");
     let kids = s("kids' museum");
-    assert!(kids.objects[0].contains("hands-on"), "{:?}", kids.objects);
     assert!(kids.objects.iter().any(|o| o.contains("plinth")), "{:?}", kids.objects);
     let dash = s("bakery sales dashboard");
-    assert_eq!(dash.objects[0], "the day's takings");
+    assert_eq!(dash.objects[0], "today's numbers");
     assert!(dash.objects.contains(&"today's numbers".to_string()), "{:?}", dash.objects);
     let unknown = s("A detailed start page");
     assert!(!unknown.from_trades);

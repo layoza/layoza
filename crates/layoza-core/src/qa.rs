@@ -157,9 +157,10 @@ pub struct QaOptions {
     /// Rule ids or style groups to allow (`pill`, `glow`, `same-section-twice`, `rule:<id>`,
     /// `style:<group>`). Merged with the groups the project's DESIGN.md / BRAND.md ask for.
     pub allow: Vec<String>,
-    /// Full mode (`--full`): adds the throttled perf pass and runs the full rule sweep at every
-    /// width. The default fast mode runs the full sweep at 1440 only.
+    /// Full visual rule sweep at every width. Does not enable performance measurements.
     pub full: bool,
+    /// Optional speed diagnostics; never required for the design gate.
+    pub performance: bool,
 }
 
 /// True for a file name the 0.1.x releases left in `%TEMP%\layoza`: `browser-qa-0.1.<anything>.mjs`.
@@ -241,6 +242,9 @@ pub fn run_browser_qa_with(
     }
     if opts.full {
         cmd.arg("--full");
+    }
+    if opts.performance {
+        cmd.arg("--performance");
     }
     cmd.env("PYTHONIOENCODING", "utf-8").env("PYTHONUTF8", "1");
     let output = output_with_timeout(&mut cmd, qa_timeout());
@@ -1059,17 +1063,20 @@ pub fn compact_qa_summary(
     out.insert("target".into(), json!(target));
     out.insert("verdict".into(), json!(verdict));
     out.insert("counts".into(), json!({ "errors": errors, "warnings": warnings, "design_critique": notes }));
-    out.insert(
-        "lab".into(),
-        json!({
+    out.insert("accessibility".into(), json!({
+        "min_contrast_ratio": pick("min_contrast_ratio"),
+        "contrast_failures": pick("contrast_failures")
+    }));
+    if report.get("performance_requested").and_then(Value::as_bool) == Some(true) {
+        out.insert("lab".into(), json!({
             "lcp_ms": pick("lcp_ms"),
             "cls": pick("cls"),
             "inp_proxy_ms": pick("inp_ms"),
             "min_contrast_ratio": pick("min_contrast_ratio"),
             "contrast_failures": pick("contrast_failures"),
             "methodology": "laboratory_synthetic: one headless Chromium load per viewport, worst viewport; not field data"
-        }),
-    );
+        }));
+    }
     if let Some(note) = motion_unsettled_note(report) {
         out.insert("motion".into(), json!(note));
     }
@@ -1275,14 +1282,18 @@ mod compact_tests {
     }
 
     #[test]
-    fn summary_puts_verdict_and_lab_first_and_flags_unsettled_motion() {
+    fn summary_puts_design_first_and_speed_only_when_requested() {
         let report = json!({ "lcp_ms": 1040, "cls": 0.26, "inp_ms": 88, "min_contrast_ratio": 1.08, "contrast_failures": 3, "motion_unsettled_viewports": ["mobile"] });
         let f = vec![finding("UI-X", Severity::Warning, "http://x/ (mobile)", "ui-x at mobile: y")];
         let s = compact_qa_summary("http://x/", &report, &f, json!([]), Path::new("shots"), Some(Path::new("shots/capture-full.json")));
         let keys: Vec<&str> = s.as_object().unwrap().keys().map(|k| k.as_str()).collect();
-        assert_eq!(keys[..4], ["target", "verdict", "counts", "lab"]);
+        assert_eq!(keys[..4], ["target", "verdict", "counts", "accessibility"]);
         assert_eq!(s["verdict"], "warnings");
-        assert_eq!(s["lab"]["inp_proxy_ms"], 88);
+        assert!(s.get("lab").is_none(), "Default summaries focus on design, not optional speed diagnostics.");
+        let mut requested = report.clone();
+        requested["performance_requested"] = json!(true);
+        let optional = compact_qa_summary("http://x/", &requested, &f, json!([]), Path::new("s"), None);
+        assert_eq!(optional["lab"]["inp_proxy_ms"], 88);
         assert!(s["motion"].as_str().unwrap().contains("did not settle"));
         assert!(s["full_detail"].as_str().unwrap().ends_with("capture-full.json"));
         let clean = compact_qa_summary("http://x/", &json!({}), &[], json!([]), Path::new("s"), None);

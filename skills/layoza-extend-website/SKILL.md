@@ -51,6 +51,6 @@ description: >-
 
 ## Tested Example
 ```bash
-cargo run --quiet --bin layoza -- inspect examples/existing-site-preservation --write
-cargo run --quiet --bin layoza -- verify examples/existing-site-preservation
+cargo run --quiet --bin layoza -- inspect path/to/site --write
+cargo run --quiet --bin layoza -- verify path/to/site
 ```
