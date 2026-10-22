@@ -442,6 +442,10 @@ const TRADES: &[Trade] = &[
         ["type in motion", "the frame sequence", "the edit timeline"], "open the reel or start a project", "frame numbers, timecodes and easing curves", &["kinetic"]),
     tr(&["smd", "signage", "billboard", "billboards", "led screen", "led screens", "led display", "led displays", "led wall", "led walls", "video wall", "video walls", "jumbotron"], None,
         ["the lit screen on its site", "the module and its pixel pitch", "the cabinet from the side"], "request a site survey or quote", "pixel pitch, nits, viewing distance and IP rating", &["industrial", "infrastructure"]),
+    // Web studios name their clients' trades in sample work ("a sailing-school booking app");
+    // their own trade must lead so those nouns do not lend the studio a school's notation.
+    tr(&["web development", "web developer", "web developers", "web design", "web designer", "web agency", "web studio", "digital agency", "development studio", "development agency"], Some(S::Showcase),
+        ["the site running in the browser", "the build beside its code", "the launch checklist"], "book an intro call or start a project", "stacks, sprint dates and launch dates", &["code"]),
     tr(&["agency", "studio", "portfolio", "designer", "photographer"], Some(S::Showcase),
         ["the work itself", "the process sketches", "the client credits"], "open a case study or start a project", "project numbers, years and credits", &["generic"]),
     tr(&["cli", "sdk", "api", "devtool", "devtools", "dev tool", "dev tools", "developer", "developers", "terminal", "mcp", "compiler", "software library", "javascript library", "python library", "component library"], Some(S::DevTool),

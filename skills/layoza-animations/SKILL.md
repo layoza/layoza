@@ -7,7 +7,7 @@ description: Web motion designed per brief: authored choreography, scroll, inter
 
 Follow [the motion policy](../layoza/references/motion-policy.md) and the tool policy in § 2. Where GSAP fits, the reusable [GSAP lifecycle controller](assets/gsap-motion.mjs) handles scoped timelines, dynamic reduced motion, pause/resume, offscreen/hidden rendering and cleanup.
 
-For rich-motion briefs, use [section choreography](reference/section-choreography.md): author content-specific transformations through MCP `recommend_animation.motion_plan`, implement them with the executable [responsive section host](assets/section-motion.mjs), then capture actual scroll states with `scripts/review-motion.mjs`. Several earned mechanisms may serve one thesis; "one signature" never excuses identical reveals across a high-motion brief. Authored plans and passing interaction tests are not motion-quality evidence.
+For rich-motion briefs, use [section choreography](reference/section-choreography.md): author content-specific transformations through MCP `recommend_animation.motion_plan`, implement them with the executable [responsive section host](assets/section-motion.mjs) (an ES module: for a page opened over file://, inline it as a classic script that assigns `window.createSectionMotion`), then capture actual scroll states with `scripts/review-motion.mjs`. Several earned mechanisms may serve one thesis; "one signature" never excuses identical reveals across a high-motion brief. Authored plans and passing interaction tests are not motion-quality evidence.
 
 Motion is a design decision, made per brief. Section 3 is the shared guardrail;
 section 2e applies when the brief requests rich motion. Other techniques and

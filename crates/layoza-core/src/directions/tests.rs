@@ -211,6 +211,9 @@ fn subject_is_read_from_the_brief() {
     let dash = s("bakery sales dashboard");
     assert_eq!(dash.objects[0], "today's numbers");
     assert!(dash.objects.contains(&"today's numbers".to_string()), "{:?}", dash.objects);
+    // Sample work naming a client's trade must not take over the studio's own subject.
+    let web = s("Northloop, Rotterdam web development studio. Sample projects: Vela sailing-school booking app, Hartwood furniture store");
+    assert_eq!(web.notation, "stacks, sprint dates and launch dates", "{:?}", web.objects);
     let unknown = s("A detailed start page");
     assert!(!unknown.from_trades);
     assert_eq!(unknown.phrase, "detailed start");

@@ -1029,7 +1029,9 @@ pub fn brief_signals(query: &str) -> BriefSignals {
         if !moods.iter().any(|m| m == "bold") {
             moods.push("bold".into());
         }
-        motion_bias += 4;
+        // A calm tone ("calm, reassuring, highly animated") sets the character of the motion,
+        // not its amount: mood penalties must not cancel an explicit heavy ask.
+        motion_bias = motion_bias.max(0) + 4;
     } else if any(&["animated", "animations", "animation", "dynamic", "lively"]) && !lower.contains("no animation") {
         motion_bias += 2;
     }
@@ -2362,13 +2364,14 @@ pub fn recommend_design_steered(
     // Explicit dial overrides and preservation modes keep the caller's / site's motion level untouched
     let tune_brief_motion = override_dials.is_none() && !preservation_enforced;
     let exact_motion = motion_dial_pin(raw_query).map(|m| signals.motion_cap.map_or(m, |cap| m.min(cap)));
+    let heavy = tune_brief_motion && exact_motion.map_or(signals.motion_bias >= 4, |m| m >= 8) && signals.motion_cap.is_none_or(|c| c >= 7);
     let tune = |m: u8| if tune_brief_motion {
-        let value = exact_motion.unwrap_or_else(|| tune_motion(m, &signals));
+        // An explicit heavy ask lands in the heavy tier even on a calm niche's low default.
+        let value = exact_motion.unwrap_or_else(|| { let t = tune_motion(m, &signals); if heavy { t.max(8) } else { t } });
         // A quiet brief still receives purposeful feedback by default. Explicit
         // stillness and numeric zero remain authoritative; preservation is above.
         if value == 0 && exact_motion != Some(0) && signals.motion_cap != Some(0) { 1 } else { value }
     } else { m };
-    let heavy = tune_brief_motion && exact_motion.map_or(signals.motion_bias >= 4, |m| m >= 8) && signals.motion_cap.is_none_or(|c| c >= 7);
 
     // Deal three directions: each is an archetype (layout composition + palette tone + type voice +
     // hero composition) with type and palette chosen for it from decoupled pools. A variant > 0
@@ -3007,6 +3010,15 @@ Text: #10203A");
             assert!(d.motion_choreography.contains("heavy motion"), "{}", d.title);
             assert!(!d.motion_choreography.contains("nothing moves on scroll"), "{}", d.title);
         }
+        // A calm tone shapes the motion; it must not cancel the explicit heavy ask.
+        let dental = rec("family dental clinic in Utrecht; calm, warm, reassuring; highly animated site; book an appointment");
+        assert!(dental.active_dials.motion_intensity >= 8, "{}", dental.active_dials.motion_intensity);
+        for d in &dental.directions {
+            assert!(d.dials.motion_intensity >= 8, "{}: {}", d.title, d.dials.motion_intensity);
+            assert!(!d.motion_choreography.contains("nothing moves on scroll"), "{}", d.title);
+        }
+        let wish = &dental.understood_brief.as_ref().expect("understood brief").motion_wish;
+        assert!(wish.contains("asked in the brief"), "{wish}");
         // "no animation" still wins, and a task UI keeps its cap.
         let calm = rec("open-source mcp server site, cinematic but no animation please");
         assert!(calm.directions.iter().all(|d| d.dials.motion_intensity <= 1));
