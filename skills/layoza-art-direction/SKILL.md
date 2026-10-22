@@ -82,6 +82,8 @@ Prototype the most uncertain, identity-defining composition first: it may be an
 image/type relationship, an interaction, a working product view or a scene.
 For a high-motion brief this prototype must demonstrate the signature transformation
 on desktop and phone, not merely a static hero or small floating elements.
+Capture its first screen at 1280x800 and on a phone before building the rest:
+headline, supporting line and first action must show without scrolling.
 Then finish every section with the same care. Section order follows the argument
 and task; section form follows its content. Familiar structures are allowed when
 they are the clearest answer. No prescribed number of sections, pictures or tricks.

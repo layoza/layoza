@@ -32,8 +32,8 @@ is measured under emulated reduce (`null` = no motion, fine).
 | Severity | Rules (examples) | Meaning |
 | :--- | :--- | :--- |
 | `error` (blocks release) | `document-overflow`, `text-clip-or-bleed`, contrast < 4.5:1, `target-size` (WCAG 2.5.8), `unlabeled-control`, `focus-obscured` (2.4.11), `text-hidden` / `-without-js`, `text-faded-or-masked`, `nav-unreachable`, `menu-toggle-broken`, `zoom-blocked`, broken images, console errors | Objective failure. Fix the cause. |
-| `warning` | `label-wrap`, `heading-crowding`, `ios-input-zoom`, `field-autocomplete`, `dark-color-scheme`, `image-no-size`, `pointer-not-button`, `transition-all`, `focus-ring-missing`, `motion-ignores-reduce`, `reduced-motion-hides-text`, `design-system-*` drift | Objective, but needs judgment. Fix or justify. |
-| `critique` (`CRAFT-*`) | template chrome, card kits, `visual-starved`, overused fonts, monotonous spacing, and more | Generated-page tells. Review them against the committed direction. |
+| `warning` | `label-wrap`, `heading-crowding`, `ios-input-zoom`, `field-autocomplete`, `dark-color-scheme`, `image-no-size`, `pointer-not-button`, `transition-all`, `focus-ring-missing`, `motion-ignores-reduce`, `reduced-motion-hides-text`, `hero-below-fold` (1280x800), `measure-uncapped-wide` (1920), `no-js-hides-text` / `no-js-blank`, `form-no-endpoint`, `design-system-*` drift | Objective, but needs judgment. Fix or justify. |
+| `critique` (`CRAFT-*`) | template chrome, card kits, `visual-starved`, overused fonts, monotonous spacing, `stock-close`, `counting-device`, `dense-screen`, and more | Generated-page tells. Review them against the committed direction. |
 
 Speed diagnostics are off by default (also with `--full`); run `--performance` or MCP `audit_performance` only when asked. Unmeasured speed stays `null` and never blocks.
 
@@ -44,5 +44,9 @@ Speed diagnostics are off by default (also with `--full`); run `--performance` o
 - A rule you believe is wrong for this page: leave it, say why, and let the
   user decide. Brand DNA can be declared with
   `<meta name="layoza-brand-allow" content="font:…, palette:…, rule:…">`.
+- To keep a warning or critique on purpose, waive it on record:
+  `<meta name="layoza-waive" content="rule-id: why it is right for this brief">`.
+  The report lists it under `waived` with the reason. Errors cannot be waived,
+  a waiver without a reason is refused, and more than three waivers is flagged.
 - Before/after: `layoza baseline create <id>`, make the changes, then
   `compare_before_after` (MCP) or `layoza verify .`.

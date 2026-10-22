@@ -5365,6 +5365,10 @@ function layozaQualitySweep(opts) {
     "graphic-unhidden": ["warning", "accessibility", "", "Decorative canvas or svg graphics without aria-hidden or a label are announced as unlabeled images by some screen readers.", "Add aria-hidden=\"true\" to decorative graphics, or role=img with an aria-label when they carry meaning."],
     "overflow-at-width": ["error", "layout", "", "The page scrolls sideways at this width, so content is cut off and the whole page wobbles on touch.", "Find the element wider than the viewport (fixed widths, 100vw plus padding, long words, wide media) and constrain it with max-width: 100%, minmax(0, 1fr) or overflow-wrap."],
     "stats-too-round": ["warning", "trust", "", "Several headline numbers that are all suspiciously round (10K+, 100%, 500+) read as placeholders. Verify this is real.", "Show the real figure with its source and date, or remove the stat."],
+    "form-no-endpoint": ["warning", "trust", "", "The form has nowhere to send to: no action and no script on the page that handles it, so whatever the visitor types is lost while the page pretends it was sent.", "Point the form at a real endpoint (action=, a form service or a fetch handler), or replace it with a mailto/phone link until one exists."],
+    "stock-close": ["critique", "template-tell", "structure", "Ending the page on a lone email box is the default newsletter close; it asks for an address without saying what the visitor gets.", "Close on the trade's own next step (book, visit, quote, read the case) or say exactly what the emails contain and how often."],
+    "counting-device": ["critique", "template-tell", "", "A long run of identical unlabelled marks (dots, ticks, bars) reads as decoration pretending to be data.", "Show the number itself, or label the marks so they carry real values; otherwise remove the run."],
+    "dense-screen": ["critique", "content", "", "One section packs far more words per screen than a visitor scans on a landing page, so the point drowns.", "Cut the section to its strongest claim and proof, move detail to a linked page or a disclosure, or split it across two compositions."],
   };
 
   const allowSet = new Set((opts.allow || []).map((x) => String(x).toLowerCase().trim()).filter(Boolean));
@@ -6345,6 +6349,56 @@ function layozaQualitySweep(opts) {
     }
   });
 
+  // ---- Endings, forms and density (Layoza-original) -----------------------------------------------
+  run("form-no-endpoint", () => {
+    const scripts = Array.from(D.scripts);
+    if (scripts.some((s) => s.src)) return; // an external script may handle it; cannot tell
+    const inline = scripts.map((s) => s.textContent || "").join("\n");
+    if (/submit|FormData|fetch\(|XMLHttpRequest|\.send\(/.test(inline)) return;
+    for (const f of D.querySelectorAll("form")) {
+      if (!shown(f) || f.getAttribute("onsubmit") || (f.getAttribute("method") || "").toLowerCase() === "dialog") continue;
+      if (Array.from(f.attributes).some((a) => a.name.startsWith("data-") || a.name === "netlify")) continue;
+      if (!f.querySelector("input:not([type=hidden]):not([type=submit]):not([type=button]), textarea")) continue;
+      const action = (f.getAttribute("action") || "").trim();
+      if (action && action !== "#" && !/^javascript:/i.test(action)) continue;
+      emit("form-no-endpoint", f, action ? "action=\"" + action + "\"" : "no action attribute and no handler script");
+    }
+  });
+  run("stock-close", () => {
+    const foot = D.querySelector("footer, [role='contentinfo']");
+    const root = D.querySelector("main") || D.body;
+    const secs = Array.from(root.children).filter((s) => shown(s) && !s.matches("header, footer, nav, script, style, [role='contentinfo']") && s.getBoundingClientRect().height > 80 && (!foot || !s.contains(foot)));
+    const last = secs[secs.length - 1];
+    if (!last || secs.length < 3) return;
+    const fields = Array.from(last.querySelectorAll("input:not([type=hidden]):not([type=submit]):not([type=button]):not([type=checkbox]), textarea, select")).filter(shown);
+    const email = fields.length === 1 && (fields[0].type === "email" || /mail/i.test(fields[0].name + " " + fields[0].id + " " + (fields[0].placeholder || "")));
+    if (email && textOf(last).length < 400) emit("stock-close", last, "last section before the footer is a single email field");
+  });
+  run("counting-device", () => {
+    for (const p of D.body.querySelectorAll("*")) {
+      if (p.children.length < 24 || p.closest("svg, canvas, select, table, ol, ul[role='listbox']")) continue;
+      const kids = Array.from(p.children);
+      const sig = (k) => k.tagName + "." + (k.getAttribute("class") || "").trim();
+      const s0 = sig(kids[0]);
+      const same = kids.filter((k) => sig(k) === s0 && !textOf(k) && !k.querySelector("img, svg title") && !k.getAttribute("aria-label"));
+      if (same.length < 24 || same.length < 0.9 * kids.length) continue;
+      const small = same.filter((k) => { const r = k.getBoundingClientRect(); return r.width > 0 && r.width <= 48 && r.height <= 48 && shown(k); });
+      if (small.length >= 24) { emit("counting-device", p, small.length + " identical unlabelled " + kids[0].tagName.toLowerCase() + " marks"); return; }
+    }
+  });
+  run("dense-screen", () => {
+    if (vw < 1024 || D.querySelectorAll("article").length) return;
+    const root = D.querySelector("main") || D.body;
+    for (const s of Array.from(root.children)) {
+      if (!shown(s) || s.matches("header, footer, nav, script, style, aside, [role='contentinfo']")) continue;
+      const h = s.getBoundingClientRect().height;
+      if (h < 200) continue;
+      const words = (s.innerText || "").split(/\s+/).filter(Boolean).length;
+      const perScreen = Math.round(words / Math.max(1, h / vh));
+      if (perScreen > 160) emit("dense-screen", s, perScreen + " words per " + vh + "px screen (" + words + " words over " + Math.round(h) + "px)");
+    }
+  });
+
   // ---- Media, icons and graphics ---------------------------------------------------------------------
   run("hero-media", () => {
     const first = Array.from(D.images).filter((im) => { const r = im.getBoundingClientRect(); return r.top < vh && r.bottom > 0 && r.width * r.height > 0.15 * vw * vh && shown(im); });
@@ -6383,16 +6437,17 @@ const QUALITY_EVAL = (opts) =>
  * Lists text that is invisible after a scroll through the page (opacity chain < 0.1 or visibility
  * hidden). Run twice on desktop, once normally and once with prefers-reduced-motion: reduce; text
  * hidden only in the reduced run is a reveal that reduced motion skips without showing the end state.
+ * `still` skips the timed scroll for the scripting-off load, where timers never fire.
  */
-async function layozaHiddenTextProbe() {
+async function layozaHiddenTextProbe(still) {
   const H = window.innerHeight;
   const total = document.documentElement.scrollHeight;
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-  for (let y = 0; y < total && y < H * 14; y += Math.round(H * 0.8)) {
+  for (let y = 0; !still && y < total && y < H * 14; y += Math.round(H * 0.8)) {
     window.scrollTo({ top: y, left: 0, behavior: "instant" });
     await wait(140);
   }
-  await wait(500);
+  if (!still) await wait(500);
   const sel = (el) => {
     const parts = [];
     for (let c = el, d = 0; c && c.nodeType === 1 && d < 3; c = c.parentElement, d++) {
@@ -6430,6 +6485,7 @@ async function layozaHiddenTextProbe() {
   return out;
 }
 const HIDDEN_TEXT_PROBE = "(" + layozaHiddenTextProbe.toString() + ")()";
+const HIDDEN_TEXT_STILL_PROBE = "(" + layozaHiddenTextProbe.toString() + ")(true)";
 /** Long or endless animations still running (used under prefers-reduced-motion: reduce). */
 function layozaRunningMotion() {
   return (document.getAnimations ? document.getAnimations() : [])
@@ -6449,6 +6505,124 @@ const RUNNING_MOTION_PROBE = "(" + layozaRunningMotion.toString() + ")()";
 const OVERFLOW_PROBE = "(() => Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth))()";
 /** Widths checked for sideways scroll on top of the three main viewports (320 is the WCAG reflow width). */
 const EXTRA_WIDTHS = [320, 1024, 1920];
+
+/*
+ * Edge pass (Layoza-original). Three checks a visitor hits before any craft rule matters:
+ *  - fold: at a common laptop screen (FOLD_VIEWPORT) the headline, its supporting line and the hero's
+ *    first action are all on the first screen without scrolling;
+ *  - wide: at WIDE_WIDTH the reading measure stays capped (paragraphs do not stretch to 100+ characters);
+ *  - no-JS: with scripting off, text that the scripted page shows is not left invisible (a reveal
+ *    gated on a script that never ran), and the page is not blank.
+ * Waivers are read here too: <meta name="layoza-waive" content="rule-id: reason; other-id: reason">.
+ */
+const FOLD_VIEWPORT = { width: 1280, height: 800 };
+const WIDE_WIDTH = 1920;
+function layozaFoldProbe() {
+  const vh = window.innerHeight;
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  const seen = (el) => {
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    for (let c = el; c && c.nodeType === 1; c = c.parentElement) {
+      const s = getComputedStyle(c);
+      if (s.display === "none" || s.visibility === "hidden" || parseFloat(s.opacity) < 0.1) return false;
+    }
+    return true;
+  };
+  const after = (a, b) => Boolean(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+  const txt = (el) => (el.textContent || el.value || "").replace(/\s+/g, " ").trim();
+  const box = (el) => { const r = el.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), text: txt(el).slice(0, 50) }; };
+  const out = { viewport: [window.innerWidth, vh], headline: null, support: null, action: null };
+  const h1 = Array.from(document.querySelectorAll("h1")).find(seen);
+  if (h1) {
+    out.headline = box(h1);
+    const outside = "nav, footer, [role='navigation'], [role='contentinfo'], dialog, [hidden], [aria-hidden='true']";
+    const hero = h1.closest("section, header, main > *") || document.body;
+    const support = Array.from(hero.querySelectorAll("p")).find((p) => after(h1, p) && !p.closest(outside) && txt(p).length >= 20 && seen(p));
+    if (support) out.support = box(support);
+    const action = Array.from(hero.querySelectorAll("a[href], button, input[type=submit]")).find((a) => after(h1, a) && !a.closest(outside) && txt(a).length >= 2 && txt(a).length <= 40 && seen(a));
+    if (action) out.action = box(action);
+  }
+  const waive = [];
+  document.querySelectorAll('meta[name="layoza-waive" i]').forEach((m) =>
+    (m.getAttribute("content") || "").split(";").forEach((part) => {
+      const i = part.indexOf(":");
+      const id = (i >= 0 ? part.slice(0, i) : part).trim().toLowerCase().replace(/^craft-/, "");
+      const reason = i >= 0 ? part.slice(i + 1).trim() : "";
+      if (id) waive.push({ rule: id, reason });
+    })
+  );
+  out.waive = waive.slice(0, 20);
+  return out;
+}
+function layozaWideProbe() {
+  const out = [];
+  let n = 0;
+  for (const p of document.querySelectorAll("main p, article p, section p, p")) {
+    if (p.closest("nav, footer, header, [aria-hidden='true'], [hidden]")) continue;
+    const t = (p.textContent || "").replace(/\s+/g, " ").trim();
+    if (t.length < 140) continue;
+    const r = p.getBoundingClientRect();
+    if (r.height < 2) continue;
+    const cs = getComputedStyle(p);
+    const lh = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize) || 16) * 1.2;
+    // Characters per rendered line: a short paragraph in a wide box is one short line, not a long one
+    const lines = Math.max(1, Math.round(r.height / lh));
+    const perLine = Math.round(t.length / lines);
+    if (lines < 2 || perLine <= 100) continue;
+    n++;
+    if (out.length < 4) out.push({ text: t.slice(0, 40), width_px: Math.round(r.width), approx_chars: perLine });
+  }
+  return { count: n, examples: out };
+}
+function layozaBlankProbe() {
+  const b = document.body;
+  return { words: b ? (b.innerText || "").split(/\s+/).filter(Boolean).length : 0, h1: document.querySelectorAll("h1").length };
+}
+const FOLD_PROBE = "(" + layozaFoldProbe.toString() + ")()";
+const WIDE_PROBE = "(" + layozaWideProbe.toString() + ")()";
+const BLANK_PROBE = "(" + layozaBlankProbe.toString() + ")()";
+
+/** Fold at 1280x800, measure at 1920, and a scripting-off load (Node runner). Each in its own context. */
+async function edgePassNode(browser, url, caps) {
+  const first = (e) => String((e && e.message) || e).split("\n")[0];
+  const scripted = async () => {
+    const ctx = await browser.newContext({ viewport: FOLD_VIEWPORT });
+    try {
+      const page = await ctx.newPage();
+      await page.goto(url, { waitUntil: "load", timeout: 30000 });
+      await page.waitForLoadState("networkidle", { timeout: caps.netidle_ms }).catch(() => {});
+      await fontsReadyNode(page, 2000);
+      await settleNode(page, 3000);
+      const fold = await ev(page, FOLD_PROBE);
+      await page.setViewportSize({ width: WIDE_WIDTH, height: 1080 });
+      await ev(page, FRAMES_SCRIPT);
+      const wide = await ev(page, WIDE_PROBE);
+      return { fold, wide };
+    } catch (e) {
+      return { error: first(e) };
+    } finally {
+      await ctx.close();
+    }
+  };
+  const nojs = async () => {
+    const vp = VIEWPORTS[0];
+    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, javaScriptEnabled: false });
+    try {
+      const page = await ctx.newPage();
+      await page.goto(url, { waitUntil: "load", timeout: 30000 });
+      // Only synchronous probes here: with scripting off, a promise evaluated in the page never settles
+      await page.waitForTimeout(WAIT.reduced);
+      return { hidden: await ev(page, HIDDEN_TEXT_STILL_PROBE), blank: await ev(page, BLANK_PROBE) };
+    } catch (e) {
+      return { error: first(e) };
+    } finally {
+      await ctx.close();
+    }
+  };
+  const [a, b] = await Promise.all([scripted(), nojs()]);
+  return { ...a, nojs: b };
+}
 
 /**
  * Look fingerprint, part 1 (in page): the coarse layout of the first three screens as two 24x18
@@ -7544,15 +7718,16 @@ async function collectWithNode(pw, args, shotDir) {
   const browser = await pw.chromium.launch({ headless: true, args: ["--allow-file-access-from-files"] });
   try {
     const firstLine = (e) => String((e && e.message) || e).split("\n")[0];
-    const [motion, reduced, throttled, ...vps] = await Promise.all([
+    const [motion, reduced, edge, throttled, ...vps] = await Promise.all([
       motionContextNode(browser, args.url, caps).catch((e) => ({ density: null, pins: [], errors: [firstLine(e)] })),
       reducedMotionNode(browser, args.url, caps),
+      edgePassNode(browser, args.url, caps).catch((e) => ({ error: firstLine(e) })),
       args.performance ? throttledPerfNode(browser, args.url) : Promise.resolve(null),
       ...VIEWPORTS.map((vp) => viewportPassNode(browser, vp, args, shotDir, caps, full || vp.label === "desktop")),
     ]);
     const raw = vps;
     raw[0].motion = motion;
-    raw.extra = { reduced, throttled };
+    raw.extra = { reduced, throttled, edge };
     raw.mode = full ? "full" : "fast";
     raw.performanceRequested = Boolean(args.performance);
     return raw;
@@ -7848,6 +8023,40 @@ async def reduced_pass(browser):
     finally:
         await rctx.close()
 
+async def edge_pass(browser):
+    # Fold at 1280x800, measure at 1920, and a scripting-off load, each in its own context
+    async def scripted():
+        fv = cfg["fold_viewport"]
+        ctx = await browser.new_context(viewport={"width": fv["width"], "height": fv["height"]})
+        try:
+            page = await ctx.new_page()
+            await page.goto(url, wait_until="load", timeout=30000)
+            await quiet(page, CAPS["netidle_ms"])
+            await settle(page, 3000)
+            fold = await page.evaluate(cfg["fold_probe"])
+            await page.set_viewport_size({"width": cfg["wide_width"], "height": 1080})
+            await page.evaluate(cfg["frames"])
+            return {"fold": fold, "wide": await page.evaluate(cfg["wide_probe"])}
+        except Exception as e:
+            return {"error": first_line(e)}
+        finally:
+            await ctx.close()
+    async def nojs():
+        vp = cfg["viewports"][0]
+        ctx = await browser.new_context(viewport={"width": vp["width"], "height": vp["height"]}, java_script_enabled=False)
+        try:
+            page = await ctx.new_page()
+            await page.goto(url, wait_until="load", timeout=30000)
+            # Only synchronous probes here: with scripting off, a promise evaluated in the page never settles
+            await page.wait_for_timeout(WAIT["reduced"])
+            return {"hidden": await page.evaluate(cfg["hidden_text_still"]), "blank": await page.evaluate(cfg["blank_probe"])}
+        except Exception as e:
+            return {"error": first_line(e)}
+        finally:
+            await ctx.close()
+    a, b = await asyncio.gather(scripted(), nojs())
+    return {**a, "nojs": b}
+
 async def throttled_pass(browser):
     # Throttled lab load (mobile): CPU 4x + network emulation over CDP
     vp = next(v for v in cfg["viewports"] if v["label"] == "mobile")
@@ -7891,14 +8100,14 @@ async def main():
             raise RuntimeError("Could not launch headless Chromium, Chrome, or Edge: " + " | ".join(errors))
         try:
             jobs = [viewport_pass(browser, vp, FULL or vp["label"] == "desktop") for vp in cfg["viewports"]]
-            res = await asyncio.gather(motion_pass(browser), reduced_pass(browser), throttled_pass(browser) if PERFORMANCE else none(), *jobs)
+            res = await asyncio.gather(motion_pass(browser), reduced_pass(browser), throttled_pass(browser) if PERFORMANCE else none(), edge_pass(browser), *jobs)
         finally:
             await browser.close()
-    motion, reduced, throttled = res[0], res[1], res[2]
-    raw = list(res[3:])
+    motion, reduced, throttled, edge = res[0], res[1], res[2], res[3]
+    raw = list(res[4:])
     raw[0]["motion"] = motion
     with open(raw_out, "w", encoding="utf-8") as f:
-        json.dump({"viewports": raw, "extra": {"reduced": reduced, "throttled": throttled}}, f)
+        json.dump({"viewports": raw, "extra": {"reduced": reduced, "throttled": throttled, "edge": edge}}, f)
 
 asyncio.run(main())
 `;
@@ -7910,6 +8119,12 @@ asyncio.run(main())
     cfgPath,
     JSON.stringify({
       viewports: VIEWPORTS,
+      fold_viewport: FOLD_VIEWPORT,
+      wide_width: WIDE_WIDTH,
+      fold_probe: FOLD_PROBE,
+      wide_probe: WIDE_PROBE,
+      blank_probe: BLANK_PROBE,
+      hidden_text_still: HIDDEN_TEXT_STILL_PROBE,
       perf_init: PERF_INIT_SCRIPT,
       perf_read: PERF_READ_SCRIPT,
       dom_eval: DOM_EVAL_SCRIPT,
@@ -8243,6 +8458,79 @@ function assembleReport(url, engine, raw, tokens) {
         });
       }
     }
+    if (v.label === "desktop" && raw.extra && raw.extra.edge && !raw.extra.edge.error) {
+      const edge = raw.extra.edge;
+      const fold = edge.fold;
+      const [fw, fh] = fold && fold.viewport ? fold.viewport : [FOLD_VIEWPORT.width, FOLD_VIEWPORT.height];
+      const below = (b) => b && b.bottom > fh;
+      if (fold && fold.headline && (below(fold.headline) || below(fold.action))) {
+        const late = [below(fold.headline) && `headline ends at ${fold.headline.bottom}px`, below(fold.action) && `first action "${fold.action.text}" ends at ${fold.action.bottom}px`].filter(Boolean);
+        issues.push({
+          rule: "hero-below-fold",
+          severity: "warning",
+          category: "layout",
+          selector: "h1",
+          measured: `${late.join(", ")} on a ${fw}x${fh} screen`,
+          why: "On a common laptop screen the visitor has to scroll before they can read what this is or act on it.",
+          fix: "Tighten the hero: smaller top padding, a shorter or smaller headline, art beside or behind the text rather than above it, so headline, supporting line and first action fit in the first screen.",
+          detail: `At ${fw}x${fh}: ${late.join("; ")}.`,
+        });
+      } else if (fold && fold.headline && below(fold.support)) {
+        issues.push({
+          rule: "hero-support-below-fold",
+          severity: "critique",
+          category: "layout",
+          selector: "h1 + p",
+          measured: `supporting line ends at ${fold.support.bottom}px on a ${fw}x${fh} screen`,
+          why: "The headline lands but the line that explains it starts below the first screen.",
+          fix: "Bring the supporting line up next to the headline, or shorten it.",
+          detail: `At ${fw}x${fh} the supporting line "${fold.support.text}" ends at ${fold.support.bottom}px.`,
+        });
+      }
+      if (edge.wide && edge.wide.count) {
+        const ex = edge.wide.examples[0];
+        issues.push({
+          rule: "measure-uncapped-wide",
+          severity: "warning",
+          category: "typography",
+          selector: "p",
+          measured: `${edge.wide.count} paragraph(s) run about ${ex.approx_chars} characters per line at ${WIDE_WIDTH}px wide`,
+          why: "On a large monitor the text column keeps growing, so lines get too long to track back to the next one.",
+          fix: "Cap the reading column (max-inline-size around 60-75ch) and cap the page container; let art or margins take the extra width.",
+          detail: edge.wide.examples.map((e) => `"${e.text}" ${e.width_px}px ~${e.approx_chars}ch`).join("; "),
+        });
+      }
+      const nj = edge.nojs;
+      if (nj && !nj.error) {
+        if (nj.blank && nj.blank.words < 20) {
+          issues.push({
+            rule: "no-js-blank",
+            severity: "warning",
+            category: "resilience",
+            selector: "body",
+            measured: `${nj.blank.words} word(s) and ${nj.blank.h1} h1 with scripting off`,
+            why: "With scripting off, blocked or still loading, the page is empty: crawlers, reader modes and slow phones get nothing.",
+            fix: "Render the content as HTML (static or server-side) and let scripts enhance it.",
+            detail: `Scripting-off load at ${VIEWPORTS[0].width}px shows ${nj.blank.words} word(s).`,
+          });
+        } else if (Array.isArray(nj.hidden) && Array.isArray(v.hiddenText)) {
+          const normal = new Set(v.hiddenText.map((h) => h.selector));
+          const only = nj.hidden.filter((h) => !normal.has(h.selector));
+          if (only.length) {
+            issues.push({
+              rule: "no-js-hides-text",
+              severity: "warning",
+              category: "resilience",
+              selector: only[0].selector,
+              measured: `${only.length} text block(s) stay invisible with scripting off`,
+              why: "The text starts hidden and only a script reveals it; if the script fails, is blocked or loads late, visitors never see it.",
+              fix: "Hide reveal targets only once script has run (e.g. a .js class set on <html> by an inline script) so the default state is visible.",
+              detail: only.slice(0, 5).map((h) => `${h.selector} "${h.text}"`).join("; "),
+            });
+          }
+        }
+      }
+    }
     return {
       label: v.label,
       width: v.width,
@@ -8372,6 +8660,35 @@ function assembleReport(url, engine, raw, tokens) {
       });
     }
   }
+  // Waivers on record: <meta name="layoza-waive" content="rule-id: reason; ...">. A waiver moves a
+  // warning or critique out of the issue lists into `waived` with its reason; errors are never waived,
+  // and a waiver without a reason is refused. Everything stays visible in the report.
+  const edgeRun = raw.extra && raw.extra.edge && !raw.extra.edge.error ? raw.extra.edge : null;
+  const waivers = (edgeRun && edgeRun.fold && edgeRun.fold.waive) || [];
+  report.waived = [];
+  report.waivers_refused = [];
+  const honoured = new Map();
+  for (const w of waivers) {
+    if (w.reason.length < 8) report.waivers_refused.push({ rule: w.rule, why: "no reason given (write rule-id: why this is right for this brief)" });
+    else honoured.set(w.rule, w.reason);
+  }
+  if (honoured.size) {
+    for (const v of report.viewports || []) {
+      v.issues = (v.issues || []).filter((i) => {
+        const id = String(i.rule || "").toLowerCase().replace(/^craft-/, "");
+        if (!honoured.has(id)) return true;
+        if (i.severity === "error") {
+          if (!report.waivers_refused.some((r) => r.rule === id)) report.waivers_refused.push({ rule: id, why: "errors are a floor and cannot be waived" });
+          return true;
+        }
+        const w = report.waived.find((x) => x.rule === i.rule);
+        if (w) { w.count++; if (!w.viewports.includes(v.label)) w.viewports.push(v.label); }
+        else report.waived.push({ rule: i.rule, reason: honoured.get(id), count: 1, viewports: [v.label] });
+        return false;
+      });
+    }
+  }
+  if (honoured.size > 3) report.waiver_note = `${honoured.size} rules waived: past three waivers the page is arguing with the floor; recheck the direction.`;
   const mobile = raw.find((v) => v.label === "mobile");
   const thr = raw.extra && raw.extra.throttled;
   report.lab_perf = {
@@ -8391,10 +8708,13 @@ function assembleReport(url, engine, raw, tokens) {
   const passes = raw.map((v) => (v.checks === "layout" ? "layout-rules@" : "full-sweep@") + v.width);
   if (raw.extra && raw.extra.reduced && !raw.extra.reduced.error) passes.push("reduced-motion@" + VIEWPORTS[0].width, "extra-widths@" + EXTRA_WIDTHS.join(","));
   if (desktop.motion) passes.push("motion-density@" + desktop.width);
+  if (edgeRun) passes.push("fold@" + FOLD_VIEWPORT.width + "x" + FOLD_VIEWPORT.height, "measure@" + WIDE_WIDTH, "no-js@" + VIEWPORTS[0].width);
   if (thr) passes.push("throttled-perf@" + (VIEWPORTS.find((v) => v.label === "mobile") || {}).width);
   const skipped = [];
   report.performance_requested = Boolean(raw.performanceRequested);
   if (layoutOnly.length) skipped.push("Full rule sweep, craft, tells, interface, design-token and art-over-text checks at " + layoutOnly.join("px, ") + "px: fast mode ran layout, overflow and touch rules only there; run with --full");
+  if (raw.extra && raw.extra.edge && raw.extra.edge.error) skipped.push("Fold, wide-measure and no-JS pass failed: " + raw.extra.edge.error);
+  else if (!edgeRun) skipped.push("Fold, wide-measure, no-JS and waiver pass did not run");
   if (raw.extra && raw.extra.reduced && raw.extra.reduced.error) skipped.push("Reduced-motion and extra-width pass failed: " + raw.extra.reduced.error);
   report.mode = mode;
   report.passes = passes;

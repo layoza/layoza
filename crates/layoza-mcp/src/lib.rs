@@ -500,12 +500,15 @@ fn qa_opts(args: &Value) -> QaOptions {
     }
 }
 
-/// Which QA mode ran, its passes and the passes fast mode skipped.
+/// Which QA mode ran, its passes, the passes fast mode skipped, and the page's waivers on record.
 fn qa_mode(report: &Value) -> Value {
     json!({
         "mode": report.get("mode").cloned().unwrap_or(Value::Null),
         "passes": report.get("passes").cloned().unwrap_or(Value::Null),
-        "skipped_passes": report.get("skipped_passes").cloned().unwrap_or(Value::Null)
+        "skipped_passes": report.get("skipped_passes").cloned().unwrap_or(Value::Null),
+        "waived": report.get("waived").cloned().unwrap_or(Value::Null),
+        "waivers_refused": report.get("waivers_refused").cloned().unwrap_or(Value::Null),
+        "waiver_note": report.get("waiver_note").cloned().unwrap_or(Value::Null)
     })
 }
 
