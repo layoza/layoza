@@ -2765,6 +2765,19 @@ mod tests {
     }
 
     #[test]
+    fn niches_of_one_trade_lead_with_their_own_daylight_palettes() {
+        let distinct = |qs: &[&str]| qs.iter().map(|q| rec(q).directions[0].palette.id.clone()).collect::<std::collections::HashSet<_>>().len();
+        let leisure = ["bowling alley", "soft play centre", "trampoline park", "escape room", "laser tag", "climbing gym", "arcade bar", "go kart track", "mini golf", "ice rink", "skate shop", "rock climbing wall"];
+        assert!(distinct(&leisure) >= 8, "leisure venues share palettes");
+        let clinics = ["physiotherapist", "chiropractor", "dermatology clinic", "fertility clinic", "gp surgery", "optician", "hearing clinic", "podiatrist", "speech therapist", "radiology clinic"];
+        assert!(distinct(&clinics) >= 6, "clinics share palettes");
+        for q in clinics {
+            let bg = rec(q).directions[0].palette.background.clone();
+            assert!(crate::directions::luminance(&bg).unwrap_or(1.0) > 0.5, "{q} leads with a dark ground {bg}");
+        }
+    }
+
+    #[test]
     fn studio_is_not_an_advertising_industry_and_architecture_keeps_its_trade() {
         for subject in ["Architecture and spatial design studio", "Independent interiors practice", "Architectural studio"] {
             let r = rec(&format!("Industry: {subject}\nA highly animated website with a project enquiry."));

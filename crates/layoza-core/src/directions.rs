@@ -91,7 +91,7 @@ fn rgb(hex: &str) -> Option<(u8, u8, u8)> {
 }
 
 /// WCAG relative luminance, 0 (black) to 1 (white).
-fn luminance(hex: &str) -> Option<f64> {
+pub(crate) fn luminance(hex: &str) -> Option<f64> {
     wcag_contrast(hex, "#000000").map(|c| c * 0.05 - 0.05)
 }
 
@@ -1427,6 +1427,9 @@ pub(crate) fn with_recent_picks<T>(archetypes: Vec<RecentPick>, palettes: Vec<Re
 
 /// Fit points below the best that still compete on freshness when the ledger steers a deal.
 const FIT_BAND: i32 = 9;
+/// How far below the best palette a niche-seeded pick may fall, and how many it chooses among.
+const NICHE_BAND: i32 = 5;
+const NICHE_SPREAD: usize = 12;
 
 /// The register a brief speaks in, read for gating looks: its three strongest registers, and
 /// whether it is aspirational (premium or cinematic among them). A long brief names words from
@@ -2034,6 +2037,10 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 if solemn && (e.tone == Tone::Field || e.tags.iter().any(|t| LOUD.contains(t))) {
                     s -= 6;
                 }
+                // Patients read a clinic by daylight: a dark care ground stays for briefs that ask for night.
+                if has("care") && e.tone == Tone::Dark && !mood("dark") && !has("night") {
+                    s -= 10;
+                }
                 if prev_axes.is_some_and(|(t, hue, warm, style)| t == e.tone && hue == e.accent_hue && warm == e.warmth && style == te.display_style) {
                     s -= 6;
                 }
@@ -2079,7 +2086,30 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 pc.retain(|i| pals[*i].palette.id != p.palette.id && !p.palette.id.ends_with(&format!("-on-{}", pals[*i].palette.id)));
             }
         }
-        let pe = &pals[pc[pick(pc.len())]];
+        // Niches of one trade score alike, so taking the single top palette would give every
+        // bowling alley and soft-play centre the same colours. Each direction instead picks within
+        // the near-top fit band, seeded by the niche itself: still a best fit, but its own.
+        let near: Vec<usize> = if variant == 0 && !no_match && tone_pin.is_none() && hue_pin.is_none() && ground_tone.is_none() {
+            let top = pr.first().map_or(0, |x| x.0);
+            // Only palettes that speak one of the niche's own tags compete, when it has any,
+            // and none may repeat every axis of the direction before it.
+            let on_tag = |i: usize| {
+                let e = &pals[i];
+                (subject.tags.is_empty() || e.tags.iter().any(|t| has(t)))
+                    && !prev_axes.is_some_and(|(t, hue, warm, style)| t == e.tone && hue == e.accent_hue && warm == e.warmth && style == te.display_style)
+            };
+            let band = |b: i32| -> Vec<usize> { pr.iter().take_while(|x| x.0 >= top - b).filter(|x| on_tag(x.1)).take(NICHE_SPREAD).map(|x| x.1).collect() };
+            // A narrow trade with one close fit widens to the full fit band so it still has a choice.
+            let near = band(NICHE_BAND);
+            if near.len() < 5 { band(FIT_BAND) } else { near }
+        } else {
+            Vec::new()
+        };
+        let pe = if near.len() > 1 {
+            &pals[near[(fnv1a(q.trim()) % near.len() as u64) as usize]]
+        } else {
+            &pals[pc[pick(pc.len())]]
+        };
         used_fonts.push(family(&te.pairing.display_font));
         used_bodies.push(family(&te.pairing.body_font));
         used_pals.push(pe.palette.id.clone());

@@ -3578,5 +3578,632 @@
 "look_family": "warm-paper-serif",
 "warmth": "neutral",
 "accent_hue": "neutral"
+},
+{
+"id": "linen-ward",
+"bg": "#F4F1EC",
+"surface": "#FFFFFF",
+"fg": "#1E2A2B",
+"muted": "#4E5B5C",
+"primary": "#5A7971",
+"secondary": "#D98A5F",
+"notes": "Linen ground with sea-glass green and a warm peach",
+"tags": [
+"care",
+"calm",
+"light"
+],
+"look_family": "soft-organic",
+"warmth": "warm",
+"accent_hue": "teal"
+},
+{
+"id": "physio-chalk",
+"bg": "#EEF2EF",
+"surface": "#FBFCFB",
+"fg": "#18242A",
+"muted": "#47555B",
+"primary": "#4568B2",
+"secondary": "#E3B23C",
+"notes": "Chalk white with movement blue and a joint-marker yellow",
+"tags": [
+"care",
+"sport",
+"light"
+],
+"look_family": "swiss-grid",
+"warmth": "cool",
+"accent_hue": "blue"
+},
+{
+"id": "quiet-lavender-room",
+"bg": "#F3F0F6",
+"surface": "#FFFFFF",
+"fg": "#241F2E",
+"muted": "#575067",
+"primary": "#7853A9",
+"secondary": "#7FB8A4",
+"notes": "Lavender-washed room with a soft eucalyptus second colour",
+"tags": [
+"care",
+"calm"
+],
+"look_family": "soft-organic",
+"warmth": "cool",
+"accent_hue": "violet"
+},
+{
+"id": "oat-and-moss",
+"bg": "#F2EEE4",
+"surface": "#FBF8F1",
+"fg": "#23281F",
+"muted": "#535A4C",
+"primary": "#2C5F0F",
+"secondary": "#C7643B",
+"notes": "Oat paper with moss green and a rust note",
+"tags": [
+"care",
+"botanical",
+"warm"
+],
+"look_family": "warm-paper-serif",
+"warmth": "warm",
+"accent_hue": "green"
+},
+{
+"id": "sky-and-cotton",
+"bg": "#EDF4F7",
+"surface": "#FFFFFF",
+"fg": "#142430",
+"muted": "#46596A",
+"primary": "#436A70",
+"secondary": "#F2A65A",
+"notes": "Cotton white under an open sky blue with apricot",
+"tags": [
+"care",
+"light",
+"cool"
+],
+"look_family": "hairline-newspaper",
+"warmth": "cool",
+"accent_hue": "teal"
+},
+{
+"id": "rosewater-clinic",
+"bg": "#F8F0EF",
+"surface": "#FFFFFF",
+"fg": "#2A1E20",
+"muted": "#5E4E50",
+"primary": "#944771",
+"secondary": "#5E8C7E",
+"notes": "Rosewater ground with berry and sage",
+"tags": [
+"care",
+"warm"
+],
+"look_family": "soft-organic",
+"warmth": "warm",
+"accent_hue": "pink"
+},
+{
+"id": "mint-tonic",
+"bg": "#EEF6F1",
+"surface": "#FFFFFF",
+"fg": "#10261D",
+"muted": "#44594F",
+"primary": "#5F8E4E",
+"secondary": "#E86A5C",
+"notes": "Mint-washed white with tonic green and a coral pulse",
+"tags": [
+"care",
+"calm",
+"light"
+],
+"look_family": "swiss-grid",
+"warmth": "neutral",
+"accent_hue": "green"
+},
+{
+"id": "espresso-crema",
+"bg": "#2A1D17",
+"surface": "#36261E",
+"fg": "#F6EDE3",
+"muted": "#C9B7A6",
+"primary": "#BBA66F",
+"secondary": "#8FBFA0",
+"notes": "Espresso dark with crema gold and a fresh herb green",
+"tags": [
+"food",
+"night",
+"warm"
+],
+"look_family": "cinematic-dark",
+"warmth": "warm",
+"accent_hue": "orange"
+},
+{
+"id": "citrus-market",
+"bg": "#FFFBEA",
+"surface": "#FFFFFF",
+"fg": "#1F2410",
+"muted": "#525937",
+"primary": "#568C00",
+"secondary": "#F2B705",
+"notes": "Market-morning yellow-white with lime leaf and lemon",
+"tags": [
+"food",
+"bold",
+"light"
+],
+"look_family": "playful-color-block",
+"warmth": "warm",
+"accent_hue": "green"
+},
+{
+"id": "bakery-flour",
+"bg": "#F6F3EE",
+"surface": "#FFFFFF",
+"fg": "#2A211B",
+"muted": "#5A4E45",
+"primary": "#945B1F",
+"secondary": "#3B5B7A",
+"notes": "Flour-dusted white with crust brown and an enamel blue",
+"tags": [
+"food",
+"warm-grain"
+],
+"look_family": "warm-paper-serif",
+"warmth": "warm",
+"accent_hue": "orange"
+},
+{
+"id": "parlour-sorbet",
+"bg": "#FDF2F5",
+"surface": "#FFFFFF",
+"fg": "#2C1A22",
+"muted": "#5E4A53",
+"primary": "#E00869",
+"secondary": "#3FA7A0",
+"notes": "Sorbet pink with raspberry and a pistachio-teal scoop",
+"tags": [
+"food",
+"play",
+"celebration"
+],
+"look_family": "playful-color-block",
+"warmth": "warm",
+"accent_hue": "pink"
+},
+{
+"id": "pitch-line",
+"bg": "#0F3B2A",
+"surface": "#154A35",
+"fg": "#F3F7F2",
+"muted": "#BFD3C6",
+"primary": "#CCDC51",
+"secondary": "#F7F2E8",
+"notes": "Floodlit pitch green with line-marker yellow",
+"tags": [
+"sport",
+"bold"
+],
+"look_family": "playful-color-block",
+"warmth": "neutral",
+"accent_hue": "yellow"
+},
+{
+"id": "ice-blue-rink",
+"bg": "#EAF2F8",
+"surface": "#FFFFFF",
+"fg": "#0E2233",
+"muted": "#40566A",
+"primary": "#3152BD",
+"secondary": "#E23D52",
+"notes": "Rink ice with blue line and a goal-light red",
+"tags": [
+"sport",
+"cool",
+"light"
+],
+"look_family": "technical-blueprint",
+"warmth": "cool",
+"accent_hue": "blue"
+},
+{
+"id": "lane-rope",
+"bg": "#F0F7FA",
+"surface": "#FFFFFF",
+"fg": "#0F2530",
+"muted": "#425A66",
+"primary": "#5486A3",
+"secondary": "#F25C54",
+"notes": "Pool-deck white with lane blue and a rope red",
+"tags": [
+"sport",
+"marine"
+],
+"look_family": "swiss-grid",
+"warmth": "cool",
+"accent_hue": "blue"
+},
+{
+"id": "chambers-green",
+"bg": "#F3F2EC",
+"surface": "#FFFFFF",
+"fg": "#1B231F",
+"muted": "#4C5650",
+"primary": "#394740",
+"secondary": "#8C3B3B",
+"notes": "Chamber-baize green on pale paper with a docket red",
+"tags": [
+"legal",
+"calm"
+],
+"look_family": "warm-paper-serif",
+"warmth": "neutral",
+"accent_hue": "green"
+},
+{
+"id": "deed-ink",
+"bg": "#F6F6F3",
+"surface": "#FFFFFF",
+"fg": "#14171C",
+"muted": "#4A4F57",
+"primary": "#4646A6",
+"secondary": "#B5523B",
+"notes": "Deed paper with registry indigo and a seal-wax red",
+"tags": [
+"legal",
+"literary"
+],
+"look_family": "hairline-newspaper",
+"warmth": "cool",
+"accent_hue": "violet"
+},
+{
+"id": "seal-burgundy",
+"bg": "#F7F3F1",
+"surface": "#FFFFFF",
+"fg": "#23171A",
+"muted": "#594A4E",
+"primary": "#521B2D",
+"secondary": "#55707A",
+"notes": "Pale vellum with seal burgundy and pewter",
+"tags": [
+"legal",
+"luxe"
+],
+"look_family": "luxury-sparse",
+"warmth": "warm",
+"accent_hue": "red"
+},
+{
+"id": "lamplit-statute",
+"bg": "#1E2328",
+"surface": "#272D33",
+"fg": "#EEF0F2",
+"muted": "#AEB6BF",
+"primary": "#BFAE95",
+"secondary": "#7FB3A8",
+"notes": "Late-chambers slate with desk-lamp peach",
+"tags": [
+"legal",
+"night"
+],
+"look_family": "cinematic-dark",
+"warmth": "neutral",
+"accent_hue": "orange"
+},
+{
+"id": "mint-note",
+"bg": "#EFF5EE",
+"surface": "#FFFFFF",
+"fg": "#14231A",
+"muted": "#46574B",
+"primary": "#1A9D43",
+"secondary": "#5B4B8A",
+"notes": "Banknote mint with money green and a stamp violet",
+"tags": [
+"finance",
+"light"
+],
+"look_family": "swiss-grid",
+"warmth": "neutral",
+"accent_hue": "green"
+},
+{
+"id": "coin-copper",
+"bg": "#15191D",
+"surface": "#1E2328",
+"fg": "#F1EEE9",
+"muted": "#B2AAA0",
+"primary": "#AB7727",
+"secondary": "#6FA8C7",
+"notes": "Vault dark with minted copper and a cool steel",
+"tags": [
+"finance",
+"night",
+"luxe"
+],
+"look_family": "dark-single-accent",
+"warmth": "warm",
+"accent_hue": "orange"
+},
+{
+"id": "plum-portfolio",
+"bg": "#F5F2F6",
+"surface": "#FFFFFF",
+"fg": "#201A24",
+"muted": "#554D5B",
+"primary": "#5B2A6E",
+"secondary": "#2E8B76",
+"notes": "Pale portfolio grey with plum and a jade return",
+"tags": [
+"finance",
+"luxe"
+],
+"look_family": "luxury-sparse",
+"warmth": "cool",
+"accent_hue": "violet"
+},
+{
+"id": "hi-vis-site",
+"bg": "#F4F3EF",
+"surface": "#FFFFFF",
+"fg": "#151515",
+"muted": "#4A4945",
+"primary": "#BA9505",
+"secondary": "#1F4E79",
+"notes": "Site-board white with hi-vis amber and a hard-hat blue",
+"tags": [
+"trades",
+"bold",
+"infrastructure"
+],
+"look_family": "brutalist-raw",
+"warmth": "warm",
+"accent_hue": "yellow"
+},
+{
+"id": "timber-yard",
+"bg": "#F3EEE6",
+"surface": "#FCFAF6",
+"fg": "#22201B",
+"muted": "#55504A",
+"primary": "#707D06",
+"secondary": "#B65A2B",
+"notes": "Sawn-timber pale with yard green and a cedar orange",
+"tags": [
+"trades",
+"earth",
+"warm-grain"
+],
+"look_family": "warm-paper-serif",
+"warmth": "warm",
+"accent_hue": "green"
+},
+{
+"id": "indigo-dye",
+"bg": "#F1F2F6",
+"surface": "#FFFFFF",
+"fg": "#181C2C",
+"muted": "#4A4F63",
+"primary": "#1E2879",
+"secondary": "#D9893B",
+"notes": "Undyed cloth white with vat indigo and a turmeric thread",
+"tags": [
+"textile",
+"ink"
+],
+"look_family": "hairline-newspaper",
+"warmth": "cool",
+"accent_hue": "blue"
+},
+{
+"id": "wax-and-wick",
+"bg": "#F7F2EA",
+"surface": "#FFFFFF",
+"fg": "#271F1C",
+"muted": "#5A4F49",
+"primary": "#73365A",
+"secondary": "#C99A3B",
+"notes": "Poured-wax cream with mulberry and a wick gold",
+"tags": [
+"textile",
+"warm-grain"
+],
+"look_family": "soft-organic",
+"warmth": "warm",
+"accent_hue": "pink"
+},
+{
+"id": "saddle-leather",
+"bg": "#2A1F18",
+"surface": "#352820",
+"fg": "#F4ECE2",
+"muted": "#C8B8A6",
+"primary": "#A58E4E",
+"secondary": "#7FA6A0",
+"notes": "Saddle-brown dark with tan stitching and a verdigris buckle",
+"tags": [
+"textile",
+"luxe",
+"night"
+],
+"look_family": "cinematic-dark",
+"warmth": "warm",
+"accent_hue": "orange"
+},
+{
+"id": "linen-thread",
+"bg": "#F0EEE9",
+"surface": "#FBFAF7",
+"fg": "#1F1E1B",
+"muted": "#504D47",
+"primary": "#576152",
+"secondary": "#B3473B",
+"notes": "Raw linen with olive thread and a red selvedge",
+"tags": [
+"textile",
+"calm"
+],
+"look_family": "soft-organic",
+"warmth": "neutral",
+"accent_hue": "green"
+},
+{
+"id": "champagne-noir",
+"bg": "#121212",
+"surface": "#1C1B1A",
+"fg": "#F5F1EA",
+"muted": "#BDB5AA",
+"primary": "#D0C4B3",
+"secondary": "#8E9AAF",
+"notes": "Noir with a champagne accent and a cool platinum",
+"tags": [
+"luxe",
+"night"
+],
+"look_family": "luxury-sparse",
+"warmth": "warm",
+"accent_hue": "yellow"
+},
+{
+"id": "velvet-rouge",
+"bg": "#2A0F18",
+"surface": "#3A1622",
+"fg": "#F6EAEE",
+"muted": "#D2B3BE",
+"primary": "#F9D0CF",
+"secondary": "#C9A14A",
+"notes": "Wine velvet ground with blush and an old-gold trim",
+"tags": [
+"luxe",
+"night"
+],
+"look_family": "cinematic-dark",
+"warmth": "warm",
+"accent_hue": "pink"
+},
+{
+"id": "jelly-bean",
+"bg": "#F6F7FB",
+"surface": "#FFFFFF",
+"fg": "#1A1B26",
+"muted": "#4C4E5E",
+"primary": "#DD5A64",
+"secondary": "#2EC4B6",
+"notes": "Cool white with jelly-bean orange and a sweet teal",
+"tags": [
+"play",
+"bold"
+],
+"look_family": "playful-color-block",
+"warmth": "warm",
+"accent_hue": "orange"
+},
+{
+"id": "bouncy-castle",
+"bg": "#F2F6FF",
+"surface": "#FFFFFF",
+"fg": "#16193A",
+"muted": "#474B6E",
+"primary": "#3550DC",
+"secondary": "#FFB703",
+"notes": "Inflatable blue and sunshine yellow on bright air",
+"tags": [
+"play",
+"celebration"
+],
+"look_family": "playful-color-block",
+"warmth": "cool",
+"accent_hue": "blue"
+},
+{
+"id": "arcade-carpet",
+"bg": "#1B1035",
+"surface": "#251747",
+"fg": "#F5F1FF",
+"muted": "#C3B8E0",
+"primary": "#F269B2",
+"secondary": "#4CE0D2",
+"notes": "Cinema-carpet purple with arcade pink and a cyan token",
+"tags": [
+"play",
+"night",
+"kinetic"
+],
+"look_family": "cinematic-dark",
+"warmth": "cool",
+"accent_hue": "pink"
+},
+{
+"id": "sandbox-sun",
+"bg": "#FFFBF0",
+"surface": "#FFFFFF",
+"fg": "#22201A",
+"muted": "#57524A",
+"primary": "#226DDB",
+"secondary": "#F2994A",
+"notes": "Sandbox pale with spade blue and a bucket orange",
+"tags": [
+"play",
+"warm",
+"light"
+],
+"look_family": "soft-organic",
+"warmth": "warm",
+"accent_hue": "blue"
+},
+{
+"id": "town-hall-green",
+"bg": "#F1F3EF",
+"surface": "#FFFFFF",
+"fg": "#18201B",
+"muted": "#4A544D",
+"primary": "#03520C",
+"secondary": "#C2452D",
+"notes": "Notice-board white with town-hall green and a post-box red",
+"tags": [
+"civic",
+"calm"
+],
+"look_family": "swiss-grid",
+"warmth": "neutral",
+"accent_hue": "green"
+},
+{
+"id": "poll-card",
+"bg": "#F6F4F1",
+"surface": "#FFFFFF",
+"fg": "#1A1715",
+"muted": "#4D4843",
+"primary": "#EB204F",
+"secondary": "#1D4E89",
+"notes": "Poll-card white with rosette red and a deep blue",
+"tags": [
+"civic",
+"bold"
+],
+"look_family": "hairline-newspaper",
+"warmth": "neutral",
+"accent_hue": "red"
+},
+{
+"id": "dome-night",
+"bg": "#0B1426",
+"surface": "#132038",
+"fg": "#EEF2FA",
+"muted": "#AAB6CC",
+"primary": "#B6D1CA",
+"secondary": "#C79BFF",
+"notes": "Projector-dome night with aurora green and a nebula violet",
+"tags": [
+"night",
+"cool"
+],
+"look_family": "cinematic-dark",
+"warmth": "cool",
+"accent_hue": "teal"
 }
 ]
