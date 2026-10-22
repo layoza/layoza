@@ -111,7 +111,7 @@ first viewport.
 - Persuasion still exists (commission, buy, contact) but sits after the work
   earns it, and stays one tap away.
 
-**Verify the design in `layoza qa`:** `missing_alt_count` 0; `broken-image` 0; `text-hidden-after-scroll` 0 (captions
+**Verify the design in `layoza qa`:** `missing_alt_count` 0; `broken-image` 0; `text-hidden*` 0 (captions
 revealed by animation); `nav-unreachable` 0 with a minimal header.
 `primary-action-below-fold` is acceptable here when the first viewport is the
 work; say so in the report.

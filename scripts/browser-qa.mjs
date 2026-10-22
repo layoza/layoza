@@ -235,12 +235,15 @@ const SCROLL_PASS_SCRIPT = `(async () => {
       if (!el || el.closest("script, style, noscript, template, svg, [aria-hidden='true'], [hidden], [inert], dialog, [popover], details:not([open]) > :not(summary)")) continue;
       const o = eff(el);
       if (o < 0.35) continue;
+      // Outline-only type (transparent fill + text stroke: a ghost numeral behind a heading) is ornament, not copy
+      const ost = getComputedStyle(el);
+      if (parseFloat(ost.webkitTextStrokeWidth) > 0 && /^rgba\\(.*,\\s*0\\)$/.test(ost.webkitTextFillColor || "")) continue;
       const range = document.createRange();
       range.selectNodeContents(n);
       // A text rect spans the font's whole content area. Display faces (Anton, condensed grotesks)
       // report ascent+descent far taller than a tight line box, so clamp each line to its line
       // box: stacked lines that share no line box do not overlap on screen.
-      const lh = parseFloat(getComputedStyle(el).lineHeight);
+      const lh = parseFloat(ost.lineHeight);
       for (const raw of range.getClientRects()) {
         let r = raw;
         if (lh > 0 && raw.height > lh * 1.05) {
@@ -1017,10 +1020,13 @@ const DOM_EVAL_SCRIPT = `(() => {
     }
     return tops.length;
   }
+  // tag#id.class.class, plus up to two ancestors when the element has no id, so a finding can be located
   function describe(el) {
     const label = (el.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 40);
-    const id = el.id ? "#" + el.id : "";
-    return "<" + el.tagName.toLowerCase() + id + "> \\"" + label + "\\"";
+    const sel = (e) => e.tagName.toLowerCase() + (e.id ? "#" + e.id : "") + (typeof e.className === "string" && e.className.trim() ? "." + e.className.trim().split(/\\s+/).slice(0, 2).join(".") : "");
+    const path = [];
+    for (let a = el.parentElement; !el.id && a && a !== document.body && path.length < 2; a = a.parentElement) { path.unshift(sel(a)); if (a.id) break; }
+    return "<" + sel(el) + ">" + (path.length ? " in " + path.join(" > ") : "") + " \\"" + label + "\\"";
   }
 
   const vw = window.innerWidth;
@@ -1169,25 +1175,70 @@ const DOM_EVAL_SCRIPT = `(() => {
     }
   }
 
-  // Text still invisible after a full scroll pass (reveal animations that never ran)
-  let hiddenTextAfterScroll = 0;
-  for (const el of Array.from(document.querySelectorAll("h1, h2, h3, p, li, a, button"))) {
-    if (!(el.textContent || "").trim() || el.closest("[aria-hidden='true'], [hidden], dialog:not([open]), details:not([open])")) continue;
-    const r = el.getBoundingClientRect();
-    if (r.width <= 2 || r.height <= 2) continue;
-    let cur = el, faded = false;
-    while (cur && cur.nodeType === 1) {
-      const cs = getComputedStyle(cur);
-      if (cs.display === "none" || cs.visibility === "hidden") { faded = false; break; }
-      if (parseFloat(cs.opacity) === 0) faded = true;
-      cur = cur.parentElement;
+  // Text left hidden, faded or masked once the scroll pass and settling are over (reveals that never
+  // finished). Hidden: its own visibility is hidden (GSAP autoAlpha) or effective opacity < 0.1. Faded:
+  // effective opacity < 0.9. Masked: every line of its text sits outside an overflow:hidden/clip ancestor
+  // it overlaps sideways (a line-mask reveal that never slid in). Closed or off-stage UI hides text on
+  // purpose and is skipped: menus, dialogs, popovers, tab panels, tooltips, collapsed aria-controls
+  // targets, fixed drawers/overlays, screen-reader-only labels, slides moved off-canvas, looping animations.
+  const collapsedIds = new Set(Array.from(document.querySelectorAll("[aria-expanded='false'][aria-controls]")).flatMap((b) => (b.getAttribute("aria-controls") || "").split(/\\s+/)).filter(Boolean));
+  const loopTargets = new Set();
+  try { for (const a of document.getAnimations()) { const t = a.effect && a.effect.target; if (t && t.nodeType === 1 && a.effect.getTiming().iterations === Infinity) loopTargets.add(t); } } catch (e) {}
+  const offStage = (el, r) => {
+    if (el.closest("[aria-hidden='true'], [hidden], [inert], dialog, [popover], details:not([open]) > :not(summary), nav, [role='navigation'], [role='menu'], [role='dialog'], [role='alertdialog'], [role='tooltip'], [role='tabpanel'], .sr-only, .visually-hidden, .screen-reader-text")) return true;
+    if (r.width <= 2 || r.height <= 2 || r.right <= 0 || r.left >= vw) return true;
+    for (let c = el; c && c.nodeType === 1; c = c.parentElement) {
+      if ((c.id && collapsedIds.has(c.id)) || loopTargets.has(c)) return true;
+      const s = getComputedStyle(c);
+      if (s.position === "fixed" || s.clip === "rect(0px, 0px, 0px, 0px)") return true;
     }
-    if (faded) hiddenTextAfterScroll++;
+    return false;
+  };
+  const maskedText = (el) => {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let n, lines = 0, guard = 0;
+    while ((n = w.nextNode()) && guard++ < 80) {
+      if (!n.nodeValue.trim() || !n.parentElement) continue;
+      const rg = document.createRange();
+      rg.selectNodeContents(n);
+      for (const q of Array.from(rg.getClientRects())) {
+        if (q.width < 1 || q.height < 1) continue;
+        lines++;
+        let clipped = false;
+        for (let a = n.parentElement; a && a !== document.body && a !== document.documentElement; a = a.parentElement) {
+          const s = getComputedStyle(a);
+          if (!/hidden|clip/.test(s.overflowX + " " + s.overflowY)) continue;
+          const ar = a.getBoundingClientRect();
+          // A collapsed box (closed accordion) or a sideways clip (carousel) is not a line mask
+          if (ar.height < 8 || q.right <= ar.left || q.left >= ar.right) continue;
+          if (q.bottom <= ar.top + 1 || q.top >= ar.bottom - 1) { clipped = true; break; }
+        }
+        if (!clipped) return false;
+      }
+    }
+    return lines > 0;
+  };
+  const hiddenEls = [], fadedEls = [];
+  for (const el of Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, li, blockquote, figcaption, label, dt, dd, a, button"))) {
+    if (!(el.textContent || "").trim() || hiddenEls.some((h) => h.contains(el)) || fadedEls.some((f) => f[0].contains(el))) continue;
+    if (typeof el.checkVisibility === "function" && !el.checkVisibility()) continue;
+    if (offStage(el, el.getBoundingClientRect())) continue;
+    let op = 1;
+    for (let c = el; c && c.nodeType === 1; c = c.parentElement) op *= parseFloat(getComputedStyle(c).opacity);
+    if (getComputedStyle(el).visibility === "hidden" || op < 0.1) hiddenEls.push(el);
+    else if (maskedText(el)) fadedEls.push([el, "masked by an overflow-clipped parent"]);
+    else if (op < 0.55 || (op < 0.9 && !el.closest("header, footer"))) fadedEls.push([el, "at opacity " + op.toFixed(2), op]);
   }
-  if (hiddenTextAfterScroll > 0) {
-    issue("text-hidden-after-scroll", "error", hiddenTextAfterScroll + " text element(s) remain at opacity 0 after scrolling the whole page");
+  if (hiddenEls.length > 0) {
+    issue("text-hidden-after-scroll", "error", hiddenEls.length + " text element(s) stay hidden (visibility:hidden or opacity under 0.1) after scrolling the whole page at " + vw + "px wide: " + hiddenEls.slice(0, 3).map(describe).join("; ") + " (end every reveal visible)");
   }
-  const midReveal = window.__layozaMidReveal || [];
+  if (fadedEls.length > 0) {
+    const hard = fadedEls.some((f) => f[2] === undefined || f[2] < 0.55);
+    issue("text-faded-or-masked", hard ? "error" : "warning", fadedEls.length + " text element(s) rest faded or masked after motion settled at " + vw + "px wide: " + fadedEls.slice(0, 3).map((f) => describe(f[0]) + " " + f[1]).join("; ") + " (finish the reveal at opacity 1 with the mask open, or drop it)");
+  }
+  const restingText = hiddenEls.concat(fadedEls.map((f) => f[0])).map((e) => (e.textContent || "").trim().slice(0, 30));
+  // A heading already reported as resting faded/hidden is not also a slow reveal
+  const midReveal = (window.__layozaMidReveal || []).filter((m) => !restingText.some((t) => t && m.startsWith(t)));
   if (midReveal.length > 0) {
     issue("text-mid-reveal", "warning", midReveal.length + " heading(s) still faded about 0.9s after scrolling stopped: " + midReveal.slice(0, 3).join(", ") + "; finish reveals within ~600ms of entering view, or scrub them so every resting position is fully readable");
   }
@@ -1317,7 +1368,9 @@ const DOM_EVAL_SCRIPT = `(() => {
     const hasOwnText = Array.from(el.childNodes).some((n) => n.nodeType === 3 && n.nodeValue.trim().length > 0);
     if (!hasOwnText || ["SCRIPT", "STYLE", "NOSCRIPT", "TITLE"].includes(el.tagName) || !isVisible(el)) continue;
     const cs = getComputedStyle(el);
-    const fg = parseColor(cs.color);
+    // Outline-only type (transparent fill + text stroke) is read by its stroke, so measure the stroke colour
+    const fill = parseColor(cs.webkitTextFillColor || cs.color);
+    const fg = fill && fill[3] < 0.05 && parseFloat(cs.webkitTextStrokeWidth) > 0 ? parseColor(cs.webkitTextStrokeColor) : parseColor(cs.color);
     // SVG text paints with fill over arbitrary shapes, so CSS-color contrast is not meaningful there
     // aria-hidden text is still seen: report it separately as decorative (WCAG 1.4.3 incidental-text exception may apply)
     const decorative = Boolean(el.closest("[aria-hidden='true']"));
@@ -1462,9 +1515,15 @@ const DOM_EVAL_SCRIPT = `(() => {
   const panelBodyBg = getComputedStyle(document.body).backgroundColor;
   let emptyPanels = 0;
   for (const el of Array.from(document.querySelectorAll("section, aside, article, div, form, footer"))) {
-    if (emptyPanels >= 6 || !isVisible(el)) continue;
+    if (emptyPanels >= 6 || !isVisible(el) || el.closest("[aria-hidden='true']")) continue;
     const r = el.getBoundingClientRect();
     if (r.width < 200 || r.height < 160 || r.width * r.height < vArea * 0.06) continue;
+    // A text-free layer absolutely positioned over its whole container (inset:0 colour flood, scrim) is a backdrop, not a panel
+    const pos = getComputedStyle(el).position;
+    if ((pos === "absolute" || pos === "fixed") && !(el.textContent || "").trim()) {
+      const cb = pos === "fixed" || !el.offsetParent ? { left: 0, top: 0, right: vw, bottom: window.innerHeight } : el.offsetParent.getBoundingClientRect();
+      if (Math.abs(r.left - cb.left) <= 4 && Math.abs(r.top - cb.top) <= 4 && Math.abs(r.right - cb.right) <= 4 && Math.abs(r.bottom - cb.bottom) <= 4) continue;
+    }
     // A panel cut sideways by the viewport or a clipping ancestor is a carousel slide scrolled part-way out:
     // its content is hidden by the scroll position, so only the sliver in view would be measured. Skip it.
     let clipL = 0, clipR = window.innerWidth;
@@ -1604,6 +1663,49 @@ const DOM_EVAL_SCRIPT = `(() => {
     }
   }
 
+  // --- Painted visual coverage. Non-text paint counts as a visual whatever builds it: media (img, picture,
+  // video, canvas, svg, iframe, role=img) and boxes holding at most a short label that paint a fill, gradient
+  // or image, plus text-free boxes drawn with a border or shadow (CSS shapes, drawn mockups). Copy containers,
+  // controls and plates spanning most of the measured box are not art. Overlapping marks count once (grid).
+  const paintAlpha = (c) => { if (!c || c === "transparent") return 0; const p = c.replace(/rgba?\\(|\\)/g, "").split(/[,\\/]/); return p.length >= 4 ? parseFloat(p[3]) : 1; };
+  function paintedBoxes(root, cap) {
+    const out = [];
+    const rr = root.getBoundingClientRect();
+    const rootBg = getComputedStyle(root).backgroundColor;
+    for (const el of Array.from(root.querySelectorAll("*")).slice(0, cap)) {
+      if (/^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT)$/.test(el.tagName) || (el.parentElement && el.parentElement.closest("svg"))) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 8 || r.height < 8) continue;
+      const media = /^(IMG|PICTURE|VIDEO|CANVAS|IFRAME|svg)$/.test(el.tagName) || el.getAttribute("role") === "img";
+      if (!media) {
+        if (r.width * r.height > rr.width * rr.height * 0.85 || el.closest("a[href], button, input, select, textarea, label, nav, footer")) continue;
+        const s = getComputedStyle(el);
+        const txt = (el.textContent || "").trim().length;
+        const fill = s.backgroundImage !== "none" || (paintAlpha(s.backgroundColor) > 0.3 && s.backgroundColor !== rootBg);
+        const line = s.boxShadow !== "none" || ["Top", "Right", "Bottom", "Left"].some((k) => parseFloat(s["border" + k + "Width"]) >= 1 && s["border" + k + "Style"] !== "none" && paintAlpha(s["border" + k + "Color"]) > 0.3);
+        if (!((fill && txt <= 40) || (line && !txt))) continue;
+      }
+      if (isVisible(el)) out.push({ el, r, media });
+    }
+    return out;
+  }
+  function coverShare(box, marks) {
+    const rs = marks.map((m) => m.r).filter((q) => q.right > box.left && q.left < box.right && q.bottom > box.top && q.top < box.bottom).sort((a, b) => b.width * b.height - a.width * a.height).slice(0, 300);
+    if (!rs.length || box.width < 1 || box.height < 1) return 0;
+    const cols = 32, rows = Math.max(8, Math.min(96, Math.round(32 * box.height / box.width)));
+    let hit = 0;
+    for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
+      const x = box.left + (i + 0.5) * box.width / cols, y = box.top + (j + 0.5) * box.height / rows;
+      if (rs.some((q) => x >= q.left && x < q.right && y >= q.top && y < q.bottom)) hit++;
+    }
+    return hit / (cols * rows);
+  }
+  const pagePaint = paintedBoxes(document.body, 4000);
+  const visualCoverage = {
+    hero: Number(coverShare({ left: 0, top: -window.scrollY, right: vw, bottom: window.innerHeight - window.scrollY, width: vw, height: window.innerHeight }, pagePaint).toFixed(3)),
+    art_boxes: pagePaint.filter((m) => m.r.width >= 160 && m.r.height >= 120).length,
+  };
+
   // --- Ledger-heavy / visual-starved page (desktop). A section is the largest box around one h2. Sections
   // built as stacked rows (lists, tables, row-cards) with no dominant visual read as a spreadsheet; a page
   // where most sections carry no visual moment (art, 3D, scene, media, type as image) reads as a document.
@@ -1668,6 +1770,11 @@ const DOM_EVAL_SCRIPT = `(() => {
         const bi = getComputedStyle(s).backgroundImage;
         if (bi.includes("url(")) visual = true;
       }
+      // Painted art inside the section (CSS shapes, drawn mockups, svg, media), overlaps counted once; a plate
+      // filling the section is its ground, not art. Union over the whole section vs a quarter of the seen area.
+      const own = pagePaint.filter((m) => m.el !== s && s.contains(m.el) && m.r.width * m.r.height <= sArea * 0.85);
+      const painted = coverShare(sr, own);
+      if (!visual && painted * sArea >= seenArea * 0.25) visual = true;
       const label = describe(s);
       // Hairline structure: three or more wide boxes or rows drawn with 1px rules.
       let hairlines = 0;
@@ -1681,10 +1788,16 @@ const DOM_EVAL_SCRIPT = `(() => {
       if (hairlines >= 3 && s.querySelectorAll("table").length === 0) ruledSecs.push(label);
       // Frame break: text set over a picture, or a picture that bleeds to both viewport edges or past the section.
       const pics = Array.from(s.querySelectorAll("img, video, canvas, picture, svg")).filter((m) => !(m.parentElement && m.parentElement.closest("svg, picture")) && isVisible(m)).map((m) => m.getBoundingClientRect()).filter((r) => r.width >= 200 && r.height >= 140);
-      const words = Array.from(s.querySelectorAll("h1, h2, h3, p")).filter(isVisible).map((w) => w.getBoundingClientRect());
-      if (pics.some((r) => (r.left <= 1 && r.right >= vw - 1) || r.top < sr.top - 8 || r.bottom > sr.bottom + 8 || words.some((w) => w.left < r.right - 8 && w.right > r.left + 8 && w.top < r.bottom - 8 && w.bottom > r.top + 8))) breaks++;
+      const wordEls = Array.from(s.querySelectorAll("h1, h2, h3, p")).filter(isVisible);
+      const words = wordEls.map((w) => w.getBoundingClientRect());
+      const over = (w, r) => w.left < r.right - 8 && w.right > r.left + 8 && w.top < r.bottom - 8 && w.bottom > r.top + 8;
+      // Painted (non-media) art breaks the frame when type sits over it or it crosses an unclipped section edge
+      const clips = /hidden|clip/.test(getComputedStyle(s).overflow);
+      const art = own.filter((m) => !m.media && m.r.width >= 200 && m.r.height >= 140);
+      if (pics.some((r) => (r.left <= 1 && r.right >= vw - 1) || r.top < sr.top - 8 || r.bottom > sr.bottom + 8 || words.some((w) => over(w, r))) ||
+        art.some((m) => (!clips && (m.r.top < sr.top - 8 || m.r.bottom > sr.bottom + 8)) || wordEls.some((w, i) => !m.el.contains(w) && over(words[i], m.r)))) breaks++;
       if (rows >= 4 && listArea >= sArea * 0.25 && !visual) ledgerSecs.push(label + " (" + rows + " rows)");
-      if (!visual) starved.push(label);
+      if (!visual) starved.push(label + " (" + Math.round(painted * 100) + "% painted)");
       const seen = new Set();
       for (const b of Array.from(s.querySelectorAll("*")).slice(0, 600)) {
         const br = b.getBoundingClientRect();
@@ -1703,7 +1816,7 @@ const DOM_EVAL_SCRIPT = `(() => {
       issue("ledger-heavy-page", "warning", ledgerSecs.length + " of " + n + " sections are stacked rows or tables with no dominant visual: " + ledgerSecs.slice(0, 4).join("; ") + " at " + vw + "px wide (keep data to the 1-2 sections where the visitor needs it; give the rest one visual moment: art, 3D, a scene or type as image)");
     }
     if (n >= 4 && starved.length / n >= 0.6) {
-      issue("visual-starved-page", "warning", starved.length + " of " + n + " sections have no visual moment (no art, media, 3D or type-as-image covering a quarter of the section), e.g. " + starved.slice(0, 3).join("; ") + " at " + vw + "px wide (each section needs one dominant visual drawn from its own content)");
+      issue("visual-starved-page", "warning", starved.length + " of " + n + " sections have no visual moment (painted art, media, 3D or type-as-image covering under a quarter of what a reader sees), e.g. " + starved.slice(0, 3).join("; ") + " at " + vw + "px wide (each section needs one dominant visual drawn from its own content)");
     }
     if (n >= 4 && ruledSecs.length / n >= 0.5) {
       issue("wireframe-page", "warning", ruledSecs.length + " of " + n + " sections are built from 1px-ruled boxes or rows (" + ruledSecs.slice(0, 3).join("; ") + ") at " + vw + "px wide: it reads as a wireframe. Separate surfaces by tone, scale and space; keep rules for real tables");
@@ -1956,6 +2069,7 @@ const DOM_EVAL_SCRIPT = `(() => {
     hasFocusVisibleRule,
     unreadableStylesheets,
     menuToggleVisible,
+    visualCoverage,
     issues,
   };
 })()`;

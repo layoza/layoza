@@ -1,19 +1,18 @@
 ---
 name: layoza-animations
-description: GSAP-first web motion by default: authored choreography, scroll, interaction and Three.js state, with explicit Motion for React support when requested, reduced-motion stills and scoped cleanup.
+description: Web motion designed per brief: authored choreography, scroll, interaction and Three.js state with the tool that fits (CSS, WAAPI, GSAP, Motion, WebGL), reduced-motion stills and scoped cleanup. The user's prompt wins.
 ---
 
 # Layoza Specialist Skill: Motion Design (`layoza-animations`)
 
-Follow [the motion policy](../layoza/references/motion-policy.md): include purposeful animation by default and use GSAP for authored animation unless the user requests none or another engine. The reusable [GSAP lifecycle controller](assets/gsap-motion.mjs) handles scoped timelines, dynamic reduced motion, pause/resume, offscreen/hidden rendering and cleanup.
+Follow [the motion policy](../layoza/references/motion-policy.md) and the tool policy in § 2. Where GSAP fits, the reusable [GSAP lifecycle controller](assets/gsap-motion.mjs) handles scoped timelines, dynamic reduced motion, pause/resume, offscreen/hidden rendering and cleanup.
 
-For rich-motion briefs, use [section choreography](reference/section-choreography.md): author content-specific transformations through MCP `recommend_animation.motion_plan`, implement them with the executable [responsive section host](assets/section-motion.mjs), then capture actual scroll states with `scripts/review-motion.mjs`. Several earned mechanisms may serve one thesis; do not interpret "one signature" as permission to leave the rest of a high-motion brief with identical reveals. Authored plans and passing interaction tests are not motion-quality evidence.
+For rich-motion briefs, use [section choreography](reference/section-choreography.md): author content-specific transformations through MCP `recommend_animation.motion_plan`, implement them with the executable [responsive section host](assets/section-motion.mjs), then capture actual scroll states with `scripts/review-motion.mjs`. Several earned mechanisms may serve one thesis; "one signature" never excuses identical reveals across a high-motion brief. Authored plans and passing interaction tests are not motion-quality evidence.
 
 Motion is a design decision, made per brief. Section 3 is the shared guardrail;
 section 2e applies when the brief requests rich motion. Other techniques and
-numeric values are starting points. The user's prompt always wins: if they name a
-library, a feel, or "no animation", do exactly that. In Mode B/C, extend the
-site's existing stack and `MOTION.md`.
+numeric values are starting points. The user's prompt always wins (§ 2). In
+Mode B/C, extend the site's existing stack and `MOTION.md`.
 
 ## 1. Decide what the design needs
 
@@ -33,11 +32,11 @@ A quiet, typographic brief may need only micro-interactions. A showcase may
 need all of them. One identical fade-up on every section is never the answer
 (`CRAFT-SCATTERED-REVEAL`).
 
-## 2. Assign one owner to each animation
+## 2. Tool policy: choose per brief, one owner per property
 
-GSAP owns entrance choreography, SVG motion, control feedback, scroll transitions and object-state animation. Use ScrollTrigger for actual scroll relationships and GSAP's scoped ticker for a live Three.js render callback. CSS defines the readable static state and immediate focus/selection feedback.
+Layoza's one motion-tool policy (other skills point here): the user's prompt wins on any tool, feel or "no animation"; otherwise design comes first and the tool follows it. Choose CSS (incl. scroll-driven), WAAPI, GSAP, Motion for React or WebGL per brief; none is mandated. GSAP + ScrollTrigger is the documented default helper for complex scroll choreography and a live Three.js ticker, never a requirement. CSS holds the readable static state and immediate focus/selection feedback.
 
-When explicitly requested, Motion for React owns component presence/layout on its own wrappers; GSAP owns separate timeline/scene properties. Never have both engines write the same transform. Lenis is optional for a requested smooth-scroll showcase and stays synchronized with ScrollTrigger. WebGL renders a real subject, rather than becoming an excuse for a floating primitive.
+One owner per animated property: two engines never write the same transform (use wrappers). Lenis is optional for a requested smooth-scroll showcase (see § 4). WebGL renders a real subject, not a floating primitive.
 
 ## 2b. Values that feel professional
 
@@ -69,14 +68,14 @@ input or focus. Gate hover
 motion behind `@media (hover: hover) and (pointer: fine)`.
 
 ```js
-// Hero mask reveal (GSAP 3.13+ SplitText), run once fonts are ready
-document.fonts.ready.then(() => {
+// Hero mask reveal (GSAP 3.13+ SplitText) once fonts are ready; reduce = static
+document.fonts.ready.then(() => gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
   const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
   SplitText.create(".hero h1", { type: "lines", mask: "lines", autoSplit: true,
     // Return the line tween itself (not tl) so autoSplit reverts only this tween on re-split
     onSplit: (s) => { const t = gsap.from(s.lines, { yPercent: 105, duration: 1, stagger: 0.09 }); tl.add(t, 0); return t; } });
   tl.from(".hero .lede, .hero .actions", { y: 24, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.35);
-});
+}));
 ```
 
 ```js
@@ -92,7 +91,7 @@ gsap.matchMedia().add("(min-width: 900px) and (prefers-reduced-motion: no-prefer
 ## 2c. Control feedback and optional micro-motion
 
 Small feedback confirms actions. A calm or minimal brief can use immediate
-colour, underline and focus changes; choose a restrained GSAP response instead of a decorative reveal on every section.
+colour, underline and focus changes; choose a restrained response instead of a decorative reveal on every section.
 For richer motion, choose feedback that fits the concept (baseline CSS:
 `layoza animate --recipe interactive-gsap-feedback`). Explicit no-motion requests keep
 feedback immediate with colour/underline changes and focus rings.
@@ -108,7 +107,7 @@ feedback immediate with colour/underline changes and focus rings.
 | Loading / async | the button shows progress; never a dead click | instant start |
 | Live numbers (totals, counters, prices) | roll or count to the new value | 250–400ms |
 | Page entrance | hero copy rises 12–16px and fades in, staggered 60–80ms; content is visible if CSS animation never runs | 600–800ms, once |
-| Section arrival | content-shaped GSAP arrival with visible source content; no shared fade-up imposed on every section | entry 0–40% |
+| Section arrival | content-shaped arrival with visible source content; no shared fade-up imposed on every section | entry 0–40% |
 | Card / media hover (fine pointer) | lift 2–4px with shadow, or art scales ≤ 1.03 | 250–500ms |
 
 **Speak the subject.** Where useful, feedback can use the business's own objects or gestures:
@@ -186,8 +185,8 @@ Stills and QA passes do not prove motion quality. Speed scoring is optional.
 
 1. **Content visible without JS.** Never hide content in CSS that waits for a
    script; start animations from the visible state (e.g. `gsap.from`, WAAPI
-   `fill: "backwards"` only after JS runs). `layoza qa` fails
-   `text-hidden-after-scroll` otherwise.
+   `fill: "backwards"` only after JS runs). `layoza qa` fails the
+   `text-hidden*` rules otherwise.
 2. **Reduced motion:** honour `prefers-reduced-motion: reduce` (in GSAP:
    `gsap.matchMedia()`). Keep fades and colour changes; drop movement, pinning
    and scrubbing.
@@ -228,4 +227,4 @@ it with ScrollTrigger if both are used (exact wiring: reference/library-rules.md
 ```bash
 layoza animate --recipe hero-gsap-masked-split --framework react --intensity 6
 ```
-Default recipes: `hero-gsap-masked-split`, `section-gsap-authored`, `interactive-gsap-feedback`, `page-gsap-transition`, `scroll-gsap-pinned-narrative`, `threejs-gsap-stage`. Explicit Motion for React: `react-motion-presence`. Legacy alternative-engine recipes remain available by explicit lookup.
+Optional GSAP recipes: `hero-gsap-masked-split`, `section-gsap-authored`, `interactive-gsap-feedback`, `page-gsap-transition`, `scroll-gsap-pinned-narrative`, `threejs-gsap-stage`. Explicit Motion for React: `react-motion-presence`. Legacy alternative-engine recipes remain available by explicit lookup.

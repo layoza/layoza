@@ -96,9 +96,9 @@ world in `SITE-DNA.json` / `BRAND.md`). If a neighbouring product could use the
 same flourish unchanged, it is not delight, it is decoration.
 
 **Cost budget (Layoza addition):** the moment may add no new dependency, at
-most a few KB of CSS/JS, nothing to the LCP path, and no new font. Measured
-guards: `lcp_ms`, `inp_ms` ≤ 200, `cls`, `text-hidden-after-scroll` = 0,
-`reduced_motion_respected` stays true. Sound only on explicit user opt-in.
+most a few KB of CSS/JS and no new font. Guards: 0 `text-hidden*`,
+`motion-ignores-reduce`, `reduced-motion-hides-text`. Speed is an optional
+`--performance` diagnostic, never a guard. Sound only on explicit opt-in.
 
 **Never:** delay or block the task, fake progress, joke about money, privacy,
 deletion, or lost work, add claims the product cannot back, or make the moment

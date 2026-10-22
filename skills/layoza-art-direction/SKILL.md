@@ -173,4 +173,4 @@ Show the actual final designs, what changed during review, and the concrete
 limits of the evaluation. A clean checker does not establish that we beat rivals.
 
 ## Motion authority
-Follow [Layoza motion policy](../layoza/references/motion-policy.md): purposeful animation is on by default, GSAP owns authored motion, and explicit no-animation or alternate-engine requests win. Motion for React can own separate component presence/layout when requested.
+Motion tools: see [`layoza-animations` § 2](../layoza-animations/SKILL.md). The user's prompt wins; tools are chosen per brief, never mandated.

@@ -311,6 +311,15 @@ pub(crate) struct Archetype {
     motion_bold: &'static str,
 }
 
+impl Archetype {
+    /// The layout opens on an index or register with no image above the fold, so the page shape
+    /// never deals it an image-led hero frame.
+    pub(crate) fn no_hero_image(&self) -> bool {
+        let text = format!("{} {}", self.layout, self.identity).to_lowercase();
+        ["no hero-image", "no hero image", "no imagery above", "no images above"].iter().any(|k| text.contains(k))
+    }
+}
+
 fn surface_of(s: &str) -> Surface {
     match s {
         "product-ui" => S::ProductUi,
@@ -456,7 +465,7 @@ const TRADES: &[Trade] = &[
     tr(&["estate", "property", "properties", "realtor", "listings"], None,
         ["the home itself", "the floor plan", "the street outside"], "book a viewing", "floor areas, prices and energy ratings", &["generic"]),
     tr(&["charity", "nonprofit", "non-profit", "ngo", "foundation", "donate", "donation", "donations"], None,
-        ["the people helped", "the project on the ground", "where the money goes"], "donate or volunteer", "amounts, places and reporting dates", &["care", "civic"]),
+        ["the people helped", "the project on the ground", "where the money goes"], "donate or volunteer", "amounts, places and reporting dates", &["civic"]),
     tr(&["salon", "barber", "hairdresser", "spa", "beauty", "nails"], Some(S::Venue),
         ["the chair", "the cut itself", "the price list"], "book a slot", "services, durations and prices", &["luxe"]),
     tr(&["vet", "veterinary", "pets", "pet", "dog", "dogs", "cats"], None,
@@ -467,8 +476,10 @@ const TRADES: &[Trade] = &[
         ["the stage", "the line-up", "the ticket"], "buy a ticket", "set times, stages and dates", &["celebration", "kinetic"]),
     tr(&["florist", "flowers", "garden", "plants"], None,
         ["stems in the bucket", "the bouquet being tied", "the delivery card"], "order a bouquet for a date", "stem names, seasons and delivery slots", &["botanical"]),
-    tr(&["bicycle", "bike", "bikes", "repair", "workshop", "mechanic", "garage"], None,
+    tr(&["bicycle", "bike", "bikes", "cycling", "cyclist"], None,
         ["the part on the stand", "the tool wall", "the job ticket"], "book a repair slot", "part numbers, torque values and job tickets", &["industrial"]),
+    tr(&["repair", "repairs", "workshop", "mechanic", "mechanics", "garage"], None,
+        ["the part on the bench", "the tool wall", "the job ticket"], "book a repair slot", "part numbers, job tickets and turnaround times", &["industrial", "generic"]),
     tr(&["ceramics", "pottery", "clay", "kiln", "stoneware"], None,
         ["the pot on the wheel", "the glaze test tiles", "the kiln shelf"], "buy a piece or book a class", "glaze codes, firing temperatures and batch numbers", &["earth"]),
     tr(&["bank", "finance", "fintech", "accounting", "accountant", "accountants", "insurance", "investment"], None,
@@ -514,8 +525,8 @@ const TRADES: &[Trade] = &[
         ["the room after the job", "the van and crew", "the fixed-price list"], "get a price and book a date", "room counts, hours and prices", &["trades"]),
     tr(&["solar", "heat pump", "insulation", "retrofit"], None,
         ["the panels on the roof", "the savings sheet", "the install day"], "get a survey and quote", "kW, payback years and grant amounts", &["infrastructure", "trades"]),
-    tr(&["logistics", "freight", "shipping", "courier", "couriers", "haulage", "warehouse", "fulfilment", "fulfillment"], None,
-        ["the parcel in transit", "the route map", "the depot board"], "get a rate or track a shipment", "tracking numbers, lanes, weights and ETAs", &["infrastructure", "industrial"]),
+    tr(&["logistics", "freight", "shipping", "courier", "couriers", "haulage", "haulier", "trucking", "cargo", "warehouse", "fulfilment", "fulfillment"], None,
+        ["the load on its lane", "the route map", "the load board"], "get a rate or track a shipment", "tracking numbers, lanes, weights and ETAs", &["infrastructure", "industrial"]),
     tr(&["invoicing", "invoice", "invoices", "billing", "payments", "payroll", "bookkeeping", "tax", "expenses"], None,
         ["the invoice itself", "the payment status", "the ledger"], "send a first invoice", "invoice numbers, amounts, due dates and currencies", &["finance"]),
     tr(&["bar", "cocktail", "cocktails", "pub", "speakeasy", "nightclub", "club night"], Some(S::Venue),
@@ -626,11 +637,15 @@ fn subject_phrase(query: &str) -> String {
     let content = |seg: &Vec<String>| -> Vec<String> {
         // "home" is filler ("home page") except as the head noun of a trade ("funeral home", "care home").
         let last = seg.len().saturating_sub(1);
+        // "web", "design" and "marketing" are the trade itself in front of a firm ("web design agency").
+        let firm = seg.last().is_some_and(|w| ["agency", "studio", "studios", "consultancy", "firm", "collective"].contains(&w.to_lowercase().as_str()));
         seg.iter()
             .enumerate()
             .filter(|(i, w)| {
                 let l = w.to_lowercase();
-                !FILLER.contains(&l.as_str()) || (l == "home" && *i == last && *i > 0)
+                !FILLER.contains(&l.as_str())
+                    || (l == "home" && *i == last && *i > 0)
+                    || (firm && ["web", "design", "marketing", "online"].contains(&l.as_str()))
             })
             .map(|(_, w)| w.to_lowercase())
             .collect()
@@ -732,6 +747,7 @@ fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
         .filter(|(off, p, t)| *off == lead_off && !t.tags.contains(&"generic") && phrase_end.is_some_and(|e| *p <= e))
         .max_by_key(|(_, p, _)| *p)
         .map(|(_, _, t)| *t)
+        .or_else(|| hits.iter().find(|(off, _, t)| *off == lead_off && !t.tags.contains(&"generic")).map(|(_, _, t)| *t))
         .unwrap_or(hits[0].2);
     // A recognised multiword trade is more specific than its generic head noun:
     // photography gallery must not inherit a museum's plinths and ticket booking.
@@ -745,16 +761,27 @@ fn read_subject_in(query: &str, signals: &BriefSignals) -> Subject {
     // splice a second trade's world into the client's content.
     let objects = head.objects.iter().map(|s| s.to_string()).collect();
     let notation = head.notation.to_string();
+    // A repair modifier keeps the trade's objects but takes the repair action
+    // ("watch repair atelier" books a repair, not a viewing).
+    let repairs = phrase.split_whitespace().any(|w| matches!(w.to_lowercase().as_str(), "repair" | "repairs"));
+    let action = match hits.iter().map(|(_, _, t)| *t).find(|t| t.words.contains(&"repair")) {
+        Some(r) if repairs && !std::ptr::eq(r, head) => r.action,
+        _ => head.action,
+    };
     // The head trade's tags lead (a "municipal water utility" is infrastructure first).
     let mut tags: Vec<&'static str> = head.tags.iter().copied().filter(|t| *t != "generic").collect();
     for (_, _, t) in hits.iter().take(3) {
+        // A generic modifier ("repair" in "watch repair atelier") lends no tags to another head.
+        if t.tags.contains(&"generic") && !std::ptr::eq(*t, head) {
+            continue;
+        }
         for tag in t.tags {
             if *tag != "generic" && !tags.contains(tag) {
                 tags.push(tag);
             }
         }
     }
-    Subject { phrase, objects, action: head.action.to_string(), notation, from_trades: true, tags, nouns }
+    Subject { phrase, objects, action: action.to_string(), notation, from_trades: true, tags, nouns }
 }
 
 /// One direction as dealt: its structure, type and palette, and the options it beat.
@@ -794,24 +821,37 @@ const SUBJECT_TAGS: &[&str] = &[
     "celebration", "infrastructure", "trades", "literary", "finance", "sport",
 ];
 
+fn hsl(hex: &str) -> Option<(f64, f64, f64)> {
+    let (r, g, b) = rgb(hex)?;
+    let (r, g, b) = (r as f64 / 255.0, g as f64 / 255.0, b as f64 / 255.0);
+    let (max, min) = (r.max(g).max(b), r.min(g).min(b));
+    let l = (max + min) / 2.0;
+    let d = max - min;
+    if d == 0.0 {
+        return Some((0.0, 0.0, l));
+    }
+    let s = d / (1.0 - (2.0 * l - 1.0).abs());
+    let hue = if max == r { 60.0 * (((g - b) / d) % 6.0) } else if max == g { 60.0 * ((b - r) / d + 2.0) } else { 60.0 * ((r - g) / d + 4.0) };
+    Some(((hue + 360.0) % 360.0, s, l))
+}
+
 /// Dark blue ground with a gold/ochre/brass accent: the "trust" palette law and finance default to.
 pub(crate) fn navy_gold(p: &PaletteRecommendation) -> bool {
-    fn hsl(hex: &str) -> Option<(f64, f64, f64)> {
-        let (r, g, b) = rgb(hex)?;
-        let (r, g, b) = (r as f64 / 255.0, g as f64 / 255.0, b as f64 / 255.0);
-        let (max, min) = (r.max(g).max(b), r.min(g).min(b));
-        let l = (max + min) / 2.0;
-        let d = max - min;
-        if d == 0.0 {
-            return Some((0.0, 0.0, l));
-        }
-        let s = d / (1.0 - (2.0 * l - 1.0).abs());
-        let hue = if max == r { 60.0 * (((g - b) / d) % 6.0) } else if max == g { 60.0 * ((b - r) / d + 2.0) } else { 60.0 * ((r - g) / d + 4.0) };
-        Some(((hue + 360.0) % 360.0, s, l))
-    }
     let navy = hsl(&p.background).is_some_and(|(h, s, l)| (200.0..=250.0).contains(&h) && s > 0.2 && l < 0.35);
     let gold = |hex: &str| hsl(hex).is_some_and(|(h, s, l)| (35.0..=55.0).contains(&h) && s > 0.45 && (0.35..=0.8).contains(&l));
     navy && (gold(&p.primary_accent) || gold(&p.secondary_accent))
+}
+
+/// A near-black ground with little hue of its own and one hot, saturated accent: the stock
+/// "dark + neon" look the avoid list bans. A dark ground with its own colour (deep teal, oxblood) does not count.
+pub(crate) fn neon_on_black(p: &PaletteRecommendation) -> bool {
+    // Near-black or a dusky, barely tinted dark (a vaporwave purple, a console grey-blue); a
+    // saturated deep teal or navy is a coloured ground, not black.
+    let black = hsl(&p.background).is_some_and(|(_, s, l)| l < 0.2 && (s < 0.45 || l < 0.06));
+    // A luminous saturated accent outside the warm reds, oranges and golds (gold on black is the
+    // luxury classic, not neon); terminal greens and mints count.
+    let hot = hsl(&p.primary_accent).is_some_and(|(h, s, l)| s > 0.45 && (0.4..=0.8).contains(&l) && (55.0..350.0).contains(&h));
+    black && hot
 }
 
 /// The first subject tag names what a pick was made for, so a pick led by another trade's subject
@@ -1289,12 +1329,14 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
     let has = |tag: &str| w(tag) > 0;
     let mood = |m: &str| signals.moods.iter().any(|x| x == m);
     let wants = |t: &str| has(t) || (t == "data" && signals.surface == S::ProductUi) || (t == "code" && signals.surface == S::DevTool);
-    let solemn = has("memorial") || (has("legal") && !has("kinetic")) || (has("care") && !has("play"));
+    let solemn = has("memorial") || (has("legal") && !has("kinetic"));
     let playful = has("play") || has("celebration") || has("sport");
     let script = brief_script(query);
     // Display gimmicks (sci-fi, pixel, arcade, novelty scripts) only when the brief asks for that register.
     let gimmick_ok = ["kinetic", "night", "y2k", "play", "celebration", "70s", "sport", "ink"].iter().any(|t| has(t))
         || ["retro", "arcade", "game", "gaming", "sci-fi", "scifi", "futuristic", "neon", "pixel", "space", "cyber"].iter().any(|k| q.contains(k));
+    let no_mono = !(signals.surface == S::DevTool || has("code") || ["monospace", "mono font", "code font"].iter().any(|k| q.contains(k)));
+    let neon_ok = has("night") || ["neon", "cyber", "arcade", "nightclub", "nightlife", "rave", "synthwave"].iter().any(|k| q.contains(k));
     // Task-first briefs (money, law, code, utilities, care, dashboards) read; posters only when asked.
     let asks_bold = mood("bold") || ["editorial", "manifesto", "campaign", "poster", "bold"].iter().any(|k| q.contains(k));
     let task_first = matches!(signals.surface, S::ProductUi | S::DevTool) || ["finance", "legal", "code", "infrastructure", "civic", "trades", "care"].iter().any(|t| has(t));
@@ -1556,6 +1598,10 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 if !gimmick_ok && e.tags.contains(&"novelty") {
                     s -= 12;
                 }
+                // The page's restraint bans a monospace face unless the brief is about code.
+                if no_mono && (e.display_style == "mono" || is_mono_name(&e.pairing.display_font) || is_mono_name(&e.pairing.body_font)) {
+                    s -= 20;
+                }
                 // Variety: a face nothing in the brief asks for loses to one it does, and a small
                 // brief-seeded jitter stops the same generalist face winning unrelated briefs.
                 if !e.tags.iter().any(|t| w(t) > 0) {
@@ -1610,6 +1656,10 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
                 // Law and money briefs list navy-and-gold as their reflex palette: never deal it.
                 if (has("legal") || has("finance")) && navy_gold(&e.palette) {
                     s -= 8;
+                }
+                // Dark + neon is the generic default look; deal it only when the brief asks for night or neon.
+                if !neon_ok && neon_on_black(&e.palette) {
+                    s -= 6;
                 }
                 if solemn && (e.tone == Tone::Field || e.tags.iter().any(|t| LOUD.contains(t))) {
                     s -= 6;
@@ -1668,7 +1718,15 @@ pub(crate) fn deal(signals: &BriefSignals, query: &str, variant: u64, industry: 
         out.push(Dealt {
             arch,
             slot,
-            typography: te.pairing.clone(),
+            typography: {
+                // A mood written for another trade ("harbour-signage grotesk" on an agency) would be
+                // read as the reason for the face: describe its style instead.
+                let mut p = te.pairing.clone();
+                if te.tags.iter().find(|t| SUBJECT_TAGS.contains(t)).is_some_and(|t| !has(t)) {
+                    p.mood = format!("{} display, {} family", te.display_style, te.look_family);
+                }
+                p
+            },
             palette: pe.palette.clone(),
             tone: pe.tone,
             type_tags: te.tags.iter().copied().filter(|t| has(t)).collect(),
@@ -1707,6 +1765,9 @@ pub(crate) struct Ctx<'a> {
     pub place: Option<&'a str>,
     pub material: Option<&'a str>,
     pub surface: Surface,
+    /// False when the page's restraint rules out a monospace face: archetype text then names the
+    /// body face's tabular figures instead.
+    pub mono: bool,
 }
 
 pub(crate) struct DirectionText {
@@ -1737,6 +1798,7 @@ pub(crate) fn write(d: &Dealt, ctx: &Ctx, motion: u8) -> DirectionText {
         _ => (800, 220),
     };
     let calm = motion <= 4 || ctx.surface == S::ProductUi;
+    let mono = if ctx.mono { d.typography.mono_font.clone() } else { format!("{} tabular figures", d.typography.body_font) };
     let fill = |t: &str| -> String {
         t.replace("{big}", &cap(subj))
             .replace("{at}", &at)
@@ -1749,7 +1811,7 @@ pub(crate) fn write(d: &Dealt, ctx: &Ctx, motion: u8) -> DirectionText {
             .replace("{mat}", &mat)
             .replace("{display}", &d.typography.display_font)
             .replace("{body}", &d.typography.body_font)
-            .replace("{mono}", &d.typography.mono_font)
+            .replace("{mono}", &mono)
             .replace("{ratio}", &d.typography.scale_ratio)
             .replace("{pal}", &pal)
             .replace("{t_in}", &t_in.to_string())
@@ -1774,6 +1836,7 @@ pub(crate) fn write(d: &Dealt, ctx: &Ctx, motion: u8) -> DirectionText {
         fallbacks.map(|f| format!("; fallbacks {f}")).unwrap_or_default(),
         d.extra_font_url
             .as_ref()
+            .filter(|_| ctx.mono)
             .map(|u| format!("; {} loads from a second stylesheet: {u}", d.typography.mono_font))
             .unwrap_or_default()
     );

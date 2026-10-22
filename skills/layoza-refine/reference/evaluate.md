@@ -27,7 +27,7 @@ calling a page "good" over a failing number.
 
 | Dimension | Measured inputs | Cap |
 | :--- | :--- | :--- |
-| Accessibility | `contrast_failures`, `unlabeled_controls`, `missing_alt_count`, `undersized_targets`, `focus_visible_styled`, `heading_hierarchy_valid`, `landmarks_present`, `focus-obscured` | any contrast failure, unlabeled control, or `focus_visible_styled` false → max 2 |
+| Accessibility | `contrast_failures`, `unlabeled_controls`, `missing_alt_count`, `undersized_targets`, `focus-ring-missing`, `heading_hierarchy_valid`, `landmarks_present`, `focus-obscured` | any contrast failure, unlabeled control, or `focus-ring-missing` → max 2 |
 | Visual composition | before/after screenshots: hierarchy, balance, typography, imagery and brief fidelity | judgment from the actual render; name the strongest and weakest design decisions |
 | Theming / tokens | `SITE-DNA.json` `colors` vs values hard-coded in source; `discrepancies`; dark-mode strategy | > 5 untokenised colours in the target → max 2 |
 | Responsive | `document-overflow`, `text-clip-or-bleed`, `nav-unreachable`, `menu-toggle-broken`, `label-wrap`, `primary-action-below-fold` | any error rule → max 1 |

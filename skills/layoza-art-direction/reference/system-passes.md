@@ -110,7 +110,7 @@ The reflex answer, more effects, is the opposite of bold; reject it first.
   `cubic-bezier(0.16, 1, 0.3, 1)` for confident arrivals; no reflexive bounce.
 - Stagger only real lists, with a capped total delay.
 - **Content visible by default** so a failed script hides nothing (`layoza qa`
-  flags `text-hidden-after-scroll`). Do not animate layout properties; transform,
+  flags `text-hidden*`). Do not animate layout properties; transform,
   FLIP, or grid tricks instead. `will-change` only during the animation.
 - Every animation: a `prefers-reduced-motion: reduce` path that removes spatial
   movement but keeps meaningful feedback; loops stop when offscreen; listeners,
@@ -118,4 +118,4 @@ The reflex answer, more effects, is the opposite of bold; reject it first.
 - Pick the tool per design (CSS, WAAPI, GSAP, Motion, View Transitions, canvas/
   WebGL) with `layoza-animations`; in an existing project, prefer its stack.
 - Verify: removing any animation would lose meaning or authored character, not
-  mere decoration; INP stays ≤ 200ms.
+  mere decoration.

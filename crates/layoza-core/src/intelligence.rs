@@ -463,6 +463,17 @@ fn rank_industries(query: &str, industries: &[IndustryRule]) -> Vec<(usize, Indu
     rank_industries_in(query, industries)
 }
 
+/// Keywords that name who a client serves as often as what the client is.
+const AUDIENCE_KEYWORDS: &[&str] = &["startup", "founders"];
+
+/// True when `word` only names the audience ("law firm for startups"): it follows "for" or
+/// "serving" within a few words, so it must not decide the client's own trade.
+pub(crate) fn audience_only(tokens: &[String], word: &str) -> bool {
+    let plural = format!("{word}s");
+    tokens.iter().enumerate().filter(|(_, t)| **t == word || **t == plural).all(|(i, _)| tokens[..i].iter().rev().take(4).any(|w| w == "for" || w == "serving"))
+        && tokens.iter().any(|t| *t == word || *t == plural)
+}
+
 fn rank_industries_in(query: &str, industries: &[IndustryRule]) -> Vec<(usize, IndustryRule)> {
     let tokens = tokenize(query);
     let mut ranked: Vec<(usize, IndustryRule)> = industries
@@ -472,7 +483,12 @@ fn rank_industries_in(query: &str, industries: &[IndustryRule]) -> Vec<(usize, I
             if keyword_hit(&tokens, &ind.slug.replace('-', " ")) {
                 score += 5;
             }
-            score += ind.keywords.iter().filter(|kw| keyword_hit(&tokens, kw)).count() * 3;
+            score += ind
+                .keywords
+                .iter()
+                .filter(|kw| keyword_hit(&tokens, kw) && !(AUDIENCE_KEYWORDS.contains(&kw.as_str()) && audience_only(&tokens, kw)))
+                .count()
+                * 3;
             (score, ind.clone())
         })
         .collect();
@@ -501,7 +517,7 @@ pub fn wcag_contrast(fg: &str, bg: &str) -> Option<f64> {
 /// Deals each direction its own hero + 2 signature mechanics, at the direction's motion dial and with
 /// no mechanism family shared between directions. Existing sites (Mode B/C) are capped by their DNA.
 #[allow(clippy::too_many_arguments)]
-fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &[String], mode: OperatingMode, existing_dna: Option<&SiteDna>, variant: u64, compositions: &[&str], recent_ids: &[String]) {
+fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &[String], mode: OperatingMode, existing_dna: Option<&SiteDna>, variant: u64, compositions: &[&str], recent_ids: &[String], banned: &[&str]) {
     use crate::mechanics::{deal_mechanics_with, DealOptions, ExistingSite, Intensity, MechanicRef};
     let existing = match mode {
         OperatingMode::ExtendExisting | OperatingMode::ImproveExisting => existing_dna.map(|d| ExistingSite::from_dna(d, "SITE-DNA")),
@@ -512,7 +528,8 @@ fn attach_mechanics(directions: &mut [CreativeDirection], query: &str, niches: &
     let mut used_compositions: Vec<String> = Vec::new();
     let mut used_looks: Vec<String> = Vec::new();
     let mut materials: Vec<String> = Vec::new();
-    let mut used_furniture: Vec<String> = Vec::new();
+    // Mechanics the page's own restraint rules out (a glass nav under "no glass") are never dealt.
+    let mut used_furniture: Vec<String> = banned.iter().map(|b| b.to_string()).collect();
     for (i, d) in directions.iter_mut().enumerate() {
         let deal = deal_mechanics_with(&DealOptions {
             brief: query.to_string(),
@@ -2372,6 +2389,7 @@ pub fn recommend_design_steered(
         place: place_cues.first().map(String::as_str),
         material: material_cues.first().map(String::as_str),
         surface: signals.surface,
+        mono: !new_site || !shape_brief.banned().contains(&"mono-caps"),
     };
     let mut directions: Vec<CreativeDirection> = Vec::new();
     for (i, d) in dealt.iter().enumerate() {
@@ -2425,7 +2443,16 @@ pub fn recommend_design_steered(
             style_family: d.arch.style_family.into(),
             layout_composition: text.layout,
             visual_identity: text.identity,
-            typography: d.typography.clone(),
+            typography: {
+                // With monospace ruled out, the pairing's note never tells the agent to load its mono face.
+                let mut t = d.typography.clone();
+                if !ctx.mono {
+                    if let Some(i) = t.mood.find("; load ") {
+                        t.mood.truncate(i);
+                    }
+                }
+                t
+            },
             palette: d.palette.clone(),
             content_treatment: text.content,
             motion_choreography: motion,
@@ -2448,6 +2475,8 @@ pub fn recommend_design_steered(
                 tone: d.tone,
                 motion_dial: c.dials.motion_intensity,
                 object: subject.objects.get(i % subject.objects.len().max(1)).map_or("", String::as_str),
+                radius: d.radius,
+                no_hero_image: d.arch.no_hero_image(),
             })
             .collect();
         for (c, shape) in directions.iter_mut().zip(crate::directions::page_shape::deal_shapes(&shape_brief, &ins)) {
@@ -2476,7 +2505,8 @@ pub fn recommend_design_steered(
     for d in &mut directions {
         verify_palette(&mut d.palette);
     }
-    attach_mechanics(&mut directions, query, &signals.niches, mode, existing_dna, variant, &compositions, recent_ids);
+    let banned: &[&str] = if new_site { shape_brief.banned() } else { &[] };
+    attach_mechanics(&mut directions, query, &signals.niches, mode, existing_dna, variant, &compositions, recent_ids, banned);
     // The direction and its hero must describe the same first screen. When no fitting hero of the
     // suggested composition exists, the direction takes the dealt hero's composition instead of
     // promising one layout and handing over another.

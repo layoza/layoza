@@ -144,6 +144,29 @@ fn every_surface_has_options_in_every_role() {
 }
 
 #[test]
+fn dark_plus_neon_is_dealt_only_when_asked() {
+    let neon = crate::intelligence::palette("x", "#0E0B14", "#18131F", "#F5F0FA", "#ADA2BD", "#FE3181", "#3FE3F0", 0.0, "");
+    let teal = crate::intelligence::palette("y", "#123E3E", "#18484A", "#F5F0FA", "#ADA2BD", "#FE3181", "#3FE3F0", 0.0, "");
+    assert!(neon_on_black(&neon));
+    assert!(!neon_on_black(&teal));
+    // Dusky purples, console greys and mint-on-black are the same reflex; gold on black is not.
+    for (bg, accent) in [("#2A1B3D", "#FF71CE"), ("#0D1117", "#3FB950"), ("#0F1A17", "#7BDCB5")] {
+        assert!(neon_on_black(&crate::intelligence::palette("z", bg, bg, "#F5F0FA", "#ADA2BD", accent, "#3FE3F0", 0.0, "")), "{bg}/{accent}");
+    }
+    assert!(!neon_on_black(&crate::intelligence::palette("g", "#0B0B0C", "#151517", "#F5F0FA", "#ADA2BD", "#C9A227", "#8FB7C9", 0.0, "")));
+    let q = "Independent web design and development agency that builds animated marketing sites. Heavy, bold scroll-driven animation, big kinetic type.";
+    let sig = brief_signals(q);
+    for v in 0..6 {
+        let dealt = deal(&sig, q, v, None);
+        assert!(dealt.iter().filter(|d| neon_on_black(&d.palette)).count() <= 1, "{q} v{v} dealt dark + neon more than once");
+        // A face written for another trade must not carry that trade's mood into the brief.
+        for d in &dealt {
+            assert!(!d.typography.mood.to_lowercase().contains("harbour"), "v{v}: {}", d.typography.mood);
+        }
+    }
+}
+
+#[test]
 fn law_and_money_briefs_never_get_navy_and_gold() {
     let navy = crate::intelligence::palette("x", "#1B2A4A", "#22335A", "#F4F2EC", "#C8CCDA", "#C9A54C", "#8FB7C9", 0.0, "");
     assert!(navy_gold(&navy));
@@ -437,6 +460,26 @@ fn paid_brief_fonts_are_never_linked_to_a_cdn() {
 fn coordinated_modifiers_keep_the_head_noun() {
     let p = subject_phrase("Independent web design and development agency (small studio, 8 people) that builds sites");
     assert!(p.ends_with("agency"), "{p}");
+    assert!(p.contains("web design"), "{p}");
     assert!(!p.contains("small"), "{p}");
+    assert_eq!(subject_phrase("design a website for my bakery"), "bakery");
     assert!(subject_phrase("black and white photography studio").ends_with("white photography studio"));
+}
+
+#[test]
+fn trades_read_the_subject_not_the_modifier_or_audience() {
+    let subj = |q: &str| read_subject(q, &brief_signals(q));
+    // A repair modifier keeps the watch objects and takes the repair action.
+    let w = subj("watch repair atelier");
+    assert!(w.objects.iter().any(|o| o.contains("movement")), "{:?}", w.objects);
+    assert!(w.action.contains("repair"), "{}", w.action);
+    assert!(!w.tags.contains(&"industrial"), "{:?}", w.tags);
+    // SaaS serving a trade shows that trade's objects.
+    let f = subj("B2B SaaS for freight brokers");
+    assert!(f.objects.iter().any(|o| o.contains("load")), "{:?}", f.objects);
+    // A charity is civic, not clinical care.
+    assert!(!subj("food bank charity").tags.contains(&"care"));
+    // "for startups" names the audience, not the trade.
+    let r = crate::intelligence::recommend_design_variant("law firm for startups", crate::intelligence::OperatingMode::NewWebsite, None, None, 0);
+    assert!(!r.matched_industry.slug.contains("saas") && !r.matched_industry.name.to_lowercase().contains("saas"), "{}", r.matched_industry.name);
 }

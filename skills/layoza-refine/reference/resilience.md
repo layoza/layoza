@@ -50,13 +50,13 @@ absurd strings: read them and fix the ones a real translation (≈ +35%) would h
 - `Intl.NumberFormat` / `Intl.DateTimeFormat` for money and dates; a plural
   library or `Intl.PluralRules`, never `count + "s"`.
 - Focus: `scroll-padding-top` for sticky headers (`focus-obscured`); visible
-  `:focus-visible` (`focus_visible_styled`); 24×24px minimum targets
+  `:focus-visible` (`focus-ring-missing`); 24×24px minimum targets
   (`target-size`); names on every control (`unlabeled-control`).
 - States: every async control has loading (disable to stop double submit),
   error with retry that keeps the visitor's input, and empty. One failing widget
   never blanks the page.
 - Content visible without JS where the framework allows; reveal animations
-  start from visible (`text-hidden-after-scroll`).
+  start from visible (`text-hidden*`).
 - Custom drag/slider controls: pointer events with `touch-action`, and clear
   drag state on `pointercancel`, `lostpointercapture`, and `blur`.
 
@@ -67,7 +67,7 @@ untested in the report, naming what produced any evidence (emulated viewport,
 synthesized input, Chromium only).
 
 **Proof:** stress-after has 0 errors; real-page report has no regression;
-`focus_visible_styled` and `heading_hierarchy_valid` true; `landmarks_present` true.
+no `focus-ring-missing`; `heading_hierarchy_valid`, `landmarks_present` true.
 
 ---
 
@@ -113,7 +113,7 @@ the desktop must still look as intended.
 
 Fix the measured bottleneck, nothing else.
 
-**Measure first.** `layoza qa` reports lab `lcp_ms`, `cls`, and an `inp_ms`
+**Measure first.** `layoza qa --performance` reports lab `lcp_ms`, `cls`, and an `inp_ms`
 proxy (LaboratorySynthetic). Over MCP, `audit_performance`
 `{target_url_or_file}` measures the same. Run twice; a change is real only when
 both runs agree. A local `file` target has no network latency, so its LCP is

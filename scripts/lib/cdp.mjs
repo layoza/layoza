@@ -114,6 +114,8 @@ export class Browser {
       '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--mute-audio',
       '--allow-file-access-from-files', 'about:blank',
     ], {stdio: ['ignore', 'ignore', 'pipe']});
+    // A browser that never prints its DevTools URL, or whose socket will not open, is killed with its profile.
+    const fail = e => { if (child.exitCode === null) child.kill(); try { fs.rmSync(profile, {recursive: true, force: true, maxRetries: 3, retryDelay: 200}); } catch {} throw e; };
     const wsUrl = await new Promise((resolve, reject) => {
       let log = '';
       const timer = setTimeout(() => reject(new Error(`Browser did not start: ${log.slice(-400)}`)), timeoutMs);
@@ -123,19 +125,21 @@ export class Browser {
         if (match) { clearTimeout(timer); resolve(match[1]); }
       });
       child.once('exit', code => { clearTimeout(timer); reject(new Error(`Browser exited (${code}): ${log.slice(-400)}`)); });
-    });
+    }).catch(fail);
     const socket = new WebSocket(wsUrl);
-    await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, {once: true}); socket.addEventListener('error', reject, {once: true}); });
+    await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, {once: true}); socket.addEventListener('error', () => reject(new Error(`DevTools socket did not open: ${wsUrl}`)), {once: true}); }).catch(fail);
     return new Browser(child, new Connection(socket), profile);
   }
   constructor(child, conn, profile) { Object.assign(this, {child, conn, profile}); }
-  async newPage({width = 1440, height = 900, reducedMotion = false} = {}) {
+  // Phone widths (< 600px) emulate a touch phone by default, so (hover: none) and (pointer: coarse) match.
+  async newPage({width = 1440, height = 900, reducedMotion = false, mobile = width < 600, touch = mobile} = {}) {
     const {targetId} = await this.conn.send('Target.createTarget', {url: 'about:blank'});
     const {sessionId} = await this.conn.send('Target.attachToTarget', {targetId, flatten: true});
     const page = new Page(this.conn, targetId, sessionId);
     await page.send('Page.enable');
     await page.send('Runtime.enable');
-    await page.send('Emulation.setDeviceMetricsOverride', {width, height, deviceScaleFactor: 1, mobile: width < 600});
+    await page.send('Emulation.setDeviceMetricsOverride', {width, height, deviceScaleFactor: 1, mobile});
+    if (touch) await page.send('Emulation.setTouchEmulationEnabled', {enabled: true, maxTouchPoints: 5});
     await page.send('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: reducedMotion ? 'reduce' : 'no-preference'}]});
     return page;
   }

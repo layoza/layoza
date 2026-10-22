@@ -54,6 +54,6 @@ description: >-
 For composition, asset acquisition, automatic selection and visual review, follow `skills/layoza/references/creative-process.md`. It supersedes conflicting quotas, world lotteries, mandatory user-pick pauses and numeric taste pass marks.
 
 ## Motion authority
-Follow [Layoza motion policy](../layoza/references/motion-policy.md): purposeful animation is on by default, GSAP owns authored motion, and explicit no-animation or alternate-engine requests win. Motion for React can own separate component presence/layout when requested.
+Motion tools: see [`layoza-animations` § 2](../layoza-animations/SKILL.md). The user's prompt wins; tools are chosen per brief, never mandated.
 
 Rich-motion briefs require an authored section progression: use `recommend_animation.motion_plan` and the section host in `layoza-animations`, restage on phone, and inspect actual scroll playback with `scripts/review-motion.mjs`. One motion thesis may include several substantial mechanisms. Repeated entrances and a rotating hero do not fulfill that brief.

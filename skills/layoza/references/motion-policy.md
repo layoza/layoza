@@ -1,17 +1,13 @@
 # Layoza motion default
 
-Include purposeful animation by default until the user requests none. GSAP owns
-authored DOM/SVG choreography, scroll sequences and Three.js state animation.
-Three.js renders geometry; it does not replace the timing system. Load a pinned
-runtime and use the original lifecycle controller at
-`layoza-animations/assets/gsap-motion.mjs` where it fits. Never load an animation
-library for a no-animation request. Keep focus and semantic state updates immediate.
-
-The user may explicitly request another engine. When Motion for React / Framer
-Motion is requested alongside GSAP, use it for React component presence/layout
-and use GSAP for separate scene/choreography properties. Each property has one
-owner; use wrapper elements when both systems contribute to one composition.
-Do not reinterpret a normal internal API request as permission to change engine.
+Include purposeful motion by default, at the level the brief needs, until the
+user requests none. Tools follow the single policy in `layoza-animations` § 2:
+the user's prompt wins, design comes first, and CSS, WAAPI, GSAP, Motion or
+WebGL are chosen per brief, never mandated. Three.js renders geometry; it does
+not replace the timing system. Never load an animation library for a
+no-animation request. Keep focus and semantic state updates immediate. Each
+animated property has one owner. An existing site keeps its engine unless the
+user asks to change it.
 
 A calm page still receives restrained, useful feedback; this default does not
 force 3D, pinning, magnetic cursors or an effect on every heading. An expressive

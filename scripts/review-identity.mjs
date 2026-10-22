@@ -11,9 +11,10 @@ try{for(const[side,url]of [['target',target],['reference',options.reference]].fi
  try{await page.goto(url,{settleMs:700});await page.eval('document.fonts.ready.then(()=>true)');
  const roles=await page.eval(({hero,body,enquiry,brand})=>{
    const h=document.querySelector(hero||'h1'),heroEl=hero?h:h?.closest('section,header');
-   const sections=[...document.querySelectorAll('main section')];
+   const sections=[...document.querySelectorAll('main section')];if(!sections.length)sections.push(...document.querySelectorAll('section'));
    const contact=enquiry?document.querySelector(enquiry):document.querySelector('form')?.closest('section');
-   const ordinary=body?document.querySelector(body):document.querySelector('#studio')||sections.filter(s=>s!==heroEl&&s!==contact)[Math.floor(Math.max(0,sections.length-2)/2)];
+   // Without --body, the ordinary surface is the middle section that is neither hero nor enquiry; no site-specific id is assumed.
+   const ordinary=body?document.querySelector(body):sections.filter(s=>s!==heroEl&&s!==contact)[Math.floor(Math.max(0,sections.length-2)/2)];
    const entries=[['hero',heroEl],['body',ordinary],['enquiry',contact]];
    const style=document.createElement('style');style.textContent=`${brand||'.brand,.wordmark,[data-brand]'}{visibility:hidden!important}`;document.head.append(style);
    return entries.map(([role,el])=>{if(!el)return{role,missing:true};el.setAttribute('data-layoza-identity-role',role);return{role,id:el.id||el.className||el.tagName};});

@@ -67,6 +67,9 @@ pub struct PageShape {
     /// The button shape, decided once for the page and carrying the motif.
     #[serde(default)]
     pub button: ShapePick,
+    /// The one section that stages the trade's object at full scale; `id` is the signature it uses.
+    #[serde(default)]
+    pub set_piece: ShapePick,
     /// Page-wide restraint rules; each one already yields to an explicit ask in the brief.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub restraint: Vec<String>,
@@ -87,6 +90,9 @@ impl PageShape {
         ];
         out.extend(self.motion_techniques.iter().map(|t| format!("  - {} [{}]: {} Fallback: {}", t.id, t.tool_name, t.build, t.fallback)));
         out.push(format!("  {REDUCED}"));
+        if !self.set_piece.build.is_empty() {
+            out.push(format!("Set piece [{}]: {}", self.set_piece.id, self.set_piece.build));
+        }
         if !self.motif.id.is_empty() {
             out.push(format!("Motif [{}]: {}", self.motif.id, self.motif.build));
             out.push(format!("Buttons [{}]: {}", self.button.id, self.button.build));
@@ -129,17 +135,17 @@ const fn o(id: &'static str, build: &'static str, fit: &'static [&'static str], 
 const AXES: [&str; 6] = ["hero_frame", "flow", "section_head", "ground", "material", "labels"];
 
 const HERO_FRAMES: &[Opt] = &[
-    o("full-bleed-scene", "Full-bleed scene: one edge-to-edge image or rendered world, the headline set over it.", &["+showcase", "+venue", "+hero:photo", "+hero:video", "+hero:map", "+comp:full-bleed", "+bold", "+commerce"], &["premium", "cinematic", "corporate", "editorial", "craft"]),
+    o("full-bleed-scene", "Full-bleed scene: one edge-to-edge image or rendered world, the headline set over it.", &["+showcase", "+venue", "+hero:photo", "+hero:video", "+hero:map", "+comp:full-bleed", "+bold", "+commerce", "-no-hero-image"], &["premium", "cinematic", "corporate", "editorial", "craft"]),
     o("poster-type", "Poster-scale type fills the first screen: words only, no image, no widget.", &["+showcase", "+editorial", "+hero:giant-type", "+comp:poster", "+bold", "-commerce", "-product-ui", "-devtool", "-supplier"], &["editorial", "playful"]),
     o("split", "Split: headline on one half, the working object on the other, for a stated reason.", &["house", "+comp:split"], &["corporate", "technical", "craft", "civic", "premium"]),
-    o("object-centre", "One object centre-stage at large scale; type tucked around or behind it.", &["+commerce", "+hero:object", "+hero:illustration", "+comp:object-wrap", "+comp:centred", "-devtool", "+venue", "+product-ui"], &["premium", "cinematic", "corporate", "craft", "playful", "technical"]),
+    o("object-centre", "One object centre-stage at large scale; type tucked around or behind it.", &["+commerce", "+hero:object", "+hero:illustration", "+comp:object-wrap", "+comp:centred", "-devtool", "+venue", "+product-ui", "-no-hero-image"], &["premium", "cinematic", "corporate", "craft", "playful", "technical"]),
     o("pinned-story", "Pinned scroll story: the first screen stays fixed while the subject assembles on scroll.", &["+showcase", "+product-ui", "+comp:sticky-stage", "+tier:heavy", "-tier:micro", "-solemn", "+commerce", "+devtool"], &["cinematic", "premium", "technical"]),
     o("index-first", "Index first: the page opens on a list of real items with counts, no hero image.", &["+editorial", "+devtool", "+hero:document", "+hero:data-as-image", "-commerce", "+product-ui", "-supplier"], &["editorial", "technical", "civic"]),
     o("product-ui-bleed", "Product UI full-bleed: the live interface fills the screen; the headline sits inside it.", &["+product-ui", "+devtool", "+hero:live-ui", "+hero:code-output", "-venue", "-solemn", "-commerce", "-showcase", "-editorial", "-general"], &["technical"]),
-    o("collage", "Scattered collage: several real artefacts across the screen at different scales and angles.", &["+showcase", "+playful", "+hero:collage", "+hero:document", "-product-ui", "-devtool", "-solemn", "-commerce", "+venue", "+editorial", "-supplier"], &["playful", "editorial", "craft"]),
-    o("work-strip", "Short headline above a full-width strip of real work or products running sideways.", &["+showcase", "+commerce", "+venue", "-devtool"], &["editorial", "craft", "corporate", "premium"]),
+    o("collage", "Scattered collage: several real artefacts across the screen at different scales and angles.", &["+showcase", "+playful", "+hero:collage", "+hero:document", "-product-ui", "-devtool", "-solemn", "-commerce", "+venue", "+editorial", "-supplier", "-no-hero-image"], &["playful", "editorial", "craft"]),
+    o("work-strip", "Short headline above a full-width strip of real work or products running sideways.", &["+showcase", "+commerce", "+venue", "-devtool", "-no-hero-image"], &["editorial", "craft", "corporate", "premium"]),
     o("giant-figure", "One giant figure, date or price leads; the headline sits small beneath it, proof first.", &["+product-ui", "+commerce", "+hero:data-as-image", "-solemn", "-venue", "+devtool"], &["technical", "corporate", "civic"]),
-    o("close-crop", "Extreme close-up crop of one detail fills the screen; headline tucked in one corner.", &["+venue", "+commerce", "+hero:photo", "+hero:object", "+calm", "-product-ui", "-devtool", "+editorial"], &["premium", "cinematic", "craft", "editorial"]),
+    o("close-crop", "Extreme close-up crop of one detail fills the screen; headline tucked in one corner.", &["+venue", "+commerce", "+hero:photo", "+hero:object", "+calm", "-product-ui", "-devtool", "+editorial", "-no-hero-image"], &["premium", "cinematic", "craft", "editorial"]),
     o("quiet-statement", "Centred quiet statement on open ground, one small image or mark below it.", &["+calm", "+solemn", "+trust", "+comp:centred", "-bold", "-commerce", "-supplier"], &["premium", "civic", "editorial", "craft"]),
 ];
 
@@ -148,14 +154,14 @@ const FLOWS: &[Opt] = &[
     o("horizontal-chapters", "Horizontal chapters: one section scrolls sideways through panels, then the page continues down.", &["+showcase", "+commerce", "-tier:micro", "-solemn", "-devtool", "+venue"], &["cinematic", "premium", "editorial", "playful"]),
     o("sticky-index", "Sticky index on one side; content panes scroll past it on the other side. The index is never an empty column: it carries the section titles plus the live picture or figure of the pane in view, and under 1024px it folds into a top bar.", &["+product-ui", "+devtool", "+editorial", "+commerce", "+supplier"], &["technical", "editorial", "corporate"]),
     o("bento", "Bento mosaic: sections packed as unequal tiles in one grid, sized by importance.", &["+product-ui", "+commerce", "+devtool", "-solemn"], &["technical", "playful", "corporate"]),
-    o("editorial-column", "Single editorial column (~65ch) with images breaking out full-width between passages.", &["+editorial", "+solemn", "+calm", "-commerce", "+venue", "-supplier"], &["editorial", "civic", "craft"]),
+    o("editorial-column", "Single editorial column (~65ch) with images breaking out full-width between passages.", &["+editorial", "+solemn", "+calm", "-commerce", "+venue", "-supplier", "-pick:typographic"], &["editorial", "civic", "craft"]),
     o("snap-slides", "Full-screen snap slides: one idea per viewport, scroll snaps between them.", &["+showcase", "+bold", "-product-ui", "-devtool", "-solemn", "-commerce", "+venue", "-supplier"], &["cinematic", "premium", "playful"]),
     o("staggered", "Asymmetric staggered blocks alternating edges and widths down the page.", &["+showcase", "+venue", "+commerce", "+supplier"], &["premium", "editorial", "craft", "corporate"]),
     o("layered-deck", "Stacked deck: each section slides over the previous one as a sticky layer.", &["+showcase", "+product-ui", "-solemn", "+commerce", "+venue", "+supplier"], &["cinematic", "premium", "technical"]),
-    o("spreads", "Magazine spreads: each section a facing pair, a full image page beside a text page.", &["+editorial", "+venue", "+showcase", "-product-ui", "-devtool", "-supplier"], &["editorial", "premium", "craft"]),
+    o("spreads", "Magazine spreads: each section a facing pair, a full image page beside a text page.", &["+editorial", "+venue", "+showcase", "-product-ui", "-devtool", "-supplier", "-pick:typographic"], &["editorial", "premium", "craft"]),
     o("spine", "One continuous rail runs down the page; every section hangs off it in order.", &["+devtool", "+product-ui", "+solemn", "-commerce", "-supplier"], &["technical", "civic", "editorial"]),
     o("product-shelves", "Product-first shelves: rows of real items with price and action lead every section.", &["+commerce", "-solemn", "-editorial", "-devtool", "-product-ui", "-showcase", "-venue", "-general"], &["craft", "playful", "corporate"]),
-    o("drawer-rows", "Numbered rows that open in place to reveal each section, like a chapter index.", &["+calm", "+solemn", "+devtool", "+editorial", "+trust", "-commerce", "-supplier"], &["civic", "technical", "editorial", "corporate"]),
+    o("drawer-rows", "Rows that open in place to reveal each section, like a chapter index.", &["+calm", "+solemn", "+devtool", "+editorial", "+trust", "-commerce", "-supplier"], &["civic", "technical", "editorial", "corporate"]),
 ];
 
 const SECTION_HEADS: &[Opt] = &[
@@ -177,24 +183,24 @@ const GROUNDS: &[Opt] = &[
     o("light-throughout", "Light ground throughout; sections separate by space and rules, not colour.", &["-tone:dark", "-tone:field"], &["corporate", "technical", "civic", "editorial", "craft", "premium"]),
     o("colour-fields", "Each section owns a saturated colour field from the palette; contrast checked per field.", &["+bold", "+playful", "-solemn", "-trust"], &["playful", "editorial"]),
     o("soft-gradient", "Soft gradients drifting between two pale tints of the palette; no hard bands.", &["+calm", "-tone:dark"], &["craft", "civic", "playful"]),
-    o("full-bleed-media", "Full-bleed image or 3D backdrops behind key sections, with a scrim for text contrast.", &["+venue", "+showcase", "+commerce"], &["cinematic", "premium", "craft", "editorial"]),
+    o("full-bleed-media", "Full-bleed image or 3D backdrops behind key sections, with a scrim for text contrast.", &["+venue", "+showcase", "+commerce", "-pick:typographic", "-pick:flat-graphic", "-pick:diagrammatic"], &["cinematic", "premium", "craft", "editorial"]),
     o("inverted-alternating", "Alternate ground and ink sections: palette background, then the foreground colour as ground.", &["+editorial", "+devtool"], &["editorial", "technical", "corporate", "premium", "cinematic"]),
     o("night-glow", "Dark ground lit by soft glow pools of the accent behind key objects.", &["+product-ui", "+devtool", "-tone:light", "-tone:field", "-solemn"], &["cinematic", "technical", "premium"]),
     o("tinted-field", "The palette's tinted field throughout; one darker band carries the main action.", &["-tone:light", "-tone:dark"], &["craft", "playful", "civic", "corporate"]),
     o("light-interlude", "Dark ground throughout, broken once by a bright paper interlude where the key proof or offer sits.", &["+showcase", "+commerce", "+editorial", "-tone:light", "-tone:field"], &["cinematic", "premium", "editorial"]),
     o("paper-grain", "Warm paper ground with a faint grain; sections part on torn or deckled edges, not boxes.", &["+editorial", "+calm", "+venue", "+playful", "-tone:dark", "-product-ui", "-devtool"], &["craft", "editorial"]),
     o("split-ground", "Each section split down the middle: one half on the palette ground, the other on its ink.", &["+editorial", "+showcase", "+commerce", "+product-ui", "-solemn", "-calm"], &["editorial", "corporate"]),
-    o("duotone-photo", "Photos washed into a two-colour duotone from the palette become the section grounds.", &["+venue", "+showcase", "+editorial", "+hero:photo", "-product-ui", "-devtool", "-solemn"], &["editorial", "playful", "cinematic"]),
+    o("duotone-photo", "Photos washed into a two-colour duotone from the palette become the section grounds.", &["+venue", "+showcase", "+editorial", "+hero:photo", "-product-ui", "-devtool", "-solemn", "^pick:photographic", "^pick:tactile"], &["editorial", "playful", "cinematic"]),
 ];
 
 const MATERIALS: &[Opt] = &[
-    o("flat-graphic", "Flat graphic shapes and solid colour blocks; no texture, shadow or photos.", &["+product-ui", "+devtool", "+showcase", "+commerce"], &["technical", "playful", "corporate"]),
+    o("flat-graphic", "Flat graphic shapes and solid colour blocks; no texture, shadow or photos.", &["+product-ui", "+devtool", "+showcase", "+commerce", "-pick:close-crop"], &["technical", "playful", "corporate"]),
     o("paper-print", "Paper and print artefacts: tickets, receipts, labels, stamps, folded sheets.", &["house", "+editorial", "+hero:document", "-devtool", "+venue", "-supplier"], &["craft", "editorial", "playful"]),
-    o("glass-light", "Glass and light: translucent panels, blur, glow and refraction over a deep ground.", &["+product-ui", "+devtool", "+bold", "-solemn", "-trust", "-supplier"], &["technical", "cinematic", "premium"]),
+    o("glass-light", "Glass and light: translucent panels, blur, glow and refraction over a deep ground.", &["+product-ui", "+devtool", "+bold", "-solemn", "-trust", "-supplier", "-tone:light", "-tone:field"], &["technical", "cinematic", "premium"]),
     o("rendered-3d", "Rendered 3D objects of the trade, lit and shadowed, as the main visuals.", &["+commerce", "+showcase", "+bold", "+hero:object", "-solemn", "-devtool"], &["cinematic", "premium", "technical", "playful"]),
     o("illustrated", "One illustration style (one hand, one line weight) across every section.", &["+playful", "+venue", "+general", "+hero:illustration", "+editorial", "-supplier"], &["playful", "craft", "civic", "editorial"]),
-    o("typographic", "Typographic only: type, rules and numerals carry every section; no imagery.", &["+editorial", "+showcase", "+calm", "+hero:giant-type", "-commerce", "+venue", "+devtool", "-supplier"], &["editorial", "premium"]),
-    o("product-screens", "Real product screens and data states, cropped and annotated, as the visuals.", &["+product-ui", "+devtool", "+hero:live-ui", "+hero:code-output", "-venue", "-solemn"], &["technical"]),
+    o("typographic", "Typographic only: type, rules and numerals carry every section; no imagery.", &["+editorial", "+showcase", "+calm", "+hero:giant-type", "-commerce", "+venue", "+devtool", "-supplier", "-pick:full-bleed-scene", "-pick:object-centre", "-pick:collage", "-pick:work-strip", "-pick:close-crop"], &["editorial", "premium"]),
+    o("product-screens", "Real product screens and data states, cropped and annotated, as the visuals.", &["+product-ui", "+devtool", "+hero:live-ui", "+hero:code-output", "-venue", "-solemn", "^product-ui", "^devtool", "^hero:live-ui", "^hero:code-output"], &["technical"]),
     o("photographic", "Photographic art direction: real-looking scenes of people, places and the work.", &["+venue", "+showcase", "+solemn", "+commerce", "+hero:photo", "+hero:video", "-devtool", "+editorial", "+supplier"], &["premium", "cinematic", "corporate", "craft", "editorial", "civic"]),
     o("diagrammatic", "Diagrams and technical drawings: plans, exploded views, flow lines and callouts.", &["+devtool", "+product-ui", "+commerce", "+hero:data-as-image", "+editorial", "+supplier"], &["technical", "corporate"]),
     o("tactile", "Tactile surfaces sampled from the trade itself: fabric, stone, wood, metal grain.", &["+venue", "+solemn", "+calm", "-product-ui", "-devtool", "-supplier"], &["craft", "premium"]),
@@ -311,7 +317,7 @@ const TECHS: &[Tech] = &[
     t("shared-element", Tier::Medium, "Shared-element transition from a list item into its detail view.", "plain navigation;", &["+commerce", "+product-ui"], &["view-transitions", "motion"]),
     t("count-up", Tier::Medium, "Real figures count up once to their values as they enter.", "the final numbers are in the HTML;", &["+product-ui", "+commerce", "-solemn"], &["waapi", "gsap"]),
     t("mask-wipe", Tier::Medium, "Images reveal through a mask wipe as they enter.", "images are fully shown;", &["+venue", "+showcase", "+editorial"], &["css-scroll", "gsap", "waapi"]),
-    t("path-draw", Tier::Medium, "An SVG line draws itself along the section's route or process.", "the line is drawn complete;", &["+devtool", "+product-ui", "+venue", "+solemn", "+trust"], &["canvas-svg", "css-scroll", "gsap"]),
+    t("path-draw", Tier::Medium, "An SVG line draws itself along the section's route or process.", "the line is drawn complete;", &["+devtool", "+product-ui", "+infrastructure"], &["canvas-svg", "css-scroll", "gsap"]),
     t("pinned-steps", Tier::Medium, "One pinned section steps through three states of the subject.", "the three states stack as plain sections;", &["+product-ui", "+showcase"], &["gsap", "css-scroll", "motion"]),
     t("spring-tilt", Tier::Medium, "Cards tilt and lift toward the pointer with spring physics.", "cards sit flat;", &["+commerce", "+playful", "-solemn", "-trust"], &["motion", "waapi"]),
     // Micro signatures.
@@ -338,12 +344,17 @@ pub(crate) struct ShapeBrief {
     /// True when the brief or project names the stack.
     pub(crate) stack_named: bool,
     seed: u64,
+    /// Re-deal index: 0 takes the best fit on every axis, n > 0 takes another near-best fit.
+    variant: u64,
     pub(crate) tone_words: Vec<&'static str>,
     /// Palette and type axes the brief named ("palette" for a named colour or hex, "typography"
     /// for a named font): pinned there, every other axis still dealt and steered.
     brand_pins: Vec<&'static str>,
     /// Page-wide restraint rules, with the brief's explicit asks already carved out.
     restraint: Vec<String>,
+    /// Shape, motif and mechanic ids the restraint rules out (a glass nav under "no glass"); a
+    /// prompt pin still wins.
+    banned: Vec<&'static str>,
     /// The brief describes its hero on a dark ground ("deep navy surroundings").
     hero_dark: bool,
     /// The register the brief speaks in: looks foreign to it stay out of the deal.
@@ -422,10 +433,15 @@ impl ShapeBrief {
         let q = query.to_lowercase();
         let words = tokenize(&q);
         let raw_l = raw.to_lowercase();
-        let solemn = has("memorial") || (has("legal") && !has("kinetic")) || (has("care") && !has("play"));
+        // Solemn is a funeral or memorial register only; legal and care briefs read as trust, so a
+        // dentist or a law firm keeps a warm, confident page instead of a hushed one.
+        let solemn = has("memorial");
+        let civic = solemn || (has("legal") && !has("kinetic"));
         // Software briefs the surface reader leaves general ("B2B SaaS for ...") read as product UI here.
         // "B2B" alone is a supplier as often as software, so it does not make a product UI by itself.
-        let software = ["saas", "software", "app", "platform", "startup"].iter().any(|w| hit(&q, &words, w));
+        // "Law firm for startups" serves software clients; it is not software itself.
+        let software = ["saas", "software", "app", "platform"].iter().any(|w| hit(&q, &words, w))
+            || (hit(&q, &words, "startup") && !crate::intelligence::audience_only(&words, "startup"));
         // A quote-led B2B supplier sells on trust: plain labels, no stamps, motion capped at medium.
         let trust = solemn || TRUST_TAGS.iter().any(|t| has(t)) || (!software && crate::intelligence::b2b_brief(&words));
         let playful = has("play") || has("celebration") || has("sport");
@@ -544,7 +560,7 @@ impl ShapeBrief {
             brand_pins.push("typography");
         }
         let hero_dark = hero_dark_ask(&raw_l);
-        let mut restraint = restraint_rules(&raw_l, signals.surface == Surface::DevTool || has("code"));
+        let (mut restraint, banned) = restraint_rules(&raw_l, signals.surface == Surface::DevTool || has("code"));
         let mut section_pins = Vec::new();
         let button_ask = button_ask(raw);
         if button_ask.as_ref().is_some_and(|b| b.2) {
@@ -556,8 +572,8 @@ impl ShapeBrief {
             }
             section_pins.push("footer");
         }
-        let reg = super::RegisterRead::of(query).with(solemn.then_some("civic"));
-        ShapeBrief { ctx, pins, tier_pin, tier_cap, stack, stack_named, seed: fnv1a(&format!("{q}|{variant}")), tone_words, brand_pins, restraint, hero_dark, reg, button_ask, section_pins }
+        let reg = super::RegisterRead::of(query).with(civic.then_some("civic"));
+        ShapeBrief { ctx, pins, tier_pin, tier_cap, stack, stack_named, seed: fnv1a(&format!("{q}|{variant}")), variant, tone_words, brand_pins, restraint, banned, hero_dark, reg, button_ask, section_pins }
     }
 
     /// The motion tier for a direction whose motion dial is `dial`.
@@ -603,6 +619,11 @@ impl ShapeBrief {
     pub(crate) fn stack_key(&self) -> &'static str {
         self.stack.key()
     }
+
+    /// Ids the restraint rules out, for the mechanics deal (a glass nav under "no glass").
+    pub(crate) fn banned(&self) -> &[&'static str] {
+        &self.banned
+    }
 }
 
 /// One direction's inputs to the shape deal.
@@ -613,6 +634,10 @@ pub(crate) struct ShapeIn<'a> {
     pub motion_dial: u8,
     /// The trade object this direction's motif is drawn from ("the module and its pixel pitch").
     pub object: &'a str,
+    /// The direction's corner-radius language (`sharp-0`, `arched`...): the motif must agree with it.
+    pub radius: &'a str,
+    /// The archetype's first screen carries no image (an index, a register): no image-led hero frame.
+    pub no_hero_image: bool,
 }
 
 thread_local! {
@@ -640,8 +665,13 @@ fn tone_key(t: Tone) -> &'static str {
     }
 }
 
-/// Fit score of `fit` tags in `ctx`; `None` when a `-tag` rules the value out.
+/// Fit score of `fit` tags in `ctx`; `None` when a `-tag` rules the value out, or when the value
+/// lists `^tag` requirements and none of them is present (one of them must hold).
 fn fit_score(fit: &[&str], ctx: &[String]) -> Option<i32> {
+    let needs: Vec<&str> = fit.iter().filter_map(|f| f.strip_prefix('^')).collect();
+    if !needs.is_empty() && !needs.iter().any(|t| ctx.iter().any(|c| c == t)) {
+        return None;
+    }
     let mut s = 0;
     for f in fit {
         if let Some(t) = f.strip_prefix('-') {
@@ -666,6 +696,18 @@ fn recency(last: Option<(usize, usize)>, slot: usize) -> i32 {
     last.map_or(0, |(age, s)| 200 - 10 * age.min(15) as i32 + if s == slot { 5 } else { 0 })
 }
 
+/// The best-scoring candidate; with `variant` n > 0, the n-th of those within `margin` of the best,
+/// so a re-deal takes another near-best fit instead of repeating the first deal.
+fn near_best<T>(mut c: Vec<(i32, &'static T)>, id: impl Fn(&T) -> &'static str, variant: u64, margin: i32) -> Option<&'static T> {
+    c.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| id(b.1).cmp(id(a.1))));
+    let top = c.first()?.0;
+    let near: Vec<&'static T> = c.iter().take_while(|(s, _)| *s >= top - margin).map(|(_, x)| *x).collect();
+    near.get(variant as usize % near.len()).copied()
+}
+
+/// Score margin inside which a re-deal may take a lower candidate: about one fitting tag.
+const NEAR: i32 = 5;
+
 /// Deals one page shape per direction: every axis differs across the directions (a pinned axis is
 /// shared), values that fit the brief and the direction score up, and values in the ledger window
 /// lose to unused ones.
@@ -677,7 +719,7 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
     let paper_last_run = recent.iter().any(|l| Some(&l.run) == last_run.as_ref() && l.material.as_deref() == Some("paper-print"));
     let pinned = b.pinned();
     let jitter = |parts: &str| (fnv1a(&format!("{}|{parts}", b.seed)) % 4) as i32;
-    let ctxs: Vec<Vec<String>> = ins
+    let mut ctxs: Vec<Vec<String>> = ins
         .iter()
         .map(|d| {
             let mut c: Vec<String> = b.ctx.iter().map(|s| s.to_string()).collect();
@@ -685,14 +727,21 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
             c.push(format!("comp:{}", d.composition));
             c.push(tone_key(d.tone).to_string());
             c.push(format!("tier:{}", b.tier(d.motion_dial).id()));
+            c.push(format!("radius:{}", d.radius));
+            if d.no_hero_image {
+                c.push("no-hero-image".into());
+            }
             c
         })
         .collect();
     let mut shapes: Vec<PageShape> = ins.iter().map(|_| PageShape { pinned_by_prompt: pinned.clone(), ..Default::default() }).collect();
-    for axis in 0..AXES.len() {
+    // Hero frame, then material, ground, flow, heads and labels: each later axis reads the earlier
+    // picks as `pick:<id>`, so a type-only page never gets a photo ground or a magazine spread.
+    for axis in [0, 4, 3, 1, 2, 5] {
         let mut used: Vec<&'static str> = Vec::new();
-        for (i, ctx) in ctxs.iter().enumerate() {
-            let opt = match b.pins[axis].and_then(|id| pool(axis).iter().find(|o| o.id == id)) {
+        for i in 0..ins.len() {
+            let ctx = &ctxs[i];
+            let opt: &'static Opt = match b.pins[axis].and_then(|id| pool(axis).iter().find(|o| o.id == id)) {
                 Some(p) => p,
                 None => {
                     // Niche fit first: only values that fit the niche (or, when too few do, the
@@ -701,6 +750,7 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
                     let fits: Vec<(i32, &Opt)> = pool(axis)
                         .iter()
                         .filter(|o| !(axis == 4 && o.id == "paper-print" && paper_last_run))
+                        .filter(|o| !b.banned.contains(&o.id))
                         .filter_map(|o| Some((fit_score(o.fit, ctx)?, o)))
                         .collect();
                     // Register before novelty: a value foreign to the brief's register (a newspaper
@@ -720,16 +770,13 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
                             (fit - recency(last, i) + jitter(&format!("{axis}|{i}|{}", o.id)), o)
                         })
                         .collect();
-                    let fresh: Vec<&(i32, &Opt)> = scored.iter().filter(|(_, o)| !used.contains(&o.id)).collect();
-                    let best = if fresh.is_empty() { scored.iter().max_by_key(|(s, o)| (*s, o.id)) } else { fresh.into_iter().max_by_key(|(s, o)| (*s, o.id)) };
-                    match best {
-                        Some((_, o)) => o,
-                        // Every value ruled out (cannot happen with the shipped tables): first value.
-                        None => &pool(axis)[0],
-                    }
+                    let fresh: Vec<(i32, &Opt)> = scored.iter().filter(|(_, o)| !used.contains(&o.id)).copied().collect();
+                    // Every value ruled out (cannot happen with the shipped tables): first value.
+                    near_best(if fresh.is_empty() { scored } else { fresh }, |o| o.id, b.variant, NEAR).unwrap_or(&pool(axis)[0])
                 }
             };
             used.push(opt.id);
+            ctxs[i].push(format!("pick:{}", opt.id));
             let pick = ShapePick { id: opt.id.into(), build: opt.build.into() };
             let s = &mut shapes[i];
             match axis {
@@ -761,9 +808,9 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
                 Some((fit - recency(last, i) + jitter(&format!("sig|{i}|{}", x.id)), x))
             })
             .collect();
-        let fresh: Vec<&(i32, &Tech)> = scored.iter().filter(|(_, x)| !used_sigs.contains(&x.id)).collect();
-        let sig = if fresh.is_empty() { scored.iter().max_by_key(|(s, x)| (*s, x.id)) } else { fresh.into_iter().max_by_key(|(s, x)| (*s, x.id)) };
-        let mut techs: Vec<&Tech> = sig.map(|(_, x)| *x).into_iter().collect();
+        let fresh: Vec<(i32, &Tech)> = scored.iter().filter(|(_, x)| !used_sigs.contains(&x.id)).copied().collect();
+        let sig = near_best(if fresh.is_empty() { scored } else { fresh }, |x| x.id, b.variant, NEAR);
+        let mut techs: Vec<&Tech> = sig.into_iter().collect();
         if tier == Tier::Heavy {
             let mut more: Vec<(i32, &Tech)> = TECHS
                 .iter()
@@ -835,8 +882,8 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
     // from that direction's own trade object. Buttons follow the motif, decided once per page.
     let mut used_motifs: Vec<&'static str> = Vec::new();
     for (i, d) in ins.iter().enumerate() {
-        let fitting: Vec<(i32, &'static Motif)> = MOTIFS.iter().filter_map(|m| Some((fit_score(m.fit, &ctxs[i])?, m))).collect();
-        let best = b
+        let fitting: Vec<(i32, &'static Motif)> = MOTIFS.iter().filter(|m| !b.banned.contains(&m.id)).filter_map(|m| Some((fit_score(m.fit, &ctxs[i])?, m))).collect();
+        let scored: Vec<(i32, &'static Motif)> = b
             .reg
             .strict()
             .gate(&fitting, ins.len(), |x: (i32, &'static Motif)| x.1.regs, -1000)
@@ -846,12 +893,24 @@ pub(crate) fn deal_shapes(b: &ShapeBrief, ins: &[ShapeIn]) -> Vec<PageShape> {
                 let last = newest_first.iter().find(|(l, _)| l.motif.as_deref() == Some(m.id)).map(|(_, a)| *a);
                 (fit + j - recency(last, i) / 50 + jitter(&format!("motif|{i}|{}", m.id)) % 3, m)
             })
-            .max_by_key(|(s, m)| (*s, m.id))
-            .map_or(&MOTIFS[0], |(_, m)| m);
+            .collect();
+        let best = near_best(scored, |m| m.id, b.variant, NEAR).unwrap_or(&MOTIFS[0]);
         used_motifs.push(best.id);
         let object = if d.object.is_empty() { "the trade's own object" } else { d.object };
         let s = &mut shapes[i];
-        s.motif = ShapePick { id: best.id.into(), build: format!("Optional framing study: {}. Subject material to inspect: {}. This is not a claim that the motif derives from that material; retain it only when the actual artwork supports the relationship. Controls have their own resolved specification.", best.build, object) };
+        s.motif = ShapePick {
+            id: best.id.into(),
+            build: format!("{} Take its proportions and edge from {object}. It is the page's one repeated device: keep it unless the rendered page shows it fighting the subject.", best.build),
+        };
+        // The page's one staged moment: the trade's object at full scale, carried by the signature.
+        let carried = match (b.tier(d.motion_dial), s.motion_techniques.first()) {
+            (Tier::Micro, _) | (_, None) => "Scale and composition carry it; motion stays at the micro tier.".to_string(),
+            (_, Some(t)) => format!("The signature technique carries it ({}: {}), resolving to a complete still for reduced motion.", t.id, t.build),
+        };
+        s.set_piece = ShapePick {
+            id: s.motion_signature.clone(),
+            build: format!("Required set piece: one full-width section given wholly to {object}, staged at the largest scale on the page. {carried} Every other section stays quieter, so this one reads as the page's moment; without it the page is a template."),
+        };
         s.button = match &b.button_ask {
             Some((id, build, true)) => ShapePick { id: id.clone(), build: build.clone() },
             Some((_, build, false)) => ShapePick { id: best.button_id.into(), build: format!("{} {build}", best.button) },
@@ -1009,7 +1068,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "stepped-corner",
         build: "Stepped corner: a three-step pixel cut in one corner of every media frame (the frame edge only, nothing over the image) and of the primary button; square bullets echo it, and one band of the same steps divides two chapters. Nothing else decorates.",
-        fit: &["+industrial", "+code", "+data", "+kinetic", "+supplier", "+devtool", "-solemn", "-care"],
+        fit: &["+industrial", "+code", "+data", "+kinetic", "+supplier", "+devtool", "-solemn", "-care", "-radius:arched", "-radius:round-play", "+radius:sharp-0", "+radius:hairline-2"],
         regs: &["technical", "playful"],
         button_id: "square-stepped",
         button: "Primary: solid accent fill, label in the ground colour at medium weight, 48px tall with 24px side padding, radius 2px, the stepped cut on its top-right corner only; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: the same size with a 1px ink outline that fills on hover.",
@@ -1017,7 +1076,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "seam-grid",
         build: "Module seams: a hairline grid at the trade's real unit runs along section edges and behind spec tables and figures; it never crosses photographs or hero media, and the active item fills one cell in the accent.",
-        fit: &["+industrial", "+infrastructure", "+data", "+devtool", "+product-ui", "+supplier", "+finance"],
+        fit: &["+industrial", "+infrastructure", "+data", "+devtool", "+product-ui", "+supplier", "+finance", "-radius:arched", "-radius:round-play", "+radius:sharp-0", "+radius:hairline-2"],
         regs: &["technical"],
         button_id: "square-cell",
         button: "Primary: solid accent fill, 48px tall (one grid cell), 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover.",
@@ -1025,7 +1084,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "bezel-frame",
         build: "Bezel frame: media sits inside a thin, even bezel with one continuous corner radius; the same radius and bezel width carry to panels and the primary button. Nothing is drawn over the media.",
-        fit: &["+industrial", "+luxe", "+supplier", "+product-ui", "+commerce", "+dark", "+night", "+data", "-solemn"],
+        fit: &["+industrial", "+luxe", "+supplier", "+product-ui", "+commerce", "+dark", "+night", "+data", "-solemn", "+radius:soft-12", "+radius:tool-6", "-radius:sharp-0", "-radius:cut-corner"],
         regs: &["premium", "cinematic", "corporate", "technical"],
         button_id: "soft-square",
         button: "Primary: solid accent fill, 52px tall with 28px side padding, radius 10px (the bezel's inner radius), label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover.",
@@ -1033,10 +1092,10 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "letterbox",
         build: "Letterbox: every photograph and film still is cropped to one cinematic ratio (2.39:1 on desktop, 4:5 on phones) with its caption set in the bar beneath; the crop ratio is the only device.",
-        fit: &["+night", "+kinetic", "+luxe", "+showcase", "+venue", "+bold", "+dark", "+supplier", "-solemn", "-care"],
+        fit: &["+night", "+kinetic", "+luxe", "+showcase", "+venue", "+bold", "+dark", "+supplier", "-solemn", "-care", "-pick:typographic", "-radius:arched", "-radius:round-play"],
         regs: &["cinematic", "premium", "editorial"],
-        button_id: "pill",
-        button: "Primary: solid accent pill, 52px tall with 32px side padding, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover.",
+        button_id: "square-slate",
+        button: "Primary: solid accent fill with square corners (radius 0), cut like a film slate, 52px tall with 32px side padding, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a square button of the same size with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover.",
     },
     Motif {
         id: "lit-ground",
@@ -1047,9 +1106,17 @@ const MOTIFS: &[Motif] = &[
         button: "Primary: solid accent fill, 52px tall with 28px side padding, radius 6px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a tonal fill (ink at 8% on light grounds, white at 10% on dark ones) that deepens on hover.",
     },
     Motif {
+        id: "plinth",
+        build: "Plinth: the trade's object stands on one deep-tone band with a hairline top edge, like a showroom stand; each chapter has at most one plinth, text never sits on it, and the primary button takes the same flat band.",
+        fit: &["+luxe", "+supplier", "+commerce", "+showcase", "+industrial", "+dark", "-care", "-radius:arched", "-radius:round-play", "+radius:sharp-0", "+radius:hairline-2", "+radius:cut-corner"],
+        regs: &["premium", "cinematic", "corporate", "craft"],
+        button_id: "square-bar",
+        button: "Primary: solid accent fill, 52px tall with 32px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px outline (translucent white on dark grounds, ink at 30% on light ones) that fills on hover.",
+    },
+    Motif {
         id: "cut-corner",
         build: "Cut corner: one 45-degree chamfer on the same corner of frames, panels and the primary button; the chamfer size is one token, used everywhere.",
-        fit: &["+industrial", "+trades", "+sport", "+bold", "+supplier", "+infrastructure", "-solemn", "-care"],
+        fit: &["+industrial", "+trades", "+sport", "+bold", "+supplier", "+infrastructure", "-solemn", "-care", "-radius:arched", "-radius:round-play", "+radius:cut-corner"],
         regs: &["technical", "playful"],
         button_id: "chamfer",
         button: "Primary: solid accent fill, 48px tall with 24px side padding, one 8px chamfer on the motif corner only (clip-path), never all four; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px, the ring following the cut. Secondary: a button of the same size and shape with a 1px ink outline that fills on hover.",
@@ -1057,7 +1124,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "ruled-frame",
         build: "Ruled frame: every chapter opens on a hairline rule with a short thick start segment; figures and captions hang from the rule, which never crosses media.",
-        fit: &["+legal", "+finance", "+civic", "+editorial", "+solemn", "+trust", "+supplier", "+infrastructure"],
+        fit: &["+legal", "+finance", "+civic", "+editorial", "+solemn", "+trust", "+supplier", "+infrastructure", "-radius:arched", "-radius:round-play"],
         regs: &["corporate", "editorial", "civic"],
         button_id: "square-ruled",
         button: "Primary: solid accent fill, 48px tall with 24px side padding, radius 2px, label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover.",
@@ -1065,7 +1132,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "registration-marks",
         build: "Registration marks: small corner crop marks frame each image and key figure; never over the hero image or film.",
-        fit: &["+ink", "+editorial", "+showcase", "+kinetic", "-solemn", "-supplier"],
+        fit: &["+ink", "+editorial", "+showcase", "+kinetic", "-solemn", "-supplier", "-radius:arched", "-radius:round-play", "+radius:sharp-0"],
         regs: &["editorial"],
         button_id: "square-marked",
         button: "Primary: solid ink fill, 48px tall with 24px side padding, radius 2px; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px, and four crop marks appear 4px outside its corners on hover and focus. Secondary: a 1px outline button of the same size.",
@@ -1073,7 +1140,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "notched-edge",
         build: "Notched edge: semicircle notches on the sides of media frames and the primary button.",
-        fit: &["+venue", "+celebration", "+night", "+food", "+playful", "-trust", "-solemn", "-supplier"],
+        fit: &["+venue", "+celebration", "+night", "+food", "+playful", "-trust", "-solemn", "-supplier", "+radius:ticket-notch"],
         regs: &["playful", "craft"],
         button_id: "notched",
         button: "Primary: solid accent fill, 52px tall with 28px side padding, a 6px round notch masked from each short side; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and shape with a 1px ink outline that fills on hover.",
@@ -1081,10 +1148,10 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "arch-top",
         build: "Arch top: media frames and the main feature panel rise into one round arch; one arch, one radius, repeated.",
-        fit: &["+solemn", "+care", "+earth", "+luxe", "+calm", "+venue", "+memorial", "-supplier"],
+        fit: &["+solemn", "+care", "+earth", "+luxe", "+calm", "+venue", "+memorial", "-supplier", "+radius:arched", "-radius:sharp-0", "-radius:cut-corner"],
         regs: &["craft", "premium", "civic"],
-        button_id: "pill",
-        button: "Primary: solid accent pill echoing the arch, 48px tall with 28px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same size with a 1px ink outline that fills on hover.",
+        button_id: "soft-square",
+        button: "Primary: solid accent fill, 48px tall with 28px side padding, radius 12px (the arch stays on media; controls stay quiet), label at medium weight; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a button of the same size and radius with a 1px ink outline that fills on hover.",
     },
     Motif {
         id: "torn-edge",
@@ -1097,7 +1164,7 @@ const MOTIFS: &[Motif] = &[
     Motif {
         id: "round-mask",
         build: "Round mask: one feature image per chapter sits in a full circle and bullets are dots; everything else stays square.",
-        fit: &["+care", "+play", "+product-ui", "+commerce", "+calm", "-supplier"],
+        fit: &["+care", "+play", "+product-ui", "+commerce", "+calm", "-supplier", "-pick:typographic", "+radius:round-play", "+radius:stamp-circle", "-radius:sharp-0", "-radius:cut-corner"],
         regs: &["playful", "craft", "civic"],
         button_id: "pill",
         button: "Primary: solid accent pill, 48px tall with 28px side padding; hover deepens the fill one step (150ms), press sinks it 1px, and keyboard focus shows a 2px accent ring offset 3px. Secondary: a pill of the same height with a 1px outline that fills on hover.",
@@ -1105,25 +1172,32 @@ const MOTIFS: &[Motif] = &[
 ];
 
 /// Page-wide restraint, the discipline that separates an authored page from a kit. Each rule
-/// narrows when the brief asks for the thing it bans: the brief always wins.
-fn restraint_rules(raw: &str, code: bool) -> Vec<String> {
+/// narrows when the brief asks for the thing it bans: the brief always wins. The second list holds
+/// the shape, motif and mechanic ids a rule rules out, so the deal never hands over a value its own
+/// restraint forbids (a prompt pin still wins).
+fn restraint_rules(raw: &str, code: bool) -> (Vec<String>, Vec<&'static str>) {
     let asks = |ks: &[&str]| ks.iter().any(|k| raw.contains(k));
+    let mut banned: Vec<&'static str> = Vec::new();
     let mut out = vec![if asks(&["eyebrow", "kicker", "overline"]) {
         "Eyebrow labels only where the brief names them, short and sentence case; no others, no tiny tracked caps.".to_string()
     } else {
+        banned.extend(["centred-overline", "wide-caps"]);
         "No eyebrow or kicker labels above headings, and no tiny tracked caps anywhere.".to_string()
     }];
     if !code && !asks(&["monospace", "mono font", "code font"]) {
+        banned.push("mono-caps");
         out.push("No monospace face: figures use the body face's tabular numerals.".into());
     }
     out.push(if asks(&["01/", "01 /", "01 —", "numbered step", "step number", "numbered process"]) {
         "Index numerals only where the brief numbers things; no section numbering elsewhere.".to_string()
     } else {
+        banned.extend(["margin-numeral", "numbered"]);
         "No index numerals (01, 02) on sections or steps; an ordered list carries order.".to_string()
     });
     out.push(if asks(&["glow", "gradient", "luminous", "lighting effect", "light effect", "glass"]) {
         "Light effects only where the brief puts them, each one deliberate; no gradient washes, blobs or glass elsewhere.".to_string()
     } else {
+        banned.extend(["soft-gradient", "night-glow", "glass-light", "lit-ground", "nav-overlay-glass-sticky"]);
         "No gradients, glows, glass panels or blobs: flat colour chapters carry the page.".to_string()
     });
     out.extend(
@@ -1138,7 +1212,7 @@ fn restraint_rules(raw: &str, code: bool) -> Vec<String> {
         ]
         .map(String::from),
     );
-    out
+    (out, banned)
 }
 
 /// What Layoza read from the brief before dealing, with niche-based defaults for everything the
@@ -1466,7 +1540,7 @@ mod tests {
             for (d, p) in r.directions.iter().zip(&s) {
                 let tone = Tone::of(&d.palette);
                 let g = GROUNDS.iter().find(|g| g.id == p.ground.id).unwrap();
-                assert!(fit_score(g.fit, &[tone_key(tone).to_string()]).is_some(), "{q}: ground {} on {:?}", p.ground.id, tone);
+                assert!(fit_score(g.fit, &[tone_key(tone).to_string(), format!("pick:{}", p.material.id)]).is_some(), "{q}: ground {} on {:?}", p.ground.id, tone);
                 assert!(p.motion.build.contains("prefers-reduced-motion"), "{q}");
             }
         }
@@ -1678,6 +1752,75 @@ light and airy"));
                     assert!(m.contains(&want), "{q} v{v}: motif {} is {m:?}", p.motif.id);
                 }
             }
+        }
+    }
+
+    const BRIEFS: &[&str] = &[
+        "family dentist in a small town",
+        "neighbourhood sourdough bakery",
+        "premium LED screen supplier for events",
+        "law firm for startups",
+        "memorial and funeral service",
+        "independent brand and digital design agency",
+        "watch repair atelier",
+        "B2B SaaS for freight brokers",
+    ];
+
+    #[test]
+    fn deals_honour_the_niche_and_the_restraint() {
+        for q in BRIEFS {
+            let r = rec(q);
+            let (_, banned) = restraint_rules(q, false);
+            for (d, p) in r.directions.iter().zip(shapes(&r)) {
+                // Nothing the page's restraint bans is ever dealt.
+                for id in [&p.hero_frame.id, &p.flow.id, &p.section_head.id, &p.ground.id, &p.material.id, &p.labels.id, &p.motif.id, &p.button.id] {
+                    assert!(!banned.contains(&id.as_str()), "{q}: dealt banned {id}");
+                }
+                // Every page is given one subject set piece.
+                assert!(!p.set_piece.build.trim().is_empty(), "{q}: empty set piece");
+                // A duotone ground needs photographs or a tactile material to wash.
+                if p.ground.id == "duotone-photo" {
+                    assert!(["photographic", "tactile"].contains(&p.material.id.as_str()), "{q}: duotone on {}", p.material.id);
+                }
+                // An index-first archetype never opens on an image-led hero frame.
+                let arch = super::super::ARCHETYPES().iter().find(|a| a.key == d.archetype);
+                if arch.is_some_and(|a| a.no_hero_image()) {
+                    assert!(!["full-bleed-scene", "object-centre", "collage", "work-strip", "close-crop"].contains(&p.hero_frame.id.as_str()), "{q}: {} on {}", p.hero_frame.id, d.archetype);
+                }
+                // Arched corners never take a square button or motif.
+                if d.radius == "arched" {
+                    let m = MOTIFS.iter().find(|m| m.id == p.motif.id).expect("dealt motif exists");
+                    assert!(!m.button_id.starts_with("square"), "{q}: {} on arched", m.id);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn product_screens_and_monospace_need_a_software_or_code_brief() {
+        for q in ["family dentist in a small town", "law firm for startups", "watch repair atelier", "neighbourhood sourdough bakery"] {
+            let r = rec(q);
+            for (d, p) in r.directions.iter().zip(shapes(&r)) {
+                assert_ne!(p.material.id, "product-screens", "{q}");
+                assert!(!super::super::is_mono_name(&d.typography.display_font) && !super::super::is_mono_name(&d.typography.body_font), "{q}: {} / {}", d.typography.display_font, d.typography.body_font);
+                // The pairing's own mono slot is raw data the brief never prints; the written text must not name it.
+                let mut shown = d.clone();
+                shown.typography.mono_font.clear();
+                let text = serde_json::to_string(&shown).unwrap();
+                for mono in ["Fira Code", "JetBrains Mono", "IBM Plex Mono", "Space Mono", "Roboto Mono"] {
+                    assert!(!text.contains(mono), "{q}: {mono} leaks into the direction: {}", text.find(mono).map(|i| &text[i.saturating_sub(200)..(i + 40).min(text.len())]).unwrap_or(""));
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn variants_of_one_brief_deal_different_shapes() {
+        for q in BRIEFS {
+            let a = recommend_design_variant(q, OperatingMode::NewWebsite, None, None, 0);
+            let b = recommend_design_variant(q, OperatingMode::NewWebsite, None, None, 1);
+            let ids = |r: &DesignRecommendation| shapes(r).iter().map(|p| format!("{}/{}/{}", p.hero_frame.id, p.flow.id, p.ground.id)).collect::<Vec<_>>();
+            assert_ne!(ids(&a), ids(&b), "{q}: variant 1 repeats variant 0");
         }
     }
 }

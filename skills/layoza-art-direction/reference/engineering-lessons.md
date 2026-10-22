@@ -33,8 +33,8 @@ a local fallback whose metrics match the web font and put it second in the stack
 ```
 
 Take the override values from the font's own metrics (or a tool such as
-Fontaine/Capsize) rather than guessing; then confirm with `layoza qa` that CLS
-≤ 0.1. Preload only the one face the LCP element uses.
+Fontaine/Capsize) rather than guessing (optional CLS check:
+`layoza qa --performance`). Preload only the face the LCP element uses.
 
 ## 2. Sticky headers need `scroll-padding-top`
 

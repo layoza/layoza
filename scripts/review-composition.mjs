@@ -1,5 +1,8 @@
 // Original Layoza composition probe: full-page captures at three widths plus measured
 // type scale, viewport fill, section rhythm and media reach. Evidence for review, not a score.
+// Full-page captures and measurements run with reduced motion: captureBeyondViewport resizes the
+// render surface, which can release pins and replay scroll scenes. Normal-motion first-screen,
+// middle and end frames are captured separately at the real viewport size, with no resize.
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -17,6 +20,7 @@ function measure() {
   const visible = el => { const s = getComputedStyle(el), r = el.getBoundingClientRect(); return s.visibility !== 'hidden' && s.display !== 'none' && +s.opacity > 0.05 && r.width > 0 && r.height > 0; };
   const textEls = [...document.querySelectorAll('h1,h2,h3,h4,p,li,a,span,blockquote,figcaption,label,button,dt,dd,td')]
     .filter(el => visible(el) && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()));
+  // Whole-pixel buckets, flagged above 10 sizes: keep in sync with browser-qa.mjs font-size-sprawl.
   const sizes = textEls.map(el => Math.round(parseFloat(getComputedStyle(el).fontSize)));
   const median = list => { const s = [...list].sort((a, b) => a - b); return s.length ? s[Math.floor(s.length / 2)] : 0; };
   const h1 = document.querySelector('h1');
@@ -55,7 +59,7 @@ function observe(width, m) {
   if (!m.type.h1Px) add('no-h1', 'No visible h1 to anchor the first screen.');
   else if (width >= 1200 && m.type.h1VwPct < 6) add('small-display-type', `Hero headline is ${m.type.h1Px}px (${m.type.h1VwPct}vw). Poster-scale pages usually run 7vw or more.`);
   if (m.type.h1Px && m.type.headingToBody < 3) add('flat-type-scale', `Headline is only ${m.type.headingToBody}x body text; the scale reads flat.`);
-  if (m.type.distinctSizes > 9) add('too-many-sizes', `${m.type.distinctSizes} distinct text sizes; a tight scale reads more deliberate.`);
+  if (m.type.distinctSizes > 10) add('too-many-sizes', `${m.type.distinctSizes} distinct text sizes; a tight scale reads more deliberate.`);
   if (m.firstScreenFillPct < 40) add('empty-first-screen', `Only ${m.firstScreenFillPct}% of the first screen carries type, media or a surface. Check it reads as a composed screen, not small items on empty ground.`);
   if (m.media.fullBleed === 0 && width >= 1200) add('no-full-bleed', 'Nothing runs edge to edge; check whether one moment should break the column.');
   const heights = m.sections.map(s => s.heightVh);
@@ -67,7 +71,9 @@ function observe(width, m) {
   return notes;
 }
 
-const report = {schema_version: 1, source: 'Layoza composition probe', target, images: [], viewports: [], findings: []};
+const report = {schema_version: 1, source: 'Layoza composition probe', target,
+  method: 'Full-page images and metrics use reduced motion; a full-page capture resizes the render surface and can change pin and scroll states. Normal-motion images are viewport-only frames at the top, middle and end of the page, captured without any resize.',
+  images: [], viewports: [], findings: []};
 const browser = await Browser.launch();
 try {
   for (const width of [1440, 768, 390]) {
@@ -84,10 +90,25 @@ try {
       const shot = await page.send('Page.captureScreenshot', {format: 'png', captureBeyondViewport: true, clip: {x: 0, y: 0, width: Math.ceil(size.width), height: Math.min(16000, Math.ceil(size.height)), scale: 1}});
       const file = `full-${width}.png`;
       fs.writeFileSync(path.join(out, file), Buffer.from(shot.data, 'base64'));
-      report.images.push({viewport: width, path: path.join(out, file)});
+      report.images.push({viewport: width, motion: 'reduced', position: 'full-page', path: path.join(out, file)});
       report.viewports.push({width, height: metrics.viewport.height, metrics});
       report.findings.push(...observe(width, metrics));
     } finally { await page.close(); }
+    const live = await browser.newPage({width, height: width === 390 ? 844 : 900, reducedMotion: false});
+    try {
+      await live.goto(url, {settleMs: 800});
+      await live.eval('document.fonts.ready.then(() => true)');
+      await live.eval(() => { document.documentElement.style.scrollBehavior = 'auto'; });
+      for (const [at, label] of [[0, 'top'], [0.5, 'middle'], [1, 'end']]) {
+        await live.eval(at => scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * at), at);
+        await live.send('Input.dispatchMouseEvent', {type: 'mouseWheel', x: width / 2, y: 400, deltaX: 0, deltaY: 1});
+        await sleep(900);
+        const shot = await live.send('Page.captureScreenshot', {format: 'png', captureBeyondViewport: false});
+        const file = `normal-${width}-${label}.png`;
+        fs.writeFileSync(path.join(out, file), Buffer.from(shot.data, 'base64'));
+        report.images.push({viewport: width, motion: 'normal', position: label, path: path.join(out, file)});
+      }
+    } finally { await live.close(); }
   }
 } finally { await browser.close(); }
 fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2));

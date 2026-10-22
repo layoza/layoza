@@ -70,6 +70,6 @@ limitations are named. Show the final designs and evidence. Do not claim a
 world-best ranking from self-scores, tests or a single judge.
 
 ## Motion authority
-Follow [Layoza motion policy](../layoza/references/motion-policy.md): purposeful animation is on by default, GSAP owns authored motion, and explicit no-animation or alternate-engine requests win. Motion for React can own separate component presence/layout when requested.
+Motion tools: see [`layoza-animations` § 2](../layoza-animations/SKILL.md). The user's prompt wins; tools are chosen per brief, never mandated.
 
 For rich-motion work, load `layoza-animations` before building. Use MCP `recommend_animation.motion_plan` to author content-specific chapter transformations and separate phone staging; build actual timelines, then inspect normal scroll playback with `scripts/review-motion.mjs`. Do not substitute repeated reveals, an animated hero alone or static QA for motion direction.

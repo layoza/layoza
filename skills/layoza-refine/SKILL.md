@@ -72,7 +72,7 @@ summary prints the same hits upper-cased (`A11Y-FOCUS-OBSCURED`,
 `CRAFT-KICKER-ABOVE-HEADING`). Side-by-side summary of two reports:
 
 ```bash
-node -e "const fs=require('fs');for(const f of process.argv.slice(1)){const d=JSON.parse(fs.readFileSync(f,'utf8')),c={};for(const v of d.viewports)for(const i of v.issues)if(i.severity!=='critique')c[v.label+':'+i.rule]=(c[v.label+':'+i.rule]||0)+1;const k=['contrast_failures','unlabeled_controls','undersized_targets','missing_alt_count','heading_hierarchy_valid','focus_visible_styled','reduced_motion_respected','h1_to_body_ratio','max_line_length_ch','font_family_count','unmeasured'];console.log(f,JSON.stringify({issues:c,craft:d.craft_critique,...Object.fromEntries(k.map(x=>[x,d[x]]))}))}" qa/before-<cmd>.json qa/browser-qa-report.json
+node -e "const fs=require('fs');for(const f of process.argv.slice(1)){const d=JSON.parse(fs.readFileSync(f,'utf8')),c={};for(const v of d.viewports)for(const i of v.issues)if(i.severity!=='critique')c[v.label+':'+i.rule]=(c[v.label+':'+i.rule]||0)+1;const k=['contrast_failures','unlabeled_controls','undersized_targets','missing_alt_count','heading_hierarchy_valid','reduced_motion_respected','h1_to_body_ratio','max_line_length_ch','font_family_count','unmeasured'];console.log(f,JSON.stringify({issues:c,craft:d.craft_critique,...Object.fromEntries(k.map(x=>[x,d[x]]))}))}" qa/before-<cmd>.json qa/browser-qa-report.json
 ```
 
 **Keep, fix, or roll back.** Compare `before-<cmd>.json` with the new report:
@@ -86,10 +86,11 @@ node -e "const fs=require('fs');for(const f of process.argv.slice(1)){const d=JS
 
 **A regression is:** a new `error` rule in `issues`; `contrast_failures`,
 `undersized_targets`, `unlabeled_controls`, or `missing_alt_count` going up;
-`heading_hierarchy_valid`, `focus_visible_styled`, `reduced_motion_respected`,
-or `landmarks_present` going `true` → `false`; or a genuine new visual defect
-confirmed in the screenshots. Speed measurements never force rollback.
-Optional speed values going to `null` do not require another design round.
+`heading_hierarchy_valid` or `landmarks_present` going `true` → `false`; a new
+`focus-ring-missing`, `motion-ignores-reduce` or `reduced-motion-hides-text`
+(`reduced_motion_respected: null` = nothing to reduce, fine); or a genuine new
+visual defect in the screenshots. Speed values (optional, `null` if unmeasured)
+never force rollback or another design round.
 
 Two fix rounds per command maximum (same ceiling as [finish.md](../layoza-art-direction/reference/finish.md)).
 
@@ -100,14 +101,14 @@ Two fix rounds per command maximum (same ceiling as [finish.md](../layoza-art-di
 | `typeset` | hierarchy muddy, text hard to read | fewer `craft-tight-leading`, `cramped-leading`, `craft-flat-type-hierarchy`, `craft-line-length`, `craft-tiny-text`, `craft-undersized-ui-text`; `h1_to_body_ratio`, `max_line_length_ch` ≤ 75 | `label-wrap`, `text-clip-or-bleed` | [system-passes § Type](../layoza-art-direction/reference/system-passes.md) |
 | `colorize` | grey, colour without roles | `contrast_failures` = 0, `min_contrast_ratio` ≥ 4.5; fewer `craft-gray-on-color`, `craft-gradient-text` | brand colours in `SITE-DNA.json` | [system-passes § Colour](../layoza-art-direction/reference/system-passes.md) |
 | `layout` | crowded, monotonous, misaligned | fewer `craft-monotonous-spacing`, `craft-cramped-padding`, `craft-nested-cards`, `heading-crowding` | `document-overflow`, `primary-action-below-fold` | [system-passes § Layout](../layoza-art-direction/reference/system-passes.md) |
-| `animate` | motion missing or wrong | `text-hidden-after-scroll` = 0, `reduced_motion_respected` true; fewer `craft-bounce-easing` | visible stable composition, keyboard use | [system-passes § Motion](../layoza-art-direction/reference/system-passes.md) + [`layoza-animations`](../layoza-animations/SKILL.md) |
+| `animate` | motion missing or wrong | 0 `text-hidden*`, `motion-ignores-reduce`, `reduced-motion-hides-text`; fewer `craft-bounce-easing` | visible stable composition, keyboard use | [system-passes § Motion](../layoza-art-direction/reference/system-passes.md) + [`layoza-animations`](../layoza-animations/SKILL.md) |
 | `bolder` | a section reads flat | `craft-flat-type-hierarchy` cleared; `h1_to_body_ratio` up | contrast, no new `craft-*` | [system-passes § Bolder](../layoza-art-direction/reference/system-passes.md) |
 | `quieter` | too loud, overstimulating | fewer `craft-dark-glow`, `craft-radial-*`, `craft-gradient-text`, `craft-pulsing-dot`, `craft-gpt-thin-border-wide-shadow` | `contrast_failures`, `craft-flat-type-hierarchy` must **not** appear | [intensity.md](reference/intensity.md) *ctx* |
 | `distill` | cluttered, too many choices | fewer `craft-nested-cards`, `craft-icon-tile-stack`, `craft-repeated-container-text`, `craft-hero-eyebrow-chip`; `primary-action-below-fold` cleared; `font_family_count` ≤ before | `nav-unreachable`, every route/form still works | [intensity.md](reference/intensity.md) *ctx* |
-| `delight` | correct but forgettable | judgment + screenshots; no new findings | `text-hidden-after-scroll`, `reduced_motion_respected` | [intensity.md](reference/intensity.md) *ctx* |
+| `delight` | correct but forgettable | judgment + screenshots; no new findings | motion rules as in `animate` | [intensity.md](reference/intensity.md) *ctx* |
 | `clarify` | labels, errors, copy unclear | `unlabeled-control` = 0, `missing_alt_count` = 0; fewer `craft-marketing-buzzword`, `craft-theater-slop-phrase`, `craft-aphoristic-cadence` | `label-wrap` (longer labels wrap) | [copy-and-flow.md](reference/copy-and-flow.md) *ctx* |
 | `onboard` | first use / empty states weak | primary action in first viewport (`primary-action-below-fold` cleared); walkthrough evidence | `focus-obscured`, `unlabeled-control` | [copy-and-flow.md](reference/copy-and-flow.md) *ctx* |
-| `harden` | only works with perfect data | 0 `focus-obscured`, `target-size`, `unlabeled-control`, `text-hidden-after-scroll`, `interactive-overlap`, `text-clip-or-bleed` **on the stress copy** | everything above on the real page | [resilience.md](reference/resilience.md) |
+| `harden` | only works with perfect data | 0 `focus-obscured`, `target-size`, `unlabeled-control`, `text-hidden*`, `interactive-overlap`, `text-clip-or-bleed` **on the stress copy** | everything above on the real page | [resilience.md](reference/resilience.md) |
 | `adapt` | breaks or feels desktop-only on small screens | 0 `document-overflow`, `nav-unreachable`, `menu-toggle-broken`, `label-wrap`; `primary-action-below-fold` cleared at 375 | desktop screenshot unchanged in intent | [resilience.md](reference/resilience.md) |
 | `optimize` (optional; explicit request only) | slow load, jank, layout shift | `lcp_ms` ≤ 2500, `cls` ≤ 0.1, `inp_ms` ≤ 200 (lab; two runs agree) | visual parity, `broken-image` | [resilience.md](reference/resilience.md) + [`layoza-performance`](../layoza-performance/SKILL.md) |
 | `audit` | "what's wrong with it?" (no fixes) | scored report from `layoza audit . --json` + `layoza qa` | n/a (read-only) | [evaluate.md](reference/evaluate.md) |
@@ -121,6 +122,6 @@ intensity command (`quieter` **or** `bolder`, never both) → `polish`.
 ## 3. Report
 
 Per command: target, the before → after values of its proof metrics (copied
-from the two reports, `null` named as unmeasured), regressions found and how
+from the reports; `null` = unmeasured), regressions found and how
 they were resolved or rolled back, screenshots opened, and what remains open.
 Lab Core Web Vitals are LaboratorySynthetic; never present them as field data.
