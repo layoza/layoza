@@ -18,6 +18,9 @@ const WORDS: &[(&str, &[&str])] = &[
     ("civic", &["council", "government", "charity", "nonprofit", "non-profit", "public service", "school", "clinic", "care", "library", "community", "volunteer", "funeral", "legal aid"]),
 ];
 
+const CALM_WORDS: &[&str] = &["calm", "calming", "reassuring", "gentle", "soothing", "serene", "quiet"];
+const AUDIENCE_WORDS: &[&str] = &["kids", "children"];
+
 /// Registers a brief speaks in, strongest first. Never empty: a brief with no register words
 /// reads as `corporate` (the safe professional default).
 pub fn brief_registers(brief: &str) -> Vec<&'static str> {
@@ -43,7 +46,11 @@ pub fn named_registers(brief: &str) -> Vec<&'static str> {
             before && after
         })
     };
-    let mut scored: Vec<(usize, &'static str)> = WORDS.iter().map(|(r, ws)| (ws.iter().filter(|w| hit(w)).count(), *r)).filter(|(n, _)| *n > 0).collect();
+    // A calm brief that serves children ("calm family dentist for kids") stays calm: the audience
+    // nouns do not open the playful register, only the brief's own tone words can.
+    let calm = CALM_WORDS.iter().any(|w| hit(w));
+    let counts = |r: &str, w: &str| !(calm && r == "playful" && AUDIENCE_WORDS.contains(&w));
+    let mut scored: Vec<(usize, &'static str)> = WORDS.iter().map(|(r, ws)| (ws.iter().filter(|w| counts(r, w) && hit(w)).count(), *r)).filter(|(n, _)| *n > 0).collect();
     scored.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| REGISTERS.iter().position(|r| *r == a.1).cmp(&REGISTERS.iter().position(|r| *r == b.1))));
     // Only the registers the brief leans on: a stray word ("local", "gallery") does not open a
     // register's gimmicks. At least a third of the leader's hits, three registers at most. A plural ("quotes", "APIs") counts.
@@ -68,6 +75,8 @@ mod tests {
         assert_eq!(brief_registers("a family-run bakery in the old town")[0], "craft");
         assert_eq!(brief_registers("something nice"), vec!["corporate"]);
         assert!(named_registers("falconry centre flying hawks").is_empty());
+        assert!(!brief_registers("calm, reassuring family dental clinic for adults and children").contains(&"playful"));
+        assert!(brief_registers("a playful clinic for children").contains(&"playful"));
         assert!(fits(&["premium", "editorial"], &led));
         assert!(!fits(&["playful"], &led));
         assert!(fits(&Vec::<String>::new(), &led));

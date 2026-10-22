@@ -1550,7 +1550,7 @@ fn raw_industries() -> Vec<IndustryRule> {
         IndustryRule {
             slug: "healthcare".into(),
             name: "Healthcare, Clinical & Wellness".into(),
-            keywords: vec!["healthcare".into(), "medical".into(), "clinic".into(), "hospital".into(), "patient".into(), "patients".into(), "telehealth".into(), "dental".into(), "dentist".into(), "optician".into(), "opticians".into(), "optometrist".into(), "optometrists".into(), "eyecare".into(), "nhs".into(), "pharmacy".into(), "physiotherapy".into(), "physio".into()],
+            keywords: vec!["healthcare".into(), "medical".into(), "clinic".into(), "hospital".into(), "patient".into(), "patients".into(), "telehealth".into(), "optician".into(), "opticians".into(), "optometrist".into(), "optometrists".into(), "eyecare".into(), "nhs".into(), "pharmacy".into(), "physiotherapy".into(), "physio".into()],
             recommended_styles: vec!["crisp-product-workbench".into(), "swiss-editorial-grid".into()],
             layout_archetype: "Patient-First Action Hero + Care Pathway & Provider Directory".into(),
             first_viewport_priority: "Immediate appointment/triage action, insurance/care clarity, WCAG AAA-leaning readability".into(),
@@ -1579,6 +1579,42 @@ fn raw_industries() -> Vec<IndustryRule> {
             anti_patterns: vec!["Low-contrast pastel text".into(), "Complex scroll-jacking".into()],
             default_dials: DesignDials::clamped(2, 2, 5),
             provenance: "adapted:ui-ux-pro-max+layoza".into(),
+        },
+        // Dentistry is not a hospital: patients arrive nervous, so the page leads with warmth,
+        // the teeth and the price, never the clinical blue of a ward.
+        IndustryRule {
+            slug: "dental-practice".into(),
+            name: "Dental Practice".into(),
+            // The clinic phrases outrank healthcare's lone "clinic" for a "dental clinic".
+            keywords: vec!["dental clinic".into(), "dental care".into(), "dental surgery".into(), "dental".into(), "dentist".into(), "dentists".into(), "dentistry".into(), "orthodontist".into(), "orthodontics".into(), "teeth".into(), "tooth".into(), "aligners".into(), "hygienist".into()],
+            recommended_styles: vec!["swiss-editorial-grid".into(), "crisp-product-workbench".into()],
+            layout_archetype: "Reassurance Hero + Visit Walkthrough, Treatments with Prices & Emergency Line".into(),
+            first_viewport_priority: "Book an appointment, the emergency number and a calm promise about what happens at the visit".into(),
+            typography_pairing: TypographyPairing {
+                id: "newsreader-figtree".into(),
+                display_font: "Newsreader".into(),
+                body_font: "Figtree".into(),
+                mono_font: "IBM Plex Mono".into(),
+                mood: "Warm, unhurried, reassuring".into(),
+                scale_ratio: "1.250 (Major Third)".into(),
+                google_fonts_url: "https://fonts.google.com/share?selection.family=Figtree:wght@400;600|Newsreader:wght@500;600".into(),
+            },
+            palette: PaletteRecommendation {
+                id: "porcelain-terracotta".into(),
+                background: "#F6F1EA".into(),
+                surface: "#FFFDF9".into(),
+                foreground: "#1F2A2A".into(),
+                muted: "#4B5654".into(),
+                primary_accent: "#A3472F".into(),
+                secondary_accent: "#3F6B5E".into(),
+                wcag_body_contrast: 13.9,
+                notes: "Warm porcelain and terracotta with a sage second colour; no clinical blue".into(),
+            },
+            conversion_trust_elements: vec!["Fixed prices shown before treatment".into(), "Emergency line visible on every screen".into(), "What happens at the first visit, step by step".into(), "Dentist registration shown the local way".into()],
+            motion_language: "Calm, slow eases; motion explains the visit (teeth, X-ray, plan) and never startles".into(),
+            anti_patterns: vec!["Hospital blue and stock smiles".into(), "Before/after galleries the client did not supply".into(), "Loud novelty fonts for nervous patients".into()],
+            default_dials: DesignDials::clamped(3, 3, 5),
+            provenance: "layoza".into(),
         },
         IndustryRule {
             slug: "education".into(),
@@ -3019,6 +3055,10 @@ Text: #10203A");
         }
         let wish = &dental.understood_brief.as_ref().expect("understood brief").motion_wish;
         assert!(wish.contains("asked in the brief"), "{wish}");
+        // A dentist reads as dentistry, not a hospital ward: its own trade, warm and calm.
+        assert_eq!(dental.matched_industry.slug, "dental-practice");
+        let tone = &dental.understood_brief.as_ref().expect("understood brief").tone;
+        assert!(!tone.iter().any(|t| t == "playful"), "{tone:?}");
         // "no animation" still wins, and a task UI keeps its cap.
         let calm = rec("open-source mcp server site, cinematic but no animation please");
         assert!(calm.directions.iter().all(|d| d.dials.motion_intensity <= 1));

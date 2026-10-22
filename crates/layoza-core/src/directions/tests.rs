@@ -486,3 +486,29 @@ fn trades_read_the_subject_not_the_modifier_or_audience() {
     let r = crate::intelligence::recommend_design_variant("law firm for startups", crate::intelligence::OperatingMode::NewWebsite, None, None, 0);
     assert!(!r.matched_industry.slug.contains("saas") && !r.matched_industry.name.to_lowercase().contains("saas"), "{}", r.matched_industry.name);
 }
+
+#[test]
+fn everyday_and_civic_niches_name_their_own_objects() {
+    // One sample per group of niches that no rival catalogue names; each must reach a trade row.
+    let cases = [
+        ("construction company", "crew on site"),
+        ("karate dojo", ""),
+        ("distillery tasting room", ""),
+        ("escape room", "session times"),
+        ("zoo", "feeding times"),
+        ("web hosting company", "server rack"),
+        ("steel mill", "tolerance"),
+        ("animal shelter", "home"),
+        ("orchestra", "season concerts"),
+        ("credit union", ""),
+        ("tennis court booking", "fixtures"),
+        ("crown court guide", "case list"),
+        ("farmers market", "stalls"),
+        ("skincare brand", "ingredient"),
+    ];
+    for (q, want) in cases {
+        let s = read_subject(q, &brief_signals(q));
+        assert!(s.from_trades, "{q} found no trade row");
+        assert!(s.objects.iter().any(|o| o.contains(want)), "{q} -> {:?}", s.objects);
+    }
+}
