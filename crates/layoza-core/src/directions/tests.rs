@@ -505,6 +505,13 @@ fn everyday_and_civic_niches_name_their_own_objects() {
         ("crown court guide", "case list"),
         ("farmers market", "stalls"),
         ("skincare brand", "ingredient"),
+        // Words that once pulled a niche into the wrong trade.
+        ("food bank", "people helped"),
+        ("health food store", "counter"),
+        ("diamond dealer", "macro"),
+        ("real estate developer", "home"),
+        ("kitchen fitter", "finished job"),
+        ("dance studio", "class"),
     ];
     for (q, want) in cases {
         let s = read_subject(q, &brief_signals(q));
