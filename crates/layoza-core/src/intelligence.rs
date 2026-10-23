@@ -2771,6 +2771,8 @@ mod tests {
         assert!(distinct(&leisure) >= 8, "leisure venues share palettes");
         let clinics = ["physiotherapist", "chiropractor", "dermatology clinic", "fertility clinic", "gp surgery", "optician", "hearing clinic", "podiatrist", "speech therapist", "radiology clinic"];
         assert!(distinct(&clinics) >= 6, "clinics share palettes");
+        let schools = ["primary school", "secondary school", "music school", "driving school", "university", "community college", "tutoring centre", "exam prep academy", "sixth form college", "boarding school", "special needs school", "dance school"];
+        assert!(distinct(&schools) >= 8, "schools share palettes");
         for q in clinics {
             let bg = rec(q).directions[0].palette.background.clone();
             assert!(crate::directions::luminance(&bg).unwrap_or(1.0) > 0.5, "{q} leads with a dark ground {bg}");

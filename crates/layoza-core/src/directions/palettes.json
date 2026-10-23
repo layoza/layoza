@@ -4205,5 +4205,90 @@
 "look_family": "cinematic-dark",
 "warmth": "cool",
 "accent_hue": "teal"
+},
+{
+"id": "satchel-tan",
+"bg": "#F4EEE4",
+"surface": "#FFFDF8",
+"fg": "#221A12",
+"muted": "#58493A",
+"primary": "#65431B",
+"secondary": "#2C5A78",
+"notes": "Satchel-leather tan on oat paper with an ink-blue strap",
+"tags": [
+"civic",
+"warm"
+],
+"look_family": "warm-paper-serif",
+"warmth": "warm",
+"accent_hue": "orange"
+},
+{
+"id": "library-plum",
+"bg": "#F2EEE7",
+"surface": "#FFFDF9",
+"fg": "#1F1A1E",
+"muted": "#544A50",
+"primary": "#521667",
+"secondary": "#8E4A1F",
+"notes": "Library-card buff with a plum binding and a rust date stamp",
+"tags": [
+"civic",
+"literary"
+],
+"look_family": "warm-paper-serif",
+"warmth": "neutral",
+"accent_hue": "violet"
+},
+{
+"id": "gown-navy",
+"bg": "#EEF0F5",
+"surface": "#FFFFFF",
+"fg": "#121729",
+"muted": "#454B62",
+"primary": "#121F50",
+"secondary": "#7E5A0E",
+"notes": "Lecture-hall white with gown navy and an old-gold hood",
+"tags": [
+"civic",
+"editorial"
+],
+"look_family": "hairline-newspaper",
+"warmth": "cool",
+"accent_hue": "blue"
+},
+{
+"id": "pencil-yellow",
+"bg": "#F7F3E6",
+"surface": "#FFFDF6",
+"fg": "#1D1B12",
+"muted": "#534F3C",
+"primary": "#6A5608",
+"secondary": "#2A5788",
+"notes": "Pencil-shaft cream with graphite olive-gold and a ruler blue",
+"tags": [
+"civic",
+"calm"
+],
+"look_family": "warm-paper-serif",
+"warmth": "neutral",
+"accent_hue": "yellow"
+},
+{
+"id": "atlas-rose",
+"bg": "#F8F1F0",
+"surface": "#FFFFFF",
+"fg": "#22171A",
+"muted": "#584549",
+"primary": "#871F64",
+"secondary": "#245E6E",
+"notes": "Atlas-page blush with a rose border and a sea-teal key",
+"tags": [
+"civic",
+"light"
+],
+"look_family": "soft-organic",
+"warmth": "warm",
+"accent_hue": "pink"
 }
 ]
