@@ -51,6 +51,18 @@ fn title(d: &Value) -> String {
     }
 }
 
+/// A warm pale ground that `layoza qa`'s cream-palette critique flags (same test as the QA script:
+/// every channel at least 209, red >= green >= blue, and red minus blue between 6 and 48).
+fn is_cream(hex: &str) -> bool {
+    let h = hex.trim().trim_start_matches('#');
+    if h.len() != 6 {
+        return false;
+    }
+    let c = |i: usize| u8::from_str_radix(&h[i..i + 2], 16).ok();
+    let (Some(r), Some(g), Some(b)) = (c(0), c(2), c(4)) else { return false };
+    r.min(g).min(b) >= 209 && r >= g && g >= b && (6..=48).contains(&(r - b))
+}
+
 /// The look's tokens as a `:root` block the agent can paste straight into its CSS.
 fn tokens_css(m: &mut String, d: &Value) {
     let (p, t, tt) = (&d["palette"], &d["typography"], &d["type_tokens"]);
@@ -129,6 +141,9 @@ pub fn markdown(out: &Value) -> String {
         let _ = writeln!(m, "- Composition: {}", clip(s(d,"layout_composition"), 520));
         let _ = writeln!(m, "- Content argument: {}", clip(s(d,"content_treatment"), 240));
         let _ = writeln!(m, "- Typography: {} / {}; ground {}; ink {}; accent {}.", s(&d["typography"],"display_font"), s(&d["typography"],"body_font"), s(&d["palette"],"background"), s(&d["palette"],"foreground"), s(&d["palette"],"primary_accent"));
+        if is_cream(s(&d["palette"],"background")) {
+            let _ = writeln!(m, "- Dealt cream ground: if built, declare `<meta name=\"layoza-brand-allow\" content=\"palette:cream\">`.");
+        }
         let _ = writeln!(m, "- Material to obtain: {}. Use design_assets to inventory/register actual images or working product views, with source, licence, credit, role and crop.", s(d,"hero_material"));
         let _ = writeln!(m, "- Tradeoff: {}", clip(s(d,"rationale"), 260));
         let _ = writeln!(m, "- Motion dial: {}. Choreography: {}", d["dials"]["motion_intensity"], s(d,"motion_choreography"));
@@ -159,6 +174,7 @@ pub fn markdown(out: &Value) -> String {
     let _ = writeln!(m, "\n## Choose on the render");
     let _ = writeln!(m, "Each concept's composition_system in detail: full includes editable static HTML/CSS using the exact quoted copy, identity applications and visual review criteria. Compare its paused reading order with real artwork before animating; carry the chosen identity into ordinary sections, not only the hero.");
     let _ = writeln!(m, "Use the same factual copy and available material across three desktop/phone first screens. Compare hierarchy, typography, image integration, clarity, full-page rhythm and phone composition. Choose the strongest complete idea and say what it gains and sacrifices. Familiar controls can be correct. Page shapes, motif ids and novelty scores are suggestions, not orders.");
+    let _ = writeln!(m, "Colour and type are dealt: keep one concept's hue family and type pair (user-named axes win; shift lightness only for contrast). Refuse the house reflex unless dealt: warm serif on cream, deep green, amber glow.");
     let _ = writeln!(m, "\n## Build, review and show");
     let _ = writeln!(m, "Motion is on by default until the user explicitly asks for none: GSAP owns authored animation unless another engine is requested. An explicit Framer Motion request can own separate React presence/layout properties. Never let two engines animate the same transform. For rich motion, author recommend_animation.motion_plan, implement section-motion.mjs, and review desktop/phone playback with node scripts/review-motion.mjs <URL> --out .layoza/motion-review. Several earned chapter transformations serve one thesis; repeated reveals and functional tests do not prove motion quality. For identity weaknesses run node scripts/review-identity.mjs <URL> --reference <comparison-URL> --out .layoza/identity-review; inspect actual opening/body/enquiry captures and retain the report with review_design.identity_report.");
     let _ = writeln!(m, "1. Record PURPOSE, pinned choices, candidates, PICKED, reason, SECTIONS, MATERIAL and MOTION (0-10) in .layoza/direction.md. Pick transparently as the designer unless the user asked to choose; never invent user approval.");
@@ -201,6 +217,16 @@ mod tests {
         assert!(!neon_on_black("#FFF", "#B2F630"));
         assert!(!neon_on_black("#1F2A4A", "#B2F630"));
         assert!(!neon_on_black("#101510", "#8C6A3F"));
+    }
+
+    #[test]
+    fn cream_matches_the_qa_rule_and_only_a_dealt_cream_is_declared() {
+        assert!(is_cream("#F4F1EC") && is_cream("#F6F1E9"));
+        assert!(!is_cream("#FFFFFF") && !is_cream("#EEF0F5") && !is_cream("#101510") && !is_cream("#FFF"));
+        let deal = |bg: &str| markdown(&json!({ "directions": [{ "title": "A", "palette": { "background": bg }, "typography": {} }] }));
+        assert!(deal("#F4F1EC").contains("palette:cream"));
+        assert!(!deal("#EEF0F5").contains("palette:cream"));
+        assert!(deal("#EEF0F5").contains("Colour and type are dealt"));
     }
 
     #[test]

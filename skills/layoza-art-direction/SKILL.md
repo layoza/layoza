@@ -150,6 +150,15 @@ visual_system roles and tested control styles. Compare the colours with actual
 artwork and action groups; a swatch strip or contrast pass cannot establish
 cohesion. Do not add every accent simply because the palette lists it.
 
+The dealt palette and type pair are the identity floor, not a mood board: pick one
+concept's set and keep its hue family and faces (lightness may shift for contrast).
+Swapping them for a personal favourite is how independent builds for one trade
+collapse into the same page. Three blind dental builds all drifted to a warm serif
+on cream with deep green and an amber lamp although the deal offered coral, yellow
+and sea-glass. If the deal itself is cream, declare it with the
+`layoza-brand-allow` meta the brief prints; a cream ground you chose yourself stays
+a finding to fix, not to accept.
+
 ## 5. Judge what is actually visible
 
 Use [reference/finish.md](reference/finish.md). Look at first screens and section

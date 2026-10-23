@@ -61,8 +61,11 @@ visual iteration; older examples and style references are materials, not mandate
 ## Authority and completion
 
 The user wins, then confirmed product truth and incumbent brand, then the chosen
-concept, then references. Page shapes, motif IDs, palette pools and novelty scores
-are suggestions. Reuse a familiar pattern when it best serves the task.
+concept, then references. Page shapes, motif IDs and novelty scores are
+suggestions. Colour and type are not: build with one dealt concept's ground, ink,
+accent and type pair, shifting lightness only for contrast. Refuse the house reflex
+(warm serif on cream with deep green and amber) unless it was dealt. Reuse a
+familiar pattern when it best serves the task.
 
 Done means: content and functions are complete; pinned choices are intact; actual
 renders were reviewed; real visual/usability defects are resolved; and remaining
