@@ -951,7 +951,11 @@ const DOM_EVAL_SCRIPT = `(() => {
       if (opaque()) break;
       if (/^(IMG|PICTURE|VIDEO|CANVAS|SVG|IFRAME|EMBED|OBJECT)$/i.test(n.tagName)) { unmeasuredReason = "image/media"; return null; }
       const k = n === el ? 1 : parseFloat(cs.opacity);
-      const stops = gradientStops(cs.backgroundImage);
+      // A gradient sized to nothing or to a thin line (a hover underline grown from 0% x 2px) paints
+      // under no glyph, so it is not the text's background.
+      const lineOnly = cs.backgroundImage.includes("gradient(") && cs.backgroundSize.split(",").every((layer) =>
+        layer.trim().split(/\s+/).some((v) => /^0(px|%)?$/.test(v) || (/px$/.test(v) && parseFloat(v) <= 4)));
+      const stops = lineOnly ? [] : gradientStops(cs.backgroundImage);
       if (stops === null) { unmeasuredReason = "image"; return null; }
       const c = parseColor(cs.backgroundColor);
       const base = c && c[3] > 0 ? withAlpha(c, k) : CLEAR;
