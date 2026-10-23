@@ -1134,14 +1134,17 @@ fn dispatch_tool_call(name: &str, args: &Value, approved_root: &Path) -> Result<
                     let user_root = user_ledger_root(ledger_on);
                     let window = window_arg(args);
                     let recent = recent_looks_all(ledger_root, user_root.as_deref(), window);
+                    // The same request again within the hour replays its deal instead of rotating away.
+                    let key = layoza_core::process::replay_key(query, mode, variant, [None; 3]);
+                    let (recent, record) = layoza_core::process::replay_split(&recent, &key);
                     let steer: &[Look] = if same_look_requested(query) { &[] } else { &recent };
                     let mut rec = recommend_design_avoiding(query, mode, None, None, variant, steer);
                     if let Some(c) = &context { c.apply(&mut rec); }
                     apply_project_memory(&mut rec, ledger_root, &recent);
-                    let looks = looks_of(&rec, &new_run_id(query));
-                    let written = record_looks_all(ledger_root, user_root.as_deref(), &looks);
+                    let looks = looks_of(&rec, &new_run_id(&key));
+                    let written = if record { record_looks_all(ledger_root, user_root.as_deref(), &looks) } else { None };
                     rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, written.is_some()));
-                    let off = ledger_off_reason(new_look, args, approved_root);
+                    let off = if record { ledger_off_reason(new_look, args, approved_root) } else { "replayed the same request from the last hour; not recorded twice" };
                     let mut out = serde_json::to_value(&rec).unwrap();
                     out["creative_workspace"] = layoza_core::creative::creative_workspace(&rec, context.as_ref(), &layoza_core::creative::asset_inventory(&target_path));
                     out["client_request"] = json!(raw_query);

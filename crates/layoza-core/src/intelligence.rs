@@ -2972,6 +2972,15 @@ mod tests {
     }
 
     #[test]
+    fn a_possessive_service_is_not_the_audience() {
+        let audience = |q: &str| rec(q).understood_brief.map(|u| u.audience).unwrap_or_default();
+        let a = audience("family and cosmetic dental clinic in Utrecht: implants, children's dentistry, anxious-patient care");
+        assert!(!a.contains("children"), "{a}");
+        assert!(audience("a dental clinic for children").contains("children"));
+        assert!(audience("dentist for children, with children's sedation").contains("children"));
+    }
+
+    #[test]
     fn brief_type_and_colours_replace_the_industry_baseline() {
         let r = rec("industrial pump maker, fonts Sora and Inter, colours #0B1F3A and #F4F6F8");
         assert!(["Sora", "Inter"].contains(&r.matched_industry.typography_pairing.display_font.as_str()), "{}", r.matched_industry.typography_pairing.display_font);

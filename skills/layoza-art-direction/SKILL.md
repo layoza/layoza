@@ -169,6 +169,14 @@ When available, use a fresh subagent critic with only the brief and rendered ima
 not your rationale; retain their findings and your response. Never present self-review
 as independent evidence.
 
+Strong heroes over thin lower pages is the recurring Layoza fault. Before handoff
+check: at most about seven text sizes, all from the dealt scale; every lower section
+carries its own visual drawn from the trade (an object, diagram or real data), not
+a lone heading over cards; at least two sections bleed or overlap the frame; card
+material and radius vary by role; the navigation is shaped by how this audience
+moves, not wordmark-left/links-centred/button-right; the intro settles within about
+2.5s and ambient loops pause; the phone hero has no empty band.
+
 Fix the weakest important decision, recapture and compare. Default budget: three
 visual review rounds; continue when a material issue remains and scope allows.
 A round cap means report an unfinished limitation, not declare excellence.

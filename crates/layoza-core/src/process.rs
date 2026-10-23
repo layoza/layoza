@@ -298,6 +298,31 @@ pub fn recent_looks_all(project: Option<&Path>, user: Option<&Path>, entries: us
     out
 }
 
+/// What makes two design-system calls the same request: brief, mode, variant and dial overrides.
+pub fn replay_key(query: &str, mode: crate::intelligence::OperatingMode, variant: u64, dials: [Option<u8>; 3]) -> String {
+    format!("{query}|{mode:?}|{variant}|{dials:?}")
+}
+
+/// How long a repeated brief replays its deal instead of steering away from it.
+pub const REPLAY_SECS: u64 = 3600;
+
+/// Splits off a replay: when the newest recorded run came from the same `key` (brief plus knobs)
+/// within `REPLAY_SECS`, the caller is asking for the same deal again (one builder reading it as
+/// text, then as JSON). That run is dropped from the steering, so the deal comes out the same,
+/// and the caller should not record it twice. Returns the looks to steer from and whether to record.
+pub fn replay_split(recent: &[Look], key: &str) -> (Vec<Look>, bool) {
+    let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
+    let newest = recent.iter().filter(|l| l.at.is_some()).max_by_key(|l| l.at);
+    let suffix = format!("-{}", crate::baseline::brief_hash(key));
+    match newest {
+        Some(n) if n.run.ends_with(&suffix) && n.at.is_some_and(|t| now.saturating_sub(t) <= REPLAY_SECS) => {
+            let run = n.run.clone();
+            (recent.iter().filter(|l| l.run != run).cloned().collect(), false)
+        }
+        _ => (recent.to_vec(), true),
+    }
+}
+
 /// Records looks in the project ledger and mirrors them to the user ledger. Returns the folder
 /// whose ledger is reported and its result (the project's when there is one).
 pub fn record_looks_all(project: Option<&Path>, user: Option<&Path>, looks: &[Look]) -> Option<(std::path::PathBuf, Result<std::path::PathBuf, String>)> {
@@ -626,6 +651,23 @@ mod tests {
         fs::write(d.join(PRODUCT_FACTS), "- Oven model X2 ships in May\n").unwrap();
         assert_eq!(rules(&d), vec!["GATE-FACT-UNVERIFIED"]);
         let _ = fs::remove_dir_all(&d);
+    }
+
+    #[test]
+    fn a_repeated_request_replays_and_a_new_one_steers() {
+        use crate::intelligence::OperatingMode::NewWebsite;
+        let key = replay_key("dental clinic", NewWebsite, 0, [None; 3]);
+        let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs();
+        let look = |run: String, at: u64| Look { run, at: Some(at), palette: Some("p".into()), ..Default::default() };
+        let old = look("1-aaaaaaaa".into(), now - 100);
+        let same = look(crate::baseline::new_run_id(&key), now - 10);
+        let (steer, record) = replay_split(&[old.clone(), same.clone()], &key);
+        assert!(!record);
+        assert_eq!(steer.iter().map(|l| l.run.clone()).collect::<Vec<_>>(), vec![old.run.clone()]);
+        // A different variant, or the same request after an hour, is a new deal.
+        assert!(replay_split(&[old.clone(), same.clone()], &replay_key("dental clinic", NewWebsite, 1, [None; 3])).1);
+        let stale = look(crate::baseline::new_run_id(&key), now - REPLAY_SECS - 5);
+        assert!(replay_split(&[old, stale], &key).1);
     }
 
     #[test]

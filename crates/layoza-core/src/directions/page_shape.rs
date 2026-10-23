@@ -1319,7 +1319,13 @@ pub(crate) fn understand(b: &ShapeBrief, signals: &BriefSignals, query: &str, tr
         .iter()
         .filter(|p| q.contains(*p))
         .map(|p| if *p == "b2b" { "business buyers (B2B)".to_string() } else { p.to_string() })
-        .chain(AUDIENCE_WORDS.iter().filter(|w| words.iter().any(|x| x == *w)).map(|w| w.to_string()))
+        // A possessive names a service, not the audience: "children's dentistry" serves families.
+        .chain(AUDIENCE_WORDS.iter()
+            .filter(|w| {
+                let possessive = ["'", "’"].iter().map(|s| q.matches(&format!("{w}{s}")).count()).sum::<usize>();
+                words.iter().filter(|x| x.as_str() == **w).count() > possessive
+            })
+            .map(|w| w.to_string()))
         .collect();
     let b2b = crate::intelligence::b2b_brief(&words);
     let audience = if named.is_empty() && b2b {

@@ -254,8 +254,13 @@ pub fn recent_entries(project: &Path, n: usize) -> Vec<Look> {
 /// A run id: seconds since the epoch plus a hash of the brief (stable sort, distinct per brief).
 pub fn new_run_id(brief: &str) -> String {
     let secs = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0);
+    format!("{secs}-{}", brief_hash(brief))
+}
+
+/// The brief part of a run id: equal briefs give equal suffixes.
+pub fn brief_hash(brief: &str) -> String {
     let h = brief.bytes().fold(0xcbf29ce484222325u64, |h, b| (h ^ b as u64).wrapping_mul(0x100000001b3));
-    format!("{secs}-{:08x}", h as u32)
+    format!("{:08x}", h as u32)
 }
 
 /// For each look in `recent` (oldest first): how many runs back its run is (0 = the newest run)

@@ -206,14 +206,17 @@ fn main() {
             let user_root = user_ledger_root(ledger_on);
             let window = uniqueness::window(num_flag::<u64>(&args, "--window", 1, layoza_core::baseline::MAX_UNIQUENESS_WINDOW as u64, json_flag));
             let recent = layoza_core::process::recent_looks_all(ledger_root.as_deref(), user_root.as_deref(), window);
+            // The same request again within the hour (text, then --json) replays its deal.
+            let key = layoza_core::process::replay_key(&query, mode, variant, [v, m, d]);
+            let (recent, record) = layoza_core::process::replay_split(&recent, &key);
             // Asked for the same look again: keep it and change the knobs instead of rotating away.
             let steer: &[layoza_core::baseline::Look] = if layoza_core::process::same_look_requested(&query) { &[] } else { &recent };
             let mut rec = recommend_design_avoiding(&query, mode, existing_dna.as_ref(), dials, variant, steer);
             layoza_core::process::apply_project_memory(&mut rec, ledger_root.as_deref(), &recent);
-            let looks = looks_of(&rec, &new_run_id(&query));
-            let written = layoza_core::process::record_looks_all(ledger_root.as_deref(), user_root.as_deref(), &looks);
+            let looks = looks_of(&rec, &new_run_id(&key));
+            let written = if record { layoza_core::process::record_looks_all(ledger_root.as_deref(), user_root.as_deref(), &looks) } else { None };
             rec.uniqueness = Some(uniqueness::check(&looks, &recent, window, written.is_some()));
-            let off_reason = if !new_look { "an existing site keeps its own look" } else if !ledger_on { "--no-ledger" } else { "not inside a project and no user ledger" };
+            let off_reason = if !new_look { "an existing site keeps its own look" } else if !ledger_on { "--no-ledger" } else if !record { "replayed the same request from the last hour; not recorded twice" } else { "not inside a project and no user ledger" };
             let ledger = uniqueness::ledger_status(written.as_ref().map(|w| w.0.as_path()), written.as_ref().map(|w| &w.1), off_reason);
             // New looks only: an existing site follows its own design, so no avoid list.
             let avoid = matches!(mode, OperatingMode::NewWebsite | OperatingMode::FullRedesign)
