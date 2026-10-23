@@ -137,8 +137,9 @@ moving one shared utility into the phone disclosure, Escape/focus return, keyboa
 containment and cleanup. Adapt its markup/breakpoint and style to the project;
 it does not prescribe a palette, wordmark, menu appearance or a universal header.
 
-Check `matched_industry` against the brief's actual trade before using its starter
-type, palette or proof language. Words such as studio, creative and agency do not
+Check `matched_industry` against the brief's actual trade before using its proof
+language. Its type and palette are the category default every build of that trade
+starts from; build from a direction's deal instead. Words such as studio, creative and agency do not
 identify the business on their own. If routing is wrong, correct the subject and
 retrieve again; do not turn architectural work, research or another practice into
 an advertising reel. Treat category styling as a candidate and judge it with the

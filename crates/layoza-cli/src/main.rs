@@ -251,7 +251,7 @@ fn main() {
                 let mono_ok = rec.directions.iter().any(|d| d.page_shape.as_ref().is_none_or(|p| !p.restraint.iter().any(|r| r.starts_with("No monospace"))));
                 let mono = if mono_ok { rec.matched_industry.typography_pairing.mono_font.clone() } else { "none, see restraint".into() };
                 println!(
-                    "Industry baseline: type {} / {} (Mono: {}); palette {} bg={} fg={} accent={} (WCAG {:.2}:1)",
+                    "Category default : type {} / {} (Mono: {}); palette {} bg={} fg={} accent={} (WCAG {:.2}:1); every build of this trade starts here, so build from a direction below instead",
                     rec.matched_industry.typography_pairing.display_font,
                     rec.matched_industry.typography_pairing.body_font,
                     mono,
@@ -269,6 +269,7 @@ fn main() {
                     .map(|(i, d)| format!("{} {} / {}", letters.get(i).copied().unwrap_or('?'), d.typography.display_font, d.typography.body_font))
                     .collect();
                 println!("Direction type   : {}", per.join(" | "));
+                println!("Colour and type  : dealt; keep one direction's hue family and type pair (lightness may shift for contrast). Refuse the house reflex unless dealt: warm serif on cream, deep green, amber glow.");
                 if !rec.brief_signals.brief_colors.is_empty() {
                     println!(
                         "Brief Colours    : {} (the brief's own palette wins; direction palettes are fallbacks)",
